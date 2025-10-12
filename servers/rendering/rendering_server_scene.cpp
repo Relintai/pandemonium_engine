@@ -2115,6 +2115,7 @@ void RenderingServerScene::_update_dirty_instance(Instance *p_instance) {
 							can_cast_shadows = false;
 						}
 					}
+
 				} else if (p_instance->base_type == RS::INSTANCE_IMMEDIATE) {
 					RID mat = RSG::storage->immediate_get_material(p_instance->base);
 
@@ -2123,6 +2124,7 @@ void RenderingServerScene::_update_dirty_instance(Instance *p_instance) {
 					if (mat.is_valid() && RSG::storage->material_is_animated(mat)) {
 						is_animated = true;
 					}
+
 				} else if (p_instance->base_type == RS::INSTANCE_PARTICLES) {
 					bool cast_shadows = false;
 
@@ -3320,6 +3322,8 @@ void RenderingServerScene::update_dirty_instances() {
 	if (scenario) {
 		scenario->sps->update();
 	}
+
+	_blob_shadows.update();
 }
 
 bool RenderingServerScene::_render_reflection_probe_step(Instance *p_instance, int p_step) {
@@ -4352,187 +4356,6 @@ uint32_t RenderingServerScene::blob_shadows_fill_background_uniforms(const AABB 
 
 uint32_t RenderingServerScene::capsule_shadows_fill_background_uniforms(const AABB &p_aabb, float *r_casters, float *r_lights, uint32_t p_max_casters) {
 	return _blob_shadows.fill_background_uniforms_capsules(p_aabb, r_casters, r_lights, p_max_casters);
-}
-
-void RenderingServerScene::_update_dirty_instance(Instance *p_instance) {
-	if (p_instance->update_aabb) {
-		_update_instance_aabb(p_instance);
-	}
-
-	if (p_instance->update_materials) {
-		if (p_instance->base_type == RS::INSTANCE_MESH) {
-			//remove materials no longer used and un-own them
-
-			int new_mat_count = RSG::storage->mesh_get_surface_count(p_instance->base);
-			for (int i = p_instance->materials.size() - 1; i >= new_mat_count; i--) {
-				if (p_instance->materials[i].is_valid()) {
-					RSG::storage->material_remove_instance_owner(p_instance->materials[i], p_instance);
-				}
-			}
-			p_instance->materials.resize(new_mat_count);
-
-			int new_blend_shape_count = RSG::storage->mesh_get_blend_shape_count(p_instance->base);
-			if (new_blend_shape_count != p_instance->blend_values.size()) {
-				p_instance->blend_values.resize(new_blend_shape_count);
-				for (int i = 0; i < new_blend_shape_count; i++) {
-					p_instance->blend_values.write().ptr()[i] = 0;
-				}
-			}
-		}
-
-		if ((1 << p_instance->base_type) & RS::INSTANCE_GEOMETRY_MASK) {
-			InstanceGeometryData *geom = static_cast<InstanceGeometryData *>(p_instance->base_data);
-
-			bool can_cast_shadows = true;
-			bool is_animated = false;
-
-			if (p_instance->cast_shadows == RS::SHADOW_CASTING_SETTING_OFF) {
-				can_cast_shadows = false;
-			} else if (p_instance->material_override.is_valid()) {
-				can_cast_shadows = RSG::storage->material_casts_shadows(p_instance->material_override);
-				is_animated = RSG::storage->material_is_animated(p_instance->material_override);
-			} else {
-				if (p_instance->base_type == RS::INSTANCE_MESH) {
-					RID mesh = p_instance->base;
-
-					if (mesh.is_valid()) {
-						bool cast_shadows = false;
-
-						for (int i = 0; i < p_instance->materials.size(); i++) {
-							RID mat = p_instance->materials[i].is_valid() ? p_instance->materials[i] : RSG::storage->mesh_surface_get_material(mesh, i);
-
-							if (!mat.is_valid()) {
-								cast_shadows = true;
-							} else {
-								if (RSG::storage->material_casts_shadows(mat)) {
-									cast_shadows = true;
-								}
-
-								if (RSG::storage->material_is_animated(mat)) {
-									is_animated = true;
-								}
-							}
-						}
-
-						if (!cast_shadows) {
-							can_cast_shadows = false;
-						}
-					}
-
-				} else if (p_instance->base_type == RS::INSTANCE_MULTIMESH) {
-					RID mesh = RSG::storage->multimesh_get_mesh(p_instance->base);
-					if (mesh.is_valid()) {
-						bool cast_shadows = false;
-
-						int sc = RSG::storage->mesh_get_surface_count(mesh);
-						for (int i = 0; i < sc; i++) {
-							RID mat = RSG::storage->mesh_surface_get_material(mesh, i);
-
-							if (!mat.is_valid()) {
-								cast_shadows = true;
-
-							} else {
-								if (RSG::storage->material_casts_shadows(mat)) {
-									cast_shadows = true;
-								}
-								if (RSG::storage->material_is_animated(mat)) {
-									is_animated = true;
-								}
-							}
-						}
-
-						if (!cast_shadows) {
-							can_cast_shadows = false;
-						}
-					}
-				} else if (p_instance->base_type == RS::INSTANCE_IMMEDIATE) {
-					RID mat = RSG::storage->immediate_get_material(p_instance->base);
-
-					can_cast_shadows = !mat.is_valid() || RSG::storage->material_casts_shadows(mat);
-
-					if (mat.is_valid() && RSG::storage->material_is_animated(mat)) {
-						is_animated = true;
-					}
-				} else if (p_instance->base_type == RS::INSTANCE_PARTICLES) {
-					bool cast_shadows = false;
-
-					int dp = RSG::storage->particles_get_draw_passes(p_instance->base);
-
-					for (int i = 0; i < dp; i++) {
-						RID mesh = RSG::storage->particles_get_draw_pass_mesh(p_instance->base, i);
-						if (!mesh.is_valid()) {
-							continue;
-						}
-
-						int sc = RSG::storage->mesh_get_surface_count(mesh);
-						for (int j = 0; j < sc; j++) {
-							RID mat = RSG::storage->mesh_surface_get_material(mesh, j);
-
-							if (!mat.is_valid()) {
-								cast_shadows = true;
-							} else {
-								if (RSG::storage->material_casts_shadows(mat)) {
-									cast_shadows = true;
-								}
-
-								if (RSG::storage->material_is_animated(mat)) {
-									is_animated = true;
-								}
-							}
-						}
-					}
-
-					if (!cast_shadows) {
-						can_cast_shadows = false;
-					}
-				}
-			}
-
-			if (p_instance->material_overlay.is_valid()) {
-				can_cast_shadows = can_cast_shadows || RSG::storage->material_casts_shadows(p_instance->material_overlay);
-				is_animated = is_animated || RSG::storage->material_is_animated(p_instance->material_overlay);
-			}
-
-			if (can_cast_shadows != geom->can_cast_shadows) {
-				//ability to cast shadows change, let lights now
-				for (List<Instance *>::Element *E = geom->lighting.front(); E; E = E->next()) {
-					InstanceLightData *light = static_cast<InstanceLightData *>(E->get()->base_data);
-					light->make_shadow_dirty();
-				}
-
-				geom->can_cast_shadows = can_cast_shadows;
-			}
-
-			geom->material_is_animated = is_animated;
-		}
-	}
-
-	_instance_update_list.remove(&p_instance->update_item);
-
-	_update_instance(p_instance);
-
-	p_instance->update_aabb = false;
-	p_instance->update_materials = false;
-}
-
-void RenderingServerScene::update_dirty_instances() {
-	RSG::storage->update_dirty_resources();
-
-	// this is just to get access to scenario so we can update the spatial partitioning scheme
-	Scenario *scenario = nullptr;
-	if (_instance_update_list.first()) {
-		scenario = _instance_update_list.first()->self()->scenario;
-	}
-
-	while (_instance_update_list.first()) {
-		_update_dirty_instance(_instance_update_list.first()->self());
-	}
-
-	if (scenario) {
-		scenario->sps->update();
-	}
-
-	_blob_shadows.update();
 }
 
 bool RenderingServerScene::free(RID p_rid) {
