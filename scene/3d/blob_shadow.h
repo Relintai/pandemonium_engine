@@ -31,7 +31,7 @@
 #ifndef BLOB_SHADOW_H
 #define BLOB_SHADOW_H
 
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 
 class BlobShadow : public Spatial {
 	GDCLASS(BlobShadow, Spatial);

@@ -31,7 +31,7 @@
 #ifndef BLOB_FOCUS_H
 #define BLOB_FOCUS_H
 
-#include "scene/3d/spatial.h"
+#include "scene/main/spatial.h"
 
 class BlobFocus : public Spatial {
 	GDCLASS(BlobFocus, Spatial);
