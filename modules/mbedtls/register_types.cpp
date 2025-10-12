@@ -36,35 +36,35 @@
 #include "packet_peer_mbed_dtls.h"
 #include "stream_peer_mbedtls.h"
 
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 #if MBEDTLS_VERSION_MAJOR >= 3
 #include <psa/crypto.h>
 #endif
 
-static bool godot_mbedtls_initialized = false;
+static bool pandemonium_mbedtls_initialized = false;
 
-#ifdef GODOT_MBEDTLS_THREADING_ALT
+#ifdef PANDEMONIM_MBEDTLS_THREADING_ALT
 extern "C" {
-void godot_mbedtls_mutex_init(mbedtls_threading_mutex_t *p_mutex) {
+void pandemonium_mbedtls_mutex_init(mbedtls_threading_mutex_t *p_mutex) {
 	ERR_FAIL_NULL(p_mutex);
 	p_mutex->mutex = memnew(Mutex);
 }
 
-void godot_mbedtls_mutex_free(mbedtls_threading_mutex_t *p_mutex) {
+void pandemonium_mbedtls_mutex_free(mbedtls_threading_mutex_t *p_mutex) {
 	ERR_FAIL_NULL(p_mutex);
 	ERR_FAIL_NULL(p_mutex->mutex);
 	memdelete((Mutex *)p_mutex->mutex);
 }
 
-int godot_mbedtls_mutex_lock(mbedtls_threading_mutex_t *p_mutex) {
+int pandemonium_mbedtls_mutex_lock(mbedtls_threading_mutex_t *p_mutex) {
 	ERR_FAIL_NULL_V(p_mutex, MBEDTLS_ERR_THREADING_BAD_INPUT_DATA);
 	ERR_FAIL_NULL_V(p_mutex->mutex, MBEDTLS_ERR_THREADING_BAD_INPUT_DATA);
 	((Mutex *)p_mutex->mutex)->lock();
 	return 0;
 }
 
-int godot_mbedtls_mutex_unlock(mbedtls_threading_mutex_t *p_mutex) {
+int pandemonium_mbedtls_mutex_unlock(mbedtls_threading_mutex_t *p_mutex) {
 	ERR_FAIL_NULL_V(p_mutex, MBEDTLS_ERR_THREADING_BAD_INPUT_DATA);
 	ERR_FAIL_NULL_V(p_mutex->mutex, MBEDTLS_ERR_THREADING_BAD_INPUT_DATA);
 	((Mutex *)p_mutex->mutex)->unlock();
@@ -77,12 +77,12 @@ void register_mbedtls_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
 		GLOBAL_DEF("network/ssl/enable_tls_v1.3", true);
 
-#ifdef GODOT_MBEDTLS_THREADING_ALT
+#ifdef PANDEMONIM_MBEDTLS_THREADING_ALT
 		mbedtls_threading_set_alt(
-				godot_mbedtls_mutex_init,
-				godot_mbedtls_mutex_free,
-				godot_mbedtls_mutex_lock,
-				godot_mbedtls_mutex_unlock);
+				pandemonium_mbedtls_mutex_init,
+				pandemonium_mbedtls_mutex_free,
+				pandemonium_mbedtls_mutex_lock,
+				pandemonium_mbedtls_mutex_unlock);
 #endif
 
 #if MBEDTLS_VERSION_MAJOR >= 3
@@ -96,7 +96,7 @@ void register_mbedtls_types(ModuleRegistrationLevel p_level) {
 		}
 #endif
 
-		godot_mbedtls_initialized = true;
+		pandemonium_mbedtls_initialized = true;
 
 		CryptoMbedTLS::initialize_crypto();
 		StreamPeerMbedTLS::initialize_ssl();
@@ -107,7 +107,7 @@ void register_mbedtls_types(ModuleRegistrationLevel p_level) {
 
 void unregister_mbedtls_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
-		if (godot_mbedtls_initialized) {
+		if (pandemonium_mbedtls_initialized) {
 			DTLSServerMbedTLS::finalize();
 			PacketPeerMbedDTLS::finalize_dtls();
 			StreamPeerMbedTLS::finalize_ssl();
@@ -118,7 +118,7 @@ void unregister_mbedtls_types(ModuleRegistrationLevel p_level) {
 		mbedtls_psa_crypto_free();
 #endif
 
-#ifdef GODOT_MBEDTLS_THREADING_ALT
+#ifdef PANDEMONIM_MBEDTLS_THREADING_ALT
 		mbedtls_threading_free_alt();
 #endif
 	}

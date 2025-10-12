@@ -31,7 +31,7 @@
 
 #include "ssl_context_mbedtls.h"
 
-#include "core/project_settings.h"
+#include "core/config/project_settings.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/editor_settings.h"
