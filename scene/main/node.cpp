@@ -273,10 +273,8 @@ void Node::_propagate_ready() {
 	data.ready_notified = true;
 	data.blocked++;
 
-	_update_children_cache();
-
-	for (uint32_t i = 0; i < data.children_cache.size(); i++) {
-		data.children_cache.get_unchecked(i)->_propagate_ready();
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		E->value()->_propagate_ready();
 	}
 
 	data.blocked--;
@@ -327,10 +325,8 @@ void Node::_propagate_physics_interpolation_reset_requested(bool p_requested) {
 
 	data.blocked++;
 
-	_update_children_cache();
-
-	for (uint32_t i = 0; i < data.children_cache.size(); i++) {
-		data.children_cache.get_unchecked(i)->_propagate_physics_interpolation_reset_requested(p_requested);
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		E->value()->_propagate_physics_interpolation_reset_requested(p_requested);
 	}
 
 	data.blocked--;
@@ -386,13 +382,9 @@ void Node::_propagate_enter_tree() {
 	data.blocked++;
 	//block while adding children
 
-	_update_children_cache();
-
-	for (uint32_t i = 0; i < data.children_cache.size(); i++) {
-		Node *child = data.children_cache.get_unchecked(i);
-
-		if (!child->is_inside_tree()) { // could have been added in enter_tree
-			child->_propagate_enter_tree();
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		if (!E->value()->is_inside_tree()) { // could have been added in enter_tree
+			E->value()->_propagate_enter_tree();
 		}
 	}
 
@@ -544,7 +536,7 @@ void Node::move_child(Node *p_child, int p_pos) {
 	data.blocked++;
 	//new pos first
 	for (int i = motion_from; i <= motion_to; i++) {
-		data.children_cache.get_unchecked(i)->data.pos = i;
+		data.children_cache[i]->data.pos = i;
 	}
 	// notification second
 	move_child_notify(p_child);
@@ -665,16 +657,14 @@ void Node::_propagate_pause_owner(Node *p_owner) {
 }
 
 void Node::_propagate_groups_dirty() {
-	_update_children_cache();
-
 	for (const RBMap<StringName, GroupData>::Element *E = data.grouped.front(); E; E = E->next()) {
 		if (E->get().group) {
 			E->get().group->changed = true;
 		}
 	}
 
-	for (uint32_t i = 0; i < data.children_cache.size(); i++) {
-		data.children_cache.get_unchecked(i)->_propagate_groups_dirty();
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		E->value()->_propagate_groups_dirty();
 	}
 }
 
@@ -755,13 +745,9 @@ int Node::seen_by_get_count() {
 void Node::_propagate_pause_change_notification(int p_notification) {
 	notification(p_notification);
 
-	_update_children_cache();
-
-	Node **children = data.children_cache.ptr();
-
-	for (uint32_t i = 0; i < data.children_cache.size(); i++) {
-		if (children[i]->data.pause_mode == PAUSE_MODE_INHERIT) {
-			children[i]->_propagate_pause_change_notification(p_notification);
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		if (E->value()->data.pause_mode == PAUSE_MODE_INHERIT) {
+			E->value()->_propagate_pause_change_notification(p_notification);
 		}
 	}
 }
@@ -770,10 +756,8 @@ void Node::set_network_master(int p_peer_id, bool p_recursive) {
 	data.network_master = p_peer_id;
 
 	if (p_recursive) {
-		_update_children_cache();
-
-		for (uint32_t i = 0; i < data.children_cache.size(); i++) {
-			data.children_cache.get_unchecked(i)->set_network_master(p_peer_id, true);
+		for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+			E->value()->set_network_master(p_peer_id, true);
 		}
 	}
 }
@@ -1868,8 +1852,7 @@ Node *Node::get_child(int p_index) const {
 
 	_update_children_cache();
 
-	// Index already checked above, can use unsafe version here.
-	return data.children_cache.get_unchecked(p_index);
+	return data.children_cache[p_index];
 }
 
 Node *Node::_get_child_by_name(const StringName &p_name) const {
@@ -1932,18 +1915,10 @@ Node *Node::get_node_or_null(const NodePath &p_path) const {
 		} else {
 			next = nullptr;
 
-			_update_children_cache();
-
-			for (uint32_t j = 0; j < current->data.children_cache.size(); j++) {
-				Node *child = current->data.children_cache.get_unchecked(j);
-
-				if (child->data.name == name) {
-					next = child;
-					break;
-				}
-			}
-
-			if (next == nullptr) {
+			const Node *const *node = current->data.children.getptr(name);
+			if (node) {
+				next = const_cast<Node *>(*node);
+			} else {
 				return nullptr;
 			}
 		}
@@ -2419,14 +2394,11 @@ void Node::_print_tree(const Node *p_node) {
 void Node::_propagate_reverse_notification(int p_notification) {
 	data.blocked++;
 
-	_update_children_cache();
-
-	for (int i = data.children_cache.size() - 1; i >= 0; i--) {
-		data.children_cache.get_unchecked(i)->_propagate_reverse_notification(p_notification);
+	for (HashMap<StringName, Node *>::Element *E = data.children.back(); E; E = E->prev) {
+		E->value()->_propagate_reverse_notification(p_notification);
 	}
 
 	notification(p_notification, true);
-
 	data.blocked--;
 }
 
@@ -2435,14 +2407,12 @@ void Node::_propagate_deferred_notification(int p_notification, bool p_reverse) 
 
 	data.blocked++;
 
-	_update_children_cache();
-
 	if (!p_reverse) {
 		MessageQueue::get_singleton()->push_notification(this, p_notification);
 	}
 
-	for (uint32_t i = 0; i < data.children_cache.size(); i++) {
-		data.children_cache.get_unchecked(i)->_propagate_deferred_notification(p_notification, p_reverse);
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		E->value()->_propagate_deferred_notification(p_notification, p_reverse);
 	}
 
 	if (p_reverse) {
@@ -2454,13 +2424,10 @@ void Node::_propagate_deferred_notification(int p_notification, bool p_reverse) 
 
 void Node::propagate_notification(int p_notification) {
 	data.blocked++;
-
 	notification(p_notification);
 
-	_update_children_cache();
-
-	for (uint32_t i = 0; i < data.children_cache.size(); i++) {
-		data.children_cache.get_unchecked(i)->propagate_notification(p_notification);
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		E->value()->propagate_notification(p_notification);
 	}
 
 	data.blocked--;
@@ -2473,10 +2440,8 @@ void Node::propagate_call(const StringName &p_method, const Array &p_args, const
 		callv(p_method, p_args);
 	}
 
-	_update_children_cache();
-
-	for (uint32_t i = 0; i < data.children_cache.size(); i++) {
-		data.children_cache.get_unchecked(i)->propagate_call(p_method, p_args, p_parent_first);
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		E->value()->propagate_call(p_method, p_args, p_parent_first);
 	}
 
 	if (!p_parent_first && has_method(p_method)) {
@@ -2492,11 +2457,8 @@ void Node::_propagate_replace_owner(Node *p_owner, Node *p_by_owner) {
 	}
 
 	data.blocked++;
-
-	_update_children_cache();
-
-	for (uint32_t i = 0; i < data.children_cache.size(); i++) {
-		data.children_cache.get_unchecked(i)->_propagate_replace_owner(p_owner, p_by_owner);
+	for (HashMap<StringName, Node *>::Element *E = data.children.front(); E; E = E->next) {
+		E->value()->_propagate_replace_owner(p_owner, p_by_owner);
 	}
 	data.blocked--;
 }
