@@ -6092,7 +6092,7 @@ void BlobShadowSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 
 	Vector<Vector3> handles;
 	handles.push_back(Vector3(r, 0, 0));
-	p_gizmo->add_handles(handles, get_material("handles_billboard"), true);
+	p_gizmo->add_handles(handles, get_material("handles_billboard"), Vector<int>(), true);
 }
 
 String BlobShadowSpatialGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
@@ -6111,7 +6111,7 @@ void BlobShadowSpatialGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p
 	Vector3 ray_from = p_camera->project_ray_origin(p_point);
 	Vector3 ray_dir = p_camera->project_ray_normal(p_point);
 
-	if (p_idx == 0) {
+	if (p_id == 0) {
 		Plane cp = Plane(gt.origin, p_camera->get_transform().basis.get_axis(2));
 
 		Vector3 inters;
