@@ -86,8 +86,8 @@ public abstract class FullScreenPandemoniumApp extends FragmentActivity implemen
 			getSupportFragmentManager().beginTransaction().replace(R.id.pandemonium_fragment_container, pandemoniumFragment).setPrimaryNavigationFragment(pandemoniumFragment).commitNowAllowingStateLoss();
 		}
 
-		if (!godotFragment.isImmersive()) {
-			View fragmentContainerView = findViewById(R.id.godot_fragment_container);
+		if (!pandemoniumFragment.isImmersive()) {
+			View fragmentContainerView = findViewById(R.id.pandemonium_fragment_container);
 			// Apply padding for the system bars and/or display cutout
 			ViewCompat.setOnApplyWindowInsetsListener(fragmentContainerView, (v, insets) -> {
 				int insetType = WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout();
