@@ -57,9 +57,9 @@
 #include "editor/editor_settings.h"
 #include "scene/3d/audio_stream_player_3d.h"
 #include "scene/3d/baked_lightmap.h"
+#include "scene/3d/blob_shadow.h"
 #include "scene/3d/camera.h"
 #include "scene/3d/collision_object.h"
-#include "scene/3d/blob_shadow.h"
 #include "scene/3d/collision_polygon.h"
 #include "scene/3d/collision_shape.h"
 #include "scene/3d/cpu_particles.h"
@@ -6095,16 +6095,16 @@ void BlobShadowSpatialGizmoPlugin::redraw(EditorSpatialGizmo *p_gizmo) {
 	p_gizmo->add_handles(handles, get_material("handles_billboard"), true);
 }
 
-String BlobShadowSpatialGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_idx) const {
+String BlobShadowSpatialGizmoPlugin::get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
 	return "Radius";
 }
 
-Variant BlobShadowSpatialGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_idx) const {
+Variant BlobShadowSpatialGizmoPlugin::get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const {
 	BlobShadow *bs = Object::cast_to<BlobShadow>(p_gizmo->get_spatial_node());
 	return bs->get_radius();
 }
 
-void BlobShadowSpatialGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_idx, Camera *p_camera, const Point2 &p_point) {
+void BlobShadowSpatialGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point) {
 	BlobShadow *bs = Object::cast_to<BlobShadow>(p_gizmo->get_spatial_node());
 	Transform gt = bs->get_global_transform();
 
@@ -6126,7 +6126,7 @@ void BlobShadowSpatialGizmoPlugin::set_handle(EditorSpatialGizmo *p_gizmo, int p
 	}
 }
 
-void BlobShadowSpatialGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_idx, const Variant &p_restore, bool p_cancel) {
+void BlobShadowSpatialGizmoPlugin::commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel) {
 	BlobShadow *bs = Object::cast_to<BlobShadow>(p_gizmo->get_spatial_node());
 	if (p_cancel) {
 		bs->set_radius(0, p_restore);

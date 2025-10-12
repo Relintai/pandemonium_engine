@@ -758,10 +758,10 @@ class BlobShadowSpatialGizmoPlugin : public EditorSpatialGizmoPlugin {
 	GDCLASS(BlobShadowSpatialGizmoPlugin, EditorSpatialGizmoPlugin);
 
 protected:
-	virtual String get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_idx) const;
-	virtual Variant get_handle_value(EditorSpatialGizmo *p_gizmo, int p_idx) const;
-	virtual void set_handle(EditorSpatialGizmo *p_gizmo, int p_idx, Camera *p_camera, const Point2 &p_point);
-	virtual void commit_handle(EditorSpatialGizmo *p_gizmo, int p_idx, const Variant &p_restore, bool p_cancel = false);
+	virtual String get_handle_name(const EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	virtual Variant get_handle_value(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary) const;
+	virtual void set_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, Camera *p_camera, const Point2 &p_point);
+	virtual void commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel = false);
 
 	bool has_gizmo(Spatial *p_spatial);
 	String get_name() const;
