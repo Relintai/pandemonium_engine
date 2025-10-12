@@ -764,7 +764,7 @@ protected:
 	virtual void commit_handle(EditorSpatialGizmo *p_gizmo, int p_id, bool p_secondary, const Variant &p_restore, bool p_cancel = false);
 
 	bool has_gizmo(Spatial *p_spatial);
-	String get_name() const;
+	String get_gizmo_name() const;
 	int get_priority() const;
 	void redraw(EditorSpatialGizmo *p_gizmo);
 

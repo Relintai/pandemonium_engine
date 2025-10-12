@@ -6032,7 +6032,7 @@ bool BlobShadowSpatialGizmoPlugin::has_gizmo(Spatial *p_spatial) {
 	return Object::cast_to<BlobShadow>(p_spatial) != nullptr;
 }
 
-String BlobShadowSpatialGizmoPlugin::get_name() const {
+String BlobShadowSpatialGizmoPlugin::get_gizmo_name() const {
 	return "BlobShadow";
 }
 
