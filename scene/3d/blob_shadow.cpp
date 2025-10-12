@@ -30,7 +30,7 @@
 
 #include "blob_shadow.h"
 
-#include "servers/visual/visual_server_blob_shadows.h"
+#include "servers/rendering/rendering_server_blob_shadows.h"
 
 void BlobShadow::_physics_interpolated_changed() {
 	set_notify_transform(!is_physics_interpolated_and_enabled());

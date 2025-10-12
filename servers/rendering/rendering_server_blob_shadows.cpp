@@ -28,7 +28,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#include "visual_server_blob_shadows.h"
+#include "rendering_server_blob_shadows.h"
 
 #include "core/engine.h"
 #include "core/math/plane.h"
