@@ -76,8 +76,8 @@ static AppDelegate *delegate_singleton = nil;
 
 - (void)createViewController {
 	ViewController *viewController = [[ViewController alloc] init];
-	viewController.godotView.useCADisplayLink = bool(GLOBAL_DEF("display.iOS/use_cadisplaylink", true)) ? YES : NO;
-	viewController.godotView.renderingInterval = 1.0 / kRenderingFrequency;
+	viewController.pandemoniumView.useCADisplayLink = bool(GLOBAL_DEF("display.iOS/use_cadisplaylink", true)) ? YES : NO;
+	viewController.pandemoniumView.renderingInterval = 1.0 / kRenderingFrequency;
 
 	self.window.rootViewController = viewController;
 
