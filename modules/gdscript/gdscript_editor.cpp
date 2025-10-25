@@ -2694,6 +2694,26 @@ Error GDScriptLanguage::complete_code(const String &p_code, const String &p_path
 				c._class = nullptr;
 			}
 
+			// Code complete for enums
+			// Note: These checks are likely overkill
+			if (op->arguments.size() == 2 &&
+					op->op == GDScriptParser::OperatorNode::OP_INDEX_NAMED &&
+					op->arguments[0]->type == GDScriptParser::Node::TYPE_IDENTIFIER &&
+					op->arguments[1]->type == GDScriptParser::Node::TYPE_IDENTIFIER &&
+					op->arguments[0]->get_datatype().is_constant &&
+					!op->arguments[1]->get_datatype().is_constant &&
+					base.value.get_type() == Variant::DICTIONARY) {
+				Dictionary d = base.value;
+
+				const Variant *d_key = d.next();
+
+				while (d_key) {
+					ScriptCodeCompletionOption option((*d_key).operator String(), ScriptCodeCompletionOption::KIND_CONSTANT);
+					options.insert(option.display, option);
+					d_key = d.next(d_key);
+				}
+			}
+
 			_find_identifiers_in_base(c, base, is_function, options);
 		} break;
 		case GDScriptParser::COMPLETION_CALL_ARGUMENTS: {
