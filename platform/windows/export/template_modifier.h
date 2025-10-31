@@ -180,7 +180,7 @@ class TemplateModifier {
 	};
 
 	struct GroupIcon : ByteStream {
-		static constexpr uint8_t SIZES[6] = { 16, 32, 48, 64, 128, 0 };
+		static const uint8_t SIZES[6];
 
 		uint16_t reserved = 0;
 		uint16_t type = 1;

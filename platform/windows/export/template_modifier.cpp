@@ -304,6 +304,8 @@ void TemplateModifier::IconEntry::load(FileAccess *p_file) {
 	image_offset = p_file->get_32(); // Image data offset.
 }
 
+const uint8_t TemplateModifier::GroupIcon::SIZES[6] = { 16, 32, 48, 64, 128, 0 };
+
 Vector<uint8_t> TemplateModifier::GroupIcon::save() const {
 	Vector<uint8_t> bytes;
 	ByteStream::save(reserved, bytes);
