@@ -302,10 +302,7 @@ void AudioDriverManager::_set_driver(int p_driver) {
 }
 
 void AudioDriverManager::initialize(int p_driver) {
-	// Emscripten (or the browsers?) doesn't seem to like restarting audio server threads after project load (javascript editor)
-#ifndef __EMSCRIPTEN__
 	bool mute_driver = GLOBAL_DEF("audio/muting/mute_driver", false);
-#endif
 
 	GLOBAL_DEF_RST("audio/enable_audio_input", false);
 	GLOBAL_DEF_RST("audio/mix_rate", DEFAULT_MIX_RATE);
@@ -313,8 +310,6 @@ void AudioDriverManager::initialize(int p_driver) {
 	GLOBAL_DEF_RST("audio/output_latency", DEFAULT_OUTPUT_LATENCY);
 	GLOBAL_DEF_RST("audio/output_latency.web", 50); // Safer default output_latency for web.
 
-	// Emscripten (or the browsers?) doesn't seem to like restarting audio server threads after project load (javascript editor)
-#ifndef __EMSCRIPTEN__
 	// These Project settings are only actually set and used outside the editor.
 	// The Editor uses EditorSettings defined in editor_node.cpp.
 	bool mute_on_pause = GLOBAL_DEF("audio/muting/mute_on_pause", true);
@@ -356,7 +351,6 @@ void AudioDriverManager::initialize(int p_driver) {
 		_update_mute_state();
 #endif
 	}
-#endif // __EMSCRIPTEN__
 
 	_set_driver(p_driver);
 }
