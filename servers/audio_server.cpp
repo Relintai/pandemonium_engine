@@ -55,6 +55,10 @@
 #define PANDEMONIUM_AUDIO_DRIVER_DISALLOW_MUTING
 #endif
 
+#ifndef __EMSCRIPTEN__
+#define PANDEMONIUM_AUDIO_DRIVER_DISALLOW_MUTING
+#endif
+
 AudioDriver *AudioDriver::singleton = nullptr;
 AudioDriver *AudioDriver::get_singleton() {
 	return singleton;
