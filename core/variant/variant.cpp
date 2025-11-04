@@ -400,6 +400,8 @@ bool Variant::can_convert(Variant::Type p_type_from, Variant::Type p_type_to) {
 				POOL_VECTOR2I_ARRAY,
 				POOL_VECTOR3_ARRAY,
 				POOL_VECTOR3I_ARRAY,
+				POOL_VECTOR4_ARRAY,
+				POOL_VECTOR4I_ARRAY,
 				NIL
 			};
 
