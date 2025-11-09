@@ -564,7 +564,7 @@ void Expression::exec_func(BuiltinFunc p_func, const Variant **p_inputs, Variant
 
 				return;
 			}
-			if (p_inputs[1]->get_type() != Variant::STRING && p_inputs[1]->get_type() != Variant::NODE_PATH) {
+			if (p_inputs[1]->get_type() != Variant::STRING && p_inputs[1]->get_type() != Variant::NODE_PATH && p_inputs[1]->get_type() != Variant::STRING_NAME) {
 				r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
 				r_error.argument = 1;
 				r_error.expected = Variant::STRING;
