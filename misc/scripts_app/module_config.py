@@ -4,6 +4,7 @@ pandemonium_branch = 'master'
 engine_repository = [ ['https://github.com/Relintai/pandemonium_engine.git', 'git@github.com:Relintai/pandemonium_engine.git'], 'pandemonium_engine', '' ]
 
 # Relative to this script's directory
+# The modules that get downloaded will be copied to this folder.
 module_install_folder = './pandemonium_engine/modules/'
 
 module_repositories = [
@@ -32,8 +33,12 @@ third_party_addon_repositories = [
 ]
 
 # Relative to the engine directory
+# if not an emtpy string this will be passed to the engine's build script
+# as the custom_modules= parameter.
 custom_module_folders = ""
 
+# When building the slim templates ("_slim" build word)
+# These commands will be passed to the build.
 slim_args = ''
 
 # Normal Modules
@@ -124,4 +129,7 @@ slim_args = ''
 #slim_args += 'disable_3d=yes ' # Cannot be used with the tools (editor) build
 #slim_args += 'disable_gles3=yes '
 
+# When building the slim editor ("_slim" build word)
+# These commands will be passed to the build.
 slim_args_editor = slim_args
+
