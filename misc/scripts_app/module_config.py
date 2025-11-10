@@ -5,7 +5,11 @@ engine_repository = [ ['https://github.com/Relintai/pandemonium_engine.git', 'gi
 
 # Relative to this script's directory
 # The modules that get downloaded will be copied to this folder.
-module_install_folder = './pandemonium_engine/modules/'
+#
+# Old default.
+#module_install_folder = './pandemonium_engine/modules/'
+# This folder is .gitignored by the engine, and also built by default.
+module_install_folder = './pandemonium_engine/custom_modules/'
 
 module_repositories = [
     #[ ['https://github.com/Relintai/entity_spell_system.git', 'git@github.com:Relintai/entity_spell_system.git'], 'entity_spell_system', '' ],
