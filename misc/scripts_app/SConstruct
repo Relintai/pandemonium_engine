@@ -640,6 +640,7 @@ opts.Add('a', 'What to do', '')
 opts.Add(EnumVariable('action', 'What to do', 'setup', ('setup', 'update')))
 opts.Add('t', 'Action target', '')
 opts.Add(EnumVariable('target', 'Action target', 'all', ('all', 'engine', 'modules', 'all_addons', 'addons', 'third_party_addons')))
+opts.Add('rt', 'Type of repositories to clone from first', '')
 opts.Add(EnumVariable('repository_type', 'Type of repositories to clone from first', 'http', ('http', 'ssh')))
 
 opts.Update(env)
@@ -648,6 +649,9 @@ Help(opts.GenerateHelpText(env))
 load_target_commits_array()
 
 rt = env['repository_type']
+
+if env['rt']:
+    rt = env['rt']
 
 if rt == 'ssh':
     repository_index = 1

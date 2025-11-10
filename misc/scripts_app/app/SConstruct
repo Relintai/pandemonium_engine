@@ -159,7 +159,7 @@ if not os.path.isdir(engine_abspath):
     with open('./HEADS', 'r') as infile:
         target_commits = json.load(infile)
 
-    if 'repository_type=ssh' in sys.argv:
+    if 'repository_type=ssh' in sys.argv or 'rt=ssh' in sys.argv:
         repository_index = 1
 
     setup_repository(module_config.engine_repository, '/', module_config.pandemonium_branch)
