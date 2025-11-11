@@ -6,10 +6,10 @@ engine_repository = [ ['https://github.com/Relintai/pandemonium_engine.git', 'gi
 # Relative to this script's directory
 # The modules that get downloaded will be copied to this folder.
 #
-# Old default.
-#module_install_folder = './pandemonium_engine/modules/'
-# This folder is .gitignored by the engine, and also built by default.
-module_install_folder = './pandemonium_engine/custom_modules/'
+# Default.
+module_install_folder = './pandemonium_engine/modules/'
+# This folder is .gitignored by the engine. Make sure you use the alternative custom_module_folders setting.
+#module_install_folder = './pandemonium_engine/custom_modules/'
 
 module_repositories = [
     #[ ['https://github.com/Relintai/entity_spell_system.git', 'git@github.com:Relintai/entity_spell_system.git'], 'entity_spell_system', '' ],
@@ -40,6 +40,9 @@ third_party_addon_repositories = [
 # if not an emtpy string this will be passed to the engine's build script
 # as the custom_modules= parameter.
 custom_module_folders = ""
+# Use this if you are using the alternative .gitignored "custom_modules" module_install_folder
+#custom_module_folders = "custom_modules"
+
 
 # When compiling the slim editor ("_slim" build word)
 # These commands will be passed to the build.
