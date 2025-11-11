@@ -41,7 +41,7 @@ third_party_addon_repositories = [
 # as the custom_modules= parameter.
 custom_module_folders = ""
 
-# When building the slim editor ("_slim" build word)
+# When compiling the slim editor ("_slim" build word)
 # These commands will be passed to the build.
 slim_args_editor = ''
 
@@ -133,7 +133,7 @@ slim_args_editor = ''
 #slim_args_editor += 'disable_3d=yes ' # Cannot be used with the tools (editor) build
 #slim_args_editor += 'disable_gles3=yes '
 
-# When building the slim templates ("_slim" build word)
+# When compiling the slim templates ("_slim" build word)
 # These commands will be passed to the build.
 slim_args = slim_args_editor
 
