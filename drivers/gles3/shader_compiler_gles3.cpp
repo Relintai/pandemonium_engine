@@ -1234,6 +1234,7 @@ ShaderCompilerGLES3::ShaderCompilerGLES3() {
 	actions[RS::SHADER_SPATIAL].renames["CAMERA_POSITION_WORLD"] = "camera_matrix[3].xyz";
 	actions[RS::SHADER_SPATIAL].renames["CAMERA_DIRECTION_WORLD"] = "camera_inverse_matrix[3].xyz";
 	actions[RS::SHADER_SPATIAL].renames["NODE_POSITION_VIEW"] = "(camera_inverse_matrix * world_transform)[3].xyz";
+	actions[RS::SHADER_SPATIAL].renames["BLOB_SHADOW"] = "blob_shadow_total";
 
 	//for light
 	actions[RS::SHADER_SPATIAL].renames["VIEW"] = "view";
