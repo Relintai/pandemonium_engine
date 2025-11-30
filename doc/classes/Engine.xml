@@ -24,10 +24,11 @@
 			<return type="Dictionary" />
 			<description>
 				Returns engine author information in a Dictionary.
-				[code]lead_developers[/code]    - Array of Strings, lead developer names
-				[code]founders[/code]           - Array of Strings, founder names
-				[code]project_managers[/code]   - Array of Strings, project manager names
-				[code]developers[/code]         - Array of Strings, developer names
+				[code]pandemonium_founders[/code]           - Array of Strings, founder names
+				[code]godot_founders[/code]           - Array of Strings, founder names
+				[code]godot_lead_developers[/code]    - Array of Strings, lead developer names
+				[code]godot_project_managers[/code]   - Array of Strings, project manager names
+				[code]godot_developers[/code]         - Array of Strings, developer names
 			</description>
 		</method>
 		<method name="get_copyright_info" qualifiers="const">
