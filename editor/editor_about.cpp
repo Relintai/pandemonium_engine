@@ -223,7 +223,7 @@ EditorAbout::EditorAbout() {
 	_license_text->set_name(TTR("License"));
 	_license_text->set_h_size_flags(Control::SIZE_EXPAND_FILL);
 	_license_text->set_v_size_flags(Control::SIZE_EXPAND_FILL);
-	_license_text->set_text(String::utf8(GODOT_LICENSE_TEXT));
+	_license_text->set_text(String::utf8(PANDEMONIUM_LICENSE_TEXT));
 	tc->add_child(_license_text);
 
 	// Thirdparty License
