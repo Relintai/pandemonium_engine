@@ -91,7 +91,7 @@
 		<method name="get_license_text" qualifiers="const">
 			<return type="String" />
 			<description>
-				Returns Godot license text.
+				Returns Pandemonium license text.
 			</description>
 		</method>
 		<method name="get_main_loop" qualifiers="const">
