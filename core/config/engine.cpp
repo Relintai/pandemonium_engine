@@ -218,7 +218,7 @@ Dictionary Engine::get_license_info() const {
 }
 
 String Engine::get_license_text() const {
-	return String(PANDEMONIUM_LICENSE_TEXT);
+	return String::utf8(PANDEMONIUM_LICENSE_TEXT);
 }
 
 void Engine::set_print_error_messages(bool p_enabled) {
