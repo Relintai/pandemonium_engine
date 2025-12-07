@@ -169,7 +169,7 @@ void CameraFeedAndroid::_set_rotation() {
 	}
 
 	_transform = Transform2D();
-	_transform = transform.rotated(Math::deg2rad(image_rotation));
+	_transform = _transform.rotated(Math::deg2rad(image_rotation));
 }
 
 void CameraFeedAndroid::_add_formats() {
@@ -319,7 +319,7 @@ bool CameraFeedAndroid::_activate_feed() {
 }
 
 bool CameraFeedAndroid::set_format(int p_index, const Dictionary &p_parameters) {
-	ERR_FAIL_COND_V_MSG(active, false, "Feed is active.");
+	ERR_FAIL_COND_V_MSG(_active, false, "Feed is active.");
 	ERR_FAIL_INDEX_V_MSG(p_index, _formats.size(), false, "Invalid format index.");
 
 	_selected_format = p_index;
@@ -429,8 +429,8 @@ void CameraFeedAndroid::onImage(void *context, AImageReader *p_reader) {
 			}
 			memcpy(data_uv.ptrw(), data, len);
 
-			image_y->initialize_data(width, height, false, Image::FORMAT_R8, data_y);
-			image_uv->initialize_data(width / 2, height / 2, false, Image::FORMAT_RG8, data_uv);
+			image_y->create(width, height, false, Image::FORMAT_R8, data_y);
+			image_uv->create(width / 2, height / 2, false, Image::FORMAT_RG8, data_uv);
 
 			feed->set_ycbcr_images(image_y, image_uv);
 			break;
@@ -445,7 +445,7 @@ void CameraFeedAndroid::onImage(void *context, AImageReader *p_reader) {
 			}
 			memcpy(data_y.ptrw(), data, len);
 
-			image_y->initialize_data(width, height, false, Image::FORMAT_RGBA8, data_y);
+			image_y->create(width, height, false, Image::FORMAT_RGBA8, data_y);
 
 			feed->set_rgb_image(image_y);
 			break;
@@ -460,7 +460,7 @@ void CameraFeedAndroid::onImage(void *context, AImageReader *p_reader) {
 			}
 			memcpy(data_y.ptrw(), data, len);
 
-			image_y->initialize_data(width, height, false, Image::FORMAT_RGB8, data_y);
+			image_y->create(width, height, false, Image::FORMAT_RGB8, data_y);
 
 			feed->set_rgb_image(image_y);
 			break;
@@ -550,8 +550,8 @@ void CameraAndroid::update_feeds() {
 	ERR_FAIL_COND(c_status != ACAMERA_OK);
 
 	// remove existing devices
-	for (int i = feeds.size() - 1; i >= 0; i--) {
-		remove_feed(feeds[i]);
+	for (int i = _feeds.size() - 1; i >= 0; i--) {
+		remove_feed(_feeds[i]);
 	}
 
 	for (int c = 0; c < cameraIds->numCameras; ++c) {
@@ -602,8 +602,8 @@ void CameraAndroid::update_feeds() {
 
 void CameraAndroid::remove_all_feeds() {
 	// remove existing devices
-	for (int i = feeds.size() - 1; i >= 0; i--) {
-		remove_feed(feeds[i]);
+	for (int i = _feeds.size() - 1; i >= 0; i--) {
+		remove_feed(_feeds[i]);
 	}
 
 	if (cameraManager != nullptr) {
@@ -631,8 +631,8 @@ void CameraAndroid::set_monitoring_feeds(bool p_monitoring_feeds) {
 }
 
 void CameraAndroid::handle_application_pause() {
-	for (int i = 0; i < feeds.size(); i++) {
-		Ref<CameraFeedAndroid> feed = feeds[i];
+	for (int i = 0; i < _feeds.size(); i++) {
+		Ref<CameraFeedAndroid> feed = _feeds[i];
 		if (feed.is_valid()) {
 			feed->handle_pause();
 		}
@@ -640,8 +640,8 @@ void CameraAndroid::handle_application_pause() {
 }
 
 void CameraAndroid::handle_application_resume() {
-	for (int i = 0; i < feeds.size(); i++) {
-		Ref<CameraFeedAndroid> feed = feeds[i];
+	for (int i = 0; i < _feeds.size(); i++) {
+		Ref<CameraFeedAndroid> feed = _feeds[i];
 		if (feed.is_valid()) {
 			feed->handle_resume();
 		}
@@ -649,8 +649,8 @@ void CameraAndroid::handle_application_resume() {
 }
 
 void CameraAndroid::handle_display_rotation_change(int) {
-	for (int i = 0; i < feeds.size(); i++) {
-		Ref<CameraFeedAndroid> feed = feeds[i];
+	for (int i = 0; i < _feeds.size(); i++) {
+		Ref<CameraFeedAndroid> feed = _feeds[i];
 		if (feed.is_valid()) {
 			feed->handle_rotation_change();
 		}
