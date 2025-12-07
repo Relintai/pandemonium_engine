@@ -116,7 +116,7 @@ void CameraFeedAndroid::refresh_camera_metadata() {
 		ERR_PRINT(vformat("Camera %s: Failed to get sensor orientation after refresh (status: %d).", camera_id, status));
 	}
 
-	formats.clear();
+	_formats.clear();
 	_add_formats();
 
 	print_verbose(vformat("Camera %s: Metadata refreshed successfully.", camera_id));
@@ -189,16 +189,16 @@ void CameraFeedAndroid::_add_formats() {
 				feed_format.height = formats.data.i32[f + 2];
 				feed_format.format = GetFormatName(format);
 				feed_format.pixel_format = format;
-				this->formats.append(feed_format);
+				_formats.append(feed_format);
 			}
 		}
 	}
 }
 
 bool CameraFeedAndroid::_activate_feed() {
-	ERR_FAIL_COND_V_MSG(formats.is_empty(), false, "No camera formats available.");
-	ERR_FAIL_INDEX_V_MSG(selected_format, formats.size(), false,
-			vformat("CameraFeed format needs to be set before activating. Selected format index: %d (formats size: %d)", selected_format, formats.size()));
+	ERR_FAIL_COND_V_MSG(_formats.is_empty(), false, "No camera formats available.");
+	ERR_FAIL_INDEX_V_MSG(selected_format, _formats.size(), false,
+			vformat("CameraFeed format needs to be set before activating. Selected format index: %d (formats size: %d)", selected_format, _formats.size()));
 	if (is_active()) {
 		deactivate_feed();
 	};
@@ -221,7 +221,7 @@ bool CameraFeedAndroid::_activate_feed() {
 	}
 
 	// Create image reader
-	const FeedFormat &feed_format = formats[selected_format];
+	const FeedFormat &feed_format = _formats[selected_format];
 	media_status_t m_status = AImageReader_new(feed_format.width, feed_format.height, feed_format.pixel_format, 1, &reader);
 	if (m_status != AMEDIA_OK) {
 		onError(this, device, m_status);
@@ -314,7 +314,7 @@ bool CameraFeedAndroid::_activate_feed() {
 
 bool CameraFeedAndroid::set_format(int p_index, const Dictionary &p_parameters) {
 	ERR_FAIL_COND_V_MSG(active, false, "Feed is active.");
-	ERR_FAIL_INDEX_V_MSG(p_index, formats.size(), false, "Invalid format index.");
+	ERR_FAIL_INDEX_V_MSG(p_index, _formats.size(), false, "Invalid format index.");
 
 	selected_format = p_index;
 	return true;
@@ -322,7 +322,9 @@ bool CameraFeedAndroid::set_format(int p_index, const Dictionary &p_parameters) 
 
 Array CameraFeedAndroid::get_formats() const {
 	Array result;
-	for (const FeedFormat &feed_format : formats) {
+	for (int i = 0; i < _formats.size(); ++i) {
+		const FeedFormat &feed_format = _formats[i];
+
 		Dictionary dictionary;
 		dictionary["width"] = feed_format.width;
 		dictionary["height"] = feed_format.height;
@@ -334,9 +336,9 @@ Array CameraFeedAndroid::get_formats() const {
 
 CameraFeed::FeedFormat CameraFeedAndroid::get_format() const {
 	CameraFeed::FeedFormat feed_format = {};
-	ERR_FAIL_INDEX_V_MSG(selected_format, formats.size(), feed_format,
-			vformat("Invalid format index: %d (formats size: %d)", selected_format, formats.size()));
-	return formats[selected_format];
+	ERR_FAIL_INDEX_V_MSG(selected_format, _formats.size(), feed_format,
+			vformat("Invalid format index: %d (formats size: %d)", selected_format, _formats.size()));
+	return _formats[selected_format];
 }
 
 void CameraFeedAndroid::handle_pause() {
