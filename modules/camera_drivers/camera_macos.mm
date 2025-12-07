@@ -209,8 +209,8 @@ public:
 
 	void set_device(AVCaptureDevice *p_device);
 
-	bool activate_feed() override;
-	void deactivate_feed() override;
+	bool _activate_feed();
+	void _deactivate_feed();
 };
 
 AVCaptureDevice *CameraFeedMacOS::get_device() const {
@@ -227,16 +227,16 @@ void CameraFeedMacOS::set_device(AVCaptureDevice *p_device) {
 
 	// get some info
 	NSString *device_name = p_device.localizedName;
-	name = String::utf8(device_name.UTF8String);
-	position = CameraFeed::FEED_UNSPECIFIED;
+	_name = String::utf8(device_name.UTF8String);
+	_position = CameraFeed::FEED_UNSPECIFIED;
 	if ([p_device position] == AVCaptureDevicePositionBack) {
-		position = CameraFeed::FEED_BACK;
+		_position = CameraFeed::FEED_BACK;
 	} else if ([p_device position] == AVCaptureDevicePositionFront) {
-		position = CameraFeed::FEED_FRONT;
+		_position = CameraFeed::FEED_FRONT;
 	};
 }
 
-bool CameraFeedMacOS::activate_feed() {
+bool CameraFeedMacOS::_activate_feed() {
 	if (capture_session) {
 		// Already recording!
 	} else {
@@ -262,7 +262,7 @@ bool CameraFeedMacOS::activate_feed() {
 	return true;
 }
 
-void CameraFeedMacOS::deactivate_feed() {
+void CameraFeedMacOS::_deactivate_feed() {
 	// end camera capture if we have one
 	if (capture_session) {
 		[capture_session cleanup];
@@ -328,8 +328,8 @@ void CameraMacOS::update_feeds() {
 #endif
 
 	// remove devices that are gone..
-	for (int i = feeds.size() - 1; i >= 0; i--) {
-		Ref<CameraFeedMacOS> feed = (Ref<CameraFeedMacOS>)feeds[i];
+	for (int i = _feeds.size() - 1; i >= 0; i--) {
+		Ref<CameraFeedMacOS> feed = (Ref<CameraFeedMacOS>)_feeds[i];
 		if (feed.is_null()) {
 			continue;
 		}
@@ -342,8 +342,8 @@ void CameraMacOS::update_feeds() {
 
 	for (AVCaptureDevice *device in devices) {
 		bool found = false;
-		for (int i = 0; i < feeds.size() && !found; i++) {
-			Ref<CameraFeedMacOS> feed = (Ref<CameraFeedMacOS>)feeds[i];
+		for (int i = 0; i < _feeds.size() && !found; i++) {
+			Ref<CameraFeedMacOS> feed = (Ref<CameraFeedMacOS>)_feeds[i];
 			if (feed.is_null()) {
 				continue;
 			}
@@ -364,11 +364,11 @@ void CameraMacOS::update_feeds() {
 			add_feed(newfeed);
 		};
 	};
-	emit_signal(SNAME(CameraServer::feeds_updated_signal_name));
+	emit_signal("camera_feeds_updated");
 }
 
 void CameraMacOS::set_monitoring_feeds(bool p_monitoring_feeds) {
-	if (p_monitoring_feeds == monitoring_feeds) {
+	if (p_monitoring_feeds == _monitoring_feeds) {
 		return;
 	}
 
