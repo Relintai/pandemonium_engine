@@ -150,7 +150,7 @@ RID CameraServer::feed_texture(int p_id, CameraServer::FeedImage p_texture) {
 
 	Ref<CameraFeed> feed = get_feed(index);
 
-	return feed->get_texture(p_texture);
+	return feed->get_texture_rid(p_texture);
 }
 
 CameraServer::CameraServer() {
