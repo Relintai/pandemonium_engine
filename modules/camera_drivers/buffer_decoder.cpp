@@ -31,7 +31,7 @@
 
 #include "buffer_decoder.h"
 
-#include "servers/camera/camera_feed.h"
+#include "modules/camera_server/camera_feed.h"
 
 #include <linux/videodev2.h>
 

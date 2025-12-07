@@ -34,7 +34,7 @@
 
 #import "camera_macos.h"
 
-#include "servers/camera/camera_feed.h"
+#include "modules/camera_server/camera_feed.h"
 
 #import <AVFoundation/AVFoundation.h>
 

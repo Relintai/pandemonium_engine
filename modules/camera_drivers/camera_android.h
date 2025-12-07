@@ -32,8 +32,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "servers/camera/camera_feed.h"
-#include "servers/camera/camera_server.h"
+#include "modules/camera_server/camera_server.h"
+#include "modules/camera_server/camera_feed.h"
 
 #include <camera/NdkCameraDevice.h>
 #include <camera/NdkCameraError.h>

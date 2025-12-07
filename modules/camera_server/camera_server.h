@@ -33,9 +33,9 @@
 /*************************************************************************/
 
 #include "core/object/class_db.h"
-#include "core/object/ref_counted.h"
+#include "core/object/reference.h"
 #include "core/os/thread_safe.h"
-#include "core/templates/rid.h"
+#include "core/containers/rid.h"
 #include "core/variant/variant.h"
 
 /**

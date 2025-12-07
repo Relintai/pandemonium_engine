@@ -34,15 +34,18 @@
 
 #include "core/io/image.h"
 #include "core/math/transform_2d.h"
-#include "servers/camera/camera_server.h"
+
+#include "core/object/reference.h"
+
+#include "camera_server.h"
 
 /**
 	The camera server is a singleton object that gives access to the various
 	camera feeds that can be used as the background for our environment.
 **/
 
-class CameraFeed : public RefCounted {
-	GDCLASS(CameraFeed, RefCounted);
+class CameraFeed : public Reference {
+	GDCLASS(CameraFeed, Reference);
 
 public:
 	enum FeedDataType {
