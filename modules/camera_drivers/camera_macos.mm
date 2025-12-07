@@ -309,6 +309,9 @@ MyDeviceNotifications *device_notifications = nil;
 //////////////////////////////////////////////////////////////////////////
 // CameraMacOS - Subclass for our camera server on macOS
 
+CameraMacOS::CameraMacOS() {
+}
+
 void CameraMacOS::update_feeds() {
 	NSArray<AVCaptureDevice *> *devices = nullptr;
 #if defined(__x86_64__)

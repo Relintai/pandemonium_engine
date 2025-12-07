@@ -41,7 +41,7 @@ class CameraMacOS : public CameraServer {
 	GDSOFTCLASS(CameraMacOS, CameraServer);
 
 public:
-	CameraMacOS() = default;
+	CameraMacOS();
 
 	void update_feeds();
 	virtual void set_monitoring_feeds(bool p_monitoring_feeds);
