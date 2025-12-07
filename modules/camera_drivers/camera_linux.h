@@ -38,11 +38,13 @@
 #include "modules/camera_server/camera_server.h"
 
 class CameraLinux : public CameraServer {
-private:
-	SafeFlag exit_flag;
-	Thread camera_thread;
-	Mutex camera_mutex;
+public:
+	CameraLinux();
+	~CameraLinux();
 
+	void set_monitoring_feeds(bool p_monitoring_feeds);
+
+private:
 	static void camera_thread_func(void *p_camera_linux);
 
 	void _update_devices();
@@ -54,11 +56,9 @@ private:
 	bool _is_video_capture_device(int p_file_descriptor);
 	bool _can_query_format(int p_file_descriptor, int p_type);
 
-public:
-	CameraLinux() = default;
-	~CameraLinux();
-
-	void set_monitoring_feeds(bool p_monitoring_feeds) override;
+	SafeFlag exit_flag;
+	Thread camera_thread;
+	Mutex camera_mutex;
 };
 
 #endif

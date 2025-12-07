@@ -39,6 +39,16 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+CameraLinux::CameraLinux() {
+}
+
+CameraLinux::~CameraLinux() {
+	exit_flag.set();
+	if (camera_thread.is_started()) {
+		camera_thread.wait_to_finish();
+	}
+}
+
 void CameraLinux::camera_thread_func(void *p_camera_linux) {
 	if (p_camera_linux) {
 		CameraLinux *camera_linux = (CameraLinux *)p_camera_linux;
@@ -51,8 +61,8 @@ void CameraLinux::_update_devices() {
 		{
 			MutexLock lock(camera_mutex);
 
-			for (int i = feeds.size() - 1; i >= 0; i--) {
-				Ref<CameraFeedLinux> feed = (Ref<CameraFeedLinux>)feeds[i];
+			for (int i = _feeds.size() - 1; i >= 0; i--) {
+				Ref<CameraFeedLinux> feed = (Ref<CameraFeedLinux>)_feeds[i];
 				if (feed.is_null()) {
 					continue;
 				}
@@ -87,8 +97,8 @@ void CameraLinux::_update_devices() {
 }
 
 bool CameraLinux::_has_device(const String &p_device_name) {
-	for (int i = 0; i < feeds.size(); i++) {
-		Ref<CameraFeedLinux> feed = (Ref<CameraFeedLinux>)feeds[i];
+	for (int i = 0; i < _feeds.size(); i++) {
+		Ref<CameraFeedLinux> feed = (Ref<CameraFeedLinux>)_feeds[i];
 		if (feed.is_null()) {
 			continue;
 		}
@@ -165,7 +175,7 @@ bool CameraLinux::_can_query_format(int p_file_descriptor, int p_type) {
 }
 
 inline void CameraLinux::set_monitoring_feeds(bool p_monitoring_feeds) {
-	if (p_monitoring_feeds == monitoring_feeds) {
+	if (p_monitoring_feeds == _monitoring_feeds) {
 		return;
 	}
 
@@ -181,9 +191,3 @@ inline void CameraLinux::set_monitoring_feeds(bool p_monitoring_feeds) {
 	}
 }
 
-CameraLinux::~CameraLinux() {
-	exit_flag.set();
-	if (camera_thread.is_started()) {
-		camera_thread.wait_to_finish();
-	}
-}
