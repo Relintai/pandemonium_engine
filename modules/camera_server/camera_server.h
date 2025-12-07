@@ -33,10 +33,8 @@
 /*************************************************************************/
 
 #include "core/containers/rid.h"
-#include "core/object/class_db.h"
 #include "core/object/reference.h"
 #include "core/os/thread_safe.h"
-#include "core/variant/variant.h"
 
 /**
 	The camera server is a singleton object that gives access to the various
@@ -44,11 +42,10 @@
 **/
 
 class CameraFeed;
-template <typename T>
-class TypedArray;
 
 class CameraServer : public Object {
 	GDCLASS(CameraServer, Object);
+
 	_THREAD_SAFE_CLASS_
 
 public:
@@ -90,7 +87,8 @@ public:
 	// Get our feeds.
 	Ref<CameraFeed> get_feed(int p_index);
 	int get_feed_count();
-	TypedArray<CameraFeed> get_feeds();
+	Vector<Ref<CameraFeed>> get_feeds();
+	Array get_feeds_bind();
 
 	// Intended for use with custom CameraServer implementation.
 	RID feed_texture(int p_id, FeedImage p_texture);
@@ -104,19 +102,19 @@ public:
 	~CameraServer();
 
 protected:
-	static CreateFunc create_func;
-
-	bool monitoring_feeds = false;
-	Vector<Ref<CameraFeed>> feeds;
-
-	static CameraServer *singleton;
-
 	static void _bind_methods();
 
 	template <typename T>
 	static CameraServer *_create_builtin() {
 		return memnew(T);
 	}
+
+	static CreateFunc create_func;
+
+	bool monitoring_feeds = false;
+	Vector<Ref<CameraFeed>> feeds;
+
+	static CameraServer *singleton;
 };
 
 VARIANT_ENUM_CAST(CameraServer::FeedImage);

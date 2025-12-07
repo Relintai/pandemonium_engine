@@ -126,17 +126,20 @@ int CameraServer::get_feed_count() {
 	return feeds.size();
 }
 
-TypedArray<CameraFeed> CameraServer::get_feeds() {
+Vector<Ref<CameraFeed>> CameraServer::get_feeds() {
+	return feeds;
+}
+Array CameraServer::get_feeds_bind() {
 	ERR_FAIL_COND_V_MSG(!monitoring_feeds, {}, "CameraServer is not actively monitoring feeds; call set_monitoring_feeds(true) first.");
-	TypedArray<CameraFeed> return_feeds;
-	int cc = get_feed_count();
-	return_feeds.resize(cc);
+	Array ret;
 
-	for (int i = 0; i < feeds.size(); i++) {
-		return_feeds[i] = get_feed(i);
-	};
+	ret.resize(feeds.size());
 
-	return return_feeds;
+	for (int i = 0; i < feeds.size(); ++i) {
+		ret[i] = feeds[i].get_ref_ptr();
+	}
+
+	return ret;
 }
 
 RID CameraServer::feed_texture(int p_id, CameraServer::FeedImage p_texture) {
@@ -165,7 +168,7 @@ void CameraServer::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_feed", "index"), &CameraServer::get_feed);
 	ClassDB::bind_method(D_METHOD("get_feed_count"), &CameraServer::get_feed_count);
-	ClassDB::bind_method(D_METHOD("feeds"), &CameraServer::get_feeds);
+	ClassDB::bind_method(D_METHOD("get_feeds"), &CameraServer::get_feeds_bind);
 
 	ClassDB::bind_method(D_METHOD("add_feed", "feed"), &CameraServer::add_feed);
 	ClassDB::bind_method(D_METHOD("remove_feed", "feed"), &CameraServer::remove_feed);
