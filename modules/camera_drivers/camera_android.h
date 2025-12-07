@@ -63,14 +63,14 @@ private:
 	Vector<uint8_t> data_y;
 	Vector<uint8_t> data_uv;
 
-	ACameraManager *manager = nullptr;
-	ACameraMetadata *metadata = nullptr;
-	ACameraDevice *device = nullptr;
-	AImageReader *reader = nullptr;
-	ACameraCaptureSession *session = nullptr;
-	ACaptureRequest *request = nullptr;
+	ACameraManager *manager;
+	ACameraMetadata *metadata;
+	ACameraDevice *device;
+	AImageReader *reader;
+	ACameraCaptureSession *session;
+	ACaptureRequest *request;
 	Mutex callback_mutex;
-	bool was_active_before_pause = false;
+	bool was_active_before_pause;
 
 	void _add_formats();
 	void _set_rotation();

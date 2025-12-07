@@ -58,26 +58,32 @@ String GetFormatName(const int32_t &format) {
 //////////////////////////////////////////////////////////////////////////
 // CameraFeedAndroid - Subclass for our camera feed on Android
 
-CameraFeedAndroid::CameraFeedAndroid(ACameraManager *manager, ACameraMetadata *metadata, const char *id,
-		CameraFeed::FeedPosition position, int32_t orientation) :
+CameraFeedAndroid::CameraFeedAndroid(ACameraManager *p_manager, ACameraMetadata *p_metadata, const char *p_id,
+		CameraFeed::FeedPosition p_position, int32_t p_orientation) :
 		CameraFeed() {
-	this->manager = manager;
-	this->metadata = metadata;
-	this->orientation = orientation;
+	device = NULL;
+	reader = NULL;
+	session = NULL;
+	request = NULL;
+	was_active_before_pause = false;
+
+	manager = p_manager;
+	metadata = p_metadata;
+	orientation = p_orientation;
 	_add_formats();
-	camera_id = id;
-	set_position(position);
+	camera_id = p_id;
+	set_position(p_position);
 
 	// Position
 	switch (position) {
 		case CameraFeed::FEED_BACK:
-			name = vformat("%s | BACK", id);
+			name = vformat("%s | BACK", p_id);
 			break;
 		case CameraFeed::FEED_FRONT:
-			name = vformat("%s | FRONT", id);
+			name = vformat("%s | FRONT", p_id);
 			break;
 		default:
-			name = vformat("%s", id);
+			name = vformat("%s", p_id);
 			break;
 	}
 
