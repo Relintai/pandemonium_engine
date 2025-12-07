@@ -94,6 +94,10 @@ void CameraFeed::set_transform(const Transform2D &p_transform) {
 }
 
 Ref<Image> CameraFeed::get_image(CameraServer::FeedImage p_which) {
+	if (_texture[p_which] == RID()) {
+		return Ref<Image>();
+	}
+
 	return RenderingServer::get_singleton()->texture_get_data(_texture[p_which]);
 }
 
