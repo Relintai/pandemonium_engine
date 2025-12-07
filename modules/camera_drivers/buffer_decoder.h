@@ -63,7 +63,7 @@ public:
 
 class AbstractYuyvBufferDecoder : public BufferDecoder {
 protected:
-	int *component_indexes;
+	int component_indexes[4];
 
 public:
 	AbstractYuyvBufferDecoder(CameraFeed *p_camera_feed);
