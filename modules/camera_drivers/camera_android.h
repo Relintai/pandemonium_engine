@@ -32,8 +32,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "modules/camera_server/camera_server.h"
 #include "modules/camera_server/camera_feed.h"
+#include "modules/camera_server/camera_server.h"
 
 #include <camera/NdkCameraDevice.h>
 #include <camera/NdkCameraError.h>
@@ -89,18 +89,18 @@ private:
 
 protected:
 public:
-	bool activate_feed() override;
-	void deactivate_feed() override;
-	bool set_format(int p_index, const Dictionary &p_parameters) override;
-	Array get_formats() const override;
-	FeedFormat get_format() const override;
+	bool activate_feed();
+	void deactivate_feed();
+	bool set_format(int p_index, const Dictionary &p_parameters);
+	Array get_formats() const;
+	FeedFormat get_format() const;
 	void handle_pause();
 	void handle_resume();
 	void handle_rotation_change();
 
 	CameraFeedAndroid(ACameraManager *manager, ACameraMetadata *metadata, const char *id,
 			CameraFeed::FeedPosition position, int32_t orientation);
-	~CameraFeedAndroid() override;
+	~CameraFeedAndroid();
 };
 
 class CameraAndroid : public CameraServer {
@@ -113,10 +113,10 @@ private:
 	void remove_all_feeds();
 
 public:
-	void set_monitoring_feeds(bool p_monitoring_feeds) override;
-	void handle_application_pause() override;
-	void handle_application_resume() override;
-	void handle_display_rotation_change(int p_orientation) override;
+	void set_monitoring_feeds(bool p_monitoring_feeds);
+	void handle_application_pause();
+	void handle_application_resume();
+	void handle_display_rotation_change(int p_orientation);
 
 	~CameraAndroid();
 };
