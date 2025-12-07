@@ -60,8 +60,8 @@ private:
 	int32_t orientation;
 	Ref<Image> image_y;
 	Ref<Image> image_uv;
-	Vector<uint8_t> data_y;
-	Vector<uint8_t> data_uv;
+	PoolVector<uint8_t> data_y;
+	PoolVector<uint8_t> data_uv;
 
 	ACameraManager *manager;
 	ACameraMetadata *metadata;

@@ -388,8 +388,8 @@ void CameraFeedAndroid::onImage(void *context, AImageReader *p_reader) {
 		return;
 	}
 
-	Vector<uint8_t> data_y = feed->data_y;
-	Vector<uint8_t> data_uv = feed->data_uv;
+	PoolVector<uint8_t> data_y = feed->data_y;
+	PoolVector<uint8_t> data_uv = feed->data_uv;
 	Ref<Image> image_y = feed->image_y;
 	Ref<Image> image_uv = feed->image_uv;
 
@@ -415,7 +415,11 @@ void CameraFeedAndroid::onImage(void *context, AImageReader *p_reader) {
 				int64_t size = Image::get_image_data_size(width, height, Image::FORMAT_R8, false);
 				data_y.resize(len > size ? len : size);
 			}
-			memcpy(data_y.ptrw(), data, len);
+
+			{
+				PoolVector<uint8_t>::Write data_y_write = data_y.write();
+				memcpy(data_y_write.ptr(), data, len);
+			}
 
 			AImage_getPlanePixelStride(image, 1, &pixel_stride);
 			AImage_getPlaneRowStride(image, 1, &row_stride);
@@ -427,7 +431,11 @@ void CameraFeedAndroid::onImage(void *context, AImageReader *p_reader) {
 				int64_t size = Image::get_image_data_size(width / 2, height / 2, Image::FORMAT_RG8, false);
 				data_uv.resize(len > size ? len : size);
 			}
-			memcpy(data_uv.ptrw(), data, len);
+
+			{
+				PoolVector<uint8_t>::Write data_uv_write = data_uv.write();
+				memcpy(data_uv_write.ptr(), data, len);
+			}
 
 			image_y->create(width, height, false, Image::FORMAT_R8, data_y);
 			image_uv->create(width / 2, height / 2, false, Image::FORMAT_RG8, data_uv);
@@ -443,7 +451,11 @@ void CameraFeedAndroid::onImage(void *context, AImageReader *p_reader) {
 				int64_t size = Image::get_image_data_size(width, height, Image::FORMAT_RGBA8, false);
 				data_y.resize(len > size ? len : size);
 			}
-			memcpy(data_y.ptrw(), data, len);
+
+			{
+				PoolVector<uint8_t>::Write data_y_write = data_y.write();
+				memcpy(data_y_write.ptr(), data, len);
+			}
 
 			image_y->create(width, height, false, Image::FORMAT_RGBA8, data_y);
 
@@ -458,7 +470,11 @@ void CameraFeedAndroid::onImage(void *context, AImageReader *p_reader) {
 				int64_t size = Image::get_image_data_size(width, height, Image::FORMAT_RGB8, false);
 				data_y.resize(len > size ? len : size);
 			}
-			memcpy(data_y.ptrw(), data, len);
+
+			{
+				PoolVector<uint8_t>::Write data_y_write = data_y.write();
+				memcpy(data_y_write.ptr(), data, len);
+			}
 
 			image_y->create(width, height, false, Image::FORMAT_RGB8, data_y);
 
@@ -468,13 +484,13 @@ void CameraFeedAndroid::onImage(void *context, AImageReader *p_reader) {
 			return;
 	}
 
-	if (!feed->formats.empty()) {
+	if (!feed->_formats.empty()) {
 		if (feed->metadata != nullptr) {
 			feed->_set_rotation();
 		} else {
 			print_verbose(vformat("Camera %s: Metadata invalidated in onImage, attempting refresh.", feed->camera_id));
 			feed->refresh_camera_metadata();
-			if (feed->metadata != nullptr && !feed->formats.empty()) {
+			if (feed->metadata != nullptr && !feed->_formats.empty()) {
 				feed->_set_rotation();
 			}
 		}
@@ -597,7 +613,7 @@ void CameraAndroid::update_feeds() {
 	}
 
 	ACameraManager_deleteCameraIdList(cameraIds);
-	emit_signal(SNAME(CameraServer::feeds_updated_signal_name));
+	emit_signal("camera_feeds_updated");
 }
 
 void CameraAndroid::remove_all_feeds() {
@@ -613,11 +629,12 @@ void CameraAndroid::remove_all_feeds() {
 }
 
 void CameraAndroid::set_monitoring_feeds(bool p_monitoring_feeds) {
-	if (p_monitoring_feeds == monitoring_feeds) {
+	if (p_monitoring_feeds == _monitoring_feeds) {
 		return;
 	}
 
 	CameraServer::set_monitoring_feeds(p_monitoring_feeds);
+
 	if (p_monitoring_feeds) {
 		if (cameraManager == nullptr) {
 			cameraManager = ACameraManager_create();
