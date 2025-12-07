@@ -106,7 +106,7 @@ void CameraServer::remove_feed(const Ref<CameraFeed> &p_feed) {
 			print_verbose("CameraServer: Removed camera " + p_feed->get_name() + " with ID " + itos(feed_id) + " and position " + itos(p_feed->get_position()));
 
 			// remove it from our array, if this results in our feed being unreferenced it will be destroyed
-			_feeds.remove_at(i);
+			_feeds.remove(i);
 
 			// let whomever is interested know
 			emit_signal(SNAME("camera_feed_removed"), feed_id);
