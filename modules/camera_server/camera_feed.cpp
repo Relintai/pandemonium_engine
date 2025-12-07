@@ -98,7 +98,7 @@ RID CameraFeed::get_texture(CameraServer::FeedImage p_which) {
 }
 
 uint64_t CameraFeed::get_texture_tex_id(CameraServer::FeedImage p_which) {
-	return RenderingServer::get_singleton()->_texture_get_native_handle(_texture[p_which]);
+	return RenderingServer::get_singleton()->texture_get_native_handle(_texture[p_which]);
 }
 
 void CameraFeed::set_rgb_image(const Ref<Image> &p_rgb_img) {
@@ -120,10 +120,10 @@ void CameraFeed::set_rgb_image(const Ref<Image> &p_rgb_img) {
 			_base_width = new_width;
 			_base_height = new_height;
 
-			RID new_texture = RenderingServer::get_singleton()->_texture_2d_create(p_rgb_img);
-			RenderingServer::get_singleton()->_texture_replace(_texture[CameraServer::FEED_RGBA_IMAGE], new_texture);
+			RID new_texture = RenderingServer::get_singleton()->texture_2d_create(p_rgb_img);
+			RenderingServer::get_singleton()->texture_replace(_texture[CameraServer::FEED_RGBA_IMAGE], new_texture);
 		} else {
-			RenderingServer::get_singleton()->_texture_2d_update(_texture[CameraServer::FEED_RGBA_IMAGE], p_rgb_img);
+			RenderingServer::get_singleton()->texture_2d_update(_texture[CameraServer::FEED_RGBA_IMAGE], p_rgb_img);
 		}
 
 		_datatype = CameraFeed::FEED_RGB;
@@ -152,10 +152,10 @@ void CameraFeed::set_ycbcr_image(const Ref<Image> &p_ycbcr_img) {
 			_base_width = new_width;
 			_base_height = new_height;
 
-			RID new_texture = RenderingServer::get_singleton()->_texture_2d_create(p_ycbcr_img);
-			RenderingServer::get_singleton()->_texture_replace(_texture[CameraServer::FEED_RGBA_IMAGE], new_texture);
+			RID new_texture = RenderingServer::get_singleton()->texture_2d_create(p_ycbcr_img);
+			RenderingServer::get_singleton()->texture_replace(_texture[CameraServer::FEED_RGBA_IMAGE], new_texture);
 		} else {
-			RenderingServer::get_singleton()->_texture_2d_update(_texture[CameraServer::FEED_RGBA_IMAGE], p_ycbcr_img);
+			RenderingServer::get_singleton()->texture_2d_update(_texture[CameraServer::FEED_RGBA_IMAGE], p_ycbcr_img);
 		}
 
 		_datatype = CameraFeed::FEED_YCBCR;
@@ -189,16 +189,16 @@ void CameraFeed::set_ycbcr_images(const Ref<Image> &p_y_img, const Ref<Image> &p
 			_base_width = new_y_width;
 			_base_height = new_y_height;
 			{
-				RID new_texture = RenderingServer::get_singleton()->_texture_2d_create(p_y_img);
-				RenderingServer::get_singleton()->_texture_replace(_texture[CameraServer::FEED_Y_IMAGE], new_texture);
+				RID new_texture = RenderingServer::get_singleton()->texture_2d_create(p_y_img);
+				RenderingServer::get_singleton()->texture_replace(_texture[CameraServer::FEED_Y_IMAGE], new_texture);
 			}
 			{
-				RID new_texture = RenderingServer::get_singleton()->_texture_2d_create(p_cbcr_img);
-				RenderingServer::get_singleton()->_texture_replace(_texture[CameraServer::FEED_CBCR_IMAGE], new_texture);
+				RID new_texture = RenderingServer::get_singleton()->texture_2d_create(p_cbcr_img);
+				RenderingServer::get_singleton()->texture_replace(_texture[CameraServer::FEED_CBCR_IMAGE], new_texture);
 			}
 		} else {
-			RenderingServer::get_singleton()->_texture_2d_update(_texture[CameraServer::FEED_Y_IMAGE], p_y_img);
-			RenderingServer::get_singleton()->_texture_2d_update(_texture[CameraServer::FEED_CBCR_IMAGE], p_cbcr_img);
+			RenderingServer::get_singleton()->texture_2d_update(_texture[CameraServer::FEED_Y_IMAGE], p_y_img);
+			RenderingServer::get_singleton()->texture_2d_update(_texture[CameraServer::FEED_CBCR_IMAGE], p_cbcr_img);
 		}
 
 		_datatype = CameraFeed::FEED_YCBCR_SEP;
@@ -222,8 +222,8 @@ void CameraFeed::set_external(int p_width, int p_height) {
 		_base_width = p_width;
 		_base_height = p_height;
 
-		RID new_texture = RenderingServer::get_singleton()->_texture_external_create(p_width, p_height, 0);
-		RenderingServer::get_singleton()->_texture_replace(_texture[CameraServer::FEED_YCBCR_IMAGE], new_texture);
+		RID new_texture = RenderingServer::get_singleton()->texture_external_create(p_width, p_height, 0);
+		RenderingServer::get_singleton()->texture_replace(_texture[CameraServer::FEED_YCBCR_IMAGE], new_texture);
 	}
 
 	_datatype = CameraFeed::FEED_EXTERNAL;
@@ -269,8 +269,8 @@ CameraFeed::CameraFeed() {
 	_datatype = CameraFeed::FEED_RGB;
 	_position = CameraFeed::FEED_UNSPECIFIED;
 	_transform = Transform2D(1.0, 0.0, 0.0, -1.0, 0.0, 1.0);
-	_texture[CameraServer::FEED_Y_IMAGE] = RenderingServer::get_singleton()->_texture_2d_placeholder_create();
-	_texture[CameraServer::FEED_CBCR_IMAGE] = RenderingServer::get_singleton()->_texture_2d_placeholder_create();
+	_texture[CameraServer::FEED_Y_IMAGE] = RenderingServer::get_singleton()->texture_2d_placeholder_create();
+	_texture[CameraServer::FEED_CBCR_IMAGE] = RenderingServer::get_singleton()->texture_2d_placeholder_create();
 }
 
 CameraFeed::CameraFeed(String p_name, FeedPosition p_position) {
@@ -284,8 +284,8 @@ CameraFeed::CameraFeed(String p_name, FeedPosition p_position) {
 	_datatype = CameraFeed::FEED_NOIMAGE;
 	_position = p_position;
 	_transform = Transform2D(1.0, 0.0, 0.0, -1.0, 0.0, 1.0);
-	_texture[CameraServer::FEED_Y_IMAGE] = RenderingServer::get_singleton()->_texture_2d_placeholder_create();
-	_texture[CameraServer::FEED_CBCR_IMAGE] = RenderingServer::get_singleton()->_texture_2d_placeholder_create();
+	_texture[CameraServer::FEED_Y_IMAGE] = RenderingServer::get_singleton()->texture_2d_placeholder_create();
+	_texture[CameraServer::FEED_CBCR_IMAGE] = RenderingServer::get_singleton()->texture_2d_placeholder_create();
 }
 
 CameraFeed::~CameraFeed() {
