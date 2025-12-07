@@ -116,6 +116,8 @@ slim_args_editor = ''
 #slim_args_editor += 'module_vertex_lights_2d_enabled=no '
 #slim_args_editor += 'module_vertex_lights_3d_enabled=no '
 #slim_args_editor += 'module_xatlas_unwrap_enabled=no ' # GLES3 lihgtmapper
+#slim_args_editor += 'module_camera_server_enabled=no '
+#slim_args_editor += 'module_camera_drivers_enabled=no ' # Depends on the camera server module.
 
 # Editor Modules
 
