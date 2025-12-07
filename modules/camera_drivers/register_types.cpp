@@ -31,13 +31,13 @@
 
 #include "register_types.h"
 
-#if defined(LINUXBSD_ENABLED)
+#if defined(X11_ENABLED)
 #include "camera_linux.h"
 #endif
 #if defined(WINDOWS_ENABLED)
 #include "camera_win.h"
 #endif
-#if defined(MACOS_ENABLED)
+#if defined(OSX_ENABLED)
 #include "camera_macos.h"
 #endif
 #if defined(ANDROID_ENABLED)
@@ -49,13 +49,13 @@ void register_camera_drivers_types(ModuleRegistrationLevel p_level) {
 		return;
 	}
 
-#if defined(LINUXBSD_ENABLED)
+#if defined(X11_ENABLED)
 	CameraServer::make_default<CameraLinux>();
 #endif
 #if defined(WINDOWS_ENABLED)
 	CameraServer::make_default<CameraWindows>();
 #endif
-#if defined(MACOS_ENABLED)
+#if defined(OSX_ENABLED)
 	CameraServer::make_default<CameraMacOS>();
 #endif
 #if defined(ANDROID_ENABLED)
