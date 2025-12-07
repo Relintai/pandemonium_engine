@@ -32,22 +32,27 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/io/image.h"
 #include "core/containers/vector.h"
+#include "core/io/image.h"
 
 class CameraFeed;
 
 struct StreamingBuffer {
-	void *start = nullptr;
-	size_t length = 0;
+	void *start;
+	size_t length;
+
+	StreamingBuffer() {
+		start = nullptr;
+		length = 0;
+	}
 };
 
 class BufferDecoder {
 protected:
-	CameraFeed *camera_feed = nullptr;
+	CameraFeed *camera_feed;
 	Ref<Image> image;
-	int width = 0;
-	int height = 0;
+	int width;
+	int height;
 
 public:
 	virtual void decode(StreamingBuffer p_buffer) = 0;
@@ -58,7 +63,7 @@ public:
 
 class AbstractYuyvBufferDecoder : public BufferDecoder {
 protected:
-	int *component_indexes = nullptr;
+	int *component_indexes;
 
 public:
 	AbstractYuyvBufferDecoder(CameraFeed *p_camera_feed);
@@ -67,51 +72,51 @@ public:
 
 class SeparateYuyvBufferDecoder : public AbstractYuyvBufferDecoder {
 private:
-	Vector<uint8_t> y_image_data;
-	Vector<uint8_t> cbcr_image_data;
+	PoolVector<uint8_t> y_image_data;
+	PoolVector<uint8_t> cbcr_image_data;
 	Ref<Image> y_image;
 	Ref<Image> cbcr_image;
 
 public:
 	SeparateYuyvBufferDecoder(CameraFeed *p_camera_feed);
-	virtual void decode(StreamingBuffer p_buffer) override;
+	virtual void decode(StreamingBuffer p_buffer);
 };
 
 class YuyvToGrayscaleBufferDecoder : public AbstractYuyvBufferDecoder {
 private:
-	Vector<uint8_t> image_data;
+	PoolVector<uint8_t> image_data;
 
 public:
 	YuyvToGrayscaleBufferDecoder(CameraFeed *p_camera_feed);
-	virtual void decode(StreamingBuffer p_buffer) override;
+	virtual void decode(StreamingBuffer p_buffer);
 };
 
 class YuyvToRgbBufferDecoder : public AbstractYuyvBufferDecoder {
 private:
-	Vector<uint8_t> image_data;
+	PoolVector<uint8_t> image_data;
 
 public:
 	YuyvToRgbBufferDecoder(CameraFeed *p_camera_feed);
-	virtual void decode(StreamingBuffer p_buffer) override;
+	virtual void decode(StreamingBuffer p_buffer);
 };
 
 class CopyBufferDecoder : public BufferDecoder {
 private:
-	Vector<uint8_t> image_data;
+	PoolVector<uint8_t> image_data;
 	bool rgba = false;
 
 public:
 	CopyBufferDecoder(CameraFeed *p_camera_feed, bool p_rgba);
-	virtual void decode(StreamingBuffer p_buffer) override;
+	virtual void decode(StreamingBuffer p_buffer);
 };
 
 class JpegBufferDecoder : public BufferDecoder {
 private:
-	Vector<uint8_t> image_data;
+	PoolVector<uint8_t> image_data;
 
 public:
 	JpegBufferDecoder(CameraFeed *p_camera_feed);
-	virtual void decode(StreamingBuffer p_buffer) override;
+	virtual void decode(StreamingBuffer p_buffer);
 };
 
 #endif
