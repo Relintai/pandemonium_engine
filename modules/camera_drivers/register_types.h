@@ -1,5 +1,5 @@
-#ifndef REGISTER_CAMERA_DRIVER_MODULE_H
-#define REGISTER_CAMERA_DRIVER_MODULE_H
+#ifndef REGISTER_CAMERA_DRIVER_TYPES_H
+#define REGISTER_CAMERA_DRIVER_TYPES_H
 
 /*************************************************************************/
 /*  register_types.h                                                     */
