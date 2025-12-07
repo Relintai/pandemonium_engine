@@ -52,11 +52,11 @@
 			[b]Note:[/b] After setting it to [code]true[/code], you can receive updated camera feeds through the [signal camera_feeds_updated] signal.
 			[codeblock]
 			func _ready():
-			  CameraServer.camera_feeds_updated.connect(_on_camera_feeds_updated)
+			  CameraServer.connect("camera_feeds_updated", self, "_on_camera_feeds_updated")
 			  CameraServer.monitoring_feeds = true
 
 			func _on_camera_feeds_updated():
-			  var feeds = CameraServer.feeds()
+			  var feeds = CameraServer.get_feeds()
 			[/codeblock]
 		</member>
 	</members>
