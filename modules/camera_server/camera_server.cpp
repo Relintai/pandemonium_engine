@@ -95,7 +95,7 @@ void CameraServer::add_feed(const Ref<CameraFeed> &p_feed) {
 	print_verbose("CameraServer: Registered camera " + p_feed->get_name() + " with ID " + itos(p_feed->get_id()) + " and position " + itos(p_feed->get_position()) + " at index " + itos(_feeds.size() - 1));
 
 	// let whomever is interested know
-	emit_signal(SNAME("camera_feed_added"), p_feed->get_id());
+	emit_signal("camera_feed_added", p_feed->get_id());
 }
 
 void CameraServer::remove_feed(const Ref<CameraFeed> &p_feed) {
