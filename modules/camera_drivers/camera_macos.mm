@@ -45,7 +45,7 @@
 	Ref<CameraFeed> feed;
 	size_t width[2];
 	size_t height[2];
-	Vector<uint8_t> img_data[2];
+	PoolVector<uint8_t> img_data[2];
 
 	AVCaptureDeviceInput *input;
 	AVCaptureVideoDataOutput *output;
@@ -156,11 +156,15 @@
 				img_data[0].resize(new_width * new_height);
 			}
 
-			uint8_t *w = img_data[0].ptrw();
-			memcpy(w, dataY, new_width * new_height);
+			{
+				PoolVector<uint8_t>::Write idw = img_data[0].write();
 
-			img[0].instantiate();
-			img[0]->set_data(new_width, new_height, 0, Image::FORMAT_R8, img_data[0]);
+				uint8_t *w = idw.ptr();
+				memcpy(w, dataY, new_width * new_height);
+			}
+
+			img[0].instance();
+			img[0]->create(new_width, new_height, 0, Image::FORMAT_R8, img_data[0]);
 		}
 
 		{
@@ -174,12 +178,16 @@
 				img_data[1].resize(2 * new_width * new_height);
 			}
 
-			uint8_t *w = img_data[1].ptrw();
-			memcpy(w, dataCbCr, 2 * new_width * new_height);
+			{
+				PoolVector<uint8_t>::Write idw = img_data[1].write();
+
+				uint8_t *w = idw.ptr();
+				memcpy(w, dataCbCr, 2 * new_width * new_height);
+			}
 
 			///TODO OpenGL doesn't support FORMAT_RG8, need to do some form of conversion
-			img[1].instantiate();
-			img[1]->set_data(new_width, new_height, 0, Image::FORMAT_RG8, img_data[1]);
+			img[1].instance();
+			img[1]->create(new_width, new_height, 0, Image::FORMAT_RG8, img_data[1]);
 		}
 
 		// set our texture...
@@ -357,7 +365,7 @@ void CameraMacOS::update_feeds() {
 
 		if (!found) {
 			Ref<CameraFeedMacOS> newfeed;
-			newfeed.instantiate();
+			newfeed.instance();
 			newfeed->set_device(device);
 
 			// assume display camera so inverse
