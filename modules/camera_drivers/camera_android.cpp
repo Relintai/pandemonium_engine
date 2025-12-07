@@ -673,9 +673,26 @@ int CameraFeedAndroid::normalize_angle(int p_angle) {
 }
 
 int CameraFeedAndroid::get_display_rotation() {
-	return OS::get_singleton()->get_screen_orientation();
+	// TODO this should be queryable properly
+	return get_app_orientation();
 }
 
 int CameraFeedAndroid::get_app_orientation() {
-	return get_display_rotation();
+	int orientation = OS::get_singleton()->get_screen_orientation();
+
+	switch (orientation) {
+		case 0: // SCREEN_LANDSCAPE
+			return 90;
+		case 1: // SCREEN_PORTRAIT
+			return 0;
+		case 2: // SCREEN_REVERSE_LANDSCAPE
+			return 270;
+		case 3: // SCREEN_REVERSE_PORTRAIT
+			return 180;
+		case 4: // SCREEN_SENSOR_LANDSCAPE
+		case 5: // SCREEN_SENSOR_PORTRAIT
+		case 6: // SCREEN_SENSOR
+		default:
+			return 0;
+	}
 }
