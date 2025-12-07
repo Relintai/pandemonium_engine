@@ -263,6 +263,7 @@ CameraFeed::CameraFeed() {
 	_id = CameraServer::get_singleton()->get_free_id();
 	_base_width = 0;
 	_base_height = 0;
+	_selected_format = -1;
 	_name = "???";
 	_active = false;
 	_datatype = CameraFeed::FEED_RGB;
@@ -277,6 +278,7 @@ CameraFeed::CameraFeed(String p_name, FeedPosition p_position) {
 	_id = CameraServer::get_singleton()->get_free_id();
 	_base_width = 0;
 	_base_height = 0;
+	_selected_format = -1;
 	_name = p_name;
 	_active = false;
 	_datatype = CameraFeed::FEED_NOIMAGE;

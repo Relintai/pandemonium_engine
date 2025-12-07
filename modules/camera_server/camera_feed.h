@@ -125,11 +125,11 @@ protected:
 	FeedDataType _datatype; // type of _texture data stored
 	FeedPosition _position; // _position of camera on the device
 	Transform2D _transform; // display _transform
-	int _base_width = 0;
-	int _base_height = 0;
+	int _base_width;
+	int _base_height;
 	Vector<FeedFormat> _formats;
 	Dictionary _parameters;
-	int _selected_format = -1;
+	int _selected_format;
 
 	bool _active; // only when _active do we actually update the camera _texture each frame
 	RID _texture[CameraServer::FEED_IMAGES]; // _texture images needed for this
