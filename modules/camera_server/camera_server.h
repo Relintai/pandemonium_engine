@@ -41,6 +41,9 @@
 	camera feeds that can be used as the background for our environment.
 **/
 
+// The api is very clunky, needs lots of work.
+// The camera_feeds_updated signal is always called after device scans, even if nothing changed..
+
 class CameraFeed;
 
 class CameraServer : public Object {
