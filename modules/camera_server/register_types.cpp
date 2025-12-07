@@ -31,18 +31,12 @@
 
 #include "register_types.h"
 
-#include "core/config/engine.h"
-
 #include "camera_feed.h"
 #include "camera_server.h"
 
-CameraServer *_camera_server = NULL;
-
 void register_camera_server_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
-		_camera_server = memnew(CameraServer);
 		ClassDB::register_class<CameraServer>();
-		Engine::get_singleton()->add_singleton(Engine::Singleton("CameraServer", CameraServer::get_singleton()));
 	}
 
 	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
@@ -51,9 +45,4 @@ void register_camera_server_types(ModuleRegistrationLevel p_level) {
 }
 
 void unregister_camera_server_types(ModuleRegistrationLevel p_level) {
-	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
-		if (_camera_server) {
-			memdelete(_camera_server);
-		}
-	}
 }

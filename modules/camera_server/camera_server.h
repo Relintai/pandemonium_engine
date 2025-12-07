@@ -71,6 +71,17 @@ public:
 		return server;
 	}
 
+	static void deallocate() {
+		if (_singleton) {
+			memdelete(_singleton);
+			_singleton = NULL;
+		}
+	}
+
+	static bool has_default() {
+		return _create_func;
+	}
+
 	virtual void set_monitoring_feeds(bool p_monitoring_feeds);
 	_FORCE_INLINE_ bool is_monitoring_feeds() const { return _monitoring_feeds; }
 

@@ -31,6 +31,8 @@
 
 #include "register_types.h"
 
+#include "core/config/engine.h"
+
 #if defined(X11_ENABLED)
 #include "camera_linux.h"
 #endif
@@ -49,19 +51,28 @@ void register_camera_drivers_types(ModuleRegistrationLevel p_level) {
 		return;
 	}
 
+	// If has default it means some other module already set it, don't change it.
+	if (!CameraServer::has_default()) {
 #if defined(X11_ENABLED)
-	CameraServer::make_default<CameraLinux>();
+		CameraServer::make_default<CameraLinux>();
 #endif
 #if defined(WINDOWS_ENABLED)
-	CameraServer::make_default<CameraWindows>();
+		CameraServer::make_default<CameraWindows>();
 #endif
 #if defined(OSX_ENABLED)
-	CameraServer::make_default<CameraMacOS>();
+		CameraServer::make_default<CameraMacOS>();
 #endif
 #if defined(ANDROID_ENABLED)
-	CameraServer::make_default<CameraAndroid>();
+		CameraServer::make_default<CameraAndroid>();
 #endif
+	}
+
+	CameraServer::create();
+	Engine::get_singleton()->add_singleton(Engine::Singleton("CameraServer", CameraServer::get_singleton()));
 }
 
 void unregister_camera_drivers_types(ModuleRegistrationLevel p_level) {
+	if (p_level == MODULE_REGISTRATION_LEVEL_PLATFORM) {
+		CameraServer::deallocate();
+	}
 }
