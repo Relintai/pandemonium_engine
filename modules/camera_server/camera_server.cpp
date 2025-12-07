@@ -109,7 +109,7 @@ void CameraServer::remove_feed(const Ref<CameraFeed> &p_feed) {
 			_feeds.remove(i);
 
 			// let whomever is interested know
-			emit_signal(SNAME("camera_feed_removed"), feed_id);
+			emit_signal("camera_feed_removed", feed_id);
 			return;
 		};
 	};
