@@ -36,7 +36,7 @@
 // and in reverse order (except for start and finalize) when it goes through unregister_module_types.
 
 enum ModuleRegistrationLevel {
-	// Starting initialization, on uninitialization
+	// Starting initialization, or uninitialization
 	MODULE_REGISTRATION_LEVEL_START = 0,
 
 	// Set up your singletons here.
