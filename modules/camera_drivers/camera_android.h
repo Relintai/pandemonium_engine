@@ -89,8 +89,8 @@ private:
 
 protected:
 public:
-	bool activate_feed();
-	void deactivate_feed();
+	bool _activate_feed();
+	void _deactivate_feed();
 	bool set_format(int p_index, const Dictionary &p_parameters);
 	Array get_formats() const;
 	FeedFormat get_format() const;

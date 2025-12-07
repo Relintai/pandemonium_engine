@@ -46,7 +46,7 @@ String CameraFeedLinux::get_device_name() const {
 	return device_name;
 }
 
-bool CameraFeedLinux::activate_feed() {
+bool CameraFeedLinux::_activate_feed() {
 	ERR_FAIL_COND_V_MSG(_selected_format == -1, false, "CameraFeed format needs to be set before activating.");
 	file_descriptor = open(device_name.ascii().get_data(), O_RDWR | O_NONBLOCK, 0);
 	if (_request_buffers() && _start_capturing()) {
@@ -57,7 +57,7 @@ bool CameraFeedLinux::activate_feed() {
 	ERR_FAIL_V_MSG(false, "Could not activate feed.");
 }
 
-void CameraFeedLinux::deactivate_feed() {
+void CameraFeedLinux::_deactivate_feed() {
 	exit_flag.set();
 	thread->wait_to_finish();
 	memdelete(thread);

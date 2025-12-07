@@ -197,7 +197,7 @@ void CameraFeedAndroid::_add_formats() {
 	}
 }
 
-bool CameraFeedAndroid::activate_feed() {
+bool CameraFeedAndroid::_activate_feed() {
 	ERR_FAIL_COND_V_MSG(formats.is_empty(), false, "No camera formats available.");
 	ERR_FAIL_INDEX_V_MSG(selected_format, formats.size(), false,
 			vformat("CameraFeed format needs to be set before activating. Selected format index: %d (formats size: %d)", selected_format, formats.size()));
@@ -490,7 +490,7 @@ void CameraFeedAndroid::onSessionClosed(void *context, ACameraCaptureSession *se
 	print_verbose("Capture session closed");
 }
 
-void CameraFeedAndroid::deactivate_feed() {
+void CameraFeedAndroid::_deactivate_feed() {
 	// First, remove image listener to prevent new callbacks.
 	if (reader != nullptr) {
 		AImageReader_setImageListener(reader, nullptr);
