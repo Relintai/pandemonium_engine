@@ -35,36 +35,6 @@
 #include "servers/camera/camera_feed.h"
 #include "servers/rendering/rendering_server.h"
 
-////////////////////////////////////////////////////////
-// CameraServer
-
-CameraServer::CreateFunc CameraServer::create_func = nullptr;
-
-void CameraServer::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("set_monitoring_feeds", "is_monitoring_feeds"), &CameraServer::set_monitoring_feeds);
-	ClassDB::bind_method(D_METHOD("is_monitoring_feeds"), &CameraServer::is_monitoring_feeds);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "monitoring_feeds"), "set_monitoring_feeds", "is_monitoring_feeds");
-	ADD_PROPERTY_DEFAULT("monitoring_feeds", false);
-
-	ClassDB::bind_method(D_METHOD("get_feed", "index"), &CameraServer::get_feed);
-	ClassDB::bind_method(D_METHOD("get_feed_count"), &CameraServer::get_feed_count);
-	ClassDB::bind_method(D_METHOD("feeds"), &CameraServer::get_feeds);
-
-	ClassDB::bind_method(D_METHOD("add_feed", "feed"), &CameraServer::add_feed);
-	ClassDB::bind_method(D_METHOD("remove_feed", "feed"), &CameraServer::remove_feed);
-
-	ADD_SIGNAL(MethodInfo("camera_feed_added", PropertyInfo(Variant::INT, "id")));
-	ADD_SIGNAL(MethodInfo("camera_feed_removed", PropertyInfo(Variant::INT, "id")));
-	ADD_SIGNAL(MethodInfo(feeds_updated_signal_name));
-
-	BIND_ENUM_CONSTANT(FEED_RGBA_IMAGE);
-	BIND_ENUM_CONSTANT(FEED_YCBCR_IMAGE);
-	BIND_ENUM_CONSTANT(FEED_Y_IMAGE);
-	BIND_ENUM_CONSTANT(FEED_CBCR_IMAGE);
-}
-
-CameraServer *CameraServer::singleton = nullptr;
-
 CameraServer *CameraServer::get_singleton() {
 	return singleton;
 }
@@ -186,3 +156,29 @@ CameraServer::CameraServer() {
 CameraServer::~CameraServer() {
 	singleton = nullptr;
 }
+
+void CameraServer::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("set_monitoring_feeds", "is_monitoring_feeds"), &CameraServer::set_monitoring_feeds);
+	ClassDB::bind_method(D_METHOD("is_monitoring_feeds"), &CameraServer::is_monitoring_feeds);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "monitoring_feeds"), "set_monitoring_feeds", "is_monitoring_feeds");
+	ADD_PROPERTY_DEFAULT("monitoring_feeds", false);
+
+	ClassDB::bind_method(D_METHOD("get_feed", "index"), &CameraServer::get_feed);
+	ClassDB::bind_method(D_METHOD("get_feed_count"), &CameraServer::get_feed_count);
+	ClassDB::bind_method(D_METHOD("feeds"), &CameraServer::get_feeds);
+
+	ClassDB::bind_method(D_METHOD("add_feed", "feed"), &CameraServer::add_feed);
+	ClassDB::bind_method(D_METHOD("remove_feed", "feed"), &CameraServer::remove_feed);
+
+	ADD_SIGNAL(MethodInfo("camera_feed_added", PropertyInfo(Variant::INT, "id")));
+	ADD_SIGNAL(MethodInfo("camera_feed_removed", PropertyInfo(Variant::INT, "id")));
+	ADD_SIGNAL(MethodInfo(feeds_updated_signal_name));
+
+	BIND_ENUM_CONSTANT(FEED_RGBA_IMAGE);
+	BIND_ENUM_CONSTANT(FEED_YCBCR_IMAGE);
+	BIND_ENUM_CONSTANT(FEED_Y_IMAGE);
+	BIND_ENUM_CONSTANT(FEED_CBCR_IMAGE);
+}
+
+CameraServer::CreateFunc CameraServer::create_func = NULL;
+CameraServer *CameraServer::singleton = NULL;

@@ -32,10 +32,10 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/containers/rid.h"
 #include "core/object/class_db.h"
 #include "core/object/reference.h"
 #include "core/os/thread_safe.h"
-#include "core/containers/rid.h"
 #include "core/variant/variant.h"
 
 /**
@@ -63,23 +63,6 @@ public:
 	typedef CameraServer *(*CreateFunc)();
 	static inline constexpr const char feeds_updated_signal_name[] = "camera_feeds_updated";
 
-private:
-protected:
-	static CreateFunc create_func;
-
-	bool monitoring_feeds = false;
-	Vector<Ref<CameraFeed>> feeds;
-
-	static CameraServer *singleton;
-
-	static void _bind_methods();
-
-	template <typename T>
-	static CameraServer *_create_builtin() {
-		return memnew(T);
-	}
-
-public:
 	static CameraServer *get_singleton();
 
 	template <typename T>
@@ -120,6 +103,21 @@ public:
 
 	CameraServer();
 	~CameraServer();
+
+protected:
+	static CreateFunc create_func;
+
+	bool monitoring_feeds = false;
+	Vector<Ref<CameraFeed>> feeds;
+
+	static CameraServer *singleton;
+
+	static void _bind_methods();
+
+	template <typename T>
+	static CameraServer *_create_builtin() {
+		return memnew(T);
+	}
 };
 
 VARIANT_ENUM_CAST(CameraServer::FeedImage);
