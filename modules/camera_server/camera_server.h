@@ -63,16 +63,16 @@ public:
 
 	template <typename T>
 	static void make_default() {
-		create_func = _create_builtin<T>;
+		_create_func = _create_builtin<T>;
 	}
 
 	static CameraServer *create() {
-		CameraServer *server = create_func ? create_func() : memnew(CameraServer);
+		CameraServer *server = _create_func ? _create_func() : memnew(CameraServer);
 		return server;
 	}
 
 	virtual void set_monitoring_feeds(bool p_monitoring_feeds);
-	_FORCE_INLINE_ bool is_monitoring_feeds() const { return monitoring_feeds; }
+	_FORCE_INLINE_ bool is_monitoring_feeds() const { return _monitoring_feeds; }
 
 	// Right now we identify our feed by it's ID when it's used in the background.
 	// May see if we can change this to purely relying on CameraFeed objects or by name.
@@ -109,12 +109,12 @@ protected:
 		return memnew(T);
 	}
 
-	static CreateFunc create_func;
+	static CreateFunc _create_func;
 
-	bool monitoring_feeds = false;
-	Vector<Ref<CameraFeed>> feeds;
+	bool _monitoring_feeds;
+	Vector<Ref<CameraFeed>> _feeds;
 
-	static CameraServer *singleton;
+	static CameraServer *_singleton;
 };
 
 VARIANT_ENUM_CAST(CameraServer::FeedImage);

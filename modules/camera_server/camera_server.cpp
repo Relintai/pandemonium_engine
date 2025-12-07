@@ -36,11 +36,11 @@
 #include "servers/rendering/rendering_server.h"
 
 CameraServer *CameraServer::get_singleton() {
-	return singleton;
+	return _singleton;
 }
 
 void CameraServer::set_monitoring_feeds(bool p_monitoring_feeds) {
-	monitoring_feeds = p_monitoring_feeds;
+	_monitoring_feeds = p_monitoring_feeds;
 }
 
 int CameraServer::get_free_id() {
@@ -51,8 +51,8 @@ int CameraServer::get_free_id() {
 	while (id_exists) {
 		newid++;
 		id_exists = false;
-		for (int i = 0; i < feeds.size() && !id_exists; i++) {
-			if (feeds[i]->get_id() == newid) {
+		for (int i = 0; i < _feeds.size() && !id_exists; i++) {
+			if (_feeds[i]->get_id() == newid) {
 				id_exists = true;
 			};
 		};
@@ -62,10 +62,10 @@ int CameraServer::get_free_id() {
 }
 
 int CameraServer::get_feed_index(int p_id) {
-	ERR_FAIL_COND_V_MSG(!monitoring_feeds, -1, "CameraServer is not actively monitoring feeds; call set_monitoring_feeds(true) first.");
+	ERR_FAIL_COND_V_MSG(!_monitoring_feeds, -1, "CameraServer is not actively monitoring feeds; call set_monitoring_feeds(true) first.");
 
-	for (int i = 0; i < feeds.size(); i++) {
-		if (feeds[i]->get_id() == p_id) {
+	for (int i = 0; i < _feeds.size(); i++) {
+		if (_feeds[i]->get_id() == p_id) {
 			return i;
 		};
 	};
@@ -74,14 +74,14 @@ int CameraServer::get_feed_index(int p_id) {
 }
 
 Ref<CameraFeed> CameraServer::get_feed_by_id(int p_id) {
-	ERR_FAIL_COND_V_MSG(!monitoring_feeds, nullptr, "CameraServer is not actively monitoring feeds; call set_monitoring_feeds(true) first.");
+	ERR_FAIL_COND_V_MSG(!_monitoring_feeds, nullptr, "CameraServer is not actively monitoring feeds; call set_monitoring_feeds(true) first.");
 
 	int index = get_feed_index(p_id);
 
 	if (index == -1) {
-		return nullptr;
+		return NULL;
 	} else {
-		return feeds[index];
+		return _feeds[index];
 	}
 }
 
@@ -89,23 +89,23 @@ void CameraServer::add_feed(const Ref<CameraFeed> &p_feed) {
 	ERR_FAIL_COND(p_feed.is_null());
 
 	// add our feed
-	feeds.push_back(p_feed);
+	_feeds.push_back(p_feed);
 
-	print_verbose("CameraServer: Registered camera " + p_feed->get_name() + " with ID " + itos(p_feed->get_id()) + " and position " + itos(p_feed->get_position()) + " at index " + itos(feeds.size() - 1));
+	print_verbose("CameraServer: Registered camera " + p_feed->get_name() + " with ID " + itos(p_feed->get_id()) + " and position " + itos(p_feed->get_position()) + " at index " + itos(_feeds.size() - 1));
 
 	// let whomever is interested know
 	emit_signal(SNAME("camera_feed_added"), p_feed->get_id());
 }
 
 void CameraServer::remove_feed(const Ref<CameraFeed> &p_feed) {
-	for (int i = 0; i < feeds.size(); i++) {
-		if (feeds[i] == p_feed) {
+	for (int i = 0; i < _feeds.size(); i++) {
+		if (_feeds[i] == p_feed) {
 			int feed_id = p_feed->get_id();
 
 			print_verbose("CameraServer: Removed camera " + p_feed->get_name() + " with ID " + itos(feed_id) + " and position " + itos(p_feed->get_position()));
 
 			// remove it from our array, if this results in our feed being unreferenced it will be destroyed
-			feeds.remove_at(i);
+			_feeds.remove_at(i);
 
 			// let whomever is interested know
 			emit_signal(SNAME("camera_feed_removed"), feed_id);
@@ -115,35 +115,35 @@ void CameraServer::remove_feed(const Ref<CameraFeed> &p_feed) {
 }
 
 Ref<CameraFeed> CameraServer::get_feed(int p_index) {
-	ERR_FAIL_COND_V_MSG(!monitoring_feeds, nullptr, "CameraServer is not actively monitoring feeds; call set_monitoring_feeds(true) first.");
-	ERR_FAIL_INDEX_V(p_index, feeds.size(), nullptr);
+	ERR_FAIL_COND_V_MSG(!_monitoring_feeds, nullptr, "CameraServer is not actively monitoring feeds; call set_monitoring_feeds(true) first.");
+	ERR_FAIL_INDEX_V(p_index, _feeds.size(), nullptr);
 
-	return feeds[p_index];
+	return _feeds[p_index];
 }
 
 int CameraServer::get_feed_count() {
-	ERR_FAIL_COND_V_MSG(!monitoring_feeds, 0, "CameraServer is not actively monitoring feeds; call set_monitoring_feeds(true) first.");
-	return feeds.size();
+	ERR_FAIL_COND_V_MSG(!_monitoring_feeds, 0, "CameraServer is not actively monitoring feeds; call set_monitoring_feeds(true) first.");
+	return _feeds.size();
 }
 
 Vector<Ref<CameraFeed>> CameraServer::get_feeds() {
-	return feeds;
+	return _feeds;
 }
 Array CameraServer::get_feeds_bind() {
-	ERR_FAIL_COND_V_MSG(!monitoring_feeds, {}, "CameraServer is not actively monitoring feeds; call set_monitoring_feeds(true) first.");
+	ERR_FAIL_COND_V_MSG(!_monitoring_feeds, {}, "CameraServer is not actively monitoring feeds; call set_monitoring_feeds(true) first.");
 	Array ret;
 
-	ret.resize(feeds.size());
+	ret.resize(_feeds.size());
 
-	for (int i = 0; i < feeds.size(); ++i) {
-		ret[i] = feeds[i].get_ref_ptr();
+	for (int i = 0; i < _feeds.size(); ++i) {
+		ret[i] = _feeds[i].get_ref_ptr();
 	}
 
 	return ret;
 }
 
 RID CameraServer::feed_texture(int p_id, CameraServer::FeedImage p_texture) {
-	ERR_FAIL_COND_V_MSG(!monitoring_feeds, RID(), "CameraServer is not actively monitoring feeds; call set_monitoring_feeds(true) first.");
+	ERR_FAIL_COND_V_MSG(!_monitoring_feeds, RID(), "CameraServer is not actively monitoring feeds; call set_monitoring_feeds(true) first.");
 	int index = get_feed_index(p_id);
 	ERR_FAIL_COND_V(index == -1, RID());
 
@@ -153,11 +153,12 @@ RID CameraServer::feed_texture(int p_id, CameraServer::FeedImage p_texture) {
 }
 
 CameraServer::CameraServer() {
-	singleton = this;
+	_singleton = this;
+	_monitoring_feeds = false;
 }
 
 CameraServer::~CameraServer() {
-	singleton = nullptr;
+	_singleton = NULL;
 }
 
 void CameraServer::_bind_methods() {
@@ -183,5 +184,5 @@ void CameraServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(FEED_CBCR_IMAGE);
 }
 
-CameraServer::CreateFunc CameraServer::create_func = NULL;
-CameraServer *CameraServer::singleton = NULL;
+CameraServer::CreateFunc CameraServer::_create_func = NULL;
+CameraServer *CameraServer::_singleton = NULL;
