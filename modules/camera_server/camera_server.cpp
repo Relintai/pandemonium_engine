@@ -31,9 +31,10 @@
 
 #include "camera_server.h"
 
-#include "core/variant/typed_array.h"
-#include "servers/camera/camera_feed.h"
-#include "servers/rendering/rendering_server.h"
+#include "core/variant/array.h"
+#include "camera_feed.h"
+
+#include "servers/rendering_server.h"
 
 CameraServer *CameraServer::get_singleton() {
 	return _singleton;
