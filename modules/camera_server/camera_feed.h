@@ -108,8 +108,11 @@ public:
 	virtual Array get_formats() const;
 	virtual FeedFormat get_format() const;
 
-	virtual bool activate_feed();
-	virtual void deactivate_feed();
+	bool activate_feed();
+	void deactivate_feed();
+
+	virtual bool _activate_feed();
+	virtual void _deactivate_feed();
 
 	CameraFeed();
 	CameraFeed(String p_name, FeedPosition p_position = CameraFeed::FEED_UNSPECIFIED);
