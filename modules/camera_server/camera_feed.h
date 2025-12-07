@@ -95,6 +95,7 @@ public:
 	Transform2D get_transform() const;
 	void set_transform(const Transform2D &p_transform);
 
+	Ref<Image> get_image(CameraServer::FeedImage p_which);
 	RID get_texture_rid(CameraServer::FeedImage p_which);
 	uint64_t get_texture_tex_id(CameraServer::FeedImage p_which);
 
