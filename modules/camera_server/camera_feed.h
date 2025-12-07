@@ -62,12 +62,45 @@ public:
 		FEED_BACK // this is a camera on the back of the device
 	};
 
-private:
-	int id; // unique id for this, for internal use in case feeds are removed
-	const StringName format_changed_signal_name = "format_changed";
-	const StringName frame_changed_signal_name = "frame_changed";
+	int get_id() const;
+	bool is_active() const;
+	void set_active(bool p_is_active);
+
+	String get_name() const;
+	void set_name(String p_name);
+
+	int get_base_width() const;
+	int get_base_height() const;
+
+	FeedPosition get_position() const;
+	void set_position(FeedPosition p_position);
+
+	Transform2D get_transform() const;
+	void set_transform(const Transform2D &p_transform);
+
+	RID get_texture(CameraServer::FeedImage p_which);
+	uint64_t get_texture_tex_id(CameraServer::FeedImage p_which);
+
+	FeedDataType get_datatype() const;
+	void set_rgb_image(const Ref<Image> &p_rgb_img);
+	void set_ycbcr_image(const Ref<Image> &p_ycbcr_img);
+	void set_ycbcr_images(const Ref<Image> &p_y_img, const Ref<Image> &p_cbcr_img);
+	void set_external(int p_width, int p_height);
+
+	virtual bool set_format(int p_index, const Dictionary &p_parameters);
+	virtual Array get_formats() const;
+	virtual FeedFormat get_format() const;
+
+	virtual bool activate_feed();
+	virtual void deactivate_feed();
+
+	CameraFeed();
+	CameraFeed(String p_name, FeedPosition p_position = CameraFeed::FEED_UNSPECIFIED);
+	virtual ~CameraFeed();
 
 protected:
+	static void _bind_methods();
+
 	struct FeedFormat {
 		int width = 0;
 		int height = 0;
@@ -90,44 +123,8 @@ protected:
 	bool active; // only when active do we actually update the camera texture each frame
 	RID texture[CameraServer::FEED_IMAGES]; // texture images needed for this
 
-	static void _bind_methods();
-
-public:
-	int get_id() const;
-	bool is_active() const;
-	void set_active(bool p_is_active);
-
-	String get_name() const;
-	void set_name(String p_name);
-
-	int get_base_width() const;
-	int get_base_height() const;
-
-	FeedPosition get_position() const;
-	void set_position(FeedPosition p_position);
-
-	Transform2D get_transform() const;
-	void set_transform(const Transform2D &p_transform);
-
-	RID get_texture(CameraServer::FeedImage p_which);
-	uint64_t get_texture_tex_id(CameraServer::FeedImage p_which);
-
-	CameraFeed();
-	CameraFeed(String p_name, FeedPosition p_position = CameraFeed::FEED_UNSPECIFIED);
-	virtual ~CameraFeed();
-
-	FeedDataType get_datatype() const;
-	void set_rgb_image(const Ref<Image> &p_rgb_img);
-	void set_ycbcr_image(const Ref<Image> &p_ycbcr_img);
-	void set_ycbcr_images(const Ref<Image> &p_y_img, const Ref<Image> &p_cbcr_img);
-	void set_external(int p_width, int p_height);
-
-	virtual bool set_format(int p_index, const Dictionary &p_parameters);
-	virtual Array get_formats() const;
-	virtual FeedFormat get_format() const;
-
-	virtual bool activate_feed();
-	virtual void deactivate_feed();
+private:
+	int id; // unique id for this, for internal use in case feeds are removed
 };
 
 VARIANT_ENUM_CAST(CameraFeed::FeedDataType);
