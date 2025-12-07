@@ -50,8 +50,8 @@ public:
 	CameraFeedWindows();
 	virtual ~CameraFeedWindows();
 
-	bool activate_feed();
-	void deactivate_feed();
+	virtual bool _activate_feed();
+	virtual void _deactivate_feed();
 };
 
 CameraFeedWindows::CameraFeedWindows() {
@@ -67,7 +67,7 @@ CameraFeedWindows::~CameraFeedWindows() {
 	///@TODO free up anything used by this
 }
 
-bool CameraFeedWindows::activate_feed() {
+bool CameraFeedWindows::_activate_feed() {
 	///@TODO this should activate our camera and start the process of capturing frames
 
 	return true;
@@ -76,7 +76,7 @@ bool CameraFeedWindows::activate_feed() {
 ///@TODO we should probably have a callback method here that is being called by the
 // camera API which provides frames and call back into the CameraServer to update our texture
 
-void CameraFeedWindows::deactivate_feed() {
+void CameraFeedWindows::_deactivate_feed() {
 	///@TODO this should deactivate our camera and stop the process of capturing frames
 }
 
