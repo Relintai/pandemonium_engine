@@ -121,6 +121,8 @@ public:
 protected:
 	static void _bind_methods();
 
+	void _free_textures();
+
 	String _name; // _name of our camera feed
 	FeedDataType _datatype; // type of _texture data stored
 	FeedPosition _position; // _position of camera on the device

@@ -98,7 +98,7 @@ RID CameraFeed::get_texture(CameraServer::FeedImage p_which) {
 }
 
 uint64_t CameraFeed::get_texture_tex_id(CameraServer::FeedImage p_which) {
-	return RenderingServer::get_singleton()->texture_get_native_handle(_texture[p_which]);
+	return RenderingServer::get_singleton()->texture_get_texid(_texture[p_which]);
 }
 
 void CameraFeed::set_rgb_image(const Ref<Image> &p_rgb_img) {
@@ -112,6 +112,8 @@ void CameraFeed::set_rgb_image(const Ref<Image> &p_rgb_img) {
 		// - They are emitted on Godot's main thread.
 		// - Both _datatype and frame size are updated before the emission.
 		if (_datatype != CameraFeed::FEED_RGB || (_base_width != new_width) || (_base_height != new_height)) {
+			_free_textures();
+
 			call_deferred("emit_signal", "format_changed");
 		}
 
@@ -120,11 +122,10 @@ void CameraFeed::set_rgb_image(const Ref<Image> &p_rgb_img) {
 			_base_width = new_width;
 			_base_height = new_height;
 
-			RID new_texture = RenderingServer::get_singleton()->texture_2d_create(p_rgb_img);
-			RenderingServer::get_singleton()->texture_replace(_texture[CameraServer::FEED_RGBA_IMAGE], new_texture);
-		} else {
-			RenderingServer::get_singleton()->texture_2d_update(_texture[CameraServer::FEED_RGBA_IMAGE], p_rgb_img);
+			_texture[CameraServer::FEED_RGBA_IMAGE] = RenderingServer::get_singleton()->texture_create();
 		}
+
+		RenderingServer::get_singleton()->texture_set_data(_texture[CameraServer::FEED_RGBA_IMAGE], p_rgb_img);
 
 		_datatype = CameraFeed::FEED_RGB;
 		// Most of the time the pixel data of camera devices comes from threads outs_ide Godot.
@@ -144,6 +145,8 @@ void CameraFeed::set_ycbcr_image(const Ref<Image> &p_ycbcr_img) {
 		// - They are emitted on Godot's main thread.
 		// - Both _datatype and frame size are updated before the emission.
 		if (_datatype != CameraFeed::FEED_YCBCR || (_base_width != new_width) || (_base_height != new_height)) {
+			_free_textures();
+
 			call_deferred("emit_signal", "format_changed");
 		}
 
@@ -152,11 +155,10 @@ void CameraFeed::set_ycbcr_image(const Ref<Image> &p_ycbcr_img) {
 			_base_width = new_width;
 			_base_height = new_height;
 
-			RID new_texture = RenderingServer::get_singleton()->texture_2d_create(p_ycbcr_img);
-			RenderingServer::get_singleton()->texture_replace(_texture[CameraServer::FEED_RGBA_IMAGE], new_texture);
-		} else {
-			RenderingServer::get_singleton()->texture_2d_update(_texture[CameraServer::FEED_RGBA_IMAGE], p_ycbcr_img);
+			_texture[CameraServer::FEED_RGBA_IMAGE] = RenderingServer::get_singleton()->texture_create();
 		}
+
+		RenderingServer::get_singleton()->texture_set_data(_texture[CameraServer::FEED_RGBA_IMAGE], p_ycbcr_img);
 
 		_datatype = CameraFeed::FEED_YCBCR;
 		// Most of the time the pixel data of camera devices comes from threads outs_ide Godot.
@@ -181,6 +183,8 @@ void CameraFeed::set_ycbcr_images(const Ref<Image> &p_y_img, const Ref<Image> &p
 		// - They are emitted on Godot's main thread.
 		// - Both _datatype and frame size are updated before the emission.
 		if (_datatype != CameraFeed::FEED_YCBCR_SEP || (_base_width != new_y_width) || (_base_height != new_y_height)) {
+			_free_textures();
+
 			call_deferred("emit_signal", "format_changed");
 		}
 
@@ -188,18 +192,13 @@ void CameraFeed::set_ycbcr_images(const Ref<Image> &p_y_img, const Ref<Image> &p
 			// We're assuming here that our camera image doesn't change around _formats etc, allocate the whole lot...
 			_base_width = new_y_width;
 			_base_height = new_y_height;
-			{
-				RID new_texture = RenderingServer::get_singleton()->texture_2d_create(p_y_img);
-				RenderingServer::get_singleton()->texture_replace(_texture[CameraServer::FEED_Y_IMAGE], new_texture);
-			}
-			{
-				RID new_texture = RenderingServer::get_singleton()->texture_2d_create(p_cbcr_img);
-				RenderingServer::get_singleton()->texture_replace(_texture[CameraServer::FEED_CBCR_IMAGE], new_texture);
-			}
-		} else {
-			RenderingServer::get_singleton()->texture_2d_update(_texture[CameraServer::FEED_Y_IMAGE], p_y_img);
-			RenderingServer::get_singleton()->texture_2d_update(_texture[CameraServer::FEED_CBCR_IMAGE], p_cbcr_img);
+
+			_texture[CameraServer::FEED_Y_IMAGE] = RenderingServer::get_singleton()->texture_create();
+			_texture[CameraServer::FEED_CBCR_IMAGE] = RenderingServer::get_singleton()->texture_create();
 		}
+
+		RenderingServer::get_singleton()->texture_set_data(_texture[CameraServer::FEED_Y_IMAGE], p_y_img);
+		RenderingServer::get_singleton()->texture_set_data(_texture[CameraServer::FEED_RGBA_IMAGE], p_cbcr_img);
 
 		_datatype = CameraFeed::FEED_YCBCR_SEP;
 		// Most of the time the pixel data of camera devices comes from threads outs_ide Godot.
@@ -214,6 +213,8 @@ void CameraFeed::set_external(int p_width, int p_height) {
 	// - They are emitted on Godot's main thread.
 	// - Both _datatype and frame size are updated before the emission.
 	if (_datatype != CameraFeed::FEED_EXTERNAL || (_base_width != p_width) || (_base_height != p_height)) {
+		_free_textures();
+
 		call_deferred("emit_signal", "format_changed");
 	}
 
@@ -222,8 +223,11 @@ void CameraFeed::set_external(int p_width, int p_height) {
 		_base_width = p_width;
 		_base_height = p_height;
 
-		RID new_texture = RenderingServer::get_singleton()->texture_external_create(p_width, p_height, 0);
-		RenderingServer::get_singleton()->texture_replace(_texture[CameraServer::FEED_YCBCR_IMAGE], new_texture);
+		// TODO needs external texture support.
+		// https://github.com/godotengine/godot/commit/1a6f8512bc5fd2b226a9db5e622b1a85350625c4
+
+		//RID new_texture = RenderingServer::get_singleton()->texture_external_create(p_width, p_height, 0);
+		//RenderingServer::get_singleton()->texture_replace(_texture[CameraServer::FEED_YCBCR_IMAGE], new_texture);
 	}
 
 	_datatype = CameraFeed::FEED_EXTERNAL;
@@ -241,6 +245,7 @@ void CameraFeed::deactivate_feed() {
 }
 
 bool CameraFeed::_activate_feed() {
+	return false;
 }
 void CameraFeed::_deactivate_feed() {
 }
@@ -269,8 +274,8 @@ CameraFeed::CameraFeed() {
 	_datatype = CameraFeed::FEED_RGB;
 	_position = CameraFeed::FEED_UNSPECIFIED;
 	_transform = Transform2D(1.0, 0.0, 0.0, -1.0, 0.0, 1.0);
-	_texture[CameraServer::FEED_Y_IMAGE] = RenderingServer::get_singleton()->texture_2d_placeholder_create();
-	_texture[CameraServer::FEED_CBCR_IMAGE] = RenderingServer::get_singleton()->texture_2d_placeholder_create();
+	_texture[CameraServer::FEED_Y_IMAGE] = RID();
+	_texture[CameraServer::FEED_CBCR_IMAGE] = RID();
 }
 
 CameraFeed::CameraFeed(String p_name, FeedPosition p_position) {
@@ -284,15 +289,24 @@ CameraFeed::CameraFeed(String p_name, FeedPosition p_position) {
 	_datatype = CameraFeed::FEED_NOIMAGE;
 	_position = p_position;
 	_transform = Transform2D(1.0, 0.0, 0.0, -1.0, 0.0, 1.0);
-	_texture[CameraServer::FEED_Y_IMAGE] = RenderingServer::get_singleton()->texture_2d_placeholder_create();
-	_texture[CameraServer::FEED_CBCR_IMAGE] = RenderingServer::get_singleton()->texture_2d_placeholder_create();
+	_texture[CameraServer::FEED_Y_IMAGE] = RID();
+	_texture[CameraServer::FEED_CBCR_IMAGE] = RID();
 }
 
 CameraFeed::~CameraFeed() {
 	// Free our _textures
 	ERR_FAIL_NULL(RenderingServer::get_singleton());
-	RenderingServer::get_singleton()->free_r_id(_texture[CameraServer::FEED_Y_IMAGE]);
-	RenderingServer::get_singleton()->free_r_id(_texture[CameraServer::FEED_CBCR_IMAGE]);
+	RenderingServer::get_singleton()->free(_texture[CameraServer::FEED_Y_IMAGE]);
+	RenderingServer::get_singleton()->free(_texture[CameraServer::FEED_CBCR_IMAGE]);
+}
+
+void CameraFeed::_free_textures() {
+	for (int i = 0; i < CameraServer::FEED_IMAGES; ++i) {
+		if (_texture[i] != RID()) {
+			RenderingServer::get_singleton()->free(_texture[i]);
+			_texture[i] = RID();
+		}
+	}
 }
 
 void CameraFeed::_bind_methods() {
