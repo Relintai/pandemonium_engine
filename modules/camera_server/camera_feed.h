@@ -136,6 +136,7 @@ protected:
 
 	bool _active; // only when _active do we actually update the camera _texture each frame
 	RID _texture[CameraServer::FEED_IMAGES]; // _texture images needed for this
+	Ref<Image> _image;
 
 private:
 	int _id; // unique _id for this, for internal use in case feeds are removed

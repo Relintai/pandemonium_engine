@@ -94,11 +94,7 @@ void CameraFeed::set_transform(const Transform2D &p_transform) {
 }
 
 Ref<Image> CameraFeed::get_image(CameraServer::FeedImage p_which) {
-	if (_texture[p_which] == RID()) {
-		return Ref<Image>();
-	}
-
-	return RenderingServer::get_singleton()->texture_get_data(_texture[p_which]);
+	return _image;
 }
 
 RID CameraFeed::get_texture_rid(CameraServer::FeedImage p_which) {
@@ -129,11 +125,18 @@ void CameraFeed::set_rgb_image(const Ref<Image> &p_rgb_img) {
 			// We're assuming here that our camera image doesn't change around _formats etc, allocate the whole lot...
 			_base_width = new_width;
 			_base_height = new_height;
+		}
 
+		if (_texture[CameraServer::FEED_RGBA_IMAGE] == RID()) {
 			_texture[CameraServer::FEED_RGBA_IMAGE] = RenderingServer::get_singleton()->texture_create();
 		}
 
-		RenderingServer::get_singleton()->texture_set_data(_texture[CameraServer::FEED_RGBA_IMAGE], p_rgb_img);
+		// Very ugly temporary hack, it does make thinks work when the mode is rgba.
+		// Lots of things need to be reworked here.
+		// Why go though the rendering server, to then use RIDs, when they are a lot less flexible in this specific case?
+		_image = p_rgb_img;
+
+		//RenderingServer::get_singleton()->texture_set_data(_texture[CameraServer::FEED_RGBA_IMAGE], p_rgb_img);
 
 		_datatype = CameraFeed::FEED_RGB;
 		// Most of the time the pixel data of camera devices comes from threads outs_ide Godot.
