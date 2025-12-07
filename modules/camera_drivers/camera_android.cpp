@@ -131,7 +131,8 @@ void CameraFeedAndroid::_set_rotation() {
 	}
 
 	float image_rotation = 0.0f;
-	std::optional<int> result;
+	int result = 0;
+	bool result_valid = false;
 
 	if (metadata) {
 		CameraRotationParams params;
@@ -139,13 +140,13 @@ void CameraFeedAndroid::_set_rotation() {
 		params.camera_facing = (position == CameraFeed::FEED_FRONT) ? CameraFacing::FRONT : CameraFacing::BACK;
 		params.display_rotation = get_app_orientation();
 
-		result = calculate_rotation(params);
+		result = calculate_rotation(params, result_valid);
 	} else {
 		ERR_PRINT(vformat("Camera %s: Cannot update rotation, metadata unavailable after refresh, using fallback.", camera_id));
 	}
 
-	if (result.has_value()) {
-		image_rotation = static_cast<float>(result.value());
+	if (result_valid) {
+		image_rotation = static_cast<float>(result);
 	} else {
 		int display_rotation = DisplayServerAndroid::get_singleton()->get_display_rotation();
 		switch (display_rotation) {
@@ -654,10 +655,13 @@ CameraAndroid::~CameraAndroid() {
 	remove_all_feeds();
 }
 
-std::optional<int> CameraFeedAndroid::calculate_rotation(const CameraRotationParams &p_params) {
+int CameraFeedAndroid::calculate_rotation(const CameraRotationParams &p_params, bool &r_valid) {
 	if (p_params.sensor_orientation < 0 || p_params.sensor_orientation > 270 || p_params.sensor_orientation % 90 != 0) {
-		return std::nullopt;
+		r_valid = false;
+		return 0;
 	}
+
+	r_valid = true;
 
 	int rotation_angle = p_params.sensor_orientation - p_params.display_rotation;
 	return normalize_angle(rotation_angle);

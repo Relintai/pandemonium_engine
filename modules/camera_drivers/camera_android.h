@@ -40,7 +40,6 @@
 #include <camera/NdkCameraManager.h>
 #include <camera/NdkCameraMetadataTags.h>
 #include <media/NdkImageReader.h>
-#include <optional>
 
 enum class CameraFacing {
 	BACK = 0,
@@ -76,7 +75,7 @@ private:
 	void _add_formats();
 	void _set_rotation();
 	void refresh_camera_metadata();
-	static std::optional<int> calculate_rotation(const CameraRotationParams &p_params);
+	static int calculate_rotation(const CameraRotationParams &p_params, bool &r_valid);
 	static int normalize_angle(int p_angle);
 	static int get_display_rotation();
 	static int get_app_orientation();
