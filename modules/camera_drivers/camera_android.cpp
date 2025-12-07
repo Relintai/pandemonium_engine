@@ -75,20 +75,20 @@ CameraFeedAndroid::CameraFeedAndroid(ACameraManager *p_manager, ACameraMetadata 
 	set_position(p_position);
 
 	// Position
-	switch (position) {
+	switch (p_position) {
 		case CameraFeed::FEED_BACK:
-			name = vformat("%s | BACK", p_id);
+			_name = vformat("%s | BACK", p_id);
 			break;
 		case CameraFeed::FEED_FRONT:
-			name = vformat("%s | FRONT", p_id);
+			_name = vformat("%s | FRONT", p_id);
 			break;
 		default:
-			name = vformat("%s", p_id);
+			_name = vformat("%s", p_id);
 			break;
 	}
 
-	image_y.instantiate();
-	image_uv.instantiate();
+	image_y.instance();
+	image_uv.instance();
 }
 
 CameraFeedAndroid::~CameraFeedAndroid() {
@@ -141,7 +141,7 @@ void CameraFeedAndroid::_set_rotation() {
 	if (metadata) {
 		CameraRotationParams params;
 		params.sensor_orientation = orientation;
-		params.camera_facing = (position == CameraFeed::FEED_FRONT) ? CameraFacing::FRONT : CameraFacing::BACK;
+		params.camera_facing = (_position == CameraFeed::FEED_FRONT) ? CameraFacing::FRONT : CameraFacing::BACK;
 		params.display_rotation = get_app_orientation();
 
 		result = calculate_rotation(params, result_valid);
@@ -164,12 +164,12 @@ void CameraFeedAndroid::_set_rotation() {
 				break;
 		}
 
-		int sign = position == CameraFeed::FEED_FRONT ? 1 : -1;
+		int sign = _position == CameraFeed::FEED_FRONT ? 1 : -1;
 		image_rotation = (orientation - display_rotation * sign + 360) % 360;
 	}
 
-	transform = Transform2D();
-	transform = transform.rotated(Math::deg_to_rad(image_rotation));
+	_transform = Transform2D();
+	_transform = transform.rotated(Math::deg2rad(image_rotation));
 }
 
 void CameraFeedAndroid::_add_formats() {
@@ -195,16 +195,16 @@ void CameraFeedAndroid::_add_formats() {
 				feed_format.height = formats.data.i32[f + 2];
 				feed_format.format = GetFormatName(format);
 				feed_format.pixel_format = format;
-				_formats.append(feed_format);
+				_formats.push_back(feed_format);
 			}
 		}
 	}
 }
 
 bool CameraFeedAndroid::_activate_feed() {
-	ERR_FAIL_COND_V_MSG(_formats.is_empty(), false, "No camera formats available.");
-	ERR_FAIL_INDEX_V_MSG(selected_format, _formats.size(), false,
-			vformat("CameraFeed format needs to be set before activating. Selected format index: %d (formats size: %d)", selected_format, _formats.size()));
+	ERR_FAIL_COND_V_MSG(_formats.empty(), false, "No camera formats available.");
+	ERR_FAIL_INDEX_V_MSG(_selected_format, _formats.size(), false,
+			vformat("CameraFeed format needs to be set before activating. Selected format index: %d (formats size: %d)", _selected_format, _formats.size()));
 	if (is_active()) {
 		deactivate_feed();
 	};
@@ -227,7 +227,7 @@ bool CameraFeedAndroid::_activate_feed() {
 	}
 
 	// Create image reader
-	const FeedFormat &feed_format = _formats[selected_format];
+	const FeedFormat &feed_format = _formats[_selected_format];
 	media_status_t m_status = AImageReader_new(feed_format.width, feed_format.height, feed_format.pixel_format, 1, &reader);
 	if (m_status != AMEDIA_OK) {
 		onError(this, device, m_status);
@@ -322,7 +322,7 @@ bool CameraFeedAndroid::set_format(int p_index, const Dictionary &p_parameters) 
 	ERR_FAIL_COND_V_MSG(active, false, "Feed is active.");
 	ERR_FAIL_INDEX_V_MSG(p_index, _formats.size(), false, "Invalid format index.");
 
-	selected_format = p_index;
+	_selected_format = p_index;
 	return true;
 }
 
@@ -342,9 +342,9 @@ Array CameraFeedAndroid::get_formats() const {
 
 CameraFeed::FeedFormat CameraFeedAndroid::get_format() const {
 	CameraFeed::FeedFormat feed_format = {};
-	ERR_FAIL_INDEX_V_MSG(selected_format, _formats.size(), feed_format,
-			vformat("Invalid format index: %d (formats size: %d)", selected_format, _formats.size()));
-	return _formats[selected_format];
+	ERR_FAIL_INDEX_V_MSG(_selected_format, _formats.size(), feed_format,
+			vformat("Invalid format index: %d (formats size: %d)", _selected_format, _formats.size()));
+	return _formats[_selected_format];
 }
 
 void CameraFeedAndroid::handle_pause() {
@@ -468,13 +468,13 @@ void CameraFeedAndroid::onImage(void *context, AImageReader *p_reader) {
 			return;
 	}
 
-	if (!feed->formats.is_empty()) {
+	if (!feed->formats.empty()) {
 		if (feed->metadata != nullptr) {
 			feed->_set_rotation();
 		} else {
 			print_verbose(vformat("Camera %s: Metadata invalidated in onImage, attempting refresh.", feed->camera_id));
 			feed->refresh_camera_metadata();
-			if (feed->metadata != nullptr && !feed->formats.is_empty()) {
+			if (feed->metadata != nullptr && !feed->formats.empty()) {
 				feed->_set_rotation();
 			}
 		}
