@@ -3,22 +3,22 @@
 Import("env")
 Import("env_modules")
 
-env_camera = env_modules.Clone()
+env_camera_drivers = env_modules.Clone()
 
 if env["platform"] in ["windows", "osx", "x11", "android"]:
-    env_camera.add_source_files(env.modules_sources, "register_types.cpp")
+    env_camera_drivers.add_source_files(env.modules_sources, "register_types.cpp")
 
 if env["platform"] == "windows":
-    env_camera.add_source_files(env.modules_sources, "camera_win.cpp")
+    env_camera_drivers.add_source_files(env.modules_sources, "camera_win.cpp")
 
 elif env["platform"] == "osx":
-    env_camera.add_source_files(env.modules_sources, "camera_macos.mm")
+    env_camera_drivers.add_source_files(env.modules_sources, "camera_macos.mm")
 
 elif env["platform"] == "android":
-    env_camera.add_source_files(env.modules_sources, "camera_android.cpp")
+    env_camera_drivers.add_source_files(env.modules_sources, "camera_android.cpp")
     env.Append(LIBS=["camera2ndk", "mediandk"])
 
 elif env["platform"] == "x11":
-    env_camera.add_source_files(env.modules_sources, "camera_linux.cpp")
-    env_camera.add_source_files(env.modules_sources, "camera_feed_linux.cpp")
-    env_camera.add_source_files(env.modules_sources, "buffer_decoder.cpp")
+    env_camera_drivers.add_source_files(env.modules_sources, "camera_linux.cpp")
+    env_camera_drivers.add_source_files(env.modules_sources, "camera_feed_linux.cpp")
+    env_camera_drivers.add_source_files(env.modules_sources, "buffer_decoder.cpp")
