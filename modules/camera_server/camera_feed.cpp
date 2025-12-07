@@ -61,8 +61,10 @@ void CameraFeed::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_formats"), &CameraFeed::get_formats);
 	ClassDB::bind_method(D_METHOD("set_format", "index", "parameters"), &CameraFeed::set_format);
 
-	GDVIRTUAL_BIND(_activate_feed);
-	GDVIRTUAL_BIND(_deactivate_feed);
+	//GDVIRTUAL_BIND(_activate_feed);
+	//GDVIRTUAL_BIND(_deactivate_feed);
+	//GDVIRTUAL0R(bool, _activate_feed)
+	//GDVIRTUAL0(_deactivate_feed)
 
 	ADD_SIGNAL(MethodInfo("frame_changed"));
 	ADD_SIGNAL(MethodInfo("format_changed"));
