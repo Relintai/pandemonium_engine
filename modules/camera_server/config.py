@@ -1,6 +1,6 @@
+
 def can_build(env, platform):
-    # temp
-    return False
+    return True 
 
 def configure(env):
     pass

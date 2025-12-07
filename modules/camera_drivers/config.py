@@ -1,13 +1,15 @@
+
 def can_build(env, platform):
-    # temp
-    return False
+    env.module_add_dependencies("camera_drivers", ["camera_server"], False)
 
     import sys
 
     if sys.platform.startswith("freebsd") or sys.platform.startswith("openbsd"):
         return False
-    return platform == "macos" or platform == "windows" or platform == "linuxbsd" or platform == "android"
+
+    return platform == "osx" or platform == "windows" or platform == "x11" or platform == "android"
 
 
 def configure(env):
     pass
+
