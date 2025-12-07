@@ -32,7 +32,6 @@
 #include "camera_android.h"
 
 #include "core/os/os.h"
-#include "platform/android/java_godot_io_wrapper.h"
 #include "platform/android/os_android.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -678,23 +677,5 @@ int CameraFeedAndroid::get_display_rotation() {
 }
 
 int CameraFeedAndroid::get_app_orientation() {
-	GodotIOJavaWrapper *godot_io_java = OS_Android::get_singleton()->get_godot_io_java();
-	ERR_FAIL_NULL_V(godot_io_java, 0);
-
-	int orientation = godot_io_java->get_screen_orientation();
-	switch (orientation) {
-		case 0: // SCREEN_LANDSCAPE
-			return 90;
-		case 1: // SCREEN_PORTRAIT
-			return 0;
-		case 2: // SCREEN_REVERSE_LANDSCAPE
-			return 270;
-		case 3: // SCREEN_REVERSE_PORTRAIT
-			return 180;
-		case 4: // SCREEN_SENSOR_LANDSCAPE
-		case 5: // SCREEN_SENSOR_PORTRAIT
-		case 6: // SCREEN_SENSOR
-		default:
-			return get_display_rotation();
-	}
+	return get_display_rotation();
 }
