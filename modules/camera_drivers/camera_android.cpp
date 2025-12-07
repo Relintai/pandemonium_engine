@@ -32,7 +32,6 @@
 #include "camera_android.h"
 
 #include "core/os/os.h"
-#include "platform/android/display_server_android.h"
 #include "platform/android/java_godot_io_wrapper.h"
 #include "platform/android/os_android.h"
 
@@ -148,7 +147,7 @@ void CameraFeedAndroid::_set_rotation() {
 	if (result_valid) {
 		image_rotation = static_cast<float>(result);
 	} else {
-		int display_rotation = DisplayServerAndroid::get_singleton()->get_display_rotation();
+		int display_rotation = OS::get_singleton()->get_screen_orientation();
 		switch (display_rotation) {
 			case 90:
 				display_rotation = 270;
@@ -675,7 +674,7 @@ int CameraFeedAndroid::normalize_angle(int p_angle) {
 }
 
 int CameraFeedAndroid::get_display_rotation() {
-	return DisplayServerAndroid::get_singleton()->get_display_rotation();
+	return OS::get_singleton()->get_screen_orientation();
 }
 
 int CameraFeedAndroid::get_app_orientation() {
