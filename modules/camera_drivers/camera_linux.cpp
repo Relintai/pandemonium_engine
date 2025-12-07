@@ -91,7 +91,7 @@ void CameraLinux::_update_devices() {
 			free(devices);
 		}
 
-		call_deferred("emit_signal", SNAME(CameraServer::feeds_updated_signal_name));
+		call_deferred("emit_signal", "camera_feeds_updated");
 		usleep(1000000);
 	}
 }
