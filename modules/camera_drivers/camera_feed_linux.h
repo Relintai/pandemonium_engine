@@ -1,3 +1,6 @@
+#ifndef CAMERA_FEED_LINUX_H
+#define CAMERA_FEED_LINUX_H
+
 /*************************************************************************/
 /*  camera_feed_linux.h                                                  */
 /*************************************************************************/
@@ -28,8 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#pragma once
 
 #include "buffer_decoder.h"
 
@@ -76,3 +77,5 @@ public:
 	CameraFeedLinux(const String &p_device_name);
 	~CameraFeedLinux() override;
 };
+
+#endif

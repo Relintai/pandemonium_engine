@@ -1,3 +1,6 @@
+#ifndef CAMERA_ANDROID_H
+#define CAMERA_ANDROID_H
+
 /*************************************************************************/
 /*  camera_android.h                                                     */
 /*************************************************************************/
@@ -28,8 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#pragma once
 
 #include "servers/camera/camera_feed.h"
 #include "servers/camera/camera_server.h"
@@ -120,3 +121,5 @@ public:
 
 	~CameraAndroid();
 };
+
+#endif

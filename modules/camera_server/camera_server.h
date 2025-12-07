@@ -1,3 +1,6 @@
+#ifndef CAMERA_SERVER_H
+#define CAMERA_SERVER_H
+
 /*************************************************************************/
 /*  camera_server.h                                                      */
 /*************************************************************************/
@@ -28,8 +31,6 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
-#pragma once
 
 #include "core/object/class_db.h"
 #include "core/object/ref_counted.h"
@@ -122,3 +123,5 @@ public:
 };
 
 VARIANT_ENUM_CAST(CameraServer::FeedImage);
+
+#endif

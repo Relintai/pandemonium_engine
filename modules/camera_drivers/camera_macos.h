@@ -1,3 +1,6 @@
+#ifndef CAMERA_MACOS_H
+#define CAMERA_MACOS_H
+
 /*************************************************************************/
 /*  camera_macos.h                                                       */
 /*************************************************************************/
@@ -29,8 +32,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#pragma once
-
 ///@TODO this is a near duplicate of CameraIOS, we should find a way to combine those to minimize code duplication!!!!
 // If you fix something here, make sure you fix it there as well!
 
@@ -45,3 +46,5 @@ public:
 	void update_feeds();
 	void set_monitoring_feeds(bool p_monitoring_feeds) override;
 };
+
+#endif

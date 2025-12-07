@@ -1,3 +1,6 @@
+#ifndef CAMERA_LINUX_H
+#define CAMERA_LINUX_H
+
 /*************************************************************************/
 /*  camera_linux.h                                                       */
 /*************************************************************************/
@@ -29,8 +32,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#pragma once
-
 #include "core/os/mutex.h"
 #include "core/os/thread.h"
 #include "servers/camera/camera_server.h"
@@ -58,3 +59,5 @@ public:
 
 	void set_monitoring_feeds(bool p_monitoring_feeds) override;
 };
+
+#endif

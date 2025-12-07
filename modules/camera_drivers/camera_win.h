@@ -1,3 +1,6 @@
+#ifndef CAMERA_WIN_H
+#define CAMERA_WIN_H
+
 /*************************************************************************/
 /*  camera_win.h                                                         */
 /*************************************************************************/
@@ -29,8 +32,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#pragma once
-
 #include "servers/camera/camera_feed.h"
 #include "servers/camera/camera_server.h"
 
@@ -42,3 +43,5 @@ public:
 	CameraWindows();
 	~CameraWindows() {}
 };
+
+#endif
