@@ -44,8 +44,8 @@
 #include "camera_android.h"
 #endif
 
-void initialize_camera_module(ModuleInitializationLevel p_level) {
-	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
+void register_camera_drivers_types(ModuleRegistrationLevel p_level) {
+	if (p_level != MODULE_REGISTRATION_LEVEL_PLATFORM) {
 		return;
 	}
 
@@ -63,8 +63,5 @@ void initialize_camera_module(ModuleInitializationLevel p_level) {
 #endif
 }
 
-void uninitialize_camera_module(ModuleInitializationLevel p_level) {
-	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
-		return;
-	}
+void unregister_camera_drivers_types(ModuleRegistrationLevel p_level) {
 }
