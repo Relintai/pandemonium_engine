@@ -31,7 +31,7 @@
 
 #include "camera_feed_linux.h"
 
-#include "servers/rendering/rendering_server.h"
+#include "servers/rendering_server.h"
 
 #include <fcntl.h>
 #include <sys/ioctl.h>

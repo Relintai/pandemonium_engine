@@ -33,7 +33,7 @@
 /*************************************************************************/
 
 #include "core/io/image.h"
-#include "core/templates/vector.h"
+#include "core/containers/vector.h"
 
 class CameraFeed;
 
