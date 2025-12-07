@@ -38,6 +38,120 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
+String CameraFeedLinux::get_device_name() const {
+	return device_name;
+}
+
+bool CameraFeedLinux::activate_feed() {
+	ERR_FAIL_COND_V_MSG(selected_format == -1, false, "CameraFeed format needs to be set before activating.");
+	file_descriptor = open(device_name.ascii().get_data(), O_RDWR | O_NONBLOCK, 0);
+	if (_request_buffers() && _start_capturing()) {
+		buffer_decoder = _create_buffer_decoder();
+		_start_thread();
+		return true;
+	}
+	ERR_FAIL_V_MSG(false, "Could not activate feed.");
+}
+
+void CameraFeedLinux::deactivate_feed() {
+	exit_flag.set();
+	thread->wait_to_finish();
+	memdelete(thread);
+	_stop_capturing();
+	_unmap_buffers(buffer_count);
+	delete[] buffers;
+	memdelete(buffer_decoder);
+	for (int i = 0; i < CameraServer::FEED_IMAGES; i++) {
+		RID placeholder = RenderingServer::get_singleton()->texture_2d_placeholder_create();
+		RenderingServer::get_singleton()->texture_replace(texture[i], placeholder);
+	}
+	base_width = 0;
+	base_height = 0;
+	close(file_descriptor);
+
+	emit_signal(SNAME("format_changed"));
+}
+
+Array CameraFeedLinux::get_formats() const {
+	Array result;
+	for (const FeedFormat &format : formats) {
+		Dictionary dictionary;
+		dictionary["width"] = format.width;
+		dictionary["height"] = format.height;
+		dictionary["format"] = format.format;
+		dictionary["frame_numerator"] = format.frame_numerator;
+		dictionary["frame_denominator"] = format.frame_denominator;
+		result.push_back(dictionary);
+	}
+	return result;
+}
+
+CameraFeed::FeedFormat CameraFeedLinux::get_format() const {
+	FeedFormat feed_format = {};
+	return selected_format == -1 ? feed_format : formats[selected_format];
+}
+
+bool CameraFeedLinux::set_format(int p_index, const Dictionary &p_parameters) {
+	ERR_FAIL_COND_V_MSG(active, false, "Feed is active.");
+	ERR_FAIL_INDEX_V_MSG(p_index, formats.size(), false, "Invalid format index.");
+
+	FeedFormat feed_format = formats[p_index];
+
+	file_descriptor = open(device_name.ascii().get_data(), O_RDWR | O_NONBLOCK, 0);
+
+	struct v4l2_format format;
+	memset(&format, 0, sizeof(format));
+	format.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+	format.fmt.pix.width = feed_format.width;
+	format.fmt.pix.height = feed_format.height;
+	format.fmt.pix.pixelformat = feed_format.pixel_format;
+
+	if (ioctl(file_descriptor, VIDIOC_S_FMT, &format) == -1) {
+		close(file_descriptor);
+		ERR_FAIL_V_MSG(false, vformat("Cannot set format, error: %d.", errno));
+	}
+
+	if (feed_format.frame_numerator > 0) {
+		struct v4l2_streamparm param;
+		memset(&param, 0, sizeof(param));
+
+		param.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+		param.parm.capture.capability = V4L2_CAP_TIMEPERFRAME;
+		param.parm.capture.timeperframe.numerator = feed_format.frame_numerator;
+		param.parm.capture.timeperframe.denominator = feed_format.frame_denominator;
+
+		if (ioctl(file_descriptor, VIDIOC_S_PARM, &param) == -1) {
+			close(file_descriptor);
+			ERR_FAIL_V_MSG(false, vformat("Cannot set framerate, error: %d.", errno));
+		}
+	}
+	close(file_descriptor);
+
+	parameters = p_parameters.duplicate();
+	selected_format = p_index;
+	emit_signal(SNAME("format_changed"));
+
+	return true;
+}
+
+CameraFeedLinux::CameraFeedLinux(const String &p_device_name) :
+		CameraFeed() {
+	thread = NULL;
+	file_descriptor = -1;
+	buffers = NULL;
+	buffer_count = 0;
+	buffer_decoder = NULL;
+
+	device_name = p_device_name;
+	_query_device(device_name);
+}
+
+CameraFeedLinux::~CameraFeedLinux() {
+	if (is_active()) {
+		deactivate_feed();
+	}
+}
+
 void CameraFeedLinux::update_buffer_thread_func(void *p_func) {
 	if (p_func) {
 		CameraFeedLinux *camera_feed_linux = (CameraFeedLinux *)p_func;
@@ -222,27 +336,6 @@ void CameraFeedLinux::_unmap_buffers(unsigned int p_count) {
 	}
 }
 
-void CameraFeedLinux::_start_thread() {
-	exit_flag.clear();
-	thread = memnew(Thread);
-	thread->start(CameraFeedLinux::update_buffer_thread_func, this);
-}
-
-String CameraFeedLinux::get_device_name() const {
-	return device_name;
-}
-
-bool CameraFeedLinux::activate_feed() {
-	ERR_FAIL_COND_V_MSG(selected_format == -1, false, "CameraFeed format needs to be set before activating.");
-	file_descriptor = open(device_name.ascii().get_data(), O_RDWR | O_NONBLOCK, 0);
-	if (_request_buffers() && _start_capturing()) {
-		buffer_decoder = _create_buffer_decoder();
-		_start_thread();
-		return true;
-	}
-	ERR_FAIL_V_MSG(false, "Could not activate feed.");
-}
-
 BufferDecoder *CameraFeedLinux::_create_buffer_decoder() {
 	switch (formats[selected_format].pixel_format) {
 		case V4L2_PIX_FMT_MJPEG:
@@ -270,95 +363,8 @@ BufferDecoder *CameraFeedLinux::_create_buffer_decoder() {
 	}
 }
 
-void CameraFeedLinux::deactivate_feed() {
-	exit_flag.set();
-	thread->wait_to_finish();
-	memdelete(thread);
-	_stop_capturing();
-	_unmap_buffers(buffer_count);
-	delete[] buffers;
-	memdelete(buffer_decoder);
-	for (int i = 0; i < CameraServer::FEED_IMAGES; i++) {
-		RID placeholder = RenderingServer::get_singleton()->texture_2d_placeholder_create();
-		RenderingServer::get_singleton()->texture_replace(texture[i], placeholder);
-	}
-	base_width = 0;
-	base_height = 0;
-	close(file_descriptor);
-
-	emit_signal(SNAME("format_changed"));
-}
-
-Array CameraFeedLinux::get_formats() const {
-	Array result;
-	for (const FeedFormat &format : formats) {
-		Dictionary dictionary;
-		dictionary["width"] = format.width;
-		dictionary["height"] = format.height;
-		dictionary["format"] = format.format;
-		dictionary["frame_numerator"] = format.frame_numerator;
-		dictionary["frame_denominator"] = format.frame_denominator;
-		result.push_back(dictionary);
-	}
-	return result;
-}
-
-CameraFeed::FeedFormat CameraFeedLinux::get_format() const {
-	FeedFormat feed_format = {};
-	return selected_format == -1 ? feed_format : formats[selected_format];
-}
-
-bool CameraFeedLinux::set_format(int p_index, const Dictionary &p_parameters) {
-	ERR_FAIL_COND_V_MSG(active, false, "Feed is active.");
-	ERR_FAIL_INDEX_V_MSG(p_index, formats.size(), false, "Invalid format index.");
-
-	FeedFormat feed_format = formats[p_index];
-
-	file_descriptor = open(device_name.ascii().get_data(), O_RDWR | O_NONBLOCK, 0);
-
-	struct v4l2_format format;
-	memset(&format, 0, sizeof(format));
-	format.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-	format.fmt.pix.width = feed_format.width;
-	format.fmt.pix.height = feed_format.height;
-	format.fmt.pix.pixelformat = feed_format.pixel_format;
-
-	if (ioctl(file_descriptor, VIDIOC_S_FMT, &format) == -1) {
-		close(file_descriptor);
-		ERR_FAIL_V_MSG(false, vformat("Cannot set format, error: %d.", errno));
-	}
-
-	if (feed_format.frame_numerator > 0) {
-		struct v4l2_streamparm param;
-		memset(&param, 0, sizeof(param));
-
-		param.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-		param.parm.capture.capability = V4L2_CAP_TIMEPERFRAME;
-		param.parm.capture.timeperframe.numerator = feed_format.frame_numerator;
-		param.parm.capture.timeperframe.denominator = feed_format.frame_denominator;
-
-		if (ioctl(file_descriptor, VIDIOC_S_PARM, &param) == -1) {
-			close(file_descriptor);
-			ERR_FAIL_V_MSG(false, vformat("Cannot set framerate, error: %d.", errno));
-		}
-	}
-	close(file_descriptor);
-
-	parameters = p_parameters.duplicate();
-	selected_format = p_index;
-	emit_signal(SNAME("format_changed"));
-
-	return true;
-}
-
-CameraFeedLinux::CameraFeedLinux(const String &p_device_name) :
-		CameraFeed() {
-	device_name = p_device_name;
-	_query_device(device_name);
-}
-
-CameraFeedLinux::~CameraFeedLinux() {
-	if (is_active()) {
-		deactivate_feed();
-	}
+void CameraFeedLinux::_start_thread() {
+	exit_flag.clear();
+	thread = memnew(Thread);
+	thread->start(CameraFeedLinux::update_buffer_thread_func, this);
 }

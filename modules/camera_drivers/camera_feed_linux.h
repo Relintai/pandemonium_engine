@@ -45,15 +45,18 @@ struct StreamingBuffer;
 class CameraFeedLinux : public CameraFeed {
 	GDSOFTCLASS(CameraFeedLinux, CameraFeed);
 
-private:
-	SafeFlag exit_flag;
-	Thread *thread = nullptr;
-	String device_name;
-	int file_descriptor = -1;
-	StreamingBuffer *buffers = nullptr;
-	unsigned int buffer_count = 0;
-	BufferDecoder *buffer_decoder = nullptr;
+public:
+	String get_device_name() const;
+	bool activate_feed();
+	void deactivate_feed();
+	bool set_format(int p_index, const Dictionary &p_parameters);
+	Array get_formats() const;
+	FeedFormat get_format() const;
 
+	CameraFeedLinux(const String &p_device_name);
+	~CameraFeedLinux();
+
+private:
 	static void update_buffer_thread_func(void *p_func);
 
 	void _update_buffer();
@@ -67,16 +70,13 @@ private:
 	BufferDecoder *_create_buffer_decoder();
 	void _start_thread();
 
-public:
-	String get_device_name() const;
-	bool activate_feed() override;
-	void deactivate_feed() override;
-	bool set_format(int p_index, const Dictionary &p_parameters) override;
-	Array get_formats() const override;
-	FeedFormat get_format() const override;
-
-	CameraFeedLinux(const String &p_device_name);
-	~CameraFeedLinux() override;
+	SafeFlag exit_flag;
+	Thread *thread;
+	String device_name;
+	int file_descriptor;
+	StreamingBuffer *buffers;
+	unsigned int buffer_count;
+	BufferDecoder *buffer_decoder;
 };
 
 #endif
