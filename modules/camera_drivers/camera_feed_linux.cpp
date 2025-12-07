@@ -31,6 +31,10 @@
 
 #include "camera_feed_linux.h"
 
+#include "buffer_decoder.h"
+
+#include "core/os/thread.h"
+
 #include "servers/rendering_server.h"
 
 #include <fcntl.h>
@@ -43,7 +47,7 @@ String CameraFeedLinux::get_device_name() const {
 }
 
 bool CameraFeedLinux::activate_feed() {
-	ERR_FAIL_COND_V_MSG(selected_format == -1, false, "CameraFeed format needs to be set before activating.");
+	ERR_FAIL_COND_V_MSG(_selected_format == -1, false, "CameraFeed format needs to be set before activating.");
 	file_descriptor = open(device_name.ascii().get_data(), O_RDWR | O_NONBLOCK, 0);
 	if (_request_buffers() && _start_capturing()) {
 		buffer_decoder = _create_buffer_decoder();
@@ -61,20 +65,34 @@ void CameraFeedLinux::deactivate_feed() {
 	_unmap_buffers(buffer_count);
 	delete[] buffers;
 	memdelete(buffer_decoder);
-	for (int i = 0; i < CameraServer::FEED_IMAGES; i++) {
-		RID placeholder = RenderingServer::get_singleton()->texture_2d_placeholder_create();
-		RenderingServer::get_singleton()->texture_replace(texture[i], placeholder);
+
+	PoolVector<uint8_t> wt;
+	wt.resize(16 * 3);
+	{
+		PoolVector<uint8_t>::Write w = wt.write();
+		for (int i = 0; i < 16 * 3; i++) {
+			w[i] = 255;
+		}
 	}
-	base_width = 0;
-	base_height = 0;
+	Ref<Image> white = memnew(Image(4, 4, 0, Image::FORMAT_RGB8, wt));
+
+	for (int i = 0; i < CameraServer::FEED_IMAGES; i++) {
+		RenderingServer::get_singleton()->texture_set_data(_texture[i], white);
+	}
+
+	_base_width = 0;
+	_base_height = 0;
 	close(file_descriptor);
 
-	emit_signal(SNAME("format_changed"));
+	emit_signal("format_changed");
 }
 
 Array CameraFeedLinux::get_formats() const {
 	Array result;
-	for (const FeedFormat &format : formats) {
+
+	for (int i = 0; i < _formats.size(); ++i) {
+		const FeedFormat &format = _formats[i];
+
 		Dictionary dictionary;
 		dictionary["width"] = format.width;
 		dictionary["height"] = format.height;
@@ -88,14 +106,14 @@ Array CameraFeedLinux::get_formats() const {
 
 CameraFeed::FeedFormat CameraFeedLinux::get_format() const {
 	FeedFormat feed_format = {};
-	return selected_format == -1 ? feed_format : formats[selected_format];
+	return _selected_format == -1 ? feed_format : _formats[_selected_format];
 }
 
 bool CameraFeedLinux::set_format(int p_index, const Dictionary &p_parameters) {
-	ERR_FAIL_COND_V_MSG(active, false, "Feed is active.");
-	ERR_FAIL_INDEX_V_MSG(p_index, formats.size(), false, "Invalid format index.");
+	ERR_FAIL_COND_V_MSG(_active, false, "Feed is active.");
+	ERR_FAIL_INDEX_V_MSG(p_index, _formats.size(), false, "Invalid format index.");
 
-	FeedFormat feed_format = formats[p_index];
+	FeedFormat feed_format = _formats[p_index];
 
 	file_descriptor = open(device_name.ascii().get_data(), O_RDWR | O_NONBLOCK, 0);
 
@@ -127,9 +145,9 @@ bool CameraFeedLinux::set_format(int p_index, const Dictionary &p_parameters) {
 	}
 	close(file_descriptor);
 
-	parameters = p_parameters.duplicate();
-	selected_format = p_index;
-	emit_signal(SNAME("format_changed"));
+	_parameters = p_parameters.duplicate();
+	_selected_format = p_index;
+	emit_signal("format_changed");
 
 	return true;
 }
@@ -174,7 +192,7 @@ void CameraFeedLinux::_query_device(const String &p_device_name) {
 	if (ioctl(file_descriptor, VIDIOC_QUERYCAP, &capability) == -1) {
 		ERR_FAIL_MSG(vformat("Cannot query device. Error: %d.", errno));
 	}
-	name = String((char *)capability.card);
+	_name = String((char *)capability.card);
 
 	for (int index = 0;; index++) {
 		struct v4l2_fmtdesc fmtdesc;
@@ -228,7 +246,7 @@ void CameraFeedLinux::_add_format(v4l2_fmtdesc p_description, v4l2_frmsize_discr
 	feed_format.frame_denominator = p_frame_denominator;
 	feed_format.pixel_format = p_description.pixelformat;
 	print_verbose(vformat("%s %dx%d@%d/%dfps", (char *)p_description.description, p_size.width, p_size.height, p_frame_denominator, p_frame_numerator));
-	formats.push_back(feed_format);
+	_formats.push_back(feed_format);
 }
 
 bool CameraFeedLinux::_request_buffers() {
@@ -337,7 +355,7 @@ void CameraFeedLinux::_unmap_buffers(unsigned int p_count) {
 }
 
 BufferDecoder *CameraFeedLinux::_create_buffer_decoder() {
-	switch (formats[selected_format].pixel_format) {
+	switch (_formats[_selected_format].pixel_format) {
 		case V4L2_PIX_FMT_MJPEG:
 		case V4L2_PIX_FMT_JPEG:
 			return memnew(JpegBufferDecoder(this));
@@ -346,7 +364,7 @@ BufferDecoder *CameraFeedLinux::_create_buffer_decoder() {
 		case V4L2_PIX_FMT_YVYU:
 		case V4L2_PIX_FMT_UYVY:
 		case V4L2_PIX_FMT_VYUY: {
-			String output = parameters["output"];
+			String output = _parameters["output"];
 			if (output == "separate") {
 				return memnew(SeparateYuyvBufferDecoder(this));
 			}

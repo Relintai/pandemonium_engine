@@ -32,15 +32,14 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "buffer_decoder.h"
-
-#include "core/os/thread.h"
-
 #include "modules/camera_server/camera_feed.h"
 
 #include <linux/videodev2.h>
 
 struct StreamingBuffer;
+class Thread;
+class BufferDecoder;
+class StreamingBuffer;
 
 class CameraFeedLinux : public CameraFeed {
 	GDSOFTCLASS(CameraFeedLinux, CameraFeed);
