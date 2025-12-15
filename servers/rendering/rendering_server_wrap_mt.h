@@ -56,6 +56,9 @@ class RenderingServerWrapMT : public RenderingServer {
 	void thread_draw(bool p_swap_buffers, double frame_step);
 	void thread_flush();
 
+	Semaphore thread_halt_semaphore;
+	void thread_halt();
+
 	void thread_exit();
 
 	Mutex alloc_mutex;
@@ -707,6 +710,8 @@ public:
 	virtual void pre_draw(bool p_will_draw);
 	virtual void draw(bool p_swap_buffers, double frame_step);
 	virtual void sync();
+	virtual void sync_and_halt();
+	virtual void thaw();
 	FUNC1RC(bool, has_changed, ChangedPriority)
 	virtual void set_physics_interpolation_enabled(bool p_enabled);
 

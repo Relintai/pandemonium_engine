@@ -47,6 +47,10 @@ void RenderingServerWrapMT::thread_flush() {
 	draw_pending.decrement();
 }
 
+void RenderingServerWrapMT::thread_halt() {
+	thread_halt_semaphore.wait();
+}
+
 void RenderingServerWrapMT::_thread_callback(void *_instance) {
 	RenderingServerWrapMT *vsmt = reinterpret_cast<RenderingServerWrapMT *>(_instance);
 
@@ -104,6 +108,19 @@ void RenderingServerWrapMT::sync() {
 		command_queue.push_and_sync(this, &RenderingServerWrapMT::thread_flush);
 	} else {
 		command_queue.flush_all(); //flush all pending from other threads
+	}
+}
+
+void RenderingServerWrapMT::sync_and_halt() {
+	if (create_thread) {
+		command_queue.push_and_sync(this, &RenderingServerWrapMT::thread_flush);
+		command_queue.push(this, &RenderingServerWrapMT::thread_halt);
+	}
+}
+
+void RenderingServerWrapMT::thaw() {
+	if (create_thread) {
+		thread_halt_semaphore.post();
 	}
 }
 

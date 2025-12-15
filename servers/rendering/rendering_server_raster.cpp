@@ -133,7 +133,14 @@ void RenderingServerRaster::draw(bool p_swap_buffers, double frame_step) {
 	}
 	RS::get_singleton()->emit_signal("frame_post_draw");
 }
+
 void RenderingServerRaster::sync() {
+}
+
+void RenderingServerRaster::sync_and_halt() {
+}
+
+void RenderingServerRaster::thaw() {
 }
 
 void RenderingServerRaster::set_physics_interpolation_enabled(bool p_enabled) {
