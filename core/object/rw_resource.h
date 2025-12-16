@@ -54,7 +54,7 @@ public:
 		_lock.write_lock();
 	}
 	_FORCE_INLINE_ void write_unlock() {
-		_lock.write_lock();
+		_lock.write_unlock();
 	}
 	_FORCE_INLINE_ Error write_try_lock() {
 		return _lock.write_try_lock();
