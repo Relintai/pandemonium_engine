@@ -3516,13 +3516,28 @@ void SceneTreeDock::attach_script_to_selected(bool p_extend) {
 
 	Ref<Script> existing = selected->get_script();
 
+	String selected_name = selected->get_name();
+
+	// Very similar to node naming logic.
+	switch (ProjectSettings::get_singleton()->get("editor/scene_naming").operator int()) {
+		case EditorNode::SCENE_NAME_CASING_AUTO:
+			// Use casing of the root node.
+			break;
+		case EditorNode::SCENE_NAME_CASING_PASCAL_CASE: {
+			selected_name = selected_name.capitalize().replace(" ", "");
+		} break;
+		case EditorNode::SCENE_NAME_CASING_SNAKE_CASE:
+			selected_name = selected_name.capitalize().replace(" ", "").replace("-", "_").camelcase_to_underscore();
+			break;
+	}
+
 	String path = selected->get_filename();
 	if (path == "") {
 		String root_path = editor_data->get_edited_scene_root()->get_filename();
 		if (root_path == "") {
-			path = String("res://").plus_file(selected->get_name());
+			path = String("res://").plus_file(selected_name);
 		} else {
-			path = root_path.get_base_dir().plus_file(selected->get_name());
+			path = root_path.get_base_dir().plus_file(selected_name);
 		}
 	}
 
