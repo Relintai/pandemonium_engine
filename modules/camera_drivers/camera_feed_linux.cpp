@@ -77,7 +77,7 @@ void CameraFeedLinux::_deactivate_feed() {
 	Ref<Image> white = memnew(Image(4, 4, 0, Image::FORMAT_RGB8, wt));
 
 	for (int i = 0; i < CameraServer::FEED_IMAGES; i++) {
-		RenderingServer::get_singleton()->texture_set_data(_texture[i], white);
+		_images[i] = white;
 	}
 
 	_base_width = 0;

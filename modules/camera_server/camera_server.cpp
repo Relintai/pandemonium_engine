@@ -31,8 +31,8 @@
 
 #include "camera_server.h"
 
-#include "core/variant/array.h"
 #include "camera_feed.h"
+#include "core/variant/array.h"
 
 #include "servers/rendering_server.h"
 
@@ -143,14 +143,14 @@ Array CameraServer::get_feeds_bind() {
 	return ret;
 }
 
-RID CameraServer::feed_texture(int p_id, CameraServer::FeedImage p_texture) {
-	ERR_FAIL_COND_V_MSG(!_monitoring_feeds, RID(), "CameraServer is not actively monitoring feeds; call set_monitoring_feeds(true) first.");
+Ref<Image> CameraServer::get_feed_image(int p_id, FeedImage p_image) {
+	ERR_FAIL_COND_V_MSG(!_monitoring_feeds, Ref<Image>(), "CameraServer is not actively monitoring feeds; call set_monitoring_feeds(true) first.");
 	int index = get_feed_index(p_id);
-	ERR_FAIL_COND_V(index == -1, RID());
+	ERR_FAIL_COND_V(index == -1, Ref<Image>());
 
 	Ref<CameraFeed> feed = get_feed(index);
 
-	return feed->get_texture_rid(p_texture);
+	return feed->get_image(p_image);
 }
 
 CameraServer::CameraServer() {

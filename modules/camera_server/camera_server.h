@@ -35,6 +35,7 @@
 #include "core/containers/rid.h"
 #include "core/object/reference.h"
 #include "core/os/thread_safe.h"
+#include "core/io/image.h"
 
 /**
 	The camera server is a singleton object that gives access to the various
@@ -104,8 +105,7 @@ public:
 	Vector<Ref<CameraFeed>> get_feeds();
 	Array get_feeds_bind();
 
-	// Intended for use with custom CameraServer implementation.
-	RID feed_texture(int p_id, FeedImage p_texture);
+	Ref<Image> get_feed_image(int p_id, FeedImage p_image);
 
 	// Platform lifecycle callbacks (virtual, default empty implementation).
 	virtual void handle_application_pause() {}

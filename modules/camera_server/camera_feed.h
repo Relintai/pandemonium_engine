@@ -100,10 +100,9 @@ public:
 	void set_transform(const Transform2D &p_transform);
 
 	Ref<Image> get_image(CameraServer::FeedImage p_which);
-	RID get_texture_rid(CameraServer::FeedImage p_which);
-	uint64_t get_texture_tex_id(CameraServer::FeedImage p_which);
 
 	FeedDataType get_datatype() const;
+
 	void set_rgb_image(const Ref<Image> &p_rgb_img);
 	void set_ycbcr_image(const Ref<Image> &p_ycbcr_img);
 	void set_ycbcr_images(const Ref<Image> &p_y_img, const Ref<Image> &p_cbcr_img);
@@ -125,8 +124,6 @@ public:
 protected:
 	static void _bind_methods();
 
-	void _free_textures();
-
 	String _name; // _name of our camera feed
 	FeedDataType _datatype; // type of _texture data stored
 	FeedPosition _position; // _position of camera on the device
@@ -138,8 +135,7 @@ protected:
 	int _selected_format;
 
 	bool _active; // only when _active do we actually update the camera _texture each frame
-	RID _texture[CameraServer::FEED_IMAGES]; // _texture images needed for this
-	Ref<Image> _image;
+	Ref<Image> _images[CameraServer::FEED_IMAGES];
 
 private:
 	int _id; // unique _id for this, for internal use in case feeds are removed
