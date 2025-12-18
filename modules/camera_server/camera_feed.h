@@ -58,7 +58,6 @@ public:
 		FEED_RGB, // our _texture will contain a normal RGB _texture that can be used directly
 		FEED_YCBCR, // our _texture will contain a YCbCr _texture that needs to be converted to RGB before output
 		FEED_YCBCR_SEP, // our camera is split into two _textures, first plane contains Y data, second plane contains CbCr data
-		FEED_EXTERNAL, // specific for andro_id atm, camera feed is managed externally, assumed RGB for now
 	};
 
 	enum FeedPosition {
@@ -108,7 +107,6 @@ public:
 	void set_rgb_image(const Ref<Image> &p_rgb_img);
 	void set_ycbcr_image(const Ref<Image> &p_ycbcr_img);
 	void set_ycbcr_images(const Ref<Image> &p_y_img, const Ref<Image> &p_cbcr_img);
-	void set_external(int p_width, int p_height);
 
 	virtual bool set_format(int p_index, const Dictionary &p_parameters);
 	virtual Array get_formats() const;

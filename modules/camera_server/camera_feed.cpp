@@ -218,35 +218,6 @@ void CameraFeed::set_ycbcr_images(const Ref<Image> &p_y_img, const Ref<Image> &p
 	}
 }
 
-void CameraFeed::set_external(int p_width, int p_height) {
-	// Emit `format_changed` signal if feed _datatype or frame size is changed.
-	// The signal is deferred to ensure:
-	// - They are emitted on Godot's main thread.
-	// - Both _datatype and frame size are updated before the emission.
-	if (_datatype != CameraFeed::FEED_EXTERNAL || (_base_width != p_width) || (_base_height != p_height)) {
-		_free_textures();
-
-		call_deferred("emit_signal", "format_changed");
-	}
-
-	if ((_base_width != p_width) || (_base_height != p_height)) {
-		// We're assuming here that our camera image doesn't change around _formats etc, allocate the whole lot...
-		_base_width = p_width;
-		_base_height = p_height;
-
-		// TODO needs external texture support.
-		// https://github.com/godotengine/godot/commit/1a6f8512bc5fd2b226a9db5e622b1a85350625c4
-
-		//RID new_texture = RenderingServer::get_singleton()->texture_external_create(p_width, p_height, 0);
-		//RenderingServer::get_singleton()->texture_replace(_texture[CameraServer::FEED_YCBCR_IMAGE], new_texture);
-	}
-
-	_datatype = CameraFeed::FEED_EXTERNAL;
-	// Most of the time the pixel data of camera devices comes from threads outs_ide Godot.
-	// Defer `frame_changed` signals to ensure they are emitted on Godot's main thread.
-	call_deferred("emit_signal", "frame_changed");
-}
-
 bool CameraFeed::activate_feed() {
 	return call("_activate_feed");
 }
@@ -339,7 +310,6 @@ void CameraFeed::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_rgb_image", "rgb_image"), &CameraFeed::set_rgb_image);
 	ClassDB::bind_method(D_METHOD("set_ycbcr_image", "ycbcr_image"), &CameraFeed::set_ycbcr_image);
 	ClassDB::bind_method(D_METHOD("set_ycbcr_images", "y_image", "cbcr_image"), &CameraFeed::set_ycbcr_images);
-	ClassDB::bind_method(D_METHOD("set_external", "width", "height"), &CameraFeed::set_external);
 
 	ClassDB::bind_method(D_METHOD("get_image", "feed_image_type"), &CameraFeed::get_image);
 	ClassDB::bind_method(D_METHOD("get_texture_rid", "feed_image_type"), &CameraFeed::get_texture_rid);
@@ -370,7 +340,6 @@ void CameraFeed::_bind_methods() {
 	BIND_ENUM_CONSTANT(FEED_RGB);
 	BIND_ENUM_CONSTANT(FEED_YCBCR);
 	BIND_ENUM_CONSTANT(FEED_YCBCR_SEP);
-	BIND_ENUM_CONSTANT(FEED_EXTERNAL);
 
 	BIND_ENUM_CONSTANT(FEED_UNSPECIFIED);
 	BIND_ENUM_CONSTANT(FEED_FRONT);
