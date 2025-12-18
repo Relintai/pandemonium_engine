@@ -44,16 +44,13 @@ bool CameraFeed::is_active() const {
 
 void CameraFeed::set_active(bool p_is_active) {
 	if (p_is_active == _active) {
-		// all good
-	} else if (p_is_active) {
-		// attempt to activate this feed
-		if (activate_feed()) {
-			_active = true;
-		}
+		return;
+	}
+
+	if (p_is_active) {
+		activate_feed();
 	} else {
-		// just deactivate it
 		deactivate_feed();
-		_active = false;
 	}
 }
 
@@ -170,11 +167,21 @@ void CameraFeed::set_ycbcr_images(const Ref<Image> &p_y_img, const Ref<Image> &p
 }
 
 bool CameraFeed::activate_feed() {
-	return call("_activate_feed");
+	if (_active) {
+		return true;
+	}
+
+	_active = call("_activate_feed");
+	return _active;
 }
 
 void CameraFeed::deactivate_feed() {
+	if (!_active) {
+		return;
+	}
+
 	call("_deactivate_feed");
+	_active = false;
 }
 
 bool CameraFeed::_activate_feed() {
