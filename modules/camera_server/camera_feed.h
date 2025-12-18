@@ -44,11 +44,6 @@
 	camera feeds that can be used as the background for our environment.
 **/
 
-// Lots of things need to be reworked here
-// This class should only use Images, it shouldn't touch the RenderingServer at all.
-// Also activate_feed() does not set _active to true, and there is no active property.
-// MOst if the logic in et_ycbcr_image and others should not be needed.
-
 class CameraFeed : public Reference {
 	GDCLASS(CameraFeed, Reference);
 
