@@ -83,11 +83,10 @@ All notable changes to this project will be documented in this file.
 
 ### Backports
 
-#### Godot 3.x
-
 Backported everything up to and including https://github.com/godotengine/godot/commit/9eae65384cb0cd7340d0c27f56b3e3f764811a24
 merge commit: https://github.com/godotengine/godot/commit/a117d512b00f1646db174e703e7e888519b64608
 
+#### Godot 3.x
 
 - Fix Open Editor Data/Settings Folder menu in self-contained mode
 - Address API 35 UI changes
