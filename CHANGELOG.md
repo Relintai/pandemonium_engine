@@ -4,8 +4,130 @@ All notable changes to this project will be documented in this file.
 
 ## [Master]
 
+### Highlights
+
+- Added RWReference and RWResource classes.
+  It's a Reference and Resource class that contains an RWLock.
+- Implement code completion for gdscript enums.
+- Backported the CameraServer from godot 4. Changes:
+  - It's 2 modules: camera_server, camera_drivers.
+  - It uses Image-s instead of textures in the rendering server.
+  - Other api cleanups.
+
+### Breaking Changes
+
+- Removed to_json() member methods instead of deprecating them.
+  - This is because gdscript has the built-in to_json method. So to_json()
+    member methods cannot really be created. (They technically can be done,
+    but then the global to_json() cannot be called.).
+  - Only 3 classes are affected (TOTP, User, HTTPSession).
+  - Also these methods were likely never used, other than from the c++
+    side.
+  - If they were, a project wide search and replaces should fix all
+    issues: .to_json() -> .as_json()
+
+### Core
+
+- Added RWReference and RWResource classes.
+  It's a Reference and Resource class that contains an RWLock.
+- Added missing conversions for can_convert.
+- Handle StringNames in Expression's funcrefs.
+
+### Editor
+
+- Fix editor theme names.
+- Added back Godot 3 theme.
+- Cleanups to create_editor_theme().
+- Rename GODOT_LICENSE_TEXT constant to PANDEMONIUM_LICENSE_TEXT.
+- Update docs for Engine's get_author_info().
+- Fix the encoding of Engine::get_license_text().
+- Respect the scene name casing setting in the script create dialog.
+  Maybe this setting could be renamed eventually.
+
+### Modules
+
+#### User
+
+- Now User and UserModule inherits from RWResource.
+
+#### GDscript
+
+- Implement code completion for gdscript enums.
+
+### Platforms
+
+#### Javascript
+
+- Disallow audio driver muting on emscripten.
+- Remove remaining (now unneeded) emscripten related ifndef-s from AusioServer.
+
+### Other 
+
+- Removed to_json() member methods instead of deprecating them.
+  - This is because gdscript has the built-in to_json method. So to_json()
+    member methods cannot really be created. (They technically can be done,
+    but then the global to_json() cannot be called.).
+  - Only 3 classes are affected (TOTP, User, HTTPSession).
+  - Also these methods were likely never used, other than from the c++
+    side.
+  - If they were, a project wide search and replaces should fix all
+    issues: .to_json() -> .as_json()
+- Added more comments to the sample module_config.py.
+- Added rt shorthand for the project setups scripts for the repository_type command.
+- Define slim_args_editor in the sample module_config.py, and use that to fill slim_args instead of the other way around.
+  It's more convenient this way, as a slim editor build will usually need
+  more modules to be enabled.
+- Update the sample module_config.py module list.
+- Update the http server module list workflow.
+- Update the http server's build container module list.
+
+### Backports
+
+#### Godot 3.x
+
 Backported everything up to and including https://github.com/godotengine/godot/commit/9eae65384cb0cd7340d0c27f56b3e3f764811a24
 merge commit: https://github.com/godotengine/godot/commit/a117d512b00f1646db174e703e7e888519b64608
+
+
+- Fix Open Editor Data/Settings Folder menu in self-contained mode
+- Address API 35 UI changes
+- DDS: Backport fixes from 4.x branch
+- mbedTLS: Update to mbedTLS 3.6.4
+  mbedTLS 2.28 is now EOL, and will no longer receive security updates.
+  This commit backports from Godot 4 the changes needed to update to
+  mbedTLS 3.6 (new LTS), including TLSv1.3 support.
+- Fix build on macOS 26 by removing AGL framework link
+  Previously, a link error occurred as we'd be trying to link
+  against a nonexistent framework. AGL was removed in macOS Tahoe
+  since the first beta.
+- Backported parts of Fast child iteration in `Node`, `Spatial`, `CanvasItem`
+- Switch window creation to UIScene.
+- Fix `mbedtls` readme duplicated text
+- FTI - Fix `SceneTreeFTI` depth limit behaviour
+  Fixes off by one bug, and increases the limit slightly.
+- Add blob shadows feature
+  BlobShadow node (sphere or capsule)
+  BlobFocus
+  Backends for GLES2 and GLES3
+- Add proper flags when using external recast
+- Export: Modify Windows template without rcedit
+  Co-Authored-By: Pawel Kowal <pkowal1982@gmail.com>
+- Linux/TTS: Fix speechd deadlock
+  Backport of #73671
+  Co-authored-by: bruvzg <7645683+bruvzg@users.noreply.github.com>
+- Disallow muting on Android
+- Rename constant.
+- mbedTLS: Update to version 3.6.5
+  (cherry picked from commit 9de2837cd521f92ad3f18bbe1f1e7d33f10d893e)
+- `BlobShadows` - Fix `GLES3` shader builtin
+  The `BLOB_SHADOW` builtin wasn't registered with the shader compiler for GLES3.
+
+#### Godot 4
+
+- Backported the CameraServer from godot 4. Changes:
+  - It's 2 modules: camera_server, camera_drivers.
+  - It uses Image-s instead of textures in the rendering server.
+  - Other api cleanups.
 
 ## [4.8.0]
 
