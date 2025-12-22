@@ -289,3 +289,37 @@ is good enough for general use. If not add helpers as needed.
 
 Maybe compression could be added. At least the algorithms that are already available in the engine.
 
+### Renderer
+
+#### Software renderer
+
+A built-in simple 2D software renderer would be nice to have for gui apps.
+
+MESA has a full monster software renderer for gles2, and it also works really well,
+so something simple should be enough.
+
+#### Gles3
+
+A another, simpler gles3 renderer wouls be nice to have.
+
+One that works more like the gles2 one, that does not really need too much features.
+
+#### Other
+
+Other rendering backends would be also nice to have.
+
+They don't need to be extremely complex and scriptable.
+
+
+### Platforms
+
+slCreate() was deprecated in the current android NDK, update the code eventually.
+
+### Shader Caching
+
+Implement some kind of shader caching, or pre-compilation feature. (Ideally both.)
+
+They could be (amonngst other things) recorded and saved to a file (shaders, and their defines), and then loaded.
+
+Binary shaders could also be saved, and then loaded on demand.
+
