@@ -242,4 +242,50 @@ and custom handling for them will be extremely messy. A good solution for this i
 Currently my best idea is to have 2 sets of popups, and the user can decide whether to have multi window support
 or not by using the proper ones. Still trying to figure out a way to make this simpler.
 
+### TypedArray
+
+A new Variant type that stores an aray of elements of any single type.
+
+Should be optimized for storage.
+
+Should have a pooled variant. Likely it could be a constructor parameter.
+
+Even though I don't use semantic versioning anymore, it's a good candidate for 5.0.
+
+It only needs conversion to arrays.
+It needs a constructor that takes an array as input.
+
+### WebNodes
+
+Login node should support 2FA with email and TOTP. Maybe it could be a new UserLogin2FANode.
+2FA Login Options helper class maybe?
+2FALoginOptionSMTP -> SMTP module adds it, needs to be inherited from to access the SMTP Node.
+Maybe also do 2FALoginOptionSMTPAutoload -> Looks up the given autoload.
+
+Register needs to work with 2FA. Or 2FA Setup node?
+
+Not yet sure how to do it, so it's still simple.
+
+WebUserAdmin editor.
+
+### Git integration
+
+Maybe an extremely simple git integration could be added to the editor.
+
+Godot has something like this, but it's more like a VCS integration with a module that adds git support.
+
+This could be a lot simpler. A commit gui, and some simple history gui. Probably around a few hundred lines of code.
+
+If helper methods that are not yet available but needed are exposed would also allow for other
+vcs integrations even using addons.
+
+### WebSockets
+
+There are already ways to get the socket itself out from the web server,
+so websockets are already possible, but need a few demos to see it the current api 
+is good enough for general use. If not add helpers as needed.
+
+### WebServer
+
+Maybe compression could be added. At least the algorithms that are already available in the engine.
 
