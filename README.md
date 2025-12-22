@@ -323,3 +323,10 @@ They could be (amonngst other things) recorded and saved to a file (shaders, and
 
 Binary shaders could also be saved, and then loaded on demand.
 
+### IK
+
+The Inverse Kinematics system has some bugs, those should be fixed.
+
+Also it will probably need som api and usage improvements.
+
+
