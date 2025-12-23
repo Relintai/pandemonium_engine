@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Master]
 
+Nothing yet.
+
+## [4.9.0]
+
 ### Highlights
 
 - Added RWReference and RWResource classes.
