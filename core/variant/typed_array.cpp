@@ -49,6 +49,10 @@ public:
 	// but with an array, then during element retreieval we need to build variants
 	// constantly. For general purpose use this is likely better.
 	Vector<Variant> array;
+
+	TypedArrayPrivate() {
+		type = Variant::NIL;
+	}
 };
 
 void TypedArray::_ref(const TypedArray &p_from) const {

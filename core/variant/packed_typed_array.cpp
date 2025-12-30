@@ -70,6 +70,7 @@ public:
 	} GCC_ALIGNED_8;
 
 	PackedTypedArrayPrivate() {
+		type = Variant::NIL;
 	}
 	~PackedTypedArrayPrivate() {
 	}
