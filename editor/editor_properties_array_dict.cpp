@@ -568,7 +568,11 @@ void EditorPropertyArray::drop_data_fw(const Point2 &p_point, const Variant &p_d
 		}
 
 		if (array.get_type() == Variant::ARRAY) {
-			array = array.call("duplicate");
+			array = array.call("duplicate"); // Duplicate, so undo/redo works better.
+		} else if (array.get_type() == Variant::TYPED_ARRAY) {
+			array = array.call("duplicate"); // Duplicate, so undo/redo works better.
+		} else if (array.get_type() == Variant::PACKED_TYPED_ARRAY) {
+			array = array.call("duplicate"); // Duplicate, so undo/redo works better.
 		}
 
 		emit_changed(get_edited_property(), array, "", false);
@@ -640,7 +644,7 @@ void EditorPropertyArray::_length_changed(double p_page) {
 
 	array.call("resize", int(p_page));
 
-	if (array.get_type() == Variant::ARRAY) {
+	if (array.get_type() == Variant::ARRAY || array.get_type() == Variant::TYPED_ARRAY || array.get_type() == Variant::PACKED_TYPED_ARRAY) {
 		if (subtype != Variant::NIL) {
 			int size = array.call("size");
 			for (int i = previous_size; i < size; i++) {
@@ -651,6 +655,7 @@ void EditorPropertyArray::_length_changed(double p_page) {
 			}
 		}
 		array = array.call("duplicate"); // Duplicate, so undo/redo works better.
+
 	} else {
 		int size = array.call("size");
 		// Pool*Array don't initialize their elements, have to do it manually.
