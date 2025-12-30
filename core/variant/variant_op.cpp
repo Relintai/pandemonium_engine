@@ -6215,8 +6215,6 @@ void Variant::interpolate(const Variant &a, const Variant &b, float c, Variant &
 				}
 				r_dst = v;
 			}
-
-			r_dst = a;
 		}
 			return;
 		case POOL_COLOR_ARRAY: {
