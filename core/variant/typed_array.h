@@ -119,12 +119,18 @@ public:
 	StringName get_object_class_name() const;
 	void set_object_class_name(const StringName &p_object_type_name);
 
+	void set_type_from_name(const StringName &p_type_name);
+
 	void set_type_from(const TypedArray &p_array);
 
 	bool can_take_variant(const Variant &p_value);
 
 	TypedArray(const TypedArray &p_from);
 	TypedArray();
+	// Both this and the TypedArray(const TypedArray &p_from); constructors are useful,
+	// but having them both will do lots of clashes when converting from Variant.
+	// Maybe static create method should be added or something
+	//TypedArray(const StringName &p_type_name);
 	~TypedArray();
 };
 

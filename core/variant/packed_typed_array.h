@@ -119,12 +119,15 @@ public:
 	StringName get_object_class_name() const;
 	void set_object_class_name(const StringName &p_object_type_name);
 
+	void set_type_from_name(const StringName &p_type_name);
+
 	void set_type_from(const PackedTypedArray &p_array);
 
 	bool can_take_variant(const Variant &p_value);
 
 	PackedTypedArray(const PackedTypedArray &p_from);
 	PackedTypedArray();
+	//PackedTypedArray(const StringName &p_type_name);
 	~PackedTypedArray();
 };
 

@@ -584,6 +584,29 @@ void PackedTypedArray::set_object_class_name(const StringName &p_object_type_nam
 	_p->object_class_name = p_object_type_name;
 }
 
+void PackedTypedArray::set_type_from_name(const StringName &p_type_name) {
+	String type_name = p_type_name;
+	Variant::Type variant_type = Variant::VARIANT_MAX;
+
+	for (int i = 0; i < Variant::VARIANT_MAX; i++) {
+		if (type_name == Variant::get_type_name(Variant::Type(i))) {
+			variant_type = Variant::Type(i);
+			break;
+		}
+	}
+
+	if (variant_type == Variant::VARIANT_MAX) {
+		variant_type = Variant::OBJECT;
+	}
+
+	_p->type = variant_type;
+	if (variant_type == Variant::OBJECT) {
+		_p->object_class_name = p_type_name;
+	} else {
+		_p->object_class_name = StringName();
+	}
+}
+
 void PackedTypedArray::set_type_from(const PackedTypedArray &p_array) {
 	ERR_FAIL_COND(_p->array.size() > 0);
 
@@ -612,6 +635,13 @@ PackedTypedArray::PackedTypedArray() {
 	_p = memnew(PackedTypedArrayPrivate);
 	_p->refcount.init();
 }
+/*
+PackedTypedArray::PackedTypedArray(const StringName &p_type_name) {
+	_p = memnew(PackedTypedArrayPrivate);
+	_p->refcount.init();
+	set_type_from_name(p_type_name);
+}
+*/
 PackedTypedArray::~PackedTypedArray() {
 	_unref();
 }
