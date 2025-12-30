@@ -26,6 +26,18 @@
 	<methods>
 		<method name="PoolIntArray">
 			<return type="PoolIntArray" />
+			<argument index="0" name="from" type="PackedTypedArray" />
+			<description>
+			</description>
+		</method>
+		<method name="PoolIntArray">
+			<return type="PoolIntArray" />
+			<argument index="0" name="from" type="TypedArray" />
+			<description>
+			</description>
+		</method>
+		<method name="PoolIntArray">
+			<return type="PoolIntArray" />
 			<argument index="0" name="from" type="Array" />
 			<description>
 				Constructs a new [PoolIntArray]. Optionally, you can pass in a generic Array that will be converted.

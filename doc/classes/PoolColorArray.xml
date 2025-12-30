@@ -25,6 +25,18 @@
 	<methods>
 		<method name="PoolColorArray">
 			<return type="PoolColorArray" />
+			<argument index="0" name="from" type="PackedTypedArray" />
+			<description>
+			</description>
+		</method>
+		<method name="PoolColorArray">
+			<return type="PoolColorArray" />
+			<argument index="0" name="from" type="TypedArray" />
+			<description>
+			</description>
+		</method>
+		<method name="PoolColorArray">
+			<return type="PoolColorArray" />
 			<argument index="0" name="from" type="Array" />
 			<description>
 				Constructs a new [PoolColorArray]. Optionally, you can pass in a generic Array that will be converted.

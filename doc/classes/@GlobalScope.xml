@@ -15,6 +15,8 @@
 		<member name="AudioServer" type="AudioServer" setter="" getter="">
 			The [AudioServer] singleton.
 		</member>
+		<member name="CameraServer" type="CameraServer" setter="" getter="">
+		</member>
 		<member name="ClassDB" type="ClassDB" setter="" getter="">
 			The [ClassDB] singleton.
 		</member>
@@ -1740,36 +1742,40 @@
 		<constant name="TYPE_ARRAY" value="26" enum="Variant.Type">
 			Variable is of type [Array].
 		</constant>
-		<constant name="TYPE_RAW_ARRAY" value="27" enum="Variant.Type">
+		<constant name="TYPE_TYPED_ARRAY" value="27" enum="Variant.Type">
+		</constant>
+		<constant name="TYPE_PACKED_TYPED_ARRAY" value="28" enum="Variant.Type">
+		</constant>
+		<constant name="TYPE_RAW_ARRAY" value="29" enum="Variant.Type">
 			Variable is of type [PoolByteArray].
 		</constant>
-		<constant name="TYPE_INT_ARRAY" value="28" enum="Variant.Type">
+		<constant name="TYPE_INT_ARRAY" value="30" enum="Variant.Type">
 			Variable is of type [PoolIntArray].
 		</constant>
-		<constant name="TYPE_REAL_ARRAY" value="29" enum="Variant.Type">
+		<constant name="TYPE_REAL_ARRAY" value="31" enum="Variant.Type">
 			Variable is of type [PoolRealArray].
 		</constant>
-		<constant name="TYPE_STRING_ARRAY" value="30" enum="Variant.Type">
+		<constant name="TYPE_STRING_ARRAY" value="32" enum="Variant.Type">
 			Variable is of type [PoolStringArray].
 		</constant>
-		<constant name="TYPE_VECTOR2_ARRAY" value="31" enum="Variant.Type">
+		<constant name="TYPE_VECTOR2_ARRAY" value="33" enum="Variant.Type">
 			Variable is of type [PoolVector2Array].
 		</constant>
-		<constant name="TYPE_VECTOR2I_ARRAY" value="32" enum="Variant.Type">
+		<constant name="TYPE_VECTOR2I_ARRAY" value="34" enum="Variant.Type">
 		</constant>
-		<constant name="TYPE_VECTOR3_ARRAY" value="33" enum="Variant.Type">
+		<constant name="TYPE_VECTOR3_ARRAY" value="35" enum="Variant.Type">
 			Variable is of type [PoolVector3Array].
 		</constant>
-		<constant name="TYPE_VECTOR3I_ARRAY" value="34" enum="Variant.Type">
+		<constant name="TYPE_VECTOR3I_ARRAY" value="36" enum="Variant.Type">
 		</constant>
-		<constant name="TYPE_VECTOR4_ARRAY" value="35" enum="Variant.Type">
+		<constant name="TYPE_VECTOR4_ARRAY" value="37" enum="Variant.Type">
 		</constant>
-		<constant name="TYPE_VECTOR4I_ARRAY" value="36" enum="Variant.Type">
+		<constant name="TYPE_VECTOR4I_ARRAY" value="38" enum="Variant.Type">
 		</constant>
-		<constant name="TYPE_COLOR_ARRAY" value="37" enum="Variant.Type">
+		<constant name="TYPE_COLOR_ARRAY" value="39" enum="Variant.Type">
 			Variable is of type [PoolColorArray].
 		</constant>
-		<constant name="TYPE_MAX" value="38" enum="Variant.Type">
+		<constant name="TYPE_MAX" value="40" enum="Variant.Type">
 			Represents the size of the [enum Variant.Type] enum.
 		</constant>
 		<constant name="OP_EQUAL" value="0" enum="Variant.Operator">

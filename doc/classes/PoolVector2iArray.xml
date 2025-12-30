@@ -9,6 +9,18 @@
 	<methods>
 		<method name="PoolVector2iArray">
 			<return type="PoolVector2iArray" />
+			<argument index="0" name="from" type="PackedTypedArray" />
+			<description>
+			</description>
+		</method>
+		<method name="PoolVector2iArray">
+			<return type="PoolVector2iArray" />
+			<argument index="0" name="from" type="TypedArray" />
+			<description>
+			</description>
+		</method>
+		<method name="PoolVector2iArray">
+			<return type="PoolVector2iArray" />
 			<argument index="0" name="from" type="Array" />
 			<description>
 			</description>

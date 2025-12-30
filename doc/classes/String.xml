@@ -12,6 +12,13 @@
 	<methods>
 		<method name="String">
 			<return type="String" />
+			<argument index="0" name="from" type="Projection" />
+			<description>
+				Constructs a new String from the given [Projection].
+			</description>
+		</method>
+		<method name="String">
+			<return type="String" />
 			<argument index="0" name="from" type="Transform2D" />
 			<description>
 				Constructs a new String from the given [Transform2D].
@@ -208,6 +215,18 @@
 		</method>
 		<method name="String">
 			<return type="String" />
+			<argument index="0" name="from" type="PackedTypedArray" />
+			<description>
+			</description>
+		</method>
+		<method name="String">
+			<return type="String" />
+			<argument index="0" name="from" type="TypedArray" />
+			<description>
+			</description>
+		</method>
+		<method name="String">
+			<return type="String" />
 			<argument index="0" name="from" type="Array" />
 			<description>
 				Constructs a new String from the given [Array].
@@ -246,13 +265,6 @@
 			<argument index="0" name="from" type="Color" />
 			<description>
 				Constructs a new String from the given [Color].
-			</description>
-		</method>
-		<method name="String">
-			<return type="String" />
-			<argument index="0" name="from" type="Projection" />
-			<description>
-				Constructs a new String from the given [Projection].
 			</description>
 		</method>
 		<method name="append_path">

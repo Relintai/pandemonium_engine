@@ -36,6 +36,18 @@
 		</method>
 		<method name="Array">
 			<return type="Array" />
+			<argument index="0" name="from" type="PoolVector4iArray" />
+			<description>
+			</description>
+		</method>
+		<method name="Array">
+			<return type="Array" />
+			<argument index="0" name="from" type="PoolVector4Array" />
+			<description>
+			</description>
+		</method>
+		<method name="Array">
+			<return type="Array" />
 			<argument index="0" name="from" type="PoolVector3iArray" />
 			<description>
 			</description>

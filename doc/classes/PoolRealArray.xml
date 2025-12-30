@@ -26,6 +26,18 @@
 	<methods>
 		<method name="PoolRealArray">
 			<return type="PoolRealArray" />
+			<argument index="0" name="from" type="PackedTypedArray" />
+			<description>
+			</description>
+		</method>
+		<method name="PoolRealArray">
+			<return type="PoolRealArray" />
+			<argument index="0" name="from" type="TypedArray" />
+			<description>
+			</description>
+		</method>
+		<method name="PoolRealArray">
+			<return type="PoolRealArray" />
 			<argument index="0" name="from" type="Array" />
 			<description>
 				Constructs a new [PoolRealArray]. Optionally, you can pass in a generic Array that will be converted.

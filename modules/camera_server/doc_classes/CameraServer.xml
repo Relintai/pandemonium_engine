@@ -18,12 +18,6 @@
 				Adds the camera feed to the camera server.
 			</description>
 		</method>
-		<method name="get_feeds">
-			<return type="Array" />
-			<description>
-				Returns an array of [CameraFeed]s.
-			</description>
-		</method>
 		<method name="get_feed">
 			<return type="CameraFeed" />
 			<argument index="0" name="index" type="int" />
@@ -35,6 +29,12 @@
 			<return type="int" />
 			<description>
 				Returns the number of [CameraFeed]s registered.
+			</description>
+		</method>
+		<method name="get_feeds">
+			<return type="Array" />
+			<description>
+				Returns an array of [CameraFeed]s.
 			</description>
 		</method>
 		<method name="remove_feed">

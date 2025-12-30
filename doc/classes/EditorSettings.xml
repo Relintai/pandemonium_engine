@@ -542,6 +542,10 @@
 		<member name="network/debug/remote_port" type="int" setter="" getter="">
 			The port to listen to when starting the remote debugger. Godot will try to use port numbers above the configured number if the configured number is already taken by another application.
 		</member>
+		<member name="network/http_proxy/host" type="String" setter="" getter="">
+		</member>
+		<member name="network/http_proxy/port" type="int" setter="" getter="">
+		</member>
 		<member name="network/ssl/editor_ssl_certificates" type="String" setter="" getter="">
 			The SSL certificate bundle to use for HTTP requests made within the editor (e.g. from the AssetLib tab). If left empty, the [url=https://github.com/godotengine/godot/blob/master/thirdparty/certs/ca-certificates.crt]included Mozilla certificate bundle[/url] will be used.
 		</member>

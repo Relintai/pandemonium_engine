@@ -47,6 +47,12 @@
 				Returns the unique ID for this feed.
 			</description>
 		</method>
+		<method name="get_image">
+			<return type="Image" />
+			<argument index="0" name="feed_image_type" type="int" enum="CameraServer.FeedImage" />
+			<description>
+			</description>
+		</method>
 		<method name="get_name" qualifiers="const">
 			<return type="String" />
 			<description>
@@ -57,21 +63,6 @@
 			<return type="int" enum="CameraFeed.FeedPosition" />
 			<description>
 				Returns the position of camera on the device.
-			</description>
-		</method>
-		<method name="get_texture_tex_id">
-			<return type="int" />
-			<argument index="0" name="feed_image_type" type="int" enum="CameraServer.FeedImage" />
-			<description>
-				Returns the texture backend ID (usable by some external libraries that need a handle to a texture to write data).
-			</description>
-		</method>
-		<method name="set_external">
-			<return type="void" />
-			<argument index="0" name="width" type="int" />
-			<argument index="1" name="height" type="int" />
-			<description>
-				Sets the feed as external feed provided by another library.
 			</description>
 		</method>
 		<method name="set_format">
@@ -126,10 +117,10 @@
 		<member name="feed_is_active" type="bool" setter="set_active" getter="is_active" default="false">
 			If [code]true[/code], the feed is active.
 		</member>
-		<member name="feed_transform" type="Transform2D" setter="set_transform" getter="get_transform" default="Transform2D(1, 0, 0, -1, 0, 1)">
+		<member name="feed_transform" type="Transform2D" setter="set_transform" getter="get_transform" default="Transform2D( 1, 0, 0, -1, 0, 1 )">
 			The transform applied to the camera's image.
 		</member>
-		<member name="formats" type="Array" setter="" getter="get_formats" default="[]">
+		<member name="formats" type="Array" setter="" getter="get_formats" default="[  ]">
 			Formats supported by the feed. Each entry is a [Dictionary] describing format parameters.
 		</member>
 	</members>
@@ -157,9 +148,6 @@
 		</constant>
 		<constant name="FEED_YCBCR_SEP" value="3" enum="FeedDataType">
 			Feed supplies separate Y and CbCr images that need to be combined and converted to RGB.
-		</constant>
-		<constant name="FEED_EXTERNAL" value="4" enum="FeedDataType">
-			Feed supplies external image.
 		</constant>
 		<constant name="FEED_UNSPECIFIED" value="0" enum="FeedPosition">
 			Unspecified position.

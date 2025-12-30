@@ -25,6 +25,18 @@
 	<methods>
 		<method name="PoolVector3Array">
 			<return type="PoolVector3Array" />
+			<argument index="0" name="from" type="PackedTypedArray" />
+			<description>
+			</description>
+		</method>
+		<method name="PoolVector3Array">
+			<return type="PoolVector3Array" />
+			<argument index="0" name="from" type="TypedArray" />
+			<description>
+			</description>
+		</method>
+		<method name="PoolVector3Array">
+			<return type="PoolVector3Array" />
 			<argument index="0" name="from" type="Array" />
 			<description>
 				Constructs a new [PoolVector3Array]. Optionally, you can pass in a generic Array that will be converted.
