@@ -254,6 +254,11 @@ void EditorPropertyArray::update_property() {
 			TypedArray a = array;
 			subtype = Variant::Type(a.get_variant_type());
 			subtype_hint_string = a.get_object_class_name();
+			if (subtype == Variant::OBJECT) {
+				subtype_hint = PROPERTY_HINT_RESOURCE_TYPE;
+			} else {
+				subtype_hint = PROPERTY_HINT_NONE;
+			}
 
 		} break;
 		case Variant::PACKED_TYPED_ARRAY: {
@@ -262,6 +267,11 @@ void EditorPropertyArray::update_property() {
 			PackedTypedArray a = array;
 			subtype = Variant::Type(a.get_variant_type());
 			subtype_hint_string = a.get_object_class_name();
+			if (subtype == Variant::OBJECT) {
+				subtype_hint = PROPERTY_HINT_RESOURCE_TYPE;
+			} else {
+				subtype_hint = PROPERTY_HINT_NONE;
+			}
 
 		} break;
 
