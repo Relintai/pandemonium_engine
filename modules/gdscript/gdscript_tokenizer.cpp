@@ -167,6 +167,8 @@ static const _bit _type_list[] = {
 	{ Variant::STRING_NAME, "StringName" },
 	{ Variant::DICTIONARY, "Dictionary" },
 	{ Variant::ARRAY, "Array" },
+	{ Variant::TYPED_ARRAY, "TypedArray" },
+	{ Variant::PACKED_TYPED_ARRAY, "PackedTypedArray" },
 	{ Variant::POOL_BYTE_ARRAY, "PoolByteArray" },
 	{ Variant::POOL_INT_ARRAY, "PoolIntArray" },
 	{ Variant::POOL_REAL_ARRAY, "PoolRealArray" },
