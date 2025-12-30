@@ -246,14 +246,36 @@ or not by using the proper ones. Still trying to figure out a way to make this s
 
 A new Variant type that stores an aray of elements of any single type.
 
-Should be optimized for storage.
+Done:
 
-Should have a pooled variant. Likely it could be a constructor parameter.
+- TypedArray and PackedTypedArray classes are already added.
+- TypedArray and PackedTypedArray classes are already added as variant types, including serialization etc.
 
-Even though I don't use semantic versioning anymore, it's a good candidate for 5.0.
+WIP:
 
-It only needs conversion to arrays.
-It needs a constructor that takes an array as input.
+- The class internals still need to be implemented.
+- Their api needs to be fleshed out. Like constructors etc need to be done.
+- Still needs better gdscript support. It needs proper export keyword. Maybe it could receive some custom syntax.
+- Needs inspector plugins.
+- Needs gdnative support.
+- Needs docs.
+- NEeds icons.
+
+Few syntax ideas:
+
+- export(TypedArray, Type) 
+- export(TypedArray[Type]) 
+- export(TypedArray&lt;Type&gt;) 
+
+- var a : TypedArray(Type) = TypedArray(Type)
+- var a : TypedArray[Type] = TypedArray[Type]()
+- var a : TypedArray&lt;Type&gt; = TypedArray&lt;Type&gt;()
+
+Maybe in place creation?
+
+- ... = TypedArray[Type][ 1, 2, 3, 4, ... ]
+- ... = TypedArray&lt;Type&gt;[ 1, 2, 3, 4, ... ]
+- ... = TypedArray(Type, 1, 2, 3, 4, ... )
 
 ### WebNodes
 
