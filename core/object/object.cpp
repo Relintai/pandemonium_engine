@@ -1634,6 +1634,20 @@ void Object::_clear_internal_resource_paths(const Variant &p_var) {
 			}
 
 		} break;
+		case Variant::TYPED_ARRAY: {
+			TypedArray a = p_var;
+			for (int i = 0; i < a.size(); i++) {
+				_clear_internal_resource_paths(a[i]);
+			}
+
+		} break;
+		case Variant::PACKED_TYPED_ARRAY: {
+			PackedTypedArray a = p_var;
+			for (int i = 0; i < a.size(); i++) {
+				_clear_internal_resource_paths(a[i]);
+			}
+
+		} break;
 		case Variant::DICTIONARY: {
 			Dictionary d = p_var;
 			List<Variant> keys;
