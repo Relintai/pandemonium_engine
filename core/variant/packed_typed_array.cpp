@@ -617,6 +617,12 @@ void PackedTypedArray::set_type_from(const PackedTypedArray &p_array) {
 }
 
 bool PackedTypedArray::can_take_variant(const Variant &p_value) {
+	if (p_value.get_type() == Variant::NIL) {
+		if (_p->type == Variant::OBJECT) {
+			return true;
+		}
+	}
+
 	if (_p->type != p_value.get_type()) {
 		return false;
 	}
