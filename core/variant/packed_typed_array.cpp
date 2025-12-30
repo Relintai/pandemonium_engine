@@ -280,6 +280,7 @@ const Variant PackedTypedArray::get(int p_idx) const {
 
 PackedTypedArray PackedTypedArray::duplicate(bool p_deep) const {
 	PackedTypedArray new_arr;
+	new_arr.set_type_from(*this);
 	int element_count = size();
 	new_arr.resize(element_count);
 	for (int i = 0; i < element_count; i++) {

@@ -248,6 +248,7 @@ const Variant &TypedArray::get(int p_idx) const {
 
 TypedArray TypedArray::duplicate(bool p_deep) const {
 	TypedArray new_arr;
+	new_arr.set_type_from(*this);
 	int element_count = size();
 	new_arr.resize(element_count);
 	for (int i = 0; i < element_count; i++) {
