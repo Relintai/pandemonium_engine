@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  typed_array.cpp                                                      */
+/*  packed_typed_array.cpp                                               */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,27 +29,64 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "typed_array.h"
+#include "packed_typed_array.h"
 
 #include "core/containers/hashfuncs.h"
 #include "core/containers/vector.h"
+#include "core/containers/local_vector.h"
 #include "core/object/object.h"
 #include "core/variant/variant.h"
 
-class TypedArrayPrivate {
+class PackedTypedArrayPrivate {
 public:
+	struct ObjData {
+		// Will be null for every type deriving from Reference as they have their
+		// own reference count mechanism
+		ObjectRC *rc;
+		// Always initialized, but will be null if the Ref<> assigned was null
+		// or this Variant is not even holding a Reference-derived object
+		RefPtr ref;
+	};
+
+	_FORCE_INLINE_ ObjData &_get_obj(const int p_index) {
+		return *reinterpret_cast<ObjData *>(&data[p_index]->_mem[0]);
+	}
+
+	_FORCE_INLINE_ const ObjData &_get_obj(const int p_index) const {
+		return *reinterpret_cast<const ObjData *>(&data[p_index]->_mem[0]);
+	}
+
+	union PackedTypedArrayPrivateEntry {
+		bool _bool;
+		int64_t _int;
+		double _real;
+		Transform2D *_transform2d;
+		::AABB *_aabb;
+		Basis *_basis;
+		Transform *_transform;
+		Projection *_projection;
+		void *_ptr; //generic pointer
+		uint8_t _mem[sizeof(ObjData) > (sizeof(real_t) * 4) ? sizeof(ObjData) : (sizeof(real_t) * 4)]{ 0 };
+	} GCC_ALIGNED_8;
+
+	PackedTypedArrayPrivate() {
+	}
+	~PackedTypedArrayPrivate() {
+	}
+
 	SafeRefCount refcount;
 
-	// Note that a Variant stores it's type and it's data.
-	// So this is less efficient in terms of memory.
-	// However if we store the type once, and then do the same as Variants internally
-	// but with an array, then during element retreieval we need to build variants
-	// constantly. For general purpose use this is likely better.
+	Variant::Type type;
+	StringName object_class_name;
+
+	LocalVector<PackedTypedArrayPrivateEntry *> data;
+
+	// Temporary
 	Vector<Variant> array;
 };
 
-void TypedArray::_ref(const TypedArray &p_from) const {
-	TypedArrayPrivate *_fp = p_from._p;
+void PackedTypedArray::_ref(const PackedTypedArray &p_from) const {
+	PackedTypedArrayPrivate *_fp = p_from._p;
 
 	ERR_FAIL_COND(!_fp); // should NOT happen.
 
@@ -66,7 +103,7 @@ void TypedArray::_ref(const TypedArray &p_from) const {
 	_p = p_from._p;
 }
 
-void TypedArray::_unref() const {
+void PackedTypedArray::_unref() const {
 	if (!_p) {
 		return;
 	}
@@ -77,25 +114,25 @@ void TypedArray::_unref() const {
 	_p = nullptr;
 }
 
-Variant &TypedArray::operator[](int p_idx) {
+Variant PackedTypedArray::operator[](int p_idx) {
 	return _p->array.write[p_idx];
 }
 
-const Variant &TypedArray::operator[](int p_idx) const {
+const Variant PackedTypedArray::operator[](int p_idx) const {
 	return _p->array[p_idx];
 }
 
-int TypedArray::size() const {
+int PackedTypedArray::size() const {
 	return _p->array.size();
 }
-bool TypedArray::empty() const {
+bool PackedTypedArray::empty() const {
 	return _p->array.empty();
 }
-void TypedArray::clear() {
+void PackedTypedArray::clear() {
 	_p->array.clear();
 }
 
-bool TypedArray::deep_equal(const TypedArray &p_array, int p_recursion_count) const {
+bool PackedTypedArray::deep_equal(const PackedTypedArray &p_array, int p_recursion_count) const {
 	// Cheap checks
 	ERR_FAIL_COND_V_MSG(p_recursion_count > MAX_RECURSION, true, "Max recursion reached");
 	if (_p == p_array._p) {
@@ -119,15 +156,15 @@ bool TypedArray::deep_equal(const TypedArray &p_array, int p_recursion_count) co
 	return true;
 }
 
-bool TypedArray::operator==(const TypedArray &p_array) const {
+bool PackedTypedArray::operator==(const PackedTypedArray &p_array) const {
 	return _p == p_array._p;
 }
 
-uint32_t TypedArray::hash() const {
+uint32_t PackedTypedArray::hash() const {
 	return recursive_hash(0);
 }
 
-uint32_t TypedArray::recursive_hash(int p_recursion_count) const {
+uint32_t PackedTypedArray::recursive_hash(int p_recursion_count) const {
 	ERR_FAIL_COND_V_MSG(p_recursion_count > MAX_RECURSION, 0, "Max recursion reached");
 	p_recursion_count++;
 
@@ -139,49 +176,49 @@ uint32_t TypedArray::recursive_hash(int p_recursion_count) const {
 	return hash_fmix32(h);
 }
 
-void TypedArray::operator=(const TypedArray &p_array) {
+void PackedTypedArray::operator=(const PackedTypedArray &p_array) {
 	_ref(p_array);
 }
 
-void TypedArray::push_back(const Variant &p_value) {
+void PackedTypedArray::push_back(const Variant &p_value) {
 	_p->array.push_back(p_value);
 }
 
-void TypedArray::append_array(const TypedArray &p_array) {
+void PackedTypedArray::append_array(const PackedTypedArray &p_array) {
 	_p->array.append_array(p_array._p->array);
 }
 
-Error TypedArray::resize(int p_new_size) {
+Error PackedTypedArray::resize(int p_new_size) {
 	return _p->array.resize(p_new_size);
 }
 
-void TypedArray::insert(int p_pos, const Variant &p_value) {
+void PackedTypedArray::insert(int p_pos, const Variant &p_value) {
 	_p->array.insert(p_pos, p_value);
 }
 
-void TypedArray::fill(const Variant &p_value) {
+void PackedTypedArray::fill(const Variant &p_value) {
 	_p->array.fill(p_value);
 }
 
-void TypedArray::erase(const Variant &p_value) {
+void PackedTypedArray::erase(const Variant &p_value) {
 	_p->array.erase(p_value);
 }
 
-Variant TypedArray::front() const {
+Variant PackedTypedArray::front() const {
 	ERR_FAIL_COND_V_MSG(_p->array.size() == 0, Variant(), "Can't take value from empty array.");
 	return operator[](0);
 }
 
-Variant TypedArray::back() const {
+Variant PackedTypedArray::back() const {
 	ERR_FAIL_COND_V_MSG(_p->array.size() == 0, Variant(), "Can't take value from empty array.");
 	return operator[](_p->array.size() - 1);
 }
 
-int TypedArray::find(const Variant &p_value, int p_from) const {
+int PackedTypedArray::find(const Variant &p_value, int p_from) const {
 	return _p->array.find(p_value, p_from);
 }
 
-int TypedArray::rfind(const Variant &p_value, int p_from) const {
+int PackedTypedArray::rfind(const Variant &p_value, int p_from) const {
 	if (_p->array.size() == 0) {
 		return -1;
 	}
@@ -204,11 +241,11 @@ int TypedArray::rfind(const Variant &p_value, int p_from) const {
 	return -1;
 }
 
-int TypedArray::find_last(const Variant &p_value) const {
+int PackedTypedArray::find_last(const Variant &p_value) const {
 	return rfind(p_value);
 }
 
-int TypedArray::count(const Variant &p_value) const {
+int PackedTypedArray::count(const Variant &p_value) const {
 	if (_p->array.size() == 0) {
 		return 0;
 	}
@@ -223,24 +260,24 @@ int TypedArray::count(const Variant &p_value) const {
 	return amount;
 }
 
-bool TypedArray::has(const Variant &p_value) const {
+bool PackedTypedArray::has(const Variant &p_value) const {
 	return _p->array.find(p_value, 0) != -1;
 }
 
-void TypedArray::remove(int p_pos) {
+void PackedTypedArray::remove(int p_pos) {
 	_p->array.remove(p_pos);
 }
 
-void TypedArray::set(int p_idx, const Variant &p_value) {
+void PackedTypedArray::set(int p_idx, const Variant &p_value) {
 	operator[](p_idx) = p_value;
 }
 
-const Variant &TypedArray::get(int p_idx) const {
+const Variant PackedTypedArray::get(int p_idx) const {
 	return operator[](p_idx);
 }
 
-TypedArray TypedArray::duplicate(bool p_deep) const {
-	TypedArray new_arr;
+PackedTypedArray PackedTypedArray::duplicate(bool p_deep) const {
+	PackedTypedArray new_arr;
 	int element_count = size();
 	new_arr.resize(element_count);
 	for (int i = 0; i < element_count; i++) {
@@ -250,7 +287,7 @@ TypedArray TypedArray::duplicate(bool p_deep) const {
 	return new_arr;
 }
 
-int TypedArray::_clamp_slice_index(int p_index) const {
+int PackedTypedArray::_clamp_slice_index(int p_index) const {
 	int arr_size = size();
 	int fixed_index = CLAMP(p_index, -arr_size, arr_size - 1);
 	if (fixed_index < 0) {
@@ -259,11 +296,11 @@ int TypedArray::_clamp_slice_index(int p_index) const {
 	return fixed_index;
 }
 
-TypedArray TypedArray::slice(int p_begin, int p_end, int p_step, bool p_deep) const { // like python, but inclusive on upper bound
+PackedTypedArray PackedTypedArray::slice(int p_begin, int p_end, int p_step, bool p_deep) const { // like python, but inclusive on upper bound
 
-	TypedArray new_arr;
+	PackedTypedArray new_arr;
 
-	ERR_FAIL_COND_V_MSG(p_step == 0, new_arr, "TypedArray slice step size cannot be zero.");
+	ERR_FAIL_COND_V_MSG(p_step == 0, new_arr, "PackedTypedArray slice step size cannot be zero.");
 
 	if (empty()) { // Don't try to slice empty arrays.
 		return new_arr;
@@ -287,13 +324,13 @@ TypedArray TypedArray::slice(int p_begin, int p_end, int p_step, bool p_deep) co
 	if (p_step > 0) {
 		int dest_idx = 0;
 		for (int idx = begin; idx <= end; idx += p_step) {
-			ERR_FAIL_COND_V_MSG(dest_idx < 0 || dest_idx >= new_arr_size, TypedArray(), "Bug in TypedArray slice()");
+			ERR_FAIL_COND_V_MSG(dest_idx < 0 || dest_idx >= new_arr_size, PackedTypedArray(), "Bug in PackedTypedArray slice()");
 			new_arr[dest_idx++] = p_deep ? get(idx).duplicate(p_deep) : get(idx);
 		}
 	} else { // p_step < 0
 		int dest_idx = 0;
 		for (int idx = begin; idx >= end; idx += p_step) {
-			ERR_FAIL_COND_V_MSG(dest_idx < 0 || dest_idx >= new_arr_size, TypedArray(), "Bug in TypedArray slice()");
+			ERR_FAIL_COND_V_MSG(dest_idx < 0 || dest_idx >= new_arr_size, PackedTypedArray(), "Bug in PackedTypedArray slice()");
 			new_arr[dest_idx++] = p_deep ? get(idx).duplicate(p_deep) : get(idx);
 		}
 	}
@@ -301,7 +338,7 @@ TypedArray TypedArray::slice(int p_begin, int p_end, int p_step, bool p_deep) co
 	return new_arr;
 }
 
-struct _TypedArrayVariantSort {
+struct _PackedTypedArrayVariantSort {
 	_FORCE_INLINE_ bool operator()(const Variant &p_l, const Variant &p_r) const {
 		bool valid = false;
 		Variant res;
@@ -313,12 +350,12 @@ struct _TypedArrayVariantSort {
 	}
 };
 
-TypedArray &TypedArray::sort() {
-	_p->array.sort_custom<_TypedArrayVariantSort>();
+PackedTypedArray &PackedTypedArray::sort() {
+	_p->array.sort_custom<_PackedTypedArrayVariantSort>();
 	return *this;
 }
 
-struct _TypedArrayVariantSortCustom {
+struct _PackedTypedArrayVariantSortCustom {
 	Object *obj;
 	StringName func;
 
@@ -332,17 +369,17 @@ struct _TypedArrayVariantSortCustom {
 		return res;
 	}
 };
-TypedArray &TypedArray::sort_custom(Object *p_obj, const StringName &p_function) {
+PackedTypedArray &PackedTypedArray::sort_custom(Object *p_obj, const StringName &p_function) {
 	ERR_FAIL_NULL_V(p_obj, *this);
 
-	SortArray<Variant, _TypedArrayVariantSortCustom, true> avs;
+	SortArray<Variant, _PackedTypedArrayVariantSortCustom, true> avs;
 	avs.compare.obj = p_obj;
 	avs.compare.func = p_function;
 	avs.sort(_p->array.ptrw(), _p->array.size());
 	return *this;
 }
 
-void TypedArray::shuffle() {
+void PackedTypedArray::shuffle() {
 	const int n = _p->array.size();
 	if (n < 2) {
 		return;
@@ -382,30 +419,30 @@ _FORCE_INLINE_ int bisect(const Vector<Variant> &p_array, const Variant &p_value
 	return lo;
 }
 
-int TypedArray::bsearch(const Variant &p_value, bool p_before) {
-	return bisect(_p->array, p_value, p_before, _TypedArrayVariantSort());
+int PackedTypedArray::bsearch(const Variant &p_value, bool p_before) {
+	return bisect(_p->array, p_value, p_before, _PackedTypedArrayVariantSort());
 }
 
-int TypedArray::bsearch_custom(const Variant &p_value, Object *p_obj, const StringName &p_function, bool p_before) {
+int PackedTypedArray::bsearch_custom(const Variant &p_value, Object *p_obj, const StringName &p_function, bool p_before) {
 	ERR_FAIL_NULL_V(p_obj, 0);
 
-	_TypedArrayVariantSortCustom less;
+	_PackedTypedArrayVariantSortCustom less;
 	less.obj = p_obj;
 	less.func = p_function;
 
 	return bisect(_p->array, p_value, p_before, less);
 }
 
-TypedArray &TypedArray::invert() {
+PackedTypedArray &PackedTypedArray::invert() {
 	_p->array.invert();
 	return *this;
 }
 
-void TypedArray::push_front(const Variant &p_value) {
+void PackedTypedArray::push_front(const Variant &p_value) {
 	_p->array.insert(0, p_value);
 }
 
-Variant TypedArray::pop_back() {
+Variant PackedTypedArray::pop_back() {
 	if (!_p->array.empty()) {
 		const int n = _p->array.size() - 1;
 		const Variant ret = _p->array.get(n);
@@ -415,7 +452,7 @@ Variant TypedArray::pop_back() {
 	return Variant();
 }
 
-Variant TypedArray::pop_front() {
+Variant PackedTypedArray::pop_front() {
 	if (!_p->array.empty()) {
 		const Variant ret = _p->array.get(0);
 		_p->array.remove(0);
@@ -424,7 +461,7 @@ Variant TypedArray::pop_front() {
 	return Variant();
 }
 
-Variant TypedArray::pop_at(int p_pos) {
+Variant PackedTypedArray::pop_at(int p_pos) {
 	if (_p->array.empty()) {
 		// Return `null` without printing an error to mimic `pop_back()` and `pop_front()` behavior.
 		return Variant();
@@ -449,7 +486,7 @@ Variant TypedArray::pop_at(int p_pos) {
 	return ret;
 }
 
-Variant TypedArray::min() const {
+Variant PackedTypedArray::min() const {
 	Variant minval;
 	for (int i = 0; i < size(); i++) {
 		if (i == 0) {
@@ -471,7 +508,7 @@ Variant TypedArray::min() const {
 	return minval;
 }
 
-Variant TypedArray::max() const {
+Variant PackedTypedArray::max() const {
 	Variant maxval;
 	for (int i = 0; i < size(); i++) {
 		if (i == 0) {
@@ -493,7 +530,7 @@ Variant TypedArray::max() const {
 	return maxval;
 }
 
-bool TypedArray::operator<(const TypedArray &p_array) const {
+bool PackedTypedArray::operator<(const PackedTypedArray &p_array) const {
 	int a_len = size();
 	int b_len = p_array.size();
 
@@ -510,29 +547,29 @@ bool TypedArray::operator<(const TypedArray &p_array) const {
 	return a_len < b_len;
 }
 
-bool TypedArray::operator<=(const TypedArray &p_array) const {
+bool PackedTypedArray::operator<=(const PackedTypedArray &p_array) const {
 	return !operator>(p_array);
 }
-bool TypedArray::operator>(const TypedArray &p_array) const {
+bool PackedTypedArray::operator>(const PackedTypedArray &p_array) const {
 	return p_array < *this;
 }
-bool TypedArray::operator>=(const TypedArray &p_array) const {
+bool PackedTypedArray::operator>=(const PackedTypedArray &p_array) const {
 	return !operator<(p_array);
 }
 
-const void *TypedArray::id() const {
+const void *PackedTypedArray::id() const {
 	return _p;
 }
 
-TypedArray::TypedArray(const TypedArray &p_from) {
+PackedTypedArray::PackedTypedArray(const PackedTypedArray &p_from) {
 	_p = nullptr;
 	_ref(p_from);
 }
 
-TypedArray::TypedArray() {
-	_p = memnew(TypedArrayPrivate);
+PackedTypedArray::PackedTypedArray() {
+	_p = memnew(PackedTypedArrayPrivate);
 	_p->refcount.init();
 }
-TypedArray::~TypedArray() {
+PackedTypedArray::~PackedTypedArray() {
 	_unref();
 }
