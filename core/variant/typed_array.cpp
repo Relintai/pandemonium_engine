@@ -33,55 +33,12 @@
 
 #include "core/containers/hashfuncs.h"
 #include "core/containers/vector.h"
-#include "core/containers/local_vector.h"
 #include "core/object/object.h"
 #include "core/variant/variant.h"
 
 class TypedArrayPrivate {
 public:
-	struct ObjData {
-		// Will be null for every type deriving from Reference as they have their
-		// own reference count mechanism
-		ObjectRC *rc;
-		// Always initialized, but will be null if the Ref<> assigned was null
-		// or this Variant is not even holding a Reference-derived object
-		RefPtr ref;
-	};
-
-	_FORCE_INLINE_ ObjData &_get_obj(const int p_index) {
-		return *reinterpret_cast<ObjData *>(&data[p_index]->_mem[0]);
-	}
-
-	_FORCE_INLINE_ const ObjData &_get_obj(const int p_index) const {
-		return *reinterpret_cast<const ObjData *>(&data[p_index]->_mem[0]);
-	}
-
-	union TypedArrayPrivateEntry {
-		bool _bool;
-		int64_t _int;
-		double _real;
-		Transform2D *_transform2d;
-		::AABB *_aabb;
-		Basis *_basis;
-		Transform *_transform;
-		Projection *_projection;
-		void *_ptr; //generic pointer
-		uint8_t _mem[sizeof(ObjData) > (sizeof(real_t) * 4) ? sizeof(ObjData) : (sizeof(real_t) * 4)]{ 0 };
-	} GCC_ALIGNED_8;
-
-	TypedArrayPrivate() {
-	}
-	~TypedArrayPrivate() {
-	}
-
 	SafeRefCount refcount;
-
-	Variant::Type type;
-	StringName object_class_name;
-
-	LocalVector<TypedArrayPrivateEntry *> data;
-
-	// Temporary
 	Vector<Variant> array;
 };
 
@@ -114,11 +71,11 @@ void TypedArray::_unref() const {
 	_p = nullptr;
 }
 
-Variant TypedArray::operator[](int p_idx) {
+Variant &TypedArray::operator[](int p_idx) {
 	return _p->array.write[p_idx];
 }
 
-const Variant TypedArray::operator[](int p_idx) const {
+const Variant &TypedArray::operator[](int p_idx) const {
 	return _p->array[p_idx];
 }
 
@@ -272,7 +229,7 @@ void TypedArray::set(int p_idx, const Variant &p_value) {
 	operator[](p_idx) = p_value;
 }
 
-const Variant TypedArray::get(int p_idx) const {
+const Variant &TypedArray::get(int p_idx) const {
 	return operator[](p_idx);
 }
 
