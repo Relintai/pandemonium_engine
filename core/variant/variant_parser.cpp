@@ -133,8 +133,6 @@ const char *VariantParser::tk_name[TK_MAX] = {
 	"']'",
 	"'('",
 	"')'",
-	"'<'",
-	"'>'",
 	"identifier",
 	"string",
 	"string_name",
@@ -206,14 +204,6 @@ Error VariantParser::get_token(Stream *p_stream, Token &r_token, int &line, Stri
 			};
 			case ')': {
 				r_token.type = TK_PARENTHESIS_CLOSE;
-				return OK;
-			};
-			case '<': {
-				r_token.type = TK_LESS_THAN;
-				return OK;
-			};
-			case '>': {
-				r_token.type = TK_GREATER_THAN;
 				return OK;
 			};
 			case ':': {
@@ -1405,16 +1395,16 @@ Error VariantParser::_parse_typed_array(TypedArray &array, Stream *p_stream, int
 	Token token;
 	bool need_comma = false;
 
-	// TypedArray<>()
-	// TypedArray< type >()
-	// TypedArray< type >( 1, 2, 3 )
+	// TypedArray()
+	// TypedArray( type )
+	// TypedArray( type , 1, 2, 3 )
 
 	// Currently:
-	// <>()
-	// < type >()
-	// < type >( 1, 2, 3 )
+	// ()
+	// ( type )
+	// ( type , 1, 2, 3 )
 
-	// Consume <
+	// Consume (
 	if (p_stream->is_eof()) {
 		r_err_str = "Unexpected End of File while parsing typed array";
 		return ERR_FILE_CORRUPT;
@@ -1425,8 +1415,8 @@ Error VariantParser::_parse_typed_array(TypedArray &array, Stream *p_stream, int
 		return err;
 	}
 
-	if (token.type != TK_LESS_THAN) {
-		r_err_str = "Expected '<'";
+	if (token.type != TK_PARENTHESIS_OPEN) {
+		r_err_str = "Expected '('";
 		return ERR_FILE_CORRUPT;
 	}
 
@@ -1441,52 +1431,20 @@ Error VariantParser::_parse_typed_array(TypedArray &array, Stream *p_stream, int
 		return err;
 	}
 
-	if (token.type != TK_IDENTIFIER && token.type != TK_GREATER_THAN) {
-		r_err_str = "Expected identifier or '>'";
+	if (token.type != TK_IDENTIFIER && token.type != TK_PARENTHESIS_CLOSE) {
+		r_err_str = "Expected type name or ')'";
 		return ERR_FILE_CORRUPT;
 	}
 
-	// Has to be <>()
-	// Currently at >
-	if (token.type == TK_GREATER_THAN) {
-		// Consume (
-		if (p_stream->is_eof()) {
-			r_err_str = "Unexpected End of File while parsing typed array";
-			return ERR_FILE_CORRUPT;
-		}
-
-		err = get_token(p_stream, token, line, r_err_str);
-		if (err != OK) {
-			return err;
-		}
-
-		if (token.type != TK_PARENTHESIS_OPEN) {
-			r_err_str = "Expected '('";
-			return ERR_FILE_CORRUPT;
-		}
-
-		// Consume )
-		if (p_stream->is_eof()) {
-			r_err_str = "Unexpected End of File while parsing typed array";
-			return ERR_FILE_CORRUPT;
-		}
-
-		err = get_token(p_stream, token, line, r_err_str);
-		if (err != OK) {
-			return err;
-		}
-
-		if (token.type != TK_PARENTHESIS_CLOSE) {
-			r_err_str = "Expected ')'";
-			return ERR_FILE_CORRUPT;
-		}
-
+	// Has to be ()
+	// Currently at )
+	if (token.type == TK_PARENTHESIS_CLOSE) {
 		return OK;
 	}
 
 	// Has to be
-	// < type >()
-	// < type >( 1, 2, 3 )
+	// ( type )
+	// ( type , 1, 2, 3 )
 	// Currently at type
 
 	String type_name = token.value;
@@ -1511,7 +1469,7 @@ Error VariantParser::_parse_typed_array(TypedArray &array, Stream *p_stream, int
 	array.set_variant_type(variant_type);
 	array.set_object_class_name(object_type_name);
 
-	// Consume >
+	// Consume ,
 	if (p_stream->is_eof()) {
 		r_err_str = "Unexpected End of File while parsing typed array";
 		return ERR_FILE_CORRUPT;
@@ -1522,25 +1480,13 @@ Error VariantParser::_parse_typed_array(TypedArray &array, Stream *p_stream, int
 		return err;
 	}
 
-	if (token.type != TK_GREATER_THAN) {
-		r_err_str = "Expected '>'";
+	if (token.type != TK_COMMA && token.type != TK_PARENTHESIS_CLOSE) {
+		r_err_str = "Expected ',' or ')'";
 		return ERR_FILE_CORRUPT;
 	}
 
-	// Consume (
-	if (p_stream->is_eof()) {
-		r_err_str = "Unexpected End of File while parsing typed array";
-		return ERR_FILE_CORRUPT;
-	}
-
-	err = get_token(p_stream, token, line, r_err_str);
-	if (err != OK) {
-		return err;
-	}
-
-	if (token.type != TK_PARENTHESIS_OPEN) {
-		r_err_str = "Expected '('";
-		return ERR_FILE_CORRUPT;
+	if (token.type == TK_PARENTHESIS_CLOSE) {
+		return OK;
 	}
 
 	while (true) {
@@ -1588,16 +1534,16 @@ Error VariantParser::_parse_packed_typed_array(PackedTypedArray &array, Stream *
 	Token token;
 	bool need_comma = false;
 
-	// PackedTypedArray<>()
-	// PackedTypedArray< type >()
-	// PackedTypedArray< type >( 1, 2, 3 )
+	// PackedTypedArray()
+	// PackedTypedArray( type )
+	// PackedTypedArray( type , 1, 2, 3 )
 
 	// Currently:
-	// <>()
-	// < type >()
-	// < type >( 1, 2, 3 )
+	// ()
+	// ( type )
+	// ( type , 1, 2, 3 )
 
-	// Consume <
+	// Consume (
 	if (p_stream->is_eof()) {
 		r_err_str = "Unexpected End of File while parsing packed typed array";
 		return ERR_FILE_CORRUPT;
@@ -1608,8 +1554,8 @@ Error VariantParser::_parse_packed_typed_array(PackedTypedArray &array, Stream *
 		return err;
 	}
 
-	if (token.type != TK_LESS_THAN) {
-		r_err_str = "Expected '<'";
+	if (token.type != TK_PARENTHESIS_OPEN) {
+		r_err_str = "Expected '('";
 		return ERR_FILE_CORRUPT;
 	}
 
@@ -1624,52 +1570,20 @@ Error VariantParser::_parse_packed_typed_array(PackedTypedArray &array, Stream *
 		return err;
 	}
 
-	if (token.type != TK_IDENTIFIER && token.type != TK_GREATER_THAN) {
-		r_err_str = "Expected identifier or '>'";
+	if (token.type != TK_IDENTIFIER && token.type != TK_PARENTHESIS_CLOSE) {
+		r_err_str = "Expected type name or ')'";
 		return ERR_FILE_CORRUPT;
 	}
 
-	// Has to be <>()
-	// Currently at >
-	if (token.type == TK_GREATER_THAN) {
-		// Consume (
-		if (p_stream->is_eof()) {
-			r_err_str = "Unexpected End of File while parsing packed typed array";
-			return ERR_FILE_CORRUPT;
-		}
-
-		err = get_token(p_stream, token, line, r_err_str);
-		if (err != OK) {
-			return err;
-		}
-
-		if (token.type != TK_PARENTHESIS_OPEN) {
-			r_err_str = "Expected '('";
-			return ERR_FILE_CORRUPT;
-		}
-
-		// Consume )
-		if (p_stream->is_eof()) {
-			r_err_str = "Unexpected End of File while parsing packed typed array";
-			return ERR_FILE_CORRUPT;
-		}
-
-		err = get_token(p_stream, token, line, r_err_str);
-		if (err != OK) {
-			return err;
-		}
-
-		if (token.type != TK_PARENTHESIS_CLOSE) {
-			r_err_str = "Expected ')'";
-			return ERR_FILE_CORRUPT;
-		}
-
+	// Has to be ()
+	// Currently at )
+	if (token.type == TK_PARENTHESIS_CLOSE) {
 		return OK;
 	}
 
 	// Has to be
-	// < type >()
-	// < type >( 1, 2, 3 )
+	// ( type )
+	// ( type , 1, 2, 3 )
 	// Currently at type
 
 	String type_name = token.value;
@@ -1694,7 +1608,7 @@ Error VariantParser::_parse_packed_typed_array(PackedTypedArray &array, Stream *
 	array.set_variant_type(variant_type);
 	array.set_object_class_name(object_type_name);
 
-	// Consume >
+	// Consume ,
 	if (p_stream->is_eof()) {
 		r_err_str = "Unexpected End of File while parsing packed typed array";
 		return ERR_FILE_CORRUPT;
@@ -1705,25 +1619,13 @@ Error VariantParser::_parse_packed_typed_array(PackedTypedArray &array, Stream *
 		return err;
 	}
 
-	if (token.type != TK_GREATER_THAN) {
-		r_err_str = "Expected '>'";
+	if (token.type != TK_COMMA && token.type != TK_PARENTHESIS_CLOSE) {
+		r_err_str = "Expected ',' or ')'";
 		return ERR_FILE_CORRUPT;
 	}
 
-	// Consume (
-	if (p_stream->is_eof()) {
-		r_err_str = "Unexpected End of File while parsing packed typed array";
-		return ERR_FILE_CORRUPT;
-	}
-
-	err = get_token(p_stream, token, line, r_err_str);
-	if (err != OK) {
-		return err;
-	}
-
-	if (token.type != TK_PARENTHESIS_OPEN) {
-		r_err_str = "Expected '('";
-		return ERR_FILE_CORRUPT;
+	if (token.type == TK_PARENTHESIS_CLOSE) {
+		return OK;
 	}
 
 	while (true) {
@@ -2339,17 +2241,17 @@ Error VariantWriter::write(const Variant &p_variant, StoreStringFunc p_store_str
 		case Variant::TYPED_ARRAY: {
 			if (unlikely(p_recursion_count > MAX_RECURSION)) {
 				ERR_PRINT("Max recursion reached");
-				p_store_string_func(p_store_string_ud, "TypedArray<>()");
+				p_store_string_func(p_store_string_ud, "TypedArray()");
 				return OK;
 			}
 			p_recursion_count++;
 
-			p_store_string_func(p_store_string_ud, "TypedArray< ");
+			p_store_string_func(p_store_string_ud, "TypedArray( ");
 
 			TypedArray array = p_variant;
 
 			p_store_string_func(p_store_string_ud, array.get_typename_string());
-			p_store_string_func(p_store_string_ud, " >( ");
+			p_store_string_func(p_store_string_ud, " , ");
 			int len = array.size();
 			for (int i = 0; i < len; i++) {
 				if (i > 0) {
@@ -2363,17 +2265,17 @@ Error VariantWriter::write(const Variant &p_variant, StoreStringFunc p_store_str
 		case Variant::PACKED_TYPED_ARRAY: {
 			if (unlikely(p_recursion_count > MAX_RECURSION)) {
 				ERR_PRINT("Max recursion reached");
-				p_store_string_func(p_store_string_ud, "PackedTypedArray<>()");
+				p_store_string_func(p_store_string_ud, "PackedTypedArray()");
 				return OK;
 			}
 			p_recursion_count++;
 
-			p_store_string_func(p_store_string_ud, "PackedTypedArray< ");
+			p_store_string_func(p_store_string_ud, "PackedTypedArray( ");
 
 			PackedTypedArray array = p_variant;
 
 			p_store_string_func(p_store_string_ud, array.get_typename_string());
-			p_store_string_func(p_store_string_ud, " >( ");
+			p_store_string_func(p_store_string_ud, " , ");
 			int len = array.size();
 			for (int i = 0; i < len; i++) {
 				if (i > 0) {
