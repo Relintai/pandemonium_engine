@@ -4298,6 +4298,16 @@ bool EditorInspectorDefaultPlugin::parse_property(Object *p_object, Variant::Typ
 			editor->setup(Variant::ARRAY, p_hint_text);
 			add_property_editor(p_path, editor);
 		} break;
+		case Variant::TYPED_ARRAY: {
+			EditorPropertyArray *editor = memnew(EditorPropertyArray);
+			editor->setup(Variant::TYPED_ARRAY, p_hint_text);
+			add_property_editor(p_path, editor);
+		} break;
+		case Variant::PACKED_TYPED_ARRAY: {
+			EditorPropertyArray *editor = memnew(EditorPropertyArray);
+			editor->setup(Variant::PACKED_TYPED_ARRAY, p_hint_text);
+			add_property_editor(p_path, editor);
+		} break;
 		case Variant::POOL_BYTE_ARRAY: {
 			EditorPropertyArray *editor = memnew(EditorPropertyArray);
 			editor->setup(Variant::POOL_BYTE_ARRAY);

@@ -190,7 +190,12 @@ void EditorPropertyArray::_property_changed(const String &p_property, Variant p_
 
 		if (array.get_type() == Variant::ARRAY) {
 			array = array.call("duplicate"); // Duplicate, so undo/redo works better.
+		} else if (array.get_type() == Variant::TYPED_ARRAY) {
+			array = array.call("duplicate"); // Duplicate, so undo/redo works better.
+		} else if (array.get_type() == Variant::PACKED_TYPED_ARRAY) {
+			array = array.call("duplicate"); // Duplicate, so undo/redo works better.
 		}
+
 		object->set_array(array);
 	}
 }
@@ -220,6 +225,10 @@ void EditorPropertyArray::_change_type_menu(int p_index) {
 
 	if (array.get_type() == Variant::ARRAY) {
 		array = array.call("duplicate"); // Duplicate, so undo/redo works better.
+	} else if (array.get_type() == Variant::TYPED_ARRAY) {
+		array = array.call("duplicate"); // Duplicate, so undo/redo works better.
+	} else if (array.get_type() == Variant::PACKED_TYPED_ARRAY) {
+		array = array.call("duplicate"); // Duplicate, so undo/redo works better.
 	}
 
 	object->set_array(array);
@@ -237,6 +246,22 @@ void EditorPropertyArray::update_property() {
 	switch (array_type) {
 		case Variant::ARRAY: {
 			arrtype = "Array";
+
+		} break;
+		case Variant::TYPED_ARRAY: {
+			arrtype = "TypedArray";
+
+			TypedArray a = array;
+			subtype = Variant::Type(a.get_variant_type());
+			subtype_hint_string = a.get_object_class_name();
+
+		} break;
+		case Variant::PACKED_TYPED_ARRAY: {
+			arrtype = "PackedTypedArray";
+
+			PackedTypedArray a = array;
+			subtype = Variant::Type(a.get_variant_type());
+			subtype_hint_string = a.get_object_class_name();
 
 		} break;
 
@@ -360,7 +385,11 @@ void EditorPropertyArray::update_property() {
 		page_hbox->set_visible(pages > 1);
 
 		if (array.get_type() == Variant::ARRAY) {
-			array = array.call("duplicate");
+			array = array.call("duplicate"); // Duplicate, so undo/redo works better.
+		} else if (array.get_type() == Variant::TYPED_ARRAY) {
+			array = array.call("duplicate"); // Duplicate, so undo/redo works better.
+		} else if (array.get_type() == Variant::PACKED_TYPED_ARRAY) {
+			array = array.call("duplicate"); // Duplicate, so undo/redo works better.
 		}
 
 		object->set_array(array);
@@ -1104,6 +1133,16 @@ void EditorPropertyDictionary::update_property() {
 				case Variant::ARRAY: {
 					EditorPropertyArray *editor = memnew(EditorPropertyArray);
 					editor->setup(Variant::ARRAY);
+					prop = editor;
+				} break;
+				case Variant::TYPED_ARRAY: {
+					EditorPropertyArray *editor = memnew(EditorPropertyArray);
+					editor->setup(Variant::TYPED_ARRAY);
+					prop = editor;
+				} break;
+				case Variant::PACKED_TYPED_ARRAY: {
+					EditorPropertyArray *editor = memnew(EditorPropertyArray);
+					editor->setup(Variant::PACKED_TYPED_ARRAY);
 					prop = editor;
 				} break;
 
