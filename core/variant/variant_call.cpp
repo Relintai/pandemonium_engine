@@ -1929,6 +1929,14 @@ struct _VariantCall {
 		r_ret = Color(c.r, c.g, c.b, *p_args[1]);
 	}
 
+	static void Projection_init1(Variant &r_ret, const Variant **p_args) {
+		r_ret = Projection(((Vector4)(*p_args[0])), ((Vector4)(*p_args[1])), ((Vector4)(*p_args[2])), ((Vector4)(*p_args[3])));
+	}
+
+	static void Projection_init2(Variant &r_ret, const Variant **p_args) {
+		r_ret = Projection((*p_args[0]).operator Transform());
+	}
+
 	static void add_constructor(VariantConstructFunc p_func, const Variant::Type p_type,
 			const String &p_name1 = "", const Variant::Type p_type1 = Variant::NIL,
 			const String &p_name2 = "", const Variant::Type p_type2 = Variant::NIL,
@@ -3652,6 +3660,9 @@ void register_variant_methods() {
 
 	_VariantCall::add_constructor(_VariantCall::Transform2D_init2, Variant::TRANSFORM2D, "rotation", Variant::REAL, "position", Variant::VECTOR2);
 	_VariantCall::add_constructor(_VariantCall::Transform2D_init3, Variant::TRANSFORM2D, "x_axis", Variant::VECTOR2, "y_axis", Variant::VECTOR2, "origin", Variant::VECTOR2);
+
+	_VariantCall::add_constructor(_VariantCall::Projection_init1, Variant::PROJECTION, "x_axis", Variant::VECTOR4, "y_axis", Variant::VECTOR4, "z_axis", Variant::VECTOR4, "w_axis", Variant::VECTOR4);
+	_VariantCall::add_constructor(_VariantCall::Projection_init2, Variant::PROJECTION, "transform", Variant::TRANSFORM);
 
 	/* REGISTER CONSTANTS */
 
