@@ -1945,10 +1945,19 @@ String Variant::stringify(List<const void *> &stack) const {
 		case TYPED_ARRAY: {
 			TypedArray arr = operator TypedArray();
 			if (stack.find(arr.id())) {
-				return vformat("TypedArray<%s>[...]", arr.get_typename_string());
+				return vformat("TypedArray(%s, ...)", arr.get_typename_string());
 			}
 			stack.push_back(arr.id());
-			String str = stringify_vector(arr, stack);
+			String str = vformat("TypedArray(%s, ", arr.get_typename_string());
+
+			for (int i = 0; i < arr.size(); i++) {
+				if (i > 0) {
+					str += ", ";
+				}
+				str = str + Variant(arr[i]).stringify(stack);
+			}
+			str += ")";
+
 			stack.erase(arr.id());
 			return str;
 
@@ -1956,10 +1965,20 @@ String Variant::stringify(List<const void *> &stack) const {
 		case PACKED_TYPED_ARRAY: {
 			PackedTypedArray arr = operator PackedTypedArray();
 			if (stack.find(arr.id())) {
-				return vformat("PackedTypedArray<%s>[...]", arr.get_typename_string());
+				return vformat("PackedTypedArray(%s, ...)", arr.get_typename_string());
 			}
+
 			stack.push_back(arr.id());
-			String str = stringify_vector(arr, stack);
+			String str = vformat("PackedTypedArray(%s, ", arr.get_typename_string());
+
+			for (int i = 0; i < arr.size(); i++) {
+				if (i > 0) {
+					str += ", ";
+				}
+				str = str + Variant(arr[i]).stringify(stack);
+			}
+			str += ")";
+
 			stack.erase(arr.id());
 			return str;
 
