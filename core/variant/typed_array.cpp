@@ -40,6 +40,9 @@ class TypedArrayPrivate {
 public:
 	SafeRefCount refcount;
 
+	Variant::Type type;
+	StringName object_class_name;
+
 	// Note that a Variant stores it's type and it's data.
 	// So this is less efficient in terms of memory.
 	// However if we store the type once, and then do the same as Variants internally
