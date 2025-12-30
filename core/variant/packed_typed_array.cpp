@@ -79,6 +79,7 @@ public:
 	Variant::Type type;
 	StringName object_class_name;
 
+	// Maybe this should just be a straight up void* that would achieve tighter packing in some cases.
 	LocalVector<PackedTypedArrayPrivateEntry *> data;
 
 	// Temporary
