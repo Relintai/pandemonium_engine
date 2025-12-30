@@ -12,7 +12,7 @@ Similar idea going from godot 3.x to godot 4.x, but taken in a completely differ
 
 Currently this engine is a weird amalgamation of godot 3.x, 4.x, and lots of custom features.
 
-Most of the design decisions went into making everything simple for people that knows (or wants to know) what is going on. 
+Most of the design decisions went into making everything simple for people that knows (or wants to know) what is going on.
 
 It contains all of my currently in use engine modules.
 
@@ -29,7 +29,7 @@ Windows), mobile platforms (Android, iOS), as well as Web-based platforms
 
 ## Free, open source
 
-Pandemonium is completely free and open source under the very permissive 
+Pandemonium is completely free and open source under the very permissive
 [MIT license](https://github.com/Relintai/pandemonium_engine/blob/master/LICENSE.txt).
 No strings attached, no royalties, nothing. The users' games are theirs, down
 to the last line of engine code.
@@ -51,7 +51,7 @@ After quite a while of thinking and experimentation however I decided that I sti
 I also needed some of the new features from godot 4.x.
 
 So in early 2022 I decided that I'll fork godot 3.x, and backport anything that I
-need for my games / projects. While here I also used the opportunity to modularize the engine more, 
+need for my games / projects. While here I also used the opportunity to modularize the engine more,
 and fix issues I had with it. I also added my engine modules to it by default, and
 ended up writing lots of custom things.
 
@@ -69,7 +69,7 @@ required complexities of today harder than they need to be.
 
 ### Binary downloads
 
-You can download binaries from the github actions tab [[here]](https://github.com/Relintai/pandemonium_engine/actions), 
+You can download binaries from the github actions tab [[here]](https://github.com/Relintai/pandemonium_engine/actions),
 or the releases tab [[here]](https://github.com/Relintai/pandemonium_engine/releases).
 
 ### Compiling from source
@@ -84,7 +84,7 @@ It includes all official pandemonium demos.
 
 The class docs are accessible from the editor.
 
-You can also look at the official 3.x Godot documentation, it will work mostly (sometimes with trivial modifications). 
+You can also look at the official 3.x Godot documentation, it will work mostly (sometimes with trivial modifications).
 
 It's also worth looking at official godot 3.x resources, like this [awesome Godot list](https://github.com/godotengine/awesome-godot),
 and there are also a number of other [godot learning resources](https://docs.godotengine.org/en/latest/community/tutorials.html)
@@ -101,7 +101,7 @@ Here is a copy in case it changes (Ignore parts that are irrelevant to this proj
 
 TL;DR:
 
-*Current QUEMU project policy is to DECLINE any contributions which are 
+*Current QUEMU project policy is to DECLINE any contributions which are
 believed to include or derive from AI generated content. This includes
 ChatGPT, Claude, Copilot, Llama and similar tools.*
 
@@ -157,7 +157,7 @@ also improvements to the engine as a whole.
 
 Currently the codebase is mostly c++03 with some c++11, and c++14 (std threading) sprinkled in.
 
-I'm not sure whether it's just me getting old, or maybe it's just timing (I started with 
+I'm not sure whether it's just me getting old, or maybe it's just timing (I started with
 Libgdx + java 7, then went to Unity + dotnet mono 2.0, then Godot 3.1). I like this sipmlicity. It makes
 the codebase a lot easier to work with. It also simplifies the tooling required, which
 could come in handy in the future.
@@ -186,7 +186,7 @@ Implement and enable CScript. CScript will be a scripting language similar to gd
 it will use a C-style syntax.
 
 It would be extremely cool if it could just interpret engine module c++ directly, but that
-might be a bit too much. Maybe that could be an another module. For this to work, solving .cpp and header 
+might be a bit too much. Maybe that could be an another module. For this to work, solving .cpp and header
 file separation are the biggest problem in my opinion due to how the engine works internally. Other than this
 it's mostly just parsing (not trivial, but relatively simple in the grand scheme of things).
 (Note that having the codebase use c++03 also helps with this!)
@@ -195,7 +195,7 @@ it's mostly just parsing (not trivial, but relatively simple in the grand scheme
 
 A RichTextLabel, but for markdown would be nice to have.
 
-### In-editor docs, and in-editor docs hosting.
+### In-editor docs, and in-editor docs hosting
 
 Since now the docs are in markdown, if the MarkDown label is implemented the docs could also be read directly using the editor itself.
 
@@ -214,7 +214,7 @@ time when public apis don't change.
 
 Keep in mind, that this is already implemented for some modules, but would be nice to have as a core feature.
 
-### GDNative, and GDNative C++ 
+### GDNative, and GDNative C++
 
 The GDNative c++ binding rework should be finished. It could also make module development a lot simpler
 if it's api is extremely similar to the engine's.
@@ -254,6 +254,7 @@ Done:
 WIP:
 
 - The class internals still need to be implemented.
+- It needs to check for inheritance too.
 - Their api needs to be fleshed out. Like constructors etc need to be done.
 - Still needs better gdscript support. It needs proper export keyword. Maybe it could receive some custom syntax.
 - Needs inspector plugins.
@@ -264,9 +265,9 @@ WIP:
 
 Few syntax ideas:
 
-- export(TypedArray, Type) 
-- export(TypedArray[Type]) 
-- export(TypedArray&lt;Type&gt;) 
+- export(TypedArray, Type)
+- export(TypedArray[Type])
+- export(TypedArray&lt;Type&gt;)
 
 - var a : TypedArray(Type) = TypedArray(Type)
 - var a : TypedArray[Type] = TypedArray[Type]()
@@ -277,6 +278,20 @@ Maybe in place creation?
 - ... = TypedArray[Type][ 1, 2, 3, 4, ... ]
 - ... = TypedArray&lt;Type&gt;[ 1, 2, 3, 4, ... ]
 - ... = TypedArray(Type, 1, 2, 3, 4, ... )
+
+No, Typed Array holds it's allowed types. None of these are needed.
+
+Also this version does not give the false sense that the type is immutable.
+(Even if it was, a class could replace the array with an another one, then
+the property would return that.)
+
+- export(TypedArray) var a : TypedArray = TypedArray("Type")
+- export(TypedArray) var a : TypedArray = TypedArray(Type) - Gdscript could parse this too.
+- ... = TypedArray([ 1, 2, 3, 4, ... ]) - automatically gets the type from the first element
+- ... = TypedArray("Type", [ 1, 2, 3, 4, ... ]) - Sets up the type, then tries to grab everything from array
+- ... = TypedArray(Type, [ 1, 2, 3, 4, ... ]) - GDScript could parse this too
+
+It doesn't need property hints either. What the properties return is going to be used.
 
 ### WebNodes
 
@@ -305,7 +320,7 @@ vcs integrations even using addons.
 ### WebSockets
 
 There are already ways to get the socket itself out from the web server,
-so websockets are already possible, but need a few demos to see it the current api 
+so websockets are already possible, but need a few demos to see it the current api
 is good enough for general use. If not add helpers as needed.
 
 ### WebServer
@@ -333,7 +348,6 @@ Other rendering backends would be also nice to have.
 
 They don't need to be extremely complex and scriptable.
 
-
 ### Platforms
 
 slCreate() was deprecated in the current android NDK, update the code eventually.
@@ -351,5 +365,3 @@ Binary shaders could also be saved, and then loaded on demand.
 The Inverse Kinematics system has some bugs, those should be fixed.
 
 Also it will probably need som api and usage improvements.
-
-
