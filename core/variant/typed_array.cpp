@@ -39,6 +39,13 @@
 class TypedArrayPrivate {
 public:
 	SafeRefCount refcount;
+
+	// Note that a Variant stores it's type and it's data.
+	// So this is less efficient in terms of memory.
+	// However if we store the type once, and then do the same as Variants internally
+	// but with an array, then during element retreieval we need to build variants
+	// constantly. For general purpose use this is likely better.
+	// Maybe PackedTypedArray should also be added?
 	Vector<Variant> array;
 };
 
