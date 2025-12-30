@@ -1075,7 +1075,7 @@ Error VariantParser::parse_value(Token &token, Variant &value, Stream *p_stream,
 			}
 		} else if (id == "TypedArray") {
 			TypedArray arr;
-			Error err = _parse_typed_array(arr, p_stream, line, r_err_str);
+			Error err = _parse_typed_array(arr, p_stream, line, r_err_str, p_res_parser);
 
 			if (err) {
 				return err;
@@ -1084,7 +1084,7 @@ Error VariantParser::parse_value(Token &token, Variant &value, Stream *p_stream,
 			value = arr;
 		} else if (id == "PackedTypedArray") {
 			PackedTypedArray arr;
-			Error err = _parse_packed_typed_array(arr, p_stream, line, r_err_str);
+			Error err = _parse_packed_typed_array(arr, p_stream, line, r_err_str, p_res_parser);
 			if (err) {
 				return err;
 			}

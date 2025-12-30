@@ -1389,6 +1389,24 @@ void ResourceFormatSaverTextInstance::_find_resources(const Variant &p_variant, 
 			}
 
 		} break;
+		case Variant::TYPED_ARRAY: {
+			TypedArray varray = p_variant;
+			int len = varray.size();
+			for (int i = 0; i < len; i++) {
+				const Variant &v = varray.get(i);
+				_find_resources(v);
+			}
+
+		} break;
+		case Variant::PACKED_TYPED_ARRAY: {
+			PackedTypedArray varray = p_variant;
+			int len = varray.size();
+			for (int i = 0; i < len; i++) {
+				const Variant &v = varray.get(i);
+				_find_resources(v);
+			}
+
+		} break;
 		case Variant::DICTIONARY: {
 			Dictionary d = p_variant;
 			List<Variant> keys;
