@@ -1431,7 +1431,7 @@ Error VariantParser::_parse_typed_array(TypedArray &array, Stream *p_stream, int
 		return err;
 	}
 
-	if (token.type != TK_IDENTIFIER || token.type != TK_PARENTHESIS_CLOSE) {
+	if (token.type != TK_IDENTIFIER && token.type != TK_PARENTHESIS_CLOSE) {
 		r_err_str = "Expected identifier or ')'!";
 		return ERR_FILE_CORRUPT;
 	}
@@ -1614,7 +1614,7 @@ Error VariantParser::_parse_packed_typed_array(PackedTypedArray &array, Stream *
 		return err;
 	}
 
-	if (token.type != TK_IDENTIFIER || token.type != TK_PARENTHESIS_CLOSE) {
+	if (token.type != TK_IDENTIFIER && token.type != TK_PARENTHESIS_CLOSE) {
 		r_err_str = "Expected identifier or ')'!";
 		return ERR_FILE_CORRUPT;
 	}
