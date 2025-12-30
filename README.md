@@ -260,6 +260,7 @@ WIP:
 - Needs gdnative support.
 - Needs docs.
 - Needs icons.
+- Needs to be added to the docs repo when finished.
 
 Few syntax ideas:
 
