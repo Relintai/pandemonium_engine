@@ -460,6 +460,10 @@ String type_to_string(Variant::Type p_type) {
 			return "DICTIONARY";
 		case Variant::ARRAY:
 			return "ARRAY";
+		case Variant::TYPED_ARRAY:
+			return "TYPED_ARRAY";
+		case Variant::PACKED_TYPED_ARRAY:
+			return "PACKED_TYPED_ARRAY";
 
 		case Variant::POOL_BYTE_ARRAY:
 			return "POOL_BYTE_ARRAY";

@@ -224,24 +224,37 @@ uint32_t PackedDataContainer::_pack(const Variant &p_data, Vector<uint8_t> &tmpd
 		case Variant::BOOL:
 		case Variant::INT:
 		case Variant::REAL:
-		case Variant::VECTOR2:
 		case Variant::RECT2:
+		case Variant::RECT2I:
+		case Variant::VECTOR2:
+		case Variant::VECTOR2I:
 		case Variant::VECTOR3:
-		case Variant::TRANSFORM2D:
+		case Variant::VECTOR3I:
+		case Variant::VECTOR4:
+		case Variant::VECTOR4I:
 		case Variant::PLANE:
 		case Variant::QUATERNION:
 		case Variant::AABB:
 		case Variant::BASIS:
 		case Variant::TRANSFORM:
+		case Variant::TRANSFORM2D:
+		case Variant::PROJECTION:
+		case Variant::COLOR:
+		case Variant::NODE_PATH:
+		case Variant::STRING_NAME:
+		case Variant::TYPED_ARRAY:
+		case Variant::PACKED_TYPED_ARRAY:
 		case Variant::POOL_BYTE_ARRAY:
 		case Variant::POOL_INT_ARRAY:
 		case Variant::POOL_REAL_ARRAY:
 		case Variant::POOL_STRING_ARRAY:
 		case Variant::POOL_VECTOR2_ARRAY:
+		case Variant::POOL_VECTOR2I_ARRAY:
 		case Variant::POOL_VECTOR3_ARRAY:
-		case Variant::POOL_COLOR_ARRAY:
-		case Variant::STRING_NAME:
-		case Variant::NODE_PATH: {
+		case Variant::POOL_VECTOR3I_ARRAY:
+		case Variant::POOL_VECTOR4_ARRAY:
+		case Variant::POOL_VECTOR4I_ARRAY:
+		case Variant::POOL_COLOR_ARRAY: {
 			uint32_t pos = tmpdata.size();
 			int len;
 			encode_variant(p_data, nullptr, len, false);

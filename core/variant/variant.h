@@ -53,6 +53,8 @@
 #include "core/string/node_path.h"
 #include "core/string/ustring.h"
 #include "core/variant/array.h"
+#include "core/variant/typed_array.h"
+#include "core/variant/packed_typed_array.h"
 #include "core/variant/dictionary.h"
 
 class Object;
@@ -128,21 +130,23 @@ public:
 		STRING_NAME,
 		DICTIONARY, // 25
 		ARRAY,
+		TYPED_ARRAY,
+		PACKED_TYPED_ARRAY,
 
 		// arrays
 		POOL_BYTE_ARRAY,
-		POOL_INT_ARRAY,
+		POOL_INT_ARRAY, // 30
 		POOL_REAL_ARRAY,
-		POOL_STRING_ARRAY, //30
+		POOL_STRING_ARRAY,
 		POOL_VECTOR2_ARRAY,
 		POOL_VECTOR2I_ARRAY,
-		POOL_VECTOR3_ARRAY,
+		POOL_VECTOR3_ARRAY, // 35
 		POOL_VECTOR3I_ARRAY,
-		POOL_VECTOR4_ARRAY, //35
+		POOL_VECTOR4_ARRAY,
 		POOL_VECTOR4I_ARRAY,
 		POOL_COLOR_ARRAY,
 
-		VARIANT_MAX // 38
+		VARIANT_MAX // 40
 
 	};
 
@@ -250,6 +254,8 @@ public:
 
 	operator Dictionary() const;
 	operator Array() const;
+	operator TypedArray() const;
+	operator PackedTypedArray() const;
 
 	operator PoolVector<uint8_t>() const;
 	operator PoolVector<int>() const;
@@ -332,6 +338,9 @@ public:
 	Variant(const Dictionary &p_dictionary);
 
 	Variant(const Array &p_array);
+	Variant(const TypedArray &p_array);
+	Variant(const PackedTypedArray &p_array);
+
 	Variant(const PoolVector<Plane> &p_array);
 	Variant(const PoolVector<uint8_t> &p_raw_array);
 	Variant(const PoolVector<int> &p_int_array);

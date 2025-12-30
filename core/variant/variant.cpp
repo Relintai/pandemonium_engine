@@ -133,6 +133,12 @@ String Variant::get_type_name(Variant::Type p_type) {
 		case ARRAY: {
 			return "Array";
 		} break;
+		case TYPED_ARRAY: {
+			return "TypedArray";
+		} break;
+		case PACKED_TYPED_ARRAY: {
+			return "PackedTypedArray";
+		} break;
 
 		// arrays
 		case POOL_BYTE_ARRAY: {
@@ -407,10 +413,30 @@ bool Variant::can_convert(Variant::Type p_type_from, Variant::Type p_type_to) {
 
 			valid_types = valid;
 		} break;
+		case TYPED_ARRAY: {
+			static const Type valid[] = {
+				ARRAY,
+				PACKED_TYPED_ARRAY,
+				NIL
+			};
+
+			valid_types = valid;
+		} break;
+		case PACKED_TYPED_ARRAY: {
+			static const Type valid[] = {
+				ARRAY,
+				TYPED_ARRAY,
+				NIL
+			};
+
+			valid_types = valid;
+		}
 		// arrays
 		case POOL_BYTE_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 
@@ -419,6 +445,8 @@ bool Variant::can_convert(Variant::Type p_type_from, Variant::Type p_type_to) {
 		case POOL_INT_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 			valid_types = valid;
@@ -426,6 +454,8 @@ bool Variant::can_convert(Variant::Type p_type_from, Variant::Type p_type_to) {
 		case POOL_REAL_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 
@@ -434,6 +464,8 @@ bool Variant::can_convert(Variant::Type p_type_from, Variant::Type p_type_to) {
 		case POOL_STRING_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 			valid_types = valid;
@@ -441,6 +473,8 @@ bool Variant::can_convert(Variant::Type p_type_from, Variant::Type p_type_to) {
 		case POOL_VECTOR2_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 			valid_types = valid;
@@ -448,6 +482,8 @@ bool Variant::can_convert(Variant::Type p_type_from, Variant::Type p_type_to) {
 		case POOL_VECTOR2I_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 			valid_types = valid;
@@ -455,6 +491,8 @@ bool Variant::can_convert(Variant::Type p_type_from, Variant::Type p_type_to) {
 		case POOL_VECTOR3_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 			valid_types = valid;
@@ -462,6 +500,8 @@ bool Variant::can_convert(Variant::Type p_type_from, Variant::Type p_type_to) {
 		case POOL_VECTOR3I_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 			valid_types = valid;
@@ -469,6 +509,8 @@ bool Variant::can_convert(Variant::Type p_type_from, Variant::Type p_type_to) {
 		case POOL_VECTOR4_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 			valid_types = valid;
@@ -476,6 +518,8 @@ bool Variant::can_convert(Variant::Type p_type_from, Variant::Type p_type_to) {
 		case POOL_VECTOR4I_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 			valid_types = valid;
@@ -483,6 +527,8 @@ bool Variant::can_convert(Variant::Type p_type_from, Variant::Type p_type_to) {
 		case POOL_COLOR_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 
@@ -749,10 +795,30 @@ bool Variant::can_convert_strict(Variant::Type p_type_from, Variant::Type p_type
 
 			valid_types = valid;
 		} break;
+		case TYPED_ARRAY: {
+			static const Type valid[] = {
+				ARRAY,
+				PACKED_TYPED_ARRAY,
+				NIL
+			};
+
+			valid_types = valid;
+		} break;
+		case PACKED_TYPED_ARRAY: {
+			static const Type valid[] = {
+				ARRAY,
+				TYPED_ARRAY,
+				NIL
+			};
+
+			valid_types = valid;
+		}
 		// arrays
 		case POOL_BYTE_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 
@@ -761,6 +827,8 @@ bool Variant::can_convert_strict(Variant::Type p_type_from, Variant::Type p_type
 		case POOL_INT_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 			valid_types = valid;
@@ -768,6 +836,8 @@ bool Variant::can_convert_strict(Variant::Type p_type_from, Variant::Type p_type
 		case POOL_REAL_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 
@@ -776,6 +846,8 @@ bool Variant::can_convert_strict(Variant::Type p_type_from, Variant::Type p_type
 		case POOL_STRING_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 
@@ -784,6 +856,8 @@ bool Variant::can_convert_strict(Variant::Type p_type_from, Variant::Type p_type
 		case POOL_VECTOR2_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 
@@ -792,6 +866,8 @@ bool Variant::can_convert_strict(Variant::Type p_type_from, Variant::Type p_type
 		case POOL_VECTOR2I_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 
@@ -800,6 +876,8 @@ bool Variant::can_convert_strict(Variant::Type p_type_from, Variant::Type p_type
 		case POOL_VECTOR3_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 
@@ -808,6 +886,8 @@ bool Variant::can_convert_strict(Variant::Type p_type_from, Variant::Type p_type
 		case POOL_VECTOR3I_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 
@@ -816,6 +896,8 @@ bool Variant::can_convert_strict(Variant::Type p_type_from, Variant::Type p_type
 		case POOL_VECTOR4_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 
@@ -824,6 +906,8 @@ bool Variant::can_convert_strict(Variant::Type p_type_from, Variant::Type p_type
 		case POOL_VECTOR4I_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 
@@ -832,6 +916,8 @@ bool Variant::can_convert_strict(Variant::Type p_type_from, Variant::Type p_type
 		case POOL_COLOR_ARRAY: {
 			static const Type valid[] = {
 				ARRAY,
+				TYPED_ARRAY,
+				PACKED_TYPED_ARRAY,
 				NIL
 			};
 
@@ -876,6 +962,26 @@ bool Variant::deep_equal(const Variant &p_variant, int p_recursion_count) const 
 
 			const Array v1_as_a = Array(*this);
 			const Array v2_as_a = Array(p_variant);
+
+			return v1_as_a.deep_equal(v2_as_a, p_recursion_count + 1);
+		} break;
+		case Variant::Type::TYPED_ARRAY: {
+			if (p_variant.type != Variant::Type::TYPED_ARRAY) {
+				return false;
+			}
+
+			const TypedArray v1_as_a = TypedArray(*this);
+			const TypedArray v2_as_a = TypedArray(p_variant);
+
+			return v1_as_a.deep_equal(v2_as_a, p_recursion_count + 1);
+		} break;
+		case Variant::Type::PACKED_TYPED_ARRAY: {
+			if (p_variant.type != Variant::Type::PACKED_TYPED_ARRAY) {
+				return false;
+			}
+
+			const PackedTypedArray v1_as_a = PackedTypedArray(*this);
+			const PackedTypedArray v2_as_a = PackedTypedArray(p_variant);
 
 			return v1_as_a.deep_equal(v2_as_a, p_recursion_count + 1);
 		} break;
@@ -1004,6 +1110,12 @@ bool Variant::is_zero() const {
 		} break;
 		case ARRAY: {
 			return reinterpret_cast<const Array *>(_data._mem)->empty();
+		} break;
+		case TYPED_ARRAY: {
+			return reinterpret_cast<const TypedArray *>(_data._mem)->empty();
+		} break;
+		case PACKED_TYPED_ARRAY: {
+			return reinterpret_cast<const PackedTypedArray *>(_data._mem)->empty();
 		} break;
 
 		// arrays
@@ -1223,6 +1335,12 @@ void Variant::reference(const Variant &p_variant) {
 		case ARRAY: {
 			memnew_placement(_data._mem, Array(*reinterpret_cast<const Array *>(p_variant._data._mem)));
 		} break;
+		case TYPED_ARRAY: {
+			memnew_placement(_data._mem, TypedArray(*reinterpret_cast<const TypedArray *>(p_variant._data._mem)));
+		} break;
+		case PACKED_TYPED_ARRAY: {
+			memnew_placement(_data._mem, PackedTypedArray(*reinterpret_cast<const PackedTypedArray *>(p_variant._data._mem)));
+		} break;
 
 		// arrays
 		case POOL_BYTE_ARRAY: {
@@ -1387,6 +1505,12 @@ void Variant::clear() {
 		} break;
 		case ARRAY: {
 			reinterpret_cast<Array *>(_data._mem)->~Array();
+		} break;
+		case TYPED_ARRAY: {
+			reinterpret_cast<TypedArray *>(_data._mem)->~TypedArray();
+		} break;
+		case PACKED_TYPED_ARRAY: {
+			reinterpret_cast<PackedTypedArray *>(_data._mem)->~PackedTypedArray();
 		} break;
 
 		// arrays
@@ -1818,6 +1942,28 @@ String Variant::stringify(List<const void *> &stack) const {
 			return str;
 
 		} break;
+		case TYPED_ARRAY: {
+			TypedArray arr = operator TypedArray();
+			if (stack.find(arr.id())) {
+				return vformat("TypedArray<%s>[...]", arr.get_typename_string());
+			}
+			stack.push_back(arr.id());
+			String str = stringify_vector(arr, stack);
+			stack.erase(arr.id());
+			return str;
+
+		} break;
+		case PACKED_TYPED_ARRAY: {
+			PackedTypedArray arr = operator PackedTypedArray();
+			if (stack.find(arr.id())) {
+				return vformat("PackedTypedArray<%s>[...]", arr.get_typename_string());
+			}
+			stack.push_back(arr.id());
+			String str = stringify_vector(arr, stack);
+			stack.erase(arr.id());
+			return str;
+
+		} break;
 
 		case POOL_BYTE_ARRAY: {
 			return stringify_vector(operator PoolVector<uint8_t>(), stack);
@@ -2199,6 +2345,12 @@ inline DA _convert_array_from_variant(const Variant &p_variant) {
 		case Variant::ARRAY: {
 			return _convert_array<DA, Array>(p_variant.operator Array());
 		}
+		case Variant::TYPED_ARRAY: {
+			return _convert_array<DA, TypedArray>(p_variant.operator TypedArray());
+		}
+		case Variant::PACKED_TYPED_ARRAY: {
+			return _convert_array<DA, PackedTypedArray>(p_variant.operator PackedTypedArray());
+		}
 		case Variant::POOL_BYTE_ARRAY: {
 			return _convert_array<DA, PoolVector<uint8_t>>(p_variant.operator PoolVector<uint8_t>());
 		}
@@ -2243,6 +2395,22 @@ Variant::operator Array() const {
 		return *reinterpret_cast<const Array *>(_data._mem);
 	} else {
 		return _convert_array_from_variant<Array>(*this);
+	}
+}
+
+Variant::operator TypedArray() const {
+	if (type == TYPED_ARRAY) {
+		return *reinterpret_cast<const TypedArray *>(_data._mem);
+	} else {
+		return _convert_array_from_variant<TypedArray>(*this);
+	}
+}
+
+Variant::operator PackedTypedArray() const {
+	if (type == PACKED_TYPED_ARRAY) {
+		return *reinterpret_cast<const PackedTypedArray *>(_data._mem);
+	} else {
+		return _convert_array_from_variant<PackedTypedArray>(*this);
 	}
 }
 
@@ -2787,6 +2955,16 @@ Variant::Variant(const Array &p_array) {
 	memnew_placement(_data._mem, Array(p_array));
 }
 
+Variant::Variant(const TypedArray &p_array) {
+	type = TYPED_ARRAY;
+	memnew_placement(_data._mem, TypedArray(p_array));
+}
+
+Variant::Variant(const PackedTypedArray &p_array) {
+	type = PACKED_TYPED_ARRAY;
+	memnew_placement(_data._mem, PackedTypedArray(p_array));
+}
+
 Variant::Variant(const PoolVector<Plane> &p_array) {
 	type = ARRAY;
 
@@ -3170,6 +3348,12 @@ void Variant::operator=(const Variant &p_variant) {
 		case ARRAY: {
 			*reinterpret_cast<Array *>(_data._mem) = *reinterpret_cast<const Array *>(p_variant._data._mem);
 		} break;
+		case TYPED_ARRAY: {
+			*reinterpret_cast<TypedArray *>(_data._mem) = *reinterpret_cast<const TypedArray *>(p_variant._data._mem);
+		} break;
+		case PACKED_TYPED_ARRAY: {
+			*reinterpret_cast<PackedTypedArray *>(_data._mem) = *reinterpret_cast<const PackedTypedArray *>(p_variant._data._mem);
+		} break;
 
 		// arrays
 		case POOL_BYTE_ARRAY: {
@@ -3387,6 +3571,14 @@ uint32_t Variant::recursive_hash(int p_recursion_count) const {
 		} break;
 		case ARRAY: {
 			const Array &arr = *reinterpret_cast<const Array *>(_data._mem);
+			return arr.recursive_hash(p_recursion_count);
+		} break;
+		case TYPED_ARRAY: {
+			const TypedArray &arr = *reinterpret_cast<const TypedArray *>(_data._mem);
+			return arr.recursive_hash(p_recursion_count);
+		} break;
+		case PACKED_TYPED_ARRAY: {
+			const PackedTypedArray &arr = *reinterpret_cast<const PackedTypedArray *>(_data._mem);
 			return arr.recursive_hash(p_recursion_count);
 		} break;
 
@@ -3794,9 +3986,64 @@ bool Variant::hash_compare(const Variant &p_variant) const {
 
 			return hash_compare_color(*l, *r);
 		} break;
+
 		case ARRAY: {
 			const Array &l = *(reinterpret_cast<const Array *>(_data._mem));
 			const Array &r = *(reinterpret_cast<const Array *>(p_variant._data._mem));
+
+			if (l.size() != r.size()) {
+				return false;
+			}
+
+			for (int i = 0; i < l.size(); ++i) {
+				if (!l[i].hash_compare(r[i])) {
+					return false;
+				}
+			}
+
+			return true;
+		} break;
+
+		case TYPED_ARRAY: {
+			const TypedArray &l = *(reinterpret_cast<const TypedArray *>(_data._mem));
+			const TypedArray &r = *(reinterpret_cast<const TypedArray *>(p_variant._data._mem));
+
+			if (l.get_variant_type() != r.get_variant_type()) {
+				return false;
+			}
+
+			if (l.get_variant_type() == Variant::OBJECT) {
+				if (l.get_object_class_name() != r.get_object_class_name()) {
+					return false;
+				}
+			}
+
+			if (l.size() != r.size()) {
+				return false;
+			}
+
+			for (int i = 0; i < l.size(); ++i) {
+				if (!l[i].hash_compare(r[i])) {
+					return false;
+				}
+			}
+
+			return true;
+		} break;
+
+		case PACKED_TYPED_ARRAY: {
+			const PackedTypedArray &l = *(reinterpret_cast<const PackedTypedArray *>(_data._mem));
+			const PackedTypedArray &r = *(reinterpret_cast<const PackedTypedArray *>(p_variant._data._mem));
+
+			if (l.get_variant_type() != r.get_variant_type()) {
+				return false;
+			}
+
+			if (l.get_variant_type() == Variant::OBJECT) {
+				if (l.get_object_class_name() != r.get_object_class_name()) {
+					return false;
+				}
+			}
 
 			if (l.size() != r.size()) {
 				return false;
@@ -3899,6 +4146,10 @@ bool Variant::is_shared() const {
 		case OBJECT:
 			return true;
 		case ARRAY:
+			return true;
+		case TYPED_ARRAY:
+			return true;
+		case PACKED_TYPED_ARRAY:
 			return true;
 		case DICTIONARY:
 			return true;

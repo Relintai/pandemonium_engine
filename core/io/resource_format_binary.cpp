@@ -85,6 +85,8 @@ enum {
 	VARIANT_PROJECTION = 50,
 	VARIANT_VECTOR4_ARRAY = 51,
 	VARIANT_VECTOR4I_ARRAY = 52,
+	VARIANT_TYPED_ARRAY = 53,
+	VARIANT_PACKED_TYPED_ARRAY = 54,
 
 	OBJECT_EMPTY = 0,
 	OBJECT_EXTERNAL_RESOURCE = 1,
@@ -451,7 +453,66 @@ Error ResourceInteractiveLoaderBinary::parse_variant(Variant &r_v) {
 		} break;
 		case VARIANT_ARRAY: {
 			uint32_t len = f->get_32();
-			Array a; //last bit means shared
+			Array a;
+			//last bit means shared
+			len &= 0x7FFFFFFF;
+			a.resize(len);
+			for (uint32_t i = 0; i < len; i++) {
+				Variant val;
+				Error err = parse_variant(val);
+				ERR_FAIL_COND_V_MSG(err, ERR_FILE_CORRUPT, "Error when trying to parse Variant.");
+				a[i] = val;
+			}
+			r_v = a;
+
+		} break;
+		case VARIANT_TYPED_ARRAY: {
+			Variant::Type variant_type = static_cast<Variant::Type>(f->get_8());
+			StringName object_class_name;
+
+			if (variant_type == Variant::OBJECT) {
+				Variant val;
+				Error err = parse_variant(val);
+				ERR_FAIL_COND_V_MSG(err, ERR_FILE_CORRUPT, "Error when trying to parse Variant.");
+				ERR_FAIL_COND_V_MSG(val.get_type() != Variant::STRING_NAME, ERR_FILE_CORRUPT, "Error when trying to parse Variant.");
+				object_class_name = val;
+			}
+
+			TypedArray a;
+			a.set_variant_type(variant_type);
+			a.set_object_class_name(object_class_name);
+
+			//last bit means shared
+			uint32_t len = f->get_32();
+			len &= 0x7FFFFFFF;
+			a.resize(len);
+			for (uint32_t i = 0; i < len; i++) {
+				Variant val;
+				Error err = parse_variant(val);
+				ERR_FAIL_COND_V_MSG(err, ERR_FILE_CORRUPT, "Error when trying to parse Variant.");
+				a[i] = val;
+			}
+			r_v = a;
+
+		} break;
+		case VARIANT_PACKED_TYPED_ARRAY: {
+			Variant::Type variant_type = static_cast<Variant::Type>(f->get_8());
+			StringName object_class_name;
+
+			if (variant_type == Variant::OBJECT) {
+				Variant val;
+				Error err = parse_variant(val);
+				ERR_FAIL_COND_V_MSG(err, ERR_FILE_CORRUPT, "Error when trying to parse Variant.");
+				ERR_FAIL_COND_V_MSG(val.get_type() != Variant::STRING_NAME, ERR_FILE_CORRUPT, "Error when trying to parse Variant.");
+				object_class_name = val;
+			}
+
+			PackedTypedArray a;
+			a.set_variant_type(variant_type);
+			a.set_object_class_name(object_class_name);
+
+			//last bit means shared
+			uint32_t len = f->get_32();
 			len &= 0x7FFFFFFF;
 			a.resize(len);
 			for (uint32_t i = 0; i < len; i++) {
@@ -1647,6 +1708,34 @@ void ResourceFormatSaverBinaryInstance::write_variant(FileAccess *f, const Varia
 			}
 
 		} break;
+		case Variant::TYPED_ARRAY: {
+			f->store_32(VARIANT_TYPED_ARRAY);
+			TypedArray a = p_property;
+			f->store_8(a.get_variant_type());
+			if (a.get_variant_type() == Variant::OBJECT) {
+				Variant v = a.get_object_class_name();
+				write_variant(f, v, resource_set, external_resources, string_map);
+			}
+			f->store_32(uint32_t(a.size()));
+			for (int i = 0; i < a.size(); i++) {
+				write_variant(f, a[i], resource_set, external_resources, string_map);
+			}
+
+		} break;
+		case Variant::PACKED_TYPED_ARRAY: {
+			f->store_32(VARIANT_PACKED_TYPED_ARRAY);
+			PackedTypedArray a = p_property;
+			f->store_8(a.get_variant_type());
+			if (a.get_variant_type() == Variant::OBJECT) {
+				Variant v = a.get_object_class_name();
+				write_variant(f, v, resource_set, external_resources, string_map);
+			}
+			f->store_32(uint32_t(a.size()));
+			for (int i = 0; i < a.size(); i++) {
+				write_variant(f, a[i], resource_set, external_resources, string_map);
+			}
+
+		} break;
 		case Variant::POOL_BYTE_ARRAY: {
 			f->store_32(VARIANT_RAW_ARRAY);
 			PoolVector<uint8_t> arr = p_property;
@@ -1842,6 +1931,26 @@ void ResourceFormatSaverBinaryInstance::_find_resources(const Variant &p_variant
 
 		case Variant::ARRAY: {
 			Array varray = p_variant;
+			int len = varray.size();
+			for (int i = 0; i < len; i++) {
+				const Variant &v = varray.get(i);
+				_find_resources(v);
+			}
+
+		} break;
+
+		case Variant::TYPED_ARRAY: {
+			TypedArray varray = p_variant;
+			int len = varray.size();
+			for (int i = 0; i < len; i++) {
+				const Variant &v = varray.get(i);
+				_find_resources(v);
+			}
+
+		} break;
+
+		case Variant::PACKED_TYPED_ARRAY: {
+			PackedTypedArray varray = p_variant;
 			int len = varray.size();
 			for (int i = 0; i < len; i++) {
 				const Variant &v = varray.get(i);

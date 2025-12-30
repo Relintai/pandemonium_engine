@@ -38,6 +38,7 @@ class Variant;
 class PackedTypedArrayPrivate;
 class Object;
 class StringName;
+class String;
 
 class PackedTypedArray {
 	mutable PackedTypedArrayPrivate *_p;
@@ -109,6 +110,18 @@ public:
 	bool operator>=(const PackedTypedArray &p_array) const;
 
 	const void *id() const;
+
+	String get_typename_string() const;
+
+	int get_variant_type() const;
+	void set_variant_type(const int p_variant_type);
+
+	StringName get_object_class_name() const;
+	void set_object_class_name(const StringName &p_object_type_name);
+
+	void set_type_from(const PackedTypedArray &p_array);
+
+	bool can_take_variant(const Variant &p_value);
 
 	PackedTypedArray(const PackedTypedArray &p_from);
 	PackedTypedArray();

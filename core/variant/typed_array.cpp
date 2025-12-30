@@ -527,6 +527,47 @@ const void *TypedArray::id() const {
 	return _p;
 }
 
+String TypedArray::get_typename_string() const {
+	if (_p->type == Variant::OBJECT) {
+		return _p->object_class_name;
+	}
+
+	return Variant::get_type_name(_p->type);
+}
+
+int TypedArray::get_variant_type() const {
+	return _p->type;
+}
+void TypedArray::set_variant_type(const int p_variant_type) {
+	_p->type = static_cast<Variant::Type>(p_variant_type);
+}
+
+StringName TypedArray::get_object_class_name() const {
+	return _p->object_class_name;
+}
+void TypedArray::set_object_class_name(const StringName &p_object_type_name) {
+	_p->object_class_name = p_object_type_name;
+}
+
+void TypedArray::set_type_from(const TypedArray &p_array) {
+	ERR_FAIL_COND(_p->array.size() > 0);
+
+	_p->type = p_array._p->type;
+	_p->object_class_name = p_array._p->object_class_name;
+}
+
+bool TypedArray::can_take_variant(const Variant &p_value) {
+	if (_p->type != p_value.get_type()) {
+		return false;
+	}
+
+	if (_p->type == Variant::OBJECT) {
+		//TODO check type
+	}
+
+	return true;
+}
+
 TypedArray::TypedArray(const TypedArray &p_from) {
 	_p = nullptr;
 	_ref(p_from);

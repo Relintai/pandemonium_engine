@@ -137,6 +137,8 @@ MAKE_PTRARG(NodePath);
 MAKE_PTRARG(RID);
 MAKE_PTRARG(Dictionary);
 MAKE_PTRARG(Array);
+MAKE_PTRARG(TypedArray);
+MAKE_PTRARG(PackedTypedArray);
 MAKE_PTRARG(PoolByteArray);
 MAKE_PTRARG(PoolIntArray);
 MAKE_PTRARG(PoolRealArray);

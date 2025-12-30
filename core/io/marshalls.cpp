@@ -622,6 +622,129 @@ Error decode_variant(Variant &r_variant, const uint8_t *p_buffer, int p_len, int
 			r_variant = varr;
 
 		} break;
+		case Variant::TYPED_ARRAY: {
+			ERR_FAIL_COND_V(len < 5, ERR_INVALID_DATA);
+
+			Variant::Type variant_type = static_cast<Variant::Type>(buf[0]);
+			buf += 1;
+			len -= 1;
+
+			if (r_len) {
+				(*r_len) += 1;
+			}
+
+			StringName object_class_name;
+
+			if (variant_type == Variant::OBJECT) {
+				int used = 0;
+				Variant v;
+				Error err = decode_variant(v, buf, len, &used, p_allow_objects, p_depth + 1);
+				ERR_FAIL_COND_V_MSG(err != OK, err, "Error when trying to decode Variant.");
+				buf += used;
+				len -= used;
+
+				ERR_FAIL_COND_V_MSG(v.get_type() != Variant::STRING_NAME, ERR_INVALID_DATA, "Error when trying to decode Variant.");
+
+				object_class_name = v;
+
+				if (r_len) {
+					(*r_len) += used;
+				}
+			}
+
+			int32_t count = decode_uint32(buf);
+			//  bool shared = count&0x80000000;
+			count &= 0x7FFFFFFF;
+
+			buf += 4;
+			len -= 4;
+
+			if (r_len) {
+				(*r_len) += 4;
+			}
+
+			TypedArray varr;
+			varr.set_variant_type(variant_type);
+			varr.set_object_class_name(object_class_name);
+
+			for (int i = 0; i < count; i++) {
+				int used = 0;
+				Variant v;
+				Error err = decode_variant(v, buf, len, &used, p_allow_objects, p_depth + 1);
+				ERR_FAIL_COND_V_MSG(err != OK, err, "Error when trying to decode Variant.");
+				buf += used;
+				len -= used;
+				varr.push_back(v);
+				if (r_len) {
+					(*r_len) += used;
+				}
+			}
+
+			r_variant = varr;
+
+		} break;
+
+		case Variant::PACKED_TYPED_ARRAY: {
+			ERR_FAIL_COND_V(len < 5, ERR_INVALID_DATA);
+
+			Variant::Type variant_type = static_cast<Variant::Type>(buf[0]);
+			buf += 1;
+			len -= 1;
+
+			if (r_len) {
+				(*r_len) += 1;
+			}
+
+			StringName object_class_name;
+
+			if (variant_type == Variant::OBJECT) {
+				int used = 0;
+				Variant v;
+				Error err = decode_variant(v, buf, len, &used, p_allow_objects, p_depth + 1);
+				ERR_FAIL_COND_V_MSG(err != OK, err, "Error when trying to decode Variant.");
+				buf += used;
+				len -= used;
+
+				ERR_FAIL_COND_V_MSG(v.get_type() != Variant::STRING_NAME, ERR_INVALID_DATA, "Error when trying to decode Variant.");
+
+				object_class_name = v;
+
+				if (r_len) {
+					(*r_len) += used;
+				}
+			}
+
+			int32_t count = decode_uint32(buf);
+			//  bool shared = count&0x80000000;
+			count &= 0x7FFFFFFF;
+
+			buf += 4;
+			len -= 4;
+
+			if (r_len) {
+				(*r_len) += 4;
+			}
+
+			PackedTypedArray varr;
+			varr.set_variant_type(variant_type);
+			varr.set_object_class_name(object_class_name);
+
+			for (int i = 0; i < count; i++) {
+				int used = 0;
+				Variant v;
+				Error err = decode_variant(v, buf, len, &used, p_allow_objects, p_depth + 1);
+				ERR_FAIL_COND_V_MSG(err != OK, err, "Error when trying to decode Variant.");
+				buf += used;
+				len -= used;
+				varr.push_back(v);
+				if (r_len) {
+					(*r_len) += used;
+				}
+			}
+
+			r_variant = varr;
+
+		} break;
 
 		// arrays
 		case Variant::POOL_BYTE_ARRAY: {
@@ -1453,6 +1576,86 @@ Error encode_variant(const Variant &p_variant, uint8_t *r_buffer, int &r_len, bo
 		} break;
 		case Variant::ARRAY: {
 			Array v = p_variant;
+
+			if (buf) {
+				encode_uint32(uint32_t(v.size()), buf);
+				buf += 4;
+			}
+
+			r_len += 4;
+
+			for (int i = 0; i < v.size(); i++) {
+				int len;
+				Error err = encode_variant(v.get(i), buf, len, p_full_objects, p_depth + 1);
+				ERR_FAIL_COND_V(err, err);
+				ERR_FAIL_COND_V(len % 4, ERR_BUG);
+				r_len += len;
+				if (buf) {
+					buf += len;
+				}
+			}
+
+		} break;
+		case Variant::TYPED_ARRAY: {
+			TypedArray v = p_variant;
+
+			if (buf) {
+				*buf = v.get_variant_type();
+				buf += 1;
+			}
+
+			r_len += 1;
+
+			if (v.get_variant_type() == Variant::OBJECT) {
+				int len;
+				Error err = encode_variant(v.get_object_class_name(), buf, len, p_full_objects, p_depth + 1);
+				ERR_FAIL_COND_V(err, err);
+				ERR_FAIL_COND_V(len % 4, ERR_BUG);
+				r_len += len;
+				if (buf) {
+					buf += len;
+				}
+			}
+
+			if (buf) {
+				encode_uint32(uint32_t(v.size()), buf);
+				buf += 4;
+			}
+
+			r_len += 4;
+
+			for (int i = 0; i < v.size(); i++) {
+				int len;
+				Error err = encode_variant(v.get(i), buf, len, p_full_objects, p_depth + 1);
+				ERR_FAIL_COND_V(err, err);
+				ERR_FAIL_COND_V(len % 4, ERR_BUG);
+				r_len += len;
+				if (buf) {
+					buf += len;
+				}
+			}
+
+		} break;
+		case Variant::PACKED_TYPED_ARRAY: {
+			PackedTypedArray v = p_variant;
+
+			if (buf) {
+				*buf = v.get_variant_type();
+				buf += 1;
+			}
+
+			r_len += 1;
+
+			if (v.get_variant_type() == Variant::OBJECT) {
+				int len;
+				Error err = encode_variant(v.get_object_class_name(), buf, len, p_full_objects, p_depth + 1);
+				ERR_FAIL_COND_V(err, err);
+				ERR_FAIL_COND_V(len % 4, ERR_BUG);
+				r_len += len;
+				if (buf) {
+					buf += len;
+				}
+			}
 
 			if (buf) {
 				encode_uint32(uint32_t(v.size()), buf);

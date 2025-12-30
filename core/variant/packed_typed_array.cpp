@@ -32,8 +32,8 @@
 #include "packed_typed_array.h"
 
 #include "core/containers/hashfuncs.h"
-#include "core/containers/vector.h"
 #include "core/containers/local_vector.h"
+#include "core/containers/vector.h"
 #include "core/object/object.h"
 #include "core/variant/variant.h"
 
@@ -560,6 +560,47 @@ bool PackedTypedArray::operator>=(const PackedTypedArray &p_array) const {
 
 const void *PackedTypedArray::id() const {
 	return _p;
+}
+
+String PackedTypedArray::get_typename_string() const {
+	if (_p->type == Variant::OBJECT) {
+		return _p->object_class_name;
+	}
+
+	return Variant::get_type_name(_p->type);
+}
+
+int PackedTypedArray::get_variant_type() const {
+	return _p->type;
+}
+void PackedTypedArray::set_variant_type(const int p_variant_type) {
+	_p->type = static_cast<Variant::Type>(p_variant_type);
+}
+
+StringName PackedTypedArray::get_object_class_name() const {
+	return _p->object_class_name;
+}
+void PackedTypedArray::set_object_class_name(const StringName &p_object_type_name) {
+	_p->object_class_name = p_object_type_name;
+}
+
+void PackedTypedArray::set_type_from(const PackedTypedArray &p_array) {
+	ERR_FAIL_COND(_p->array.size() > 0);
+
+	_p->type = p_array._p->type;
+	_p->object_class_name = p_array._p->object_class_name;
+}
+
+bool PackedTypedArray::can_take_variant(const Variant &p_value) {
+	if (_p->type != p_value.get_type()) {
+		return false;
+	}
+
+	if (_p->type == Variant::OBJECT) {
+		//TODO check type
+	}
+
+	return true;
 }
 
 PackedTypedArray::PackedTypedArray(const PackedTypedArray &p_from) {

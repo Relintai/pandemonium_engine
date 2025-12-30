@@ -878,6 +878,7 @@ struct _VariantCall {
 	VCALL_LOCALMEM2R(Dictionary, get);
 	VCALL_LOCALMEM2R(Dictionary, get_or_add);
 
+	// Array
 	VCALL_LOCALMEM2(Array, set);
 	VCALL_LOCALMEM1R(Array, get);
 	VCALL_LOCALMEM0R(Array, size);
@@ -914,6 +915,81 @@ struct _VariantCall {
 	VCALL_LOCALMEM0R(Array, max);
 	VCALL_LOCALMEM0R(Array, min);
 
+	// TypedArray
+	VCALL_LOCALMEM2(TypedArray, set);
+	VCALL_LOCALMEM1R(TypedArray, get);
+	VCALL_LOCALMEM0R(TypedArray, size);
+	VCALL_LOCALMEM0R(TypedArray, empty);
+	VCALL_LOCALMEM0(TypedArray, clear);
+	VCALL_LOCALMEM0R(TypedArray, hash);
+	VCALL_LOCALMEM1(TypedArray, push_back);
+	VCALL_LOCALMEM1(TypedArray, push_front);
+	VCALL_LOCALMEM0R(TypedArray, pop_back);
+	VCALL_LOCALMEM0R(TypedArray, pop_front);
+	VCALL_LOCALMEM1R(TypedArray, pop_at);
+	VCALL_LOCALMEM1(TypedArray, append);
+	VCALL_LOCALMEM1(TypedArray, append_array);
+	VCALL_LOCALMEM1(TypedArray, fill);
+	VCALL_LOCALMEM1(TypedArray, resize);
+	VCALL_LOCALMEM2(TypedArray, insert);
+	VCALL_LOCALMEM1(TypedArray, remove);
+	VCALL_LOCALMEM0R(TypedArray, front);
+	VCALL_LOCALMEM0R(TypedArray, back);
+	VCALL_LOCALMEM2R(TypedArray, find);
+	VCALL_LOCALMEM2R(TypedArray, rfind);
+	VCALL_LOCALMEM1R(TypedArray, find_last);
+	VCALL_LOCALMEM1R(TypedArray, count);
+	VCALL_LOCALMEM1R(TypedArray, has);
+	VCALL_LOCALMEM1(TypedArray, erase);
+	VCALL_LOCALMEM0(TypedArray, sort);
+	VCALL_LOCALMEM2(TypedArray, sort_custom);
+	VCALL_LOCALMEM0(TypedArray, shuffle);
+	VCALL_LOCALMEM2R(TypedArray, bsearch);
+	VCALL_LOCALMEM4R(TypedArray, bsearch_custom);
+	VCALL_LOCALMEM1R(TypedArray, duplicate);
+	VCALL_LOCALMEM4R(TypedArray, slice);
+	VCALL_LOCALMEM0(TypedArray, invert);
+	VCALL_LOCALMEM0R(TypedArray, max);
+	VCALL_LOCALMEM0R(TypedArray, min);
+
+	// PackedTypedArray
+	VCALL_LOCALMEM2(PackedTypedArray, set);
+	VCALL_LOCALMEM1R(PackedTypedArray, get);
+	VCALL_LOCALMEM0R(PackedTypedArray, size);
+	VCALL_LOCALMEM0R(PackedTypedArray, empty);
+	VCALL_LOCALMEM0(PackedTypedArray, clear);
+	VCALL_LOCALMEM0R(PackedTypedArray, hash);
+	VCALL_LOCALMEM1(PackedTypedArray, push_back);
+	VCALL_LOCALMEM1(PackedTypedArray, push_front);
+	VCALL_LOCALMEM0R(PackedTypedArray, pop_back);
+	VCALL_LOCALMEM0R(PackedTypedArray, pop_front);
+	VCALL_LOCALMEM1R(PackedTypedArray, pop_at);
+	VCALL_LOCALMEM1(PackedTypedArray, append);
+	VCALL_LOCALMEM1(PackedTypedArray, append_array);
+	VCALL_LOCALMEM1(PackedTypedArray, fill);
+	VCALL_LOCALMEM1(PackedTypedArray, resize);
+	VCALL_LOCALMEM2(PackedTypedArray, insert);
+	VCALL_LOCALMEM1(PackedTypedArray, remove);
+	VCALL_LOCALMEM0R(PackedTypedArray, front);
+	VCALL_LOCALMEM0R(PackedTypedArray, back);
+	VCALL_LOCALMEM2R(PackedTypedArray, find);
+	VCALL_LOCALMEM2R(PackedTypedArray, rfind);
+	VCALL_LOCALMEM1R(PackedTypedArray, find_last);
+	VCALL_LOCALMEM1R(PackedTypedArray, count);
+	VCALL_LOCALMEM1R(PackedTypedArray, has);
+	VCALL_LOCALMEM1(PackedTypedArray, erase);
+	VCALL_LOCALMEM0(PackedTypedArray, sort);
+	VCALL_LOCALMEM2(PackedTypedArray, sort_custom);
+	VCALL_LOCALMEM0(PackedTypedArray, shuffle);
+	VCALL_LOCALMEM2R(PackedTypedArray, bsearch);
+	VCALL_LOCALMEM4R(PackedTypedArray, bsearch_custom);
+	VCALL_LOCALMEM1R(PackedTypedArray, duplicate);
+	VCALL_LOCALMEM4R(PackedTypedArray, slice);
+	VCALL_LOCALMEM0(PackedTypedArray, invert);
+	VCALL_LOCALMEM0R(PackedTypedArray, max);
+	VCALL_LOCALMEM0R(PackedTypedArray, min);
+
+	// PoolByteArray
 	static void _call_PoolByteArray_get_string_from_ascii(Variant &r_ret, Variant &p_self, const Variant **p_args) {
 		PoolByteArray *ba = reinterpret_cast<PoolByteArray *>(p_self._data._mem);
 		String s;
@@ -2043,6 +2119,10 @@ Variant Variant::construct(const Variant::Type p_type, const Variant **p_args, i
 				return Dictionary();
 			case ARRAY:
 				return Array();
+			case TYPED_ARRAY:
+				return TypedArray();
+			case PACKED_TYPED_ARRAY:
+				return PackedTypedArray();
 			case POOL_BYTE_ARRAY:
 				return PoolByteArray();
 			case POOL_INT_ARRAY:
@@ -2140,6 +2220,10 @@ Variant Variant::construct(const Variant::Type p_type, const Variant **p_args, i
 				return p_args[0]->operator Dictionary();
 			case ARRAY:
 				return p_args[0]->operator Array(); // 20
+			case TYPED_ARRAY:
+				return p_args[0]->operator TypedArray();
+			case PACKED_TYPED_ARRAY:
+				return p_args[0]->operator PackedTypedArray();
 
 			// arrays
 			case POOL_BYTE_ARRAY:
@@ -2995,6 +3079,74 @@ void register_variant_methods() {
 	ADDFUNC4R(ARRAY, ARRAY, Array, slice, INT, "begin", INT, "end", INT, "step", BOOL, "deep", varray(1, false));
 	ADDFUNC0R(ARRAY, NIL, Array, max, varray());
 	ADDFUNC0R(ARRAY, NIL, Array, min, varray());
+
+	ADDFUNC0R(TYPED_ARRAY, INT, TypedArray, size, varray());
+	ADDFUNC0R(TYPED_ARRAY, BOOL, TypedArray, empty, varray());
+	ADDFUNC0NC(TYPED_ARRAY, NIL, TypedArray, clear, varray());
+	ADDFUNC0R(TYPED_ARRAY, INT, TypedArray, hash, varray());
+	ADDFUNC1NC(TYPED_ARRAY, NIL, TypedArray, push_back, NIL, "value", varray());
+	ADDFUNC1NC(TYPED_ARRAY, NIL, TypedArray, push_front, NIL, "value", varray());
+	ADDFUNC1NC(TYPED_ARRAY, NIL, TypedArray, fill, NIL, "value", varray());
+	ADDFUNC1NC(TYPED_ARRAY, NIL, TypedArray, append, NIL, "value", varray());
+	ADDFUNC1NC(TYPED_ARRAY, NIL, TypedArray, append_array, TYPED_ARRAY, "array", varray());
+	ADDFUNC1NC(TYPED_ARRAY, NIL, TypedArray, resize, INT, "size", varray());
+	ADDFUNC2NC(TYPED_ARRAY, NIL, TypedArray, insert, INT, "position", NIL, "value", varray());
+	ADDFUNC1NC(TYPED_ARRAY, NIL, TypedArray, remove, INT, "position", varray());
+	ADDFUNC1NC(TYPED_ARRAY, NIL, TypedArray, erase, NIL, "value", varray());
+	ADDFUNC0R(TYPED_ARRAY, NIL, TypedArray, front, varray());
+	ADDFUNC0R(TYPED_ARRAY, NIL, TypedArray, back, varray());
+	ADDFUNC2R(TYPED_ARRAY, INT, TypedArray, find, NIL, "what", INT, "from", varray(0));
+	ADDFUNC2R(TYPED_ARRAY, INT, TypedArray, rfind, NIL, "what", INT, "from", varray(-1));
+	ADDFUNC1R(TYPED_ARRAY, INT, TypedArray, find_last, NIL, "value", varray());
+	ADDFUNC1R(TYPED_ARRAY, INT, TypedArray, count, NIL, "value", varray());
+	ADDFUNC1R(TYPED_ARRAY, BOOL, TypedArray, has, NIL, "value", varray());
+	ADDFUNC0RNC(TYPED_ARRAY, NIL, TypedArray, pop_back, varray());
+	ADDFUNC0RNC(TYPED_ARRAY, NIL, TypedArray, pop_front, varray());
+	ADDFUNC1RNC(TYPED_ARRAY, NIL, TypedArray, pop_at, INT, "position", varray());
+	ADDFUNC0NC(TYPED_ARRAY, NIL, TypedArray, sort, varray());
+	ADDFUNC2NC(TYPED_ARRAY, NIL, TypedArray, sort_custom, OBJECT, "obj", STRING, "func", varray());
+	ADDFUNC0NC(TYPED_ARRAY, NIL, TypedArray, shuffle, varray());
+	ADDFUNC2R(TYPED_ARRAY, INT, TypedArray, bsearch, NIL, "value", BOOL, "before", varray(true));
+	ADDFUNC4R(TYPED_ARRAY, INT, TypedArray, bsearch_custom, NIL, "value", OBJECT, "obj", STRING, "func", BOOL, "before", varray(true));
+	ADDFUNC0NC(TYPED_ARRAY, NIL, TypedArray, invert, varray());
+	ADDFUNC1R(TYPED_ARRAY, TYPED_ARRAY, TypedArray, duplicate, BOOL, "deep", varray(false));
+	ADDFUNC4R(TYPED_ARRAY, TYPED_ARRAY, TypedArray, slice, INT, "begin", INT, "end", INT, "step", BOOL, "deep", varray(1, false));
+	ADDFUNC0R(TYPED_ARRAY, NIL, TypedArray, max, varray());
+	ADDFUNC0R(TYPED_ARRAY, NIL, TypedArray, min, varray());
+
+	ADDFUNC0R(PACKED_TYPED_ARRAY, INT, PackedTypedArray, size, varray());
+	ADDFUNC0R(PACKED_TYPED_ARRAY, BOOL, PackedTypedArray, empty, varray());
+	ADDFUNC0NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, clear, varray());
+	ADDFUNC0R(PACKED_TYPED_ARRAY, INT, PackedTypedArray, hash, varray());
+	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, push_back, NIL, "value", varray());
+	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, push_front, NIL, "value", varray());
+	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, fill, NIL, "value", varray());
+	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, append, NIL, "value", varray());
+	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, append_array, PACKED_TYPED_ARRAY, "array", varray());
+	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, resize, INT, "size", varray());
+	ADDFUNC2NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, insert, INT, "position", NIL, "value", varray());
+	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, remove, INT, "position", varray());
+	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, erase, NIL, "value", varray());
+	ADDFUNC0R(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, front, varray());
+	ADDFUNC0R(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, back, varray());
+	ADDFUNC2R(PACKED_TYPED_ARRAY, INT, PackedTypedArray, find, NIL, "what", INT, "from", varray(0));
+	ADDFUNC2R(PACKED_TYPED_ARRAY, INT, PackedTypedArray, rfind, NIL, "what", INT, "from", varray(-1));
+	ADDFUNC1R(PACKED_TYPED_ARRAY, INT, PackedTypedArray, find_last, NIL, "value", varray());
+	ADDFUNC1R(PACKED_TYPED_ARRAY, INT, PackedTypedArray, count, NIL, "value", varray());
+	ADDFUNC1R(PACKED_TYPED_ARRAY, BOOL, PackedTypedArray, has, NIL, "value", varray());
+	ADDFUNC0RNC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, pop_back, varray());
+	ADDFUNC0RNC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, pop_front, varray());
+	ADDFUNC1RNC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, pop_at, INT, "position", varray());
+	ADDFUNC0NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, sort, varray());
+	ADDFUNC2NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, sort_custom, OBJECT, "obj", STRING, "func", varray());
+	ADDFUNC0NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, shuffle, varray());
+	ADDFUNC2R(PACKED_TYPED_ARRAY, INT, PackedTypedArray, bsearch, NIL, "value", BOOL, "before", varray(true));
+	ADDFUNC4R(PACKED_TYPED_ARRAY, INT, PackedTypedArray, bsearch_custom, NIL, "value", OBJECT, "obj", STRING, "func", BOOL, "before", varray(true));
+	ADDFUNC0NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, invert, varray());
+	ADDFUNC1R(PACKED_TYPED_ARRAY, PACKED_TYPED_ARRAY, PackedTypedArray, duplicate, BOOL, "deep", varray(false));
+	ADDFUNC4R(PACKED_TYPED_ARRAY, PACKED_TYPED_ARRAY, PackedTypedArray, slice, INT, "begin", INT, "end", INT, "step", BOOL, "deep", varray(1, false));
+	ADDFUNC0R(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, max, varray());
+	ADDFUNC0R(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, min, varray());
 
 	ADDFUNC0R(POOL_BYTE_ARRAY, INT, PoolByteArray, size, varray());
 	ADDFUNC0R(POOL_BYTE_ARRAY, BOOL, PoolByteArray, empty, varray());

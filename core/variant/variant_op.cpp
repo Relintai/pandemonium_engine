@@ -67,6 +67,8 @@
 	CASE_TYPE(PREFIX, OP, STRING_NAME)         \
 	CASE_TYPE(PREFIX, OP, DICTIONARY)          \
 	CASE_TYPE(PREFIX, OP, ARRAY)               \
+	CASE_TYPE(PREFIX, OP, TYPED_ARRAY)         \
+	CASE_TYPE(PREFIX, OP, PACKED_TYPED_ARRAY)  \
 	CASE_TYPE(PREFIX, OP, POOL_BYTE_ARRAY)     \
 	CASE_TYPE(PREFIX, OP, POOL_INT_ARRAY)      \
 	CASE_TYPE(PREFIX, OP, POOL_REAL_ARRAY)     \
@@ -112,6 +114,8 @@
 		TYPE(PREFIX, OP, STRING_NAME),         \
 		TYPE(PREFIX, OP, DICTIONARY),          \
 		TYPE(PREFIX, OP, ARRAY),               \
+		TYPE(PREFIX, OP, TYPED_ARRAY),         \
+		TYPE(PREFIX, OP, PACKED_TYPED_ARRAY),  \
 		TYPE(PREFIX, OP, POOL_BYTE_ARRAY),     \
 		TYPE(PREFIX, OP, POOL_INT_ARRAY),      \
 		TYPE(PREFIX, OP, POOL_REAL_ARRAY),     \
@@ -127,7 +131,7 @@
 
 /* clang-format on */
 
-#define CASES(PREFIX) static const void *switch_table_##PREFIX[25][38] = { \
+#define CASES(PREFIX) static const void *switch_table_##PREFIX[25][40] = { \
 	TYPES(PREFIX, OP_EQUAL),                                               \
 	TYPES(PREFIX, OP_NOT_EQUAL),                                           \
 	TYPES(PREFIX, OP_LESS),                                                \
@@ -540,6 +544,68 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 				_RETURN(true);
 			}
 
+			CASE_TYPE(math, OP_EQUAL, TYPED_ARRAY) {
+				if (p_b.type != TYPED_ARRAY) {
+					if (p_b.type == NIL)
+						_RETURN(false);
+					_RETURN_FAIL;
+				}
+				const TypedArray *arr_a = reinterpret_cast<const TypedArray *>(p_a._data._mem);
+				const TypedArray *arr_b = reinterpret_cast<const TypedArray *>(p_b._data._mem);
+
+				if (arr_a->get_variant_type() != arr_b->get_variant_type()) {
+					_RETURN(false);
+				}
+
+				if (arr_a->get_variant_type() == Variant::OBJECT) {
+					if (arr_a->get_object_class_name() != arr_b->get_object_class_name()) {
+						_RETURN(false);
+					}
+				}
+
+				int l = arr_a->size();
+				if (arr_b->size() != l)
+					_RETURN(false);
+				for (int i = 0; i < l; i++) {
+					if (!((*arr_a)[i] == (*arr_b)[i])) {
+						_RETURN(false);
+					}
+				}
+
+				_RETURN(true);
+			}
+
+			CASE_TYPE(math, OP_EQUAL, PACKED_TYPED_ARRAY) {
+				if (p_b.type != PACKED_TYPED_ARRAY) {
+					if (p_b.type == NIL)
+						_RETURN(false);
+					_RETURN_FAIL;
+				}
+				const PackedTypedArray *arr_a = reinterpret_cast<const PackedTypedArray *>(p_a._data._mem);
+				const PackedTypedArray *arr_b = reinterpret_cast<const PackedTypedArray *>(p_b._data._mem);
+
+				if (arr_a->get_variant_type() != arr_b->get_variant_type()) {
+					_RETURN(false);
+				}
+
+				if (arr_a->get_variant_type() == Variant::OBJECT) {
+					if (arr_a->get_object_class_name() != arr_b->get_object_class_name()) {
+						_RETURN(false);
+					}
+				}
+
+				int l = arr_a->size();
+				if (arr_b->size() != l)
+					_RETURN(false);
+				for (int i = 0; i < l; i++) {
+					if (!((*arr_a)[i] == (*arr_b)[i])) {
+						_RETURN(false);
+					}
+				}
+
+				_RETURN(true);
+			}
+
 			DEFAULT_OP_NUM_NULL(math, OP_EQUAL, INT, ==, _int);
 			DEFAULT_OP_NUM_NULL(math, OP_EQUAL, REAL, ==, _real);
 			DEFAULT_OP_STR_NULL(math, OP_EQUAL, STRING, ==, String);
@@ -642,6 +708,70 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 				_RETURN(false);
 			}
 
+			CASE_TYPE(math, OP_NOT_EQUAL, TYPED_ARRAY) {
+				if (p_b.type != TYPED_ARRAY) {
+					if (p_b.type == NIL)
+						_RETURN(true);
+
+					_RETURN_FAIL;
+				}
+				const TypedArray *arr_a = reinterpret_cast<const TypedArray *>(p_a._data._mem);
+				const TypedArray *arr_b = reinterpret_cast<const TypedArray *>(p_b._data._mem);
+
+				if (arr_a->get_variant_type() != arr_b->get_variant_type()) {
+					_RETURN(true);
+				}
+
+				if (arr_a->get_variant_type() == Variant::OBJECT) {
+					if (arr_a->get_object_class_name() != arr_b->get_object_class_name()) {
+						_RETURN(true);
+					}
+				}
+
+				int l = arr_a->size();
+				if (arr_b->size() != l)
+					_RETURN(true);
+				for (int i = 0; i < l; i++) {
+					if (!((*arr_a)[i] == (*arr_b)[i])) {
+						_RETURN(true);
+					}
+				}
+
+				_RETURN(false);
+			}
+
+			CASE_TYPE(math, OP_NOT_EQUAL, PACKED_TYPED_ARRAY) {
+				if (p_b.type != PACKED_TYPED_ARRAY) {
+					if (p_b.type == NIL)
+						_RETURN(true);
+
+					_RETURN_FAIL;
+				}
+				const PackedTypedArray *arr_a = reinterpret_cast<const PackedTypedArray *>(p_a._data._mem);
+				const PackedTypedArray *arr_b = reinterpret_cast<const PackedTypedArray *>(p_b._data._mem);
+
+				if (arr_a->get_variant_type() != arr_b->get_variant_type()) {
+					_RETURN(true);
+				}
+
+				if (arr_a->get_variant_type() == Variant::OBJECT) {
+					if (arr_a->get_object_class_name() != arr_b->get_object_class_name()) {
+						_RETURN(true);
+					}
+				}
+
+				int l = arr_a->size();
+				if (arr_b->size() != l)
+					_RETURN(true);
+				for (int i = 0; i < l; i++) {
+					if (!((*arr_a)[i] == (*arr_b)[i])) {
+						_RETURN(true);
+					}
+				}
+
+				_RETURN(false);
+			}
+
 			DEFAULT_OP_NUM_NULL(math, OP_NOT_EQUAL, INT, !=, _int);
 			DEFAULT_OP_NUM_NULL(math, OP_NOT_EQUAL, REAL, !=, _real);
 			DEFAULT_OP_STR_NULL(math, OP_NOT_EQUAL, STRING, !=, String);
@@ -704,6 +834,64 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 
 				const Array *arr_a = reinterpret_cast<const Array *>(p_a._data._mem);
 				const Array *arr_b = reinterpret_cast<const Array *>(p_b._data._mem);
+
+				int l = arr_a->size();
+				if (arr_b->size() < l)
+					_RETURN(false);
+				for (int i = 0; i < l; i++) {
+					if (!((*arr_a)[i] < (*arr_b)[i])) {
+						_RETURN(true);
+					}
+				}
+
+				_RETURN(false);
+			}
+
+			CASE_TYPE(math, OP_LESS, TYPED_ARRAY) {
+				if (p_b.type != TYPED_ARRAY)
+					_RETURN_FAIL;
+
+				const TypedArray *arr_a = reinterpret_cast<const TypedArray *>(p_a._data._mem);
+				const TypedArray *arr_b = reinterpret_cast<const TypedArray *>(p_b._data._mem);
+
+				if (arr_a->get_variant_type() != arr_b->get_variant_type()) {
+					_RETURN_FAIL;
+				}
+
+				if (arr_a->get_variant_type() == Variant::OBJECT) {
+					if (arr_a->get_object_class_name() != arr_b->get_object_class_name()) {
+						_RETURN_FAIL;
+					}
+				}
+
+				int l = arr_a->size();
+				if (arr_b->size() < l)
+					_RETURN(false);
+				for (int i = 0; i < l; i++) {
+					if (!((*arr_a)[i] < (*arr_b)[i])) {
+						_RETURN(true);
+					}
+				}
+
+				_RETURN(false);
+			}
+
+			CASE_TYPE(math, OP_LESS, PACKED_TYPED_ARRAY) {
+				if (p_b.type != PACKED_TYPED_ARRAY)
+					_RETURN_FAIL;
+
+				const PackedTypedArray *arr_a = reinterpret_cast<const PackedTypedArray *>(p_a._data._mem);
+				const PackedTypedArray *arr_b = reinterpret_cast<const PackedTypedArray *>(p_b._data._mem);
+
+				if (arr_a->get_variant_type() != arr_b->get_variant_type()) {
+					_RETURN_FAIL;
+				}
+
+				if (arr_a->get_variant_type() == Variant::OBJECT) {
+					if (arr_a->get_object_class_name() != arr_b->get_object_class_name()) {
+						_RETURN_FAIL;
+					}
+				}
 
 				int l = arr_a->size();
 				if (arr_b->size() < l)
@@ -791,6 +979,8 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			CASE_TYPE(math, OP_LESS_EQUAL, STRING_NAME)
 			CASE_TYPE(math, OP_LESS_EQUAL, DICTIONARY)
 			CASE_TYPE(math, OP_LESS_EQUAL, ARRAY)
+			CASE_TYPE(math, OP_LESS_EQUAL, TYPED_ARRAY)
+			CASE_TYPE(math, OP_LESS_EQUAL, PACKED_TYPED_ARRAY)
 			CASE_TYPE(math, OP_LESS_EQUAL, POOL_BYTE_ARRAY);
 			CASE_TYPE(math, OP_LESS_EQUAL, POOL_INT_ARRAY);
 			CASE_TYPE(math, OP_LESS_EQUAL, POOL_REAL_ARRAY);
@@ -842,6 +1032,64 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 				}
 
 				_RETURN(true);
+			}
+
+			CASE_TYPE(math, OP_GREATER, TYPED_ARRAY) {
+				if (p_b.type != TYPED_ARRAY)
+					_RETURN_FAIL;
+
+				const TypedArray *arr_a = reinterpret_cast<const TypedArray *>(p_a._data._mem);
+				const TypedArray *arr_b = reinterpret_cast<const TypedArray *>(p_b._data._mem);
+
+				if (arr_a->get_variant_type() != arr_b->get_variant_type()) {
+					_RETURN_FAIL;
+				}
+
+				if (arr_a->get_variant_type() == Variant::OBJECT) {
+					if (arr_a->get_object_class_name() != arr_b->get_object_class_name()) {
+						_RETURN_FAIL;
+					}
+				}
+
+				int l = arr_a->size();
+				if (arr_b->size() < l)
+					_RETURN(false);
+				for (int i = 0; i < l; i++) {
+					if (((*arr_a)[i] < (*arr_b)[i])) {
+						_RETURN(true);
+					}
+				}
+
+				_RETURN(false);
+			}
+
+			CASE_TYPE(math, OP_GREATER, PACKED_TYPED_ARRAY) {
+				if (p_b.type != PACKED_TYPED_ARRAY)
+					_RETURN_FAIL;
+
+				const PackedTypedArray *arr_a = reinterpret_cast<const PackedTypedArray *>(p_a._data._mem);
+				const PackedTypedArray *arr_b = reinterpret_cast<const PackedTypedArray *>(p_b._data._mem);
+
+				if (arr_a->get_variant_type() != arr_b->get_variant_type()) {
+					_RETURN_FAIL;
+				}
+
+				if (arr_a->get_variant_type() == Variant::OBJECT) {
+					if (arr_a->get_object_class_name() != arr_b->get_object_class_name()) {
+						_RETURN_FAIL;
+					}
+				}
+
+				int l = arr_a->size();
+				if (arr_b->size() < l)
+					_RETURN(false);
+				for (int i = 0; i < l; i++) {
+					if (((*arr_a)[i] < (*arr_b)[i])) {
+						_RETURN(true);
+					}
+				}
+
+				_RETURN(false);
 			}
 
 			DEFAULT_OP_NUM(math, OP_GREATER, INT, >, _int);
@@ -917,6 +1165,8 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			CASE_TYPE(math, OP_GREATER_EQUAL, DICTIONARY)
 			CASE_TYPE(math, OP_GREATER_EQUAL, STRING_NAME)
 			CASE_TYPE(math, OP_GREATER_EQUAL, ARRAY)
+			CASE_TYPE(math, OP_GREATER_EQUAL, TYPED_ARRAY)
+			CASE_TYPE(math, OP_GREATER_EQUAL, PACKED_TYPED_ARRAY)
 			CASE_TYPE(math, OP_GREATER_EQUAL, POOL_BYTE_ARRAY);
 			CASE_TYPE(math, OP_GREATER_EQUAL, POOL_INT_ARRAY);
 			CASE_TYPE(math, OP_GREATER_EQUAL, POOL_REAL_ARRAY);
@@ -939,6 +1189,68 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 				const Array &array_a = *reinterpret_cast<const Array *>(p_a._data._mem);
 				const Array &array_b = *reinterpret_cast<const Array *>(p_b._data._mem);
 				Array sum;
+				int asize = array_a.size();
+				int bsize = array_b.size();
+				sum.resize(asize + bsize);
+				for (int i = 0; i < asize; i++) {
+					sum[i] = array_a[i];
+				}
+				for (int i = 0; i < bsize; i++) {
+					sum[i + asize] = array_b[i];
+				}
+				_RETURN(sum);
+			}
+
+			CASE_TYPE(math, OP_ADD, TYPED_ARRAY) {
+				if (p_a.type != p_b.type)
+					_RETURN_FAIL;
+
+				const TypedArray &array_a = *reinterpret_cast<const TypedArray *>(p_a._data._mem);
+				const TypedArray &array_b = *reinterpret_cast<const TypedArray *>(p_b._data._mem);
+
+				if (array_a.get_variant_type() != array_b.get_variant_type()) {
+					_RETURN_FAIL;
+				}
+
+				if (array_a.get_variant_type() == Variant::OBJECT) {
+					if (array_a.get_object_class_name() != array_b.get_object_class_name()) {
+						_RETURN_FAIL;
+					}
+				}
+
+				TypedArray sum;
+				sum.set_type_from(array_a);
+				int asize = array_a.size();
+				int bsize = array_b.size();
+				sum.resize(asize + bsize);
+				for (int i = 0; i < asize; i++) {
+					sum[i] = array_a[i];
+				}
+				for (int i = 0; i < bsize; i++) {
+					sum[i + asize] = array_b[i];
+				}
+				_RETURN(sum);
+			}
+
+			CASE_TYPE(math, OP_ADD, PACKED_TYPED_ARRAY) {
+				if (p_a.type != p_b.type)
+					_RETURN_FAIL;
+
+				const PackedTypedArray &array_a = *reinterpret_cast<const PackedTypedArray *>(p_a._data._mem);
+				const PackedTypedArray &array_b = *reinterpret_cast<const PackedTypedArray *>(p_b._data._mem);
+
+				if (array_a.get_variant_type() != array_b.get_variant_type()) {
+					_RETURN_FAIL;
+				}
+
+				if (array_a.get_variant_type() == Variant::OBJECT) {
+					if (array_a.get_object_class_name() != array_b.get_object_class_name()) {
+						_RETURN_FAIL;
+					}
+				}
+
+				PackedTypedArray sum;
+				sum.set_type_from(array_a);
 				int asize = array_a.size();
 				int bsize = array_b.size();
 				sum.resize(asize + bsize);
@@ -1022,6 +1334,8 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			CASE_TYPE(math, OP_SUBTRACT, STRING_NAME)
 			CASE_TYPE(math, OP_SUBTRACT, DICTIONARY)
 			CASE_TYPE(math, OP_SUBTRACT, ARRAY)
+			CASE_TYPE(math, OP_SUBTRACT, TYPED_ARRAY)
+			CASE_TYPE(math, OP_SUBTRACT, PACKED_TYPED_ARRAY)
 			CASE_TYPE(math, OP_SUBTRACT, POOL_BYTE_ARRAY);
 			CASE_TYPE(math, OP_SUBTRACT, POOL_INT_ARRAY);
 			CASE_TYPE(math, OP_SUBTRACT, POOL_REAL_ARRAY);
@@ -1146,6 +1460,8 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			CASE_TYPE(math, OP_MULTIPLY, STRING_NAME)
 			CASE_TYPE(math, OP_MULTIPLY, DICTIONARY)
 			CASE_TYPE(math, OP_MULTIPLY, ARRAY)
+			CASE_TYPE(math, OP_MULTIPLY, TYPED_ARRAY)
+			CASE_TYPE(math, OP_MULTIPLY, PACKED_TYPED_ARRAY)
 			CASE_TYPE(math, OP_MULTIPLY, POOL_BYTE_ARRAY);
 			CASE_TYPE(math, OP_MULTIPLY, POOL_INT_ARRAY);
 			CASE_TYPE(math, OP_MULTIPLY, POOL_REAL_ARRAY);
@@ -1200,6 +1516,8 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			CASE_TYPE(math, OP_DIVIDE, STRING_NAME)
 			CASE_TYPE(math, OP_DIVIDE, DICTIONARY)
 			CASE_TYPE(math, OP_DIVIDE, ARRAY)
+			CASE_TYPE(math, OP_DIVIDE, TYPED_ARRAY)
+			CASE_TYPE(math, OP_DIVIDE, PACKED_TYPED_ARRAY)
 			CASE_TYPE(math, OP_DIVIDE, POOL_BYTE_ARRAY);
 			CASE_TYPE(math, OP_DIVIDE, POOL_INT_ARRAY);
 			CASE_TYPE(math, OP_DIVIDE, POOL_REAL_ARRAY);
@@ -1243,6 +1561,8 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			CASE_TYPE(math, OP_POSITIVE, STRING_NAME)
 			CASE_TYPE(math, OP_POSITIVE, DICTIONARY)
 			CASE_TYPE(math, OP_POSITIVE, ARRAY)
+			CASE_TYPE(math, OP_POSITIVE, TYPED_ARRAY)
+			CASE_TYPE(math, OP_POSITIVE, PACKED_TYPED_ARRAY)
 			CASE_TYPE(math, OP_POSITIVE, POOL_BYTE_ARRAY)
 			CASE_TYPE(math, OP_POSITIVE, POOL_INT_ARRAY)
 			CASE_TYPE(math, OP_POSITIVE, POOL_REAL_ARRAY)
@@ -1287,6 +1607,8 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			CASE_TYPE(math, OP_NEGATE, STRING_NAME)
 			CASE_TYPE(math, OP_NEGATE, DICTIONARY)
 			CASE_TYPE(math, OP_NEGATE, ARRAY)
+			CASE_TYPE(math, OP_NEGATE, TYPED_ARRAY)
+			CASE_TYPE(math, OP_NEGATE, PACKED_TYPED_ARRAY)
 			CASE_TYPE(math, OP_NEGATE, POOL_BYTE_ARRAY)
 			CASE_TYPE(math, OP_NEGATE, POOL_INT_ARRAY)
 			CASE_TYPE(math, OP_NEGATE, POOL_REAL_ARRAY)
@@ -1358,6 +1680,8 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			CASE_TYPE(math, OP_MODULE, STRING_NAME)
 			CASE_TYPE(math, OP_MODULE, DICTIONARY)
 			CASE_TYPE(math, OP_MODULE, ARRAY)
+			CASE_TYPE(math, OP_MODULE, TYPED_ARRAY)
+			CASE_TYPE(math, OP_MODULE, PACKED_TYPED_ARRAY)
 			CASE_TYPE(math, OP_MODULE, POOL_BYTE_ARRAY)
 			CASE_TYPE(math, OP_MODULE, POOL_INT_ARRAY)
 			CASE_TYPE(math, OP_MODULE, POOL_REAL_ARRAY)
@@ -3309,6 +3633,8 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 			// and clang-format 15 removes it...
 			/* clang-format off */
 			DEFAULT_OP_ARRAY_CMD(ARRAY, Array, ;, (*arr)[index] = p_value; return) // 20
+			DEFAULT_OP_ARRAY_CMD(TYPED_ARRAY, TypedArray, ;, (*arr)[index] = p_value; return) // 20
+			DEFAULT_OP_ARRAY_CMD(PACKED_TYPED_ARRAY, PackedTypedArray, ;, (*arr)[index] = p_value; return) // 20
 			/* clang-format on */
 			DEFAULT_OP_DVECTOR_SET(POOL_BYTE_ARRAY, uint8_t, p_value.type != Variant::REAL && p_value.type != Variant::INT)
 			DEFAULT_OP_DVECTOR_SET(POOL_INT_ARRAY, int, p_value.type != Variant::REAL && p_value.type != Variant::INT)
@@ -4087,6 +4413,8 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 			}
 		} break;
 			DEFAULT_OP_ARRAY_CMD(ARRAY, const Array, ;, return (*arr)[index]) // 20
+			DEFAULT_OP_ARRAY_CMD(TYPED_ARRAY, const TypedArray, ;, return (*arr)[index]) // 20
+			DEFAULT_OP_ARRAY_CMD(PACKED_TYPED_ARRAY, const PackedTypedArray, ;, return (*arr)[index]) // 20
 			DEFAULT_OP_DVECTOR_GET(POOL_BYTE_ARRAY, uint8_t)
 			DEFAULT_OP_DVECTOR_GET(POOL_INT_ARRAY, int)
 			DEFAULT_OP_DVECTOR_GET(POOL_REAL_ARRAY, real_t)
@@ -4150,6 +4478,34 @@ bool Variant::in(const Variant &p_index, bool *r_valid) const {
 		} break; // 20
 		case ARRAY: {
 			const Array *arr = reinterpret_cast<const Array *>(_data._mem);
+			int l = arr->size();
+			if (l) {
+				for (int i = 0; i < l; i++) {
+					if (evaluate(OP_EQUAL, (*arr)[i], p_index)) {
+						return true;
+					}
+				}
+			}
+
+			return false;
+
+		} break;
+		case TYPED_ARRAY: {
+			const TypedArray *arr = reinterpret_cast<const TypedArray *>(_data._mem);
+			int l = arr->size();
+			if (l) {
+				for (int i = 0; i < l; i++) {
+					if (evaluate(OP_EQUAL, (*arr)[i], p_index)) {
+						return true;
+					}
+				}
+			}
+
+			return false;
+
+		} break;
+		case PACKED_TYPED_ARRAY: {
+			const PackedTypedArray *arr = reinterpret_cast<const PackedTypedArray *>(_data._mem);
 			int l = arr->size();
 			if (l) {
 				for (int i = 0; i < l; i++) {
@@ -4512,6 +4868,8 @@ void Variant::get_property_list(List<PropertyInfo> *p_list) const {
 			}
 		} break;
 		case ARRAY: // 20
+		case TYPED_ARRAY:
+		case PACKED_TYPED_ARRAY:
 		case POOL_BYTE_ARRAY:
 		case POOL_INT_ARRAY:
 		case POOL_REAL_ARRAY:
@@ -4638,6 +4996,22 @@ bool Variant::iter_init(Variant &r_iter, bool &valid) const {
 		} break;
 		case ARRAY: {
 			const Array *arr = reinterpret_cast<const Array *>(_data._mem);
+			if (arr->empty()) {
+				return false;
+			}
+			r_iter = 0;
+			return true;
+		} break;
+		case TYPED_ARRAY: {
+			const TypedArray *arr = reinterpret_cast<const TypedArray *>(_data._mem);
+			if (arr->empty()) {
+				return false;
+			}
+			r_iter = 0;
+			return true;
+		} break;
+		case PACKED_TYPED_ARRAY: {
+			const PackedTypedArray *arr = reinterpret_cast<const PackedTypedArray *>(_data._mem);
 			if (arr->empty()) {
 				return false;
 			}
@@ -4886,6 +5260,26 @@ bool Variant::iter_next(Variant &r_iter, bool &valid) const {
 			r_iter = idx;
 			return true;
 		} break;
+		case TYPED_ARRAY: {
+			const TypedArray *arr = reinterpret_cast<const TypedArray *>(_data._mem);
+			int idx = r_iter;
+			idx++;
+			if (idx >= arr->size()) {
+				return false;
+			}
+			r_iter = idx;
+			return true;
+		} break;
+		case PACKED_TYPED_ARRAY: {
+			const PackedTypedArray *arr = reinterpret_cast<const PackedTypedArray *>(_data._mem);
+			int idx = r_iter;
+			idx++;
+			if (idx >= arr->size()) {
+				return false;
+			}
+			r_iter = idx;
+			return true;
+		} break;
 		case POOL_BYTE_ARRAY: {
 			const PoolVector<uint8_t> *arr = reinterpret_cast<const PoolVector<uint8_t> *>(_data._mem);
 			int idx = r_iter;
@@ -5073,6 +5467,28 @@ Variant Variant::iter_get(const Variant &r_iter, bool &r_valid) const {
 #endif
 			return arr->get(idx);
 		} break;
+		case TYPED_ARRAY: {
+			const TypedArray *arr = reinterpret_cast<const TypedArray *>(_data._mem);
+			int idx = r_iter;
+#ifdef DEBUG_ENABLED
+			if (idx < 0 || idx >= arr->size()) {
+				r_valid = false;
+				return Variant();
+			}
+#endif
+			return arr->get(idx);
+		} break;
+		case PACKED_TYPED_ARRAY: {
+			const PackedTypedArray *arr = reinterpret_cast<const PackedTypedArray *>(_data._mem);
+			int idx = r_iter;
+#ifdef DEBUG_ENABLED
+			if (idx < 0 || idx >= arr->size()) {
+				r_valid = false;
+				return Variant();
+			}
+#endif
+			return arr->get(idx);
+		} break;
 		case POOL_BYTE_ARRAY: {
 			const PoolVector<uint8_t> *arr = reinterpret_cast<const PoolVector<uint8_t> *>(_data._mem);
 			int idx = r_iter;
@@ -5219,6 +5635,10 @@ Variant Variant::duplicate(bool deep) const {
 			return operator Dictionary().duplicate(deep);
 		case ARRAY:
 			return operator Array().duplicate(deep);
+		case TYPED_ARRAY:
+			return operator TypedArray().duplicate(deep);
+		case PACKED_TYPED_ARRAY:
+			return operator PackedTypedArray().duplicate(deep);
 		default:
 			return *this;
 	}
@@ -5598,6 +6018,14 @@ void Variant::interpolate(const Variant &a, const Variant &b, float c, Variant &
 		}
 			return;
 		case ARRAY: {
+			r_dst = a;
+		}
+			return;
+		case TYPED_ARRAY: {
+			r_dst = a;
+		}
+			return;
+		case PACKED_TYPED_ARRAY: {
 			r_dst = a;
 		}
 			return;
