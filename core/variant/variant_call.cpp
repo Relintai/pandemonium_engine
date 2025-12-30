@@ -1937,6 +1937,18 @@ struct _VariantCall {
 		r_ret = Projection((*p_args[0]).operator Transform());
 	}
 
+	static void TypedArray_init1(Variant &r_ret, const Variant **p_args) {
+		TypedArray a;
+		a.set_type_from_name((*p_args[0]).operator StringName());
+		r_ret = a;
+	}
+
+	static void PackedTypedArray_init1(Variant &r_ret, const Variant **p_args) {
+		PackedTypedArray a;
+		a.set_type_from_name((*p_args[0]).operator StringName());
+		r_ret = a;
+	}
+
 	static void add_constructor(VariantConstructFunc p_func, const Variant::Type p_type,
 			const String &p_name1 = "", const Variant::Type p_type1 = Variant::NIL,
 			const String &p_name2 = "", const Variant::Type p_type2 = Variant::NIL,
@@ -3663,6 +3675,10 @@ void register_variant_methods() {
 
 	_VariantCall::add_constructor(_VariantCall::Projection_init1, Variant::PROJECTION, "x_axis", Variant::VECTOR4, "y_axis", Variant::VECTOR4, "z_axis", Variant::VECTOR4, "w_axis", Variant::VECTOR4);
 	_VariantCall::add_constructor(_VariantCall::Projection_init2, Variant::PROJECTION, "transform", Variant::TRANSFORM);
+
+	_VariantCall::add_constructor(_VariantCall::TypedArray_init1, Variant::TYPED_ARRAY, "type_name", Variant::STRING_NAME);
+
+	_VariantCall::add_constructor(_VariantCall::PackedTypedArray_init1, Variant::PACKED_TYPED_ARRAY, "type_name", Variant::STRING_NAME);
 
 	/* REGISTER CONSTANTS */
 
