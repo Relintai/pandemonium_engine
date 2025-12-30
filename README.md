@@ -242,9 +242,9 @@ and custom handling for them will be extremely messy. A good solution for this i
 Currently my best idea is to have 2 sets of popups, and the user can decide whether to have multi window support
 or not by using the proper ones. Still trying to figure out a way to make this simpler.
 
-### TypedArray
+### TypedArray, PackedTypedArray
 
-A new Variant type that stores an aray of elements of any single type.
+2 new Variant types that stores an aray of elements of any single type.
 
 Done:
 
@@ -259,7 +259,7 @@ WIP:
 - Needs inspector plugins.
 - Needs gdnative support.
 - Needs docs.
-- NEeds icons.
+- Needs icons.
 
 Few syntax ideas:
 
