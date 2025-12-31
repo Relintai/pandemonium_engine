@@ -922,7 +922,7 @@ void TypedArray::set_type_from(const TypedArray &p_array) {
 	}
 }
 
-bool TypedArray::validate_type_name(const StringName &p_type_name) {
+bool TypedArray::validate_type_name(const StringName &p_type_name) const {
 	if (p_type_name == StringName()) {
 		return false;
 	}
@@ -942,7 +942,7 @@ bool TypedArray::validate_type_name(const StringName &p_type_name) {
 	return ClassDB::class_exists(p_type_name);
 }
 
-bool TypedArray::validate_object_type_name(const StringName &p_type_name) {
+bool TypedArray::validate_object_type_name(const StringName &p_type_name) const {
 	if (p_type_name == StringName()) {
 		return false;
 	}
@@ -954,7 +954,7 @@ bool TypedArray::validate_object_type_name(const StringName &p_type_name) {
 	return ClassDB::class_exists(p_type_name);
 }
 
-bool TypedArray::can_take_variant(const Variant &p_value) {
+bool TypedArray::can_take_variant(const Variant &p_value) const {
 	if (p_value.get_type() == Variant::NIL) {
 		if (_p->type == Variant::OBJECT) {
 			return true;
