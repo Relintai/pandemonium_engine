@@ -485,10 +485,11 @@ void GDAPI pandemonium_packed_typed_array_shuffle(pandemonium_packed_typed_array
 }
 
 pandemonium_string GDAPI pandemonium_packed_typed_array_get_typename_string(const pandemonium_packed_typed_array *p_self) {
-	pandemonium_string dest;
+	pandemonium_string raw_dest;
+	String *dest = (String *)&raw_dest;
 	const PackedTypedArray *self = (const PackedTypedArray *)p_self;
-	*((String *)&dest) = self->get_typename_string();
-	return dest;
+	memnew_placement(dest, String(self->get_typename_string()));
+	return raw_dest;
 }
 
 pandemonium_int GDAPI pandemonium_packed_typed_array_get_variant_type(const pandemonium_packed_typed_array *p_self) {

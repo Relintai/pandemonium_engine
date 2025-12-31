@@ -482,10 +482,11 @@ void GDAPI pandemonium_typed_array_shuffle(pandemonium_typed_array *p_self) {
 }
 
 pandemonium_string GDAPI pandemonium_typed_array_get_typename_string(const pandemonium_typed_array *p_self) {
-	pandemonium_string dest;
+	pandemonium_string raw_dest;
+	String *dest = (String *)&raw_dest;
 	const TypedArray *self = (const TypedArray *)p_self;
-	*((String *)&dest) = self->get_typename_string();
-	return dest;
+	memnew_placement(dest, String(self->get_typename_string()));
+	return raw_dest;
 }
 
 pandemonium_int GDAPI pandemonium_typed_array_get_variant_type(const pandemonium_typed_array *p_self) {
