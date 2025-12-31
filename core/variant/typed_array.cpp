@@ -561,7 +561,7 @@ TypedArray TypedArray::duplicate(bool p_deep) const {
 	int element_count = size();
 	new_arr.resize(element_count);
 	for (int i = 0; i < element_count; i++) {
-		_p->array.write[i] = p_deep ? get(i).duplicate(p_deep) : get(i);
+		new_arr._p->array.write[i] = p_deep ? get(i).duplicate(p_deep) : get(i);
 	}
 
 	return new_arr;
