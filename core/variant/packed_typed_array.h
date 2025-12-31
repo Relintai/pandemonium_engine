@@ -48,7 +48,6 @@ class PackedTypedArray {
 	inline int _clamp_slice_index(int p_index) const;
 
 public:
-	Variant operator[](int p_idx);
 	const Variant operator[](int p_idx) const;
 
 	void set(int p_idx, const Variant &p_value);

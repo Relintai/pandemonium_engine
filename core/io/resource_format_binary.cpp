@@ -519,7 +519,7 @@ Error ResourceInteractiveLoaderBinary::parse_variant(Variant &r_v) {
 				Variant val;
 				Error err = parse_variant(val);
 				ERR_FAIL_COND_V_MSG(err, ERR_FILE_CORRUPT, "Error when trying to parse Variant.");
-				a[i] = val;
+				a.set(i, val);
 			}
 			r_v = a;
 

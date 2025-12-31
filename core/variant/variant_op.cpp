@@ -1255,10 +1255,10 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 				int bsize = array_b.size();
 				sum.resize(asize + bsize);
 				for (int i = 0; i < asize; i++) {
-					sum[i] = array_a[i];
+					sum.set(i, array_a[i]);
 				}
 				for (int i = 0; i < bsize; i++) {
-					sum[i + asize] = array_b[i];
+					sum.set(i + asize, array_b[i]);
 				}
 				_RETURN(sum);
 			}
@@ -3629,12 +3629,25 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid)
 			valid = true; //always valid, i guess? should this really be ok?
 			return;
 		} break;
+		case PACKED_TYPED_ARRAY: {
+			if (p_index.get_type() == Variant::INT || p_index.get_type() == Variant::REAL) {
+				int index = p_index;
+				PackedTypedArray *arr = reinterpret_cast<PackedTypedArray *>(_data._mem);
+
+				if (index < 0)
+					index += arr->size();
+				if (index >= 0 && index < arr->size()) {
+					valid = true;
+					arr->set(index, p_value);
+					return;
+				}
+			}
+		} break;
 			// clang-format 14 wants to add a space after the last return,
 			// and clang-format 15 removes it...
 			/* clang-format off */
 			DEFAULT_OP_ARRAY_CMD(ARRAY, Array, ;, (*arr)[index] = p_value; return) // 20
 			DEFAULT_OP_ARRAY_CMD(TYPED_ARRAY, TypedArray, ;, (*arr)[index] = p_value; return) // 20
-			DEFAULT_OP_ARRAY_CMD(PACKED_TYPED_ARRAY, PackedTypedArray, ;, (*arr)[index] = p_value; return) // 20
 			/* clang-format on */
 			DEFAULT_OP_DVECTOR_SET(POOL_BYTE_ARRAY, uint8_t, p_value.type != Variant::REAL && p_value.type != Variant::INT)
 			DEFAULT_OP_DVECTOR_SET(POOL_INT_ARRAY, int, p_value.type != Variant::REAL && p_value.type != Variant::INT)

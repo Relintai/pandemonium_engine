@@ -116,10 +116,6 @@ void PackedTypedArray::_unref() const {
 	_p = nullptr;
 }
 
-Variant PackedTypedArray::operator[](int p_idx) {
-	return _p->array.write[p_idx];
-}
-
 const Variant PackedTypedArray::operator[](int p_idx) const {
 	return _p->array[p_idx];
 }
@@ -271,7 +267,7 @@ void PackedTypedArray::remove(int p_pos) {
 }
 
 void PackedTypedArray::set(int p_idx, const Variant &p_value) {
-	operator[](p_idx) = p_value;
+	_p->array.write[p_idx] = p_value;
 }
 
 const Variant PackedTypedArray::get(int p_idx) const {
@@ -284,7 +280,7 @@ PackedTypedArray PackedTypedArray::duplicate(bool p_deep) const {
 	int element_count = size();
 	new_arr.resize(element_count);
 	for (int i = 0; i < element_count; i++) {
-		new_arr[i] = p_deep ? get(i).duplicate(p_deep) : get(i);
+		new_arr._p->array.write[i] = p_deep ? get(i).duplicate(p_deep) : get(i);
 	}
 
 	return new_arr;
@@ -328,13 +324,13 @@ PackedTypedArray PackedTypedArray::slice(int p_begin, int p_end, int p_step, boo
 		int dest_idx = 0;
 		for (int idx = begin; idx <= end; idx += p_step) {
 			ERR_FAIL_COND_V_MSG(dest_idx < 0 || dest_idx >= new_arr_size, PackedTypedArray(), "Bug in PackedTypedArray slice()");
-			new_arr[dest_idx++] = p_deep ? get(idx).duplicate(p_deep) : get(idx);
+			new_arr._p->array.write[dest_idx++] = p_deep ? get(idx).duplicate(p_deep) : get(idx);
 		}
 	} else { // p_step < 0
 		int dest_idx = 0;
 		for (int idx = begin; idx >= end; idx += p_step) {
 			ERR_FAIL_COND_V_MSG(dest_idx < 0 || dest_idx >= new_arr_size, PackedTypedArray(), "Bug in PackedTypedArray slice()");
-			new_arr[dest_idx++] = p_deep ? get(idx).duplicate(p_deep) : get(idx);
+			new_arr._p->array.write[dest_idx++] = p_deep ? get(idx).duplicate(p_deep) : get(idx);
 		}
 	}
 
