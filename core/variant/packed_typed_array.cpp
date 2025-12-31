@@ -913,15 +913,21 @@ void PackedTypedArray::_push_back_unchecked(const Variant &p_value) {
 	ACCESS_DATA(vec->push_back(p_value));
 }
 
-// TODO
-bool PackedTypedArray::append_array(const PackedTypedArray &p_array) {
-	_p->ensure_data();
+#define APPEND_ARRAYS(m_type)                                            \
+	Vector<m_type> *veca = reinterpret_cast<Vector<m_type> *>(_p->data); \
+	Vector<m_type> *vecb = reinterpret_cast<Vector<m_type> *>(_p->data); \
+	veca->append_array(*vecb);
 
-	if (_p->type != p_array._p->type) {
+bool PackedTypedArray::append_array(const PackedTypedArray &p_array) {
+	if (!p_array._p->data) {
 		return false;
 	}
 
 	if (p_array.size() == 0) {
+		return false;
+	}
+
+	if (_p->type != p_array._p->type) {
 		return false;
 	}
 
@@ -931,10 +937,169 @@ bool PackedTypedArray::append_array(const PackedTypedArray &p_array) {
 		}
 	}
 
-	_p->array.append_array(p_array._p->array);
+	if (_p->type == Variant::INT) {
+		if (_p->int_type != p_array._p->int_type) {
+			return false;
+		}
+	}
+
+	_p->ensure_data();
+
+	switch (_p->type) {
+		case Variant::NIL: {
+			APPEND_ARRAYS(bool);
+		} break;
+		case Variant::BOOL: {
+			APPEND_ARRAYS(bool);
+		} break;
+		case Variant::INT: {
+			switch (_p->int_type) {
+				case PackedTypedArray::INT_TYPE_SIGNED_8: {
+					APPEND_ARRAYS(int8_t);
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_8: {
+					APPEND_ARRAYS(uint8_t);
+				} break;
+				case PackedTypedArray::INT_TYPE_SIGNED_16: {
+					APPEND_ARRAYS(int16_t);
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_16: {
+					APPEND_ARRAYS(uint16_t);
+				} break;
+				case PackedTypedArray::INT_TYPE_SIGNED_32: {
+					APPEND_ARRAYS(int32_t);
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_32: {
+					APPEND_ARRAYS(uint32_t);
+				} break;
+				case PackedTypedArray::INT_TYPE_SIGNED_64: {
+					APPEND_ARRAYS(int64_t);
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_64: {
+					APPEND_ARRAYS(uint64_t);
+				} break;
+			}
+		} break;
+		case Variant::REAL: {
+			APPEND_ARRAYS(real_t);
+		} break;
+		case Variant::STRING: {
+			APPEND_ARRAYS(String);
+		} break;
+		case Variant::RECT2: {
+			APPEND_ARRAYS(Rect2);
+		} break;
+		case Variant::RECT2I: {
+			APPEND_ARRAYS(Rect2i);
+		} break;
+		case Variant::VECTOR2: {
+			APPEND_ARRAYS(Vector2);
+		} break;
+		case Variant::VECTOR2I: {
+			APPEND_ARRAYS(Vector2i);
+		} break;
+		case Variant::VECTOR3: {
+			APPEND_ARRAYS(Vector3);
+		} break;
+		case Variant::VECTOR3I: {
+			APPEND_ARRAYS(Vector3i);
+		} break;
+		case Variant::VECTOR4: {
+			APPEND_ARRAYS(Vector4);
+		} break;
+		case Variant::VECTOR4I: {
+			APPEND_ARRAYS(Vector4i);
+		} break;
+		case Variant::PLANE: {
+			APPEND_ARRAYS(Plane);
+		} break;
+		case Variant::QUATERNION: {
+			APPEND_ARRAYS(Quaternion);
+		} break;
+		case Variant::AABB: {
+			APPEND_ARRAYS(AABB);
+		} break;
+		case Variant::BASIS: {
+			APPEND_ARRAYS(Basis);
+		} break;
+		case Variant::TRANSFORM: {
+			APPEND_ARRAYS(Transform);
+		} break;
+		case Variant::TRANSFORM2D: {
+			APPEND_ARRAYS(Transform2D);
+		} break;
+		case Variant::PROJECTION: {
+			APPEND_ARRAYS(Projection);
+		} break;
+		case Variant::COLOR: {
+			APPEND_ARRAYS(Color);
+		} break;
+		case Variant::NODE_PATH: {
+			APPEND_ARRAYS(NodePath);
+		} break;
+		case Variant::RID: {
+			APPEND_ARRAYS(RID);
+		} break;
+		case Variant::OBJECT: {
+			APPEND_ARRAYS(Variant);
+		} break;
+		case Variant::STRING_NAME: {
+			APPEND_ARRAYS(StringName);
+		} break;
+		case Variant::DICTIONARY: {
+			APPEND_ARRAYS(Dictionary);
+		} break;
+		case Variant::ARRAY: {
+			APPEND_ARRAYS(Array);
+
+		} break;
+		case Variant::TYPED_ARRAY: {
+			APPEND_ARRAYS(TypedArray);
+		} break;
+		case Variant::PACKED_TYPED_ARRAY: {
+			APPEND_ARRAYS(PackedTypedArray);
+		} break;
+		case Variant::POOL_BYTE_ARRAY: {
+			APPEND_ARRAYS(Variant);
+		} break;
+		case Variant::POOL_INT_ARRAY: {
+			APPEND_ARRAYS(Variant);
+		} break;
+		case Variant::POOL_REAL_ARRAY: {
+			APPEND_ARRAYS(Variant);
+		} break;
+		case Variant::POOL_STRING_ARRAY: {
+			APPEND_ARRAYS(Variant);
+		} break;
+		case Variant::POOL_VECTOR2_ARRAY: {
+			APPEND_ARRAYS(Variant);
+		} break;
+		case Variant::POOL_VECTOR2I_ARRAY: {
+			APPEND_ARRAYS(Variant);
+		} break;
+		case Variant::POOL_VECTOR3_ARRAY: {
+			APPEND_ARRAYS(Variant);
+		} break;
+		case Variant::POOL_VECTOR3I_ARRAY: {
+			APPEND_ARRAYS(Variant);
+		} break;
+		case Variant::POOL_VECTOR4_ARRAY: {
+			APPEND_ARRAYS(Variant);
+		} break;
+		case Variant::POOL_VECTOR4I_ARRAY: {
+			APPEND_ARRAYS(Variant);
+		} break;
+		case Variant::POOL_COLOR_ARRAY: {
+			APPEND_ARRAYS(Variant);
+		} break;
+		default: {
+		} break;
+	}
 
 	return true;
 }
+
+#undef APPEND_ARRAYS
 
 bool PackedTypedArray::append_from(const Variant &p_array) {
 	_p->ensure_data();
