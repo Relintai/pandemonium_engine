@@ -916,22 +916,23 @@ struct _VariantCall {
 	VCALL_LOCALMEM0R(Array, min);
 
 	// TypedArray
-	VCALL_LOCALMEM2(TypedArray, set);
+	VCALL_LOCALMEM2R(TypedArray, set);
 	VCALL_LOCALMEM1R(TypedArray, get);
 	VCALL_LOCALMEM0R(TypedArray, size);
 	VCALL_LOCALMEM0R(TypedArray, empty);
 	VCALL_LOCALMEM0(TypedArray, clear);
 	VCALL_LOCALMEM0R(TypedArray, hash);
-	VCALL_LOCALMEM1(TypedArray, push_back);
-	VCALL_LOCALMEM1(TypedArray, push_front);
+	VCALL_LOCALMEM1R(TypedArray, push_back);
+	VCALL_LOCALMEM1R(TypedArray, push_front);
 	VCALL_LOCALMEM0R(TypedArray, pop_back);
 	VCALL_LOCALMEM0R(TypedArray, pop_front);
 	VCALL_LOCALMEM1R(TypedArray, pop_at);
-	VCALL_LOCALMEM1(TypedArray, append);
-	VCALL_LOCALMEM1(TypedArray, append_array);
-	VCALL_LOCALMEM1(TypedArray, fill);
+	VCALL_LOCALMEM1R(TypedArray, append);
+	VCALL_LOCALMEM1R(TypedArray, append_array);
+	VCALL_LOCALMEM1R(TypedArray, append_from);
+	VCALL_LOCALMEM1R(TypedArray, fill);
 	VCALL_LOCALMEM1(TypedArray, resize);
-	VCALL_LOCALMEM2(TypedArray, insert);
+	VCALL_LOCALMEM2R(TypedArray, insert);
 	VCALL_LOCALMEM1(TypedArray, remove);
 	VCALL_LOCALMEM0R(TypedArray, front);
 	VCALL_LOCALMEM0R(TypedArray, back);
@@ -951,24 +952,36 @@ struct _VariantCall {
 	VCALL_LOCALMEM0(TypedArray, invert);
 	VCALL_LOCALMEM0R(TypedArray, max);
 	VCALL_LOCALMEM0R(TypedArray, min);
+	VCALL_LOCALMEM0R(TypedArray, get_typename_string);
+	VCALL_LOCALMEM0R(TypedArray, get_variant_type);
+	VCALL_LOCALMEM1(TypedArray, set_variant_type);
+	VCALL_LOCALMEM0R(TypedArray, get_object_class_name);
+	VCALL_LOCALMEM1(TypedArray, set_object_class_name);
+	VCALL_LOCALMEM1(TypedArray, set_type_from_name);
+	VCALL_LOCALMEM1(TypedArray, set_type_from);
+	VCALL_LOCALMEM1R(TypedArray, validate_type_name);
+	VCALL_LOCALMEM1R(TypedArray, validate_object_type_name);
+	VCALL_LOCALMEM1R(TypedArray, can_take_variant);
 
 	// PackedTypedArray
-	VCALL_LOCALMEM2(PackedTypedArray, set);
+
+	VCALL_LOCALMEM2R(PackedTypedArray, set);
 	VCALL_LOCALMEM1R(PackedTypedArray, get);
 	VCALL_LOCALMEM0R(PackedTypedArray, size);
 	VCALL_LOCALMEM0R(PackedTypedArray, empty);
 	VCALL_LOCALMEM0(PackedTypedArray, clear);
 	VCALL_LOCALMEM0R(PackedTypedArray, hash);
-	VCALL_LOCALMEM1(PackedTypedArray, push_back);
-	VCALL_LOCALMEM1(PackedTypedArray, push_front);
+	VCALL_LOCALMEM1R(PackedTypedArray, push_back);
+	VCALL_LOCALMEM1R(PackedTypedArray, push_front);
 	VCALL_LOCALMEM0R(PackedTypedArray, pop_back);
 	VCALL_LOCALMEM0R(PackedTypedArray, pop_front);
 	VCALL_LOCALMEM1R(PackedTypedArray, pop_at);
-	VCALL_LOCALMEM1(PackedTypedArray, append);
-	VCALL_LOCALMEM1(PackedTypedArray, append_array);
-	VCALL_LOCALMEM1(PackedTypedArray, fill);
+	VCALL_LOCALMEM1R(PackedTypedArray, append);
+	VCALL_LOCALMEM1R(PackedTypedArray, append_array);
+	VCALL_LOCALMEM1R(PackedTypedArray, append_from);
+	VCALL_LOCALMEM1R(PackedTypedArray, fill);
 	VCALL_LOCALMEM1(PackedTypedArray, resize);
-	VCALL_LOCALMEM2(PackedTypedArray, insert);
+	VCALL_LOCALMEM2R(PackedTypedArray, insert);
 	VCALL_LOCALMEM1(PackedTypedArray, remove);
 	VCALL_LOCALMEM0R(PackedTypedArray, front);
 	VCALL_LOCALMEM0R(PackedTypedArray, back);
@@ -988,6 +1001,16 @@ struct _VariantCall {
 	VCALL_LOCALMEM0(PackedTypedArray, invert);
 	VCALL_LOCALMEM0R(PackedTypedArray, max);
 	VCALL_LOCALMEM0R(PackedTypedArray, min);
+	VCALL_LOCALMEM0R(PackedTypedArray, get_typename_string);
+	VCALL_LOCALMEM0R(PackedTypedArray, get_variant_type);
+	VCALL_LOCALMEM1(PackedTypedArray, set_variant_type);
+	VCALL_LOCALMEM0R(PackedTypedArray, get_object_class_name);
+	VCALL_LOCALMEM1(PackedTypedArray, set_object_class_name);
+	VCALL_LOCALMEM1(PackedTypedArray, set_type_from_name);
+	VCALL_LOCALMEM1(PackedTypedArray, set_type_from);
+	VCALL_LOCALMEM1R(PackedTypedArray, validate_type_name);
+	VCALL_LOCALMEM1R(PackedTypedArray, validate_object_type_name);
+	VCALL_LOCALMEM1R(PackedTypedArray, can_take_variant);
 
 	// PoolByteArray
 	static void _call_PoolByteArray_get_string_from_ascii(Variant &r_ret, Variant &p_self, const Variant **p_args) {
@@ -1938,12 +1961,20 @@ struct _VariantCall {
 	}
 
 	static void TypedArray_init1(Variant &r_ret, const Variant **p_args) {
+		r_ret = TypedArray((*p_args[0]).operator StringName(), *p_args[1]);
+	}
+
+	static void TypedArray_init2(Variant &r_ret, const Variant **p_args) {
 		TypedArray a;
 		a.set_type_from_name((*p_args[0]).operator StringName());
 		r_ret = a;
 	}
 
 	static void PackedTypedArray_init1(Variant &r_ret, const Variant **p_args) {
+		r_ret = PackedTypedArray((*p_args[0]).operator StringName(), *p_args[1]);
+	}
+
+	static void PackedTypedArray_init2(Variant &r_ret, const Variant **p_args) {
 		PackedTypedArray a;
 		a.set_type_from_name((*p_args[0]).operator StringName());
 		r_ret = a;
@@ -3109,6 +3140,7 @@ void register_variant_methods() {
 	ADDFUNC1NC(TYPED_ARRAY, BOOL, TypedArray, fill, NIL, "value", varray());
 	ADDFUNC1NC(TYPED_ARRAY, BOOL, TypedArray, append, NIL, "value", varray());
 	ADDFUNC1NC(TYPED_ARRAY, BOOL, TypedArray, append_array, TYPED_ARRAY, "array", varray());
+	ADDFUNC1RNC(TYPED_ARRAY, BOOL, TypedArray, append_from, NIL, "array", varray());
 	ADDFUNC1NC(TYPED_ARRAY, NIL, TypedArray, resize, INT, "size", varray());
 	ADDFUNC2NC(TYPED_ARRAY, BOOL, TypedArray, insert, INT, "position", NIL, "value", varray());
 	ADDFUNC1NC(TYPED_ARRAY, NIL, TypedArray, remove, INT, "position", varray());
@@ -3133,6 +3165,16 @@ void register_variant_methods() {
 	ADDFUNC4R(TYPED_ARRAY, TYPED_ARRAY, TypedArray, slice, INT, "begin", INT, "end", INT, "step", BOOL, "deep", varray(1, false));
 	ADDFUNC0R(TYPED_ARRAY, NIL, TypedArray, max, varray());
 	ADDFUNC0R(TYPED_ARRAY, NIL, TypedArray, min, varray());
+	ADDFUNC0R(TYPED_ARRAY, STRING, TypedArray, get_typename_string, varray());
+	ADDFUNC0R(TYPED_ARRAY, INT, TypedArray, get_variant_type, varray());
+	ADDFUNC1NC(TYPED_ARRAY, NIL, TypedArray, set_variant_type, INT, "variant_type", varray());
+	ADDFUNC0R(TYPED_ARRAY, STRING_NAME, TypedArray, get_object_class_name, varray());
+	ADDFUNC1NC(TYPED_ARRAY, NIL, TypedArray, set_object_class_name, STRING_NAME, "object_type_name", varray());
+	ADDFUNC1NC(TYPED_ARRAY, NIL, TypedArray, set_type_from_name, STRING_NAME, "type_name", varray());
+	ADDFUNC1NC(TYPED_ARRAY, NIL, TypedArray, set_type_from, TYPED_ARRAY, "array", varray());
+	ADDFUNC1R(TYPED_ARRAY, BOOL, TypedArray, validate_type_name, STRING_NAME, "type_name", varray());
+	ADDFUNC1R(TYPED_ARRAY, BOOL, TypedArray, validate_object_type_name, STRING_NAME, "type_name", varray());
+	ADDFUNC1R(TYPED_ARRAY, BOOL, TypedArray, can_take_variant, NIL, "value", varray());
 
 	ADDFUNC0R(PACKED_TYPED_ARRAY, INT, PackedTypedArray, size, varray());
 	ADDFUNC0R(PACKED_TYPED_ARRAY, BOOL, PackedTypedArray, empty, varray());
@@ -3143,6 +3185,7 @@ void register_variant_methods() {
 	ADDFUNC1NC(PACKED_TYPED_ARRAY, BOOL, PackedTypedArray, fill, NIL, "value", varray());
 	ADDFUNC1NC(PACKED_TYPED_ARRAY, BOOL, PackedTypedArray, append, NIL, "value", varray());
 	ADDFUNC1NC(PACKED_TYPED_ARRAY, BOOL, PackedTypedArray, append_array, PACKED_TYPED_ARRAY, "array", varray());
+	ADDFUNC1RNC(PACKED_TYPED_ARRAY, BOOL, PackedTypedArray, append_from, NIL, "array", varray());
 	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, resize, INT, "size", varray());
 	ADDFUNC2NC(PACKED_TYPED_ARRAY, BOOL, PackedTypedArray, insert, INT, "position", NIL, "value", varray());
 	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, remove, INT, "position", varray());
@@ -3167,6 +3210,16 @@ void register_variant_methods() {
 	ADDFUNC4R(PACKED_TYPED_ARRAY, PACKED_TYPED_ARRAY, PackedTypedArray, slice, INT, "begin", INT, "end", INT, "step", BOOL, "deep", varray(1, false));
 	ADDFUNC0R(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, max, varray());
 	ADDFUNC0R(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, min, varray());
+	ADDFUNC0R(PACKED_TYPED_ARRAY, STRING, PackedTypedArray, get_typename_string, varray());
+	ADDFUNC0R(PACKED_TYPED_ARRAY, INT, PackedTypedArray, get_variant_type, varray());
+	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, set_variant_type, INT, "variant_type", varray());
+	ADDFUNC0R(PACKED_TYPED_ARRAY, STRING_NAME, PackedTypedArray, get_object_class_name, varray());
+	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, set_object_class_name, STRING_NAME, "object_type_name", varray());
+	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, set_type_from_name, STRING_NAME, "type_name", varray());
+	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, set_type_from, PACKED_TYPED_ARRAY, "array", varray());
+	ADDFUNC1R(PACKED_TYPED_ARRAY, BOOL, PackedTypedArray, validate_type_name, STRING_NAME, "type_name", varray());
+	ADDFUNC1R(PACKED_TYPED_ARRAY, BOOL, PackedTypedArray, validate_object_type_name, STRING_NAME, "type_name", varray());
+	ADDFUNC1R(PACKED_TYPED_ARRAY, BOOL, PackedTypedArray, can_take_variant, NIL, "value", varray());
 
 	ADDFUNC0R(POOL_BYTE_ARRAY, INT, PoolByteArray, size, varray());
 	ADDFUNC0R(POOL_BYTE_ARRAY, BOOL, PoolByteArray, empty, varray());
@@ -3676,9 +3729,11 @@ void register_variant_methods() {
 	_VariantCall::add_constructor(_VariantCall::Projection_init1, Variant::PROJECTION, "x_axis", Variant::VECTOR4, "y_axis", Variant::VECTOR4, "z_axis", Variant::VECTOR4, "w_axis", Variant::VECTOR4);
 	_VariantCall::add_constructor(_VariantCall::Projection_init2, Variant::PROJECTION, "transform", Variant::TRANSFORM);
 
-	_VariantCall::add_constructor(_VariantCall::TypedArray_init1, Variant::TYPED_ARRAY, "type_name", Variant::STRING_NAME);
+	_VariantCall::add_constructor(_VariantCall::TypedArray_init1, Variant::TYPED_ARRAY, "type_name", Variant::STRING_NAME, "from", Variant::NIL);
+	_VariantCall::add_constructor(_VariantCall::TypedArray_init2, Variant::TYPED_ARRAY, "type_name", Variant::STRING_NAME);
 
-	_VariantCall::add_constructor(_VariantCall::PackedTypedArray_init1, Variant::PACKED_TYPED_ARRAY, "type_name", Variant::STRING_NAME);
+	_VariantCall::add_constructor(_VariantCall::PackedTypedArray_init1, Variant::PACKED_TYPED_ARRAY, "type_name", Variant::STRING_NAME, "from", Variant::NIL);
+	_VariantCall::add_constructor(_VariantCall::PackedTypedArray_init2, Variant::PACKED_TYPED_ARRAY, "type_name", Variant::STRING_NAME);
 
 	/* REGISTER CONSTANTS */
 
