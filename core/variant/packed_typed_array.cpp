@@ -922,6 +922,18 @@ uint32_t PackedTypedArray::recursive_hash(int p_recursion_count) const {
 
 	uint32_t h = hash_murmur3_one_32(0);
 
+	h = hash_murmur3_one_32((int)_p->type, h);
+
+	if (_p->type == Variant::INT) {
+		h = hash_murmur3_one_32((int)_p->int_type, h);
+	} else if (_p->type == Variant::OBJECT) {
+		h = hash_murmur3_one_32(HashMapHasherDefault::hash(_p->object_class_name), h);
+	}
+
+	if (!_p->data) {
+		return hash_fmix32(h);
+	}
+
 	switch (_p->type) {
 		case Variant::NIL: {
 			RECURSIVE_HASH_VECTORS_CAST(bool, hash_murmur3_one_32, uint8_t);
