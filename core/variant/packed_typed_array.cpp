@@ -880,18 +880,205 @@ uint32_t PackedTypedArray::hash() const {
 	return recursive_hash(0);
 }
 
-// TODO
+#define RECURSIVE_HASH_VECTORS(m_type, m_hash_func)                   \
+	Vector<m_type> *a = reinterpret_cast<Vector<m_type> *>(_p->data); \
+                                                                      \
+	const int s = a->size();                                          \
+                                                                      \
+	for (int i = 0; i < s; i++) {                                     \
+		h = m_hash_func(a->operator[](i), h);                         \
+	}
+
+#define RECURSIVE_HASH_VECTORS_HMHD(m_type, m_hash_func)                          \
+	Vector<m_type> *a = reinterpret_cast<Vector<m_type> *>(_p->data);             \
+                                                                                  \
+	const int s = a->size();                                                      \
+                                                                                  \
+	for (int i = 0; i < s; i++) {                                                 \
+		h = m_hash_func(HashMapHasherDefault::hash((m_type)a->operator[](i)), h); \
+	}
+
+#define RECURSIVE_HASH_VECTORS_CAST(m_type, m_hash_func, m_cast_to)   \
+	Vector<m_type> *a = reinterpret_cast<Vector<m_type> *>(_p->data); \
+                                                                      \
+	const int s = a->size();                                          \
+                                                                      \
+	for (int i = 0; i < s; i++) {                                     \
+		h = m_hash_func(static_cast<m_cast_to>(a->operator[](i)), h); \
+	}
+
+#define RECURSIVE_HASH_VARIANT_BASED_VECTORS(m_type)                                    \
+	Vector<m_type> *a = reinterpret_cast<Vector<m_type> *>(_p->data);                   \
+                                                                                        \
+	const int s = a->size();                                                            \
+                                                                                        \
+	for (int i = 0; i < s; i++) {                                                       \
+		h = hash_murmur3_one_32(a->operator[](i).recursive_hash(p_recursion_count), h); \
+	}
+
 uint32_t PackedTypedArray::recursive_hash(int p_recursion_count) const {
 	ERR_FAIL_COND_V_MSG(p_recursion_count > MAX_RECURSION, 0, "Max recursion reached");
 	p_recursion_count++;
 
 	uint32_t h = hash_murmur3_one_32(0);
 
-	for (int i = 0; i < _p->array.size(); i++) {
-		h = hash_murmur3_one_32(_p->array[i].recursive_hash(p_recursion_count), h);
+	switch (_p->type) {
+		case Variant::NIL: {
+			RECURSIVE_HASH_VECTORS_CAST(bool, hash_murmur3_one_32, uint8_t);
+		} break;
+		case Variant::BOOL: {
+			RECURSIVE_HASH_VECTORS_CAST(bool, hash_murmur3_one_32, uint8_t);
+		} break;
+		case Variant::INT: {
+			switch (_p->int_type) {
+				case PackedTypedArray::INT_TYPE_SIGNED_8: {
+					RECURSIVE_HASH_VECTORS(int8_t, hash_murmur3_one_32);
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_8: {
+					RECURSIVE_HASH_VECTORS(uint8_t, hash_murmur3_one_32);
+				} break;
+				case PackedTypedArray::INT_TYPE_SIGNED_16: {
+					RECURSIVE_HASH_VECTORS(int16_t, hash_murmur3_one_32);
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_16: {
+					RECURSIVE_HASH_VECTORS(uint16_t, hash_murmur3_one_32);
+				} break;
+				case PackedTypedArray::INT_TYPE_SIGNED_32: {
+					RECURSIVE_HASH_VECTORS(int32_t, hash_murmur3_one_32);
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_32: {
+					RECURSIVE_HASH_VECTORS(uint32_t, hash_murmur3_one_32);
+				} break;
+				case PackedTypedArray::INT_TYPE_SIGNED_64: {
+					RECURSIVE_HASH_VECTORS(int64_t, hash_murmur3_one_64);
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_64: {
+					RECURSIVE_HASH_VECTORS(uint64_t, hash_murmur3_one_64);
+				} break;
+			}
+		} break;
+		case Variant::REAL: {
+			RECURSIVE_HASH_VECTORS(real_t, hash_murmur3_one_real);
+		} break;
+		case Variant::STRING: {
+			RECURSIVE_HASH_VECTORS_HMHD(String, hash_murmur3_one_32);
+		} break;
+		case Variant::RECT2: {
+			RECURSIVE_HASH_VECTORS_HMHD(Rect2, hash_murmur3_one_32);
+		} break;
+		case Variant::RECT2I: {
+			RECURSIVE_HASH_VECTORS_HMHD(Rect2i, hash_murmur3_one_32);
+		} break;
+		case Variant::VECTOR2: {
+			RECURSIVE_HASH_VECTORS_HMHD(Vector2, hash_murmur3_one_32);
+		} break;
+		case Variant::VECTOR2I: {
+			RECURSIVE_HASH_VECTORS_HMHD(Vector2i, hash_murmur3_one_32);
+		} break;
+		case Variant::VECTOR3: {
+			RECURSIVE_HASH_VECTORS_HMHD(Vector3, hash_murmur3_one_32);
+		} break;
+		case Variant::VECTOR3I: {
+			RECURSIVE_HASH_VECTORS_HMHD(Vector3i, hash_murmur3_one_32);
+		} break;
+		case Variant::VECTOR4: {
+			RECURSIVE_HASH_VECTORS_HMHD(Vector4, hash_murmur3_one_32);
+		} break;
+		case Variant::VECTOR4I: {
+			RECURSIVE_HASH_VECTORS_HMHD(Vector4i, hash_murmur3_one_32);
+		} break;
+		case Variant::PLANE: {
+			RECURSIVE_HASH_VECTORS_HMHD(Plane, hash_murmur3_one_32);
+		} break;
+		case Variant::QUATERNION: {
+			RECURSIVE_HASH_VECTORS_HMHD(Quaternion, hash_murmur3_one_32);
+		} break;
+		case Variant::AABB: {
+			RECURSIVE_HASH_VECTORS_HMHD(AABB, hash_murmur3_one_32);
+		} break;
+		case Variant::BASIS: {
+			RECURSIVE_HASH_VECTORS_HMHD(Basis, hash_murmur3_one_32);
+		} break;
+		case Variant::TRANSFORM: {
+			RECURSIVE_HASH_VECTORS_HMHD(Transform, hash_murmur3_one_32);
+		} break;
+		case Variant::TRANSFORM2D: {
+			RECURSIVE_HASH_VECTORS_HMHD(Transform2D, hash_murmur3_one_32);
+		} break;
+		case Variant::PROJECTION: {
+			RECURSIVE_HASH_VECTORS_HMHD(Projection, hash_murmur3_one_32);
+		} break;
+		case Variant::COLOR: {
+			RECURSIVE_HASH_VECTORS_HMHD(Color, hash_murmur3_one_32);
+		} break;
+		case Variant::NODE_PATH: {
+			RECURSIVE_HASH_VECTORS_HMHD(NodePath, hash_murmur3_one_32);
+		} break;
+		case Variant::RID: {
+			RECURSIVE_HASH_VECTORS_HMHD(RID, hash_murmur3_one_32);
+		} break;
+		case Variant::OBJECT: {
+			RECURSIVE_HASH_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::STRING_NAME: {
+			RECURSIVE_HASH_VECTORS_HMHD(StringName, hash_murmur3_one_32);
+		} break;
+		case Variant::DICTIONARY: {
+			RECURSIVE_HASH_VARIANT_BASED_VECTORS(Dictionary);
+		} break;
+		case Variant::ARRAY: {
+			RECURSIVE_HASH_VARIANT_BASED_VECTORS(Array);
+		} break;
+		case Variant::TYPED_ARRAY: {
+			RECURSIVE_HASH_VARIANT_BASED_VECTORS(TypedArray);
+		} break;
+		case Variant::PACKED_TYPED_ARRAY: {
+			RECURSIVE_HASH_VARIANT_BASED_VECTORS(PackedTypedArray);
+		} break;
+		case Variant::POOL_BYTE_ARRAY: {
+			RECURSIVE_HASH_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::POOL_INT_ARRAY: {
+			RECURSIVE_HASH_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::POOL_REAL_ARRAY: {
+			RECURSIVE_HASH_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::POOL_STRING_ARRAY: {
+			RECURSIVE_HASH_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::POOL_VECTOR2_ARRAY: {
+			RECURSIVE_HASH_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::POOL_VECTOR2I_ARRAY: {
+			RECURSIVE_HASH_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::POOL_VECTOR3_ARRAY: {
+			RECURSIVE_HASH_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::POOL_VECTOR3I_ARRAY: {
+			RECURSIVE_HASH_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::POOL_VECTOR4_ARRAY: {
+			RECURSIVE_HASH_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::POOL_VECTOR4I_ARRAY: {
+			RECURSIVE_HASH_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::POOL_COLOR_ARRAY: {
+			RECURSIVE_HASH_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		default: {
+		} break;
 	}
+
 	return hash_fmix32(h);
 }
+
+#undef RECURSIVE_HASH_VECTORS
+#undef RECURSIVE_HASH_VECTORS_HMHD
+#undef RECURSIVE_HASH_VECTORS_CAST
+#undef RECURSIVE_HASH_VARIANT_BASED_VECTORS
 
 void PackedTypedArray::operator=(const PackedTypedArray &p_array) {
 	_ref(p_array);
