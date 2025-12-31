@@ -2015,25 +2015,35 @@ bool PackedTypedArray::push_front(const Variant &p_value) {
 	return true;
 }
 
-// TODO
 Variant PackedTypedArray::pop_back() {
-	if (!_p->array.empty()) {
-		const int n = _p->array.size() - 1;
-		const Variant ret = _p->array.get(n);
-		_p->array.resize(n);
-		return ret;
+	if (!_p->data) {
+		return Variant();
 	}
-	return Variant();
+	int s = size();
+
+	if (s == 0) {
+		return Variant();
+	}
+
+	const int n = s - 1;
+	const Variant ret = get(n);
+	resize(n);
+	return ret;
 }
 
-// TODO
 Variant PackedTypedArray::pop_front() {
-	if (!_p->array.empty()) {
-		const Variant ret = _p->array.get(0);
-		_p->array.remove(0);
-		return ret;
+	if (!_p->data) {
+		return Variant();
 	}
-	return Variant();
+	int s = size();
+
+	if (s == 0) {
+		return Variant();
+	}
+
+	const Variant ret = get(0);
+	remove(0);
+	return ret;
 }
 
 // TODO
