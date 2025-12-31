@@ -376,9 +376,6 @@ public:
 	bool is_global_class;
 
 	void *data;
-
-	// Temporary
-	Vector<Variant> array;
 };
 
 #define ACCESS_DATA(command)                                                                        \
@@ -1631,7 +1628,7 @@ Variant PackedTypedArray::back() const {
 	int size = 0;
 	ACCESS_DATA(size = vec->size());
 	ERR_FAIL_COND_V_MSG(size == 0, Variant(), "Can't take value from empty array.");
-	return operator[](_p->array.size() - 1);
+	return operator[](size - 1);
 }
 
 int PackedTypedArray::find(const Variant &p_value, int p_from) const {
@@ -1691,7 +1688,7 @@ int PackedTypedArray::count(const Variant &p_value) const {
 	}
 
 	int amount = 0;
-	for (int i = 0; i < _p->array.size(); i++) {
+	for (int i = 0; i < size; i++) {
 		if (operator[](i) == p_value) {
 			amount++;
 		}
@@ -2523,7 +2520,7 @@ int PackedTypedArray::get_variant_type() const {
 	return _p->type;
 }
 void PackedTypedArray::set_variant_type(const int p_variant_type) {
-	ERR_FAIL_COND(_p->array.size() > 0);
+	ERR_FAIL_COND(size() > 0);
 
 	_p->type = static_cast<Variant::Type>(p_variant_type);
 }
@@ -2532,7 +2529,7 @@ int PackedTypedArray::get_int_type() const {
 	return _p->int_type;
 }
 void PackedTypedArray::set_int_type(const int p_int_type) {
-	ERR_FAIL_COND(_p->array.size() > 0);
+	ERR_FAIL_COND(size() > 0);
 
 	_p->int_type = static_cast<PackedTypedArray::IntType>(p_int_type);
 }
@@ -2541,7 +2538,7 @@ StringName PackedTypedArray::get_object_class_name() const {
 	return _p->object_class_name;
 }
 void PackedTypedArray::set_object_class_name(const StringName &p_object_type_name) {
-	ERR_FAIL_COND(_p->array.size() > 0);
+	ERR_FAIL_COND(size() > 0);
 
 	_p->object_class_name = p_object_type_name;
 	_p->is_global_class = ScriptServer::is_global_class(p_object_type_name);
@@ -2551,7 +2548,7 @@ void PackedTypedArray::set_object_class_name(const StringName &p_object_type_nam
 }
 
 void PackedTypedArray::set_type_from_name(const StringName &p_type_name) {
-	ERR_FAIL_COND(_p->array.size() > 0);
+	ERR_FAIL_COND(size() > 0);
 
 	String type_name = p_type_name;
 	Variant::Type variant_type = Variant::VARIANT_MAX;
@@ -2580,7 +2577,7 @@ void PackedTypedArray::set_type_from_name(const StringName &p_type_name) {
 }
 
 void PackedTypedArray::set_type_from(const PackedTypedArray &p_array) {
-	ERR_FAIL_COND(_p->array.size() > 0);
+	ERR_FAIL_COND(size() > 0);
 
 	_p->type = p_array._p->type;
 	_p->object_class_name = p_array._p->object_class_name;
