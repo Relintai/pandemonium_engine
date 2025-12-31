@@ -1958,16 +1958,31 @@ int PackedTypedArray::bsearch(const Variant &p_value, bool p_before) {
 	return -1;
 }
 
-// TODO
-// This should just work as is
 int PackedTypedArray::bsearch_custom(const Variant &p_value, Object *p_obj, const StringName &p_function, bool p_before) {
 	ERR_FAIL_NULL_V(p_obj, 0);
+
+	if (!_p->data) {
+		return -1;
+	}
+
+	int dsize = size();
+
+	if (dsize == 0) {
+		return -1;
+	}
 
 	_PackedTypedArrayVariantSortCustom less;
 	less.obj = p_obj;
 	less.func = p_function;
 
-	return bisect(_p->array, p_value, p_before, less);
+	Vector<Variant> sarray;
+	sarray.resize(dsize);
+
+	for (int i = 0; i < dsize; ++i) {
+		sarray.write[i] = get(i);
+	}
+
+	return bisect(sarray, p_value, p_before, less);
 }
 
 PackedTypedArray &PackedTypedArray::invert() {
