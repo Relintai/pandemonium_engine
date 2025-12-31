@@ -248,7 +248,7 @@ or not by using the proper ones. Still trying to figure out a way to make this s
 
 WIP:
 
-- The PackedTypedArray internals still need to be properly implemented. It does work, but not what it should be.
+- The PackedTypedArray internals need to be tested properly.
 - Their c++ only api still needs to be fleshed out. Especially the packed one needs lots of getters setters.
 - Needs docs.
 - Needs icons.
