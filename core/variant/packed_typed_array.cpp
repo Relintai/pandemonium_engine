@@ -163,37 +163,37 @@ public:
 				data = memnew(Vector<PackedTypedArray>());
 			} break;
 			case Variant::POOL_BYTE_ARRAY: {
-				data = memnew(Vector<PoolByteArray>());
+				data = memnew(Vector<Variant>());
 			} break;
 			case Variant::POOL_INT_ARRAY: {
-				data = memnew(Vector<PoolIntArray>());
+				data = memnew(Vector<Variant>());
 			} break;
 			case Variant::POOL_REAL_ARRAY: {
-				data = memnew(Vector<PoolRealArray>());
+				data = memnew(Vector<Variant>());
 			} break;
 			case Variant::POOL_STRING_ARRAY: {
-				data = memnew(Vector<PoolStringArray>());
+				data = memnew(Vector<Variant>());
 			} break;
 			case Variant::POOL_VECTOR2_ARRAY: {
-				data = memnew(Vector<PoolVector2Array>());
+				data = memnew(Vector<Variant>());
 			} break;
 			case Variant::POOL_VECTOR2I_ARRAY: {
-				data = memnew(Vector<PoolVector2iArray>());
+				data = memnew(Vector<Variant>());
 			} break;
 			case Variant::POOL_VECTOR3_ARRAY: {
-				data = memnew(Vector<PoolVector3Array>());
+				data = memnew(Vector<Variant>());
 			} break;
 			case Variant::POOL_VECTOR3I_ARRAY: {
-				data = memnew(Vector<PoolVector3iArray>());
+				data = memnew(Vector<Variant>());
 			} break;
 			case Variant::POOL_VECTOR4_ARRAY: {
-				data = memnew(Vector<PoolVector4Array>());
+				data = memnew(Vector<Variant>());
 			} break;
 			case Variant::POOL_VECTOR4I_ARRAY: {
-				data = memnew(Vector<PoolVector4iArray>());
+				data = memnew(Vector<Variant>());
 			} break;
 			case Variant::POOL_COLOR_ARRAY: {
-				data = memnew(Vector<PoolColorArray>());
+				data = memnew(Vector<Variant>());
 			} break;
 			default: {
 			} break;
@@ -319,37 +319,37 @@ public:
 				memdelete(reinterpret_cast<Vector<PackedTypedArray> *>(data));
 			} break;
 			case Variant::POOL_BYTE_ARRAY: {
-				memdelete(reinterpret_cast<Vector<PoolByteArray> *>(data));
+				memdelete(reinterpret_cast<Vector<Variant> *>(data));
 			} break;
 			case Variant::POOL_INT_ARRAY: {
-				memdelete(reinterpret_cast<Vector<PoolIntArray> *>(data));
+				memdelete(reinterpret_cast<Vector<Variant> *>(data));
 			} break;
 			case Variant::POOL_REAL_ARRAY: {
-				memdelete(reinterpret_cast<Vector<PoolRealArray> *>(data));
+				memdelete(reinterpret_cast<Vector<Variant> *>(data));
 			} break;
 			case Variant::POOL_STRING_ARRAY: {
-				memdelete(reinterpret_cast<Vector<PoolStringArray> *>(data));
+				memdelete(reinterpret_cast<Vector<Variant> *>(data));
 			} break;
 			case Variant::POOL_VECTOR2_ARRAY: {
-				memdelete(reinterpret_cast<Vector<PoolVector2Array> *>(data));
+				memdelete(reinterpret_cast<Vector<Variant> *>(data));
 			} break;
 			case Variant::POOL_VECTOR2I_ARRAY: {
-				memdelete(reinterpret_cast<Vector<PoolVector2iArray> *>(data));
+				memdelete(reinterpret_cast<Vector<Variant> *>(data));
 			} break;
 			case Variant::POOL_VECTOR3_ARRAY: {
-				memdelete(reinterpret_cast<Vector<PoolVector3Array> *>(data));
+				memdelete(reinterpret_cast<Vector<Variant> *>(data));
 			} break;
 			case Variant::POOL_VECTOR3I_ARRAY: {
-				memdelete(reinterpret_cast<Vector<PoolVector3iArray> *>(data));
+				memdelete(reinterpret_cast<Vector<Variant> *>(data));
 			} break;
 			case Variant::POOL_VECTOR4_ARRAY: {
-				memdelete(reinterpret_cast<Vector<PoolVector4Array> *>(data));
+				memdelete(reinterpret_cast<Vector<Variant> *>(data));
 			} break;
 			case Variant::POOL_VECTOR4I_ARRAY: {
-				memdelete(reinterpret_cast<Vector<PoolVector4iArray> *>(data));
+				memdelete(reinterpret_cast<Vector<Variant> *>(data));
 			} break;
 			case Variant::POOL_COLOR_ARRAY: {
-				memdelete(reinterpret_cast<Vector<PoolColorArray> *>(data));
+				memdelete(reinterpret_cast<Vector<Variant> *>(data));
 			} break;
 			default: {
 			} break;
@@ -385,202 +385,202 @@ public:
 	Vector<Variant> array;
 };
 
-#define ACCESS_DATA(command)                                                                          \
-	switch (_p->type) {                                                                               \
-		case Variant::NIL: {                                                                          \
-			Vector<bool> *vec = reinterpret_cast<Vector<bool> *>(_p->data);                           \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::BOOL: {                                                                         \
-			Vector<bool> *vec = reinterpret_cast<Vector<bool> *>(_p->data);                           \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::INT: {                                                                          \
-			switch (_p->int_type) {                                                                   \
-				case PackedTypedArray::INT_TYPE_SIGNED_8: {                                           \
-					Vector<int8_t> *vec = reinterpret_cast<Vector<int8_t> *>(_p->data);               \
-					command;                                                                          \
-				} break;                                                                              \
-				case PackedTypedArray::INT_TYPE_UNSIGNED_8: {                                         \
-					Vector<uint8_t> *vec = reinterpret_cast<Vector<uint8_t> *>(_p->data);             \
-					command;                                                                          \
-				} break;                                                                              \
-				case PackedTypedArray::INT_TYPE_SIGNED_16: {                                          \
-					Vector<int16_t> *vec = reinterpret_cast<Vector<int16_t> *>(_p->data);             \
-					command;                                                                          \
-				} break;                                                                              \
-				case PackedTypedArray::INT_TYPE_UNSIGNED_16: {                                        \
-					Vector<uint16_t> *vec = reinterpret_cast<Vector<uint16_t> *>(_p->data);           \
-					command;                                                                          \
-				} break;                                                                              \
-				case PackedTypedArray::INT_TYPE_SIGNED_32: {                                          \
-					Vector<int32_t> *vec = reinterpret_cast<Vector<int32_t> *>(_p->data);             \
-					command;                                                                          \
-				} break;                                                                              \
-				case PackedTypedArray::INT_TYPE_UNSIGNED_32: {                                        \
-					Vector<uint32_t> *vec = reinterpret_cast<Vector<uint32_t> *>(_p->data);           \
-					command;                                                                          \
-				} break;                                                                              \
-				case PackedTypedArray::INT_TYPE_SIGNED_64: {                                          \
-					Vector<int64_t> *vec = reinterpret_cast<Vector<int64_t> *>(_p->data);             \
-					command;                                                                          \
-				} break;                                                                              \
-				case PackedTypedArray::INT_TYPE_UNSIGNED_64: {                                        \
-					Vector<uint64_t> *vec = reinterpret_cast<Vector<uint64_t> *>(_p->data);           \
-					command;                                                                          \
-				} break;                                                                              \
-			}                                                                                         \
-		} break;                                                                                      \
-		case Variant::REAL: {                                                                         \
-			Vector<real_t> *vec = reinterpret_cast<Vector<real_t> *>(_p->data);                       \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::STRING: {                                                                       \
-			Vector<String> *vec = reinterpret_cast<Vector<String> *>(_p->data);                       \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::RECT2: {                                                                        \
-			Vector<Rect2> *vec = reinterpret_cast<Vector<Rect2> *>(_p->data);                         \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::RECT2I: {                                                                       \
-			Vector<Rect2i> *vec = reinterpret_cast<Vector<Rect2i> *>(_p->data);                       \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::VECTOR2: {                                                                      \
-			Vector<Vector2> *vec = reinterpret_cast<Vector<Vector2> *>(_p->data);                     \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::VECTOR2I: {                                                                     \
-			Vector<Vector2i> *vec = reinterpret_cast<Vector<Vector2i> *>(_p->data);                   \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::VECTOR3: {                                                                      \
-			Vector<Vector3> *vec = reinterpret_cast<Vector<Vector3> *>(_p->data);                     \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::VECTOR3I: {                                                                     \
-			Vector<Vector3i> *vec = reinterpret_cast<Vector<Vector3i> *>(_p->data);                   \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::VECTOR4: {                                                                      \
-			Vector<Vector4> *vec = reinterpret_cast<Vector<Vector4> *>(_p->data);                     \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::VECTOR4I: {                                                                     \
-			Vector<Vector4i> *vec = reinterpret_cast<Vector<Vector4i> *>(_p->data);                   \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::PLANE: {                                                                        \
-			Vector<Plane> *vec = reinterpret_cast<Vector<Plane> *>(_p->data);                         \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::QUATERNION: {                                                                   \
-			Vector<Quaternion> *vec = reinterpret_cast<Vector<Quaternion> *>(_p->data);               \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::AABB: {                                                                         \
-			Vector<AABB> *vec = reinterpret_cast<Vector<AABB> *>(_p->data);                           \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::BASIS: {                                                                        \
-			Vector<Basis> *vec = reinterpret_cast<Vector<Basis> *>(_p->data);                         \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::TRANSFORM: {                                                                    \
-			Vector<Transform> *vec = reinterpret_cast<Vector<Transform> *>(_p->data);                 \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::TRANSFORM2D: {                                                                  \
-			Vector<Transform2D> *vec = reinterpret_cast<Vector<Transform2D> *>(_p->data);             \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::PROJECTION: {                                                                   \
-			Vector<Projection> *vec = reinterpret_cast<Vector<Projection> *>(_p->data);               \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::COLOR: {                                                                        \
-			Vector<Color> *vec = reinterpret_cast<Vector<Color> *>(_p->data);                         \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::NODE_PATH: {                                                                    \
-			Vector<NodePath> *vec = reinterpret_cast<Vector<NodePath> *>(_p->data);                   \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::RID: {                                                                          \
-			Vector<RID> *vec = reinterpret_cast<Vector<RID> *>(_p->data);                             \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::OBJECT: {                                                                       \
-			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);                     \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::STRING_NAME: {                                                                  \
-			Vector<StringName> *vec = reinterpret_cast<Vector<StringName> *>(_p->data);               \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::DICTIONARY: {                                                                   \
-			Vector<Dictionary> *vec = reinterpret_cast<Vector<Dictionary> *>(_p->data);               \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::ARRAY: {                                                                        \
-			Vector<Array> *vec = reinterpret_cast<Vector<Array> *>(_p->data);                         \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::TYPED_ARRAY: {                                                                  \
-			Vector<TypedArray> *vec = reinterpret_cast<Vector<TypedArray> *>(_p->data);               \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::PACKED_TYPED_ARRAY: {                                                           \
-			Vector<PackedTypedArray> *vec = reinterpret_cast<Vector<PackedTypedArray> *>(_p->data);   \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::POOL_BYTE_ARRAY: {                                                              \
-			Vector<PoolByteArray> *vec = reinterpret_cast<Vector<PoolByteArray> *>(_p->data);         \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::POOL_INT_ARRAY: {                                                               \
-			Vector<PoolIntArray> *vec = reinterpret_cast<Vector<PoolIntArray> *>(_p->data);           \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::POOL_REAL_ARRAY: {                                                              \
-			Vector<PoolRealArray> *vec = reinterpret_cast<Vector<PoolRealArray> *>(_p->data);         \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::POOL_STRING_ARRAY: {                                                            \
-			Vector<PoolStringArray> *vec = reinterpret_cast<Vector<PoolStringArray> *>(_p->data);     \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::POOL_VECTOR2_ARRAY: {                                                           \
-			Vector<PoolVector2Array> *vec = reinterpret_cast<Vector<PoolVector2Array> *>(_p->data);   \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::POOL_VECTOR2I_ARRAY: {                                                          \
-			Vector<PoolVector2iArray> *vec = reinterpret_cast<Vector<PoolVector2iArray> *>(_p->data); \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::POOL_VECTOR3_ARRAY: {                                                           \
-			Vector<PoolVector3Array> *vec = reinterpret_cast<Vector<PoolVector3Array> *>(_p->data);   \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::POOL_VECTOR3I_ARRAY: {                                                          \
-			Vector<PoolVector3iArray> *vec = reinterpret_cast<Vector<PoolVector3iArray> *>(_p->data); \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::POOL_VECTOR4_ARRAY: {                                                           \
-			Vector<PoolVector4Array> *vec = reinterpret_cast<Vector<PoolVector4Array> *>(_p->data);   \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::POOL_VECTOR4I_ARRAY: {                                                          \
-			Vector<PoolVector4iArray> *vec = reinterpret_cast<Vector<PoolVector4iArray> *>(_p->data); \
-			command;                                                                                  \
-		} break;                                                                                      \
-		case Variant::POOL_COLOR_ARRAY: {                                                             \
-			Vector<PoolColorArray> *vec = reinterpret_cast<Vector<PoolColorArray> *>(_p->data);       \
-			command;                                                                                  \
-		} break;                                                                                      \
-		default: {                                                                                    \
-		} break;                                                                                      \
+#define ACCESS_DATA(command)                                                                        \
+	switch (_p->type) {                                                                             \
+		case Variant::NIL: {                                                                        \
+			Vector<bool> *vec = reinterpret_cast<Vector<bool> *>(_p->data);                         \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::BOOL: {                                                                       \
+			Vector<bool> *vec = reinterpret_cast<Vector<bool> *>(_p->data);                         \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::INT: {                                                                        \
+			switch (_p->int_type) {                                                                 \
+				case PackedTypedArray::INT_TYPE_SIGNED_8: {                                         \
+					Vector<int8_t> *vec = reinterpret_cast<Vector<int8_t> *>(_p->data);             \
+					command;                                                                        \
+				} break;                                                                            \
+				case PackedTypedArray::INT_TYPE_UNSIGNED_8: {                                       \
+					Vector<uint8_t> *vec = reinterpret_cast<Vector<uint8_t> *>(_p->data);           \
+					command;                                                                        \
+				} break;                                                                            \
+				case PackedTypedArray::INT_TYPE_SIGNED_16: {                                        \
+					Vector<int16_t> *vec = reinterpret_cast<Vector<int16_t> *>(_p->data);           \
+					command;                                                                        \
+				} break;                                                                            \
+				case PackedTypedArray::INT_TYPE_UNSIGNED_16: {                                      \
+					Vector<uint16_t> *vec = reinterpret_cast<Vector<uint16_t> *>(_p->data);         \
+					command;                                                                        \
+				} break;                                                                            \
+				case PackedTypedArray::INT_TYPE_SIGNED_32: {                                        \
+					Vector<int32_t> *vec = reinterpret_cast<Vector<int32_t> *>(_p->data);           \
+					command;                                                                        \
+				} break;                                                                            \
+				case PackedTypedArray::INT_TYPE_UNSIGNED_32: {                                      \
+					Vector<uint32_t> *vec = reinterpret_cast<Vector<uint32_t> *>(_p->data);         \
+					command;                                                                        \
+				} break;                                                                            \
+				case PackedTypedArray::INT_TYPE_SIGNED_64: {                                        \
+					Vector<int64_t> *vec = reinterpret_cast<Vector<int64_t> *>(_p->data);           \
+					command;                                                                        \
+				} break;                                                                            \
+				case PackedTypedArray::INT_TYPE_UNSIGNED_64: {                                      \
+					Vector<uint64_t> *vec = reinterpret_cast<Vector<uint64_t> *>(_p->data);         \
+					command;                                                                        \
+				} break;                                                                            \
+			}                                                                                       \
+		} break;                                                                                    \
+		case Variant::REAL: {                                                                       \
+			Vector<real_t> *vec = reinterpret_cast<Vector<real_t> *>(_p->data);                     \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::STRING: {                                                                     \
+			Vector<String> *vec = reinterpret_cast<Vector<String> *>(_p->data);                     \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::RECT2: {                                                                      \
+			Vector<Rect2> *vec = reinterpret_cast<Vector<Rect2> *>(_p->data);                       \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::RECT2I: {                                                                     \
+			Vector<Rect2i> *vec = reinterpret_cast<Vector<Rect2i> *>(_p->data);                     \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::VECTOR2: {                                                                    \
+			Vector<Vector2> *vec = reinterpret_cast<Vector<Vector2> *>(_p->data);                   \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::VECTOR2I: {                                                                   \
+			Vector<Vector2i> *vec = reinterpret_cast<Vector<Vector2i> *>(_p->data);                 \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::VECTOR3: {                                                                    \
+			Vector<Vector3> *vec = reinterpret_cast<Vector<Vector3> *>(_p->data);                   \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::VECTOR3I: {                                                                   \
+			Vector<Vector3i> *vec = reinterpret_cast<Vector<Vector3i> *>(_p->data);                 \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::VECTOR4: {                                                                    \
+			Vector<Vector4> *vec = reinterpret_cast<Vector<Vector4> *>(_p->data);                   \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::VECTOR4I: {                                                                   \
+			Vector<Vector4i> *vec = reinterpret_cast<Vector<Vector4i> *>(_p->data);                 \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::PLANE: {                                                                      \
+			Vector<Plane> *vec = reinterpret_cast<Vector<Plane> *>(_p->data);                       \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::QUATERNION: {                                                                 \
+			Vector<Quaternion> *vec = reinterpret_cast<Vector<Quaternion> *>(_p->data);             \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::AABB: {                                                                       \
+			Vector<AABB> *vec = reinterpret_cast<Vector<AABB> *>(_p->data);                         \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::BASIS: {                                                                      \
+			Vector<Basis> *vec = reinterpret_cast<Vector<Basis> *>(_p->data);                       \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::TRANSFORM: {                                                                  \
+			Vector<Transform> *vec = reinterpret_cast<Vector<Transform> *>(_p->data);               \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::TRANSFORM2D: {                                                                \
+			Vector<Transform2D> *vec = reinterpret_cast<Vector<Transform2D> *>(_p->data);           \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::PROJECTION: {                                                                 \
+			Vector<Projection> *vec = reinterpret_cast<Vector<Projection> *>(_p->data);             \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::COLOR: {                                                                      \
+			Vector<Color> *vec = reinterpret_cast<Vector<Color> *>(_p->data);                       \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::NODE_PATH: {                                                                  \
+			Vector<NodePath> *vec = reinterpret_cast<Vector<NodePath> *>(_p->data);                 \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::RID: {                                                                        \
+			Vector<RID> *vec = reinterpret_cast<Vector<RID> *>(_p->data);                           \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::OBJECT: {                                                                     \
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);                   \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::STRING_NAME: {                                                                \
+			Vector<StringName> *vec = reinterpret_cast<Vector<StringName> *>(_p->data);             \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::DICTIONARY: {                                                                 \
+			Vector<Dictionary> *vec = reinterpret_cast<Vector<Dictionary> *>(_p->data);             \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::ARRAY: {                                                                      \
+			Vector<Array> *vec = reinterpret_cast<Vector<Array> *>(_p->data);                       \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::TYPED_ARRAY: {                                                                \
+			Vector<TypedArray> *vec = reinterpret_cast<Vector<TypedArray> *>(_p->data);             \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::PACKED_TYPED_ARRAY: {                                                         \
+			Vector<PackedTypedArray> *vec = reinterpret_cast<Vector<PackedTypedArray> *>(_p->data); \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::POOL_BYTE_ARRAY: {                                                            \
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);                   \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::POOL_INT_ARRAY: {                                                             \
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);                   \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::POOL_REAL_ARRAY: {                                                            \
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);                   \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::POOL_STRING_ARRAY: {                                                          \
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);                   \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::POOL_VECTOR2_ARRAY: {                                                         \
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);                   \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::POOL_VECTOR2I_ARRAY: {                                                        \
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);                   \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::POOL_VECTOR3_ARRAY: {                                                         \
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);                   \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::POOL_VECTOR3I_ARRAY: {                                                        \
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);                   \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::POOL_VECTOR4_ARRAY: {                                                         \
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);                   \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::POOL_VECTOR4I_ARRAY: {                                                        \
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);                   \
+			command;                                                                                \
+		} break;                                                                                    \
+		case Variant::POOL_COLOR_ARRAY: {                                                           \
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);                   \
+			command;                                                                                \
+		} break;                                                                                    \
+		default: {                                                                                  \
+		} break;                                                                                    \
 	}
 
 void PackedTypedArray::_ref(const PackedTypedArray &p_from) const {
@@ -676,31 +676,6 @@ bool deep_compare_variant_based_vectors(const Vector<T> &a1, const Vector<T> &a2
 	return true;
 }
 
-template <typename T, typename PT>
-bool deep_compare_pool_vector_based_vectors(const Vector<T> &a1, const Vector<T> &a2) {
-	const int size = a1.size();
-	if (size != a2.size()) {
-		return false;
-	}
-
-	for (int i = 0; i < size; i++) {
-		const PoolVector<PT> &a1i = a1[i];
-		const PoolVector<PT> &a2i = a2[i];
-
-		if (a1i.size() != a2i.size()) {
-			return false;
-		}
-
-		for (int j = 0; j < a1i.size(); ++j) {
-			if (a1i[j] != a2i[j]) {
-				return false;
-			}
-		}
-	}
-
-	return true;
-}
-
 #define DO_DEEP_COMPARE_VECTORS(m_type)                                        \
 	Vector<m_type> *a1 = reinterpret_cast<Vector<m_type> *>(_p->data);         \
 	Vector<m_type> *a2 = reinterpret_cast<Vector<m_type> *>(p_array._p->data); \
@@ -710,11 +685,6 @@ bool deep_compare_pool_vector_based_vectors(const Vector<T> &a1, const Vector<T>
 	Vector<m_type> *a1 = reinterpret_cast<Vector<m_type> *>(_p->data);         \
 	Vector<m_type> *a2 = reinterpret_cast<Vector<m_type> *>(p_array._p->data); \
 	return deep_compare_variant_based_vectors(*a1, *a2, p_recursion_count);
-
-#define DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(m_type, m_pv_type)           \
-	Vector<m_type> *a1 = reinterpret_cast<Vector<m_type> *>(_p->data);         \
-	Vector<m_type> *a2 = reinterpret_cast<Vector<m_type> *>(p_array._p->data); \
-	return deep_compare_pool_vector_based_vectors<m_type, m_pv_type>(*a1, *a2);
 
 bool PackedTypedArray::deep_equal(const PackedTypedArray &p_array, int p_recursion_count) const {
 	// Cheap checks
@@ -860,37 +830,37 @@ bool PackedTypedArray::deep_equal(const PackedTypedArray &p_array, int p_recursi
 			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(PackedTypedArray);
 		} break;
 		case Variant::POOL_BYTE_ARRAY: {
-			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolByteArray, uint8_t);
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
 		} break;
 		case Variant::POOL_INT_ARRAY: {
-			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolIntArray, int);
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
 		} break;
 		case Variant::POOL_REAL_ARRAY: {
-			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolRealArray, real_t);
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
 		} break;
 		case Variant::POOL_STRING_ARRAY: {
-			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolStringArray, String);
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
 		} break;
 		case Variant::POOL_VECTOR2_ARRAY: {
-			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolVector2Array, Vector2);
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
 		} break;
 		case Variant::POOL_VECTOR2I_ARRAY: {
-			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolVector2iArray, Vector2i);
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
 		} break;
 		case Variant::POOL_VECTOR3_ARRAY: {
-			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolVector3Array, Vector3);
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
 		} break;
 		case Variant::POOL_VECTOR3I_ARRAY: {
-			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolVector3iArray, Vector3i);
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
 		} break;
 		case Variant::POOL_VECTOR4_ARRAY: {
-			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolVector4Array, Vector4);
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
 		} break;
 		case Variant::POOL_VECTOR4I_ARRAY: {
-			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolVector4iArray, Vector4i);
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
 		} break;
 		case Variant::POOL_COLOR_ARRAY: {
-			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolColorArray, Color);
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
 		} break;
 		default: {
 		} break;
