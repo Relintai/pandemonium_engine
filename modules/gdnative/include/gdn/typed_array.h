@@ -61,10 +61,9 @@ typedef struct {
 extern "C" {
 #endif
 
-pandemonium_variant GDAPI *pandemonium_typed_array_operator_index(pandemonium_typed_array *p_self, const pandemonium_int p_idx);
 const pandemonium_variant GDAPI *pandemonium_typed_array_operator_index_const(const pandemonium_typed_array *p_self, const pandemonium_int p_idx);
 
-void GDAPI pandemonium_typed_array_set(pandemonium_typed_array *p_self, const pandemonium_int p_idx, const pandemonium_variant *p_value);
+pandemonium_bool GDAPI pandemonium_typed_array_set(pandemonium_typed_array *p_self, const pandemonium_int p_idx, const pandemonium_variant *p_value);
 pandemonium_variant GDAPI pandemonium_typed_array_get(const pandemonium_typed_array *p_self, const pandemonium_int p_idx);
 
 pandemonium_int GDAPI pandemonium_typed_array_size(const pandemonium_typed_array *p_self);
@@ -78,14 +77,15 @@ pandemonium_bool GDAPI pandemonium_typed_array_operator_equals(pandemonium_typed
 pandemonium_int GDAPI pandemonium_typed_array_hash(const pandemonium_typed_array *p_self);
 //bool operator=(const Array &p_typed_array) const;
 
-void GDAPI pandemonium_typed_array_push_back(pandemonium_typed_array *p_self, const pandemonium_variant *p_value);
-void GDAPI pandemonium_typed_array_append(pandemonium_typed_array *p_self, const pandemonium_variant *p_value);
-void GDAPI pandemonium_typed_array_append_typed_array(pandemonium_typed_array *p_self, const pandemonium_typed_array *p_typed_array);
+pandemonium_bool GDAPI pandemonium_typed_array_push_back(pandemonium_typed_array *p_self, const pandemonium_variant *p_value);
+pandemonium_bool GDAPI pandemonium_typed_array_append(pandemonium_typed_array *p_self, const pandemonium_variant *p_value);
+pandemonium_bool GDAPI pandemonium_typed_array_append_array(pandemonium_typed_array *p_self, const pandemonium_typed_array *p_typed_array);
+pandemonium_bool GDAPI pandemonium_typed_array_append_from(pandemonium_typed_array *p_self, const pandemonium_variant *p_array);
 void GDAPI pandemonium_typed_array_resize(pandemonium_typed_array *p_self, const pandemonium_int p_size);
 
-void GDAPI pandemonium_typed_array_insert(pandemonium_typed_array *p_self, const pandemonium_int p_pos, const pandemonium_variant *p_value);
+pandemonium_bool GDAPI pandemonium_typed_array_insert(pandemonium_typed_array *p_self, const pandemonium_int p_pos, const pandemonium_variant *p_value);
 void GDAPI pandemonium_typed_array_remove(pandemonium_typed_array *p_self, const pandemonium_int p_idx);
-void GDAPI pandemonium_typed_array_fill(pandemonium_typed_array *p_self, const pandemonium_variant *p_value);
+pandemonium_bool GDAPI pandemonium_typed_array_fill(pandemonium_typed_array *p_self, const pandemonium_variant *p_value);
 
 pandemonium_variant GDAPI pandemonium_typed_array_front(const pandemonium_typed_array *p_self);
 pandemonium_variant GDAPI pandemonium_typed_array_back(const pandemonium_typed_array *p_self);
@@ -109,7 +109,7 @@ pandemonium_bool GDAPI pandemonium_typed_array_has(const pandemonium_typed_array
 
 void GDAPI pandemonium_typed_array_erase(pandemonium_typed_array *p_self, const pandemonium_variant *p_value);
 
-void GDAPI pandemonium_typed_array_push_front(pandemonium_typed_array *p_self, const pandemonium_variant *p_value);
+pandemonium_bool GDAPI pandemonium_typed_array_push_front(pandemonium_typed_array *p_self, const pandemonium_variant *p_value);
 pandemonium_variant GDAPI pandemonium_typed_array_pop_back(pandemonium_typed_array *p_self);
 pandemonium_variant GDAPI pandemonium_typed_array_pop_front(pandemonium_typed_array *p_self);
 pandemonium_variant GDAPI pandemonium_typed_array_pop_at(pandemonium_typed_array *p_self, pandemonium_int p_pos);
@@ -123,6 +123,22 @@ pandemonium_typed_array GDAPI pandemonium_typed_array_slice_step_deep(const pand
 
 pandemonium_variant GDAPI pandemonium_typed_array_min(const pandemonium_typed_array *p_self);
 pandemonium_variant GDAPI pandemonium_typed_array_max(const pandemonium_typed_array *p_self);
+
+pandemonium_string GDAPI pandemonium_typed_array_get_typename_string(const pandemonium_typed_array *p_self);
+
+pandemonium_int GDAPI pandemonium_typed_array_get_variant_type(const pandemonium_typed_array *p_self);
+void GDAPI pandemonium_typed_array_set_variant_type(pandemonium_typed_array *p_self, const pandemonium_int p_variant_type);
+
+pandemonium_string_name GDAPI pandemonium_typed_array_get_object_class_name(const pandemonium_typed_array *p_self);
+void GDAPI pandemonium_typed_array_set_object_class_name(pandemonium_typed_array *p_self, const pandemonium_string_name *p_object_type_name);
+
+void GDAPI pandemonium_typed_array_set_type_from_name(pandemonium_typed_array *p_self, const pandemonium_string_name *p_type_name);
+
+void GDAPI pandemonium_typed_array_set_type_from(pandemonium_typed_array *p_self, const pandemonium_typed_array *p_array);
+
+pandemonium_bool GDAPI pandemonium_typed_array_validate_type_name(const pandemonium_typed_array *p_self, const pandemonium_string_name *p_type_name);
+pandemonium_bool GDAPI pandemonium_typed_array_validate_object_type_name(const pandemonium_typed_array *p_self, const pandemonium_string_name *p_type_name);
+pandemonium_bool GDAPI pandemonium_typed_array_can_take_variant(const pandemonium_typed_array *p_self, const pandemonium_variant *p_value);
 
 void GDAPI pandemonium_typed_array_new(pandemonium_typed_array *r_dest);
 void GDAPI pandemonium_typed_array_new_copy(pandemonium_typed_array *r_dest, const pandemonium_typed_array *p_src);
