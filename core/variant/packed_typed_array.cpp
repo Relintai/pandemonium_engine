@@ -1452,7 +1452,214 @@ PackedTypedArray &PackedTypedArray::sort() {
 		return *this;
 	}
 
-	ACCESS_DATA(vec->sort_custom<_PackedTypedArrayVariantSort>());
+	switch (_p->type) {
+		case Variant::NIL: {
+			Vector<bool> *vec = reinterpret_cast<Vector<bool> *>(_p->data);
+			vec->sort();
+		} break;
+		case Variant::BOOL: {
+			Vector<bool> *vec = reinterpret_cast<Vector<bool> *>(_p->data);
+			vec->sort();
+		} break;
+		case Variant::INT: {
+			switch (_p->int_type) {
+				case PackedTypedArray::INT_TYPE_SIGNED_8: {
+					Vector<int8_t> *vec = reinterpret_cast<Vector<int8_t> *>(_p->data);
+					vec->sort();
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_8: {
+					Vector<uint8_t> *vec = reinterpret_cast<Vector<uint8_t> *>(_p->data);
+					vec->sort();
+				} break;
+				case PackedTypedArray::INT_TYPE_SIGNED_16: {
+					Vector<int16_t> *vec = reinterpret_cast<Vector<int16_t> *>(_p->data);
+					vec->sort();
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_16: {
+					Vector<uint16_t> *vec = reinterpret_cast<Vector<uint16_t> *>(_p->data);
+					vec->sort();
+				} break;
+				case PackedTypedArray::INT_TYPE_SIGNED_32: {
+					Vector<int32_t> *vec = reinterpret_cast<Vector<int32_t> *>(_p->data);
+					vec->sort();
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_32: {
+					Vector<uint32_t> *vec = reinterpret_cast<Vector<uint32_t> *>(_p->data);
+					vec->sort();
+				} break;
+				case PackedTypedArray::INT_TYPE_SIGNED_64: {
+					Vector<int64_t> *vec = reinterpret_cast<Vector<int64_t> *>(_p->data);
+					vec->sort();
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_64: {
+					Vector<uint64_t> *vec = reinterpret_cast<Vector<uint64_t> *>(_p->data);
+					vec->sort();
+				} break;
+			}
+		} break;
+		case Variant::REAL: {
+			Vector<real_t> *vec = reinterpret_cast<Vector<real_t> *>(_p->data);
+			vec->sort();
+		} break;
+		case Variant::STRING: {
+			Vector<String> *vec = reinterpret_cast<Vector<String> *>(_p->data);
+			vec->sort();
+		} break;
+		case Variant::RECT2: {
+			//Vector<Rect2> *vec = reinterpret_cast<Vector<Rect2> *>(_p->data);
+			//vec->sort();
+			ERR_FAIL_V_MSG(*this, "Rect2s cannot be sorted directly.");
+		} break;
+		case Variant::RECT2I: {
+			//Vector<Rect2i> *vec = reinterpret_cast<Vector<Rect2i> *>(_p->data);
+			//vec->sort();
+			ERR_FAIL_V_MSG(*this, "Rect2is cannot be sorted directly.");
+		} break;
+		case Variant::VECTOR2: {
+			Vector<Vector2> *vec = reinterpret_cast<Vector<Vector2> *>(_p->data);
+			vec->sort();
+		} break;
+		case Variant::VECTOR2I: {
+			Vector<Vector2i> *vec = reinterpret_cast<Vector<Vector2i> *>(_p->data);
+			vec->sort();
+		} break;
+		case Variant::VECTOR3: {
+			Vector<Vector3> *vec = reinterpret_cast<Vector<Vector3> *>(_p->data);
+			vec->sort();
+		} break;
+		case Variant::VECTOR3I: {
+			Vector<Vector3i> *vec = reinterpret_cast<Vector<Vector3i> *>(_p->data);
+			vec->sort();
+		} break;
+		case Variant::VECTOR4: {
+			Vector<Vector4> *vec = reinterpret_cast<Vector<Vector4> *>(_p->data);
+			vec->sort();
+		} break;
+		case Variant::VECTOR4I: {
+			Vector<Vector4i> *vec = reinterpret_cast<Vector<Vector4i> *>(_p->data);
+			vec->sort();
+		} break;
+		case Variant::PLANE: {
+			//Vector<Plane> *vec = reinterpret_cast<Vector<Plane> *>(_p->data);
+			//vec->sort();
+			ERR_FAIL_V_MSG(*this, "Planes cannot be sorted directly.");
+		} break;
+		case Variant::QUATERNION: {
+			//Vector<Quaternion> *vec = reinterpret_cast<Vector<Quaternion> *>(_p->data);
+			//vec->sort();
+			ERR_FAIL_V_MSG(*this, "Quaternions cannot be sorted directly.");
+		} break;
+		case Variant::AABB: {
+			//Vector<AABB> *vec = reinterpret_cast<Vector<AABB> *>(_p->data);
+			//vec->sort();
+			ERR_FAIL_V_MSG(*this, "AABBs cannot be sorted directly.");
+		} break;
+		case Variant::BASIS: {
+			//Vector<Basis> *vec = reinterpret_cast<Vector<Basis> *>(_p->data);
+			//vec->sort();
+			ERR_FAIL_V_MSG(*this, "Basises cannot be sorted directly.");
+		} break;
+		case Variant::TRANSFORM: {
+			//Vector<Transform> *vec = reinterpret_cast<Vector<Transform> *>(_p->data);
+			//vec->sort();
+			ERR_FAIL_V_MSG(*this, "Transforms cannot be sorted directly.");
+		} break;
+		case Variant::TRANSFORM2D: {
+			//Vector<Transform2D> *vec = reinterpret_cast<Vector<Transform2D> *>(_p->data);
+			//vec->sort();
+			ERR_FAIL_V_MSG(*this, "Transform2Ds cannot be sorted directly.");
+		} break;
+		case Variant::PROJECTION: {
+			//Vector<Projection> *vec = reinterpret_cast<Vector<Projection> *>(_p->data);
+			//vec->sort();
+			ERR_FAIL_V_MSG(*this, "Projections cannot be sorted directly.");
+		} break;
+		case Variant::COLOR: {
+			Vector<Color> *vec = reinterpret_cast<Vector<Color> *>(_p->data);
+			vec->sort();
+		} break;
+		case Variant::NODE_PATH: {
+			//Vector<NodePath> *vec = reinterpret_cast<Vector<NodePath> *>(_p->data);
+			//vec->sort();
+			ERR_FAIL_V_MSG(*this, "NodePaths cannot be sorted directly.");
+		} break;
+		case Variant::RID: {
+			Vector<RID> *vec = reinterpret_cast<Vector<RID> *>(_p->data);
+			vec->sort();
+		} break;
+		case Variant::OBJECT: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			vec->sort_custom<_PackedTypedArrayVariantSort>();
+		} break;
+		case Variant::STRING_NAME: {
+			Vector<StringName> *vec = reinterpret_cast<Vector<StringName> *>(_p->data);
+			vec->sort();
+		} break;
+		case Variant::DICTIONARY: {
+			//Vector<Dictionary> *vec = reinterpret_cast<Vector<Dictionary> *>(_p->data);
+			//vec->sort();
+			ERR_FAIL_V_MSG(*this, "Dictionaries cannot be sorted directly.");
+		} break;
+		case Variant::ARRAY: {
+			Vector<Array> *vec = reinterpret_cast<Vector<Array> *>(_p->data);
+			vec->sort();
+
+		} break;
+		case Variant::TYPED_ARRAY: {
+			Vector<TypedArray> *vec = reinterpret_cast<Vector<TypedArray> *>(_p->data);
+			vec->sort();
+		} break;
+		case Variant::PACKED_TYPED_ARRAY: {
+			Vector<PackedTypedArray> *vec = reinterpret_cast<Vector<PackedTypedArray> *>(_p->data);
+			vec->sort();
+		} break;
+		case Variant::POOL_BYTE_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			vec->sort_custom<_PackedTypedArrayVariantSort>();
+		} break;
+		case Variant::POOL_INT_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			vec->sort_custom<_PackedTypedArrayVariantSort>();
+		} break;
+		case Variant::POOL_REAL_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			vec->sort_custom<_PackedTypedArrayVariantSort>();
+		} break;
+		case Variant::POOL_STRING_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			vec->sort_custom<_PackedTypedArrayVariantSort>();
+		} break;
+		case Variant::POOL_VECTOR2_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			vec->sort_custom<_PackedTypedArrayVariantSort>();
+		} break;
+		case Variant::POOL_VECTOR2I_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			vec->sort_custom<_PackedTypedArrayVariantSort>();
+		} break;
+		case Variant::POOL_VECTOR3_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			vec->sort_custom<_PackedTypedArrayVariantSort>();
+		} break;
+		case Variant::POOL_VECTOR3I_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			vec->sort_custom<_PackedTypedArrayVariantSort>();
+		} break;
+		case Variant::POOL_VECTOR4_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			vec->sort_custom<_PackedTypedArrayVariantSort>();
+		} break;
+		case Variant::POOL_VECTOR4I_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			vec->sort_custom<_PackedTypedArrayVariantSort>();
+		} break;
+		case Variant::POOL_COLOR_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			vec->sort_custom<_PackedTypedArrayVariantSort>();
+		} break;
+		default: {
+		} break;
+	}
 
 	return *this;
 }
@@ -1479,6 +1686,8 @@ PackedTypedArray &PackedTypedArray::sort_custom(Object *p_obj, const StringName 
 	if (!_p->data) {
 		return *this;
 	}
+	// copy elements to Vector<variant>, sort take them back
+	// if Vector<VAriant just sort inplace>
 
 	SortArray<Variant, _PackedTypedArrayVariantSortCustom, true> avs;
 	avs.compare.obj = p_obj;
@@ -1502,6 +1711,7 @@ void PackedTypedArray::shuffle() {
 	}
 }
 
+// const Vector<Variant> &p_array make it templated VEctor<t>, then it's easy
 template <typename Less>
 _FORCE_INLINE_ int bisect(const Vector<Variant> &p_array, const Variant &p_value, bool p_before, const Less &p_less) {
 	int lo = 0;
@@ -1534,6 +1744,7 @@ int PackedTypedArray::bsearch(const Variant &p_value, bool p_before) {
 }
 
 // TODO
+// This should just work as is
 int PackedTypedArray::bsearch_custom(const Variant &p_value, Object *p_obj, const StringName &p_function, bool p_before) {
 	ERR_FAIL_NULL_V(p_obj, 0);
 
