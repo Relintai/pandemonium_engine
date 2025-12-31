@@ -363,8 +363,6 @@ public:
 		int_type = PackedTypedArray::INT_TYPE_SIGNED_64;
 		is_global_class = false;
 		data = NULL;
-		size = 0;
-		capacity = 0;
 	}
 	~PackedTypedArrayPrivate() {
 		clear();
@@ -378,8 +376,6 @@ public:
 	bool is_global_class;
 
 	void *data;
-	uint64_t size;
-	uint64_t capacity;
 
 	// Temporary
 	Vector<Variant> array;
