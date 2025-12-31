@@ -47,7 +47,20 @@ class PackedTypedArray {
 
 	inline int _clamp_slice_index(int p_index) const;
 
+	void _push_back_unchecked(const Variant &p_value);
+
 public:
+	enum IntType {
+		INT_TYPE_SIGNED_8 = 1,
+		INT_TYPE_UNSIGNED_8,
+		INT_TYPE_SIGNED_16,
+		INT_TYPE_UNSIGNED_16,
+		INT_TYPE_SIGNED_32,
+		INT_TYPE_UNSIGNED_32,
+		INT_TYPE_SIGNED_64,
+		INT_TYPE_UNSIGNED_64,
+	};
+
 	const Variant operator[](int p_idx) const;
 
 	bool set(int p_idx, const Variant &p_value);
@@ -116,6 +129,9 @@ public:
 	int get_variant_type() const;
 	void set_variant_type(const int p_variant_type);
 
+	int get_int_type() const;
+	void set_int_type(const int p_int_type);
+
 	StringName get_object_class_name() const;
 	void set_object_class_name(const StringName &p_object_type_name);
 
@@ -130,6 +146,7 @@ public:
 	PackedTypedArray();
 	PackedTypedArray(const PackedTypedArray &p_from);
 	PackedTypedArray(const StringName &p_type_name, const Variant &p_from);
+	PackedTypedArray(const StringName &p_type_name, const Variant &p_from, const int p_int_type);
 
 	// Both this and the TypedArray(const TypedArray &p_from); constructors are useful,
 	// but having them both will do lots of clashes when converting from Variant.

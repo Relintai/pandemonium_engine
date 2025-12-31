@@ -3846,6 +3846,15 @@ void register_variant_methods() {
 	_VariantCall::add_variant_constant(Variant::PLANE, "PLANE_XY", Plane(Vector3(0, 0, 1), 0));
 
 	_VariantCall::add_variant_constant(Variant::QUATERNION, "IDENTITY", Quaternion(0, 0, 0, 1));
+
+	_VariantCall::add_constant(Variant::PACKED_TYPED_ARRAY, "INT_TYPE_SIGNED_8", PackedTypedArray::INT_TYPE_SIGNED_8);
+	_VariantCall::add_constant(Variant::PACKED_TYPED_ARRAY, "INT_TYPE_UNSIGNED_8", PackedTypedArray::INT_TYPE_UNSIGNED_8);
+	_VariantCall::add_constant(Variant::PACKED_TYPED_ARRAY, "INT_TYPE_SIGNED_16", PackedTypedArray::INT_TYPE_SIGNED_16);
+	_VariantCall::add_constant(Variant::PACKED_TYPED_ARRAY, "INT_TYPE_UNSIGNED_16", PackedTypedArray::INT_TYPE_UNSIGNED_16);
+	_VariantCall::add_constant(Variant::PACKED_TYPED_ARRAY, "INT_TYPE_SIGNED_32", PackedTypedArray::INT_TYPE_SIGNED_32);
+	_VariantCall::add_constant(Variant::PACKED_TYPED_ARRAY, "INT_TYPE_UNSIGNED_32", PackedTypedArray::INT_TYPE_UNSIGNED_32);
+	_VariantCall::add_constant(Variant::PACKED_TYPED_ARRAY, "INT_TYPE_SIGNED_64", PackedTypedArray::INT_TYPE_SIGNED_64);
+	_VariantCall::add_constant(Variant::PACKED_TYPED_ARRAY, "INT_TYPE_UNSIGNED_64", PackedTypedArray::INT_TYPE_UNSIGNED_64);
 }
 
 void unregister_variant_methods() {

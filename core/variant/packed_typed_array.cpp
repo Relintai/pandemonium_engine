@@ -40,55 +40,548 @@
 
 class PackedTypedArrayPrivate {
 public:
-	struct ObjData {
-		// Will be null for every type deriving from Reference as they have their
-		// own reference count mechanism
-		ObjectRC *rc;
-		// Always initialized, but will be null if the Ref<> assigned was null
-		// or this Variant is not even holding a Reference-derived object
-		RefPtr ref;
-	};
+	_FORCE_INLINE_ void ensure_data() {
+		if (data) {
+			return;
+		}
 
-	_FORCE_INLINE_ ObjData &_get_obj(const int p_index) {
-		return *reinterpret_cast<ObjData *>(&data[p_index]->_mem[0]);
+		_ensure_data();
 	}
 
-	_FORCE_INLINE_ const ObjData &_get_obj(const int p_index) const {
-		return *reinterpret_cast<const ObjData *>(&data[p_index]->_mem[0]);
+	void _ensure_data() {
+		switch (type) {
+			case Variant::NIL: {
+				data = memnew(Vector<bool>());
+			} break;
+			case Variant::BOOL: {
+				data = memnew(Vector<bool>());
+			} break;
+			case Variant::INT: {
+				switch (int_type) {
+					case PackedTypedArray::INT_TYPE_SIGNED_8: {
+						data = memnew(Vector<int8_t>());
+					} break;
+					case PackedTypedArray::INT_TYPE_UNSIGNED_8: {
+						data = memnew(Vector<uint8_t>());
+					} break;
+					case PackedTypedArray::INT_TYPE_SIGNED_16: {
+						data = memnew(Vector<int16_t>());
+					} break;
+					case PackedTypedArray::INT_TYPE_UNSIGNED_16: {
+						data = memnew(Vector<uint16_t>());
+					} break;
+					case PackedTypedArray::INT_TYPE_SIGNED_32: {
+						data = memnew(Vector<int32_t>());
+					} break;
+					case PackedTypedArray::INT_TYPE_UNSIGNED_32: {
+						data = memnew(Vector<uint32_t>());
+					} break;
+					case PackedTypedArray::INT_TYPE_SIGNED_64: {
+						data = memnew(Vector<int64_t>());
+					} break;
+					case PackedTypedArray::INT_TYPE_UNSIGNED_64: {
+						data = memnew(Vector<uint64_t>());
+					} break;
+				}
+			} break;
+			case Variant::REAL: {
+				data = memnew(Vector<real_t>());
+			} break;
+			case Variant::STRING: {
+				data = memnew(Vector<String>());
+			} break;
+			case Variant::RECT2: {
+				data = memnew(Vector<Rect2>());
+			} break;
+			case Variant::RECT2I: {
+				data = memnew(Vector<Rect2i>());
+			} break;
+			case Variant::VECTOR2: {
+				data = memnew(Vector<Vector2>());
+			} break;
+			case Variant::VECTOR2I: {
+				data = memnew(Vector<Vector2i>());
+			} break;
+			case Variant::VECTOR3: {
+				data = memnew(Vector<Vector3>());
+			} break;
+			case Variant::VECTOR3I: {
+				data = memnew(Vector<Vector3i>());
+			} break;
+			case Variant::VECTOR4: {
+				data = memnew(Vector<Vector4>());
+			} break;
+			case Variant::VECTOR4I: {
+				data = memnew(Vector<Vector4i>());
+			} break;
+			case Variant::PLANE: {
+				data = memnew(Vector<Plane>());
+			} break;
+			case Variant::QUATERNION: {
+				data = memnew(Vector<Quaternion>());
+			} break;
+			case Variant::AABB: {
+				data = memnew(Vector<AABB>());
+			} break;
+			case Variant::BASIS: {
+				data = memnew(Vector<Basis>());
+			} break;
+			case Variant::TRANSFORM: {
+				data = memnew(Vector<Transform>());
+			} break;
+			case Variant::TRANSFORM2D: {
+				data = memnew(Vector<Transform2D>());
+			} break;
+			case Variant::PROJECTION: {
+				data = memnew(Vector<Projection>());
+			} break;
+			case Variant::COLOR: {
+				data = memnew(Vector<Color>());
+			} break;
+			case Variant::NODE_PATH: {
+				data = memnew(Vector<NodePath>());
+			} break;
+			case Variant::RID: {
+				data = memnew(Vector<RID>());
+			} break;
+			case Variant::OBJECT: {
+				data = memnew(Vector<Variant>());
+			} break;
+			case Variant::STRING_NAME: {
+				data = memnew(Vector<StringName>());
+			} break;
+			case Variant::DICTIONARY: {
+				data = memnew(Vector<Dictionary>());
+			} break;
+			case Variant::ARRAY: {
+				data = memnew(Vector<Array>());
+			} break;
+			case Variant::TYPED_ARRAY: {
+				data = memnew(Vector<TypedArray>());
+			} break;
+			case Variant::PACKED_TYPED_ARRAY: {
+				data = memnew(Vector<PackedTypedArray>());
+			} break;
+			case Variant::POOL_BYTE_ARRAY: {
+				data = memnew(Vector<PoolByteArray>());
+			} break;
+			case Variant::POOL_INT_ARRAY: {
+				data = memnew(Vector<PoolIntArray>());
+			} break;
+			case Variant::POOL_REAL_ARRAY: {
+				data = memnew(Vector<PoolRealArray>());
+			} break;
+			case Variant::POOL_STRING_ARRAY: {
+				data = memnew(Vector<PoolStringArray>());
+			} break;
+			case Variant::POOL_VECTOR2_ARRAY: {
+				data = memnew(Vector<PoolVector2Array>());
+			} break;
+			case Variant::POOL_VECTOR2I_ARRAY: {
+				data = memnew(Vector<PoolVector2iArray>());
+			} break;
+			case Variant::POOL_VECTOR3_ARRAY: {
+				data = memnew(Vector<PoolVector3Array>());
+			} break;
+			case Variant::POOL_VECTOR3I_ARRAY: {
+				data = memnew(Vector<PoolVector3iArray>());
+			} break;
+			case Variant::POOL_VECTOR4_ARRAY: {
+				data = memnew(Vector<PoolVector4Array>());
+			} break;
+			case Variant::POOL_VECTOR4I_ARRAY: {
+				data = memnew(Vector<PoolVector4iArray>());
+			} break;
+			case Variant::POOL_COLOR_ARRAY: {
+				data = memnew(Vector<PoolColorArray>());
+			} break;
+			default: {
+			} break;
+		}
 	}
 
-	union PackedTypedArrayPrivateEntry {
-		bool _bool;
-		int64_t _int;
-		double _real;
-		Transform2D *_transform2d;
-		::AABB *_aabb;
-		Basis *_basis;
-		Transform *_transform;
-		Projection *_projection;
-		void *_ptr; //generic pointer
-		uint8_t _mem[sizeof(ObjData) > (sizeof(real_t) * 4) ? sizeof(ObjData) : (sizeof(real_t) * 4)]{ 0 };
-	} GCC_ALIGNED_8;
+	void clear() {
+		if (!data) {
+			return;
+		}
+
+		switch (type) {
+			case Variant::NIL: {
+				memdelete(reinterpret_cast<Vector<bool> *>(data));
+			} break;
+			case Variant::BOOL: {
+				memdelete(reinterpret_cast<Vector<bool> *>(data));
+			} break;
+			case Variant::INT: {
+				switch (int_type) {
+					case PackedTypedArray::INT_TYPE_SIGNED_8: {
+						memdelete(reinterpret_cast<Vector<int8_t> *>(data));
+					} break;
+					case PackedTypedArray::INT_TYPE_UNSIGNED_8: {
+						memdelete(reinterpret_cast<Vector<uint8_t> *>(data));
+					} break;
+					case PackedTypedArray::INT_TYPE_SIGNED_16: {
+						memdelete(reinterpret_cast<Vector<int16_t> *>(data));
+					} break;
+					case PackedTypedArray::INT_TYPE_UNSIGNED_16: {
+						memdelete(reinterpret_cast<Vector<uint16_t> *>(data));
+					} break;
+					case PackedTypedArray::INT_TYPE_SIGNED_32: {
+						memdelete(reinterpret_cast<Vector<int32_t> *>(data));
+					} break;
+					case PackedTypedArray::INT_TYPE_UNSIGNED_32: {
+						memdelete(reinterpret_cast<Vector<uint32_t> *>(data));
+					} break;
+					case PackedTypedArray::INT_TYPE_SIGNED_64: {
+						memdelete(reinterpret_cast<Vector<int64_t> *>(data));
+					} break;
+					case PackedTypedArray::INT_TYPE_UNSIGNED_64: {
+						memdelete(reinterpret_cast<Vector<uint64_t> *>(data));
+					} break;
+				}
+			} break;
+			case Variant::REAL: {
+				memdelete(reinterpret_cast<Vector<real_t> *>(data));
+			} break;
+			case Variant::STRING: {
+				memdelete(reinterpret_cast<Vector<String> *>(data));
+			} break;
+			case Variant::RECT2: {
+				memdelete(reinterpret_cast<Vector<Rect2> *>(data));
+			} break;
+			case Variant::RECT2I: {
+				memdelete(reinterpret_cast<Vector<Rect2i> *>(data));
+			} break;
+			case Variant::VECTOR2: {
+				memdelete(reinterpret_cast<Vector<Vector2> *>(data));
+			} break;
+			case Variant::VECTOR2I: {
+				memdelete(reinterpret_cast<Vector<Vector2i> *>(data));
+			} break;
+			case Variant::VECTOR3: {
+				memdelete(reinterpret_cast<Vector<Vector3> *>(data));
+			} break;
+			case Variant::VECTOR3I: {
+				memdelete(reinterpret_cast<Vector<Vector3i> *>(data));
+			} break;
+			case Variant::VECTOR4: {
+				memdelete(reinterpret_cast<Vector<Vector4> *>(data));
+			} break;
+			case Variant::VECTOR4I: {
+				memdelete(reinterpret_cast<Vector<Vector4i> *>(data));
+			} break;
+			case Variant::PLANE: {
+				memdelete(reinterpret_cast<Vector<Plane> *>(data));
+			} break;
+			case Variant::QUATERNION: {
+				memdelete(reinterpret_cast<Vector<Quaternion> *>(data));
+			} break;
+			case Variant::AABB: {
+				memdelete(reinterpret_cast<Vector<AABB> *>(data));
+			} break;
+			case Variant::BASIS: {
+				memdelete(reinterpret_cast<Vector<Basis> *>(data));
+			} break;
+			case Variant::TRANSFORM: {
+				memdelete(reinterpret_cast<Vector<Transform> *>(data));
+			} break;
+			case Variant::TRANSFORM2D: {
+				memdelete(reinterpret_cast<Vector<Transform2D> *>(data));
+			} break;
+			case Variant::PROJECTION: {
+				memdelete(reinterpret_cast<Vector<Projection> *>(data));
+			} break;
+			case Variant::COLOR: {
+				memdelete(reinterpret_cast<Vector<Color> *>(data));
+			} break;
+			case Variant::NODE_PATH: {
+				memdelete(reinterpret_cast<Vector<NodePath> *>(data));
+			} break;
+			case Variant::RID: {
+				memdelete(reinterpret_cast<Vector<RID> *>(data));
+			} break;
+			case Variant::OBJECT: {
+				memdelete(reinterpret_cast<Vector<Variant> *>(data));
+			} break;
+			case Variant::STRING_NAME: {
+				memdelete(reinterpret_cast<Vector<StringName> *>(data));
+			} break;
+			case Variant::DICTIONARY: {
+				memdelete(reinterpret_cast<Vector<Dictionary> *>(data));
+			} break;
+			case Variant::ARRAY: {
+				memdelete(reinterpret_cast<Vector<Array> *>(data));
+			} break;
+			case Variant::TYPED_ARRAY: {
+				memdelete(reinterpret_cast<Vector<TypedArray> *>(data));
+			} break;
+			case Variant::PACKED_TYPED_ARRAY: {
+				memdelete(reinterpret_cast<Vector<PackedTypedArray> *>(data));
+			} break;
+			case Variant::POOL_BYTE_ARRAY: {
+				memdelete(reinterpret_cast<Vector<PoolByteArray> *>(data));
+			} break;
+			case Variant::POOL_INT_ARRAY: {
+				memdelete(reinterpret_cast<Vector<PoolIntArray> *>(data));
+			} break;
+			case Variant::POOL_REAL_ARRAY: {
+				memdelete(reinterpret_cast<Vector<PoolRealArray> *>(data));
+			} break;
+			case Variant::POOL_STRING_ARRAY: {
+				memdelete(reinterpret_cast<Vector<PoolStringArray> *>(data));
+			} break;
+			case Variant::POOL_VECTOR2_ARRAY: {
+				memdelete(reinterpret_cast<Vector<PoolVector2Array> *>(data));
+			} break;
+			case Variant::POOL_VECTOR2I_ARRAY: {
+				memdelete(reinterpret_cast<Vector<PoolVector2iArray> *>(data));
+			} break;
+			case Variant::POOL_VECTOR3_ARRAY: {
+				memdelete(reinterpret_cast<Vector<PoolVector3Array> *>(data));
+			} break;
+			case Variant::POOL_VECTOR3I_ARRAY: {
+				memdelete(reinterpret_cast<Vector<PoolVector3iArray> *>(data));
+			} break;
+			case Variant::POOL_VECTOR4_ARRAY: {
+				memdelete(reinterpret_cast<Vector<PoolVector4Array> *>(data));
+			} break;
+			case Variant::POOL_VECTOR4I_ARRAY: {
+				memdelete(reinterpret_cast<Vector<PoolVector4iArray> *>(data));
+			} break;
+			case Variant::POOL_COLOR_ARRAY: {
+				memdelete(reinterpret_cast<Vector<PoolColorArray> *>(data));
+			} break;
+			default: {
+			} break;
+		}
+
+		data = NULL;
+	}
 
 	PackedTypedArrayPrivate() {
 		type = Variant::NIL;
+		int_type = PackedTypedArray::INT_TYPE_SIGNED_64;
 		is_global_class = false;
+		data = NULL;
+		size = 0;
+		capacity = 0;
 	}
 	~PackedTypedArrayPrivate() {
+		clear();
 	}
 
 	SafeRefCount refcount;
 
 	Variant::Type type;
 	StringName object_class_name;
+	PackedTypedArray::IntType int_type;
 	bool is_global_class;
 
-	// Maybe this should just be a straight up void* that would achieve tighter packing in some cases.
-	LocalVector<PackedTypedArrayPrivateEntry *> data;
+	void *data;
+	uint64_t size;
+	uint64_t capacity;
 
 	// Temporary
 	Vector<Variant> array;
 };
+
+#define ACCESS_DATA(command)                                                                          \
+	switch (_p->type) {                                                                               \
+		case Variant::NIL: {                                                                          \
+			Vector<bool> *vec = reinterpret_cast<Vector<bool> *>(_p->data);                           \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::BOOL: {                                                                         \
+			Vector<bool> *vec = reinterpret_cast<Vector<bool> *>(_p->data);                           \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::INT: {                                                                          \
+			switch (_p->int_type) {                                                                   \
+				case PackedTypedArray::INT_TYPE_SIGNED_8: {                                           \
+					Vector<int8_t> *vec = reinterpret_cast<Vector<int8_t> *>(_p->data);               \
+					command;                                                                          \
+				} break;                                                                              \
+				case PackedTypedArray::INT_TYPE_UNSIGNED_8: {                                         \
+					Vector<uint8_t> *vec = reinterpret_cast<Vector<uint8_t> *>(_p->data);             \
+					command;                                                                          \
+				} break;                                                                              \
+				case PackedTypedArray::INT_TYPE_SIGNED_16: {                                          \
+					Vector<int16_t> *vec = reinterpret_cast<Vector<int16_t> *>(_p->data);             \
+					command;                                                                          \
+				} break;                                                                              \
+				case PackedTypedArray::INT_TYPE_UNSIGNED_16: {                                        \
+					Vector<uint16_t> *vec = reinterpret_cast<Vector<uint16_t> *>(_p->data);           \
+					command;                                                                          \
+				} break;                                                                              \
+				case PackedTypedArray::INT_TYPE_SIGNED_32: {                                          \
+					Vector<int32_t> *vec = reinterpret_cast<Vector<int32_t> *>(_p->data);             \
+					command;                                                                          \
+				} break;                                                                              \
+				case PackedTypedArray::INT_TYPE_UNSIGNED_32: {                                        \
+					Vector<uint32_t> *vec = reinterpret_cast<Vector<uint32_t> *>(_p->data);           \
+					command;                                                                          \
+				} break;                                                                              \
+				case PackedTypedArray::INT_TYPE_SIGNED_64: {                                          \
+					Vector<int64_t> *vec = reinterpret_cast<Vector<int64_t> *>(_p->data);             \
+					command;                                                                          \
+				} break;                                                                              \
+				case PackedTypedArray::INT_TYPE_UNSIGNED_64: {                                        \
+					Vector<uint64_t> *vec = reinterpret_cast<Vector<uint64_t> *>(_p->data);           \
+					command;                                                                          \
+				} break;                                                                              \
+			}                                                                                         \
+		} break;                                                                                      \
+		case Variant::REAL: {                                                                         \
+			Vector<real_t> *vec = reinterpret_cast<Vector<real_t> *>(_p->data);                       \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::STRING: {                                                                       \
+			Vector<String> *vec = reinterpret_cast<Vector<String> *>(_p->data);                       \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::RECT2: {                                                                        \
+			Vector<Rect2> *vec = reinterpret_cast<Vector<Rect2> *>(_p->data);                         \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::RECT2I: {                                                                       \
+			Vector<Rect2i> *vec = reinterpret_cast<Vector<Rect2i> *>(_p->data);                       \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::VECTOR2: {                                                                      \
+			Vector<Vector2> *vec = reinterpret_cast<Vector<Vector2> *>(_p->data);                     \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::VECTOR2I: {                                                                     \
+			Vector<Vector2i> *vec = reinterpret_cast<Vector<Vector2i> *>(_p->data);                   \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::VECTOR3: {                                                                      \
+			Vector<Vector3> *vec = reinterpret_cast<Vector<Vector3> *>(_p->data);                     \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::VECTOR3I: {                                                                     \
+			Vector<Vector3i> *vec = reinterpret_cast<Vector<Vector3i> *>(_p->data);                   \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::VECTOR4: {                                                                      \
+			Vector<Vector4> *vec = reinterpret_cast<Vector<Vector4> *>(_p->data);                     \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::VECTOR4I: {                                                                     \
+			Vector<Vector4i> *vec = reinterpret_cast<Vector<Vector4i> *>(_p->data);                   \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::PLANE: {                                                                        \
+			Vector<Plane> *vec = reinterpret_cast<Vector<Plane> *>(_p->data);                         \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::QUATERNION: {                                                                   \
+			Vector<Quaternion> *vec = reinterpret_cast<Vector<Quaternion> *>(_p->data);               \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::AABB: {                                                                         \
+			Vector<AABB> *vec = reinterpret_cast<Vector<AABB> *>(_p->data);                           \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::BASIS: {                                                                        \
+			Vector<Basis> *vec = reinterpret_cast<Vector<Basis> *>(_p->data);                         \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::TRANSFORM: {                                                                    \
+			Vector<Transform> *vec = reinterpret_cast<Vector<Transform> *>(_p->data);                 \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::TRANSFORM2D: {                                                                  \
+			Vector<Transform2D> *vec = reinterpret_cast<Vector<Transform2D> *>(_p->data);             \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::PROJECTION: {                                                                   \
+			Vector<Projection> *vec = reinterpret_cast<Vector<Projection> *>(_p->data);               \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::COLOR: {                                                                        \
+			Vector<Color> *vec = reinterpret_cast<Vector<Color> *>(_p->data);                         \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::NODE_PATH: {                                                                    \
+			Vector<NodePath> *vec = reinterpret_cast<Vector<NodePath> *>(_p->data);                   \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::RID: {                                                                          \
+			Vector<RID> *vec = reinterpret_cast<Vector<RID> *>(_p->data);                             \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::OBJECT: {                                                                       \
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);                     \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::STRING_NAME: {                                                                  \
+			Vector<StringName> *vec = reinterpret_cast<Vector<StringName> *>(_p->data);               \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::DICTIONARY: {                                                                   \
+			Vector<Dictionary> *vec = reinterpret_cast<Vector<Dictionary> *>(_p->data);               \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::ARRAY: {                                                                        \
+			Vector<Array> *vec = reinterpret_cast<Vector<Array> *>(_p->data);                         \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::TYPED_ARRAY: {                                                                  \
+			Vector<TypedArray> *vec = reinterpret_cast<Vector<TypedArray> *>(_p->data);               \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::PACKED_TYPED_ARRAY: {                                                           \
+			Vector<PackedTypedArray> *vec = reinterpret_cast<Vector<PackedTypedArray> *>(_p->data);   \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::POOL_BYTE_ARRAY: {                                                              \
+			Vector<PoolByteArray> *vec = reinterpret_cast<Vector<PoolByteArray> *>(_p->data);         \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::POOL_INT_ARRAY: {                                                               \
+			Vector<PoolIntArray> *vec = reinterpret_cast<Vector<PoolIntArray> *>(_p->data);           \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::POOL_REAL_ARRAY: {                                                              \
+			Vector<PoolRealArray> *vec = reinterpret_cast<Vector<PoolRealArray> *>(_p->data);         \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::POOL_STRING_ARRAY: {                                                            \
+			Vector<PoolStringArray> *vec = reinterpret_cast<Vector<PoolStringArray> *>(_p->data);     \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::POOL_VECTOR2_ARRAY: {                                                           \
+			Vector<PoolVector2Array> *vec = reinterpret_cast<Vector<PoolVector2Array> *>(_p->data);   \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::POOL_VECTOR2I_ARRAY: {                                                          \
+			Vector<PoolVector2iArray> *vec = reinterpret_cast<Vector<PoolVector2iArray> *>(_p->data); \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::POOL_VECTOR3_ARRAY: {                                                           \
+			Vector<PoolVector3Array> *vec = reinterpret_cast<Vector<PoolVector3Array> *>(_p->data);   \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::POOL_VECTOR3I_ARRAY: {                                                          \
+			Vector<PoolVector3iArray> *vec = reinterpret_cast<Vector<PoolVector3iArray> *>(_p->data); \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::POOL_VECTOR4_ARRAY: {                                                           \
+			Vector<PoolVector4Array> *vec = reinterpret_cast<Vector<PoolVector4Array> *>(_p->data);   \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::POOL_VECTOR4I_ARRAY: {                                                          \
+			Vector<PoolVector4iArray> *vec = reinterpret_cast<Vector<PoolVector4iArray> *>(_p->data); \
+			command;                                                                                  \
+		} break;                                                                                      \
+		case Variant::POOL_COLOR_ARRAY: {                                                             \
+			Vector<PoolColorArray> *vec = reinterpret_cast<Vector<PoolColorArray> *>(_p->data);       \
+			command;                                                                                  \
+		} break;                                                                                      \
+		default: {                                                                                    \
+		} break;                                                                                      \
+	}
 
 void PackedTypedArray::_ref(const PackedTypedArray &p_from) const {
 	PackedTypedArrayPrivate *_fp = p_from._p;
@@ -120,27 +613,53 @@ void PackedTypedArray::_unref() const {
 }
 
 const Variant PackedTypedArray::operator[](int p_idx) const {
-	return _p->array[p_idx];
+	ERR_FAIL_COND_V(!_p->data, Variant());
+
+	ACCESS_DATA(return vec->operator[](p_idx));
+
+	return Variant();
 }
 
 int PackedTypedArray::size() const {
-	return _p->array.size();
+	if (!_p->data) {
+		return 0;
+	}
+
+	ACCESS_DATA(return vec->size());
+
+	return 0;
 }
 bool PackedTypedArray::empty() const {
-	return _p->array.empty();
-}
-void PackedTypedArray::clear() {
-	_p->array.clear();
-}
-
-bool PackedTypedArray::deep_equal(const PackedTypedArray &p_array, int p_recursion_count) const {
-	// Cheap checks
-	ERR_FAIL_COND_V_MSG(p_recursion_count > MAX_RECURSION, true, "Max recursion reached");
-	if (_p == p_array._p) {
+	if (!_p->data) {
 		return true;
 	}
-	const Vector<Variant> &a1 = _p->array;
-	const Vector<Variant> &a2 = p_array._p->array;
+
+	ACCESS_DATA(return vec->empty());
+
+	return 0;
+}
+void PackedTypedArray::clear() {
+	ACCESS_DATA(return vec->clear());
+}
+
+template <typename T>
+bool deep_compare_vectors(const Vector<T> &a1, const Vector<T> &a2) {
+	const int size = a1.size();
+	if (size != a2.size()) {
+		return false;
+	}
+
+	for (int i = 0; i < size; i++) {
+		if (a1[i] != a2[i]) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+template <typename T>
+bool deep_compare_variant_based_vectors(const Vector<T> &a1, const Vector<T> &a2, int p_recursion_count) {
 	const int size = a1.size();
 	if (size != a2.size()) {
 		return false;
@@ -157,6 +676,229 @@ bool PackedTypedArray::deep_equal(const PackedTypedArray &p_array, int p_recursi
 	return true;
 }
 
+template <typename T, typename PT>
+bool deep_compare_pool_vector_based_vectors(const Vector<T> &a1, const Vector<T> &a2) {
+	const int size = a1.size();
+	if (size != a2.size()) {
+		return false;
+	}
+
+	for (int i = 0; i < size; i++) {
+		const PoolVector<PT> &a1i = a1[i];
+		const PoolVector<PT> &a2i = a2[i];
+
+		if (a1i.size() != a2i.size()) {
+			return false;
+		}
+
+		for (int j = 0; j < a1i.size(); ++j) {
+			if (a1i[j] != a2i[j]) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+#define DO_DEEP_COMPARE_VECTORS(m_type)                                        \
+	Vector<m_type> *a1 = reinterpret_cast<Vector<m_type> *>(_p->data);         \
+	Vector<m_type> *a2 = reinterpret_cast<Vector<m_type> *>(p_array._p->data); \
+	return deep_compare_vectors(*a1, *a2);
+
+#define DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(m_type)                          \
+	Vector<m_type> *a1 = reinterpret_cast<Vector<m_type> *>(_p->data);         \
+	Vector<m_type> *a2 = reinterpret_cast<Vector<m_type> *>(p_array._p->data); \
+	return deep_compare_variant_based_vectors(*a1, *a2, p_recursion_count);
+
+#define DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(m_type, m_pv_type)           \
+	Vector<m_type> *a1 = reinterpret_cast<Vector<m_type> *>(_p->data);         \
+	Vector<m_type> *a2 = reinterpret_cast<Vector<m_type> *>(p_array._p->data); \
+	return deep_compare_pool_vector_based_vectors<m_type, m_pv_type>(*a1, *a2);
+
+bool PackedTypedArray::deep_equal(const PackedTypedArray &p_array, int p_recursion_count) const {
+	// Cheap checks
+	ERR_FAIL_COND_V_MSG(p_recursion_count > MAX_RECURSION, true, "Max recursion reached");
+
+	if (_p == p_array._p) {
+		return true;
+	}
+
+	// If the other one is missing data aswell, the previos if already returned true
+	if (!_p->data) {
+		return false;
+	}
+
+	if (_p->type != p_array._p->type) {
+		return false;
+	}
+
+	if (_p->type == Variant::OBJECT) {
+		if (_p->object_class_name != p_array._p->object_class_name) {
+			return false;
+		}
+	}
+
+	if (_p->type == Variant::INT) {
+		if (_p->int_type != p_array._p->int_type) {
+			return false;
+		}
+	}
+
+	switch (_p->type) {
+		case Variant::NIL: {
+			DO_DEEP_COMPARE_VECTORS(bool);
+		} break;
+		case Variant::BOOL: {
+			DO_DEEP_COMPARE_VECTORS(bool);
+		} break;
+		case Variant::INT: {
+			switch (_p->int_type) {
+				case PackedTypedArray::INT_TYPE_SIGNED_8: {
+					DO_DEEP_COMPARE_VECTORS(int8_t);
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_8: {
+					DO_DEEP_COMPARE_VECTORS(uint8_t);
+				} break;
+				case PackedTypedArray::INT_TYPE_SIGNED_16: {
+					DO_DEEP_COMPARE_VECTORS(int16_t);
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_16: {
+					DO_DEEP_COMPARE_VECTORS(uint16_t);
+				} break;
+				case PackedTypedArray::INT_TYPE_SIGNED_32: {
+					DO_DEEP_COMPARE_VECTORS(int32_t);
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_32: {
+					DO_DEEP_COMPARE_VECTORS(uint32_t);
+				} break;
+				case PackedTypedArray::INT_TYPE_SIGNED_64: {
+					DO_DEEP_COMPARE_VECTORS(int64_t);
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_64: {
+					DO_DEEP_COMPARE_VECTORS(uint64_t);
+				} break;
+			}
+		} break;
+		case Variant::REAL: {
+			DO_DEEP_COMPARE_VECTORS(real_t);
+		} break;
+		case Variant::STRING: {
+			DO_DEEP_COMPARE_VECTORS(String);
+		} break;
+		case Variant::RECT2: {
+			DO_DEEP_COMPARE_VECTORS(Rect2);
+		} break;
+		case Variant::RECT2I: {
+			DO_DEEP_COMPARE_VECTORS(Rect2i);
+		} break;
+		case Variant::VECTOR2: {
+			DO_DEEP_COMPARE_VECTORS(Vector2);
+		} break;
+		case Variant::VECTOR2I: {
+			DO_DEEP_COMPARE_VECTORS(Vector2i);
+		} break;
+		case Variant::VECTOR3: {
+			DO_DEEP_COMPARE_VECTORS(Vector3);
+		} break;
+		case Variant::VECTOR3I: {
+			DO_DEEP_COMPARE_VECTORS(Vector3i);
+		} break;
+		case Variant::VECTOR4: {
+			DO_DEEP_COMPARE_VECTORS(Vector4);
+		} break;
+		case Variant::VECTOR4I: {
+			DO_DEEP_COMPARE_VECTORS(Vector4i);
+		} break;
+		case Variant::PLANE: {
+			DO_DEEP_COMPARE_VECTORS(Plane);
+		} break;
+		case Variant::QUATERNION: {
+			DO_DEEP_COMPARE_VECTORS(Quaternion);
+		} break;
+		case Variant::AABB: {
+			DO_DEEP_COMPARE_VECTORS(AABB);
+		} break;
+		case Variant::BASIS: {
+			DO_DEEP_COMPARE_VECTORS(Basis);
+		} break;
+		case Variant::TRANSFORM: {
+			DO_DEEP_COMPARE_VECTORS(Transform);
+		} break;
+		case Variant::TRANSFORM2D: {
+			DO_DEEP_COMPARE_VECTORS(Transform2D);
+		} break;
+		case Variant::PROJECTION: {
+			DO_DEEP_COMPARE_VECTORS(Projection);
+		} break;
+		case Variant::COLOR: {
+			DO_DEEP_COMPARE_VECTORS(Color);
+		} break;
+		case Variant::NODE_PATH: {
+			DO_DEEP_COMPARE_VECTORS(NodePath);
+		} break;
+		case Variant::RID: {
+			DO_DEEP_COMPARE_VECTORS(RID);
+		} break;
+		case Variant::OBJECT: {
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::STRING_NAME: {
+			DO_DEEP_COMPARE_VECTORS(StringName);
+		} break;
+		case Variant::DICTIONARY: {
+			DO_DEEP_COMPARE_VECTORS(Dictionary);
+		} break;
+		case Variant::ARRAY: {
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Array);
+
+		} break;
+		case Variant::TYPED_ARRAY: {
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(TypedArray);
+		} break;
+		case Variant::PACKED_TYPED_ARRAY: {
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(PackedTypedArray);
+		} break;
+		case Variant::POOL_BYTE_ARRAY: {
+			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolByteArray, uint8_t);
+		} break;
+		case Variant::POOL_INT_ARRAY: {
+			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolIntArray, int);
+		} break;
+		case Variant::POOL_REAL_ARRAY: {
+			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolRealArray, real_t);
+		} break;
+		case Variant::POOL_STRING_ARRAY: {
+			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolStringArray, String);
+		} break;
+		case Variant::POOL_VECTOR2_ARRAY: {
+			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolVector2Array, Vector2);
+		} break;
+		case Variant::POOL_VECTOR2I_ARRAY: {
+			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolVector2iArray, Vector2i);
+		} break;
+		case Variant::POOL_VECTOR3_ARRAY: {
+			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolVector3Array, Vector3);
+		} break;
+		case Variant::POOL_VECTOR3I_ARRAY: {
+			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolVector3iArray, Vector3i);
+		} break;
+		case Variant::POOL_VECTOR4_ARRAY: {
+			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolVector4Array, Vector4);
+		} break;
+		case Variant::POOL_VECTOR4I_ARRAY: {
+			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolVector4iArray, Vector4i);
+		} break;
+		case Variant::POOL_COLOR_ARRAY: {
+			DO_DEEP_COMPARE_POOL_VECTOR_BASED_VECTORS(PoolColorArray, Color);
+		} break;
+		default: {
+		} break;
+	}
+
+	return false;
+}
+
 bool PackedTypedArray::operator==(const PackedTypedArray &p_array) const {
 	return _p == p_array._p;
 }
@@ -165,6 +907,7 @@ uint32_t PackedTypedArray::hash() const {
 	return recursive_hash(0);
 }
 
+// TODO
 uint32_t PackedTypedArray::recursive_hash(int p_recursion_count) const {
 	ERR_FAIL_COND_V_MSG(p_recursion_count > MAX_RECURSION, 0, "Max recursion reached");
 	p_recursion_count++;
@@ -186,11 +929,18 @@ bool PackedTypedArray::push_back(const Variant &p_value) {
 		return false;
 	}
 
-	_p->array.push_back(p_value);
+	_p->ensure_data();
+	ACCESS_DATA(vec->push_back(p_value));
 
 	return true;
 }
 
+void PackedTypedArray::_push_back_unchecked(const Variant &p_value) {
+	_p->ensure_data();
+	ACCESS_DATA(vec->push_back(p_value));
+}
+
+// TODO
 bool PackedTypedArray::append_array(const PackedTypedArray &p_array) {
 	if (_p->type != p_array._p->type) {
 		return false;
@@ -244,7 +994,7 @@ bool PackedTypedArray::append_from(const Variant &p_array) {
 				return element_added;
 			} else {
 				for (int i = 0; i < arr.size(); ++i) {
-					_p->array.push_back(arr[i]);
+					_push_back_unchecked(arr[i]);
 				}
 				return true;
 			}
@@ -264,7 +1014,7 @@ bool PackedTypedArray::append_from(const Variant &p_array) {
 			}
 
 			for (int i = 0; i < arr.size(); ++i) {
-				_p->array.push_back(arr[i]);
+				_push_back_unchecked(arr[i]);
 			}
 			return true;
 		} break;
@@ -277,12 +1027,12 @@ bool PackedTypedArray::append_from(const Variant &p_array) {
 
 			if (_p->type == Variant::INT) {
 				for (int i = 0; i < arr.size(); ++i) {
-					_p->array.push_back(arr[i]);
+					_push_back_unchecked(arr[i]);
 				}
 				return true;
 			} else if (_p->type == Variant::REAL) {
 				for (int i = 0; i < arr.size(); ++i) {
-					_p->array.push_back(static_cast<int>(arr[i]));
+					_push_back_unchecked(static_cast<int>(arr[i]));
 				}
 				return true;
 			}
@@ -299,12 +1049,12 @@ bool PackedTypedArray::append_from(const Variant &p_array) {
 
 			if (_p->type == Variant::INT) {
 				for (int i = 0; i < arr.size(); ++i) {
-					_p->array.push_back(static_cast<int>(arr[i]));
+					_push_back_unchecked(static_cast<int>(arr[i]));
 				}
 				return true;
 			} else if (_p->type == Variant::REAL) {
 				for (int i = 0; i < arr.size(); ++i) {
-					_p->array.push_back(arr[i]);
+					_push_back_unchecked(arr[i]);
 				}
 				return true;
 			}
@@ -321,12 +1071,12 @@ bool PackedTypedArray::append_from(const Variant &p_array) {
 
 			if (_p->type == Variant::STRING) {
 				for (int i = 0; i < arr.size(); ++i) {
-					_p->array.push_back(arr[i]);
+					_push_back_unchecked(arr[i]);
 				}
 				return true;
 			} else if (_p->type == Variant::STRING_NAME) {
 				for (int i = 0; i < arr.size(); ++i) {
-					_p->array.push_back(String(arr[i]));
+					_push_back_unchecked(String(arr[i]));
 				}
 				return true;
 			}
@@ -342,12 +1092,12 @@ bool PackedTypedArray::append_from(const Variant &p_array) {
 
 			if (_p->type == Variant::VECTOR2) {
 				for (int i = 0; i < arr.size(); ++i) {
-					_p->array.push_back(arr[i]);
+					_push_back_unchecked(arr[i]);
 				}
 				return true;
 			} else if (_p->type == Variant::VECTOR2I) {
 				for (int i = 0; i < arr.size(); ++i) {
-					_p->array.push_back(Vector2(arr[i]));
+					_push_back_unchecked(Vector2(arr[i]));
 				}
 				return true;
 			}
@@ -363,12 +1113,12 @@ bool PackedTypedArray::append_from(const Variant &p_array) {
 
 			if (_p->type == Variant::VECTOR2I) {
 				for (int i = 0; i < arr.size(); ++i) {
-					_p->array.push_back(arr[i]);
+					_push_back_unchecked(arr[i]);
 				}
 				return true;
 			} else if (_p->type == Variant::VECTOR2) {
 				for (int i = 0; i < arr.size(); ++i) {
-					_p->array.push_back(Vector2i(arr[i]));
+					_push_back_unchecked(Vector2i(arr[i]));
 				}
 				return true;
 			}
@@ -384,12 +1134,12 @@ bool PackedTypedArray::append_from(const Variant &p_array) {
 
 			if (_p->type == Variant::VECTOR3) {
 				for (int i = 0; i < arr.size(); ++i) {
-					_p->array.push_back(arr[i]);
+					_push_back_unchecked(arr[i]);
 				}
 				return true;
 			} else if (_p->type == Variant::VECTOR3I) {
 				for (int i = 0; i < arr.size(); ++i) {
-					_p->array.push_back(Vector3(arr[i]));
+					_push_back_unchecked(Vector3(arr[i]));
 				}
 				return true;
 			}
@@ -405,12 +1155,12 @@ bool PackedTypedArray::append_from(const Variant &p_array) {
 
 			if (_p->type == Variant::VECTOR3I) {
 				for (int i = 0; i < arr.size(); ++i) {
-					_p->array.push_back(arr[i]);
+					_push_back_unchecked(arr[i]);
 				}
 				return true;
 			} else if (_p->type == Variant::VECTOR3) {
 				for (int i = 0; i < arr.size(); ++i) {
-					_p->array.push_back(Vector3i(arr[i]));
+					_push_back_unchecked(Vector3i(arr[i]));
 				}
 				return true;
 			}
@@ -426,12 +1176,12 @@ bool PackedTypedArray::append_from(const Variant &p_array) {
 
 			if (_p->type == Variant::VECTOR4) {
 				for (int i = 0; i < arr.size(); ++i) {
-					_p->array.push_back(arr[i]);
+					_push_back_unchecked(arr[i]);
 				}
 				return true;
 			} else if (_p->type == Variant::VECTOR4I) {
 				for (int i = 0; i < arr.size(); ++i) {
-					_p->array.push_back(Vector4(arr[i]));
+					_push_back_unchecked(Vector4(arr[i]));
 				}
 				return true;
 			}
@@ -447,12 +1197,12 @@ bool PackedTypedArray::append_from(const Variant &p_array) {
 
 			if (_p->type == Variant::VECTOR4I) {
 				for (int i = 0; i < arr.size(); ++i) {
-					_p->array.push_back(arr[i]);
+					_push_back_unchecked(arr[i]);
 				}
 				return true;
 			} else if (_p->type == Variant::VECTOR4) {
 				for (int i = 0; i < arr.size(); ++i) {
-					_p->array.push_back(Vector4i(arr[i]));
+					_push_back_unchecked(Vector4i(arr[i]));
 				}
 				return true;
 			}
@@ -471,7 +1221,7 @@ bool PackedTypedArray::append_from(const Variant &p_array) {
 			}
 
 			for (int i = 0; i < arr.size(); ++i) {
-				_p->array.push_back(arr[i]);
+				_push_back_unchecked(arr[i]);
 			}
 			return true;
 		} break;
@@ -484,7 +1234,9 @@ bool PackedTypedArray::append_from(const Variant &p_array) {
 }
 
 Error PackedTypedArray::resize(int p_new_size) {
-	return _p->array.resize(p_new_size);
+	ACCESS_DATA(return vec->resize(p_new_size));
+
+	return OK;
 }
 
 bool PackedTypedArray::insert(int p_pos, const Variant &p_value) {
@@ -492,7 +1244,7 @@ bool PackedTypedArray::insert(int p_pos, const Variant &p_value) {
 		return false;
 	}
 
-	_p->array.insert(p_pos, p_value);
+	ACCESS_DATA(vec->insert(p_pos, p_value));
 
 	return true;
 }
@@ -502,13 +1254,14 @@ bool PackedTypedArray::fill(const Variant &p_value) {
 		return false;
 	}
 
-	_p->array.fill(p_value);
+	ACCESS_DATA(vec->fill(p_value));
 
 	return true;
 }
 
 void PackedTypedArray::erase(const Variant &p_value) {
-	_p->array.erase(p_value);
+	//TODO
+	//ACCESS_DATA(vec->erase(p_value));
 }
 
 Variant PackedTypedArray::front() const {
@@ -898,6 +1651,15 @@ void PackedTypedArray::set_variant_type(const int p_variant_type) {
 	_p->type = static_cast<Variant::Type>(p_variant_type);
 }
 
+int PackedTypedArray::get_int_type() const {
+	return _p->int_type;
+}
+void PackedTypedArray::set_int_type(const int p_int_type) {
+	ERR_FAIL_COND(_p->array.size() > 0);
+
+	_p->int_type = static_cast<PackedTypedArray::IntType>(p_int_type);
+}
+
 StringName PackedTypedArray::get_object_class_name() const {
 	return _p->object_class_name;
 }
@@ -945,6 +1707,7 @@ void PackedTypedArray::set_type_from(const PackedTypedArray &p_array) {
 
 	_p->type = p_array._p->type;
 	_p->object_class_name = p_array._p->object_class_name;
+	_p->int_type = p_array._p->int_type;
 	_p->is_global_class = p_array._p->is_global_class;
 
 	// Just warn the user.
@@ -1046,6 +1809,14 @@ PackedTypedArray::PackedTypedArray(const PackedTypedArray &p_from) {
 PackedTypedArray::PackedTypedArray(const StringName &p_type_name, const Variant &p_from) {
 	_p = memnew(PackedTypedArrayPrivate);
 	_p->refcount.init();
+	append_from(p_from);
+}
+
+PackedTypedArray::PackedTypedArray(const StringName &p_type_name, const Variant &p_from, const int p_int_type) {
+	_p = memnew(PackedTypedArrayPrivate);
+	_p->refcount.init();
+	set_type_from_name(p_type_name);
+	_p->int_type = static_cast<PackedTypedArray::IntType>(p_int_type);
 	append_from(p_from);
 }
 
