@@ -1004,6 +1004,8 @@ struct _VariantCall {
 	VCALL_LOCALMEM0R(PackedTypedArray, get_typename_string);
 	VCALL_LOCALMEM0R(PackedTypedArray, get_variant_type);
 	VCALL_LOCALMEM1(PackedTypedArray, set_variant_type);
+	VCALL_LOCALMEM0R(PackedTypedArray, get_int_type);
+	VCALL_LOCALMEM1(PackedTypedArray, set_int_type);
 	VCALL_LOCALMEM0R(PackedTypedArray, get_object_class_name);
 	VCALL_LOCALMEM1(PackedTypedArray, set_object_class_name);
 	VCALL_LOCALMEM1(PackedTypedArray, set_type_from_name);
@@ -1971,10 +1973,14 @@ struct _VariantCall {
 	}
 
 	static void PackedTypedArray_init1(Variant &r_ret, const Variant **p_args) {
-		r_ret = PackedTypedArray((*p_args[0]).operator StringName(), *p_args[1]);
+		r_ret = PackedTypedArray((*p_args[0]).operator StringName(), *p_args[1], ((int)(*p_args[2])));
 	}
 
 	static void PackedTypedArray_init2(Variant &r_ret, const Variant **p_args) {
+		r_ret = PackedTypedArray((*p_args[0]).operator StringName(), *p_args[1]);
+	}
+
+	static void PackedTypedArray_init3(Variant &r_ret, const Variant **p_args) {
 		PackedTypedArray a;
 		a.set_type_from_name((*p_args[0]).operator StringName());
 		r_ret = a;
@@ -3213,6 +3219,8 @@ void register_variant_methods() {
 	ADDFUNC0R(PACKED_TYPED_ARRAY, STRING, PackedTypedArray, get_typename_string, varray());
 	ADDFUNC0R(PACKED_TYPED_ARRAY, INT, PackedTypedArray, get_variant_type, varray());
 	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, set_variant_type, INT, "variant_type", varray());
+	ADDFUNC0R(PACKED_TYPED_ARRAY, INT, PackedTypedArray, get_int_type, varray());
+	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, set_int_type, INT, "int_type", varray());
 	ADDFUNC0R(PACKED_TYPED_ARRAY, STRING_NAME, PackedTypedArray, get_object_class_name, varray());
 	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, set_object_class_name, STRING_NAME, "object_type_name", varray());
 	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, set_type_from_name, STRING_NAME, "type_name", varray());
@@ -3732,8 +3740,9 @@ void register_variant_methods() {
 	_VariantCall::add_constructor(_VariantCall::TypedArray_init1, Variant::TYPED_ARRAY, "type_name", Variant::STRING_NAME, "from", Variant::NIL);
 	_VariantCall::add_constructor(_VariantCall::TypedArray_init2, Variant::TYPED_ARRAY, "type_name", Variant::STRING_NAME);
 
-	_VariantCall::add_constructor(_VariantCall::PackedTypedArray_init1, Variant::PACKED_TYPED_ARRAY, "type_name", Variant::STRING_NAME, "from", Variant::NIL);
-	_VariantCall::add_constructor(_VariantCall::PackedTypedArray_init2, Variant::PACKED_TYPED_ARRAY, "type_name", Variant::STRING_NAME);
+	_VariantCall::add_constructor(_VariantCall::PackedTypedArray_init1, Variant::PACKED_TYPED_ARRAY, "type_name", Variant::STRING_NAME, "from", Variant::NIL, "int_type", Variant::INT);
+	_VariantCall::add_constructor(_VariantCall::PackedTypedArray_init2, Variant::PACKED_TYPED_ARRAY, "type_name", Variant::STRING_NAME, "from", Variant::NIL);
+	_VariantCall::add_constructor(_VariantCall::PackedTypedArray_init3, Variant::PACKED_TYPED_ARRAY, "type_name", Variant::STRING_NAME);
 
 	/* REGISTER CONSTANTS */
 
