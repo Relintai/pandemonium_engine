@@ -284,6 +284,18 @@ void GDAPI pandemonium_variant_new_array(pandemonium_variant *r_dest, const pand
 	memnew_placement_custom(dest, Variant, Variant(*arr));
 }
 
+void GDAPI pandemonium_variant_new_typed_array(pandemonium_variant *r_dest, const pandemonium_typed_array *p_arr) {
+	Variant *dest = (Variant *)r_dest;
+	TypedArray *arr = (TypedArray *)p_arr;
+	memnew_placement_custom(dest, Variant, Variant(*arr));
+}
+
+void GDAPI pandemonium_variant_new_packed_typed_array(pandemonium_variant *r_dest, const pandemonium_packed_typed_array *p_arr) {
+	Variant *dest = (Variant *)r_dest;
+	PackedTypedArray *arr = (PackedTypedArray *)p_arr;
+	memnew_placement_custom(dest, Variant, Variant(*arr));
+}
+
 void GDAPI pandemonium_variant_new_pool_byte_array(pandemonium_variant *r_dest, const pandemonium_pool_byte_array *p_pba) {
 	Variant *dest = (Variant *)r_dest;
 	PoolByteArray *pba = (PoolByteArray *)p_pba;
@@ -550,6 +562,22 @@ pandemonium_array GDAPI pandemonium_variant_as_array(const pandemonium_variant *
 	const Variant *self = (const Variant *)p_self;
 	Array *dest = (Array *)&raw_dest;
 	memnew_placement(dest, Array(self->operator Array())); // operator = is overloaded by Array
+	return raw_dest;
+}
+
+pandemonium_typed_array GDAPI pandemonium_variant_as_typed_array(const pandemonium_variant *p_self) {
+	pandemonium_typed_array raw_dest;
+	const Variant *self = (const Variant *)p_self;
+	TypedArray *dest = (TypedArray *)&raw_dest;
+	memnew_placement(dest, TypedArray(self->operator TypedArray())); // operator = is overloaded by Array
+	return raw_dest;
+}
+
+pandemonium_packed_typed_array GDAPI pandemonium_variant_as_packed_typed_array(const pandemonium_variant *p_self) {
+	pandemonium_packed_typed_array raw_dest;
+	const Variant *self = (const Variant *)p_self;
+	PackedTypedArray *dest = (PackedTypedArray *)&raw_dest;
+	memnew_placement(dest, PackedTypedArray(self->operator PackedTypedArray())); // operator = is overloaded by Array
 	return raw_dest;
 }
 

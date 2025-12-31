@@ -85,22 +85,24 @@ typedef enum pandemonium_variant_type {
 	PANDEMONIUM_VARIANT_TYPE_STRING_NAME,
 	PANDEMONIUM_VARIANT_TYPE_DICTIONARY, // 25
 	PANDEMONIUM_VARIANT_TYPE_ARRAY,
+	PANDEMONIUM_VARIANT_TYPE_TYPED_ARRAY,
+	PANDEMONIUM_VARIANT_TYPE_PACKED_TYPED_ARRAY,
 
 	// arrays
 
 	PANDEMONIUM_VARIANT_TYPE_POOL_BYTE_ARRAY,
-	PANDEMONIUM_VARIANT_TYPE_POOL_INT_ARRAY,
+	PANDEMONIUM_VARIANT_TYPE_POOL_INT_ARRAY, // 30
 	PANDEMONIUM_VARIANT_TYPE_POOL_REAL_ARRAY,
-	PANDEMONIUM_VARIANT_TYPE_POOL_STRING_ARRAY, //30
+	PANDEMONIUM_VARIANT_TYPE_POOL_STRING_ARRAY,
 	PANDEMONIUM_VARIANT_TYPE_POOL_VECTOR2_ARRAY,
 	PANDEMONIUM_VARIANT_TYPE_POOL_VECTOR2I_ARRAY,
-	PANDEMONIUM_VARIANT_TYPE_POOL_VECTOR3_ARRAY,
+	PANDEMONIUM_VARIANT_TYPE_POOL_VECTOR3_ARRAY, // 35
 	PANDEMONIUM_VARIANT_TYPE_POOL_VECTOR3I_ARRAY,
-	PANDEMONIUM_VARIANT_TYPE_POOL_VECTOR4_ARRAY, //35
+	PANDEMONIUM_VARIANT_TYPE_POOL_VECTOR4_ARRAY,
 	PANDEMONIUM_VARIANT_TYPE_POOL_VECTOR4I_ARRAY,
 	PANDEMONIUM_VARIANT_TYPE_POOL_COLOR_ARRAY,
 
-	//VARIANT_MAX // 38
+	//VARIANT_MAX // 40
 } pandemonium_variant_type;
 
 typedef enum pandemonium_variant_call_error_error {
@@ -168,6 +170,7 @@ typedef enum pandemonium_variant_operator {
 #include <gdn/color.h>
 #include <gdn/dictionary.h>
 #include <gdn/node_path.h>
+#include <gdn/packed_typed_array.h>
 #include <gdn/plane.h>
 #include <gdn/pool_arrays.h>
 #include <gdn/projection.h>
@@ -179,6 +182,7 @@ typedef enum pandemonium_variant_operator {
 #include <gdn/string_name.h>
 #include <gdn/transform.h>
 #include <gdn/transform2d.h>
+#include <gdn/typed_array.h>
 #include <gdn/variant.h>
 #include <gdn/vector2.h>
 #include <gdn/vector2i.h>
@@ -297,6 +301,8 @@ pandemonium_rid GDAPI pandemonium_variant_as_rid(const pandemonium_variant *p_se
 pandemonium_object GDAPI *pandemonium_variant_as_object(const pandemonium_variant *p_self);
 pandemonium_dictionary GDAPI pandemonium_variant_as_dictionary(const pandemonium_variant *p_self);
 pandemonium_array GDAPI pandemonium_variant_as_array(const pandemonium_variant *p_self);
+pandemonium_typed_array GDAPI pandemonium_variant_as_typed_array(const pandemonium_variant *p_self);
+pandemonium_packed_typed_array GDAPI pandemonium_variant_as_packed_typed_array(const pandemonium_variant *p_self);
 pandemonium_pool_byte_array GDAPI pandemonium_variant_as_pool_byte_array(const pandemonium_variant *p_self);
 pandemonium_pool_int_array GDAPI pandemonium_variant_as_pool_int_array(const pandemonium_variant *p_self);
 pandemonium_pool_real_array GDAPI pandemonium_variant_as_pool_real_array(const pandemonium_variant *p_self);
@@ -339,6 +345,8 @@ void GDAPI pandemonium_variant_new_rid(pandemonium_variant *r_dest, const pandem
 void GDAPI pandemonium_variant_new_object(pandemonium_variant *r_dest, const pandemonium_object *p_obj);
 void GDAPI pandemonium_variant_new_dictionary(pandemonium_variant *r_dest, const pandemonium_dictionary *p_dict);
 void GDAPI pandemonium_variant_new_array(pandemonium_variant *r_dest, const pandemonium_array *p_arr);
+void GDAPI pandemonium_variant_new_typed_array(pandemonium_variant *r_dest, const pandemonium_typed_array *p_arr);
+void GDAPI pandemonium_variant_new_packed_typed_array(pandemonium_variant *r_dest, const pandemonium_packed_typed_array *p_arr);
 void GDAPI pandemonium_variant_new_pool_byte_array(pandemonium_variant *r_dest, const pandemonium_pool_byte_array *p_pba);
 void GDAPI pandemonium_variant_new_pool_int_array(pandemonium_variant *r_dest, const pandemonium_pool_int_array *p_pia);
 void GDAPI pandemonium_variant_new_pool_real_array(pandemonium_variant *r_dest, const pandemonium_pool_real_array *p_pra);
