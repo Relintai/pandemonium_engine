@@ -1520,12 +1520,11 @@ Error VariantParser::_parse_typed_array(TypedArray &array, Stream *p_stream, int
 			return err;
 		}
 
-		if (!array.can_take_variant(v)) {
+		if (!array.push_back(v)) {
 			r_err_str = "Invalid value in typed array";
 			return ERR_FILE_CORRUPT;
 		}
 
-		array.push_back(v);
 		need_comma = true;
 	}
 }
@@ -1659,12 +1658,11 @@ Error VariantParser::_parse_packed_typed_array(PackedTypedArray &array, Stream *
 			return err;
 		}
 
-		if (!array.can_take_variant(v)) {
+		if (!array.push_back(v)) {
 			r_err_str = "Invalid value in packed typed array";
 			return ERR_FILE_CORRUPT;
 		}
 
-		array.push_back(v);
 		need_comma = true;
 	}
 }

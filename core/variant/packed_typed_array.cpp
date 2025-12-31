@@ -178,24 +178,330 @@ void PackedTypedArray::operator=(const PackedTypedArray &p_array) {
 	_ref(p_array);
 }
 
-void PackedTypedArray::push_back(const Variant &p_value) {
+bool PackedTypedArray::push_back(const Variant &p_value) {
+	if (!can_take_variant(p_value)) {
+		return false;
+	}
+
 	_p->array.push_back(p_value);
+
+	return true;
 }
 
-void PackedTypedArray::append_array(const PackedTypedArray &p_array) {
+bool PackedTypedArray::append_array(const PackedTypedArray &p_array) {
+	if (_p->type != p_array._p->type) {
+		return false;
+	}
+
+	if (p_array.size() == 0) {
+		return false;
+	}
+
+	if (_p->type == Variant::OBJECT) {
+		if (!can_take_variant(p_array[0])) {
+			return false;
+		}
+	}
+
 	_p->array.append_array(p_array._p->array);
+
+	return true;
+}
+
+bool PackedTypedArray::append_from(const Variant &p_array) {
+	switch (p_array.get_type()) {
+		case Variant::ARRAY: {
+			Array arr;
+			bool element_added = false;
+			for (int i = 0; i < arr.size(); ++i) {
+				if (push_back(arr[i])) {
+					element_added = true;
+				}
+			}
+			return element_added;
+		} break;
+		case Variant::TYPED_ARRAY: {
+			TypedArray arr;
+
+			if (arr.size() == 0) {
+				return false;
+			}
+
+			if (arr.get_variant_type() != _p->type) {
+				return false;
+			}
+
+			if (_p->type == Variant::OBJECT) {
+				bool element_added = false;
+				for (int i = 0; i < arr.size(); ++i) {
+					if (push_back(arr[i])) {
+						element_added = true;
+					}
+				}
+				return element_added;
+			} else {
+				for (int i = 0; i < arr.size(); ++i) {
+					_p->array.push_back(arr[i]);
+				}
+				return true;
+			}
+		} break;
+		case Variant::PACKED_TYPED_ARRAY: {
+			append_array(p_array);
+		} break;
+		case Variant::POOL_BYTE_ARRAY: {
+			PoolByteArray arr = p_array;
+
+			if (arr.size() == 0) {
+				return false;
+			}
+
+			if (_p->type != Variant::INT || _p->type != Variant::REAL) {
+				return false;
+			}
+
+			for (int i = 0; i < arr.size(); ++i) {
+				_p->array.push_back(arr[i]);
+			}
+			return true;
+		} break;
+		case Variant::POOL_INT_ARRAY: {
+			PoolIntArray arr = p_array;
+
+			if (arr.size() == 0) {
+				return false;
+			}
+
+			if (_p->type == Variant::INT) {
+				for (int i = 0; i < arr.size(); ++i) {
+					_p->array.push_back(arr[i]);
+				}
+				return true;
+			} else if (_p->type == Variant::REAL) {
+				for (int i = 0; i < arr.size(); ++i) {
+					_p->array.push_back(static_cast<int>(arr[i]));
+				}
+				return true;
+			}
+
+			return false;
+
+		} break;
+		case Variant::POOL_REAL_ARRAY: {
+			PoolRealArray arr = p_array;
+
+			if (arr.size() == 0) {
+				return false;
+			}
+
+			if (_p->type == Variant::INT) {
+				for (int i = 0; i < arr.size(); ++i) {
+					_p->array.push_back(static_cast<int>(arr[i]));
+				}
+				return true;
+			} else if (_p->type == Variant::REAL) {
+				for (int i = 0; i < arr.size(); ++i) {
+					_p->array.push_back(arr[i]);
+				}
+				return true;
+			}
+
+			return false;
+
+		} break;
+		case Variant::POOL_STRING_ARRAY: {
+			PoolStringArray arr = p_array;
+
+			if (arr.size() == 0) {
+				return false;
+			}
+
+			if (_p->type == Variant::STRING) {
+				for (int i = 0; i < arr.size(); ++i) {
+					_p->array.push_back(arr[i]);
+				}
+				return true;
+			} else if (_p->type == Variant::STRING_NAME) {
+				for (int i = 0; i < arr.size(); ++i) {
+					_p->array.push_back(String(arr[i]));
+				}
+				return true;
+			}
+
+			return false;
+		} break;
+		case Variant::POOL_VECTOR2_ARRAY: {
+			PoolVector2Array arr = p_array;
+
+			if (arr.size() == 0) {
+				return false;
+			}
+
+			if (_p->type == Variant::VECTOR2) {
+				for (int i = 0; i < arr.size(); ++i) {
+					_p->array.push_back(arr[i]);
+				}
+				return true;
+			} else if (_p->type == Variant::VECTOR2I) {
+				for (int i = 0; i < arr.size(); ++i) {
+					_p->array.push_back(Vector2(arr[i]));
+				}
+				return true;
+			}
+
+			return false;
+		} break;
+		case Variant::POOL_VECTOR2I_ARRAY: {
+			PoolVector2iArray arr = p_array;
+
+			if (arr.size() == 0) {
+				return false;
+			}
+
+			if (_p->type == Variant::VECTOR2I) {
+				for (int i = 0; i < arr.size(); ++i) {
+					_p->array.push_back(arr[i]);
+				}
+				return true;
+			} else if (_p->type == Variant::VECTOR2) {
+				for (int i = 0; i < arr.size(); ++i) {
+					_p->array.push_back(Vector2i(arr[i]));
+				}
+				return true;
+			}
+
+			return false;
+		} break;
+		case Variant::POOL_VECTOR3_ARRAY: {
+			PoolVector3Array arr = p_array;
+
+			if (arr.size() == 0) {
+				return false;
+			}
+
+			if (_p->type == Variant::VECTOR3) {
+				for (int i = 0; i < arr.size(); ++i) {
+					_p->array.push_back(arr[i]);
+				}
+				return true;
+			} else if (_p->type == Variant::VECTOR3I) {
+				for (int i = 0; i < arr.size(); ++i) {
+					_p->array.push_back(Vector3(arr[i]));
+				}
+				return true;
+			}
+
+			return false;
+		} break;
+		case Variant::POOL_VECTOR3I_ARRAY: {
+			PoolVector3iArray arr = p_array;
+
+			if (arr.size() == 0) {
+				return false;
+			}
+
+			if (_p->type == Variant::VECTOR3I) {
+				for (int i = 0; i < arr.size(); ++i) {
+					_p->array.push_back(arr[i]);
+				}
+				return true;
+			} else if (_p->type == Variant::VECTOR3) {
+				for (int i = 0; i < arr.size(); ++i) {
+					_p->array.push_back(Vector3i(arr[i]));
+				}
+				return true;
+			}
+
+			return false;
+		} break;
+		case Variant::POOL_VECTOR4_ARRAY: {
+			PoolVector4Array arr = p_array;
+
+			if (arr.size() == 0) {
+				return false;
+			}
+
+			if (_p->type == Variant::VECTOR4) {
+				for (int i = 0; i < arr.size(); ++i) {
+					_p->array.push_back(arr[i]);
+				}
+				return true;
+			} else if (_p->type == Variant::VECTOR4I) {
+				for (int i = 0; i < arr.size(); ++i) {
+					_p->array.push_back(Vector4(arr[i]));
+				}
+				return true;
+			}
+
+			return false;
+		} break;
+		case Variant::POOL_VECTOR4I_ARRAY: {
+			PoolVector4iArray arr = p_array;
+
+			if (arr.size() == 0) {
+				return false;
+			}
+
+			if (_p->type == Variant::VECTOR4I) {
+				for (int i = 0; i < arr.size(); ++i) {
+					_p->array.push_back(arr[i]);
+				}
+				return true;
+			} else if (_p->type == Variant::VECTOR4) {
+				for (int i = 0; i < arr.size(); ++i) {
+					_p->array.push_back(Vector4i(arr[i]));
+				}
+				return true;
+			}
+
+			return false;
+		} break;
+		case Variant::POOL_COLOR_ARRAY: {
+			PoolColorArray arr = p_array;
+
+			if (arr.size() == 0) {
+				return false;
+			}
+
+			if (_p->type != Variant::COLOR) {
+				return false;
+			}
+
+			for (int i = 0; i < arr.size(); ++i) {
+				_p->array.push_back(arr[i]);
+			}
+			return true;
+		} break;
+		default: {
+			return false;
+		} break;
+	}
+
+	return false;
 }
 
 Error PackedTypedArray::resize(int p_new_size) {
 	return _p->array.resize(p_new_size);
 }
 
-void PackedTypedArray::insert(int p_pos, const Variant &p_value) {
+bool PackedTypedArray::insert(int p_pos, const Variant &p_value) {
+	if (!can_take_variant(p_value)) {
+		return false;
+	}
+
 	_p->array.insert(p_pos, p_value);
+
+	return true;
 }
 
-void PackedTypedArray::fill(const Variant &p_value) {
+bool PackedTypedArray::fill(const Variant &p_value) {
+	if (!can_take_variant(p_value)) {
+		return false;
+	}
+
 	_p->array.fill(p_value);
+
+	return true;
 }
 
 void PackedTypedArray::erase(const Variant &p_value) {
@@ -266,8 +572,14 @@ void PackedTypedArray::remove(int p_pos) {
 	_p->array.remove(p_pos);
 }
 
-void PackedTypedArray::set(int p_idx, const Variant &p_value) {
+bool PackedTypedArray::set(int p_idx, const Variant &p_value) {
+	if (!can_take_variant(p_value)) {
+		return false;
+	}
+
 	_p->array.write[p_idx] = p_value;
+
+	return true;
 }
 
 const Variant PackedTypedArray::get(int p_idx) const {
@@ -437,8 +749,14 @@ PackedTypedArray &PackedTypedArray::invert() {
 	return *this;
 }
 
-void PackedTypedArray::push_front(const Variant &p_value) {
+bool PackedTypedArray::push_front(const Variant &p_value) {
+	if (!can_take_variant(p_value)) {
+		return false;
+	}
+
 	_p->array.insert(0, p_value);
+
+	return true;
 }
 
 Variant PackedTypedArray::pop_back() {
@@ -624,10 +942,22 @@ bool PackedTypedArray::can_take_variant(const Variant &p_value) {
 	}
 
 	if (_p->type == Variant::OBJECT) {
-		//TODO check type
+		Object *obj = ObjectDB::get_instance(p_value.get_object_instance_id());
+
+		if (!obj) {
+			// can this happen?
+			return true;
+		}
+
+		return obj->is_class(_p->object_class_name);
 	}
 
 	return true;
+}
+
+PackedTypedArray::PackedTypedArray() {
+	_p = memnew(PackedTypedArrayPrivate);
+	_p->refcount.init();
 }
 
 PackedTypedArray::PackedTypedArray(const PackedTypedArray &p_from) {
@@ -635,10 +965,12 @@ PackedTypedArray::PackedTypedArray(const PackedTypedArray &p_from) {
 	_ref(p_from);
 }
 
-PackedTypedArray::PackedTypedArray() {
+PackedTypedArray::PackedTypedArray(const StringName &p_type_name, const Variant &p_from) {
 	_p = memnew(PackedTypedArrayPrivate);
 	_p->refcount.init();
+	append_from(p_from);
 }
+
 /*
 PackedTypedArray::PackedTypedArray(const StringName &p_type_name) {
 	_p = memnew(PackedTypedArrayPrivate);
@@ -646,6 +978,7 @@ PackedTypedArray::PackedTypedArray(const StringName &p_type_name) {
 	set_type_from_name(p_type_name);
 }
 */
+
 PackedTypedArray::~PackedTypedArray() {
 	_unref();
 }

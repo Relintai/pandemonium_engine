@@ -50,7 +50,7 @@ class PackedTypedArray {
 public:
 	const Variant operator[](int p_idx) const;
 
-	void set(int p_idx, const Variant &p_value);
+	bool set(int p_idx, const Variant &p_value);
 	const Variant get(int p_idx) const;
 
 	int size() const;
@@ -64,14 +64,15 @@ public:
 	uint32_t recursive_hash(int p_recursion_count) const;
 	void operator=(const PackedTypedArray &p_array);
 
-	void push_back(const Variant &p_value);
-	_FORCE_INLINE_ void append(const Variant &p_value) { push_back(p_value); } //for python compatibility
-	void append_array(const PackedTypedArray &p_array);
+	bool push_back(const Variant &p_value);
+	_FORCE_INLINE_ bool append(const Variant &p_value) { return push_back(p_value); } //for python compatibility
+	bool append_array(const PackedTypedArray &p_array);
+	bool append_from(const Variant &p_array);
 	Error resize(int p_new_size);
 
-	void insert(int p_pos, const Variant &p_value);
+	bool insert(int p_pos, const Variant &p_value);
 	void remove(int p_pos);
-	void fill(const Variant &p_value);
+	bool fill(const Variant &p_value);
 
 	Variant front() const;
 	Variant back() const;
@@ -91,7 +92,7 @@ public:
 
 	void erase(const Variant &p_value);
 
-	void push_front(const Variant &p_value);
+	bool push_front(const Variant &p_value);
 	Variant pop_back();
 	Variant pop_front();
 	Variant pop_at(int p_pos);
@@ -124,9 +125,15 @@ public:
 
 	bool can_take_variant(const Variant &p_value);
 
-	PackedTypedArray(const PackedTypedArray &p_from);
 	PackedTypedArray();
+	PackedTypedArray(const PackedTypedArray &p_from);
+	PackedTypedArray(const StringName &p_type_name, const Variant &p_from);
+
+	// Both this and the TypedArray(const TypedArray &p_from); constructors are useful,
+	// but having them both will do lots of clashes when converting from Variant.
+	// Maybe static create method should be added or something
 	//PackedTypedArray(const StringName &p_type_name);
+
 	~PackedTypedArray();
 };
 
