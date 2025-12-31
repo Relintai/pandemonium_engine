@@ -1758,6 +1758,14 @@ _FORCE_INLINE_ int bisect(const Vector<VT> &p_array, const Variant &p_value, boo
 }
 
 int PackedTypedArray::bsearch(const Variant &p_value, bool p_before) {
+	if (!_p->data) {
+		return -1;
+	}
+
+	if (size() == 0) {
+		return -1;
+	}
+
 	switch (_p->type) {
 		case Variant::NIL: {
 			Vector<bool> *vec = reinterpret_cast<Vector<bool> *>(_p->data);
