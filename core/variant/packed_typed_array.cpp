@@ -2509,3 +2509,7 @@ PackedTypedArray::PackedTypedArray(const StringName &p_type_name) {
 PackedTypedArray::~PackedTypedArray() {
 	_unref();
 }
+
+#undef ACCESS_DATA
+#undef DO_DEEP_COMPARE_VECTORS
+#undef DO_DEEP_COMPARE_VARIANT_BASED_VECTORS
