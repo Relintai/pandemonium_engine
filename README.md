@@ -246,16 +246,10 @@ or not by using the proper ones. Still trying to figure out a way to make this s
 
 2 new Variant types that stores an aray of elements of any single type.
 
-Done:
-
-- TypedArray and PackedTypedArray classes are already added.
-- TypedArray and PackedTypedArray classes are already added as variant types, including serialization etc.
-
 WIP:
 
 - The PackedTypedArray internals still need to be properly implemented. It does work, but not what it should be.
 - Their c++ only api still needs to be fleshed out. Especially the packed one needs lots of getters setters.
-- Needs gdnative support.
 - Needs docs.
 - Needs icons.
 - Needs to be added to the docs repo when finished.
