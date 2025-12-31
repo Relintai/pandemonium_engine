@@ -501,6 +501,15 @@ void GDAPI pandemonium_packed_typed_array_set_variant_type(pandemonium_packed_ty
 	self->set_variant_type(p_variant_type);
 }
 
+pandemonium_int GDAPI pandemonium_packed_typed_array_get_int_type(const pandemonium_packed_typed_array *p_self) {
+	const PackedTypedArray *self = (const PackedTypedArray *)p_self;
+	return self->get_int_type();
+}
+void GDAPI pandemonium_packed_typed_array_set_int_type(pandemonium_packed_typed_array *p_self, const pandemonium_int p_int_type) {
+	PackedTypedArray *self = (PackedTypedArray *)p_self;
+	self->set_int_type(p_int_type);
+}
+
 pandemonium_string_name GDAPI pandemonium_packed_typed_array_get_object_class_name(const pandemonium_packed_typed_array *p_self) {
 	pandemonium_string_name dest;
 	const PackedTypedArray *self = (const PackedTypedArray *)p_self;

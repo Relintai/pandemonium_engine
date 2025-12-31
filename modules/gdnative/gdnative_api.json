@@ -3160,6 +3160,30 @@
                 ]
             },
             {
+                "name": "pandemonium_packed_typed_array_get_int_type",
+                "return_type": "pandemonium_int",
+                "arguments": [
+                    [
+                        "const pandemonium_packed_typed_array *",
+                        "p_self"
+                    ]
+                ]
+            },
+            {
+                "name": "pandemonium_packed_typed_array_set_int_type",
+                "return_type": "void",
+                "arguments": [
+                    [
+                        "pandemonium_packed_typed_array *",
+                        "p_self"
+                    ],
+                    [
+                        "const pandemonium_int",
+                        "p_int_type"
+                    ]
+                ]
+            },
+            {
                 "name": "pandemonium_packed_typed_array_get_object_class_name",
                 "return_type": "pandemonium_string_name",
                 "arguments": [
