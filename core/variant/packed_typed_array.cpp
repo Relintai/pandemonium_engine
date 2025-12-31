@@ -259,7 +259,7 @@ bool PackedTypedArray::append_from(const Variant &p_array) {
 				return false;
 			}
 
-			if (_p->type != Variant::INT || _p->type != Variant::REAL) {
+			if (_p->type != Variant::INT && _p->type != Variant::REAL) {
 				return false;
 			}
 
