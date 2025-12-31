@@ -104,9 +104,21 @@ void TypedArray::clear() {
 bool TypedArray::deep_equal(const TypedArray &p_array, int p_recursion_count) const {
 	// Cheap checks
 	ERR_FAIL_COND_V_MSG(p_recursion_count > MAX_RECURSION, true, "Max recursion reached");
+
 	if (_p == p_array._p) {
 		return true;
 	}
+
+	if (_p->type != p_array._p->type) {
+		return false;
+	}
+
+	if (_p->type == Variant::OBJECT) {
+		if (_p->object_class_name != p_array._p->object_class_name) {
+			return false;
+		}
+	}
+
 	const Vector<Variant> &a1 = _p->array;
 	const Vector<Variant> &a2 = p_array._p->array;
 	const int size = a1.size();
