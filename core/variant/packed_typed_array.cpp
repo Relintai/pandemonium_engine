@@ -72,6 +72,7 @@ public:
 
 	PackedTypedArrayPrivate() {
 		type = Variant::NIL;
+		is_global_class = false;
 	}
 	~PackedTypedArrayPrivate() {
 	}
@@ -80,6 +81,7 @@ public:
 
 	Variant::Type type;
 	StringName object_class_name;
+	bool is_global_class;
 
 	// Maybe this should just be a straight up void* that would achieve tighter packing in some cases.
 	LocalVector<PackedTypedArrayPrivateEntry *> data;
@@ -903,6 +905,10 @@ void PackedTypedArray::set_object_class_name(const StringName &p_object_type_nam
 	ERR_FAIL_COND(_p->array.size() > 0);
 
 	_p->object_class_name = p_object_type_name;
+	_p->is_global_class = ScriptServer::is_global_class(p_object_type_name);
+
+	// Just warn the user.
+	ERR_FAIL_COND(validate_object_type_name(_p->object_class_name));
 }
 
 void PackedTypedArray::set_type_from_name(const StringName &p_type_name) {
@@ -925,6 +931,7 @@ void PackedTypedArray::set_type_from_name(const StringName &p_type_name) {
 	_p->type = variant_type;
 	if (variant_type == Variant::OBJECT) {
 		_p->object_class_name = p_type_name;
+		_p->is_global_class = ScriptServer::is_global_class(p_type_name);
 
 		// Just warn the user.
 		ERR_FAIL_COND(validate_object_type_name(_p->object_class_name));
@@ -938,6 +945,7 @@ void PackedTypedArray::set_type_from(const PackedTypedArray &p_array) {
 
 	_p->type = p_array._p->type;
 	_p->object_class_name = p_array._p->object_class_name;
+	_p->is_global_class = p_array._p->is_global_class;
 
 	// Just warn the user.
 	if (_p->type == Variant::OBJECT) {
@@ -949,6 +957,8 @@ bool PackedTypedArray::validate_type_name(const StringName &p_type_name) {
 	if (p_type_name == StringName()) {
 		return false;
 	}
+
+	String type_name = p_type_name;
 
 	for (int i = 0; i < Variant::VARIANT_MAX; i++) {
 		if (type_name == Variant::get_type_name(Variant::Type(i))) {
@@ -996,7 +1006,7 @@ bool PackedTypedArray::can_take_variant(const Variant &p_value) {
 
 		// The set object_class_name is a registered script global class
 		// We don't need to care about engine side classes anymore.
-		if (ScriptServer::is_global_class(_p->object_class_name)) {
+		if (_p->is_global_class) {
 			Ref<Script> script = obj->get_script();
 
 			while (script.is_valid()) {
