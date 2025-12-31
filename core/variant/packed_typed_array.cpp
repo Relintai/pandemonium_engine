@@ -1711,18 +1711,23 @@ PackedTypedArray &PackedTypedArray::sort_custom(Object *p_obj, const StringName 
 	return *this;
 }
 
-// TODO
 void PackedTypedArray::shuffle() {
-	const int n = _p->array.size();
+	if (!_p->data) {
+		return;
+	}
+
+	const int n = size();
+
 	if (n < 2) {
 		return;
 	}
-	Variant *data = _p->array.ptrw();
+
 	for (int i = n - 1; i >= 1; i--) {
 		const int j = Math::rand() % (i + 1);
-		const Variant tmp = data[j];
-		data[j] = data[i];
-		data[i] = tmp;
+		const Variant tmp = get(j);
+
+		_set_unchecked(j, get(i));
+		_set_unchecked(i, tmp);
 	}
 }
 
