@@ -2035,6 +2035,7 @@ Variant PackedTypedArray::pop_front() {
 	if (!_p->data) {
 		return Variant();
 	}
+
 	int s = size();
 
 	if (s == 0) {
@@ -2046,29 +2047,28 @@ Variant PackedTypedArray::pop_front() {
 	return ret;
 }
 
-// TODO
 Variant PackedTypedArray::pop_at(int p_pos) {
-	if (_p->array.empty()) {
+	if (!_p->data) {
+		return Variant();
+	}
+
+	int s = size();
+
+	if (s == 0) {
 		// Return `null` without printing an error to mimic `pop_back()` and `pop_front()` behavior.
 		return Variant();
 	}
 
 	if (p_pos < 0) {
 		// Relative offset from the end
-		p_pos = _p->array.size() + p_pos;
+		p_pos = s + p_pos;
 	}
 
-	ERR_FAIL_INDEX_V_MSG(
-			p_pos,
-			_p->array.size(),
-			Variant(),
-			vformat(
-					"The calculated index %s is out of bounds (the array has %s elements). Leaving the array untouched and returning `null`.",
-					p_pos,
-					_p->array.size()));
+	ERR_FAIL_INDEX_V_MSG(p_pos, s, Variant(),
+			vformat("The calculated index %s is out of bounds (the array has %s elements). Leaving the array untouched and returning `null`.", p_pos, s));
 
-	const Variant ret = _p->array.get(p_pos);
-	_p->array.remove(p_pos);
+	const Variant ret = get(p_pos);
+	remove(p_pos);
 	return ret;
 }
 
