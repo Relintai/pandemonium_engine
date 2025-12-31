@@ -13,6 +13,21 @@
 			<description>
 			</description>
 		</method>
+		<method name="Projection">
+			<return type="Projection" />
+			<argument index="0" name="transform" type="Transform" />
+			<description>
+			</description>
+		</method>
+		<method name="Projection">
+			<return type="Projection" />
+			<argument index="0" name="x_axis" type="Vector4" />
+			<argument index="1" name="y_axis" type="Vector4" />
+			<argument index="2" name="z_axis" type="Vector4" />
+			<argument index="3" name="w_axis" type="Vector4" />
+			<description>
+			</description>
+		</method>
 		<method name="add_jitter_offset">
 			<argument index="0" name="offset" type="Vector2" />
 			<description>

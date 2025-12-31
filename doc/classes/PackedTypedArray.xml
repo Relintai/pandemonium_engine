@@ -20,13 +20,34 @@
 			<description>
 			</description>
 		</method>
+		<method name="PackedTypedArray">
+			<return type="PackedTypedArray" />
+			<argument index="0" name="type_name" type="StringName" />
+			<description>
+			</description>
+		</method>
+		<method name="PackedTypedArray">
+			<return type="PackedTypedArray" />
+			<argument index="0" name="type_name" type="StringName" />
+			<argument index="1" name="from" type="Variant" />
+			<description>
+			</description>
+		</method>
 		<method name="append">
+			<return type="bool" />
 			<argument index="0" name="value" type="Variant" />
 			<description>
 			</description>
 		</method>
 		<method name="append_array">
+			<return type="bool" />
 			<argument index="0" name="array" type="PackedTypedArray" />
+			<description>
+			</description>
+		</method>
+		<method name="append_from">
+			<return type="bool" />
+			<argument index="0" name="array" type="Variant" />
 			<description>
 			</description>
 		</method>
@@ -48,6 +69,12 @@
 			<argument index="1" name="obj" type="Object" />
 			<argument index="2" name="func" type="String" />
 			<argument index="3" name="before" type="bool" default="true" />
+			<description>
+			</description>
+		</method>
+		<method name="can_take_variant">
+			<return type="bool" />
+			<argument index="0" name="value" type="Variant" />
 			<description>
 			</description>
 		</method>
@@ -78,6 +105,7 @@
 			</description>
 		</method>
 		<method name="fill">
+			<return type="bool" />
 			<argument index="0" name="value" type="Variant" />
 			<description>
 			</description>
@@ -100,6 +128,21 @@
 			<description>
 			</description>
 		</method>
+		<method name="get_object_class_name">
+			<return type="StringName" />
+			<description>
+			</description>
+		</method>
+		<method name="get_typename_string">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_variant_type">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="has">
 			<return type="bool" />
 			<argument index="0" name="value" type="Variant" />
@@ -112,6 +155,7 @@
 			</description>
 		</method>
 		<method name="insert">
+			<return type="bool" />
 			<argument index="0" name="position" type="int" />
 			<argument index="1" name="value" type="Variant" />
 			<description>
@@ -148,11 +192,13 @@
 			</description>
 		</method>
 		<method name="push_back">
+			<return type="bool" />
 			<argument index="0" name="value" type="Variant" />
 			<description>
 			</description>
 		</method>
 		<method name="push_front">
+			<return type="bool" />
 			<argument index="0" name="value" type="Variant" />
 			<description>
 			</description>
@@ -171,6 +217,26 @@
 			<return type="int" />
 			<argument index="0" name="what" type="Variant" />
 			<argument index="1" name="from" type="int" default="-1" />
+			<description>
+			</description>
+		</method>
+		<method name="set_object_class_name">
+			<argument index="0" name="object_type_name" type="StringName" />
+			<description>
+			</description>
+		</method>
+		<method name="set_type_from">
+			<argument index="0" name="array" type="PackedTypedArray" />
+			<description>
+			</description>
+		</method>
+		<method name="set_type_from_name">
+			<argument index="0" name="type_name" type="StringName" />
+			<description>
+			</description>
+		</method>
+		<method name="set_variant_type">
+			<argument index="0" name="variant_type" type="int" />
 			<description>
 			</description>
 		</method>
@@ -199,6 +265,18 @@
 		<method name="sort_custom">
 			<argument index="0" name="obj" type="Object" />
 			<argument index="1" name="func" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="validate_object_type_name">
+			<return type="bool" />
+			<argument index="0" name="type_name" type="StringName" />
+			<description>
+			</description>
+		</method>
+		<method name="validate_type_name">
+			<return type="bool" />
+			<argument index="0" name="type_name" type="StringName" />
 			<description>
 			</description>
 		</method>

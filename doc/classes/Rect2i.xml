@@ -13,6 +13,22 @@
 			<description>
 			</description>
 		</method>
+		<method name="Rect2i">
+			<return type="Rect2i" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="y" type="int" />
+			<argument index="2" name="width" type="int" />
+			<argument index="3" name="height" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="Rect2i">
+			<return type="Rect2i" />
+			<argument index="0" name="position" type="Vector2i" />
+			<argument index="1" name="size" type="Vector2i" />
+			<description>
+			</description>
+		</method>
 		<method name="abs">
 			<return type="Rect2i" />
 			<description>
