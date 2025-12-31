@@ -35,6 +35,7 @@
 #include "core/containers/local_vector.h"
 #include "core/containers/vector.h"
 #include "core/object/object.h"
+#include "core/object/script_language.h"
 #include "core/variant/variant.h"
 
 class PackedTypedArrayPrivate {
@@ -947,6 +948,29 @@ bool PackedTypedArray::can_take_variant(const Variant &p_value) {
 		if (!obj) {
 			// can this happen?
 			return true;
+		}
+
+		// The set object_class_name is a registered script global class
+		// We don't need to care about engine side classes anymore.
+		if (ScriptServer::is_global_class(_p->object_class_name)) {
+			Ref<Script> script = obj->get_script();
+
+			while (script.is_valid()) {
+				StringName global_class_name = script->get_global_class_name();
+
+				if (global_class_name == StringName()) {
+					continue;
+				}
+
+				// There is no multiple inheritance, so the first global name we find should suffice
+				if (_p->object_class_name == global_class_name) {
+					return true;
+				}
+
+				script = script->get_base_script();
+			}
+
+			return false;
 		}
 
 		return obj->is_class(_p->object_class_name);
