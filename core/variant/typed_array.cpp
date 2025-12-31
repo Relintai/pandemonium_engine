@@ -1015,6 +1015,7 @@ TypedArray::TypedArray(const TypedArray &p_from) {
 TypedArray::TypedArray(const StringName &p_type_name, const Variant &p_from) {
 	_p = memnew(TypedArrayPrivate);
 	_p->refcount.init();
+	set_type_from_name(p_type_name);
 	append_from(p_from);
 }
 
