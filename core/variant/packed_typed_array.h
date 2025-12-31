@@ -48,6 +48,7 @@ class PackedTypedArray {
 	inline int _clamp_slice_index(int p_index) const;
 
 	void _push_back_unchecked(const Variant &p_value);
+	void _set_unchecked(int p_idx, const Variant &p_value);
 
 public:
 	enum IntType {

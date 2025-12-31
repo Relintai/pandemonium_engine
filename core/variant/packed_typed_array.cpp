@@ -639,6 +639,10 @@ bool PackedTypedArray::empty() const {
 	return 0;
 }
 void PackedTypedArray::clear() {
+	if (!_p->data) {
+		return;
+	}
+
 	ACCESS_DATA(return vec->clear());
 }
 
@@ -912,6 +916,8 @@ void PackedTypedArray::_push_back_unchecked(const Variant &p_value) {
 
 // TODO
 bool PackedTypedArray::append_array(const PackedTypedArray &p_array) {
+	_p->ensure_data();
+
 	if (_p->type != p_array._p->type) {
 		return false;
 	}
@@ -932,6 +938,8 @@ bool PackedTypedArray::append_array(const PackedTypedArray &p_array) {
 }
 
 bool PackedTypedArray::append_from(const Variant &p_array) {
+	_p->ensure_data();
+
 	switch (p_array.get_type()) {
 		case Variant::ARRAY: {
 			Array arr;
@@ -1204,6 +1212,8 @@ bool PackedTypedArray::append_from(const Variant &p_array) {
 }
 
 Error PackedTypedArray::resize(int p_new_size) {
+	_p->ensure_data();
+
 	ACCESS_DATA(return vec->resize(p_new_size));
 
 	return OK;
@@ -1211,6 +1221,10 @@ Error PackedTypedArray::resize(int p_new_size) {
 
 bool PackedTypedArray::insert(int p_pos, const Variant &p_value) {
 	if (!can_take_variant(p_value)) {
+		return false;
+	}
+
+	if (!_p->data) {
 		return false;
 	}
 
@@ -1224,46 +1238,72 @@ bool PackedTypedArray::fill(const Variant &p_value) {
 		return false;
 	}
 
+	if (!_p->data) {
+		return true;
+	}
+
 	ACCESS_DATA(vec->fill(p_value));
 
 	return true;
 }
 
 void PackedTypedArray::erase(const Variant &p_value) {
-	//TODO
-	//ACCESS_DATA(vec->erase(p_value));
+	if (!_p->data) {
+		return;
+	}
+
+	ACCESS_DATA(vec->erase(p_value));
 }
 
 Variant PackedTypedArray::front() const {
-	ERR_FAIL_COND_V_MSG(_p->array.size() == 0, Variant(), "Can't take value from empty array.");
+	ERR_FAIL_COND_V_MSG(!_p->data, Variant(), "Can't take value from empty array.");
+	int size = 0;
+	ACCESS_DATA(size = vec->size());
+	ERR_FAIL_COND_V_MSG(size == 0, Variant(), "Can't take value from empty array.");
 	return operator[](0);
 }
 
 Variant PackedTypedArray::back() const {
-	ERR_FAIL_COND_V_MSG(_p->array.size() == 0, Variant(), "Can't take value from empty array.");
+	ERR_FAIL_COND_V_MSG(!_p->data, Variant(), "Can't take value from empty array.");
+	int size = 0;
+	ACCESS_DATA(size = vec->size());
+	ERR_FAIL_COND_V_MSG(size == 0, Variant(), "Can't take value from empty array.");
 	return operator[](_p->array.size() - 1);
 }
 
 int PackedTypedArray::find(const Variant &p_value, int p_from) const {
-	return _p->array.find(p_value, p_from);
+	if (!_p->data) {
+		return -1;
+	}
+
+	ACCESS_DATA(return vec->find(p_value, p_from));
+
+	return -1;
 }
 
 int PackedTypedArray::rfind(const Variant &p_value, int p_from) const {
-	if (_p->array.size() == 0) {
+	if (!_p->data) {
+		return -1;
+	}
+
+	int size = 0;
+	ACCESS_DATA(size = vec->size());
+
+	if (size == 0) {
 		return -1;
 	}
 
 	if (p_from < 0) {
 		// Relative offset from the end
-		p_from = _p->array.size() + p_from;
+		p_from = size + p_from;
 	}
-	if (p_from < 0 || p_from >= _p->array.size()) {
+	if (p_from < 0 || p_from >= size) {
 		// Limit to array boundaries
-		p_from = _p->array.size() - 1;
+		p_from = size - 1;
 	}
 
 	for (int i = p_from; i >= 0; i--) {
-		if (_p->array[i] == p_value) {
+		if (operator[](i) == p_value) {
 			return i;
 		}
 	}
@@ -1276,13 +1316,20 @@ int PackedTypedArray::find_last(const Variant &p_value) const {
 }
 
 int PackedTypedArray::count(const Variant &p_value) const {
-	if (_p->array.size() == 0) {
+	if (!_p->data) {
+		return 0;
+	}
+
+	int size = 0;
+	ACCESS_DATA(size = vec->size());
+
+	if (size == 0) {
 		return 0;
 	}
 
 	int amount = 0;
 	for (int i = 0; i < _p->array.size(); i++) {
-		if (_p->array[i] == p_value) {
+		if (operator[](i) == p_value) {
 			amount++;
 		}
 	}
@@ -1291,21 +1338,30 @@ int PackedTypedArray::count(const Variant &p_value) const {
 }
 
 bool PackedTypedArray::has(const Variant &p_value) const {
-	return _p->array.find(p_value, 0) != -1;
+	return find(p_value, 0) != -1;
 }
 
 void PackedTypedArray::remove(int p_pos) {
-	_p->array.remove(p_pos);
+	ERR_FAIL_COND(!_p->data);
+
+	ACCESS_DATA(return vec->remove(p_pos));
 }
 
 bool PackedTypedArray::set(int p_idx, const Variant &p_value) {
+	ERR_FAIL_COND_V(!_p->data, false);
+
 	if (!can_take_variant(p_value)) {
 		return false;
 	}
 
-	_p->array.write[p_idx] = p_value;
+	ACCESS_DATA(vec->write[p_idx] = p_value);
 
 	return true;
+}
+
+void PackedTypedArray::_set_unchecked(int p_idx, const Variant &p_value) {
+	ERR_FAIL_COND(!_p->data);
+	ACCESS_DATA(vec->write[p_idx] = p_value);
 }
 
 const Variant PackedTypedArray::get(int p_idx) const {
@@ -1315,10 +1371,15 @@ const Variant PackedTypedArray::get(int p_idx) const {
 PackedTypedArray PackedTypedArray::duplicate(bool p_deep) const {
 	PackedTypedArray new_arr;
 	new_arr.set_type_from(*this);
+
+	if (!_p->data) {
+		return new_arr;
+	}
+
 	int element_count = size();
 	new_arr.resize(element_count);
 	for (int i = 0; i < element_count; i++) {
-		new_arr._p->array.write[i] = p_deep ? get(i).duplicate(p_deep) : get(i);
+		new_arr.set(i, p_deep ? get(i).duplicate(p_deep) : get(i));
 	}
 
 	return new_arr;
@@ -1362,13 +1423,13 @@ PackedTypedArray PackedTypedArray::slice(int p_begin, int p_end, int p_step, boo
 		int dest_idx = 0;
 		for (int idx = begin; idx <= end; idx += p_step) {
 			ERR_FAIL_COND_V_MSG(dest_idx < 0 || dest_idx >= new_arr_size, PackedTypedArray(), "Bug in PackedTypedArray slice()");
-			new_arr._p->array.write[dest_idx++] = p_deep ? get(idx).duplicate(p_deep) : get(idx);
+			new_arr._set_unchecked(dest_idx++, p_deep ? get(idx).duplicate(p_deep) : get(idx));
 		}
 	} else { // p_step < 0
 		int dest_idx = 0;
 		for (int idx = begin; idx >= end; idx += p_step) {
 			ERR_FAIL_COND_V_MSG(dest_idx < 0 || dest_idx >= new_arr_size, PackedTypedArray(), "Bug in PackedTypedArray slice()");
-			new_arr._p->array.write[dest_idx++] = p_deep ? get(idx).duplicate(p_deep) : get(idx);
+			new_arr._set_unchecked(dest_idx++, p_deep ? get(idx).duplicate(p_deep) : get(idx));
 		}
 	}
 
@@ -1388,7 +1449,12 @@ struct _PackedTypedArrayVariantSort {
 };
 
 PackedTypedArray &PackedTypedArray::sort() {
-	_p->array.sort_custom<_PackedTypedArrayVariantSort>();
+	if (!_p->data) {
+		return *this;
+	}
+
+	ACCESS_DATA(vec->sort_custom<_PackedTypedArrayVariantSort>());
+
 	return *this;
 }
 
@@ -1406,8 +1472,14 @@ struct _PackedTypedArrayVariantSortCustom {
 		return res;
 	}
 };
+
+// TODO
 PackedTypedArray &PackedTypedArray::sort_custom(Object *p_obj, const StringName &p_function) {
 	ERR_FAIL_NULL_V(p_obj, *this);
+
+	if (!_p->data) {
+		return *this;
+	}
 
 	SortArray<Variant, _PackedTypedArrayVariantSortCustom, true> avs;
 	avs.compare.obj = p_obj;
@@ -1416,6 +1488,7 @@ PackedTypedArray &PackedTypedArray::sort_custom(Object *p_obj, const StringName 
 	return *this;
 }
 
+// TODO
 void PackedTypedArray::shuffle() {
 	const int n = _p->array.size();
 	if (n < 2) {
@@ -1456,10 +1529,12 @@ _FORCE_INLINE_ int bisect(const Vector<Variant> &p_array, const Variant &p_value
 	return lo;
 }
 
+// TODO
 int PackedTypedArray::bsearch(const Variant &p_value, bool p_before) {
 	return bisect(_p->array, p_value, p_before, _PackedTypedArrayVariantSort());
 }
 
+// TODO
 int PackedTypedArray::bsearch_custom(const Variant &p_value, Object *p_obj, const StringName &p_function, bool p_before) {
 	ERR_FAIL_NULL_V(p_obj, 0);
 
@@ -1471,7 +1546,12 @@ int PackedTypedArray::bsearch_custom(const Variant &p_value, Object *p_obj, cons
 }
 
 PackedTypedArray &PackedTypedArray::invert() {
-	_p->array.invert();
+	if (!_p->data) {
+		return *this;
+	}
+
+	ACCESS_DATA(vec->invert());
+
 	return *this;
 }
 
@@ -1480,11 +1560,14 @@ bool PackedTypedArray::push_front(const Variant &p_value) {
 		return false;
 	}
 
-	_p->array.insert(0, p_value);
+	_p->ensure_data();
+
+	ACCESS_DATA(vec->insert(0, p_value));
 
 	return true;
 }
 
+// TODO
 Variant PackedTypedArray::pop_back() {
 	if (!_p->array.empty()) {
 		const int n = _p->array.size() - 1;
@@ -1495,6 +1578,7 @@ Variant PackedTypedArray::pop_back() {
 	return Variant();
 }
 
+// TODO
 Variant PackedTypedArray::pop_front() {
 	if (!_p->array.empty()) {
 		const Variant ret = _p->array.get(0);
@@ -1504,6 +1588,7 @@ Variant PackedTypedArray::pop_front() {
 	return Variant();
 }
 
+// TODO
 Variant PackedTypedArray::pop_at(int p_pos) {
 	if (_p->array.empty()) {
 		// Return `null` without printing an error to mimic `pop_back()` and `pop_front()` behavior.
