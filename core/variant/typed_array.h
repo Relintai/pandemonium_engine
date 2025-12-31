@@ -48,8 +48,6 @@ class TypedArray {
 	inline int _clamp_slice_index(int p_index) const;
 
 public:
-	// Get rid of this! Bad values can be added with it
-	Variant &operator[](int p_idx);
 	const Variant &operator[](int p_idx) const;
 
 	bool set(int p_idx, const Variant &p_value);
