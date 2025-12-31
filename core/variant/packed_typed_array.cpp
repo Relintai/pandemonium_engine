@@ -694,8 +694,11 @@ bool PackedTypedArray::deep_equal(const PackedTypedArray &p_array, int p_recursi
 		return true;
 	}
 
-	// If the other one is missing data aswell, the previos if already returned true
-	if (!_p->data) {
+	if (!_p->data && !p_array._p->data) {
+		return true;
+	}
+
+	if (!_p->data || !p_array._p->data) {
 		return false;
 	}
 
