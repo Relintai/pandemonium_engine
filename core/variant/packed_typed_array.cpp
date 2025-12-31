@@ -1731,9 +1731,8 @@ void PackedTypedArray::shuffle() {
 	}
 }
 
-// const Vector<Variant> &p_array make it templated VEctor<t>, then it's easy
-template <typename Less>
-_FORCE_INLINE_ int bisect(const Vector<Variant> &p_array, const Variant &p_value, bool p_before, const Less &p_less) {
+template <typename Less, typename VT>
+_FORCE_INLINE_ int bisect(const Vector<VT> &p_array, const Variant &p_value, bool p_before, const Less &p_less) {
 	int lo = 0;
 	int hi = p_array.size();
 	if (p_before) {
@@ -1758,9 +1757,205 @@ _FORCE_INLINE_ int bisect(const Vector<Variant> &p_array, const Variant &p_value
 	return lo;
 }
 
-// TODO
 int PackedTypedArray::bsearch(const Variant &p_value, bool p_before) {
-	return bisect(_p->array, p_value, p_before, _PackedTypedArrayVariantSort());
+	switch (_p->type) {
+		case Variant::NIL: {
+			Vector<bool> *vec = reinterpret_cast<Vector<bool> *>(_p->data);
+			return bisect<_DefaultComparator<bool>, bool>(*vec, p_value, p_before, _DefaultComparator<bool>());
+		} break;
+		case Variant::BOOL: {
+			Vector<bool> *vec = reinterpret_cast<Vector<bool> *>(_p->data);
+			return bisect<_DefaultComparator<bool>, bool>(*vec, p_value, p_before, _DefaultComparator<bool>());
+		} break;
+		case Variant::INT: {
+			switch (_p->int_type) {
+				case PackedTypedArray::INT_TYPE_SIGNED_8: {
+					Vector<int8_t> *vec = reinterpret_cast<Vector<int8_t> *>(_p->data);
+					return bisect<_DefaultComparator<int8_t>, int8_t>(*vec, p_value, p_before, _DefaultComparator<int8_t>());
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_8: {
+					Vector<uint8_t> *vec = reinterpret_cast<Vector<uint8_t> *>(_p->data);
+					return bisect<_DefaultComparator<uint8_t>, uint8_t>(*vec, p_value, p_before, _DefaultComparator<uint8_t>());
+				} break;
+				case PackedTypedArray::INT_TYPE_SIGNED_16: {
+					Vector<int16_t> *vec = reinterpret_cast<Vector<int16_t> *>(_p->data);
+					return bisect<_DefaultComparator<int16_t>, int16_t>(*vec, p_value, p_before, _DefaultComparator<int16_t>());
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_16: {
+					Vector<uint16_t> *vec = reinterpret_cast<Vector<uint16_t> *>(_p->data);
+					return bisect<_DefaultComparator<uint16_t>, uint16_t>(*vec, p_value, p_before, _DefaultComparator<uint16_t>());
+				} break;
+				case PackedTypedArray::INT_TYPE_SIGNED_32: {
+					Vector<int32_t> *vec = reinterpret_cast<Vector<int32_t> *>(_p->data);
+					return bisect<_DefaultComparator<int32_t>, int32_t>(*vec, p_value, p_before, _DefaultComparator<int32_t>());
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_32: {
+					Vector<uint32_t> *vec = reinterpret_cast<Vector<uint32_t> *>(_p->data);
+					return bisect<_DefaultComparator<uint32_t>, uint32_t>(*vec, p_value, p_before, _DefaultComparator<uint32_t>());
+				} break;
+				case PackedTypedArray::INT_TYPE_SIGNED_64: {
+					Vector<int64_t> *vec = reinterpret_cast<Vector<int64_t> *>(_p->data);
+					return bisect<_DefaultComparator<int64_t>, int64_t>(*vec, p_value, p_before, _DefaultComparator<int64_t>());
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_64: {
+					Vector<uint64_t> *vec = reinterpret_cast<Vector<uint64_t> *>(_p->data);
+					return bisect<_DefaultComparator<uint64_t>, uint64_t>(*vec, p_value, p_before, _DefaultComparator<uint64_t>());
+				} break;
+			}
+		} break;
+		case Variant::REAL: {
+			Vector<real_t> *vec = reinterpret_cast<Vector<real_t> *>(_p->data);
+			return bisect<_DefaultComparator<real_t>, real_t>(*vec, p_value, p_before, _DefaultComparator<real_t>());
+		} break;
+		case Variant::STRING: {
+			Vector<String> *vec = reinterpret_cast<Vector<String> *>(_p->data);
+			return bisect<_DefaultComparator<String>, String>(*vec, p_value, p_before, _DefaultComparator<String>());
+		} break;
+		case Variant::RECT2: {
+			//Vector<Rect2> *vec = reinterpret_cast<Vector<Rect2> *>(_p->data);
+			ERR_FAIL_V_MSG(-1, "Rect2s cannot be bisected directly.");
+		} break;
+		case Variant::RECT2I: {
+			//Vector<Rect2i> *vec = reinterpret_cast<Vector<Rect2i> *>(_p->data);
+			ERR_FAIL_V_MSG(-1, "Rect2is cannot be bisected directly.");
+		} break;
+		case Variant::VECTOR2: {
+			Vector<Vector2> *vec = reinterpret_cast<Vector<Vector2> *>(_p->data);
+			return bisect<_DefaultComparator<Vector2>, Vector2>(*vec, p_value, p_before, _DefaultComparator<Vector2>());
+		} break;
+		case Variant::VECTOR2I: {
+			Vector<Vector2i> *vec = reinterpret_cast<Vector<Vector2i> *>(_p->data);
+			return bisect<_DefaultComparator<Vector2i>, Vector2i>(*vec, p_value, p_before, _DefaultComparator<Vector2i>());
+		} break;
+		case Variant::VECTOR3: {
+			Vector<Vector3> *vec = reinterpret_cast<Vector<Vector3> *>(_p->data);
+			return bisect<_DefaultComparator<Vector3>, Vector3>(*vec, p_value, p_before, _DefaultComparator<Vector3>());
+		} break;
+		case Variant::VECTOR3I: {
+			Vector<Vector3i> *vec = reinterpret_cast<Vector<Vector3i> *>(_p->data);
+			return bisect<_DefaultComparator<Vector3i>, Vector3i>(*vec, p_value, p_before, _DefaultComparator<Vector3i>());
+		} break;
+		case Variant::VECTOR4: {
+			Vector<Vector4> *vec = reinterpret_cast<Vector<Vector4> *>(_p->data);
+			return bisect<_DefaultComparator<Vector4>, Vector4>(*vec, p_value, p_before, _DefaultComparator<Vector4>());
+		} break;
+		case Variant::VECTOR4I: {
+			Vector<Vector4i> *vec = reinterpret_cast<Vector<Vector4i> *>(_p->data);
+			return bisect<_DefaultComparator<Vector4i>, Vector4i>(*vec, p_value, p_before, _DefaultComparator<Vector4i>());
+		} break;
+		case Variant::PLANE: {
+			//Vector<Plane> *vec = reinterpret_cast<Vector<Plane> *>(_p->data);
+			ERR_FAIL_V_MSG(-1, "Planes cannot be bisected directly.");
+		} break;
+		case Variant::QUATERNION: {
+			//Vector<Quaternion> *vec = reinterpret_cast<Vector<Quaternion> *>(_p->data);
+			ERR_FAIL_V_MSG(-1, "Qaternions cannot be bisected directly.");
+		} break;
+		case Variant::AABB: {
+			//Vector<AABB> *vec = reinterpret_cast<Vector<AABB> *>(_p->data);
+			ERR_FAIL_V_MSG(-1, "AABBs cannot be bisected directly.");
+		} break;
+		case Variant::BASIS: {
+			//Vector<Basis> *vec = reinterpret_cast<Vector<Basis> *>(_p->data);
+			ERR_FAIL_V_MSG(-1, "Basises cannot be bisected directly.");
+		} break;
+		case Variant::TRANSFORM: {
+			//Vector<Transform> *vec = reinterpret_cast<Vector<Transform> *>(_p->data);
+			ERR_FAIL_V_MSG(-1, "Transforms cannot be bisected directly.");
+		} break;
+		case Variant::TRANSFORM2D: {
+			//Vector<Transform2D> *vec = reinterpret_cast<Vector<Transform2D> *>(_p->data);
+			ERR_FAIL_V_MSG(-1, "ransform2Ds cannot be bisected directly.");
+		} break;
+		case Variant::PROJECTION: {
+			//Vector<Projection> *vec = reinterpret_cast<Vector<Projection> *>(_p->data);
+			ERR_FAIL_V_MSG(-1, "Projections cannot be bisected directly.");
+		} break;
+		case Variant::COLOR: {
+			Vector<Color> *vec = reinterpret_cast<Vector<Color> *>(_p->data);
+			return bisect<_DefaultComparator<Color>, Color>(*vec, p_value, p_before, _DefaultComparator<Color>());
+		} break;
+		case Variant::NODE_PATH: {
+			//Vector<NodePath> *vec = reinterpret_cast<Vector<NodePath> *>(_p->data);
+			ERR_FAIL_V_MSG(-1, "NodePaths cannot be bisected directly.");
+		} break;
+		case Variant::RID: {
+			Vector<RID> *vec = reinterpret_cast<Vector<RID> *>(_p->data);
+			return bisect<_DefaultComparator<RID>, RID>(*vec, p_value, p_before, _DefaultComparator<RID>());
+		} break;
+		case Variant::OBJECT: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			return bisect<_PackedTypedArrayVariantSort, Variant>(*vec, p_value, p_before, _PackedTypedArrayVariantSort());
+		} break;
+		case Variant::STRING_NAME: {
+			Vector<StringName> *vec = reinterpret_cast<Vector<StringName> *>(_p->data);
+			return bisect<_DefaultComparator<StringName>, StringName>(*vec, p_value, p_before, _DefaultComparator<StringName>());
+		} break;
+		case Variant::DICTIONARY: {
+			//Vector<Dictionary> *vec = reinterpret_cast<Vector<Dictionary> *>(_p->data);
+			ERR_FAIL_V_MSG(-1, "Dictionaries cannot be bisected directly.");
+		} break;
+		case Variant::ARRAY: {
+			Vector<Array> *vec = reinterpret_cast<Vector<Array> *>(_p->data);
+			return bisect<_DefaultComparator<Array>, Array>(*vec, p_value, p_before, _DefaultComparator<Array>());
+		} break;
+		case Variant::TYPED_ARRAY: {
+			Vector<TypedArray> *vec = reinterpret_cast<Vector<TypedArray> *>(_p->data);
+			return bisect<_DefaultComparator<TypedArray>, TypedArray>(*vec, p_value, p_before, _DefaultComparator<TypedArray>());
+		} break;
+		case Variant::PACKED_TYPED_ARRAY: {
+			Vector<PackedTypedArray> *vec = reinterpret_cast<Vector<PackedTypedArray> *>(_p->data);
+			return bisect<_DefaultComparator<PackedTypedArray>, PackedTypedArray>(*vec, p_value, p_before, _DefaultComparator<PackedTypedArray>());
+		} break;
+		case Variant::POOL_BYTE_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			return bisect<_PackedTypedArrayVariantSort, Variant>(*vec, p_value, p_before, _PackedTypedArrayVariantSort());
+		} break;
+		case Variant::POOL_INT_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			return bisect<_PackedTypedArrayVariantSort, Variant>(*vec, p_value, p_before, _PackedTypedArrayVariantSort());
+		} break;
+		case Variant::POOL_REAL_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			return bisect<_PackedTypedArrayVariantSort, Variant>(*vec, p_value, p_before, _PackedTypedArrayVariantSort());
+		} break;
+		case Variant::POOL_STRING_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			return bisect<_PackedTypedArrayVariantSort, Variant>(*vec, p_value, p_before, _PackedTypedArrayVariantSort());
+		} break;
+		case Variant::POOL_VECTOR2_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			return bisect<_PackedTypedArrayVariantSort, Variant>(*vec, p_value, p_before, _PackedTypedArrayVariantSort());
+		} break;
+		case Variant::POOL_VECTOR2I_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			return bisect<_PackedTypedArrayVariantSort, Variant>(*vec, p_value, p_before, _PackedTypedArrayVariantSort());
+		} break;
+		case Variant::POOL_VECTOR3_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			return bisect<_PackedTypedArrayVariantSort, Variant>(*vec, p_value, p_before, _PackedTypedArrayVariantSort());
+		} break;
+		case Variant::POOL_VECTOR3I_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			return bisect<_PackedTypedArrayVariantSort, Variant>(*vec, p_value, p_before, _PackedTypedArrayVariantSort());
+		} break;
+		case Variant::POOL_VECTOR4_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			return bisect<_PackedTypedArrayVariantSort, Variant>(*vec, p_value, p_before, _PackedTypedArrayVariantSort());
+		} break;
+		case Variant::POOL_VECTOR4I_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			return bisect<_PackedTypedArrayVariantSort, Variant>(*vec, p_value, p_before, _PackedTypedArrayVariantSort());
+		} break;
+		case Variant::POOL_COLOR_ARRAY: {
+			Vector<Variant> *vec = reinterpret_cast<Vector<Variant> *>(_p->data);
+			return bisect<_PackedTypedArrayVariantSort, Variant>(*vec, p_value, p_before, _PackedTypedArrayVariantSort());
+		} break;
+		default: {
+		} break;
+	}
+
+	return -1;
 }
 
 // TODO
