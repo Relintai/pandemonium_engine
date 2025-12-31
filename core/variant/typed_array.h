@@ -123,6 +123,8 @@ public:
 
 	void set_type_from(const TypedArray &p_array);
 
+	bool validate_type_name(const StringName &p_type_name);
+	bool validate_object_type_name(const StringName &p_type_name);
 	bool can_take_variant(const Variant &p_value);
 
 	TypedArray();

@@ -859,6 +859,8 @@ int TypedArray::get_variant_type() const {
 	return _p->type;
 }
 void TypedArray::set_variant_type(const int p_variant_type) {
+	ERR_FAIL_COND(_p->array.size() > 0);
+
 	_p->type = static_cast<Variant::Type>(p_variant_type);
 }
 
@@ -866,10 +868,14 @@ StringName TypedArray::get_object_class_name() const {
 	return _p->object_class_name;
 }
 void TypedArray::set_object_class_name(const StringName &p_object_type_name) {
+	ERR_FAIL_COND(_p->array.size() > 0);
+
 	_p->object_class_name = p_object_type_name;
 }
 
 void TypedArray::set_type_from_name(const StringName &p_type_name) {
+	ERR_FAIL_COND(_p->array.size() > 0);
+
 	String type_name = p_type_name;
 	Variant::Type variant_type = Variant::VARIANT_MAX;
 
@@ -887,6 +893,9 @@ void TypedArray::set_type_from_name(const StringName &p_type_name) {
 	_p->type = variant_type;
 	if (variant_type == Variant::OBJECT) {
 		_p->object_class_name = p_type_name;
+
+		// Just warn the user.
+		ERR_FAIL_COND(validate_object_type_name(_p->object_class_name));
 	} else {
 		_p->object_class_name = StringName();
 	}
@@ -897,6 +906,41 @@ void TypedArray::set_type_from(const TypedArray &p_array) {
 
 	_p->type = p_array._p->type;
 	_p->object_class_name = p_array._p->object_class_name;
+
+	// Just warn the user.
+	if (_p->type == Variant::OBJECT) {
+		ERR_FAIL_COND(validate_object_type_name(_p->object_class_name));
+	}
+}
+
+bool TypedArray::validate_type_name(const StringName &p_type_name) {
+	if (p_type_name == StringName()) {
+		return false;
+	}
+
+	for (int i = 0; i < Variant::VARIANT_MAX; i++) {
+		if (type_name == Variant::get_type_name(Variant::Type(i))) {
+			return true;
+		}
+	}
+
+	if (ScriptServer::is_global_class(p_type_name)) {
+		return true;
+	}
+
+	return ClassDB::class_exists(p_type_name);
+}
+
+bool TypedArray::validate_object_type_name(const StringName &p_type_name) {
+	if (p_type_name == StringName()) {
+		return false;
+	}
+
+	if (ScriptServer::is_global_class(p_type_name)) {
+		return true;
+	}
+
+	return ClassDB::class_exists(p_type_name);
 }
 
 bool TypedArray::can_take_variant(const Variant &p_value) {
