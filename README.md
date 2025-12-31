@@ -253,11 +253,8 @@ Done:
 
 WIP:
 
-- The class internals still need to be implemented.
-- It needs to check for inheritance too.
-- Their api needs to be fleshed out. Like constructors etc need to be done.
-- Still needs better gdscript support. It needs proper export keyword. Maybe it could receive some custom syntax.
-- Needs inspector plugins.
+- The PackedTypedArray internals still need to be properly implemented. It does work, but not what it should be.
+- Their c++ only api still needs to be fleshed out. Especially the packed one needs lots of getters setters.
 - Needs gdnative support.
 - Needs docs.
 - Needs icons.
