@@ -1679,20 +1679,35 @@ struct _PackedTypedArrayVariantSortCustom {
 	}
 };
 
-// TODO
 PackedTypedArray &PackedTypedArray::sort_custom(Object *p_obj, const StringName &p_function) {
 	ERR_FAIL_NULL_V(p_obj, *this);
 
 	if (!_p->data) {
 		return *this;
 	}
-	// copy elements to Vector<variant>, sort take them back
-	// if Vector<VAriant just sort inplace>
+
+	int dsize = size();
+
+	if (dsize == 0) {
+		return *this;
+	}
+
+	Vector<Variant> sort_array;
+	sort_array.resize(dsize);
+
+	for (int i = 0; i < dsize; ++i) {
+		sort_array.write[i] = get(i);
+	}
 
 	SortArray<Variant, _PackedTypedArrayVariantSortCustom, true> avs;
 	avs.compare.obj = p_obj;
 	avs.compare.func = p_function;
-	avs.sort(_p->array.ptrw(), _p->array.size());
+	avs.sort(sort_array.ptrw(), sort_array.size());
+
+	for (int i = 0; i < dsize; ++i) {
+		_set_unchecked(i, sort_array[i]);
+	}
+
 	return *this;
 }
 
