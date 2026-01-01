@@ -120,7 +120,8 @@ public:
 	void set_object_class_name(const StringName &p_object_type_name);
 
 	void set_type_from_name(const StringName &p_type_name);
-
+	void set_type_from_variant(const Variant &p_variant);
+	void set_type_from_array_element(const Variant &p_array);
 	void set_type_from(const TypedArray &p_array);
 
 	bool validate_type_name(const StringName &p_type_name) const;

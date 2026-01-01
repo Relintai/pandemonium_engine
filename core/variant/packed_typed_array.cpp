@@ -2520,7 +2520,10 @@ int PackedTypedArray::get_variant_type() const {
 	return _p->type;
 }
 void PackedTypedArray::set_variant_type(const int p_variant_type) {
-	ERR_FAIL_COND(size() > 0);
+	if (_p->data) {
+		ERR_FAIL_COND(size() > 0);
+		_p->clear();
+	}
 
 	_p->type = static_cast<Variant::Type>(p_variant_type);
 }
@@ -2529,7 +2532,10 @@ int PackedTypedArray::get_int_type() const {
 	return _p->int_type;
 }
 void PackedTypedArray::set_int_type(const int p_int_type) {
-	ERR_FAIL_COND(size() > 0);
+	if (_p->data) {
+		ERR_FAIL_COND(size() > 0);
+		_p->clear();
+	}
 
 	_p->int_type = static_cast<PackedTypedArray::IntType>(p_int_type);
 }
@@ -2538,7 +2544,10 @@ StringName PackedTypedArray::get_object_class_name() const {
 	return _p->object_class_name;
 }
 void PackedTypedArray::set_object_class_name(const StringName &p_object_type_name) {
-	ERR_FAIL_COND(size() > 0);
+	if (_p->data) {
+		ERR_FAIL_COND(size() > 0);
+		_p->clear();
+	}
 
 	_p->object_class_name = p_object_type_name;
 	_p->is_global_class = ScriptServer::is_global_class(p_object_type_name);
@@ -2548,7 +2557,10 @@ void PackedTypedArray::set_object_class_name(const StringName &p_object_type_nam
 }
 
 void PackedTypedArray::set_type_from_name(const StringName &p_type_name) {
-	ERR_FAIL_COND(size() > 0);
+	if (_p->data) {
+		ERR_FAIL_COND(size() > 0);
+		_p->clear();
+	}
 
 	String type_name = p_type_name;
 	Variant::Type variant_type = Variant::VARIANT_MAX;
@@ -2565,6 +2577,8 @@ void PackedTypedArray::set_type_from_name(const StringName &p_type_name) {
 	}
 
 	_p->type = variant_type;
+	_p->int_type = INT_TYPE_SIGNED_64;
+
 	if (variant_type == Variant::OBJECT) {
 		_p->object_class_name = p_type_name;
 		_p->is_global_class = ScriptServer::is_global_class(p_type_name);
@@ -2576,8 +2590,191 @@ void PackedTypedArray::set_type_from_name(const StringName &p_type_name) {
 	}
 }
 
+void PackedTypedArray::set_type_from_variant(const Variant &p_variant) {
+	if (_p->data) {
+		ERR_FAIL_COND(size() > 0);
+		_p->clear();
+	}
+
+	_p->type = p_variant.get_type();
+	_p->int_type = INT_TYPE_SIGNED_64;
+
+	if (_p->type == Variant::OBJECT) {
+		Object *obj = ObjectDB::get_instance(p_variant.get_object_instance_id());
+
+		if (!obj) {
+			_p->object_class_name = StringName();
+			_p->is_global_class = false;
+			return;
+		}
+
+		_p->object_class_name = obj->get_class_name();
+		_p->is_global_class = false;
+
+		Ref<Script> script = obj->get_script();
+
+		while (script.is_valid()) {
+			StringName global_class_name = script->get_global_class_name();
+
+			if (global_class_name == StringName()) {
+				script = script->get_base_script();
+				continue;
+			}
+
+			_p->object_class_name = global_class_name;
+			_p->is_global_class = true;
+
+			break;
+		}
+	} else {
+		_p->object_class_name = StringName();
+		_p->is_global_class = false;
+	}
+}
+
+void PackedTypedArray::set_type_from_array_element(const Variant &p_array) {
+	if (_p->data) {
+		ERR_FAIL_COND(size() > 0);
+		_p->clear();
+	}
+
+	switch (p_array.get_type()) {
+		case Variant::NIL:
+		case Variant::BOOL:
+		case Variant::INT:
+		case Variant::REAL:
+		case Variant::STRING:
+		case Variant::RECT2:
+		case Variant::RECT2I:
+		case Variant::VECTOR2:
+		case Variant::VECTOR2I:
+		case Variant::VECTOR3:
+		case Variant::VECTOR3I:
+		case Variant::VECTOR4:
+		case Variant::VECTOR4I:
+		case Variant::PLANE:
+		case Variant::QUATERNION:
+		case Variant::AABB:
+		case Variant::BASIS:
+		case Variant::TRANSFORM:
+		case Variant::TRANSFORM2D:
+		case Variant::PROJECTION:
+		case Variant::COLOR:
+		case Variant::NODE_PATH:
+		case Variant::RID:
+		case Variant::STRING_NAME:
+		case Variant::DICTIONARY: {
+			ERR_FAIL_MSG("Given type is not an array!");
+		} break;
+		case Variant::OBJECT: {
+			bool valid;
+			Variant element = p_array.get(0, &valid);
+
+			ERR_FAIL_COND_MSG(!valid, "Given type is not an array!");
+
+			set_type_from_variant(element);
+		} break;
+		case Variant::ARRAY: {
+			Array arr = p_array;
+
+			ERR_FAIL_COND_MSG(arr.size() == 0, "Cannot set type from empty array!");
+
+			// Try to find the first non null element.
+			// If can't be found we just use the null type
+			Variant element;
+			for (int i = 0; i < arr.size(); ++i) {
+				element = arr[i];
+
+				if (element.get_type() != Variant::NIL) {
+					break;
+				}
+			}
+			set_type_from_variant(element);
+		} break;
+		case Variant::TYPED_ARRAY: {
+			TypedArray arr = p_array;
+			set_type_from_name(arr.get_typename_string());
+		} break;
+		case Variant::PACKED_TYPED_ARRAY: {
+			PackedTypedArray arr = p_array;
+			set_type_from(arr);
+		} break;
+		case Variant::POOL_BYTE_ARRAY: {
+			_p->type = Variant::INT;
+			_p->int_type = INT_TYPE_UNSIGNED_8;
+			_p->object_class_name = StringName();
+			_p->is_global_class = false;
+		} break;
+		case Variant::POOL_INT_ARRAY: {
+			_p->type = Variant::INT;
+			_p->int_type = INT_TYPE_SIGNED_64;
+			_p->object_class_name = StringName();
+			_p->is_global_class = false;
+		} break;
+		case Variant::POOL_REAL_ARRAY: {
+			_p->type = Variant::REAL;
+			_p->int_type = INT_TYPE_SIGNED_64;
+			_p->object_class_name = StringName();
+			_p->is_global_class = false;
+		} break;
+		case Variant::POOL_STRING_ARRAY: {
+			_p->type = Variant::STRING;
+			_p->int_type = INT_TYPE_SIGNED_64;
+			_p->object_class_name = StringName();
+			_p->is_global_class = false;
+		} break;
+		case Variant::POOL_VECTOR2_ARRAY: {
+			_p->type = Variant::VECTOR2;
+			_p->int_type = INT_TYPE_SIGNED_64;
+			_p->object_class_name = StringName();
+			_p->is_global_class = false;
+		} break;
+		case Variant::POOL_VECTOR2I_ARRAY: {
+			_p->type = Variant::VECTOR2I;
+			_p->int_type = INT_TYPE_SIGNED_64;
+			_p->object_class_name = StringName();
+			_p->is_global_class = false;
+		} break;
+		case Variant::POOL_VECTOR3_ARRAY: {
+			_p->type = Variant::VECTOR3;
+			_p->int_type = INT_TYPE_SIGNED_64;
+			_p->object_class_name = StringName();
+			_p->is_global_class = false;
+		} break;
+		case Variant::POOL_VECTOR3I_ARRAY: {
+			_p->type = Variant::VECTOR3I;
+			_p->int_type = INT_TYPE_SIGNED_64;
+			_p->object_class_name = StringName();
+			_p->is_global_class = false;
+		} break;
+		case Variant::POOL_VECTOR4_ARRAY: {
+			_p->type = Variant::VECTOR4;
+			_p->int_type = INT_TYPE_SIGNED_64;
+			_p->object_class_name = StringName();
+			_p->is_global_class = false;
+		} break;
+		case Variant::POOL_VECTOR4I_ARRAY: {
+			_p->type = Variant::VECTOR4I;
+			_p->int_type = INT_TYPE_SIGNED_64;
+			_p->object_class_name = StringName();
+			_p->is_global_class = false;
+		} break;
+		case Variant::POOL_COLOR_ARRAY: {
+			_p->type = Variant::COLOR;
+			_p->int_type = INT_TYPE_SIGNED_64;
+			_p->object_class_name = StringName();
+			_p->is_global_class = false;
+		} break;
+		default: {
+		} break;
+	}
+}
+
 void PackedTypedArray::set_type_from(const PackedTypedArray &p_array) {
-	ERR_FAIL_COND(size() > 0);
+	if (_p->data) {
+		ERR_FAIL_COND(size() > 0);
+		_p->clear();
+	}
 
 	_p->type = p_array._p->type;
 	_p->object_class_name = p_array._p->object_class_name;

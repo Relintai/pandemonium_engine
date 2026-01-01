@@ -958,6 +958,8 @@ struct _VariantCall {
 	VCALL_LOCALMEM0R(TypedArray, get_object_class_name);
 	VCALL_LOCALMEM1(TypedArray, set_object_class_name);
 	VCALL_LOCALMEM1(TypedArray, set_type_from_name);
+	VCALL_LOCALMEM1(TypedArray, set_type_from_variant);
+	VCALL_LOCALMEM1(TypedArray, set_type_from_array_element);
 	VCALL_LOCALMEM1(TypedArray, set_type_from);
 	VCALL_LOCALMEM1R(TypedArray, validate_type_name);
 	VCALL_LOCALMEM1R(TypedArray, validate_object_type_name);
@@ -1009,6 +1011,8 @@ struct _VariantCall {
 	VCALL_LOCALMEM0R(PackedTypedArray, get_object_class_name);
 	VCALL_LOCALMEM1(PackedTypedArray, set_object_class_name);
 	VCALL_LOCALMEM1(PackedTypedArray, set_type_from_name);
+	VCALL_LOCALMEM1(PackedTypedArray, set_type_from_variant);
+	VCALL_LOCALMEM1(PackedTypedArray, set_type_from_array_element);
 	VCALL_LOCALMEM1(PackedTypedArray, set_type_from);
 	VCALL_LOCALMEM1R(PackedTypedArray, validate_type_name);
 	VCALL_LOCALMEM1R(PackedTypedArray, validate_object_type_name);
@@ -3177,6 +3181,8 @@ void register_variant_methods() {
 	ADDFUNC0R(TYPED_ARRAY, STRING_NAME, TypedArray, get_object_class_name, varray());
 	ADDFUNC1NC(TYPED_ARRAY, NIL, TypedArray, set_object_class_name, STRING_NAME, "object_type_name", varray());
 	ADDFUNC1NC(TYPED_ARRAY, NIL, TypedArray, set_type_from_name, STRING_NAME, "type_name", varray());
+	ADDFUNC1NC(TYPED_ARRAY, NIL, TypedArray, set_type_from_variant, NIL, "variant", varray());
+	ADDFUNC1NC(TYPED_ARRAY, NIL, TypedArray, set_type_from_array_element, NIL, "array", varray());
 	ADDFUNC1NC(TYPED_ARRAY, NIL, TypedArray, set_type_from, TYPED_ARRAY, "array", varray());
 	ADDFUNC1R(TYPED_ARRAY, BOOL, TypedArray, validate_type_name, STRING_NAME, "type_name", varray());
 	ADDFUNC1R(TYPED_ARRAY, BOOL, TypedArray, validate_object_type_name, STRING_NAME, "type_name", varray());
@@ -3224,6 +3230,8 @@ void register_variant_methods() {
 	ADDFUNC0R(PACKED_TYPED_ARRAY, STRING_NAME, PackedTypedArray, get_object_class_name, varray());
 	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, set_object_class_name, STRING_NAME, "object_type_name", varray());
 	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, set_type_from_name, STRING_NAME, "type_name", varray());
+	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, set_type_from_variant, NIL, "variant", varray());
+	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, set_type_from_array_element, NIL, "array", varray());
 	ADDFUNC1NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, set_type_from, PACKED_TYPED_ARRAY, "array", varray());
 	ADDFUNC1R(PACKED_TYPED_ARRAY, BOOL, PackedTypedArray, validate_type_name, STRING_NAME, "type_name", varray());
 	ADDFUNC1R(PACKED_TYPED_ARRAY, BOOL, PackedTypedArray, validate_object_type_name, STRING_NAME, "type_name", varray());
