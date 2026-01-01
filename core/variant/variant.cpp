@@ -2409,6 +2409,71 @@ inline DA _convert_array_from_variant(const Variant &p_variant) {
 	}
 }
 
+template <class DA, class SA>
+inline DA _convert_typed_array(const SA &p_array) {
+	DA da;
+
+	if (p_array.size() == 0) {
+		return da;
+	}
+
+	da.set_type_from_array_element(p_array);
+	da.append_from(p_array);
+
+	return da;
+}
+
+template <class DA>
+inline DA _convert_typed_array_from_variant(const Variant &p_variant) {
+	switch (p_variant.get_type()) {
+		case Variant::ARRAY: {
+			return _convert_typed_array<DA, Array>(p_variant.operator Array());
+		}
+		case Variant::TYPED_ARRAY: {
+			return _convert_typed_array<DA, TypedArray>(p_variant.operator TypedArray());
+		}
+		case Variant::PACKED_TYPED_ARRAY: {
+			return _convert_typed_array<DA, PackedTypedArray>(p_variant.operator PackedTypedArray());
+		}
+		case Variant::POOL_BYTE_ARRAY: {
+			return _convert_typed_array<DA, PoolVector<uint8_t>>(p_variant.operator PoolVector<uint8_t>());
+		}
+		case Variant::POOL_INT_ARRAY: {
+			return _convert_typed_array<DA, PoolVector<int>>(p_variant.operator PoolVector<int>());
+		}
+		case Variant::POOL_REAL_ARRAY: {
+			return _convert_typed_array<DA, PoolVector<real_t>>(p_variant.operator PoolVector<real_t>());
+		}
+		case Variant::POOL_STRING_ARRAY: {
+			return _convert_typed_array<DA, PoolVector<String>>(p_variant.operator PoolVector<String>());
+		}
+		case Variant::POOL_VECTOR2_ARRAY: {
+			return _convert_typed_array<DA, PoolVector<Vector2>>(p_variant.operator PoolVector<Vector2>());
+		}
+		case Variant::POOL_VECTOR2I_ARRAY: {
+			return _convert_typed_array<DA, PoolVector<Vector2i>>(p_variant.operator PoolVector<Vector2i>());
+		}
+		case Variant::POOL_VECTOR3_ARRAY: {
+			return _convert_typed_array<DA, PoolVector<Vector3>>(p_variant.operator PoolVector<Vector3>());
+		}
+		case Variant::POOL_VECTOR3I_ARRAY: {
+			return _convert_typed_array<DA, PoolVector<Vector3i>>(p_variant.operator PoolVector<Vector3i>());
+		}
+		case Variant::POOL_VECTOR4_ARRAY: {
+			return _convert_typed_array<DA, PoolVector<Vector4>>(p_variant.operator PoolVector<Vector4>());
+		}
+		case Variant::POOL_VECTOR4I_ARRAY: {
+			return _convert_typed_array<DA, PoolVector<Vector4i>>(p_variant.operator PoolVector<Vector4i>());
+		}
+		case Variant::POOL_COLOR_ARRAY: {
+			return _convert_typed_array<DA, PoolVector<Color>>(p_variant.operator PoolVector<Color>());
+		}
+		default: {
+			return DA();
+		}
+	}
+}
+
 Variant::operator Array() const {
 	if (type == ARRAY) {
 		return *reinterpret_cast<const Array *>(_data._mem);
@@ -2421,7 +2486,7 @@ Variant::operator TypedArray() const {
 	if (type == TYPED_ARRAY) {
 		return *reinterpret_cast<const TypedArray *>(_data._mem);
 	} else {
-		return _convert_array_from_variant<TypedArray>(*this);
+		return _convert_typed_array_from_variant<TypedArray>(*this);
 	}
 }
 
@@ -2429,7 +2494,7 @@ Variant::operator PackedTypedArray() const {
 	if (type == PACKED_TYPED_ARRAY) {
 		return *reinterpret_cast<const PackedTypedArray *>(_data._mem);
 	} else {
-		return _convert_array_from_variant<PackedTypedArray>(*this);
+		return _convert_typed_array_from_variant<PackedTypedArray>(*this);
 	}
 }
 
