@@ -145,6 +145,18 @@ public:
 	bool validate_object_type_name(const StringName &p_type_name) const;
 	bool can_take_variant(const Variant &p_value) const;
 
+	// Returns the internal Vector<>'s pointer.
+	// Can be NULL!
+	// Look at the .cpp file to know what to cast this to. (ACCESS_DATA define for example.)
+	const void *vector_ptr() const;
+	void *vector_ptrw();
+
+	// Returns the internal vector<>'s internal array's pointer. Vector<>->ptr().
+	// Can be NULL!
+	// Look at the .cpp file to know what to cast this to. (ACCESS_DATA define for example.)
+	const void *ptr() const;
+	void *ptrw();
+
 	PackedTypedArray();
 	PackedTypedArray(const PackedTypedArray &p_from);
 	PackedTypedArray(const StringName &p_type_name, const Variant &p_from);

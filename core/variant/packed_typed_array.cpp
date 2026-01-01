@@ -2867,6 +2867,34 @@ bool PackedTypedArray::can_take_variant(const Variant &p_value) const {
 	return true;
 }
 
+// Returns the internal Vector<>'s pointer
+const void *PackedTypedArray::vector_ptr() const {
+	return _p->data;
+}
+void *PackedTypedArray::vector_ptrw() {
+	return _p->data;
+}
+
+// Returns the internal vector<>'s internal aiiay's pointer. Vector<>.ptr()
+const void *PackedTypedArray::ptr() const {
+	if (!_p->data) {
+		return NULL;
+	}
+
+	ACCESS_DATA(return vec->ptr());
+
+	return NULL;
+}
+void *PackedTypedArray::ptrw() {
+	if (!_p->data) {
+		return NULL;
+	}
+
+	ACCESS_DATA(return vec->ptrw());
+
+	return NULL;
+}
+
 PackedTypedArray::PackedTypedArray() {
 	_p = memnew(PackedTypedArrayPrivate);
 	_p->refcount.init();
