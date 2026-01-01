@@ -232,6 +232,7 @@
 			<return type="Variant" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the element at the given index.
 			</description>
 		</method>
 		<method name="get_object_class_name">
@@ -256,11 +257,26 @@
 			<return type="bool" />
 			<argument index="0" name="value" type="Variant" />
 			<description>
+				Returns [code]true[/code] if the array contains the given value.
+				[codeblock]
+				TypedArray(["inside", "7"]).has("inside") # True
+				TypedArray(["inside", "7"]).has("outside") # False
+				TypedArray(["inside", "7"]).has("7") # True
+				TypedArray(["inside", "7"]).has(7) # False
+				[/codeblock]
+				[b]Note:[/b] This is equivalent to using the [code]in[/code] operator as follows:
+				[codeblock]
+				# Will evaluate to `true`.
+				if 2 in TypedArray([2, 4, 6, 8]):
+				    pass
+				[/codeblock]
 			</description>
 		</method>
 		<method name="hash">
 			<return type="int" />
 			<description>
+				Returns a hashed 32-bit integer value representing the array and its contents.
+				[b]Note:[/b] [Array]s with equal content will always produce identical hash values. However, the reverse is not true. Returning identical hash values does [i]not[/i] imply the arrays are equal, because different arrays can have identical hash values due to hash collisions.
 			</description>
 		</method>
 		<method name="insert">
@@ -268,58 +284,79 @@
 			<argument index="0" name="position" type="int" />
 			<argument index="1" name="value" type="Variant" />
 			<description>
+				Inserts a new element at a given position in the array. The position must be valid, or at the end of the array ([code]pos == size()[/code]).
+				Returns true if the given value was added to the array, false otherwise.
+				[b]Note:[/b] This method acts in-place and doesn't return a value.
+				[b]Note:[/b] On large arrays, this method will be slower if the inserted element is close to the beginning of the array (index 0). This is because all elements placed after the newly inserted element have to be reindexed.
 			</description>
 		</method>
 		<method name="invert">
 			<description>
+				Reverses the order of the elements in the array.
 			</description>
 		</method>
 		<method name="max">
 			<return type="Variant" />
 			<description>
+				Returns the maximum value contained in the array if all elements are of comparable types. If the elements can't be compared, [code]null[/code] is returned.
 			</description>
 		</method>
 		<method name="min">
 			<return type="Variant" />
 			<description>
+				Returns the minimum value contained in the array if all elements are of comparable types. If the elements can't be compared, [code]null[/code] is returned.
 			</description>
 		</method>
 		<method name="pop_at">
 			<return type="Variant" />
 			<argument index="0" name="position" type="int" />
 			<description>
+				Removes and returns the element of the array at index [code]position[/code]. If negative, [code]position[/code] is considered relative to the end of the array. Leaves the array untouched and returns [code]null[/code] if the array is empty or if it's accessed out of bounds. An error message is printed when the array is accessed out of bounds, but not when the array is empty.
+				[b]Note:[/b] On large arrays, this method can be slower than [method pop_back] as it will reindex the array's elements that are located after the removed element. The larger the array and the lower the index of the removed element, the slower [method pop_at] will be.
 			</description>
 		</method>
 		<method name="pop_back">
 			<return type="Variant" />
 			<description>
+				Removes and returns the last element of the array. Returns [code]null[/code] if the array is empty, without printing an error message. See also [method pop_front].
 			</description>
 		</method>
 		<method name="pop_front">
 			<return type="Variant" />
 			<description>
+				Removes and returns the first element of the array. Returns [code]null[/code] if the array is empty, without printing an error message. See also [method pop_back].
+				[b]Note:[/b] On large arrays, this method is much slower than [method pop_back] as it will reindex all the array's elements every time it's called. The larger the array, the slower [method pop_front] will be.
 			</description>
 		</method>
 		<method name="push_back">
 			<return type="bool" />
 			<argument index="0" name="value" type="Variant" />
 			<description>
+				Appends an element at the end of the array. See also [method push_front].
+				Returns true if the given value was added to the array, false otherwise.
 			</description>
 		</method>
 		<method name="push_front">
 			<return type="bool" />
 			<argument index="0" name="value" type="Variant" />
 			<description>
+				Adds an element at the beginning of the array. See also [method push_back].
+				Returns true if the given value was added to the array, false otherwise.
+				[b]Note:[/b] On large arrays, this method is much slower than [method push_back] as it will reindex all the array's elements every time it's called. The larger the array, the slower [method push_front] will be.
 			</description>
 		</method>
 		<method name="remove">
 			<argument index="0" name="position" type="int" />
 			<description>
+				Removes an element from the array by index. If the index does not exist in the array, nothing happens. To remove an element by searching for its value, use [method erase] instead.
+				[b]Note:[/b] This method acts in-place and doesn't return a value.
+				[b]Note:[/b] On large arrays, this method will be slower if the removed element is close to the beginning of the array (index 0). This is because all elements placed after the removed element have to be reindexed.
 			</description>
 		</method>
 		<method name="resize">
 			<argument index="0" name="size" type="int" />
 			<description>
+				Resizes the array to contain a different number of elements. If the array size is smaller, elements are cleared, if bigger, new elements are [code]null[/code].
 			</description>
 		</method>
 		<method name="rfind">
@@ -327,6 +364,7 @@
 			<argument index="0" name="what" type="Variant" />
 			<argument index="1" name="from" type="int" default="-1" />
 			<description>
+				Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array.
 			</description>
 		</method>
 		<method name="set">
@@ -334,45 +372,62 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="Variant" />
 			<description>
+				Changes the element at index to value.
+				Returns true if the given value was added to the array, false otherwise.
 			</description>
 		</method>
 		<method name="set_object_class_name">
 			<argument index="0" name="object_type_name" type="StringName" />
 			<description>
+				Sets the name for the [Object] derived class if the type that is stored is TYPE_OBJECT.
+				Will print an error, and won't do anything if the size is greater than 0.
 			</description>
 		</method>
 		<method name="set_type_from">
 			<argument index="0" name="array" type="TypedArray" />
 			<description>
+				Copies the type information from an another PackedTypedArray.
+				Will print an error, and won't do anything if the size is greater than 0.
 			</description>
 		</method>
 		<method name="set_type_from_array_element">
 			<argument index="0" name="array" type="Variant" />
 			<description>
+				This class sets itself up internally to take values from the given array.
+				Will print an error, and won't do anything if the given value is not any array type.
+				Will print an error, and won't do anything if the size is greater than 0.
 			</description>
 		</method>
 		<method name="set_type_from_name">
 			<argument index="0" name="type_name" type="StringName" />
 			<description>
+				Set the internally stored type using any type name.
+				Will print an error, and won't do anything if the size is greater than 0.
 			</description>
 		</method>
 		<method name="set_type_from_variant">
 			<argument index="0" name="variant" type="Variant" />
 			<description>
+				This class sets itself up internally to be able to store the given value.
+				Will print an error, and won't do anything if the size is greater than 0.
 			</description>
 		</method>
 		<method name="set_variant_type">
 			<argument index="0" name="variant_type" type="int" />
 			<description>
+				Sets the internally stored variant type.
+				Will print an error, and won't do anything if the size is greater than 0.
 			</description>
 		</method>
 		<method name="shuffle">
 			<description>
+				Searches the array in reverse order. Optionally, a start search index can be passed. If negative, the start index is considered relative to the end of the array. If the adjusted start index is out of bounds, this method searches from the end of the array.
 			</description>
 		</method>
 		<method name="size">
 			<return type="int" />
 			<description>
+				Returns the number of elements in the array.
 			</description>
 		</method>
 		<method name="slice">
@@ -382,28 +437,52 @@
 			<argument index="2" name="step" type="int" default="1" />
 			<argument index="3" name="deep" type="bool" default="false" />
 			<description>
+				Duplicates the subset described in the function and returns it in an array, deeply copying the array if [code]deep[/code] is [code]true[/code]. Lower and upper index are inclusive, with the [code]step[/code] describing the change between indices while slicing.
 			</description>
 		</method>
 		<method name="sort">
 			<description>
+				Sorts the array.
+				[b]Note:[/b] Strings are sorted in alphabetical order (as opposed to natural order). This may lead to unexpected behavior when sorting an array of strings ending with a sequence of numbers. Consider the following example:
+				[codeblock]
+				var strings = TypedArray(["string1", "string2", "string10", "string11"])
+				strings.sort()
+				print(strings) # Prints [string1, string10, string11, string2]
+				[/codeblock]
 			</description>
 		</method>
 		<method name="sort_custom">
 			<argument index="0" name="obj" type="Object" />
 			<argument index="1" name="func" type="String" />
 			<description>
+				Sorts the array using a custom method. The arguments are an object that holds the method and the name of such method. The custom method receives two arguments (a pair of elements from the array) and must return either [code]true[/code] or [code]false[/code].
+				For two elements [code]a[/code] and [code]b[/code], if the given method returns [code]true[/code], element [code]b[/code] will be after element [code]a[/code] in the array.
+				[b]Note:[/b] You cannot randomize the return value as the heapsort algorithm expects a deterministic result. Doing so will result in unexpected behavior.
+				[codeblock]
+				class MyCustomSorter:
+				    static func sort_ascending(a, b):
+				        if a[0] &lt; b[0]:
+				            return true
+				        return false
+
+				var my_items = TypedArray([[5, "Potato"], [9, "Rice"], [4, "Tomato"]])
+				my_items.sort_custom(MyCustomSorter, "sort_ascending")
+				print(my_items) # Prints [[4, Tomato], [5, Potato], [9, Rice]].
+				[/codeblock]
 			</description>
 		</method>
 		<method name="validate_object_type_name">
 			<return type="bool" />
 			<argument index="0" name="type_name" type="StringName" />
 			<description>
+				Validates whether the given [Object] based type is valid.
 			</description>
 		</method>
 		<method name="validate_type_name">
 			<return type="bool" />
 			<argument index="0" name="type_name" type="StringName" />
 			<description>
+				Validates whether the given type is valid.
 			</description>
 		</method>
 	</methods>
