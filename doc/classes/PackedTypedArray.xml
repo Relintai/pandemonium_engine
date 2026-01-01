@@ -240,6 +240,12 @@
 				[b]Note:[/b] Calling this function is not the same as writing [code]array[0][/code]. If the array is empty, accessing by index will pause project execution when running from the editor.
 			</description>
 		</method>
+		<method name="get">
+			<return type="Variant" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="get_int_type">
 			<return type="int" />
 			<description>
@@ -338,6 +344,13 @@
 			<return type="int" />
 			<argument index="0" name="what" type="Variant" />
 			<argument index="1" name="from" type="int" default="-1" />
+			<description>
+			</description>
+		</method>
+		<method name="set">
+			<return type="bool" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="Variant" />
 			<description>
 			</description>
 		</method>
