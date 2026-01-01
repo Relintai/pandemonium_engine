@@ -3190,8 +3190,8 @@ void register_variant_methods() {
 	ADDFUNC1R(TYPED_ARRAY, BOOL, TypedArray, validate_object_type_name, STRING_NAME, "type_name", varray());
 	ADDFUNC1R(TYPED_ARRAY, BOOL, TypedArray, can_take_variant, NIL, "value", varray());
 
-	ADDFUNC1R(TYPED_ARRAY, NIL, PackedTypedArray, get, INT, "index", varray());
-	ADDFUNC2RNC(TYPED_ARRAY, BOOL, PackedTypedArray, set, INT, "index", NIL, "value", varray());
+	ADDFUNC1R(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, get, INT, "index", varray());
+	ADDFUNC2RNC(PACKED_TYPED_ARRAY, BOOL, PackedTypedArray, set, INT, "index", NIL, "value", varray());
 	ADDFUNC0R(PACKED_TYPED_ARRAY, INT, PackedTypedArray, size, varray());
 	ADDFUNC0R(PACKED_TYPED_ARRAY, BOOL, PackedTypedArray, empty, varray());
 	ADDFUNC0NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, clear, varray());
