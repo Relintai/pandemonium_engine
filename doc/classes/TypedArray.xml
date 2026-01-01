@@ -1,24 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="TypedArray">
 	<brief_description>
-		A generic array datatype.
+		A generic array datatype that enforces a given type.
 	</brief_description>
 	<description>
 		A generic array that can contain several elements of any one type, accessible by a numerical index starting at 0. Negative indices can be used to count from the back, like in Python (-1 is the last element, -2 is the second to last, etc.).
-		[b]Example:[/b]
+		Like the normal [Array], this class stores everything internally as [Variant]s, but it enforces the given types. If more space efficincy is desired take a look at PoolVectors, or [PackedTypedArray].
+		[b]Examples:[/b]
 		[codeblock]
-		var typed_array : TypedArray = TypedArray([ 1, 2, 3, 4])
-		print(array[0]) # 1.
-		print(array[2]) # 3.
-		print(array[-1]) # 4.
-		array[2] = "Some string" # Won't get added
-		print(array[-2]) # 3.
+		var typed_array : TypedArray = TypedArray([ 1, 2, 3, 4]) # Type will be automatically inferred
+		print(typed_array[0]) # 1.
+		print(typed_array[2]) # 3.
+		print(typed_array[-1]) # 4.
+		typed_array[2] = "Some string" # Won't get set
+		print(typed_array[-2]) # 3.
+		[/codeblock]
+		Explicit type:
+		[codeblock]
+		var typed_array : TypedArray = TypedArray("int", [ 1, 2, 3, 4])
+		print(typed_array[0]) # 1.
+		typed_array[0] = "Some string" # Won't get set
+		print(typed_array[0]) # 1.
+		if !typed_array.set(0, "Some string"):
+		  print("Element wasn't set!") # This will be printed
+		[/codeblock]
+		Objects, and inheritance also works:
+		[codeblock]
+		var typed_array : TypedArray = TypedArray("Mesh") # Only Mesh, and it's derived classes can be inserted.
+		[/codeblock]
+		Exporting TypedArrays also works:
+		[codeblock]
+		export(TypedArray) var typed_array : TypedArray = TypedArray("Mesh") # Only Mesh, and it's derived classes can be inserted (including the editor's gui).
 		[/codeblock]
 		Arrays can be concatenated using the [code]+[/code] operator:
 		[codeblock]
-		var typed_array1 = TypedArray(["One", "Two"])
-		var typed_array2 = TypedArray(["Three", "Four"])
-		print(array1 + array2) # ["One", 2, 3, "Four"]
+		var typed_array1 : TypedArray = TypedArray("String", ["One", "Two"])
+		var typed_array2 : TypedArray = TypedArray(["Three", "Four"])
+		print(typed_array1 + typed_array2) # ["One", "Two", "Four", "Four"]
 		[/codeblock]
 		[b]Note:[/b] Concatenating with the [code]+=[/code] operator will create a new array, which has a cost. If you want to append another array to an existing array, [method append_array] is more efficient.
 		[b]Note:[/b] Arrays are always passed by reference. To get a copy of an array that can be modified independently of the original array, use [method duplicate].
@@ -148,6 +166,12 @@
 			<description>
 			</description>
 		</method>
+		<method name="get">
+			<return type="Variant" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="get_object_class_name">
 			<return type="StringName" />
 			<description>
@@ -237,6 +261,13 @@
 			<return type="int" />
 			<argument index="0" name="what" type="Variant" />
 			<argument index="1" name="from" type="int" default="-1" />
+			<description>
+			</description>
+		</method>
+		<method name="set">
+			<return type="bool" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="Variant" />
 			<description>
 			</description>
 		</method>

@@ -1,24 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="PackedTypedArray">
 	<brief_description>
-		A generic array datatype.
+		A generic array datatype that enforces a given type in a space efficient manner.
 	</brief_description>
 	<description>
-		A generic array that can contain several elements of any type, accessible by a numerical index starting at 0. Negative indices can be used to count from the back, like in Python (-1 is the last element, -2 is the second to last, etc.).
-		[b]Example:[/b]
+		A generic array that can contain several elements of any one type in a space efficient manner, accessible by a numerical index starting at 0. Negative indices can be used to count from the back, like in Python (-1 is the last element, -2 is the second to last, etc.).
+		Unlike the normal [Array] and [TypedArray], this class stores everything internally as the most sapce efficient way as possible.
+		Like [TypedArray], it enforces the given types.
+		Unlike PoolVectors it does not use pool allocations, so it's not limited by the (compile time) preset memory pool size.
+		[b]Examples:[/b]
 		[codeblock]
-		var array = ["One", 2, 3, "Four"]
-		print(array[0]) # One.
-		print(array[2]) # 3.
-		print(array[-1]) # Four.
-		array[2] = "Three"
-		print(array[-2]) # Three.
+		var packed_typed_array : PackedTypedArray = PackedTypedArray([ 1, 2, 3, 4]) # Type will be automatically inferred
+		print(packed_typed_array[0]) # 1.
+		print(packed_typed_array[2]) # 3.
+		print(packed_typed_array[-1]) # 4.
+		packed_typed_array[2] = "Some string" # Won't get set
+		print(packed_typed_array[-2]) # 3.
+		[/codeblock]
+		Explicit type:
+		[codeblock]
+		var packed_typed_array : PackedTypedArray = PackedTypedArray("int", [ 1, 2, 3, 4])
+		print(packed_typed_array[0]) # 1.
+		packed_typed_array[0] = "Some string" # Won't get set
+		print(packed_typed_array[0]) # 1.
+		if !packed_typed_array.set(0, "Some string"):
+		  print("Element wasn't set!") # This will be printed
+		[/codeblock]
+		Objects, and inheritance also works:
+		[codeblock]
+		var packed_typed_array : PackedTypedArray = PackedTypedArray("Mesh") # Only Mesh, and it's derived classes can be inserted.
+		[/codeblock]
+		Exporting TypedArrays also works:
+		[codeblock]
+		export(PackedTypedArray) var packed_typed_array : PackedTypedArray = PackedTypedArray("Mesh") # Only Mesh, and it's derived classes can be inserted (including the editor's gui).
 		[/codeblock]
 		Arrays can be concatenated using the [code]+[/code] operator:
 		[codeblock]
-		var array1 = ["One", 2]
-		var array2 = [3, "Four"]
-		print(array1 + array2) # ["One", 2, 3, "Four"]
+		var packed_typed_array1 : PackedTypedArray = PackedTypedArray("String", ["One", "Two"])
+		var packed_typed_array2 : PackedTypedArray = PackedTypedArray(["Three", "Four"])
+		print(packed_typed_array1 + packed_typed_array2) # ["One", "Two", "Four", "Four"]
 		[/codeblock]
 		[b]Note:[/b] Concatenating with the [code]+=[/code] operator will create a new array, which has a cost. If you want to append another array to an existing array, [method append_array] is more efficient.
 		[b]Note:[/b] Arrays are always passed by reference. To get a copy of an array that can be modified independently of the original array, use [method duplicate].
