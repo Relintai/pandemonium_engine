@@ -32,6 +32,14 @@
 			<description>
 			</description>
 		</method>
+		<method name="PackedTypedArray">
+			<return type="PackedTypedArray" />
+			<argument index="0" name="type_name" type="StringName" />
+			<argument index="1" name="from" type="Variant" />
+			<argument index="2" name="int_type" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="append">
 			<return type="bool" />
 			<argument index="0" name="value" type="Variant" />
@@ -127,6 +135,11 @@
 			<description>
 			</description>
 		</method>
+		<method name="get_int_type">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="get_object_class_name">
 			<return type="StringName" />
 			<description>
@@ -219,6 +232,11 @@
 			<description>
 			</description>
 		</method>
+		<method name="set_int_type">
+			<argument index="0" name="int_type" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="set_object_class_name">
 			<argument index="0" name="object_type_name" type="StringName" />
 			<description>
@@ -281,5 +299,21 @@
 		</method>
 	</methods>
 	<constants>
+		<constant name="INT_TYPE_SIGNED_8" value="1">
+		</constant>
+		<constant name="INT_TYPE_UNSIGNED_8" value="2">
+		</constant>
+		<constant name="INT_TYPE_SIGNED_16" value="3">
+		</constant>
+		<constant name="INT_TYPE_UNSIGNED_16" value="4">
+		</constant>
+		<constant name="INT_TYPE_SIGNED_32" value="5">
+		</constant>
+		<constant name="INT_TYPE_UNSIGNED_32" value="6">
+		</constant>
+		<constant name="INT_TYPE_SIGNED_64" value="7">
+		</constant>
+		<constant name="INT_TYPE_UNSIGNED_64" value="8">
+		</constant>
 	</constants>
 </class>
