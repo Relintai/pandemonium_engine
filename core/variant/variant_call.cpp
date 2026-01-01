@@ -3141,6 +3141,8 @@ void register_variant_methods() {
 	ADDFUNC0R(ARRAY, NIL, Array, max, varray());
 	ADDFUNC0R(ARRAY, NIL, Array, min, varray());
 
+	ADDFUNC1R(TYPED_ARRAY, NIL, TypedArray, get, INT, "index", varray());
+	ADDFUNC2RNC(TYPED_ARRAY, BOOL, TypedArray, set, INT, "index", NIL, "value", varray());
 	ADDFUNC0R(TYPED_ARRAY, INT, TypedArray, size, varray());
 	ADDFUNC0R(TYPED_ARRAY, BOOL, TypedArray, empty, varray());
 	ADDFUNC0NC(TYPED_ARRAY, NIL, TypedArray, clear, varray());
@@ -3188,6 +3190,8 @@ void register_variant_methods() {
 	ADDFUNC1R(TYPED_ARRAY, BOOL, TypedArray, validate_object_type_name, STRING_NAME, "type_name", varray());
 	ADDFUNC1R(TYPED_ARRAY, BOOL, TypedArray, can_take_variant, NIL, "value", varray());
 
+	ADDFUNC1R(TYPED_ARRAY, NIL, PackedTypedArray, get, INT, "index", varray());
+	ADDFUNC2RNC(TYPED_ARRAY, BOOL, PackedTypedArray, set, INT, "index", NIL, "value", varray());
 	ADDFUNC0R(PACKED_TYPED_ARRAY, INT, PackedTypedArray, size, varray());
 	ADDFUNC0R(PACKED_TYPED_ARRAY, BOOL, PackedTypedArray, empty, varray());
 	ADDFUNC0NC(PACKED_TYPED_ARRAY, NIL, PackedTypedArray, clear, varray());
