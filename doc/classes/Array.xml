@@ -38,18 +38,21 @@
 			<return type="Array" />
 			<argument index="0" name="from" type="PoolVector4iArray" />
 			<description>
+				Constructs an array from a [PoolVector4iArray].
 			</description>
 		</method>
 		<method name="Array">
 			<return type="Array" />
 			<argument index="0" name="from" type="PoolVector4Array" />
 			<description>
+				Constructs an array from a [PoolVector4Array].
 			</description>
 		</method>
 		<method name="Array">
 			<return type="Array" />
 			<argument index="0" name="from" type="PoolVector3iArray" />
 			<description>
+				Constructs an array from a [PoolVector3iArray].
 			</description>
 		</method>
 		<method name="Array">
@@ -63,6 +66,7 @@
 			<return type="Array" />
 			<argument index="0" name="from" type="PoolVector2iArray" />
 			<description>
+				Constructs an array from a [PoolVector2iArray].
 			</description>
 		</method>
 		<method name="Array">
