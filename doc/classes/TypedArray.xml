@@ -250,8 +250,18 @@
 			<description>
 			</description>
 		</method>
+		<method name="set_type_from_array_element">
+			<argument index="0" name="array" type="Variant" />
+			<description>
+			</description>
+		</method>
 		<method name="set_type_from_name">
 			<argument index="0" name="type_name" type="StringName" />
+			<description>
+			</description>
+		</method>
+		<method name="set_type_from_variant">
+			<argument index="0" name="variant" type="Variant" />
 			<description>
 			</description>
 		</method>
