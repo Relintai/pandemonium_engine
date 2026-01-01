@@ -250,8 +250,6 @@ WIP:
 
 - The PackedTypedArray internals need to be tested properly.
 - Their c++ only api still needs to be fleshed out. Especially the packed one needs lots of getters setters.
-- Needs docs.
-- Needs icons.
 - Needs to be added to the docs repo when finished.
 
 Few syntax ideas:
