@@ -528,6 +528,18 @@ void GDAPI pandemonium_packed_typed_array_set_type_from_name(pandemonium_packed_
 	self->set_type_from_name(*type_name);
 }
 
+void GDAPI pandemonium_packed_typed_array_set_type_from_variant(pandemonium_packed_typed_array *p_self, const pandemonium_variant *p_variant) {
+	PackedTypedArray *self = (PackedTypedArray *)p_self;
+	const Variant *variant = (const Variant *)p_variant;
+	self->set_type_from_variant(*variant);
+}
+
+void GDAPI pandemonium_packed_typed_array_set_type_from_array_element(pandemonium_packed_typed_array *p_self, const pandemonium_variant *p_array) {
+	PackedTypedArray *self = (PackedTypedArray *)p_self;
+	const Variant *array = (const Variant *)p_array;
+	self->set_type_from_array_element(*array);
+}
+
 void GDAPI pandemonium_packed_typed_array_set_type_from(pandemonium_packed_typed_array *p_self, const pandemonium_packed_typed_array *p_array) {
 	PackedTypedArray *self = (PackedTypedArray *)p_self;
 	const PackedTypedArray *array = (const PackedTypedArray *)p_array;

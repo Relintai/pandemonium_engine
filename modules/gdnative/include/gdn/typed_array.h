@@ -133,7 +133,8 @@ pandemonium_string_name GDAPI pandemonium_typed_array_get_object_class_name(cons
 void GDAPI pandemonium_typed_array_set_object_class_name(pandemonium_typed_array *p_self, const pandemonium_string_name *p_object_type_name);
 
 void GDAPI pandemonium_typed_array_set_type_from_name(pandemonium_typed_array *p_self, const pandemonium_string_name *p_type_name);
-
+void GDAPI pandemonium_typed_array_set_type_from_variant(pandemonium_typed_array *p_self, const pandemonium_variant *p_variant);
+void GDAPI pandemonium_typed_array_set_type_from_array_element(pandemonium_typed_array *p_self, const pandemonium_variant *p_array);
 void GDAPI pandemonium_typed_array_set_type_from(pandemonium_typed_array *p_self, const pandemonium_typed_array *p_array);
 
 pandemonium_bool GDAPI pandemonium_typed_array_validate_type_name(const pandemonium_typed_array *p_self, const pandemonium_string_name *p_type_name);
