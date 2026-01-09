@@ -512,28 +512,28 @@
 		</method>
 	</methods>
 	<constants>
-		<constant name="INT_TYPE_SIGNED_8" value="1">
+		<constant name="INT_TYPE_SIGNED_8" value="0">
 			Use int8_t-s internally when the type is TYPE_INT.
 		</constant>
-		<constant name="INT_TYPE_UNSIGNED_8" value="2">
+		<constant name="INT_TYPE_UNSIGNED_8" value="1">
 			Use uint8_t-s internally when the type is TYPE_INT.
 		</constant>
-		<constant name="INT_TYPE_SIGNED_16" value="3">
+		<constant name="INT_TYPE_SIGNED_16" value="2">
 			Use int16_t-s internally when the type is TYPE_INT.
 		</constant>
-		<constant name="INT_TYPE_UNSIGNED_16" value="4">
+		<constant name="INT_TYPE_UNSIGNED_16" value="3">
 			Use uint16_t-s internally when the type is TYPE_INT.
 		</constant>
-		<constant name="INT_TYPE_SIGNED_32" value="5">
+		<constant name="INT_TYPE_SIGNED_32" value="4">
 			Use int32_t-s internally when the type is TYPE_INT.
 		</constant>
-		<constant name="INT_TYPE_UNSIGNED_32" value="6">
+		<constant name="INT_TYPE_UNSIGNED_32" value="5">
 			Use uint32_t-s internally when the type is TYPE_INT.
 		</constant>
-		<constant name="INT_TYPE_SIGNED_64" value="7">
+		<constant name="INT_TYPE_SIGNED_64" value="6">
 			Use int64_t-s internally when the type is TYPE_INT.
 		</constant>
-		<constant name="INT_TYPE_UNSIGNED_64" value="8">
+		<constant name="INT_TYPE_UNSIGNED_64" value="7">
 			Use uint64_t-s internally when the type is TYPE_INT.
 		</constant>
 	</constants>
