@@ -52,7 +52,7 @@ class PackedTypedArray {
 
 public:
 	enum IntType {
-		INT_TYPE_SIGNED_8 = 1,
+		INT_TYPE_SIGNED_8,
 		INT_TYPE_UNSIGNED_8,
 		INT_TYPE_SIGNED_16,
 		INT_TYPE_UNSIGNED_16,
