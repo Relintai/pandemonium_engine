@@ -173,6 +173,7 @@ VARIANT_ENUM_CAST(Vector3i::Axis);
 VARIANT_ENUM_CAST(Vector4::Axis);
 VARIANT_ENUM_CAST(Vector4i::Axis);
 VARIANT_ENUM_CAST(Projection::Planes);
+VARIANT_ENUM_CAST(PackedTypedArray::IntType);
 
 VARIANT_ENUM_CAST(Error);
 VARIANT_ENUM_CAST(Margin);

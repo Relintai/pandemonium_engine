@@ -62,6 +62,17 @@ typedef struct {
 extern "C" {
 #endif
 
+typedef enum {
+	PANDEMONIUM_PACKED_TYPED_ARRAY_INT_TYPE_SIGNED_8,
+	PANDEMONIUM_PACKED_TYPED_ARRAY_INT_TYPE_UNSIGNED_8,
+	PANDEMONIUM_PACKED_TYPED_ARRAY_INT_TYPE_SIGNED_16,
+	PANDEMONIUM_PACKED_TYPED_ARRAY_INT_TYPE_UNSIGNED_16,
+	PANDEMONIUM_PACKED_TYPED_ARRAY_INT_TYPE_SIGNED_32,
+	PANDEMONIUM_PACKED_TYPED_ARRAY_INT_TYPE_UNSIGNED_32,
+	PANDEMONIUM_PACKED_TYPED_ARRAY_INT_TYPE_SIGNED_64,
+	PANDEMONIUM_PACKED_TYPED_ARRAY_INT_TYPE_UNSIGNED_64,
+} pandemonium_packed_typed_array_int_type;
+
 const pandemonium_variant GDAPI pandemonium_packed_typed_array_operator_index_const(const pandemonium_packed_typed_array *p_self, const pandemonium_int p_idx);
 
 void GDAPI pandemonium_packed_typed_array_set(pandemonium_packed_typed_array *p_self, const pandemonium_int p_idx, const pandemonium_variant *p_value);
@@ -130,8 +141,8 @@ pandemonium_string GDAPI pandemonium_packed_typed_array_get_typename_string(cons
 pandemonium_int GDAPI pandemonium_packed_typed_array_get_variant_type(const pandemonium_packed_typed_array *p_self);
 void GDAPI pandemonium_packed_typed_array_set_variant_type(pandemonium_packed_typed_array *p_self, const pandemonium_int p_variant_type);
 
-pandemonium_int GDAPI pandemonium_packed_typed_array_get_int_type(const pandemonium_packed_typed_array *p_self);
-void GDAPI pandemonium_packed_typed_array_set_int_type(pandemonium_packed_typed_array *p_self, const pandemonium_int p_int_type);
+pandemonium_packed_typed_array_int_type GDAPI pandemonium_packed_typed_array_get_int_type(const pandemonium_packed_typed_array *p_self);
+void GDAPI pandemonium_packed_typed_array_set_int_type(pandemonium_packed_typed_array *p_self, const pandemonium_packed_typed_array_int_type p_int_type);
 
 pandemonium_string_name GDAPI pandemonium_packed_typed_array_get_object_class_name(const pandemonium_packed_typed_array *p_self);
 void GDAPI pandemonium_packed_typed_array_set_object_class_name(pandemonium_packed_typed_array *p_self, const pandemonium_string_name *p_object_type_name);

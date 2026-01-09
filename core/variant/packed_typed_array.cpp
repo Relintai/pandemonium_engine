@@ -2528,16 +2528,16 @@ void PackedTypedArray::set_variant_type(const int p_variant_type) {
 	_p->type = static_cast<Variant::Type>(p_variant_type);
 }
 
-int PackedTypedArray::get_int_type() const {
+PackedTypedArray::IntType PackedTypedArray::get_int_type() const {
 	return _p->int_type;
 }
-void PackedTypedArray::set_int_type(const int p_int_type) {
+void PackedTypedArray::set_int_type(const IntType p_int_type) {
 	if (_p->data) {
 		ERR_FAIL_COND(size() > 0);
 		_p->clear();
 	}
 
-	_p->int_type = static_cast<PackedTypedArray::IntType>(p_int_type);
+	_p->int_type = p_int_type;
 }
 
 StringName PackedTypedArray::get_object_class_name() const {
@@ -2911,11 +2911,11 @@ PackedTypedArray::PackedTypedArray(const StringName &p_type_name, const Variant 
 	append_from(p_from);
 }
 
-PackedTypedArray::PackedTypedArray(const StringName &p_type_name, const Variant &p_from, const int p_int_type) {
+PackedTypedArray::PackedTypedArray(const StringName &p_type_name, const Variant &p_from, const IntType p_int_type) {
 	_p = memnew(PackedTypedArrayPrivate);
 	_p->refcount.init();
 	set_type_from_name(p_type_name);
-	_p->int_type = static_cast<PackedTypedArray::IntType>(p_int_type);
+	_p->int_type = p_int_type;
 	append_from(p_from);
 }
 

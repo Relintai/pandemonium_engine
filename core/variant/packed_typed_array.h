@@ -130,8 +130,8 @@ public:
 	int get_variant_type() const;
 	void set_variant_type(const int p_variant_type);
 
-	int get_int_type() const;
-	void set_int_type(const int p_int_type);
+	IntType get_int_type() const;
+	void set_int_type(const IntType p_int_type);
 
 	StringName get_object_class_name() const;
 	void set_object_class_name(const StringName &p_object_type_name);
@@ -160,7 +160,7 @@ public:
 	PackedTypedArray();
 	PackedTypedArray(const PackedTypedArray &p_from);
 	PackedTypedArray(const StringName &p_type_name, const Variant &p_from);
-	PackedTypedArray(const StringName &p_type_name, const Variant &p_from, const int p_int_type);
+	PackedTypedArray(const StringName &p_type_name, const Variant &p_from, const IntType p_int_type);
 
 	// Both this and the TypedArray(const TypedArray &p_from); constructors are useful,
 	// but having them both will do lots of clashes when converting from Variant.

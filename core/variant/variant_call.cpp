@@ -1007,7 +1007,9 @@ struct _VariantCall {
 	VCALL_LOCALMEM0R(PackedTypedArray, get_variant_type);
 	VCALL_LOCALMEM1(PackedTypedArray, set_variant_type);
 	VCALL_LOCALMEM0R(PackedTypedArray, get_int_type);
-	VCALL_LOCALMEM1(PackedTypedArray, set_int_type);
+	static void _call_PackedTypedArray_set_int_type(Variant &r_ret, Variant &p_self, const Variant **p_args) {
+		reinterpret_cast<PackedTypedArray *>(p_self._data._mem)->set_int_type((PackedTypedArray::IntType)(p_args[0]->operator int()));
+	}
 	VCALL_LOCALMEM0R(PackedTypedArray, get_object_class_name);
 	VCALL_LOCALMEM1(PackedTypedArray, set_object_class_name);
 	VCALL_LOCALMEM1(PackedTypedArray, set_type_from_name);
@@ -1977,7 +1979,7 @@ struct _VariantCall {
 	}
 
 	static void PackedTypedArray_init1(Variant &r_ret, const Variant **p_args) {
-		r_ret = PackedTypedArray((*p_args[0]).operator StringName(), *p_args[1], ((int)(*p_args[2])));
+		r_ret = PackedTypedArray((*p_args[0]).operator StringName(), *p_args[1], (PackedTypedArray::IntType)(p_args[2]->operator int()));
 	}
 
 	static void PackedTypedArray_init2(Variant &r_ret, const Variant **p_args) {
