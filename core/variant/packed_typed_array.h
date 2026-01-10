@@ -71,7 +71,7 @@ public:
 	bool empty() const;
 	void clear();
 
-	bool deep_equal(const PackedTypedArray &p_array, int p_recursion_count = 0) const;
+	bool deep_equal(const PackedTypedArray &p_array, int p_recursion_count = 0, bool p_approximate = false) const;
 	bool operator==(const PackedTypedArray &p_array) const;
 
 	uint32_t hash() const;

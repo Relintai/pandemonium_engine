@@ -970,6 +970,10 @@ bool Variant::deep_equal(const Variant &p_variant, int p_recursion_count, bool p
 	// Containers must be handled with recursivity checks
 	if (type == ARRAY) {
 		return _equal_approx_recursive<Array>(*this, p_variant, p_recursion_count, p_approximate);
+	}else if (type == TYPED_ARRAY) {
+		return _equal_approx_recursive<TypedArray>(*this, p_variant, p_recursion_count, p_approximate);
+	}else if (type == PACKED_TYPED_ARRAY) {
+		return _equal_approx_recursive<PackedTypedArray>(*this, p_variant, p_recursion_count, p_approximate);
 	} else if (type == DICTIONARY) {
 		return _equal_approx_recursive<Dictionary>(*this, p_variant, p_recursion_count, p_approximate);
 	} else if (p_approximate) {
@@ -998,6 +1002,10 @@ bool Variant::deep_equal(const Variant &p_variant, int p_recursion_count, bool p
 				return _equal_approx_recursive<Dictionary>(*this, p_variant, p_recursion_count, p_approximate);
 			case ARRAY:
 				return _equal_approx_recursive<Array>(*this, p_variant, p_recursion_count, p_approximate);
+			case TYPED_ARRAY:
+				return _equal_approx_recursive<TypedArray>(*this, p_variant, p_recursion_count, p_approximate);
+			case PACKED_TYPED_ARRAY:
+				return _equal_approx_recursive<PackedTypedArray>(*this, p_variant, p_recursion_count, p_approximate);
 			default: {
 			}
 		}

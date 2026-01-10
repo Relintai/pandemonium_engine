@@ -101,7 +101,7 @@ void TypedArray::clear() {
 	_p->array.clear();
 }
 
-bool TypedArray::deep_equal(const TypedArray &p_array, int p_recursion_count) const {
+bool TypedArray::deep_equal(const TypedArray &p_array, int p_recursion_count, bool p_approximate) const {
 	// Cheap checks
 	ERR_FAIL_COND_V_MSG(p_recursion_count > MAX_RECURSION, true, "Max recursion reached");
 
@@ -129,7 +129,7 @@ bool TypedArray::deep_equal(const TypedArray &p_array, int p_recursion_count) co
 	// Heavy O(n) check
 	p_recursion_count++;
 	for (int i = 0; i < size; i++) {
-		if (!a1[i].deep_equal(a2[i], p_recursion_count)) {
+		if (!a1[i].deep_equal(a2[i], p_recursion_count, p_approximate)) {
 			return false;
 		}
 	}
