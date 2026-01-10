@@ -128,6 +128,7 @@ public:
 		LEN,
 		IS_INSTANCE_VALID,
 		DEEP_EQUAL,
+		DEEP_EQUAL_APPROX,
 		FUNC_MAX
 	};
 
