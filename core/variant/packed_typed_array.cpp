@@ -861,7 +861,7 @@ bool PackedTypedArray::deep_equal(const PackedTypedArray &p_array, int p_recursi
 			DO_DEEP_COMPARE_VECTORS_APPROX_STRUCT(Transform2D);
 		} break;
 		case Variant::PROJECTION: {
-			DO_DEEP_COMPARE_VECTORS_APPROX_STRUCT(Projection);
+			DO_DEEP_COMPARE_VECTORS(Projection);
 		} break;
 		case Variant::COLOR: {
 			DO_DEEP_COMPARE_VECTORS_APPROX_STRUCT(Color);
