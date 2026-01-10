@@ -101,7 +101,7 @@ void TypedArray::clear() {
 	_p->array.clear();
 }
 
-bool TypedArray::deep_equal(const TypedArray &p_array, int p_recursion_count, bool p_approximate) const {
+bool TypedArray::deep_equal(const TypedArray &p_array, int p_recursion_count) const {
 	// Cheap checks
 	ERR_FAIL_COND_V_MSG(p_recursion_count > MAX_RECURSION, true, "Max recursion reached");
 
@@ -129,7 +129,43 @@ bool TypedArray::deep_equal(const TypedArray &p_array, int p_recursion_count, bo
 	// Heavy O(n) check
 	p_recursion_count++;
 	for (int i = 0; i < size; i++) {
-		if (!a1[i].deep_equal(a2[i], p_recursion_count, p_approximate)) {
+		if (!a1[i].deep_equal(a2[i], p_recursion_count)) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool TypedArray::deep_equal_approx(const TypedArray &p_array, int p_recursion_count) const {
+	// Cheap checks
+	ERR_FAIL_COND_V_MSG(p_recursion_count > MAX_RECURSION, true, "Max recursion reached");
+
+	if (_p == p_array._p) {
+		return true;
+	}
+
+	if (_p->type != p_array._p->type) {
+		return false;
+	}
+
+	if (_p->type == Variant::OBJECT) {
+		if (_p->object_class_name != p_array._p->object_class_name) {
+			return false;
+		}
+	}
+
+	const Vector<Variant> &a1 = _p->array;
+	const Vector<Variant> &a2 = p_array._p->array;
+	const int size = a1.size();
+	if (size != a2.size()) {
+		return false;
+	}
+
+	// Heavy O(n) check
+	p_recursion_count++;
+	for (int i = 0; i < size; i++) {
+		if (!a1[i].deep_equal_approx(a2[i], p_recursion_count)) {
 			return false;
 		}
 	}

@@ -940,8 +940,59 @@ bool Variant::can_convert_strict(Variant::Type p_type_from, Variant::Type p_type
 	return false;
 }
 
+bool Variant::deep_equal(const Variant &p_variant, int p_recursion_count) const {
+	ERR_FAIL_COND_V_MSG(p_recursion_count > MAX_RECURSION, true, "Max recursion reached");
+
+	// Containers must be handled with recursivity checks
+	switch (type) {
+		case Variant::Type::DICTIONARY: {
+			if (p_variant.type != Variant::Type::DICTIONARY) {
+				return false;
+			}
+
+			const Dictionary v1_as_d = Dictionary(*this);
+			const Dictionary v2_as_d = Dictionary(p_variant);
+
+			return v1_as_d.deep_equal(v2_as_d, p_recursion_count + 1);
+		} break;
+		case Variant::Type::ARRAY: {
+			if (p_variant.type != Variant::Type::ARRAY) {
+				return false;
+			}
+
+			const Array v1_as_a = Array(*this);
+			const Array v2_as_a = Array(p_variant);
+
+			return v1_as_a.deep_equal(v2_as_a, p_recursion_count + 1);
+		} break;
+		case Variant::Type::TYPED_ARRAY: {
+			if (p_variant.type != Variant::Type::TYPED_ARRAY) {
+				return false;
+			}
+
+			const TypedArray v1_as_a = TypedArray(*this);
+			const TypedArray v2_as_a = TypedArray(p_variant);
+
+			return v1_as_a.deep_equal(v2_as_a, p_recursion_count + 1);
+		} break;
+		case Variant::Type::PACKED_TYPED_ARRAY: {
+			if (p_variant.type != Variant::Type::PACKED_TYPED_ARRAY) {
+				return false;
+			}
+
+			const PackedTypedArray v1_as_a = PackedTypedArray(*this);
+			const PackedTypedArray v2_as_a = PackedTypedArray(p_variant);
+
+			return v1_as_a.deep_equal(v2_as_a, p_recursion_count + 1);
+		} break;
+		default: {
+			return *this == p_variant;
+		} break;
+	}
+}
+
 template <typename T>
-static bool _equal_approx_recursive(const Variant &p_a, const Variant &p_b, int p_recursion_count, bool p_approximate) {
+static bool _equal_approx_recursive(const Variant &p_a, const Variant &p_b, int p_recursion_count) {
 	if (p_a.get_type() != p_b.get_type()) {
 		return false;
 	}
@@ -949,7 +1000,7 @@ static bool _equal_approx_recursive(const Variant &p_a, const Variant &p_b, int 
 	const T &a_as_t = p_a.operator T();
 	const T &b_as_t = p_b.operator T();
 
-	return a_as_t.deep_equal(b_as_t, p_recursion_count + 1, p_approximate);
+	return a_as_t.deep_equal_approx(b_as_t, p_recursion_count + 1);
 }
 
 template <typename T>
@@ -964,59 +1015,49 @@ static bool _equal_approx_primitive(const Variant &p_a, const Variant &p_b) {
 	return a_as_t.is_equal_approx(b_as_t);
 }
 
-bool Variant::deep_equal(const Variant &p_variant, int p_recursion_count, bool p_approximate) const {
+bool Variant::deep_equal_approx(const Variant &p_variant, int p_recursion_count) const {
 	ERR_FAIL_COND_V_MSG(p_recursion_count > MAX_RECURSION, true, "Max recursion reached");
 
 	// Containers must be handled with recursivity checks
-	if (type == ARRAY) {
-		return _equal_approx_recursive<Array>(*this, p_variant, p_recursion_count, p_approximate);
-	} else if (type == TYPED_ARRAY) {
-		return _equal_approx_recursive<TypedArray>(*this, p_variant, p_recursion_count, p_approximate);
-	} else if (type == PACKED_TYPED_ARRAY) {
-		return _equal_approx_recursive<PackedTypedArray>(*this, p_variant, p_recursion_count, p_approximate);
-	} else if (type == DICTIONARY) {
-		return _equal_approx_recursive<Dictionary>(*this, p_variant, p_recursion_count, p_approximate);
-	} else if (p_approximate) {
-		switch (type) {
-			case REAL:
-				return Math::is_equal_approx((double)*this, (double)p_variant);
-			case RECT2:
-				return _equal_approx_primitive<Rect2>(*this, p_variant);
-			case VECTOR2:
-				return _equal_approx_primitive<Vector2>(*this, p_variant);
-			case VECTOR3:
-				return _equal_approx_primitive<Vector3>(*this, p_variant);
-			case VECTOR4:
-				return _equal_approx_primitive<Vector4>(*this, p_variant);
-			case PLANE:
-				return _equal_approx_primitive<Plane>(*this, p_variant);
-			case QUATERNION:
-				return _equal_approx_primitive<Quaternion>(*this, p_variant);
-			case AABB:
-				return _equal_approx_primitive<::AABB>(*this, p_variant);
-			case BASIS:
-				return _equal_approx_primitive<Basis>(*this, p_variant);
-			case TRANSFORM:
-				return _equal_approx_primitive<Transform>(*this, p_variant);
-			case TRANSFORM2D:
-				return _equal_approx_primitive<Transform2D>(*this, p_variant);
-			//case PROJECTION:
-				//return _equal_approx_primitive<Projection>(*this, p_variant);
-			case COLOR:
-				return _equal_approx_primitive<Color>(*this, p_variant);
-			case DICTIONARY:
-				return _equal_approx_recursive<Dictionary>(*this, p_variant, p_recursion_count, p_approximate);
-			case ARRAY:
-				return _equal_approx_recursive<Array>(*this, p_variant, p_recursion_count, p_approximate);
-			case TYPED_ARRAY:
-				return _equal_approx_recursive<TypedArray>(*this, p_variant, p_recursion_count, p_approximate);
-			case PACKED_TYPED_ARRAY:
-				return _equal_approx_recursive<PackedTypedArray>(*this, p_variant, p_recursion_count, p_approximate);
-			default: {
-			}
+	switch (type) {
+		case REAL:
+			return Math::is_equal_approx((double)*this, (double)p_variant);
+		case RECT2:
+			return _equal_approx_primitive<Rect2>(*this, p_variant);
+		case VECTOR2:
+			return _equal_approx_primitive<Vector2>(*this, p_variant);
+		case VECTOR3:
+			return _equal_approx_primitive<Vector3>(*this, p_variant);
+		case VECTOR4:
+			return _equal_approx_primitive<Vector4>(*this, p_variant);
+		case PLANE:
+			return _equal_approx_primitive<Plane>(*this, p_variant);
+		case QUATERNION:
+			return _equal_approx_primitive<Quaternion>(*this, p_variant);
+		case AABB:
+			return _equal_approx_primitive<::AABB>(*this, p_variant);
+		case BASIS:
+			return _equal_approx_primitive<Basis>(*this, p_variant);
+		case TRANSFORM:
+			return _equal_approx_primitive<Transform>(*this, p_variant);
+		case TRANSFORM2D:
+			return _equal_approx_primitive<Transform2D>(*this, p_variant);
+		//case PROJECTION:
+		//return _equal_approx_primitive<Projection>(*this, p_variant);
+		case COLOR:
+			return _equal_approx_primitive<Color>(*this, p_variant);
+		case DICTIONARY:
+			return _equal_approx_recursive<Dictionary>(*this, p_variant, p_recursion_count);
+		case ARRAY:
+			return _equal_approx_recursive<Array>(*this, p_variant, p_recursion_count);
+		case TYPED_ARRAY:
+			return _equal_approx_recursive<TypedArray>(*this, p_variant, p_recursion_count);
+		case PACKED_TYPED_ARRAY:
+			return _equal_approx_recursive<PackedTypedArray>(*this, p_variant, p_recursion_count);
+		default: {
+			return *this == p_variant;
 		}
 	}
-	return *this == p_variant;
 }
 
 bool Variant::operator==(const Variant &p_variant) const {

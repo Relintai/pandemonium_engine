@@ -470,7 +470,8 @@ public:
 
 	//argsVariant call()
 
-	bool deep_equal(const Variant &p_variant, int p_recursion_count = 0, bool p_approximate = false) const;
+	bool deep_equal(const Variant &p_variant, int p_recursion_count = 0) const;
+	bool deep_equal_approx(const Variant &p_variant, int p_recursion_count = 0) const;
 	bool operator==(const Variant &p_variant) const;
 	bool operator!=(const Variant &p_variant) const;
 	bool operator<(const Variant &p_variant) const;

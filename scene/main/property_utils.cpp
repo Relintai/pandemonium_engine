@@ -42,7 +42,7 @@ bool PropertyUtils::is_property_value_different(const Variant &p_a, const Varian
 	const Variant &a = p_a.get_type() == Variant::OBJECT && (Object *)p_a == nullptr ? Variant() : p_a;
 	const Variant &b = p_b.get_type() == Variant::OBJECT && (Object *)p_b == nullptr ? Variant() : p_b;
 	// Approximation must be used because, as some scenes save as text, there might be a tiny difference in floats due to numerical error
-	return !a.deep_equal(b, 0, true);
+	return !a.deep_equal_approx(b);
 }
 
 Variant PropertyUtils::get_property_default_value(const Object *p_object, const StringName &p_property, bool *r_is_valid, const Vector<SceneState::PackState> *p_states_stack_cache, bool p_update_exports, const Node *p_owner, bool *r_is_class_default) {

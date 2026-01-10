@@ -656,59 +656,39 @@ bool deep_compare_vectors(const Vector<T> &a1, const Vector<T> &a2) {
 }
 
 template <typename T>
-bool deep_compare_vectors_approx_simple(const Vector<T> &a1, const Vector<T> &a2, bool p_approximate) {
+bool deep_compare_vectors_approx_simple(const Vector<T> &a1, const Vector<T> &a2) {
 	const int size = a1.size();
 	if (size != a2.size()) {
 		return false;
 	}
 
-	if (!p_approximate) {
-		for (int i = 0; i < size; i++) {
-			if (a1[i] != a2[i]) {
-				return false;
-			}
+	for (int i = 0; i < size; i++) {
+		if (!Math::is_equal_approx(a1[i], a2[i])) {
+			return false;
 		}
-
-		return true;
-	} else {
-		for (int i = 0; i < size; i++) {
-			if (!Math::is_equal_approx(a1[i], a2[i])) {
-				return false;
-			}
-		}
-
-		return true;
 	}
+
+	return true;
 }
 
 template <typename T>
-bool deep_compare_vectors_approx_struct(const Vector<T> &a1, const Vector<T> &a2, bool p_approximate) {
+bool deep_compare_vectors_approx_struct(const Vector<T> &a1, const Vector<T> &a2) {
 	const int size = a1.size();
 	if (size != a2.size()) {
 		return false;
 	}
 
-	if (!p_approximate) {
-		for (int i = 0; i < size; i++) {
-			if (a1[i] != a2[i]) {
-				return false;
-			}
+	for (int i = 0; i < size; i++) {
+		if (!a1[i].is_equal_approx(a2[i])) {
+			return false;
 		}
-
-		return true;
-	} else {
-		for (int i = 0; i < size; i++) {
-			if (!a1[i].is_equal_approx(a2[i])) {
-				return false;
-			}
-		}
-
-		return true;
 	}
+
+	return true;
 }
 
 template <typename T>
-bool deep_compare_variant_based_vectors(const Vector<T> &a1, const Vector<T> &a2, int p_recursion_count, bool p_approximate) {
+bool deep_compare_variant_based_vectors(const Vector<T> &a1, const Vector<T> &a2, int p_recursion_count) {
 	const int size = a1.size();
 	if (size != a2.size()) {
 		return false;
@@ -717,7 +697,25 @@ bool deep_compare_variant_based_vectors(const Vector<T> &a1, const Vector<T> &a2
 	// Heavy O(n) check
 	p_recursion_count++;
 	for (int i = 0; i < size; i++) {
-		if (!a1[i].deep_equal(a2[i], p_recursion_count, p_approximate)) {
+		if (!a1[i].deep_equal(a2[i], p_recursion_count)) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+template <typename T>
+bool deep_compare_variant_based_vectors_approx(const Vector<T> &a1, const Vector<T> &a2, int p_recursion_count) {
+	const int size = a1.size();
+	if (size != a2.size()) {
+		return false;
+	}
+
+	// Heavy O(n) check
+	p_recursion_count++;
+	for (int i = 0; i < size; i++) {
+		if (!a1[i].deep_equal_approx(a2[i], p_recursion_count)) {
 			return false;
 		}
 	}
@@ -733,19 +731,210 @@ bool deep_compare_variant_based_vectors(const Vector<T> &a1, const Vector<T> &a2
 #define DO_DEEP_COMPARE_VECTORS_APPROX_SIMPLE(m_type)                          \
 	Vector<m_type> *a1 = reinterpret_cast<Vector<m_type> *>(_p->data);         \
 	Vector<m_type> *a2 = reinterpret_cast<Vector<m_type> *>(p_array._p->data); \
-	return deep_compare_vectors_approx_simple(*a1, *a2, p_approximate);
+	return deep_compare_vectors_approx_simple(*a1, *a2);
 
 #define DO_DEEP_COMPARE_VECTORS_APPROX_STRUCT(m_type)                          \
 	Vector<m_type> *a1 = reinterpret_cast<Vector<m_type> *>(_p->data);         \
 	Vector<m_type> *a2 = reinterpret_cast<Vector<m_type> *>(p_array._p->data); \
-	return deep_compare_vectors_approx_struct(*a1, *a2, p_approximate);
+	return deep_compare_vectors_approx_struct(*a1, *a2);
 
 #define DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(m_type)                          \
 	Vector<m_type> *a1 = reinterpret_cast<Vector<m_type> *>(_p->data);         \
 	Vector<m_type> *a2 = reinterpret_cast<Vector<m_type> *>(p_array._p->data); \
-	return deep_compare_variant_based_vectors(*a1, *a2, p_recursion_count, p_approximate);
+	return deep_compare_variant_based_vectors(*a1, *a2, p_recursion_count);
 
-bool PackedTypedArray::deep_equal(const PackedTypedArray &p_array, int p_recursion_count, bool p_approximate) const {
+#define DO_DEEP_COMPARE_VARIANT_BASED_VECTORS_APPROX(m_type)                   \
+	Vector<m_type> *a1 = reinterpret_cast<Vector<m_type> *>(_p->data);         \
+	Vector<m_type> *a2 = reinterpret_cast<Vector<m_type> *>(p_array._p->data); \
+	return deep_compare_variant_based_vectors_approx(*a1, *a2, p_recursion_count);
+
+bool PackedTypedArray::deep_equal(const PackedTypedArray &p_array, int p_recursion_count) const {
+	// Cheap checks
+	ERR_FAIL_COND_V_MSG(p_recursion_count > MAX_RECURSION, true, "Max recursion reached");
+
+	if (_p == p_array._p) {
+		return true;
+	}
+
+	if (!_p->data && !p_array._p->data) {
+		return true;
+	}
+
+	if (!_p->data || !p_array._p->data) {
+		return false;
+	}
+
+	if (_p->type != p_array._p->type) {
+		return false;
+	}
+
+	if (_p->type == Variant::OBJECT) {
+		if (_p->object_class_name != p_array._p->object_class_name) {
+			return false;
+		}
+	}
+
+	if (_p->type == Variant::INT) {
+		if (_p->int_type != p_array._p->int_type) {
+			return false;
+		}
+	}
+
+	switch (_p->type) {
+		case Variant::NIL: {
+			DO_DEEP_COMPARE_VECTORS(bool);
+		} break;
+		case Variant::BOOL: {
+			DO_DEEP_COMPARE_VECTORS(bool);
+		} break;
+		case Variant::INT: {
+			switch (_p->int_type) {
+				case PackedTypedArray::INT_TYPE_SIGNED_8: {
+					DO_DEEP_COMPARE_VECTORS(int8_t);
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_8: {
+					DO_DEEP_COMPARE_VECTORS(uint8_t);
+				} break;
+				case PackedTypedArray::INT_TYPE_SIGNED_16: {
+					DO_DEEP_COMPARE_VECTORS(int16_t);
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_16: {
+					DO_DEEP_COMPARE_VECTORS(uint16_t);
+				} break;
+				case PackedTypedArray::INT_TYPE_SIGNED_32: {
+					DO_DEEP_COMPARE_VECTORS(int32_t);
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_32: {
+					DO_DEEP_COMPARE_VECTORS(uint32_t);
+				} break;
+				case PackedTypedArray::INT_TYPE_SIGNED_64: {
+					DO_DEEP_COMPARE_VECTORS(int64_t);
+				} break;
+				case PackedTypedArray::INT_TYPE_UNSIGNED_64: {
+					DO_DEEP_COMPARE_VECTORS(uint64_t);
+				} break;
+			}
+		} break;
+		case Variant::REAL: {
+			DO_DEEP_COMPARE_VECTORS(real_t);
+		} break;
+		case Variant::STRING: {
+			DO_DEEP_COMPARE_VECTORS(String);
+		} break;
+		case Variant::RECT2: {
+			DO_DEEP_COMPARE_VECTORS(Rect2);
+		} break;
+		case Variant::RECT2I: {
+			DO_DEEP_COMPARE_VECTORS(Rect2i);
+		} break;
+		case Variant::VECTOR2: {
+			DO_DEEP_COMPARE_VECTORS(Vector2);
+		} break;
+		case Variant::VECTOR2I: {
+			DO_DEEP_COMPARE_VECTORS(Vector2i);
+		} break;
+		case Variant::VECTOR3: {
+			DO_DEEP_COMPARE_VECTORS(Vector3);
+		} break;
+		case Variant::VECTOR3I: {
+			DO_DEEP_COMPARE_VECTORS(Vector3i);
+		} break;
+		case Variant::VECTOR4: {
+			DO_DEEP_COMPARE_VECTORS(Vector4);
+		} break;
+		case Variant::VECTOR4I: {
+			DO_DEEP_COMPARE_VECTORS(Vector4i);
+		} break;
+		case Variant::PLANE: {
+			DO_DEEP_COMPARE_VECTORS(Plane);
+		} break;
+		case Variant::QUATERNION: {
+			DO_DEEP_COMPARE_VECTORS(Quaternion);
+		} break;
+		case Variant::AABB: {
+			DO_DEEP_COMPARE_VECTORS(AABB);
+		} break;
+		case Variant::BASIS: {
+			DO_DEEP_COMPARE_VECTORS(Basis);
+		} break;
+		case Variant::TRANSFORM: {
+			DO_DEEP_COMPARE_VECTORS(Transform);
+		} break;
+		case Variant::TRANSFORM2D: {
+			DO_DEEP_COMPARE_VECTORS(Transform2D);
+		} break;
+		case Variant::PROJECTION: {
+			DO_DEEP_COMPARE_VECTORS(Projection);
+		} break;
+		case Variant::COLOR: {
+			DO_DEEP_COMPARE_VECTORS(Color);
+		} break;
+		case Variant::NODE_PATH: {
+			DO_DEEP_COMPARE_VECTORS(NodePath);
+		} break;
+		case Variant::RID: {
+			DO_DEEP_COMPARE_VECTORS(RID);
+		} break;
+		case Variant::OBJECT: {
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::STRING_NAME: {
+			DO_DEEP_COMPARE_VECTORS(StringName);
+		} break;
+		case Variant::DICTIONARY: {
+			DO_DEEP_COMPARE_VECTORS(Dictionary);
+		} break;
+		case Variant::ARRAY: {
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Array);
+
+		} break;
+		case Variant::TYPED_ARRAY: {
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(TypedArray);
+		} break;
+		case Variant::PACKED_TYPED_ARRAY: {
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(PackedTypedArray);
+		} break;
+		case Variant::POOL_BYTE_ARRAY: {
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::POOL_INT_ARRAY: {
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::POOL_REAL_ARRAY: {
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::POOL_STRING_ARRAY: {
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::POOL_VECTOR2_ARRAY: {
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::POOL_VECTOR2I_ARRAY: {
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::POOL_VECTOR3_ARRAY: {
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::POOL_VECTOR3I_ARRAY: {
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::POOL_VECTOR4_ARRAY: {
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::POOL_VECTOR4I_ARRAY: {
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		case Variant::POOL_COLOR_ARRAY: {
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
+		} break;
+		default: {
+		} break;
+	}
+
+	return false;
+}
+
+bool PackedTypedArray::deep_equal_approx(const PackedTypedArray &p_array, int p_recursion_count) const {
 	// Cheap checks
 	ERR_FAIL_COND_V_MSG(p_recursion_count > MAX_RECURSION, true, "Max recursion reached");
 
@@ -882,13 +1071,13 @@ bool PackedTypedArray::deep_equal(const PackedTypedArray &p_array, int p_recursi
 			DO_DEEP_COMPARE_VECTORS(Dictionary);
 		} break;
 		case Variant::ARRAY: {
-			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Array);
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS_APPROX(Array);
 		} break;
 		case Variant::TYPED_ARRAY: {
-			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(TypedArray);
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS_APPROX(TypedArray);
 		} break;
 		case Variant::PACKED_TYPED_ARRAY: {
-			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(PackedTypedArray);
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS_APPROX(PackedTypedArray);
 		} break;
 		case Variant::POOL_BYTE_ARRAY: {
 			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
@@ -897,31 +1086,31 @@ bool PackedTypedArray::deep_equal(const PackedTypedArray &p_array, int p_recursi
 			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
 		} break;
 		case Variant::POOL_REAL_ARRAY: {
-			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS_APPROX(Variant);
 		} break;
 		case Variant::POOL_STRING_ARRAY: {
 			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
 		} break;
 		case Variant::POOL_VECTOR2_ARRAY: {
-			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS_APPROX(Variant);
 		} break;
 		case Variant::POOL_VECTOR2I_ARRAY: {
 			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
 		} break;
 		case Variant::POOL_VECTOR3_ARRAY: {
-			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS_APPROX(Variant);
 		} break;
 		case Variant::POOL_VECTOR3I_ARRAY: {
 			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
 		} break;
 		case Variant::POOL_VECTOR4_ARRAY: {
-			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS_APPROX(Variant);
 		} break;
 		case Variant::POOL_VECTOR4I_ARRAY: {
 			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
 		} break;
 		case Variant::POOL_COLOR_ARRAY: {
-			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS(Variant);
+			DO_DEEP_COMPARE_VARIANT_BASED_VECTORS_APPROX(Variant);
 		} break;
 		default: {
 		} break;
