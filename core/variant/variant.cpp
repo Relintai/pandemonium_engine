@@ -970,9 +970,9 @@ bool Variant::deep_equal(const Variant &p_variant, int p_recursion_count, bool p
 	// Containers must be handled with recursivity checks
 	if (type == ARRAY) {
 		return _equal_approx_recursive<Array>(*this, p_variant, p_recursion_count, p_approximate);
-	}else if (type == TYPED_ARRAY) {
+	} else if (type == TYPED_ARRAY) {
 		return _equal_approx_recursive<TypedArray>(*this, p_variant, p_recursion_count, p_approximate);
-	}else if (type == PACKED_TYPED_ARRAY) {
+	} else if (type == PACKED_TYPED_ARRAY) {
 		return _equal_approx_recursive<PackedTypedArray>(*this, p_variant, p_recursion_count, p_approximate);
 	} else if (type == DICTIONARY) {
 		return _equal_approx_recursive<Dictionary>(*this, p_variant, p_recursion_count, p_approximate);
@@ -980,24 +980,32 @@ bool Variant::deep_equal(const Variant &p_variant, int p_recursion_count, bool p
 		switch (type) {
 			case REAL:
 				return Math::is_equal_approx((double)*this, (double)p_variant);
-			case VECTOR2:
-				return _equal_approx_primitive<Vector2>(*this, p_variant);
 			case RECT2:
 				return _equal_approx_primitive<Rect2>(*this, p_variant);
+			case VECTOR2:
+				return _equal_approx_primitive<Vector2>(*this, p_variant);
 			case VECTOR3:
 				return _equal_approx_primitive<Vector3>(*this, p_variant);
-			case TRANSFORM2D:
-				return _equal_approx_primitive<Transform2D>(*this, p_variant);
+			case VECTOR4:
+				return _equal_approx_primitive<Vector4>(*this, p_variant);
 			case PLANE:
 				return _equal_approx_primitive<Plane>(*this, p_variant);
-			case QUAT:
-				return _equal_approx_primitive<Quat>(*this, p_variant);
+			case QUATERNION:
+				return _equal_approx_primitive<Quaternion>(*this, p_variant);
+			case TRANSFORM2D:
+				return _equal_approx_primitive<Transform2D>(*this, p_variant);
 			case AABB:
 				return _equal_approx_primitive<::AABB>(*this, p_variant);
 			case BASIS:
 				return _equal_approx_primitive<Basis>(*this, p_variant);
 			case TRANSFORM:
 				return _equal_approx_primitive<Transform>(*this, p_variant);
+			case TRANSFORM2D:
+				return _equal_approx_primitive<Transform2D>(*this, p_variant);
+			case PROJECTION:
+				return _equal_approx_primitive<Projection>(*this, p_variant);
+			case COLOR:
+				return _equal_approx_primitive<Color>(*this, p_variant);
 			case DICTIONARY:
 				return _equal_approx_recursive<Dictionary>(*this, p_variant, p_recursion_count, p_approximate);
 			case ARRAY:
