@@ -992,8 +992,6 @@ bool Variant::deep_equal(const Variant &p_variant, int p_recursion_count, bool p
 				return _equal_approx_primitive<Plane>(*this, p_variant);
 			case QUATERNION:
 				return _equal_approx_primitive<Quaternion>(*this, p_variant);
-			case TRANSFORM2D:
-				return _equal_approx_primitive<Transform2D>(*this, p_variant);
 			case AABB:
 				return _equal_approx_primitive<::AABB>(*this, p_variant);
 			case BASIS:
