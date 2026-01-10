@@ -164,6 +164,17 @@ pandemonium_bool GDAPI pandemonium_dictionary_deep_equal_recursion_count(const p
 	return self->deep_equal(*dictionary, p_recursion_count);
 }
 
+pandemonium_bool GDAPI pandemonium_dictionary_deep_equal_approx(const pandemonium_dictionary *p_self, const pandemonium_dictionary *p_dictionary) {
+	const Dictionary *self = (const Dictionary *)p_self;
+	const Dictionary *dictionary = (const Dictionary *)p_dictionary;
+	return self->deep_equal_approx(*dictionary);
+}
+pandemonium_bool GDAPI pandemonium_dictionary_deep_equal_approx_recursion_count(const pandemonium_dictionary *p_self, const pandemonium_dictionary *p_dictionary, pandemonium_int p_recursion_count) {
+	const Dictionary *self = (const Dictionary *)p_self;
+	const Dictionary *dictionary = (const Dictionary *)p_dictionary;
+	return self->deep_equal_approx(*dictionary, p_recursion_count);
+}
+
 pandemonium_bool GDAPI pandemonium_dictionary_operator_equal(const pandemonium_dictionary *p_self, const pandemonium_dictionary *p_b) {
 	const Dictionary *self = (const Dictionary *)p_self;
 	const Dictionary *b = (const Dictionary *)p_b;

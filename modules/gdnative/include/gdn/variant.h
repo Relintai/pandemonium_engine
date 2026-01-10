@@ -257,6 +257,8 @@ pandemonium_bool GDAPI pandemonium_variant_has_method(const pandemonium_variant 
 
 pandemonium_bool GDAPI pandemonium_variant_deep_equal(const pandemonium_variant *p_self, const pandemonium_variant *p_variant);
 pandemonium_bool GDAPI pandemonium_variant_deep_equal_recursion_count(const pandemonium_variant *p_self, const pandemonium_variant *p_variant, pandemonium_int p_recursion_count);
+pandemonium_bool GDAPI pandemonium_variant_deep_equal_approx(const pandemonium_variant *p_self, const pandemonium_variant *p_variant);
+pandemonium_bool GDAPI pandemonium_variant_deep_equal_approx_recursion_count(const pandemonium_variant *p_self, const pandemonium_variant *p_variant, pandemonium_int p_recursion_count);
 pandemonium_bool GDAPI pandemonium_variant_operator_equal(const pandemonium_variant *p_self, const pandemonium_variant *p_other);
 pandemonium_bool GDAPI pandemonium_variant_operator_less(const pandemonium_variant *p_self, const pandemonium_variant *p_other);
 pandemonium_int GDAPI pandemonium_variant_hash(const pandemonium_variant *p_self);

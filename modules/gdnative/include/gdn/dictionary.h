@@ -81,6 +81,8 @@ pandemonium_bool GDAPI pandemonium_dictionary_erase_with_return(pandemonium_dict
 
 pandemonium_bool GDAPI pandemonium_dictionary_deep_equal(const pandemonium_dictionary *p_self, const pandemonium_dictionary *p_dictionary);
 pandemonium_bool GDAPI pandemonium_dictionary_deep_equal_recursion_count(const pandemonium_dictionary *p_self, const pandemonium_dictionary *p_dictionary, pandemonium_int p_recursion_count);
+pandemonium_bool GDAPI pandemonium_dictionary_deep_equal_approx(const pandemonium_dictionary *p_self, const pandemonium_dictionary *p_dictionary);
+pandemonium_bool GDAPI pandemonium_dictionary_deep_equal_approx_recursion_count(const pandemonium_dictionary *p_self, const pandemonium_dictionary *p_dictionary, pandemonium_int p_recursion_count);
 pandemonium_bool GDAPI pandemonium_dictionary_operator_equal(const pandemonium_dictionary *p_self, const pandemonium_dictionary *p_b);
 
 pandemonium_int GDAPI pandemonium_dictionary_hash(const pandemonium_dictionary *p_self);

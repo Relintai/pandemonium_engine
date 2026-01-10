@@ -73,6 +73,8 @@ void GDAPI pandemonium_array_clear(pandemonium_array *p_self);
 
 pandemonium_bool GDAPI pandemonium_array_deep_equal(const pandemonium_array *p_self, const pandemonium_array *p_array);
 pandemonium_bool GDAPI pandemonium_array_deep_equal_recursion_count(const pandemonium_array *p_self, const pandemonium_array *p_array, pandemonium_int p_recursion_count);
+pandemonium_bool GDAPI pandemonium_array_deep_equal_approx(const pandemonium_array *p_self, const pandemonium_array *p_array);
+pandemonium_bool GDAPI pandemonium_array_deep_equal_approx_recursion_count(const pandemonium_array *p_self, const pandemonium_array *p_array, pandemonium_int p_recursion_count);
 pandemonium_bool GDAPI pandemonium_array_operator_equals(pandemonium_array *p_self, const pandemonium_array *p_array);
 
 pandemonium_int GDAPI pandemonium_array_hash(const pandemonium_array *p_self);

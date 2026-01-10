@@ -830,6 +830,38 @@
                 ]
             },
             {
+                "name": "pandemonium_array_deep_equal_approx",
+                "return_type": "pandemonium_bool",
+                "arguments": [
+                    [
+                        "const pandemonium_array *",
+                        "p_self"
+                    ],
+                    [
+                        "const pandemonium_array *",
+                        "p_array"
+                    ]
+                ]
+            },
+            {
+                "name": "pandemonium_array_deep_equal_approx_recursion_count",
+                "return_type": "pandemonium_bool",
+                "arguments": [
+                    [
+                        "const pandemonium_array *",
+                        "p_self"
+                    ],
+                    [
+                        "const pandemonium_array *",
+                        "p_array"
+                    ],
+                    [
+                        "pandemonium_int",
+                        "p_recursion_count"
+                    ]
+                ]
+            },
+            {
                 "name": "pandemonium_array_operator_equals",
                 "return_type": "pandemonium_bool",
                 "arguments": [
@@ -1625,6 +1657,38 @@
             },
             {
                 "name": "pandemonium_typed_array_deep_equal_recursion_count",
+                "return_type": "pandemonium_bool",
+                "arguments": [
+                    [
+                        "const pandemonium_typed_array *",
+                        "p_self"
+                    ],
+                    [
+                        "const pandemonium_typed_array *",
+                        "p_typed_array"
+                    ],
+                    [
+                        "pandemonium_int",
+                        "p_recursion_count"
+                    ]
+                ]
+            },
+            {
+                "name": "pandemonium_typed_array_deep_equal_approx",
+                "return_type": "pandemonium_bool",
+                "arguments": [
+                    [
+                        "const pandemonium_typed_array *",
+                        "p_self"
+                    ],
+                    [
+                        "const pandemonium_typed_array *",
+                        "p_typed_array"
+                    ]
+                ]
+            },
+            {
+                "name": "pandemonium_typed_array_deep_equal_approx_recursion_count",
                 "return_type": "pandemonium_bool",
                 "arguments": [
                     [
@@ -2607,6 +2671,38 @@
             },
             {
                 "name": "pandemonium_packed_typed_array_deep_equal_recursion_count",
+                "return_type": "pandemonium_bool",
+                "arguments": [
+                    [
+                        "const pandemonium_packed_typed_array *",
+                        "p_self"
+                    ],
+                    [
+                        "const pandemonium_packed_typed_array *",
+                        "p_packed_typed_array"
+                    ],
+                    [
+                        "pandemonium_int",
+                        "p_recursion_count"
+                    ]
+                ]
+            },
+            {
+                "name": "pandemonium_packed_typed_array_deep_equal_approx",
+                "return_type": "pandemonium_bool",
+                "arguments": [
+                    [
+                        "const pandemonium_packed_typed_array *",
+                        "p_self"
+                    ],
+                    [
+                        "const pandemonium_packed_typed_array *",
+                        "p_packed_typed_array"
+                    ]
+                ]
+            },
+            {
+                "name": "pandemonium_packed_typed_array_deep_equal_approx_recursion_count",
                 "return_type": "pandemonium_bool",
                 "arguments": [
                     [
@@ -6409,6 +6505,38 @@
             },
             {
                 "name": "pandemonium_dictionary_deep_equal_recursion_count",
+                "return_type": "pandemonium_bool",
+                "arguments": [
+                    [
+                        "const pandemonium_dictionary *",
+                        "p_self"
+                    ],
+                    [
+                        "const pandemonium_dictionary *",
+                        "p_dictionary"
+                    ],
+                    [
+                        "pandemonium_int",
+                        "p_recursion_count"
+                    ]
+                ]
+            },
+            {
+                "name": "pandemonium_dictionary_deep_equal_approx",
+                "return_type": "pandemonium_bool",
+                "arguments": [
+                    [
+                        "const pandemonium_dictionary *",
+                        "p_self"
+                    ],
+                    [
+                        "const pandemonium_dictionary *",
+                        "p_dictionary"
+                    ]
+                ]
+            },
+            {
+                "name": "pandemonium_dictionary_deep_equal_approx_recursion_count",
                 "return_type": "pandemonium_bool",
                 "arguments": [
                     [
@@ -15505,6 +15633,38 @@
             },
             {
                 "name": "pandemonium_variant_deep_equal_recursion_count",
+                "return_type": "pandemonium_bool",
+                "arguments": [
+                    [
+                        "const pandemonium_variant *",
+                        "p_self"
+                    ],
+                    [
+                        "const pandemonium_variant *",
+                        "p_variant"
+                    ],
+                    [
+                        "pandemonium_int",
+                        "p_recursion_count"
+                    ]
+                ]
+            },
+            {
+                "name": "pandemonium_variant_deep_equal_approx",
+                "return_type": "pandemonium_bool",
+                "arguments": [
+                    [
+                        "const pandemonium_variant *",
+                        "p_self"
+                    ],
+                    [
+                        "const pandemonium_variant *",
+                        "p_variant"
+                    ]
+                ]
+            },
+            {
+                "name": "pandemonium_variant_deep_equal_approx_recursion_count",
                 "return_type": "pandemonium_bool",
                 "arguments": [
                     [

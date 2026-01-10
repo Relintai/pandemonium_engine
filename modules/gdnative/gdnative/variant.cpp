@@ -713,6 +713,17 @@ pandemonium_bool GDAPI pandemonium_variant_deep_equal_recursion_count(const pand
 	return self->deep_equal(*variant, p_recursion_count);
 }
 
+pandemonium_bool GDAPI pandemonium_variant_deep_equal_approx(const pandemonium_variant *p_self, const pandemonium_variant *p_variant) {
+	const Variant *self = (const Variant *)p_self;
+	const Variant *variant = (const Variant *)p_variant;
+	return self->deep_equal_approx(*variant);
+}
+pandemonium_bool GDAPI pandemonium_variant_deep_equal_approx_recursion_count(const pandemonium_variant *p_self, const pandemonium_variant *p_variant, pandemonium_int p_recursion_count) {
+	const Variant *self = (const Variant *)p_self;
+	const Variant *variant = (const Variant *)p_variant;
+	return self->deep_equal_approx(*variant, p_recursion_count);
+}
+
 pandemonium_bool GDAPI pandemonium_variant_operator_equal(const pandemonium_variant *p_self, const pandemonium_variant *p_other) {
 	const Variant *self = (const Variant *)p_self;
 	const Variant *other = (const Variant *)p_other;

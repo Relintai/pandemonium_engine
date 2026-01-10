@@ -243,6 +243,18 @@ pandemonium_bool GDAPI pandemonium_packed_typed_array_deep_equal_recursion_count
 	const PackedTypedArray *packed_typed_array = (const PackedTypedArray *)p_packed_typed_array;
 	return self->deep_equal(*packed_typed_array, p_recursion_count);
 }
+
+pandemonium_bool GDAPI pandemonium_packed_typed_array_deep_equal_approx(const pandemonium_packed_typed_array *p_self, const pandemonium_packed_typed_array *p_packed_typed_array) {
+	const PackedTypedArray *self = (const PackedTypedArray *)p_self;
+	const PackedTypedArray *packed_typed_array = (const PackedTypedArray *)p_packed_typed_array;
+	return self->deep_equal_approx(*packed_typed_array);
+}
+pandemonium_bool GDAPI pandemonium_packed_typed_array_deep_equal_approx_recursion_count(const pandemonium_packed_typed_array *p_self, const pandemonium_packed_typed_array *p_packed_typed_array, pandemonium_int p_recursion_count) {
+	const PackedTypedArray *self = (const PackedTypedArray *)p_self;
+	const PackedTypedArray *packed_typed_array = (const PackedTypedArray *)p_packed_typed_array;
+	return self->deep_equal_approx(*packed_typed_array, p_recursion_count);
+}
+
 pandemonium_bool GDAPI pandemonium_packed_typed_array_operator_equals(pandemonium_packed_typed_array *p_self, const pandemonium_packed_typed_array *p_packed_typed_array) {
 	PackedTypedArray *self = (PackedTypedArray *)p_self;
 	const PackedTypedArray *packed_typed_array = (const PackedTypedArray *)p_packed_typed_array;
