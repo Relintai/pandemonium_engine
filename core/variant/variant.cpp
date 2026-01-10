@@ -1000,8 +1000,8 @@ bool Variant::deep_equal(const Variant &p_variant, int p_recursion_count, bool p
 				return _equal_approx_primitive<Transform>(*this, p_variant);
 			case TRANSFORM2D:
 				return _equal_approx_primitive<Transform2D>(*this, p_variant);
-			case PROJECTION:
-				return _equal_approx_primitive<Projection>(*this, p_variant);
+			//case PROJECTION:
+				//return _equal_approx_primitive<Projection>(*this, p_variant);
 			case COLOR:
 				return _equal_approx_primitive<Color>(*this, p_variant);
 			case DICTIONARY:
