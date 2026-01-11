@@ -913,25 +913,50 @@ void VoxelChunk::clear_baked_lights() {
 }
 
 #ifdef MODULE_PROPS_ENABLED
-void VoxelChunk::prop_add(const Transform &transform, const Ref<PropData> &prop) {
+void VoxelChunk::prop_add(const Transform &transform, const Ref<PropData> &prop, const bool p_owner) {
 	ERR_FAIL_COND(!prop.is_valid());
 
 	PropDataStore s;
+	s.owner = p_owner;
 	s.transform = transform;
 	s.prop = prop;
 
 	_props.push_back(s);
 }
+
 Ref<PropData> VoxelChunk::prop_get(int index) {
 	ERR_FAIL_INDEX_V(index, _props.size(), Ref<PropData>());
 
 	return _props.get(index).prop;
 }
+void VoxelChunk::prop_set(const int index, const Ref<PropData> &p_prop) {
+	ERR_FAIL_INDEX(index, _props.size());
+
+	_props.write[index].prop = p_prop;
+}
+
 Transform VoxelChunk::prop_get_transform(const int index) {
 	ERR_FAIL_INDEX_V(index, _props.size(), Transform());
 
 	return _props.get(index).transform;
 }
+void VoxelChunk::prop_set_transform(const int index, const Transform &p_transform) {
+	ERR_FAIL_INDEX(index, _props.size());
+
+	_props.write[index].transform = p_transform;
+}
+
+bool VoxelChunk::prop_get_is_owner(const int index) {
+	ERR_FAIL_INDEX_V(index, _props.size(), false);
+
+	return _props.get(index).owner;
+}
+void VoxelChunk::prop_set_is_owner(const int index, const bool p_owner) {
+	ERR_FAIL_INDEX(index, _props.size());
+
+	_props.write[index].owner = p_owner;
+}
+
 int VoxelChunk::prop_get_count() const {
 	return _props.size();
 }
@@ -950,6 +975,7 @@ Array VoxelChunk::props_get() {
 	for (int i = 0; i < _props.size(); i++) {
 		Array prop_data;
 
+		prop_data.push_back(_props[i].owner);
 		prop_data.push_back(_props[i].transform);
 		prop_data.push_back(_props[i].prop.get_ref_ptr());
 
@@ -964,12 +990,13 @@ void VoxelChunk::props_set(const Array &p_props) {
 	for (int i = 0; i < p_props.size(); ++i) {
 		Array prop_data = p_props[i];
 
-		ERR_CONTINUE(prop_data.size() != 2);
+		ERR_CONTINUE(prop_data.size() != 3);
 
-		Transform transform = prop_data[0];
-		Ref<PropData> prop = Ref<PropData>(prop_data[1]);
+		bool owner = prop_data[0];
+		Transform transform = prop_data[1];
+		Ref<PropData> prop = Ref<PropData>(prop_data[2]);
 
-		prop_add(transform, prop);
+		prop_add(transform, prop, owner);
 	}
 }
 #endif
@@ -1806,8 +1833,17 @@ void VoxelChunk::_bind_methods() {
 	//Meshes
 
 #ifdef MODULE_PROPS_ENABLED
-	ClassDB::bind_method(D_METHOD("prop_add", "prop"), &VoxelChunk::prop_add);
+	ClassDB::bind_method(D_METHOD("prop_add", "prop", "owner"), &VoxelChunk::prop_add, DEFVAL(true));
+
 	ClassDB::bind_method(D_METHOD("prop_get", "index"), &VoxelChunk::prop_get);
+	ClassDB::bind_method(D_METHOD("prop_set", "index", "prop"), &VoxelChunk::prop_set);
+
+	ClassDB::bind_method(D_METHOD("prop_get_transform", "index"), &VoxelChunk::prop_get_transform);
+	ClassDB::bind_method(D_METHOD("prop_set_transform", "index", "transform"), &VoxelChunk::prop_set_transform);
+
+	ClassDB::bind_method(D_METHOD("prop_get_is_owner", "index"), &VoxelChunk::prop_get_is_owner);
+	ClassDB::bind_method(D_METHOD("prop_set_is_owner", "index", "owner"), &VoxelChunk::prop_set_is_owner);
+
 	ClassDB::bind_method(D_METHOD("prop_get_count"), &VoxelChunk::prop_get_count);
 	ClassDB::bind_method(D_METHOD("prop_remove", "index"), &VoxelChunk::prop_remove);
 	ClassDB::bind_method(D_METHOD("props_clear"), &VoxelChunk::props_clear);
