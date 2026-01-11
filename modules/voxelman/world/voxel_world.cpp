@@ -769,6 +769,7 @@ void VoxelWorld::prop_add(Transform transform, const Ref<PropData> &prop, const 
 			light->set_indirect_energy(light_data->get_light_indirect_energy());
 			light->set_negative(light_data->get_light_negative());
 			light->set_specular(light_data->get_light_specular());
+			light->set_owner_type(VoxelLight::OWNER_TYPE_PROP);
 
 			light_add(light);
 
