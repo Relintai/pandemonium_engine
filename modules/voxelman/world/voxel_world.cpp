@@ -125,6 +125,13 @@ void VoxelWorld::set_max_concurrent_generations(const int value) {
 	_max_concurrent_generations = OS::get_singleton()->can_use_threads() ? value : 1;
 }
 
+bool VoxelWorld::get_is_priority_generation() const {
+	return _is_priority_generation;
+}
+void VoxelWorld::set_is_priority_generation(const bool value) {
+	_is_priority_generation = value;
+}
+
 int VoxelWorld::get_max_frame_chunk_build_steps() const {
 	return _max_frame_chunk_build_steps;
 }
@@ -890,7 +897,7 @@ int VoxelWorld::get_channel_index_info(const VoxelWorld::ChannelTypeInfo channel
 VoxelWorld::VoxelWorld() {
 	_editable = false;
 
-	_is_priority_generation = true;
+	_is_priority_generation = false;
 
 	_chunk_size_x = 16;
 	_chunk_size_y = 16;
@@ -954,6 +961,10 @@ void VoxelWorld::_generate_chunk(Ref<VoxelChunk> chunk) {
 void VoxelWorld::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
+			if (_chunks_vector.size() != 0) {
+				_is_priority_generation = true;
+			}
+
 			set_player_bind(get_node_or_null(get_player_path()));
 
 			set_process_internal(true);
@@ -1111,6 +1122,10 @@ void VoxelWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_max_concurrent_generations"), &VoxelWorld::get_max_concurrent_generations);
 	ClassDB::bind_method(D_METHOD("set_max_concurrent_generations", "value"), &VoxelWorld::set_max_concurrent_generations);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "max_concurrent_generations"), "set_max_concurrent_generations", "get_max_concurrent_generations");
+
+	ClassDB::bind_method(D_METHOD("get_is_priority_generation"), &VoxelWorld::get_is_priority_generation);
+	ClassDB::bind_method(D_METHOD("set_is_priority_generation", "height"), &VoxelWorld::set_is_priority_generation);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_priority_generation", PROPERTY_HINT_NONE, "", 0), "set_is_priority_generation", "get_is_priority_generation");
 
 	ClassDB::bind_method(D_METHOD("get_max_frame_chunk_build_steps"), &VoxelWorld::get_max_frame_chunk_build_steps);
 	ClassDB::bind_method(D_METHOD("set_max_frame_chunk_build_steps", "value"), &VoxelWorld::set_max_frame_chunk_build_steps);

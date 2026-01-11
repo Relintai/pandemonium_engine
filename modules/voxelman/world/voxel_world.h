@@ -95,6 +95,9 @@ public:
 	int get_max_concurrent_generations() const;
 	void set_max_concurrent_generations(const int value);
 
+	bool get_is_priority_generation() const;
+	void set_is_priority_generation(const bool value);
+
 	int get_max_frame_chunk_build_steps() const;
 	void set_max_frame_chunk_build_steps(const int value);
 
