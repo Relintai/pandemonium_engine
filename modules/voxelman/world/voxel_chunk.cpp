@@ -1241,7 +1241,9 @@ void VoxelChunk::_enter_tree() {
 }
 
 void VoxelChunk::_exit_tree() {
-	_abort_build = true;
+	if (_is_generating) {
+		cancel_build();
+	}
 
 	for (int i = 0; i < _jobs.size(); ++i) {
 		Ref<VoxelJob> j = _jobs[i];
@@ -1250,9 +1252,19 @@ void VoxelChunk::_exit_tree() {
 			j->chunk_exit_tree();
 		}
 	}
+
+	if (_library.is_valid() && _library->supports_caching()) {
+		if (material_cache_key_has()) {
+			_library->material_cache_unref(material_cache_key_get());
+		}
+	}
 }
 
 void VoxelChunk::_generation_process(const float delta) {
+	if (_abort_build) {
+		return;
+	}
+
 	_THREAD_SAFE_METHOD_
 
 	if (_current_job < 0 || _current_job >= _jobs.size())
@@ -1274,6 +1286,10 @@ void VoxelChunk::_generation_process(const float delta) {
 	}
 }
 void VoxelChunk::_generation_physics_process(const float delta) {
+	if (_abort_build) {
+		return;
+	}
+
 	_THREAD_SAFE_METHOD_
 
 	if (_current_job < 0 || _current_job >= _jobs.size())
@@ -1392,6 +1408,7 @@ void VoxelChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("generation_physics_process", "delta"), &VoxelChunk::generation_physics_process);
 
 	ClassDB::bind_method(D_METHOD("finalize_build"), &VoxelChunk::finalize_build);
+	ClassDB::bind_method(D_METHOD("cancel_build"), &VoxelChunk::cancel_build);
 
 	ClassDB::bind_method(D_METHOD("get_process"), &VoxelChunk::get_process);
 	ClassDB::bind_method(D_METHOD("set_process", "value"), &VoxelChunk::set_process);
@@ -1416,6 +1433,8 @@ void VoxelChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_is_generating"), &VoxelChunk::get_is_generating);
 	ClassDB::bind_method(D_METHOD("set_is_generating", "value"), &VoxelChunk::set_is_generating);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_generating", PROPERTY_HINT_NONE, "", 0), "set_is_generating", "get_is_generating");
+
+	ClassDB::bind_method(D_METHOD("is_build_aborted"), &VoxelChunk::is_build_aborted);
 
 	ClassDB::bind_method(D_METHOD("get_is_immediate_build"), &VoxelChunk::get_is_immediate_build);
 	ClassDB::bind_method(D_METHOD("set_is_immediate_build", "value"), &VoxelChunk::set_is_immediate_build);
@@ -1653,4 +1672,6 @@ void VoxelChunk::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_generation_process"), &VoxelChunk::_generation_process);
 	ClassDB::bind_method(D_METHOD("_generation_physics_process"), &VoxelChunk::_generation_physics_process);
+
+	ClassDB::bind_method(D_METHOD("is_safe_to_delete"), &VoxelChunk::is_safe_to_delete);
 }
