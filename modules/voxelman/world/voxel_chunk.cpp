@@ -1091,8 +1091,6 @@ void VoxelChunk::physics_process(const float delta) {
 }
 void VoxelChunk::world_transform_changed() {
 	call("_world_transform_changed");
-
-	call("_world_transform_changed");
 }
 void VoxelChunk::visibility_changed(const bool visible) {
 	if (has_method("_visibility_changed")) {
