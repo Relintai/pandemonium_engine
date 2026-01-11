@@ -316,6 +316,8 @@ void VoxelWorld::chunk_add(Ref<VoxelChunk> chunk, const int x, const int y, cons
 	if (has_method("_chunk_added")) {
 		call("_chunk_added", chunk);
 	}
+
+	generation_queue_add_to(chunk);
 }
 bool VoxelWorld::chunk_has(const int x, const int y, const int z) const {
 	return _chunks.has(IntPos(x, y, z));
