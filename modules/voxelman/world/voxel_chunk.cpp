@@ -212,6 +212,8 @@ int VoxelChunk::material_cache_key_get() const {
 }
 void VoxelChunk::material_cache_key_set(const int value) {
 	_material_cache_key = value;
+
+	_material_cache_key_invalid = false;
 }
 
 bool VoxelChunk::material_cache_key_has() const {
@@ -221,11 +223,20 @@ void VoxelChunk::material_cache_key_has_set(const bool value) {
 	_material_cache_key_has = value;
 }
 
+bool VoxelChunk::material_cache_key_invalid_get() const {
+	return _material_cache_key_invalid;
+}
+void VoxelChunk::material_cache_key_invalid_set(const bool value) {
+	_material_cache_key_invalid = value;
+}
+
 int VoxelChunk::liquid_material_cache_key_get() const {
 	return _liquid_material_cache_key;
 }
 void VoxelChunk::liquid_material_cache_key_set(const int value) {
 	_liquid_material_cache_key = value;
+
+	_liquid_material_cache_key_invalid = false;
 }
 
 bool VoxelChunk::liquid_material_cache_key_has() const {
@@ -235,11 +246,20 @@ void VoxelChunk::liquid_material_cache_key_has_set(const bool value) {
 	_liquid_material_cache_key_has = value;
 }
 
+bool VoxelChunk::liquid_material_cache_key_invalid_get() const {
+	return _liquid_material_cache_key_invalid;
+}
+void VoxelChunk::liquid_material_cache_key_invalid_set(const bool value) {
+	_liquid_material_cache_key_invalid = value;
+}
+
 int VoxelChunk::prop_material_cache_key_get() const {
 	return _prop_material_cache_key;
 }
 void VoxelChunk::prop_material_cache_key_set(const int value) {
 	_prop_material_cache_key = value;
+
+	_prop_material_cache_key_invalid = false;
 }
 
 bool VoxelChunk::prop_material_cache_key_has() const {
@@ -247,6 +267,13 @@ bool VoxelChunk::prop_material_cache_key_has() const {
 }
 void VoxelChunk::prop_material_cache_key_has_set(const bool value) {
 	_prop_material_cache_key_has = value;
+}
+
+bool VoxelChunk::prop_material_cache_key_invalid_get() const {
+	return _prop_material_cache_key_invalid;
+}
+void VoxelChunk::prop_material_cache_key_invalid_set(const bool value) {
+	_prop_material_cache_key_invalid = value;
 }
 
 Ref<VoxelLibrary> VoxelChunk::get_library() {
@@ -1118,12 +1145,15 @@ VoxelChunk::VoxelChunk() {
 
 	_material_cache_key = 0;
 	_material_cache_key_has = false;
+	_material_cache_key_invalid = false;
 
 	_liquid_material_cache_key = 0;
 	_liquid_material_cache_key_has = false;
+	_liquid_material_cache_key_invalid = false;
 
 	_prop_material_cache_key = 0;
 	_prop_material_cache_key_has = false;
+	_prop_material_cache_key_invalid = false;
 
 	_current_job = -1;
 
@@ -1418,6 +1448,10 @@ void VoxelChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("material_cache_key_has_set"), &VoxelChunk::material_cache_key_has_set);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "material_cache_key_has", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "material_cache_key_has_set", "material_cache_key_has_get");
 
+	ClassDB::bind_method(D_METHOD("material_cache_key_invalid_get"), &VoxelChunk::material_cache_key_invalid_get);
+	ClassDB::bind_method(D_METHOD("material_cache_key_invalid_set"), &VoxelChunk::material_cache_key_invalid_set);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "material_cache_key_invalid", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "material_cache_key_invalid_set", "material_cache_key_invalid_get");
+
 	ClassDB::bind_method(D_METHOD("liquid_material_cache_key_get"), &VoxelChunk::liquid_material_cache_key_get);
 	ClassDB::bind_method(D_METHOD("liquid_material_cache_key_set"), &VoxelChunk::liquid_material_cache_key_set);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "liquid_material_cache_key", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "liquid_material_cache_key_set", "liquid_material_cache_key_get");
@@ -1426,6 +1460,10 @@ void VoxelChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("liquid_material_cache_key_has_set"), &VoxelChunk::liquid_material_cache_key_has_set);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "liquid_material_cache_key_has", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "liquid_material_cache_key_has_set", "liquid_material_cache_key_has_get");
 
+	ClassDB::bind_method(D_METHOD("liquid_material_cache_key_invalid_get"), &VoxelChunk::liquid_material_cache_key_invalid_get);
+	ClassDB::bind_method(D_METHOD("liquid_material_cache_key_invalid_set"), &VoxelChunk::liquid_material_cache_key_invalid_set);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "liquid_material_cache_key_invalid", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "liquid_material_cache_key_invalid_set", "liquid_material_cache_key_invalid_get");
+
 	ClassDB::bind_method(D_METHOD("prop_material_cache_key_get"), &VoxelChunk::prop_material_cache_key_get);
 	ClassDB::bind_method(D_METHOD("prop_material_cache_key_set"), &VoxelChunk::prop_material_cache_key_set);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "prop_material_cache_key", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "prop_material_cache_key_set", "prop_material_cache_key_get");
@@ -1433,6 +1471,10 @@ void VoxelChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("prop_material_cache_key_has_get"), &VoxelChunk::prop_material_cache_key_has);
 	ClassDB::bind_method(D_METHOD("prop_material_cache_key_has_set"), &VoxelChunk::prop_material_cache_key_has_set);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "prop_material_cache_key_has", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "prop_material_cache_key_has_set", "prop_material_cache_key_has_get");
+
+	ClassDB::bind_method(D_METHOD("prop_material_cache_key_invalid_get"), &VoxelChunk::prop_material_cache_key_invalid_get);
+	ClassDB::bind_method(D_METHOD("prop_material_cache_key_invalid_set"), &VoxelChunk::prop_material_cache_key_invalid_set);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "prop_material_cache_key_invalid", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_EDITOR), "prop_material_cache_key_invalid_set", "prop_material_cache_key_invalid_get");
 
 	ClassDB::bind_method(D_METHOD("get_library"), &VoxelChunk::get_library);
 	ClassDB::bind_method(D_METHOD("set_library", "value"), &VoxelChunk::set_library);

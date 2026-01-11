@@ -148,17 +148,26 @@ public:
 	bool material_cache_key_has() const;
 	void material_cache_key_has_set(const bool value);
 
+	bool material_cache_key_invalid_get() const;
+	void material_cache_key_invalid_set(const bool value);
+
 	int liquid_material_cache_key_get() const;
 	void liquid_material_cache_key_set(const int value);
 
 	bool liquid_material_cache_key_has() const;
 	void liquid_material_cache_key_has_set(const bool value);
 
+	bool liquid_material_cache_key_invalid_get() const;
+	void liquid_material_cache_key_invalid_set(const bool value);
+
 	int prop_material_cache_key_get() const;
 	void prop_material_cache_key_set(const int value);
 
 	bool prop_material_cache_key_has() const;
 	void prop_material_cache_key_has_set(const bool value);
+
+	bool prop_material_cache_key_invalid_get() const;
+	void prop_material_cache_key_invalid_set(const bool value);
 
 	Ref<VoxelLibrary> get_library();
 	void set_library(const Ref<VoxelLibrary> &value);
@@ -391,12 +400,15 @@ protected:
 
 	int _material_cache_key;
 	bool _material_cache_key_has;
+	bool _material_cache_key_invalid;
 
 	int _liquid_material_cache_key;
 	bool _liquid_material_cache_key_has;
+	bool _liquid_material_cache_key_invalid;
 
 	int _prop_material_cache_key;
 	bool _prop_material_cache_key_has;
+	bool _prop_material_cache_key_invalid;
 
 	Vector<uint8_t *> _channels;
 

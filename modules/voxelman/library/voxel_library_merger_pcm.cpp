@@ -71,6 +71,12 @@ void VoxelLibraryMergerPCM::_material_cache_get_key(Ref<VoxelChunk> chunk) {
 		return;
 	}
 
+	int old_key = 0;
+
+	if (chunk->material_cache_key_has()) {
+		old_key = chunk->material_cache_key_get();
+	}
+
 	Vector<uint8_t> surfaces;
 
 	uint32_t size = chunk->get_data_size();
@@ -100,6 +106,10 @@ void VoxelLibraryMergerPCM::_material_cache_get_key(Ref<VoxelChunk> chunk) {
 		chunk->material_cache_key_set(0);
 		chunk->material_cache_key_has_set(false);
 
+		if (old_key != 0) {
+			material_cache_unref(old_key);
+		}
+
 		return;
 	}
 
@@ -113,8 +123,17 @@ void VoxelLibraryMergerPCM::_material_cache_get_key(Ref<VoxelChunk> chunk) {
 
 	int hash = static_cast<int>(hstr.hash());
 
+	if (old_key != 0 && old_key == hash) {
+		chunk->material_cache_key_invalid_set(false);
+		return;
+	}
+
 	chunk->material_cache_key_set(hash);
 	chunk->material_cache_key_has_set(true);
+
+	if (old_key != 0) {
+		material_cache_unref(old_key);
+	}
 
 	_material_cache_mutex.lock();
 
@@ -217,6 +236,12 @@ void VoxelLibraryMergerPCM::_material_cache_unref(const int key) {
 }
 
 void VoxelLibraryMergerPCM::_prop_material_cache_get_key(Ref<VoxelChunk> chunk) {
+	int old_key = 0;
+
+	if (chunk->prop_material_cache_key_has()) {
+		old_key = chunk->prop_material_cache_key_get();
+	}
+
 	Vector<uint64_t> props;
 
 	/*
@@ -274,6 +299,10 @@ void VoxelLibraryMergerPCM::_prop_material_cache_get_key(Ref<VoxelChunk> chunk) 
 		chunk->prop_material_cache_key_set(0);
 		chunk->prop_material_cache_key_has_set(false);
 
+		if (old_key != 0) {
+			prop_material_cache_unref(old_key);
+		}
+
 		return;
 	}
 
@@ -287,8 +316,17 @@ void VoxelLibraryMergerPCM::_prop_material_cache_get_key(Ref<VoxelChunk> chunk) 
 
 	int hash = static_cast<int>(hstr.hash());
 
+	if (old_key != 0 && old_key == hash) {
+		chunk->prop_material_cache_key_invalid_set(false);
+		return;
+	}
+
 	chunk->prop_material_cache_key_set(hash);
 	chunk->prop_material_cache_key_has_set(true);
+
+	if (old_key != 0) {
+		prop_material_cache_unref(old_key);
+	}
 
 	_prop_material_cache_mutex.lock();
 
