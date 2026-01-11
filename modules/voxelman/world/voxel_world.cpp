@@ -715,6 +715,7 @@ void VoxelWorld::prop_add(Transform transform, const Ref<PropData> &prop, const 
 	Ref<VoxelChunk> chunk = get_or_create_chunk_at_world_position(wp);
 
 	chunk->prop_add(transform, prop, p_original);
+	chunk->build();
 
 	int count = prop->get_prop_count();
 	for (int i = 0; i < count; ++i) {
@@ -801,6 +802,7 @@ void VoxelWorld::prop_add(Transform transform, const Ref<PropData> &prop, const 
 			chunk_local_tform.origin = chunk->to_local(chunk_local_tform.origin);
 
 			chunk->mesh_data_resource_add(chunk_local_tform, mdr, mesh_data->get_texture(), Color(1, 1, 1, 1), false, false);
+			chunk->build();
 
 			continue;
 		}
@@ -822,6 +824,7 @@ void VoxelWorld::light_add(const Ref<VoxelLight> &light) {
 	ERR_FAIL_COND(!chunk.is_valid());
 
 	chunk->light_add(light);
+	chunk->build();
 }
 void VoxelWorld::light_remove(const Ref<VoxelLight> &light) {
 	if (!light.is_valid()) {
