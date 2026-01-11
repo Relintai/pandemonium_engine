@@ -727,7 +727,7 @@ void VoxelWorld::prop_add(Transform transform, const Ref<PropData> &prop, const 
 			Ref<VoxelLight> light;
 			light.instance();
 
-			light->set_world_position(wp.x / get_voxel_scale(), wp.y / get_voxel_scale(), wp.z / get_voxel_scale());
+			light->set_world_data_position(Vector3i(wp.x / get_voxel_scale(), wp.y / get_voxel_scale(), wp.z / get_voxel_scale()));
 			light->set_range(light_data->get_light_range());
 			light->set_attenuation(light_data->get_light_attenuation());
 			light->set_color(light_data->get_light_color());
@@ -766,8 +766,44 @@ void VoxelWorld::prop_add(Transform transform, const Ref<PropData> &prop, const 
 
 //Lights
 void VoxelWorld::light_add(const Ref<VoxelLight> &light) {
-	_lights.push_back(light);
+	if (!light.is_valid()) {
+		return;
+	}
 
+	Vector3i light_world_data_position = light->get_world_data_position();
+
+	Ref<VoxelChunk> chunk = get_or_create_chunk_at_world_data_position(light_world_data_position);
+
+	ERR_FAIL_COND(!chunk.is_valid());
+
+	chunk->light_add(light);
+}
+void VoxelWorld::light_remove(const Ref<VoxelLight> &light) {
+	if (!light.is_valid()) {
+		return;
+	}
+
+	Vector3i light_world_data_position = light->get_world_data_position();
+
+	Ref<VoxelChunk> chunk = get_chunk_at_world_data_position(light_world_data_position);
+
+	if (!chunk.is_valid()) {
+		return;
+	}
+
+	chunk->light_remove(light);
+}
+void VoxelWorld::lights_clear() {
+	for (int i = 0; i < _chunks_vector.size(); ++i) {
+		Ref<VoxelChunk> chunk = _chunks_vector[i];
+
+		if (chunk.is_valid()) {
+			chunk->lights_clear();
+		}
+	}
+}
+
+void VoxelWorld::world_light_added(const Ref<VoxelLight> &light) {
 	for (int i = 0; i < _chunks_vector.size(); ++i) {
 		Ref<VoxelChunk> chunk = _chunks_vector[i];
 
@@ -776,16 +812,7 @@ void VoxelWorld::light_add(const Ref<VoxelLight> &light) {
 		}
 	}
 }
-Ref<VoxelLight> VoxelWorld::light_get(const int index) {
-	ERR_FAIL_INDEX_V(index, _lights.size(), Ref<VoxelLight>());
-
-	return _lights.get(index);
-}
-void VoxelWorld::light_remove(const int index) {
-	ERR_FAIL_INDEX(index, _lights.size());
-
-	Ref<VoxelLight> light = _lights[index];
-
+void VoxelWorld::world_light_removed(const Ref<VoxelLight> &light) {
 	for (int i = 0; i < _chunks_vector.size(); ++i) {
 		Ref<VoxelChunk> chunk = _chunks_vector[i];
 
@@ -794,40 +821,11 @@ void VoxelWorld::light_remove(const int index) {
 		}
 	}
 }
-int VoxelWorld::light_get_count() const {
-	return _lights.size();
-}
-void VoxelWorld::lights_clear() {
-	for (int i = 0; i < _lights.size(); ++i) {
-		Ref<VoxelLight> light = _lights[i];
 
-		if (!light.is_valid()) {
-			continue;
-		}
-
-		for (int j = 0; j < _chunks_vector.size(); ++j) {
-			Ref<VoxelChunk> chunk = _chunks_vector[j];
-
-			if (chunk.is_valid()) {
-				chunk->world_light_removed(light);
-			}
-		}
-	}
-
-	_lights.clear();
-}
-
-Vector<Variant> VoxelWorld::lights_get() {
-	VARIANT_ARRAY_GET(_lights);
-}
-void VoxelWorld::lights_set(const Vector<Variant> &chunks) {
-	lights_clear();
-
-	for (int i = 0; i < chunks.size(); ++i) {
-		Ref<VoxelLight> light = Ref<VoxelLight>(chunks[i]);
-
-		light_add(light);
-	}
+void VoxelWorld::world_light_moved(const Ref<VoxelLight> &light) {
+	// TODO better implementation
+	light_remove(light);
+	light_add(light);
 }
 
 uint8_t VoxelWorld::get_voxel_at_world_position(const Vector3 &world_position, const int channel_index) {
@@ -1456,8 +1454,6 @@ VoxelWorld ::~VoxelWorld() {
 
 	_generation_queue.clear();
 	_generating.clear();
-
-	_lights.clear();
 }
 
 void VoxelWorld::_generate_chunk(Ref<VoxelChunk> chunk) {
@@ -1774,13 +1770,8 @@ void VoxelWorld::_bind_methods() {
 
 	//Lights
 	ClassDB::bind_method(D_METHOD("light_add", "light"), &VoxelWorld::light_add);
-	ClassDB::bind_method(D_METHOD("light_get", "index"), &VoxelWorld::light_get);
-	ClassDB::bind_method(D_METHOD("light_remove", "index"), &VoxelWorld::light_remove);
-	ClassDB::bind_method(D_METHOD("light_get_count"), &VoxelWorld::light_get_count);
+	ClassDB::bind_method(D_METHOD("light_remove", "light"), &VoxelWorld::light_remove);
 	ClassDB::bind_method(D_METHOD("lights_clear"), &VoxelWorld::lights_clear);
-
-	ClassDB::bind_method(D_METHOD("lights_get"), &VoxelWorld::lights_get);
-	ClassDB::bind_method(D_METHOD("lights_set", "chunks"), &VoxelWorld::lights_set);
 
 	ClassDB::bind_method(D_METHOD("get_voxel_at_world_position", "world_position", "channel_index"), &VoxelWorld::get_voxel_at_world_position);
 	ClassDB::bind_method(D_METHOD("set_voxel_at_world_position", "world_position", "data", "channel_index", "rebuild"), &VoxelWorld::set_voxel_at_world_position, DEFVAL(true));

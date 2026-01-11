@@ -44,6 +44,14 @@
 #include "../fastnoise/noise.h"
 #endif
 
+#ifdef MODULE_VOXELMAN_ENABLED
+#include "../voxelman/data/voxel_light.h"
+#endif
+
+#ifdef MODULE_TERRAMAN_ENABLED
+#include "../terraman/data/terrain_light.h"
+#endif
+
 const String PropMesher::BINDING_STRING_BUILD_FLAGS = "Use Lighting,Use AO,Use RAO,Bake Lights";
 
 bool PropMesher::Vertex::operator==(const Vertex &p_vertex) const {
@@ -1258,6 +1266,96 @@ void PropMesher::bake_lights(MeshInstance *node, Vector<Ref<TerrainLight>> &ligh
 		if (cv2.y > 1) {
 			cv2.y = 1;
 		}
+
+		// cv2.x = Mathf.Clamp(cv2.x, 0f, 1f);
+		//cv2.y = Mathf.Clamp(cv2.y, 0f, 1f);
+		// cv2.z = Mathf.Clamp(cv2.z, 0f, 1f);
+
+		f.r = cv2.x;
+		f.g = cv2.y;
+		f.b = cv2.z;
+
+		//f.r = v_lightDiffuse.x;
+		//f.g = v_lightDiffuse.y;
+		//f.b = v_lightDiffuse.z;
+
+		vertexv.color = f;
+		_vertices.set(v, vertexv);
+	}
+
+	//	for (int i = 0; i < _colors->size(); ++i) {
+	//		print_error(_colors->get(i));
+	//	}
+}
+#endif
+
+#ifdef MODULE_VOXELMAN_ENABLED
+void PropMesher::bake_lights(MeshInstance *node, Vector<Ref<VoxelLight>> &lights) {
+	ERR_FAIL_COND(node == NULL);
+
+	Color darkColor(0, 0, 0, 1);
+
+	for (int v = 0; v < _vertices.size(); ++v) {
+		Vertex vertexv = _vertices.get(v);
+		Vector3 vet = vertexv.vertex;
+		Vector3 vertex = node->to_global(vet);
+
+		//grab normal
+		Vector3 normal = vertexv.normal;
+
+		Vector3 v_lightDiffuse;
+
+		//calculate the lights value
+		for (int i = 0; i < lights.size(); ++i) {
+			Ref<VoxelLight> light = lights.get(i);
+
+			Vector3 light_world_position = light->get_world_data_position();
+			Vector3 lightDir = light_world_position - vertex;
+
+			float dist2 = lightDir.dot(lightDir);
+			//inverse sqrt
+			lightDir *= (1.0 / sqrt(dist2));
+
+			float NdotL = normal.dot(lightDir);
+
+			if (NdotL > 1.0) {
+				NdotL = 1.0;
+			} else if (NdotL < 0.0) {
+				NdotL = 0.0;
+			}
+
+			Color cc = light->get_color();
+			Vector3 cv(cc.r, cc.g, cc.b);
+
+			Vector3 value = cv * (NdotL / (1.0 + dist2));
+
+			value *= light->get_range();
+			v_lightDiffuse += value;
+
+			/*
+					float dist2 = Mathf.Clamp(Vector3.Distance(transformedLights[i], vertices), 0f, 15f);
+					dist2 /= 35f;
+
+					Vector3 value = Vector3.one;
+					value *= ((float) lights[i].Strength) / 255f;
+					value *= (1 - dist2);
+					v_lightDiffuse += value;*/
+		}
+
+		Color f = vertexv.color;
+		//Color f = darkColor;
+
+		Vector3 cv2(f.r, f.g, f.b);
+		cv2 += v_lightDiffuse;
+
+		if (cv2.x > 1)
+			cv2.x = 1;
+
+		if (cv2.y > 1)
+			cv2.y = 1;
+
+		if (cv2.y > 1)
+			cv2.y = 1;
 
 		// cv2.x = Mathf.Clamp(cv2.x, 0f, 1f);
 		//cv2.y = Mathf.Clamp(cv2.y, 0f, 1f);

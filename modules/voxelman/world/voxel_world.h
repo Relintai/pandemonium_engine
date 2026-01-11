@@ -188,13 +188,12 @@ public:
 
 	//Lights
 	void light_add(const Ref<VoxelLight> &light);
-	Ref<VoxelLight> light_get(const int index);
-	void light_remove(const int index);
-	int light_get_count() const;
+	void light_remove(const Ref<VoxelLight> &light);
 	void lights_clear();
 
-	Vector<Variant> lights_get();
-	void lights_set(const Vector<Variant> &chunks);
+	void world_light_added(const Ref<VoxelLight> &light);
+	void world_light_removed(const Ref<VoxelLight> &light);
+	void world_light_moved(const Ref<VoxelLight> &light);
 
 	//Helpers
 	uint8_t get_voxel_at_world_position(const Vector3 &world_position, const int channel_index);
@@ -296,8 +295,6 @@ private:
 	Vector<Ref<VoxelChunk>> _generating;
 	int _max_frame_chunk_build_steps;
 	int _num_frame_chunk_build_steps;
-
-	Vector<Ref<VoxelLight>> _lights;
 };
 
 _FORCE_INLINE_ bool operator==(const VoxelWorld::IntPos &a, const VoxelWorld::IntPos &b) {

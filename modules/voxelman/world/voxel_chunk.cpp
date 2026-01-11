@@ -666,6 +666,113 @@ _FORCE_INLINE_ int VoxelChunk::get_data_size() const {
 	return _data_size_x * _data_size_y * _data_size_z;
 }
 
+//Lights
+void VoxelChunk::light_add(Ref<VoxelLight> p_light) {
+	if (!p_light.is_valid()) {
+		return;
+	}
+
+	p_light->set_has_owner_chunk(true);
+	p_light->set_owner_chunk_position(Vector3i(_position_x, _position_y, _position_z));
+	p_light->connect("light_moved", this, "_on_light_moved");
+
+	_lights.push_back(p_light);
+
+	VoxelWorld *world = get_voxel_world();
+
+	if (ObjectDB::instance_validate(world)) {
+		world->world_light_added(p_light);
+	}
+}
+bool VoxelChunk::light_remove(Ref<VoxelLight> p_light) {
+	if (!p_light.is_valid()) {
+		return false;
+	}
+
+	if (_lights.erase(p_light)) {
+		p_light->set_has_owner_chunk(false);
+		p_light->disconnect("light_moved", this, "_on_light_moved");
+
+		VoxelWorld *world = get_voxel_world();
+
+		if (ObjectDB::instance_validate(world)) {
+			world->world_light_removed(p_light);
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+bool VoxelChunk::light_has(const Ref<VoxelLight> &p_light) {
+	return _lights.find(p_light) != -1;
+}
+
+Ref<VoxelLight> VoxelChunk::light_get_index(const int index) {
+	ERR_FAIL_INDEX_V(index, _lights.size(), Ref<VoxelLight>());
+
+	return _lights.get(index);
+}
+void VoxelChunk::light_remove_index(const int index) {
+	ERR_FAIL_INDEX(index, _lights.size());
+
+	Ref<VoxelLight> light = _lights[index];
+
+	VoxelWorld *world = get_voxel_world();
+
+	if (ObjectDB::instance_validate(world)) {
+		world->world_light_removed(light);
+	}
+}
+int VoxelChunk::light_get_count() const {
+	return _lights.size();
+}
+void VoxelChunk::lights_clear() {
+	VoxelWorld *world = get_voxel_world();
+
+	if (!ObjectDB::instance_validate(world)) {
+		world = NULL;
+	}
+
+	for (int i = 0; i < _lights.size(); ++i) {
+		Ref<VoxelLight> light = _lights[i];
+
+		if (!light.is_valid()) {
+			continue;
+		}
+
+		light->set_has_owner_chunk(false);
+
+		if (world) {
+			world->world_light_removed(light);
+		}
+	}
+
+	_lights.clear();
+}
+
+Vector<Variant> VoxelChunk::lights_get() {
+	VARIANT_ARRAY_GET(_lights);
+}
+void VoxelChunk::lights_set(const Vector<Variant> &chunks) {
+	lights_clear();
+
+	for (int i = 0; i < chunks.size(); ++i) {
+		Ref<VoxelLight> light = Ref<VoxelLight>(chunks[i]);
+
+		light_add(light);
+	}
+}
+
+void VoxelChunk::_on_light_moved(const Ref<VoxelLight> &p_light) {
+	VoxelWorld *world = get_voxel_world();
+
+	if (ObjectDB::instance_validate(world)) {
+		world->world_light_moved(p_light);
+	}
+}
+
 //Voxel Structures
 
 Ref<VoxelStructure> VoxelChunk::voxel_structure_get(const int index) const {
@@ -1299,6 +1406,8 @@ VoxelChunk::~VoxelChunk() {
 	_colliders.clear();
 
 	_jobs.clear();
+
+	_lights.clear();
 }
 
 void VoxelChunk::_enter_tree() {
@@ -1665,6 +1774,23 @@ void VoxelChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_data_index", "x", "y", "z"), &VoxelChunk::get_data_index);
 	ClassDB::bind_method(D_METHOD("get_data_size"), &VoxelChunk::get_data_size);
 
+	// Lights
+	ClassDB::bind_method(D_METHOD("light_add", "light"), &VoxelChunk::light_add);
+	ClassDB::bind_method(D_METHOD("light_remove", "light"), &VoxelChunk::light_remove);
+	ClassDB::bind_method(D_METHOD("light_has", "light"), &VoxelChunk::light_has);
+
+	ClassDB::bind_method(D_METHOD("light_get_index", "index"), &VoxelChunk::light_get_index);
+	ClassDB::bind_method(D_METHOD("light_remove_index", "index"), &VoxelChunk::light_remove_index);
+	ClassDB::bind_method(D_METHOD("light_get_count"), &VoxelChunk::light_get_count);
+	ClassDB::bind_method(D_METHOD("lights_clear"), &VoxelChunk::lights_clear);
+
+	ClassDB::bind_method(D_METHOD("lights_get"), &VoxelChunk::lights_get);
+	ClassDB::bind_method(D_METHOD("lights_set", "chunks"), &VoxelChunk::lights_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "lights", PROPERTY_HINT_NONE, "23/20:VoxelLight", PROPERTY_USAGE_DEFAULT, "VoxelLight"), "lights_set", "lights_get");
+
+	ClassDB::bind_method(D_METHOD("_on_light_moved"), &VoxelChunk::_on_light_moved);
+
+	// Structures
 	ClassDB::bind_method(D_METHOD("voxel_structure_get", "index"), &VoxelChunk::voxel_structure_get);
 	ClassDB::bind_method(D_METHOD("voxel_structure_add", "structure"), &VoxelChunk::voxel_structure_add);
 	ClassDB::bind_method(D_METHOD("voxel_structure_remove", "structure"), &VoxelChunk::voxel_structure_remove);

@@ -227,6 +227,21 @@ public:
 	int get_data_index(const int x, const int y, const int z) const;
 	int get_data_size() const;
 
+	//Lights
+	void light_add(Ref<VoxelLight> p_light);
+	bool light_remove(Ref<VoxelLight> p_light);
+	bool light_has(const Ref<VoxelLight> &p_light);
+
+	Ref<VoxelLight> light_get_index(const int index);
+	void light_remove_index(const int index);
+	int light_get_count() const;
+	void lights_clear();
+
+	Vector<Variant> lights_get();
+	void lights_set(const Vector<Variant> &chunks);
+
+	void _on_light_moved(const Ref<VoxelLight> &p_light);
+
 	//Voxel Structures
 	Ref<VoxelStructure> voxel_structure_get(const int index) const;
 	void voxel_structure_add(const Ref<VoxelStructure> &structure);
@@ -433,6 +448,8 @@ protected:
 	Vector<Ref<VoxelJob>> _jobs;
 
 	Ref<VoxelLibrary> _library;
+
+	Vector<Ref<VoxelLight>> _lights;
 
 	Vector<Ref<VoxelStructure>> _voxel_structures;
 

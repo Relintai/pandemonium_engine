@@ -51,14 +51,12 @@
 #include "../mesh_data_resource/mesh_data_resource.h"
 #endif
 
-#ifdef MODULE_TERRAMAN_ENABLED
-#include "../terraman/data/terrain_light.h"
-#endif
-
 class OpenSimplexNoise;
 class PropLight;
 class PropMaterialCache;
 class TiledWallData;
+class TerrainLight;
+class VoxelLight;
 
 class PropMesher : public Reference {
 	GDCLASS(PropMesher, Reference);
@@ -171,6 +169,10 @@ public:
 
 #ifdef MODULE_TERRAMAN_ENABLED
 	void bake_lights(MeshInstance *node, Vector<Ref<TerrainLight>> &lights);
+#endif
+
+#ifdef MODULE_VOXELMAN_ENABLED
+	void bake_lights(MeshInstance *node, Vector<Ref<VoxelLight>> &lights);
 #endif
 
 	Array build_mesh();
