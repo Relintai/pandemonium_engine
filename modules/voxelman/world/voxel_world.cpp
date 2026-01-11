@@ -52,6 +52,11 @@
 #include "../../mesh_data_resource/props/prop_data_mesh_data.h"
 #endif
 
+#if TOOLS_ENABLED
+#include "editor/plugins/spatial_editor_plugin.h"
+#include "scene/3d/camera.h"
+#endif
+
 const String VoxelWorld::BINDING_STRING_CHANNEL_TYPE_INFO = "Type,Isolevel,Liquid,Liquid Level";
 
 bool VoxelWorld::get_editable() const {
@@ -488,6 +493,26 @@ void VoxelWorld::chunks_set(const Vector<Variant> &chunks) {
 
 int VoxelWorld::_get_channel_index_info(const VoxelWorld::ChannelTypeInfo channel_type) {
 	return -1;
+}
+
+Spatial *VoxelWorld::get_editor_camera() {
+#if TOOLS_ENABLED
+	SpatialEditor *se = SpatialEditor::get_singleton();
+
+	if (!se) {
+		return nullptr;
+	}
+
+	SpatialEditorViewport *wp = se->get_editor_viewport(0);
+
+	if (!wp) {
+		return nullptr;
+	}
+
+	return wp->get_camera();
+#else
+	return NULL;
+#endif
 }
 
 void VoxelWorld::_set_voxel_with_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal, const int selected_voxel, const int isolevel) {
