@@ -236,7 +236,7 @@ void VoxelLibraryMergerPCM::_material_cache_unref(const int key) {
 }
 
 void VoxelLibraryMergerPCM::_liquid_material_cache_get_key(Ref<VoxelChunk> chunk) {
-	uint8_t *ch = chunk->channel_get(VoxelChunkDefault::DEFAULT_CHANNEL_ALT_TYPE);
+	uint8_t *ch = chunk->channel_get(VoxelChunkDefault::DEFAULT_CHANNEL_LIQUID_TYPE);
 
 	if (!ch) {
 		chunk->liquid_material_cache_key_set(0);

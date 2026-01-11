@@ -273,10 +273,10 @@
 		<constant name="DEFAULT_CHANNEL_ISOLEVEL" value="1" enum="DefaultChannels">
 			The default isolevel channel.
 		</constant>
-		<constant name="DEFAULT_CHANNEL_ALT_TYPE" value="2" enum="DefaultChannels">
+		<constant name="DEFAULT_CHANNEL_LIQUID_TYPE" value="2" enum="DefaultChannels">
 			The default liquid type channel.
 		</constant>
-		<constant name="DEFAULT_CHANNEL_ALT_ISOLEVEL" value="3" enum="DefaultChannels">
+		<constant name="DEFAULT_CHANNEL_LIQUID_ISOLEVEL" value="3" enum="DefaultChannels">
 			The default liquid isolevel channel.
 		</constant>
 		<constant name="DEFAULT_CHANNEL_LIGHT_COLOR_R" value="4" enum="DefaultChannels">
