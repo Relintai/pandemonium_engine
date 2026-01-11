@@ -327,6 +327,8 @@ void VoxelWorld::chunk_add(Ref<VoxelChunk> chunk, const int x, const int y, cons
 		call("_chunk_added", chunk);
 	}
 
+	emit_signal("chunk_added", chunk);
+
 	generation_queue_add_to(chunk);
 }
 bool VoxelWorld::chunk_has(const int x, const int y, const int z) const {
@@ -368,7 +370,8 @@ Ref<VoxelChunk> VoxelWorld::chunk_remove(const int x, const int y, const int z) 
 	//never remove from this here
 	//_generating.erase(chunk);
 
-	ERR_FAIL_COND_V(!_chunks.erase(pos), NULL);
+	_chunks.erase(pos);
+	emit_signal("chunk_removed", chunk);
 
 	//_chunks.erase(pos);
 
@@ -392,6 +395,8 @@ Ref<VoxelChunk> VoxelWorld::chunk_remove_index(const int index) {
 	//never remove from this here
 	//_generating.erase(chunk);
 
+	emit_signal("chunk_removed", chunk);
+
 	return chunk;
 }
 
@@ -406,7 +411,11 @@ int VoxelWorld::chunk_get_count() const {
 
 void VoxelWorld::chunks_clear() {
 	for (int i = 0; i < _chunks_vector.size(); ++i) {
-		_chunks_vector.get(i)->exit_tree();
+		Ref<VoxelChunk> chunk = _chunks_vector.get(i);
+
+		chunk->exit_tree();
+
+		emit_signal("chunk_removed", chunk);
 	}
 
 	_chunks_vector.clear();
@@ -1627,6 +1636,8 @@ void VoxelWorld::_notification(int p_what) {
 
 void VoxelWorld::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("chunk_mesh_generation_finished", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
+	ADD_SIGNAL(MethodInfo("chunk_added", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
+	ADD_SIGNAL(MethodInfo("chunk_removed", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
 
 	ClassDB::bind_method(D_METHOD("get_active"), &VoxelWorld::get_active);
 	ClassDB::bind_method(D_METHOD("set_active", "value"), &VoxelWorld::set_active);
