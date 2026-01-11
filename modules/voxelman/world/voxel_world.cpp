@@ -892,6 +892,45 @@ void VoxelWorld::set_voxel_at_world_position(const Vector3 &world_position, cons
 				chunk->build();
 			}
 		}
+
+		// PRobably needed, todo: https://git.relintai.net/Relintai/pandemonium_engine/commit/39b3a12b1ae84b05f786716fdc0ac90a22d82c2e
+		/*
+		if (bx != 0 && by == 0 && bz == 0) {
+			Ref<TerrainChunk> chunk = chunk_get_or_create(x, y - 1, z - 1);
+			chunk->set_voxel(data, bx, get_chunk_size_y(), get_chunk_size_z(), channel_index);
+
+			if (rebuild) {
+				chunk->build();
+			}
+		}
+
+		if (bx == 0 && by != 0 && bz == 0) {
+			Ref<TerrainChunk> chunk = chunk_get_or_create(x - 1, y, z - 1);
+			chunk->set_voxel(data, get_chunk_size_x(), by, get_chunk_size_z(), channel_index);
+
+			if (rebuild) {
+				chunk->build();
+			}
+		}
+
+		if (bx == 0 && by == 0 && bz != 0) {
+			Ref<TerrainChunk> chunk = chunk_get_or_create(x - 1, y - 1, z);
+			chunk->set_voxel(data, get_chunk_size_x(), get_chunk_size_y(), bz, channel_index);
+
+			if (rebuild) {
+				chunk->build();
+			}
+		}
+
+		if (bx == 0 && by == 0 && bz == 0) {
+			Ref<TerrainChunk> chunk = chunk_get_or_create(x - 1, y - 1, z - 1);
+			chunk->set_voxel(data, get_chunk_size_x(), get_chunk_size_y(), get_chunk_size_z(), channel_index);
+
+			if (rebuild) {
+				chunk->build();
+			}
+		}
+		*/
 	}
 
 	if (get_data_margin_start() > 0) {
