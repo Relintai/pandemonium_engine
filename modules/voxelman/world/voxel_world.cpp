@@ -38,6 +38,8 @@
 
 #include "../defines.h"
 
+#include "core/object/message_queue.h"
+
 #include "modules/modules_enabled.gen.h"
 
 #ifdef MODULE_PROPS_ENABLED
@@ -331,10 +333,12 @@ Ref<VoxelChunk> VoxelWorld::chunk_remove(const int x, const int y, const int z) 
 	IntPos pos(x, y, z);
 
 	if (!_chunks.has(pos)) {
-		return NULL;
+		return Ref<VoxelChunk>();
 	}
 
 	Ref<VoxelChunk> chunk = _chunks.get(pos);
+
+	chunk->exit_tree();
 
 	for (int i = 0; i < _chunks_vector.size(); ++i) {
 		if (_chunks_vector.get(i) == chunk) {
@@ -343,7 +347,14 @@ Ref<VoxelChunk> VoxelWorld::chunk_remove(const int x, const int y, const int z) 
 		}
 	}
 
-	chunk->exit_tree();
+	_generation_queue.erase(chunk);
+
+	if (chunk->get_is_generating()) {
+		chunk->cancel_build();
+	}
+
+	//never remove from this here
+	//_generating.erase(chunk);
 
 	ERR_FAIL_COND_V(!_chunks.erase(pos), NULL);
 
@@ -355,9 +366,19 @@ Ref<VoxelChunk> VoxelWorld::chunk_remove_index(const int index) {
 	ERR_FAIL_INDEX_V(index, _chunks_vector.size(), NULL);
 
 	Ref<VoxelChunk> chunk = _chunks_vector.get(index);
+	chunk->exit_tree();
+
 	_chunks_vector.remove(index);
 	_chunks.erase(IntPos(chunk->get_position_x(), chunk->get_position_y(), chunk->get_position_z()));
-	chunk->exit_tree();
+
+	_generation_queue.erase(chunk);
+
+	if (chunk->get_is_generating()) {
+		chunk->cancel_build();
+	}
+
+	//never remove from this here
+	//_generating.erase(chunk);
 
 	return chunk;
 }
@@ -377,11 +398,20 @@ void VoxelWorld::chunks_clear() {
 	}
 
 	_chunks_vector.clear();
-
 	_chunks.clear();
 
 	_generation_queue.clear();
-	_generating.clear();
+
+	for (int i = 0; i < _generating.size(); ++i) {
+		Ref<VoxelChunk> chunk = _generating[i];
+
+		if (chunk->get_is_generating()) {
+			chunk->cancel_build();
+		}
+	}
+
+	//never remove from this here
+	//_generating.clear();
 }
 
 Ref<VoxelChunk> VoxelWorld::chunk_get_or_create(int x, int y, int z) {
@@ -461,7 +491,16 @@ void VoxelWorld::chunks_set(const Vector<Variant> &chunks) {
 			if (chunks.find(chunk) == -1) {
 				chunk_remove_index(i);
 				_generation_queue.erase(chunk);
-				_generating.erase(chunk);
+
+				chunk->exit_tree();
+
+				if (chunk->get_is_generating()) {
+					chunk->cancel_build();
+				}
+
+				//never remove from this here
+				//_generating.erase(chunk);
+
 				--i;
 			}
 		}
@@ -1414,7 +1453,19 @@ void VoxelWorld::_notification(int p_what) {
 			for (int i = 0; i < _generating.size(); ++i) {
 				Ref<VoxelChunk> chunk = _generating.get(i);
 
-				if (!chunk.is_valid() || !chunk->get_is_generating()) {
+				if (!chunk.is_valid()) {
+					_generating.remove(i);
+					--i;
+					continue;
+				}
+
+				if (!chunk->get_is_generating()) {
+					_generating.remove(i);
+					--i;
+					continue;
+				}
+
+				if (chunk->is_build_aborted() && chunk->is_safe_to_delete()) {
 					_generating.remove(i);
 					--i;
 					continue;

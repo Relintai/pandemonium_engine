@@ -43,6 +43,8 @@
 
 #include "modules/modules_enabled.gen.h"
 
+#include "core/object/message_queue.h"
+
 #ifdef MODULE_LZ4_ENABLED
 #include "modules/lz4/lz4_compressor.h"
 #endif
@@ -89,6 +91,10 @@ bool VoxelChunk::get_is_immediate_build() const {
 }
 void VoxelChunk::set_is_immediate_build(const bool value) {
 	_is_immediate_build = value;
+}
+
+bool VoxelChunk::is_build_aborted() const {
+	return _abort_build;
 }
 
 bool VoxelChunk::is_in_tree() const {
@@ -331,6 +337,12 @@ int VoxelChunk::job_get_current_index() {
 	return _current_job;
 }
 void VoxelChunk::job_next() {
+	if (_abort_build) {
+		_is_generating = false;
+		_current_job = -1;
+		return;
+	}
+
 	_THREAD_SAFE_METHOD_
 
 	++_current_job;
@@ -753,6 +765,20 @@ void VoxelChunk::finalize_build() {
 	}
 }
 
+void VoxelChunk::cancel_build() {
+	_queued_generation = false;
+
+	_abort_build = true;
+
+	if (_is_generating) {
+		Ref<VoxelJob> job = job_get_current();
+
+		if (job.is_valid()) {
+			ThreadPool::get_singleton()->cancel_job(job);
+		}
+	}
+}
+
 void VoxelChunk::bake_lights() {
 	if (has_method("_bake_lights")) {
 		call("_bake_lights");
@@ -1109,6 +1135,20 @@ Vector3 VoxelChunk::to_local(Vector3 p_global) const {
 
 Vector3 VoxelChunk::to_global(Vector3 p_local) const {
 	return get_global_transform().xform(p_local);
+}
+
+bool VoxelChunk::is_safe_to_delete() {
+	if (!_is_generating) {
+		return true;
+	}
+
+	Ref<VoxelJob> job = job_get_current();
+
+	if (!job.is_valid()) {
+		return true;
+	}
+
+	return !ThreadPool::get_singleton()->has_job(job);
 }
 
 VoxelChunk::VoxelChunk() {

@@ -734,7 +734,10 @@ void VoxelChunkDefault::_visibility_changed(bool visible) {
 void VoxelChunkDefault::_exit_tree() {
 	VoxelChunk::_exit_tree();
 
-	rids_free();
+	if (!_is_generating) {
+		rids_free();
+		rids_clear();
+	}
 }
 
 void VoxelChunkDefault::_world_transform_changed() {
@@ -876,6 +879,7 @@ VoxelChunkDefault::~VoxelChunkDefault() {
 	_lights.clear();
 
 	debug_mesh_free();
+	rids_free();
 }
 
 void VoxelChunkDefault::_channel_setup() {

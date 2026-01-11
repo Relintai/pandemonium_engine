@@ -96,6 +96,8 @@ public:
 	bool get_is_generating() const;
 	void set_is_generating(const bool value);
 
+	bool is_build_aborted() const;
+
 	bool get_is_immediate_build() const;
 	void set_is_immediate_build(const bool value);
 
@@ -239,6 +241,7 @@ public:
 	void build_immediate();
 	void clear();
 	void finalize_build();
+	void cancel_build();
 
 	virtual void _build();
 	virtual void _build_immediate();
@@ -321,6 +324,8 @@ public:
 	Transform get_global_transform() const;
 	Vector3 to_local(Vector3 p_global) const;
 	Vector3 to_global(Vector3 p_local) const;
+
+	bool is_safe_to_delete();
 
 	VoxelChunk();
 	~VoxelChunk();
