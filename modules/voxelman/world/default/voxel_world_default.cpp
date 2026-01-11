@@ -86,6 +86,10 @@ void VoxelWorldDefault::set_num_lods(const int value) {
 }
 
 void VoxelWorldDefault::update_lods() {
+	if (!get_active()) {
+		return;
+	}
+
 	call("_update_lods");
 }
 
@@ -342,6 +346,26 @@ void VoxelWorldDefault::_notification(int p_what) {
 
 				update_lods();
 			}
+		} break;
+		case NOTIFICATION_ACTIVE_STATE_CHANGED: {
+			if (!is_inside_tree()) {
+				return;
+			}
+
+			bool active = get_active();
+
+			for (int i = 0; i < chunk_get_count(); ++i) {
+				Ref<VoxelChunk> chunk = chunk_get_index(i);
+
+				if (chunk.is_valid()) {
+					chunk->set_visible(active);
+				}
+			}
+
+			if (active) {
+				update_lods();
+			}
+
 		} break;
 	}
 }

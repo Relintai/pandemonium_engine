@@ -61,6 +61,16 @@
 
 const String VoxelWorld::BINDING_STRING_CHANNEL_TYPE_INFO = "Type,Isolevel,Liquid,Liquid Level";
 
+bool VoxelWorld::get_active() const {
+	return _active;
+}
+
+void VoxelWorld::set_active(const bool value) {
+	_active = value;
+
+	notification(NOTIFICATION_ACTIVE_STATE_CHANGED);
+}
+
 bool VoxelWorld::get_editable() const {
 	return _editable;
 }
@@ -463,6 +473,10 @@ Ref<VoxelChunk> VoxelWorld::_create_chunk(const int x, const int y, const int z,
 	chunk->set_voxel_scale(_voxel_scale);
 	chunk->set_size(_chunk_size_x, _chunk_size_y, _chunk_size_z, _data_margin_start, _data_margin_end);
 	//chunk->set_translation(Vector3(x * _chunk_size_x * _voxel_scale, y * _chunk_size_y * _voxel_scale, z * _chunk_size_z * _voxel_scale));
+
+	if (!get_active()) {
+		chunk->set_visible(false);
+	}
 
 	chunk_add(chunk, x, y, z);
 
@@ -1404,6 +1418,7 @@ int VoxelWorld::get_channel_index_info(const VoxelWorld::ChannelTypeInfo channel
 }
 
 VoxelWorld::VoxelWorld() {
+	_active = true;
 	_editable = false;
 
 	_is_priority_generation = false;
@@ -1613,6 +1628,10 @@ void VoxelWorld::_notification(int p_what) {
 void VoxelWorld::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("chunk_mesh_generation_finished", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
 
+	ClassDB::bind_method(D_METHOD("get_active"), &VoxelWorld::get_active);
+	ClassDB::bind_method(D_METHOD("set_active", "value"), &VoxelWorld::set_active);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "active"), "set_active", "get_active");
+
 	ClassDB::bind_method(D_METHOD("get_editable"), &VoxelWorld::get_editable);
 	ClassDB::bind_method(D_METHOD("set_editable", "value"), &VoxelWorld::set_editable);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "editable"), "set_editable", "get_editable");
@@ -1791,4 +1810,6 @@ void VoxelWorld::_bind_methods() {
 	BIND_ENUM_CONSTANT(CHANNEL_TYPE_INFO_TYPE);
 	BIND_ENUM_CONSTANT(CHANNEL_TYPE_INFO_ISOLEVEL);
 	BIND_ENUM_CONSTANT(CHANNEL_TYPE_INFO_LIQUID_FLOW);
+
+	BIND_CONSTANT(NOTIFICATION_ACTIVE_STATE_CHANGED);
 }

@@ -65,9 +65,16 @@ public:
 		CHANNEL_TYPE_INFO_LIQUID_FLOW,
 	};
 
+	enum {
+		NOTIFICATION_ACTIVE_STATE_CHANGED = 9000,
+	};
+
 	static const String BINDING_STRING_CHANNEL_TYPE_INFO;
 
 public:
+	bool get_active() const;
+	void set_active(const bool value);
+
 	bool get_editable() const;
 	void set_editable(const bool value);
 
@@ -256,6 +263,7 @@ public:
 	};
 
 private:
+	bool _active;
 	bool _editable;
 
 	bool _is_priority_generation;
