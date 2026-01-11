@@ -154,11 +154,9 @@ void VoxelTerrainJob::phase_library_setup() {
 			lib->material_cache_get_key(_chunk);
 		}
 
-		/*
 		if (!_chunk->liquid_material_cache_key_has() || _chunk->liquid_material_cache_key_invalid_get()) {
 			lib->liquid_material_cache_get_key(_chunk);
 		}
-		*/
 	}
 
 	next_phase();
@@ -567,16 +565,19 @@ void VoxelTerrainJob::phase_terrain_mesh() {
 			}
 		}
 
-		//	if (should_do()) {
 		RS::get_singleton()->mesh_add_surface_from_arrays(mesh_rid, RenderingServer::PRIMITIVE_TRIANGLES, temp_mesh_arr);
 
-		if (chunk->get_library()->liquid_material_lod_get(0).is_valid())
-			RS::get_singleton()->mesh_surface_set_material(mesh_rid, 0, chunk->get_library()->liquid_material_lod_get(0)->get_rid());
+		Ref<Material> lmat;
 
-		//	if (should_return()) {
-		//		return;
-		//	}
-		//}
+		if (chunk->liquid_material_cache_key_has()) {
+			lmat = chunk->get_library()->liquid_material_cache_get(_chunk->liquid_material_cache_key_get())->material_get(0);
+		} else {
+			lmat = chunk->get_library()->liquid_material_get(0);
+		}
+
+		if (lmat.is_valid()) {
+			RS::get_singleton()->mesh_surface_set_material(mesh_rid, 0, lmat->get_rid());
+		}
 	}
 
 	if (has_meta("bptm_ulm")) {
