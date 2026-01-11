@@ -31,6 +31,13 @@
 
 #include "voxel_light.h"
 
+VoxelLight::OwnerType VoxelLight::get_owner_type() const {
+	return _owner_type;
+}
+void VoxelLight::set_owner_type(const OwnerType p_value) {
+	_owner_type = p_value;
+}
+
 bool VoxelLight::get_has_owner_chunk() const {
 	return _has_owner_chunk;
 }
@@ -110,6 +117,8 @@ void VoxelLight::set_specular(const real_t value) {
 }
 
 VoxelLight::VoxelLight() {
+	_owner_type = OWNER_TYPE_NONE;
+	_has_owner_chunk = false;
 	_range = 0;
 	_attenuation = 0;
 	_energy = 0;
@@ -123,6 +132,19 @@ VoxelLight::~VoxelLight() {
 
 void VoxelLight::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("light_moved", PropertyInfo(Variant::OBJECT, "light", PROPERTY_HINT_RESOURCE_TYPE, "VoxelLight")));
+
+	ClassDB::bind_method(D_METHOD("get_owner_type"), &VoxelLight::get_owner_type);
+	ClassDB::bind_method(D_METHOD("set_owner_type", "value"), &VoxelLight::set_owner_type);
+
+	String owner_type_hint = "None";
+#ifdef MODULE_PROPS_ENABLED
+	owner_type_hint += ",Prop";
+#endif
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	owner_type_hint += ",Vertex Light 3D";
+#endif
+
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "owner_type", PROPERTY_HINT_ENUM, owner_type_hint), "set_owner_type", "get_owner_type");
 
 	ClassDB::bind_method(D_METHOD("get_has_owner_chunk"), &VoxelLight::get_has_owner_chunk);
 	ClassDB::bind_method(D_METHOD("set_has_owner_chunk", "value"), &VoxelLight::set_has_owner_chunk);
@@ -163,4 +185,12 @@ void VoxelLight::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_specular"), &VoxelLight::get_specular);
 	ClassDB::bind_method(D_METHOD("set_specular", "value"), &VoxelLight::set_specular);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "light_specular"), "set_specular", "get_specular");
+
+	BIND_ENUM_CONSTANT(OWNER_TYPE_NONE);
+#ifdef MODULE_PROPS_ENABLED
+	BIND_ENUM_CONSTANT(OWNER_TYPE_PROP);
+#endif
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	BIND_ENUM_CONSTANT(OWNER_TYPE_VERTEX_LIGHT_3D);
+#endif
 }
