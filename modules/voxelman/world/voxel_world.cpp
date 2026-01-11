@@ -693,10 +693,10 @@ int VoxelWorld::generation_get_size() const {
 }
 
 #ifdef MODULE_PROPS_ENABLED
-void VoxelWorld::prop_add(Transform transform, const Ref<PropData> &prop, const bool apply_voxel_scael) {
+void VoxelWorld::prop_add(Transform transform, const Ref<PropData> &prop, const bool apply_voxel_scale, const bool p_owner) {
 	ERR_FAIL_COND(!prop.is_valid());
 
-	if (apply_voxel_scael) {
+	if (apply_voxel_scale) {
 		transform = transform.scaled(Vector3(get_voxel_scale(), get_voxel_scale(), get_voxel_scale()));
 	}
 
@@ -704,7 +704,7 @@ void VoxelWorld::prop_add(Transform transform, const Ref<PropData> &prop, const 
 	wp = transform.xform(wp);
 	Ref<VoxelChunk> chunk = get_or_create_chunk_at_world_position(wp);
 
-	chunk->prop_add(transform, prop);
+	chunk->prop_add(transform, prop, p_owner);
 
 	int count = prop->get_prop_count();
 	for (int i = 0; i < count; ++i) {
@@ -728,7 +728,7 @@ void VoxelWorld::prop_add(Transform transform, const Ref<PropData> &prop, const 
 				continue;
 			}
 
-			prop_add(t, p, false);
+			prop_add(t, p, false, p_owner);
 
 			continue;
 		}
@@ -1799,7 +1799,7 @@ void VoxelWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("on_chunk_mesh_generation_finished", "chunk"), &VoxelWorld::on_chunk_mesh_generation_finished);
 
 #ifdef MODULE_PROPS_ENABLED
-	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "apply_voxel_scael"), &VoxelWorld::prop_add, DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "apply_voxel_scale", "owner"), &VoxelWorld::prop_add, DEFVAL(true), DEFVAL(true));
 #endif
 
 	//Lights

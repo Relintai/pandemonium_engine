@@ -183,7 +183,7 @@ public:
 	int generation_get_size() const;
 
 #ifdef MODULE_PROPS_ENABLED
-	void prop_add(Transform transform, const Ref<PropData> &prop, const bool apply_voxel_scael = true);
+	void prop_add(Transform transform, const Ref<PropData> &prop, const bool apply_voxel_scale = true, const bool p_owner = true);
 #endif
 
 	//Lights
