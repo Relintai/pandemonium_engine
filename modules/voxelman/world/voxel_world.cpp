@@ -735,7 +735,7 @@ void VoxelWorld::prop_add(Transform transform, const Ref<PropData> &prop, const 
 				continue;
 			}
 
-			chunk->mesh_data_resource_add(t, mdr, mesh_data->get_texture());
+			chunk->mesh_data_resource_add(t, mdr, mesh_data->get_texture(), Color(1, 1, 1), false);
 
 			continue;
 		}
