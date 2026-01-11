@@ -757,11 +757,55 @@ void VoxelChunk::lights_clear() {
 Vector<Variant> VoxelChunk::lights_get() {
 	VARIANT_ARRAY_GET(_lights);
 }
-void VoxelChunk::lights_set(const Vector<Variant> &chunks) {
+void VoxelChunk::lights_set(const Vector<Variant> &p_lights) {
 	lights_clear();
 
-	for (int i = 0; i < chunks.size(); ++i) {
-		Ref<VoxelLight> light = Ref<VoxelLight>(chunks[i]);
+	for (int i = 0; i < p_lights.size(); ++i) {
+		Ref<VoxelLight> light = Ref<VoxelLight>(p_lights[i]);
+
+		light_add(light);
+	}
+}
+
+Vector<Variant> VoxelChunk::owned_lights_get() {
+	Vector<Variant> r;
+	for (int i = 0; i < _lights.size(); i++) {
+		Ref<VoxelLight> l = _lights[i];
+
+		if (!l.is_valid()) {
+			continue;
+		}
+
+		if (l->get_owner_type() != VoxelLight::OWNER_TYPE_NONE) {
+			continue;
+		}
+
+		r.push_back(_lights[i].get_ref_ptr());
+	}
+	return r;
+}
+void VoxelChunk::owned_lights_set(const Vector<Variant> &p_lights) {
+	for (int i = 0; i < _lights.size(); ++i) {
+		Ref<VoxelLight> l = _lights[i];
+
+		if (!l.is_valid()) {
+			continue;
+		}
+
+		if (l->get_owner_type() != VoxelLight::OWNER_TYPE_NONE) {
+			continue;
+		}
+
+		light_remove_index(i);
+		--i;
+	}
+
+	for (int i = 0; i < p_lights.size(); ++i) {
+		Ref<VoxelLight> light = Ref<VoxelLight>(p_lights[i]);
+
+		if (!light.is_valid()) {
+			continue;
+		}
 
 		light_add(light);
 	}
@@ -1830,7 +1874,11 @@ void VoxelChunk::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("lights_get"), &VoxelChunk::lights_get);
 	ClassDB::bind_method(D_METHOD("lights_set", "chunks"), &VoxelChunk::lights_set);
-	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "lights", PROPERTY_HINT_NONE, "23/20:VoxelLight", PROPERTY_USAGE_DEFAULT, "VoxelLight"), "lights_set", "lights_get");
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "lights", PROPERTY_HINT_NONE, "23/20:VoxelLight", 0, "VoxelLight"), "lights_set", "lights_get");
+
+	ClassDB::bind_method(D_METHOD("owned_lights_get"), &VoxelChunk::owned_lights_get);
+	ClassDB::bind_method(D_METHOD("owned_lights_set", "chunks"), &VoxelChunk::owned_lights_set);
+	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "owned_lights", PROPERTY_HINT_NONE, "23/20:VoxelLight", PROPERTY_USAGE_DEFAULT, "VoxelLight"), "owned_lights_set", "owned_lights_get");
 
 	ClassDB::bind_method(D_METHOD("_on_light_moved"), &VoxelChunk::_on_light_moved);
 

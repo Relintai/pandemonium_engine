@@ -238,7 +238,10 @@ public:
 	void lights_clear();
 
 	Vector<Variant> lights_get();
-	void lights_set(const Vector<Variant> &chunks);
+	void lights_set(const Vector<Variant> &p_lights);
+
+	Vector<Variant> owned_lights_get();
+	void owned_lights_set(const Vector<Variant> &p_lights);
 
 	void _on_light_moved(const Ref<VoxelLight> &p_light);
 
