@@ -93,6 +93,13 @@ void VoxelChunk::set_is_immediate_build(const bool value) {
 	_is_immediate_build = value;
 }
 
+bool VoxelChunk::get_is_terrain_generated() const {
+	return _is_terrain_generated;
+}
+void VoxelChunk::set_is_terrain_generated(const bool value) {
+	_is_terrain_generated = value;
+}
+
 bool VoxelChunk::is_build_aborted() const {
 	return _abort_build;
 }
@@ -1159,6 +1166,7 @@ VoxelChunk::VoxelChunk() {
 
 	_is_generating = false;
 	_is_immediate_build = false;
+	_is_terrain_generated = false;
 	_dirty = false;
 	_state = VOXEL_CHUNK_STATE_OK;
 
@@ -1440,6 +1448,10 @@ void VoxelChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_is_immediate_build"), &VoxelChunk::get_is_immediate_build);
 	ClassDB::bind_method(D_METHOD("set_is_immediate_build", "value"), &VoxelChunk::set_is_immediate_build);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_immediate_build", PROPERTY_HINT_NONE, "", 0), "set_is_immediate_build", "get_is_immediate_build");
+
+	ClassDB::bind_method(D_METHOD("get_is_terrain_generated"), &VoxelChunk::get_is_terrain_generated);
+	ClassDB::bind_method(D_METHOD("set_is_terrain_generated", "value"), &VoxelChunk::set_is_terrain_generated);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_terrain_generated"), "set_is_terrain_generated", "get_is_terrain_generated");
 
 	ClassDB::bind_method(D_METHOD("get_dirty"), &VoxelChunk::get_dirty);
 	ClassDB::bind_method(D_METHOD("set_dirty", "value"), &VoxelChunk::set_dirty);

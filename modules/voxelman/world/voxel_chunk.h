@@ -101,6 +101,9 @@ public:
 	bool get_is_immediate_build() const;
 	void set_is_immediate_build(const bool value);
 
+	bool get_is_terrain_generated() const;
+	void set_is_terrain_generated(const bool value);
+
 	bool is_in_tree() const;
 
 	bool get_dirty() const;
@@ -381,6 +384,7 @@ protected:
 
 	bool _is_generating;
 	bool _is_immediate_build;
+	bool _is_terrain_generated;
 	bool _dirty;
 	int _state;
 
