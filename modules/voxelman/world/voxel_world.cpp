@@ -509,49 +509,39 @@ Vector<Variant> VoxelWorld::chunks_get() {
 }
 
 void VoxelWorld::chunks_set(const Vector<Variant> &chunks) {
-	if (is_inside_tree()) {
-		for (int i = 0; i < _chunks_vector.size(); ++i) {
-			Ref<VoxelChunk> chunk = Ref<VoxelChunk>(_chunks_vector[i]);
+	for (int i = 0; i < _chunks_vector.size(); ++i) {
+		Ref<VoxelChunk> chunk = Ref<VoxelChunk>(_chunks_vector[i]);
 
-			if (chunks.find(chunk) == -1) {
-				chunk_remove_index(i);
-				_generation_queue.erase(chunk);
+		if (chunks.find(chunk) == -1) {
+			chunk_remove_index(i);
+			_generation_queue.erase(chunk);
 
-				chunk->exit_tree();
+			chunk->exit_tree();
 
-				if (chunk->get_is_generating()) {
-					chunk->cancel_build();
-				}
-
-				//never remove from this here
-				//_generating.erase(chunk);
-
-				--i;
-			}
-		}
-
-		//add the difference
-		for (int i = 0; i < chunks.size(); ++i) {
-			Ref<VoxelChunk> chunk = Ref<VoxelChunk>(chunks[i]);
-
-			if (!chunk.is_valid()) {
-				continue;
+			if (chunk->get_is_generating()) {
+				chunk->cancel_build();
 			}
 
-			if (_chunks_vector.find(chunk) != -1) {
-				continue;
-			}
+			//never remove from this here
+			//_generating.erase(chunk);
 
-			chunk_add(chunk, chunk->get_position_x(), chunk->get_position_y(), chunk->get_position_z());
+			--i;
 		}
-	} else {
-		_chunks_vector.clear();
+	}
 
-		for (int i = 0; i < chunks.size(); ++i) {
-			Ref<VoxelChunk> chunk = Ref<VoxelChunk>(chunks[i]);
+	//add the difference
+	for (int i = 0; i < chunks.size(); ++i) {
+		Ref<VoxelChunk> chunk = Ref<VoxelChunk>(chunks[i]);
 
-			_chunks_vector.push_back(chunk);
+		if (!chunk.is_valid()) {
+			continue;
 		}
+
+		if (_chunks_vector.find(chunk) != -1) {
+			continue;
+		}
+
+		chunk_add(chunk, chunk->get_position_x(), chunk->get_position_y(), chunk->get_position_z());
 	}
 }
 
