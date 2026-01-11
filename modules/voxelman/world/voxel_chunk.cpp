@@ -2010,7 +2010,7 @@ void VoxelChunk::_bind_methods() {
 	//Props
 
 #ifdef MODULE_PROPS_ENABLED
-	ClassDB::bind_method(D_METHOD("prop_add", "prop", "original"), &VoxelChunk::prop_add, DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "original"), &VoxelChunk::prop_add, DEFVAL(true));
 
 	ClassDB::bind_method(D_METHOD("prop_get", "index"), &VoxelChunk::prop_get);
 	ClassDB::bind_method(D_METHOD("prop_set", "index", "prop"), &VoxelChunk::prop_set);
