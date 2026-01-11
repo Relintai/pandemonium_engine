@@ -257,6 +257,25 @@ public:
 	Vector<Variant> voxel_structures_get();
 	void voxel_structures_set(const Vector<Variant> &structures);
 
+	//Scenes
+	void scene_add(const Ref<PackedScene> &p_scene, const Transform &p_transform = Transform(), const bool p_original = true);
+
+	Ref<PackedScene> scene_get(const int index);
+	void scene_set(const int index, const Ref<PackedScene> &p_scene);
+
+	Transform scene_get_transform(const int index);
+	void scene_set_transform(const int index, const Transform &p_transform);
+
+	bool scene_get_is_original(const int index);
+	void scene_set_is_original(const int index, const bool p_original);
+
+	int scene_get_count() const;
+	void scene_remove(const int index);
+	void scenes_clear();
+
+	Array scenes_get();
+	void scenes_set(const Array &p_scenes);
+
 	//Meshing
 	void build();
 	void build_immediate();
@@ -375,6 +394,12 @@ protected:
 	virtual void _generation_physics_process(const float delta);
 
 protected:
+	struct SceneDataStore {
+		bool original;
+		Transform transform;
+		Ref<PackedScene> scene;
+	};
+
 #ifdef MODULE_PROPS_ENABLED
 	struct PropDataStore {
 		bool original;
@@ -468,6 +493,8 @@ protected:
 	Vector<Ref<VoxelLight>> _lights;
 
 	Vector<Ref<VoxelStructure>> _voxel_structures;
+
+	Vector<SceneDataStore> _scenes;
 
 #ifdef MODULE_PROPS_ENABLED
 	Vector<PropDataStore> _props;
