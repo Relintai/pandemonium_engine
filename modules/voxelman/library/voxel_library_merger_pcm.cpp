@@ -37,7 +37,7 @@
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/texture.h"
 
-#include "core/message_queue.h"
+#include "core/object/message_queue.h"
 
 #include "modules/modules_enabled.gen.h"
 
