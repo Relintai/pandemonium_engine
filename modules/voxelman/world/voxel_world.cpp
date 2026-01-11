@@ -1584,6 +1584,11 @@ void VoxelWorld::_notification(int p_what) {
 			}
 
 		} break;
+		case MainLoop::NOTIFICATION_QUITTING: {
+			if (_library.is_valid()) {
+				_library->notification(MainLoop::NOTIFICATION_QUITTING);
+			}
+		} break;
 	}
 }
 
