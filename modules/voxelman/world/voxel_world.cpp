@@ -886,6 +886,212 @@ Ref<VoxelChunk> VoxelWorld::get_or_create_chunk_at_world_position(const Vector3 
 	return chunk_get_or_create(x, y, z);
 }
 
+Vector3i VoxelWorld::world_position_to_world_data_position(const Vector3 &world_position) {
+	Vector3 pos = world_position / get_voxel_scale();
+
+	return Vector3i(pos.x, pos.y, pos.z);
+}
+uint8_t VoxelWorld::get_voxel_at_world_data_position(const Vector3i &world_data_position, const int channel_index) {
+	// TODO rework this so it works directly with ints.
+
+	Vector3 pos = world_data_position;
+
+	//Note: floor is needed to handle negative numbers properly
+	int x = static_cast<int>(Math::floor(pos.x / get_chunk_size_x()));
+	int y = static_cast<int>(Math::floor(pos.y / get_chunk_size_y()));
+	int z = static_cast<int>(Math::floor(pos.z / get_chunk_size_z()));
+
+	int bx = static_cast<int>(Math::floor(pos.x)) % get_chunk_size_x();
+	int by = static_cast<int>(Math::floor(pos.y)) % get_chunk_size_y();
+	int bz = static_cast<int>(Math::floor(pos.z)) % get_chunk_size_z();
+
+	if (bx < 0) {
+		bx += get_chunk_size_x();
+	}
+
+	if (by < 0) {
+		by += get_chunk_size_y();
+	}
+
+	if (bz < 0) {
+		bz += get_chunk_size_z();
+	}
+
+	Ref<VoxelChunk> chunk = chunk_get(x, y, z);
+
+	if (chunk.is_valid()) {
+		return chunk->get_voxel(bx, by, bz, channel_index);
+	}
+
+	return 0;
+}
+void VoxelWorld::set_voxel_at_world_data_position(const Vector3i &world_data_position, const uint8_t data, const int channel_index, const bool rebuild, const bool allow_creating_chunks) {
+	// TODO rework this so it works directly with ints.
+
+	Vector3 pos = world_data_position;
+
+	//Note: floor is needed to handle negative numbers properly
+	int x = static_cast<int>(Math::floor(pos.x / get_chunk_size_x()));
+	int y = static_cast<int>(Math::floor(pos.y / get_chunk_size_y()));
+	int z = static_cast<int>(Math::floor(pos.z / get_chunk_size_z()));
+
+	int bx = static_cast<int>(Math::floor(pos.x)) % get_chunk_size_x();
+	int by = static_cast<int>(Math::floor(pos.y)) % get_chunk_size_y();
+	int bz = static_cast<int>(Math::floor(pos.z)) % get_chunk_size_z();
+
+	if (bx < 0) {
+		bx += get_chunk_size_x();
+	}
+
+	if (by < 0) {
+		by += get_chunk_size_y();
+	}
+
+	if (bz < 0) {
+		bz += get_chunk_size_z();
+	}
+
+	Ref<VoxelChunk> chunk;
+
+	if (get_data_margin_end() > 0) {
+		if (bx == 0) {
+			if (allow_creating_chunks) {
+				chunk = chunk_get_or_create(x - 1, y, z);
+			} else {
+				chunk = chunk_get(x - 1, y, z);
+			}
+
+			if (chunk.is_valid()) {
+				chunk->set_voxel(data, get_chunk_size_x(), by, bz, channel_index);
+
+				if (rebuild) {
+					chunk->build();
+				}
+			}
+		}
+
+		if (by == 0) {
+			if (allow_creating_chunks) {
+				chunk = chunk_get_or_create(x, y - 1, z);
+			} else {
+				chunk = chunk_get(x, y - 1, z);
+			}
+
+			if (chunk.is_valid()) {
+				chunk->set_voxel(data, bx, get_chunk_size_y(), bz, channel_index);
+
+				if (rebuild) {
+					chunk->build();
+				}
+			}
+		}
+
+		if (bz == 0) {
+			if (allow_creating_chunks) {
+				chunk = chunk_get_or_create(x, y, z - 1);
+			} else {
+				chunk = chunk_get(x, y, z - 1);
+			}
+
+			if (chunk.is_valid()) {
+				chunk->set_voxel(data, bx, by, get_chunk_size_z(), channel_index);
+
+				if (rebuild) {
+					chunk->build();
+				}
+			}
+		}
+	}
+
+	if (get_data_margin_start() > 0) {
+		if (bx == get_chunk_size_x() - 1) {
+			if (allow_creating_chunks) {
+				chunk = chunk_get_or_create(x + 1, y, z);
+			} else {
+				chunk = chunk_get(x + 1, y, z);
+			}
+
+			if (chunk.is_valid()) {
+				chunk->set_voxel(data, -1, by, bz, channel_index);
+
+				if (rebuild) {
+					chunk->build();
+				}
+			}
+		}
+
+		if (by == get_chunk_size_y() - 1) {
+			if (allow_creating_chunks) {
+				chunk = chunk_get_or_create(x, y + 1, z);
+			} else {
+				chunk = chunk_get(x, y + 1, z);
+			}
+
+			if (chunk.is_valid()) {
+				chunk->set_voxel(data, bx, -1, bz, channel_index);
+
+				if (rebuild) {
+					chunk->build();
+				}
+			}
+		}
+
+		if (bz == get_chunk_size_z() - 1) {
+			if (allow_creating_chunks) {
+				chunk = chunk_get_or_create(x, y, z + 1);
+			} else {
+				chunk = chunk_get(x, y, z + 1);
+			}
+
+			if (chunk.is_valid()) {
+				chunk->set_voxel(data, bx, by, -1, channel_index);
+
+				if (rebuild) {
+					chunk->build();
+				}
+			}
+		}
+	}
+
+	if (allow_creating_chunks) {
+		chunk = chunk_get_or_create(x, y, z);
+	} else {
+		chunk = chunk_get(x, y, z);
+	}
+
+	if (chunk.is_valid()) {
+		chunk->set_voxel(data, bx, by, bz, channel_index);
+
+		if (rebuild) {
+			chunk->build();
+		}
+	}
+}
+Ref<VoxelChunk> VoxelWorld::get_chunk_at_world_data_position(const Vector3i &world_data_position) {
+	// TODO rework this so it works directly with ints.
+
+	Vector3 pos = world_data_position;
+
+	//Note: floor is needed to handle negative numbers proiberly
+	int x = static_cast<int>(Math::floor(pos.x / get_chunk_size_x()));
+	int y = static_cast<int>(Math::floor(pos.y / get_chunk_size_y()));
+	int z = static_cast<int>(Math::floor(pos.z / get_chunk_size_z()));
+
+	return chunk_get(x, y, z);
+}
+Ref<VoxelChunk> VoxelWorld::get_or_create_chunk_at_world_data_position(const Vector3i &world_data_position) {
+	// TODO rework this so it works directly with ints.
+
+	Vector3 pos = world_data_position;
+
+	//Note: floor is needed to handle negative numbers proiberly
+	int x = static_cast<int>(Math::floor(pos.x / get_chunk_size_x()));
+	int y = static_cast<int>(Math::floor(pos.y / get_chunk_size_y()));
+	int z = static_cast<int>(Math::floor(pos.z / get_chunk_size_z()));
+
+	return chunk_get_or_create(x, y, z);
+}
+
 void VoxelWorld::set_voxel_with_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal, const int selected_voxel, const int isolevel) {
 	call("_set_voxel_with_tool", mode_add, hit_position, hit_normal, selected_voxel, isolevel);
 }
@@ -1237,6 +1443,12 @@ void VoxelWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_voxel_at_world_position", "world_position", "data", "channel_index", "rebuild"), &VoxelWorld::set_voxel_at_world_position, DEFVAL(true));
 	ClassDB::bind_method(D_METHOD("get_chunk_at_world_position", "world_position"), &VoxelWorld::get_chunk_at_world_position);
 	ClassDB::bind_method(D_METHOD("get_or_create_chunk_at_world_position", "world_position"), &VoxelWorld::get_or_create_chunk_at_world_position);
+
+	ClassDB::bind_method(D_METHOD("world_position_to_world_data_position", "world_position"), &VoxelWorld::world_position_to_world_data_position);
+	ClassDB::bind_method(D_METHOD("get_voxel_at_world_data_position", "world_data_position", "channel_index"), &VoxelWorld::get_voxel_at_world_data_position);
+	ClassDB::bind_method(D_METHOD("set_voxel_at_world_data_position", "world_data_position", "data", "channel_index", "rebuild", "allow_creating_chunks"), &VoxelWorld::set_voxel_at_world_data_position, DEFVAL(true), DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("get_chunk_at_world_data_position", "world_data_position"), &VoxelWorld::get_chunk_at_world_data_position);
+	ClassDB::bind_method(D_METHOD("get_or_create_chunk_at_world_data_position", "world_data_position"), &VoxelWorld::get_or_create_chunk_at_world_data_position);
 
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::INT, "ret"), "_get_channel_index_info", PropertyInfo(Variant::INT, "channel_type", PROPERTY_HINT_ENUM, BINDING_STRING_CHANNEL_TYPE_INFO)));
 
