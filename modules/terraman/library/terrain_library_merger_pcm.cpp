@@ -236,6 +236,7 @@ void TerrainLibraryMergerPCM::_material_cache_unref(const int key) {
 	//_material_cache_mutex.lock();
 
 	if (!_material_cache.has(key)) {
+		_material_cache_mutex.unlock();
 		return;
 	}
 
@@ -434,6 +435,7 @@ void TerrainLibraryMergerPCM::_liquid_material_cache_unref(const int key) {
 	//_material_cache_mutex.lock();
 
 	if (!_liquid_material_cache.has(key)) {
+		_liquid_material_cache_mutex.unlock();
 		return;
 	}
 
@@ -647,6 +649,7 @@ void TerrainLibraryMergerPCM::_prop_material_cache_unref(const int key) {
 	//_prop_material_cache_mutex.lock();
 
 	if (!_prop_material_cache.has(key)) {
+		_prop_material_cache_mutex.unlock();
 		return;
 	}
 
