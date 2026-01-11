@@ -77,11 +77,18 @@ void VoxelChunk::set_visible(const bool value) {
 	visibility_changed(value);
 }
 
-_FORCE_INLINE_ bool VoxelChunk::get_is_generating() const {
+bool VoxelChunk::get_is_generating() const {
 	return _is_generating;
 }
-_FORCE_INLINE_ void VoxelChunk::set_is_generating(const bool value) {
+void VoxelChunk::set_is_generating(const bool value) {
 	_is_generating = value;
+}
+
+bool VoxelChunk::get_is_immediate_build() const {
+	return _is_immediate_build;
+}
+void VoxelChunk::set_is_immediate_build(const bool value) {
+	_is_immediate_build = value;
 }
 
 bool VoxelChunk::is_in_tree() const {
@@ -319,7 +326,11 @@ void VoxelChunk::job_next() {
 	j->set_complete(false);
 
 	if (j->get_build_phase_type() == VoxelJob::BUILD_PHASE_TYPE_NORMAL) {
-		ThreadPool::get_singleton()->add_job(j);
+		if (!_is_immediate_build) {
+			ThreadPool::get_singleton()->add_job(j);
+		} else {
+			j->execute();
+		}
 	}
 }
 Ref<VoxelJob> VoxelChunk::job_get_current() {
@@ -671,6 +682,14 @@ void VoxelChunk::build() {
 	call("_build");
 }
 
+void VoxelChunk::build_immediate() {
+	ERR_FAIL_COND(!ObjectDB::instance_validate(get_voxel_world()));
+	ERR_FAIL_COND(!get_voxel_world()->is_inside_tree());
+	ERR_FAIL_COND(!is_in_tree());
+
+	call("_build_immediate");
+}
+
 void VoxelChunk::_build() {
 	if (get_is_generating()) {
 		_queued_generation = true;
@@ -678,6 +697,19 @@ void VoxelChunk::_build() {
 	}
 
 	_is_generating = true;
+	_is_immediate_build = false;
+
+	job_next();
+}
+
+void VoxelChunk::_build_immediate() {
+	if (get_is_generating()) {
+		_queued_generation = true;
+		return;
+	}
+
+	_is_generating = true;
+	_is_immediate_build = true;
 
 	job_next();
 }
@@ -1061,6 +1093,7 @@ VoxelChunk::VoxelChunk() {
 	_is_visible = true;
 
 	_is_generating = false;
+	_is_immediate_build = false;
 	_dirty = false;
 	_state = VOXEL_CHUNK_STATE_OK;
 
@@ -1314,6 +1347,10 @@ void VoxelChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_is_generating", "value"), &VoxelChunk::set_is_generating);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_generating", PROPERTY_HINT_NONE, "", 0), "set_is_generating", "get_is_generating");
 
+	ClassDB::bind_method(D_METHOD("get_is_immediate_build"), &VoxelChunk::get_is_immediate_build);
+	ClassDB::bind_method(D_METHOD("set_is_immediate_build", "value"), &VoxelChunk::set_is_immediate_build);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_immediate_build", PROPERTY_HINT_NONE, "", 0), "set_is_immediate_build", "get_is_immediate_build");
+
 	ClassDB::bind_method(D_METHOD("get_dirty"), &VoxelChunk::get_dirty);
 	ClassDB::bind_method(D_METHOD("set_dirty", "value"), &VoxelChunk::set_dirty);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "dirty", PROPERTY_HINT_NONE, "", 0), "set_dirty", "get_dirty");
@@ -1517,9 +1554,12 @@ void VoxelChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("colliders_clear"), &VoxelChunk::colliders_clear);
 
 	BIND_VMETHOD(MethodInfo("_build"));
-
 	ClassDB::bind_method(D_METHOD("build"), &VoxelChunk::build);
 	ClassDB::bind_method(D_METHOD("_build"), &VoxelChunk::_build);
+
+	BIND_VMETHOD(MethodInfo("_build_immediate"));
+	ClassDB::bind_method(D_METHOD("build_immediate"), &VoxelChunk::build_immediate);
+	ClassDB::bind_method(D_METHOD("_build_immediate"), &VoxelChunk::_build_immediate);
 
 	ClassDB::bind_method(D_METHOD("get_global_transform"), &VoxelChunk::get_global_transform);
 	ClassDB::bind_method(D_METHOD("to_local", "global"), &VoxelChunk::to_local);
