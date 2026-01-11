@@ -195,6 +195,7 @@ public:
 	Ref<VoxelChunk> get_chunk_at_world_position(const Vector3 &world_position);
 	Ref<VoxelChunk> get_or_create_chunk_at_world_position(const Vector3 &world_position);
 	Vector3i world_position_to_chunk_position(const Vector3 &p_world_position);
+	Vector3i world_data_position_to_chunk_position(const Vector3i &p_world_data_position);
 
 	void set_voxel_with_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal, const int selected_voxel, const int isolevel);
 

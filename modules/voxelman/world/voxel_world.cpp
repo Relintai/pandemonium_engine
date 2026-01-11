@@ -1004,6 +1004,18 @@ Vector3i VoxelWorld::world_position_to_chunk_position(const Vector3 &p_world_pos
 
 	return Vector3i(x, y, z);
 }
+Vector3i VoxelWorld::world_data_position_to_chunk_position(const Vector3i &p_world_data_position) {
+	// TODO rework this so it works directly with ints.
+
+	Vector3 pos = p_world_data_position;
+
+	//Note: floor is needed to handle negative numbers properly
+	int x = static_cast<int>(Math::floor(pos.x / get_chunk_size_x()));
+	int y = static_cast<int>(Math::floor(pos.y / get_chunk_size_y()));
+	int z = static_cast<int>(Math::floor(pos.z / get_chunk_size_z()));
+
+	return Vector3i(x, y, z);
+}
 
 Vector3i VoxelWorld::world_position_to_world_data_position(const Vector3 &world_position) {
 	Vector3 pos = world_position / get_voxel_scale();
@@ -1746,6 +1758,7 @@ void VoxelWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_chunk_at_world_position", "world_position"), &VoxelWorld::get_chunk_at_world_position);
 	ClassDB::bind_method(D_METHOD("get_or_create_chunk_at_world_position", "world_position"), &VoxelWorld::get_or_create_chunk_at_world_position);
 	ClassDB::bind_method(D_METHOD("world_position_to_chunk_position", "world_position"), &VoxelWorld::world_position_to_chunk_position);
+	ClassDB::bind_method(D_METHOD("world_data_position_to_chunk_position", "world_data_position"), &VoxelWorld::world_data_position_to_chunk_position);
 
 	ClassDB::bind_method(D_METHOD("world_position_to_world_data_position", "world_position"), &VoxelWorld::world_position_to_world_data_position);
 	ClassDB::bind_method(D_METHOD("get_voxel_at_world_data_position", "world_data_position", "channel_index"), &VoxelWorld::get_voxel_at_world_data_position);
