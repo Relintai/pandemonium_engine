@@ -65,6 +65,10 @@ public:
 	Ref<VoxelMaterialCache> _material_cache_get(const int key);
 	void _material_cache_unref(const int key);
 
+	void _liquid_material_cache_get_key(Ref<VoxelChunk> chunk);
+	Ref<VoxelMaterialCache> _liquid_material_cache_get(const int key);
+	void _liquid_material_cache_unref(const int key);
+
 	void _prop_material_cache_get_key(Ref<VoxelChunk> chunk);
 	Ref<VoxelMaterialCache> _prop_material_cache_get(const int key);
 	void _prop_material_cache_unref(const int key);
@@ -126,6 +130,7 @@ protected:
 	static void _bind_methods();
 
 	RBMap<int, Ref<VoxelMaterialCachePCM>> _material_cache;
+	RBMap<int, Ref<VoxelMaterialCachePCM>> _liquid_material_cache;
 	RBMap<int, Ref<VoxelMaterialCachePCM>> _prop_material_cache;
 
 	Vector<Ref<VoxelSurfaceMerger>> _voxel_surfaces;
@@ -135,9 +140,11 @@ protected:
 
 	//todo remove these
 	Ref<TexturePacker> _packer;
+	Ref<TexturePacker> _liquid_packer;
 	Ref<TexturePacker> _prop_packer;
 
 	Mutex _material_cache_mutex;
+	Mutex _liquid_material_cache_mutex;
 	Mutex _prop_material_cache_mutex;
 };
 

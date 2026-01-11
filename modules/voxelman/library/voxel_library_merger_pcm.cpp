@@ -235,6 +235,178 @@ void VoxelLibraryMergerPCM::_material_cache_unref(const int key) {
 	_material_cache_mutex.unlock();
 }
 
+void VoxelLibraryMergerPCM::_liquid_material_cache_get_key(Ref<VoxelChunk> chunk) {
+	uint8_t *ch = chunk->channel_get(VoxelChunkDefault::DEFAULT_CHANNEL_ALT_TYPE);
+
+	if (!ch) {
+		chunk->liquid_material_cache_key_set(0);
+		chunk->liquid_material_cache_key_has_set(false);
+
+		return;
+	}
+
+	int old_key = 0;
+
+	if (chunk->liquid_material_cache_key_has()) {
+		old_key = chunk->liquid_material_cache_key_get();
+	}
+
+	Vector<uint8_t> surfaces;
+
+	uint32_t size = chunk->get_data_size();
+
+	for (uint32_t i = 0; i < size; ++i) {
+		uint8_t v = ch[i];
+
+		if (v == 0) {
+			continue;
+		}
+
+		int ssize = surfaces.size();
+		bool found = false;
+		for (uint8_t j = 0; j < ssize; ++j) {
+			if (surfaces[j] == v) {
+				found = true;
+				break;
+			}
+		}
+
+		if (!found) {
+			surfaces.push_back(v);
+		}
+	}
+
+	if (surfaces.size() == 0) {
+		chunk->liquid_material_cache_key_set(0);
+		chunk->liquid_material_cache_key_has_set(false);
+
+		if (old_key != 0) {
+			liquid_material_cache_unref(old_key);
+		}
+
+		return;
+	}
+
+	surfaces.sort();
+
+	String hstr;
+
+	for (int i = 0; i < surfaces.size(); ++i) {
+		hstr += String::num(surfaces[i]) + "|";
+	}
+
+	int hash = static_cast<int>(hstr.hash());
+
+	if (old_key != 0 && old_key == hash) {
+		chunk->liquid_material_cache_key_invalid_set(false);
+		return;
+	}
+
+	chunk->liquid_material_cache_key_set(hash);
+	chunk->liquid_material_cache_key_has_set(true);
+
+	if (old_key != 0) {
+		liquid_material_cache_unref(old_key);
+	}
+
+	_liquid_material_cache_mutex.lock();
+
+	if (_liquid_material_cache.has(hash)) {
+		Ref<VoxelMaterialCachePCM> cc = _liquid_material_cache[hash];
+
+		if (cc.is_valid()) {
+			cc->inc_ref_count();
+		}
+
+		_liquid_material_cache_mutex.unlock();
+
+		return;
+	}
+
+	//print_error("New cache: " + hstr);
+
+	Ref<VoxelMaterialCachePCM> cache;
+	cache.instance();
+	cache->inc_ref_count();
+
+	cache->set_texture_flags(get_texture_flags());
+	cache->set_max_atlas_size(get_max_atlas_size());
+	cache->set_keep_original_atlases(get_keep_original_atlases());
+	cache->set_background_color(get_background_color());
+	cache->set_margin(get_margin());
+
+	for (int i = 0; i < surfaces.size(); ++i) {
+		int s = surfaces[i] - 1;
+
+		if (_voxel_surfaces.size() <= s) {
+			continue;
+		}
+
+		Ref<VoxelSurfaceMerger> ms = _voxel_surfaces[s];
+
+		if (!ms.is_valid()) {
+			continue;
+		}
+
+		Ref<VoxelSurfaceMerger> nms = ms->duplicate();
+		nms->set_library(Ref<VoxelLibraryMergerPCM>(this));
+		nms->set_id(s);
+
+		cache->surface_add(nms);
+	}
+
+	for (int i = 0; i < _liquid_materials.size(); ++i) {
+		Ref<Material> m = _liquid_materials[i];
+
+		if (!m.is_valid()) {
+			continue;
+		}
+
+		Ref<Material> nm = m->duplicate();
+
+		cache->material_add(nm);
+	}
+
+	_liquid_material_cache[hash] = cache;
+
+	//this will generate the atlases
+	cache->refresh_rects();
+
+	_liquid_material_cache_mutex.unlock();
+}
+Ref<VoxelMaterialCache> VoxelLibraryMergerPCM::_liquid_material_cache_get(const int key) {
+	_liquid_material_cache_mutex.lock();
+
+	ERR_FAIL_COND_V(!_liquid_material_cache.has(key), Ref<VoxelMaterialCache>());
+
+	Ref<VoxelMaterialCache> c = _liquid_material_cache[key];
+
+	_liquid_material_cache_mutex.unlock();
+
+	return c;
+}
+void VoxelLibraryMergerPCM::_liquid_material_cache_unref(const int key) {
+	_liquid_material_cache_mutex.lock();
+
+	if (!_liquid_material_cache.has(key)) {
+		return;
+	}
+
+	Ref<VoxelMaterialCachePCM> cc = _liquid_material_cache[key];
+
+	if (!cc.is_valid()) {
+		return;
+	}
+
+	cc->dec_ref_count();
+
+	if (cc->get_ref_count() <= 0) {
+		_liquid_material_cache.erase(key);
+	}
+
+	_liquid_material_cache_mutex.unlock();
+}
+
 void VoxelLibraryMergerPCM::_prop_material_cache_get_key(Ref<VoxelChunk> chunk) {
 	int old_key = 0;
 
