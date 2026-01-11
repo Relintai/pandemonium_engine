@@ -34,12 +34,12 @@
 
 #include "core/containers/vector.h"
 #include "core/math/color.h"
-#include "core/object/reference.h"
+#include "core/object/resource.h"
 
 #include "modules/modules_enabled.gen.h"
 
-class VoxelLight : public Reference {
-	GDCLASS(VoxelLight, Reference);
+class VoxelLight : public Resource {
+	GDCLASS(VoxelLight, Resource);
 
 public:
 	enum OwnerType {
