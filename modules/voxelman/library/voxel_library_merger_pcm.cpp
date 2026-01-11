@@ -37,6 +37,8 @@
 #include "scene/resources/packed_scene.h"
 #include "scene/resources/texture.h"
 
+#include "core/message_queue.h"
+
 #include "modules/modules_enabled.gen.h"
 
 #ifdef MODULE_PROPS_ENABLED
@@ -214,7 +216,16 @@ Ref<VoxelMaterialCache> VoxelLibraryMergerPCM::_material_cache_get(const int key
 }
 
 void VoxelLibraryMergerPCM::_material_cache_unref(const int key) {
-	_material_cache_mutex.lock();
+	if (_material_cache_mutex.try_lock() != OK) {
+		// If we don't get the lock try again later
+		// This is needed, because when duplicating materials the VisualServer apparently
+		// needs synchronization with the main thread. So if _material_cache_unref holds the mutex
+		// and is duplicating the materials, trying to get the lock from the main thread will deadlock
+		// the game. This can happen when chunks are spawned and despawned really fast.
+		// E.g. when flying around in the editor.
+		MessageQueue::get_singleton()->push_call(this, "_material_cache_unref", key, 1);
+		return;
+	}
 
 	if (!_material_cache.has(key)) {
 		return;
@@ -386,7 +397,16 @@ Ref<VoxelMaterialCache> VoxelLibraryMergerPCM::_liquid_material_cache_get(const 
 	return c;
 }
 void VoxelLibraryMergerPCM::_liquid_material_cache_unref(const int key) {
-	_liquid_material_cache_mutex.lock();
+	if (_liquid_material_cache_mutex.try_lock() != OK) {
+		// If we don't get the lock try again later
+		// This is needed, because when duplicating materials the VisualServer apparently
+		// needs synchronization with the main thread. So if _material_cache_unref holds the mutex
+		// and is duplicating the materials, trying to get the lock from the main thread will deadlock
+		// the game. This can happen when chunks are spawned and despawned really fast.
+		// E.g. when flying around in the editor.
+		MessageQueue::get_singleton()->push_call(this, "_liquid_material_cache_unref", key, 1);
+		return;
+	}
 
 	if (!_liquid_material_cache.has(key)) {
 		return;
@@ -581,7 +601,16 @@ Ref<VoxelMaterialCache> VoxelLibraryMergerPCM::_prop_material_cache_get(const in
 	return c;
 }
 void VoxelLibraryMergerPCM::_prop_material_cache_unref(const int key) {
-	_prop_material_cache_mutex.lock();
+	if (_prop_material_cache_mutex.try_lock() != OK) {
+		// If we don't get the lock try again later
+		// This is needed, because when duplicating materials the VisualServer apparently
+		// needs synchronization with the main thread. So if _material_cache_unref holds the mutex
+		// and is duplicating the materials, trying to get the lock from the main thread will deadlock
+		// the game. This can happen when chunks are spawned and despawned really fast.
+		// E.g. when flying around in the editor.
+		MessageQueue::get_singleton()->push_call(this, "_prop_material_cache_unref", key, 1);
+		return;
+	}
 
 	if (!_prop_material_cache.has(key)) {
 		return;
