@@ -290,8 +290,8 @@ public:
 #endif
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
-	int mesh_data_resource_addv(const Vector3 &local_data_pos, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture = Ref<Texture>(), const Color &color = Color(1, 1, 1, 1), const bool apply_voxel_scale = true);
-	int mesh_data_resource_add(const Transform &local_transform, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture = Ref<Texture>(), const Color &color = Color(1, 1, 1, 1), const bool apply_voxel_scale = true);
+	int mesh_data_resource_addv(const Vector3 &local_data_pos, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture = Ref<Texture>(), const Color &color = Color(1, 1, 1, 1), const bool apply_voxel_scale = true, const bool p_original = true);
+	int mesh_data_resource_add(const Transform &local_transform, const Ref<MeshDataResource> &mesh, const Ref<Texture> &texture = Ref<Texture>(), const Color &color = Color(1, 1, 1, 1), const bool apply_voxel_scale = true, const bool p_original = true);
 
 	Ref<MeshDataResource> mesh_data_resource_get(const int index);
 	void mesh_data_resource_set(const int index, const Ref<MeshDataResource> &mesh);
@@ -310,6 +310,9 @@ public:
 
 	bool mesh_data_resource_get_is_inside(const int index);
 	void mesh_data_resource_set_is_inside(const int index, const bool &inside);
+
+	bool mesh_data_resource_get_is_original(const int index);
+	void mesh_data_resource_set_is_original(const int index, const bool p_original);
 
 	int mesh_data_resource_get_count() const;
 	void mesh_data_resource_remove(const int index);
@@ -385,6 +388,7 @@ protected:
 		Rect2 uv_rect;
 		Transform transform;
 		bool is_inside;
+		bool is_original;
 	};
 #endif
 
