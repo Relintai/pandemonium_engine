@@ -323,6 +323,14 @@ void VoxelWorld::chunk_add(Ref<VoxelChunk> chunk, const int x, const int y, cons
 		chunk->enter_tree();
 	}
 
+	for (int i = 0; i < chunk->light_get_count(); ++i) {
+		Ref<VoxelLight> light = chunk->light_get_index(i);
+
+		if (light.is_valid()) {
+			world_light_added(light);
+		}
+	}
+
 	if (has_method("_chunk_added")) {
 		call("_chunk_added", chunk);
 	}
@@ -367,6 +375,14 @@ Ref<VoxelChunk> VoxelWorld::chunk_remove(const int x, const int y, const int z) 
 		chunk->cancel_build();
 	}
 
+	for (int i = 0; i < chunk->light_get_count(); ++i) {
+		Ref<VoxelLight> light = chunk->light_get_index(i);
+
+		if (light.is_valid()) {
+			world_light_removed(light);
+		}
+	}
+
 	//never remove from this here
 	//_generating.erase(chunk);
 
@@ -390,6 +406,14 @@ Ref<VoxelChunk> VoxelWorld::chunk_remove_index(const int index) {
 
 	if (chunk->get_is_generating()) {
 		chunk->cancel_build();
+	}
+
+	for (int i = 0; i < chunk->light_get_count(); ++i) {
+		Ref<VoxelLight> light = chunk->light_get_index(i);
+
+		if (light.is_valid()) {
+			world_light_removed(light);
+		}
 	}
 
 	//never remove from this here
@@ -430,6 +454,8 @@ void VoxelWorld::chunks_clear() {
 			chunk->cancel_build();
 		}
 	}
+
+	// Ignoring lights here should be fine
 
 	//never remove from this here
 	//_generating.clear();
@@ -523,6 +549,14 @@ void VoxelWorld::chunks_set(const Vector<Variant> &chunks) {
 
 			if (chunk->get_is_generating()) {
 				chunk->cancel_build();
+			}
+
+			for (int j = 0; j < chunk->light_get_count(); ++j) {
+				Ref<VoxelLight> light = chunk->light_get_index(j);
+
+				if (light.is_valid()) {
+					world_light_removed(light);
+				}
 			}
 
 			//never remove from this here
