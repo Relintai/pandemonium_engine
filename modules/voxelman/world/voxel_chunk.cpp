@@ -2085,7 +2085,7 @@ void VoxelChunk::_bind_methods() {
 
 	//Scenes
 
-	ClassDB::bind_method(D_METHOD("scene_add", "scene", "transform", "node", "original"), &VoxelChunk::scene_add, DEFVAL(Transform()), DEFVAL(0), DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("scene_add", "scene", "transform", "node", "original"), &VoxelChunk::scene_add, DEFVAL(Transform()), DEFVAL(Variant()), DEFVAL(true));
 
 	ClassDB::bind_method(D_METHOD("scene_get", "index"), &VoxelChunk::scene_get);
 	ClassDB::bind_method(D_METHOD("scene_set", "index", "scene"), &VoxelChunk::scene_set);

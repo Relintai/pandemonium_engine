@@ -1809,7 +1809,7 @@ void VoxelWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("is_position_walkable", "position"), &VoxelWorld::is_position_walkable);
 	ClassDB::bind_method(D_METHOD("on_chunk_mesh_generation_finished", "chunk"), &VoxelWorld::on_chunk_mesh_generation_finished);
 
-	ClassDB::bind_method(D_METHOD("scene_add", "scene", "transform", "node", "original"), &VoxelWorld::scene_add, DEFVAL(Transform()), DEFVAL(NULL), DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("scene_add", "scene", "transform", "node", "original"), &VoxelWorld::scene_add, DEFVAL(Transform()), DEFVAL(Variant()), DEFVAL(true));
 
 #ifdef MODULE_PROPS_ENABLED
 	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "apply_voxel_scale", "original"), &VoxelWorld::prop_add, DEFVAL(true), DEFVAL(true));
