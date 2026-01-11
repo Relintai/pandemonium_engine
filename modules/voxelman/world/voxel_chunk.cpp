@@ -129,18 +129,21 @@ _FORCE_INLINE_ int VoxelChunk::get_position_x() const {
 }
 void VoxelChunk::set_position_x(const int value) {
 	_position_x = value;
+	emit_changed();
 }
 _FORCE_INLINE_ int VoxelChunk::get_position_y() const {
 	return _position_y;
 }
 void VoxelChunk::set_position_y(const int value) {
 	_position_y = value;
+	emit_changed();
 }
 _FORCE_INLINE_ int VoxelChunk::get_position_z() const {
 	return _position_z;
 }
 void VoxelChunk::set_position_z(const int value) {
 	_position_z = value;
+	emit_changed();
 }
 
 _FORCE_INLINE_ Vector3 VoxelChunk::get_position() const {
@@ -170,12 +173,15 @@ _FORCE_INLINE_ int VoxelChunk::get_size_z() const {
 
 _FORCE_INLINE_ void VoxelChunk::set_size_x(const int value) {
 	_size_x = value;
+	emit_changed();
 }
 _FORCE_INLINE_ void VoxelChunk::set_size_y(const int value) {
 	_size_y = value;
+	emit_changed();
 }
 _FORCE_INLINE_ void VoxelChunk::set_size_z(const int value) {
 	_size_z = value;
+	emit_changed();
 }
 
 _FORCE_INLINE_ Vector3 VoxelChunk::get_size() const {
@@ -206,6 +212,7 @@ void VoxelChunk::set_position(const int x, const int y, const int z) {
 	_position_x = x;
 	_position_y = y;
 	_position_z = z;
+	emit_changed();
 }
 
 _FORCE_INLINE_ int VoxelChunk::get_margin_start() const {
@@ -217,9 +224,11 @@ _FORCE_INLINE_ int VoxelChunk::get_margin_end() const {
 
 _FORCE_INLINE_ void VoxelChunk::set_margin_start(const int value) {
 	_margin_start = value;
+	emit_changed();
 }
 _FORCE_INLINE_ void VoxelChunk::set_margin_end(const int value) {
 	_margin_end = value;
+	emit_changed();
 }
 
 int VoxelChunk::material_cache_key_get() const {
@@ -303,6 +312,7 @@ float VoxelChunk::get_voxel_scale() const {
 }
 void VoxelChunk::set_voxel_scale(const float value) {
 	_voxel_scale = value;
+	emit_changed();
 }
 
 VoxelWorld *VoxelChunk::get_voxel_world() const {
@@ -423,6 +433,8 @@ void VoxelChunk::set_size(const int size_x, const int size_y, const int size_z, 
 
 	_margin_start = margin_start;
 	_margin_end = margin_end;
+
+	emit_changed();
 }
 
 bool VoxelChunk::validate_data_position(const int x, const int y, const int z) const {
@@ -455,6 +467,8 @@ void VoxelChunk::set_voxel(const uint8_t p_value, const int p_x, const int p_y, 
 	uint8_t *ch = channel_get_valid(p_channel_index);
 
 	ch[get_data_index(x, y, z)] = p_value;
+
+	emit_changed();
 }
 
 int VoxelChunk::channel_get_count() const {
@@ -484,6 +498,8 @@ void VoxelChunk::channel_set_count(const int count) {
 	for (int i = s; i < count; ++i) {
 		_channels.set(i, NULL);
 	}
+
+	emit_changed();
 }
 bool VoxelChunk::channel_is_allocated(const int channel_index) {
 	ERR_FAIL_INDEX_V(channel_index, _channels.size(), false);
@@ -508,6 +524,8 @@ void VoxelChunk::channel_allocate(const int channel_index, const uint8_t default
 	memset(ch, default_value, size);
 
 	_channels.set(channel_index, ch);
+
+	emit_changed();
 }
 void VoxelChunk::channel_fill(const uint8_t value, const int channel_index) {
 	ERR_FAIL_INDEX(channel_index, _channels.size());
@@ -524,6 +542,8 @@ void VoxelChunk::channel_fill(const uint8_t value, const int channel_index) {
 	for (uint32_t i = 0; i < size; ++i) {
 		ch[i] = value;
 	}
+
+	emit_changed();
 }
 void VoxelChunk::channel_dealloc(const int channel_index) {
 	ERR_FAIL_INDEX(channel_index, _channels.size());
@@ -535,6 +555,8 @@ void VoxelChunk::channel_dealloc(const int channel_index) {
 
 		_channels.set(channel_index, NULL);
 	}
+
+	emit_changed();
 }
 
 uint8_t *VoxelChunk::channel_get(const int channel_index) {
@@ -597,6 +619,8 @@ void VoxelChunk::channel_set_array(const int channel_index, const PoolByteArray 
 	for (int i = 0; i < array.size(); ++i) {
 		ch[i] = array[i];
 	}
+
+	emit_changed();
 }
 
 PoolByteArray VoxelChunk::channel_get_compressed(const int channel_index) const {
@@ -653,6 +677,8 @@ void VoxelChunk::channel_set_compressed(const int channel_index, const PoolByteA
 	uint8_t *data_arr = const_cast<uint8_t *>(r.ptr());
 
 	LZ4Compressor::LZ4_decompress_safe(reinterpret_cast<char *>(data_arr), reinterpret_cast<char *>(ch), ds, size);
+
+	emit_changed();
 #endif
 }
 
@@ -685,6 +711,8 @@ void VoxelChunk::light_add(Ref<VoxelLight> p_light) {
 	if (ObjectDB::instance_validate(world)) {
 		world->world_light_added(p_light);
 	}
+
+	emit_changed();
 }
 bool VoxelChunk::light_remove(Ref<VoxelLight> p_light) {
 	if (!p_light.is_valid()) {
@@ -700,6 +728,8 @@ bool VoxelChunk::light_remove(Ref<VoxelLight> p_light) {
 		if (ObjectDB::instance_validate(world)) {
 			world->world_light_removed(p_light);
 		}
+
+		emit_changed();
 
 		return true;
 	}
@@ -726,6 +756,8 @@ void VoxelChunk::light_remove_index(const int index) {
 	if (ObjectDB::instance_validate(world)) {
 		world->world_light_removed(light);
 	}
+
+	emit_changed();
 }
 int VoxelChunk::light_get_count() const {
 	return _lights.size();
@@ -752,6 +784,8 @@ void VoxelChunk::lights_clear() {
 	}
 
 	_lights.clear();
+
+	emit_changed();
 }
 
 Vector<Variant> VoxelChunk::lights_get() {
@@ -809,6 +843,8 @@ void VoxelChunk::owned_lights_set(const Vector<Variant> &p_lights) {
 
 		light_add(light);
 	}
+
+	emit_changed();
 }
 
 void VoxelChunk::_on_light_moved(const Ref<VoxelLight> &p_light) {
@@ -828,6 +864,8 @@ Ref<VoxelStructure> VoxelChunk::voxel_structure_get(const int index) const {
 }
 void VoxelChunk::voxel_structure_add(const Ref<VoxelStructure> &structure) {
 	_voxel_structures.push_back(structure);
+
+	emit_changed();
 }
 void VoxelChunk::voxel_structure_remove(const Ref<VoxelStructure> &structure) {
 	if (!structure.is_valid())
@@ -837,15 +875,20 @@ void VoxelChunk::voxel_structure_remove(const Ref<VoxelStructure> &structure) {
 
 	if (index != -1) {
 		_voxel_structures.remove(index);
+		emit_changed();
 	}
 }
 void VoxelChunk::voxel_structure_remove_index(const int index) {
 	ERR_FAIL_INDEX(index, _voxel_structures.size());
 
 	_voxel_structures.remove(index);
+
+	emit_changed();
 }
 void VoxelChunk::voxel_structure_clear() {
 	_voxel_structures.clear();
+
+	emit_changed();
 }
 int VoxelChunk::voxel_structure_get_count() const {
 	return _voxel_structures.size();
@@ -893,6 +936,8 @@ void VoxelChunk::scene_add(const Ref<PackedScene> &p_scene, const Transform &p_t
 	if (_is_in_tree && !p_node) {
 		scene_instance(_scenes.size() - 1);
 	}
+
+	emit_changed();
 }
 
 Ref<PackedScene> VoxelChunk::scene_get(int index) {
@@ -904,6 +949,8 @@ void VoxelChunk::scene_set(const int index, const Ref<PackedScene> &p_scene) {
 	ERR_FAIL_INDEX(index, _scenes.size());
 
 	_scenes.write[index].scene = p_scene;
+
+	emit_changed();
 }
 
 Transform VoxelChunk::scene_get_transform(const int index) {
@@ -915,6 +962,8 @@ void VoxelChunk::scene_set_transform(const int index, const Transform &p_transfo
 	ERR_FAIL_INDEX(index, _scenes.size());
 
 	_scenes.write[index].transform = p_transform;
+
+	emit_changed();
 }
 
 bool VoxelChunk::scene_get_is_original(const int index) {
@@ -926,6 +975,8 @@ void VoxelChunk::scene_set_is_original(const int index, const bool p_original) {
 	ERR_FAIL_INDEX(index, _scenes.size());
 
 	_scenes.write[index].original = p_original;
+
+	emit_changed();
 }
 
 Node *VoxelChunk::scene_get_node(const int index) {
@@ -943,6 +994,8 @@ void VoxelChunk::scene_set_node(const int index, const Node *p_node) {
 	}
 
 	_scenes.write[index].node = id;
+
+	emit_changed();
 }
 
 int VoxelChunk::scene_get_count() const {
@@ -957,6 +1010,8 @@ void VoxelChunk::scene_remove(const int index, const bool p_queue_free) {
 	}
 
 	_scenes.remove(index);
+
+	emit_changed();
 }
 
 void VoxelChunk::scenes_clear(const bool p_queue_free) {
@@ -967,6 +1022,8 @@ void VoxelChunk::scenes_clear(const bool p_queue_free) {
 	}
 
 	_scenes.clear();
+
+	emit_changed();
 }
 
 void VoxelChunk::scene_instance(const int index) {
@@ -1148,6 +1205,8 @@ void VoxelChunk::prop_add(const Transform &transform, const Ref<PropData> &prop,
 	s.prop = prop;
 
 	_props.push_back(s);
+
+	emit_changed();
 }
 
 Ref<PropData> VoxelChunk::prop_get(int index) {
@@ -1159,6 +1218,8 @@ void VoxelChunk::prop_set(const int index, const Ref<PropData> &p_prop) {
 	ERR_FAIL_INDEX(index, _props.size());
 
 	_props.write[index].prop = p_prop;
+
+	emit_changed();
 }
 
 Transform VoxelChunk::prop_get_transform(const int index) {
@@ -1170,6 +1231,8 @@ void VoxelChunk::prop_set_transform(const int index, const Transform &p_transfor
 	ERR_FAIL_INDEX(index, _props.size());
 
 	_props.write[index].transform = p_transform;
+
+	emit_changed();
 }
 
 bool VoxelChunk::prop_get_is_original(const int index) {
@@ -1181,6 +1244,8 @@ void VoxelChunk::prop_set_is_original(const int index, const bool p_original) {
 	ERR_FAIL_INDEX(index, _props.size());
 
 	_props.write[index].original = p_original;
+
+	emit_changed();
 }
 
 int VoxelChunk::prop_get_count() const {
@@ -1190,9 +1255,13 @@ void VoxelChunk::prop_remove(const int index) {
 	ERR_FAIL_INDEX(index, _props.size());
 
 	_props.remove(index);
+
+	emit_changed();
 }
 void VoxelChunk::props_clear() {
 	_props.clear();
+
+	emit_changed();
 }
 
 Array VoxelChunk::props_get() {
@@ -1267,6 +1336,8 @@ int VoxelChunk::mesh_data_resource_addv(const Vector3 &local_data_pos, const Ref
 		call("_mesh_data_resource_added", index);
 	}
 
+	emit_changed();
+
 	return index;
 }
 
@@ -1308,6 +1379,8 @@ int VoxelChunk::mesh_data_resource_add(const Transform &local_transform, const R
 		call("_mesh_data_resource_added", index);
 	}
 
+	emit_changed();
+
 	return index;
 }
 
@@ -1319,6 +1392,10 @@ Ref<MeshDataResource> VoxelChunk::mesh_data_resource_get(const int index) {
 
 void VoxelChunk::mesh_data_resource_set(const int index, const Ref<MeshDataResource> &mesh) {
 	ERR_FAIL_INDEX(index, _mesh_data_resources.size());
+
+	_mesh_data_resources.write[index].mesh = mesh;
+
+	emit_changed();
 }
 
 Ref<Texture> VoxelChunk::mesh_data_resource_get_texture(const int index) {
@@ -1330,6 +1407,8 @@ void VoxelChunk::mesh_data_resource_set_texture(const int index, const Ref<Textu
 	ERR_FAIL_INDEX(index, _mesh_data_resources.size());
 
 	_mesh_data_resources.write[index].texture = texture;
+
+	emit_changed();
 }
 
 Color VoxelChunk::mesh_data_resource_get_color(const int index) {
@@ -1341,6 +1420,8 @@ void VoxelChunk::mesh_data_resource_set_color(const int index, const Color &colo
 	ERR_FAIL_INDEX(index, _mesh_data_resources.size());
 
 	_mesh_data_resources.write[index].color = color;
+
+	emit_changed();
 }
 
 Rect2 VoxelChunk::mesh_data_resource_get_uv_rect(const int index) {
@@ -1352,6 +1433,8 @@ void VoxelChunk::mesh_data_resource_set_uv_rect(const int index, const Rect2 &uv
 	ERR_FAIL_INDEX(index, _mesh_data_resources.size());
 
 	_mesh_data_resources.write[index].uv_rect = uv_rect;
+
+	emit_changed();
 }
 
 Transform VoxelChunk::mesh_data_resource_get_transform(const int index) {
@@ -1363,6 +1446,8 @@ void VoxelChunk::mesh_data_resource_set_transform(const int index, const Transfo
 	ERR_FAIL_INDEX(index, _mesh_data_resources.size());
 
 	_mesh_data_resources.write[index].transform = transform;
+
+	emit_changed();
 }
 
 bool VoxelChunk::mesh_data_resource_get_is_inside(const int index) {
@@ -1374,6 +1459,8 @@ void VoxelChunk::mesh_data_resource_set_is_inside(const int index, const bool &i
 	ERR_FAIL_INDEX(index, _mesh_data_resources.size());
 
 	_mesh_data_resources.write[index].is_inside = inside;
+
+	emit_changed();
 }
 
 bool VoxelChunk::mesh_data_resource_get_is_original(const int index) {
@@ -1385,6 +1472,8 @@ void VoxelChunk::mesh_data_resource_set_is_original(const int index, const bool 
 	ERR_FAIL_INDEX(index, _mesh_data_resources.size());
 
 	_mesh_data_resources.write[index].is_original = p_original;
+
+	emit_changed();
 }
 
 int VoxelChunk::mesh_data_resource_get_count() const {
@@ -1394,6 +1483,8 @@ void VoxelChunk::mesh_data_resource_remove(const int index) {
 	ERR_FAIL_INDEX(index, _mesh_data_resources.size());
 
 	_mesh_data_resources.remove(index);
+
+	emit_changed();
 }
 void VoxelChunk::mesh_data_resource_clear() {
 	_mesh_data_resources.clear();
@@ -1452,6 +1543,8 @@ int VoxelChunk::collider_add(const Transform &local_transform, const Ref<Shape> 
 
 	_colliders.push_back(e);
 
+	emit_changed();
+
 	return index;
 }
 
@@ -1464,6 +1557,8 @@ void VoxelChunk::collider_set_transform(const int index, const Transform &transf
 	ERR_FAIL_INDEX(index, _colliders.size());
 
 	_colliders.write[index].transform = transform;
+
+	emit_changed();
 }
 
 Ref<Shape> VoxelChunk::collider_get_shape(const int index) {
@@ -1476,6 +1571,8 @@ void VoxelChunk::collider_set_shape(const int index, const Ref<Shape> &shape) {
 	ERR_FAIL_INDEX(index, _colliders.size());
 
 	_colliders.write[index].shape = shape;
+
+	emit_changed();
 }
 
 RID VoxelChunk::collider_get_shape_rid(const int index) {
@@ -1487,6 +1584,8 @@ void VoxelChunk::collider_set_shape_rid(const int index, const RID &rid) {
 	ERR_FAIL_INDEX(index, _colliders.size());
 
 	_colliders.write[index].shape_rid = rid;
+
+	emit_changed();
 }
 
 RID VoxelChunk::collider_get_body(const int index) {
@@ -1498,6 +1597,8 @@ void VoxelChunk::collider_set_body(const int index, const RID &rid) {
 	ERR_FAIL_INDEX(index, _colliders.size());
 
 	_colliders.write[index].body = rid;
+
+	emit_changed();
 }
 
 int VoxelChunk::collider_get_count() const {
@@ -1507,9 +1608,13 @@ void VoxelChunk::collider_remove(const int index) {
 	ERR_FAIL_INDEX(index, _colliders.size());
 
 	_colliders.remove(index);
+
+	emit_changed();
 }
 void VoxelChunk::colliders_clear() {
 	_colliders.clear();
+
+	emit_changed();
 }
 
 void VoxelChunk::enter_tree() {
