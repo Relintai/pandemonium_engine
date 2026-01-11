@@ -31,6 +31,7 @@
 
 #include "voxel_mesher_liquid_blocky.h"
 
+#include "../../library/voxel_material_cache.h"
 #include "../../world/default/voxel_chunk_default.h"
 
 void VoxelMesherLiquidBlocky::_add_chunk(Ref<VoxelChunk> p_chunk) {
@@ -87,6 +88,12 @@ void VoxelMesherLiquidBlocky::_add_chunk(Ref<VoxelChunk> p_chunk) {
 			liquids.push_back(static_cast<uint8_t>(i + 1));
 	}
 
+	Ref<VoxelMaterialCache> mcache;
+
+	if (chunk->liquid_material_cache_key_has()) {
+		mcache = _library->liquid_material_cache_get(chunk->liquid_material_cache_key_get());
+	}
+
 	for (int y = chunk->get_margin_start(); y < y_size + chunk->get_margin_start(); ++y) {
 		for (int z = chunk->get_margin_start(); z < z_size + chunk->get_margin_start(); ++z) {
 			for (int x = chunk->get_margin_start(); x < x_size + chunk->get_margin_start(); ++x) {
@@ -106,7 +113,13 @@ void VoxelMesherLiquidBlocky::_add_chunk(Ref<VoxelChunk> p_chunk) {
 				if (liquids.find(type) == -1)
 					continue;
 
-				Ref<VoxelSurface> surface = _library->voxel_surface_get(type - 1);
+				Ref<VoxelSurface> surface;
+
+				if (!mcache.is_valid()) {
+					surface = _library->voxel_surface_get(type - 1);
+				} else {
+					surface = mcache->surface_id_get(type - 1);
+				}
 
 				if (!surface.is_valid())
 					continue;

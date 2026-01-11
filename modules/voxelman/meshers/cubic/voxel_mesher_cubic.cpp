@@ -31,6 +31,7 @@
 
 #include "voxel_mesher_cubic.h"
 
+#include "../../library/voxel_material_cache.h"
 #include "../../world/default/voxel_chunk_default.h"
 
 #include "../../defines.h"
@@ -64,6 +65,12 @@ void VoxelMesherCubic::_add_chunk(Ref<VoxelChunk> p_chunk) {
 
 	Color base_light(_base_light_value, _base_light_value, _base_light_value);
 
+	Ref<VoxelMaterialCache> mcache;
+
+	if (chunk->material_cache_key_has()) {
+		mcache = _library->material_cache_get(chunk->material_cache_key_get());
+	}
+
 	for (int y = 0; y < y_size; ++y) {
 		for (int z = 0; z < z_size; ++z) {
 			for (int x = 0; x < x_size; ++x) {
@@ -78,10 +85,17 @@ void VoxelMesherCubic::_add_chunk(Ref<VoxelChunk> p_chunk) {
 
 					uint8_t type = cube_points->get_face_type(face) - 1;
 
-					Ref<VoxelSurface> surface = _library->voxel_surface_get(type);
+					Ref<VoxelSurface> surface;
 
-					if (!surface.is_valid())
+					if (!mcache.is_valid()) {
+						surface = _library->voxel_surface_get(type);
+					} else {
+						surface = mcache->surface_id_get(type);
+					}
+
+					if (!surface.is_valid()) {
 						continue;
+					}
 
 					add_indices(get_vertex_count() + 2);
 					add_indices(get_vertex_count() + 1);

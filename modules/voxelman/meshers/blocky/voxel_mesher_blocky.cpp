@@ -31,6 +31,7 @@
 
 #include "voxel_mesher_blocky.h"
 
+#include "../../library/voxel_material_cache.h"
 #include "../../world/default/voxel_chunk_default.h"
 
 bool VoxelMesherBlocky::get_always_add_colors() const {
@@ -57,8 +58,9 @@ void VoxelMesherBlocky::_add_chunk(Ref<VoxelChunk> p_chunk) {
 
 	uint8_t *channel_type = chunk->channel_get(_channel_index_type);
 
-	if (!channel_type)
+	if (!channel_type) {
 		return;
+	}
 
 	uint8_t *channel_color_r = NULL;
 	uint8_t *channel_color_g = NULL;
@@ -95,6 +97,12 @@ void VoxelMesherBlocky::_add_chunk(Ref<VoxelChunk> p_chunk) {
 			liquids.push_back(static_cast<uint8_t>(i + 1));
 	}
 
+	Ref<VoxelMaterialCache> mcache;
+
+	if (chunk->material_cache_key_has()) {
+		mcache = _library->material_cache_get(chunk->material_cache_key_get());
+	}
+
 	for (int y = chunk->get_margin_start(); y < y_size + chunk->get_margin_start(); ++y) {
 		for (int z = chunk->get_margin_start(); z < z_size + chunk->get_margin_start(); ++z) {
 			for (int x = chunk->get_margin_start(); x < x_size + chunk->get_margin_start(); ++x) {
@@ -108,16 +116,25 @@ void VoxelMesherBlocky::_add_chunk(Ref<VoxelChunk> p_chunk) {
 
 				uint8_t type = channel_type[index];
 
-				if (type == 0)
+				if (type == 0) {
 					continue;
+				}
 
-				if (liquids.find(type) != -1)
+				if (liquids.find(type) != -1) {
 					continue;
+				}
 
-				Ref<VoxelSurface> surface = _library->voxel_surface_get(type - 1);
+				Ref<VoxelSurface> surface;
 
-				if (!surface.is_valid())
+				if (!mcache.is_valid()) {
+					surface = _library->voxel_surface_get(type - 1);
+				} else {
+					surface = mcache->surface_id_get(type - 1);
+				}
+
+				if (!surface.is_valid()) {
 					continue;
+				}
 
 				uint8_t neighbours[] = {
 					channel_type[indexxp],
