@@ -204,13 +204,13 @@ void VoxelLibraryMergerPCM::_material_cache_get_key(Ref<VoxelChunk> chunk) {
 }
 
 Ref<VoxelMaterialCache> VoxelLibraryMergerPCM::_material_cache_get(const int key) {
+	Ref<VoxelMaterialCache> c;
+
 	_material_cache_mutex.lock();
-
-	ERR_FAIL_COND_V(!_material_cache.has(key), Ref<VoxelMaterialCache>());
-
-	Ref<VoxelMaterialCache> c = _material_cache[key];
-
+	c = _material_cache[key];
 	_material_cache_mutex.unlock();
+
+	ERR_FAIL_COND_V(!c.is_valid(), Ref<VoxelMaterialCache>());
 
 	return c;
 }
@@ -228,12 +228,14 @@ void VoxelLibraryMergerPCM::_material_cache_unref(const int key) {
 	}
 
 	if (!_material_cache.has(key)) {
+		_material_cache_mutex.unlock();
 		return;
 	}
 
 	Ref<VoxelMaterialCachePCM> cc = _material_cache[key];
 
 	if (!cc.is_valid()) {
+		_material_cache_mutex.unlock();
 		return;
 	}
 
@@ -386,13 +388,13 @@ void VoxelLibraryMergerPCM::_liquid_material_cache_get_key(Ref<VoxelChunk> chunk
 	_liquid_material_cache_mutex.unlock();
 }
 Ref<VoxelMaterialCache> VoxelLibraryMergerPCM::_liquid_material_cache_get(const int key) {
+	Ref<VoxelMaterialCache> c;
+
 	_liquid_material_cache_mutex.lock();
-
-	ERR_FAIL_COND_V(!_liquid_material_cache.has(key), Ref<VoxelMaterialCache>());
-
-	Ref<VoxelMaterialCache> c = _liquid_material_cache[key];
-
+	c = _liquid_material_cache[key];
 	_liquid_material_cache_mutex.unlock();
+
+	ERR_FAIL_COND_V(!c.is_valid(), Ref<VoxelMaterialCache>());
 
 	return c;
 }
@@ -409,12 +411,14 @@ void VoxelLibraryMergerPCM::_liquid_material_cache_unref(const int key) {
 	}
 
 	if (!_liquid_material_cache.has(key)) {
+		_liquid_material_cache_mutex.unlock();
 		return;
 	}
 
 	Ref<VoxelMaterialCachePCM> cc = _liquid_material_cache[key];
 
 	if (!cc.is_valid()) {
+		_liquid_material_cache_mutex.unlock();
 		return;
 	}
 
@@ -590,13 +594,13 @@ void VoxelLibraryMergerPCM::_prop_material_cache_get_key(Ref<VoxelChunk> chunk) 
 	cache->refresh_rects();
 }
 Ref<VoxelMaterialCache> VoxelLibraryMergerPCM::_prop_material_cache_get(const int key) {
+	Ref<VoxelMaterialCache> c;
+
 	_prop_material_cache_mutex.lock();
-
-	ERR_FAIL_COND_V(!_prop_material_cache.has(key), Ref<VoxelMaterialCache>());
-
-	Ref<VoxelMaterialCache> c = _prop_material_cache[key];
-
+	c = _prop_material_cache[key];
 	_prop_material_cache_mutex.unlock();
+
+	ERR_FAIL_COND_V(!c.is_valid(), Ref<VoxelMaterialCache>());
 
 	return c;
 }
@@ -613,12 +617,14 @@ void VoxelLibraryMergerPCM::_prop_material_cache_unref(const int key) {
 	}
 
 	if (!_prop_material_cache.has(key)) {
+		_prop_material_cache_mutex.unlock();
 		return;
 	}
 
 	Ref<VoxelMaterialCachePCM> cc = _prop_material_cache[key];
 
 	if (!cc.is_valid()) {
+		_prop_material_cache_mutex.unlock();
 		return;
 	}
 
