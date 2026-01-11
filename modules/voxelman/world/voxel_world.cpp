@@ -925,7 +925,7 @@ uint8_t VoxelWorld::get_voxel_at_world_data_position(const Vector3i &world_data_
 
 	return 0;
 }
-void VoxelWorld::set_voxel_at_world_data_position(const Vector3i &world_data_position, const uint8_t data, const int channel_index, const bool rebuild, const bool allow_creating_chunks) {
+void VoxelWorld::set_voxel_at_world_data_position(const Vector3i &world_data_position, const uint8_t data, const int channel_index, const bool p_immediate_build, const bool allow_creating_chunks) {
 	// TODO rework this so it works directly with ints.
 
 	Vector3 pos = world_data_position;
@@ -964,7 +964,9 @@ void VoxelWorld::set_voxel_at_world_data_position(const Vector3i &world_data_pos
 			if (chunk.is_valid()) {
 				chunk->set_voxel(data, get_chunk_size_x(), by, bz, channel_index);
 
-				if (rebuild) {
+				if (p_immediate_build) {
+					chunk->build_immediate();
+				} else {
 					chunk->build();
 				}
 			}
@@ -980,7 +982,9 @@ void VoxelWorld::set_voxel_at_world_data_position(const Vector3i &world_data_pos
 			if (chunk.is_valid()) {
 				chunk->set_voxel(data, bx, get_chunk_size_y(), bz, channel_index);
 
-				if (rebuild) {
+				if (p_immediate_build) {
+					chunk->build_immediate();
+				} else {
 					chunk->build();
 				}
 			}
@@ -996,7 +1000,9 @@ void VoxelWorld::set_voxel_at_world_data_position(const Vector3i &world_data_pos
 			if (chunk.is_valid()) {
 				chunk->set_voxel(data, bx, by, get_chunk_size_z(), channel_index);
 
-				if (rebuild) {
+				if (p_immediate_build) {
+					chunk->build_immediate();
+				} else {
 					chunk->build();
 				}
 			}
@@ -1014,7 +1020,9 @@ void VoxelWorld::set_voxel_at_world_data_position(const Vector3i &world_data_pos
 			if (chunk.is_valid()) {
 				chunk->set_voxel(data, -1, by, bz, channel_index);
 
-				if (rebuild) {
+				if (p_immediate_build) {
+					chunk->build_immediate();
+				} else {
 					chunk->build();
 				}
 			}
@@ -1030,7 +1038,9 @@ void VoxelWorld::set_voxel_at_world_data_position(const Vector3i &world_data_pos
 			if (chunk.is_valid()) {
 				chunk->set_voxel(data, bx, -1, bz, channel_index);
 
-				if (rebuild) {
+				if (p_immediate_build) {
+					chunk->build_immediate();
+				} else {
 					chunk->build();
 				}
 			}
@@ -1046,7 +1056,9 @@ void VoxelWorld::set_voxel_at_world_data_position(const Vector3i &world_data_pos
 			if (chunk.is_valid()) {
 				chunk->set_voxel(data, bx, by, -1, channel_index);
 
-				if (rebuild) {
+				if (p_immediate_build) {
+					chunk->build_immediate();
+				} else {
 					chunk->build();
 				}
 			}
@@ -1062,7 +1074,9 @@ void VoxelWorld::set_voxel_at_world_data_position(const Vector3i &world_data_pos
 	if (chunk.is_valid()) {
 		chunk->set_voxel(data, bx, by, bz, channel_index);
 
-		if (rebuild) {
+		if (p_immediate_build) {
+			chunk->build_immediate();
+		} else {
 			chunk->build();
 		}
 	}
@@ -1446,7 +1460,7 @@ void VoxelWorld::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("world_position_to_world_data_position", "world_position"), &VoxelWorld::world_position_to_world_data_position);
 	ClassDB::bind_method(D_METHOD("get_voxel_at_world_data_position", "world_data_position", "channel_index"), &VoxelWorld::get_voxel_at_world_data_position);
-	ClassDB::bind_method(D_METHOD("set_voxel_at_world_data_position", "world_data_position", "data", "channel_index", "rebuild", "allow_creating_chunks"), &VoxelWorld::set_voxel_at_world_data_position, DEFVAL(true), DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("set_voxel_at_world_data_position", "world_data_position", "data", "channel_index", "immediate_build", "allow_creating_chunks"), &VoxelWorld::set_voxel_at_world_data_position, DEFVAL(true), DEFVAL(true));
 	ClassDB::bind_method(D_METHOD("get_chunk_at_world_data_position", "world_data_position"), &VoxelWorld::get_chunk_at_world_data_position);
 	ClassDB::bind_method(D_METHOD("get_or_create_chunk_at_world_data_position", "world_data_position"), &VoxelWorld::get_or_create_chunk_at_world_data_position);
 
