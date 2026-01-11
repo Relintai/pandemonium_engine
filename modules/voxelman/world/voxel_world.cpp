@@ -896,7 +896,7 @@ void VoxelWorld::set_voxel_at_world_position(const Vector3 &world_position, cons
 		// PRobably needed, todo: https://git.relintai.net/Relintai/pandemonium_engine/commit/39b3a12b1ae84b05f786716fdc0ac90a22d82c2e
 		/*
 		if (bx != 0 && by == 0 && bz == 0) {
-			Ref<TerrainChunk> chunk = chunk_get_or_create(x, y - 1, z - 1);
+			Ref<VoxelChunk> chunk = chunk_get_or_create(x, y - 1, z - 1);
 			chunk->set_voxel(data, bx, get_chunk_size_y(), get_chunk_size_z(), channel_index);
 
 			if (rebuild) {
@@ -905,7 +905,7 @@ void VoxelWorld::set_voxel_at_world_position(const Vector3 &world_position, cons
 		}
 
 		if (bx == 0 && by != 0 && bz == 0) {
-			Ref<TerrainChunk> chunk = chunk_get_or_create(x - 1, y, z - 1);
+			Ref<VoxelChunk> chunk = chunk_get_or_create(x - 1, y, z - 1);
 			chunk->set_voxel(data, get_chunk_size_x(), by, get_chunk_size_z(), channel_index);
 
 			if (rebuild) {
@@ -914,7 +914,7 @@ void VoxelWorld::set_voxel_at_world_position(const Vector3 &world_position, cons
 		}
 
 		if (bx == 0 && by == 0 && bz != 0) {
-			Ref<TerrainChunk> chunk = chunk_get_or_create(x - 1, y - 1, z);
+			Ref<VoxelChunk> chunk = chunk_get_or_create(x - 1, y - 1, z);
 			chunk->set_voxel(data, get_chunk_size_x(), get_chunk_size_y(), bz, channel_index);
 
 			if (rebuild) {
@@ -923,7 +923,7 @@ void VoxelWorld::set_voxel_at_world_position(const Vector3 &world_position, cons
 		}
 
 		if (bx == 0 && by == 0 && bz == 0) {
-			Ref<TerrainChunk> chunk = chunk_get_or_create(x - 1, y - 1, z - 1);
+			Ref<VoxelChunk> chunk = chunk_get_or_create(x - 1, y - 1, z - 1);
 			chunk->set_voxel(data, get_chunk_size_x(), get_chunk_size_y(), get_chunk_size_z(), channel_index);
 
 			if (rebuild) {
@@ -980,6 +980,7 @@ Ref<VoxelChunk> VoxelWorld::get_chunk_at_world_position(const Vector3 &world_pos
 
 	return chunk_get(x, y, z);
 }
+
 Ref<VoxelChunk> VoxelWorld::get_or_create_chunk_at_world_position(const Vector3 &world_position) {
 	Vector3 pos = world_position / get_voxel_scale();
 
@@ -989,6 +990,19 @@ Ref<VoxelChunk> VoxelWorld::get_or_create_chunk_at_world_position(const Vector3 
 	int z = static_cast<int>(Math::floor(pos.z / get_chunk_size_z()));
 
 	return chunk_get_or_create(x, y, z);
+}
+
+Vector3i VoxelWorld::world_position_to_chunk_position(const Vector3 &p_world_position) {
+	// TODO rework this so it works directly with ints.
+
+	Vector3 pos = p_world_position / get_voxel_scale();
+
+	//Note: floor is needed to handle negative numbers properly
+	int x = static_cast<int>(Math::floor(pos.x / get_chunk_size_x()));
+	int y = static_cast<int>(Math::floor(pos.y / get_chunk_size_y()));
+	int z = static_cast<int>(Math::floor(pos.z / get_chunk_size_z()));
+
+	return Vector3i(x, y, z);
 }
 
 Vector3i VoxelWorld::world_position_to_world_data_position(const Vector3 &world_position) {
@@ -1726,6 +1740,7 @@ void VoxelWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_voxel_at_world_position", "world_position", "data", "channel_index", "rebuild"), &VoxelWorld::set_voxel_at_world_position, DEFVAL(true));
 	ClassDB::bind_method(D_METHOD("get_chunk_at_world_position", "world_position"), &VoxelWorld::get_chunk_at_world_position);
 	ClassDB::bind_method(D_METHOD("get_or_create_chunk_at_world_position", "world_position"), &VoxelWorld::get_or_create_chunk_at_world_position);
+	ClassDB::bind_method(D_METHOD("world_position_to_chunk_position", "world_position"), &VoxelWorld::world_position_to_chunk_position);
 
 	ClassDB::bind_method(D_METHOD("world_position_to_world_data_position", "world_position"), &VoxelWorld::world_position_to_world_data_position);
 	ClassDB::bind_method(D_METHOD("get_voxel_at_world_data_position", "world_data_position", "channel_index"), &VoxelWorld::get_voxel_at_world_data_position);
