@@ -647,6 +647,7 @@ void VoxelTerrainJob::_reset() {
 		ERR_CONTINUE(!mesher.is_valid());
 
 		mesher->set_voxel_scale(_chunk->get_voxel_scale());
+		mesher->set_lod_index(0);
 
 		Ref<VoxelChunkDefault> chunk = _chunk;
 		Ref<VoxelMesherDefault> md = mesher;
@@ -662,6 +663,7 @@ void VoxelTerrainJob::_reset() {
 		ERR_CONTINUE(!mesher.is_valid());
 
 		mesher->set_voxel_scale(_chunk->get_voxel_scale());
+		mesher->set_lod_index(0);
 
 		Ref<VoxelChunkDefault> chunk = _chunk;
 		Ref<VoxelMesherDefault> md = mesher;
@@ -673,8 +675,9 @@ void VoxelTerrainJob::_reset() {
 }
 
 void VoxelTerrainJob::_physics_process(float delta) {
-	if (_phase == 4)
+	if (_phase == 4) {
 		phase_physics_process();
+	}
 }
 
 void VoxelTerrainJob::step_type_normal() {
