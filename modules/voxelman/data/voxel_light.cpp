@@ -130,6 +130,15 @@ void VoxelLight::set_item_cull_mask(const int p_item_cull_mask) {
 	_item_cull_mask = p_item_cull_mask;
 }
 
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+RID VoxelLight::get_vertex_lights_3d_rid() const {
+	return _vertex_lights_3d_rid;
+}
+void VoxelLight::set_vertex_lights_3d_rid(const RID p_rid) {
+	_vertex_lights_3d_rid = p_rid;
+}
+#endif
+
 Dictionary VoxelLight::to_dict() {
 	Dictionary data;
 
@@ -251,6 +260,11 @@ void VoxelLight::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_item_cull_mask"), &VoxelLight::get_item_cull_mask);
 	ClassDB::bind_method(D_METHOD("set_item_cull_mask", "value"), &VoxelLight::set_item_cull_mask);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "item_cull_mask", PROPERTY_HINT_LAYERS_3D_RENDER), "set_item_cull_mask", "get_item_cull_mask");
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	ClassDB::bind_method(D_METHOD("get_vertex_lights_3d_rid"), &VoxelLight::get_vertex_lights_3d_rid);
+	ClassDB::bind_method(D_METHOD("set_vertex_lights_3d_rid", "rid"), &VoxelLight::set_vertex_lights_3d_rid);
+#endif
 
 	ClassDB::bind_method(D_METHOD("to_dict"), &VoxelLight::to_dict);
 	ClassDB::bind_method(D_METHOD("from_dict", "data"), &VoxelLight::from_dict);
