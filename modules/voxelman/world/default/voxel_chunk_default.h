@@ -189,6 +189,7 @@ protected:
 
 	virtual void _visibility_changed(bool visible);
 
+	virtual void _enter_tree();
 	virtual void _exit_tree();
 	virtual void _world_transform_changed();
 

@@ -2055,8 +2055,6 @@ void VoxelChunk::_enter_tree() {
 		}
 	}
 #endif
-
-	visibility_changed(_is_visible);
 }
 
 void VoxelChunk::_exit_tree() {
