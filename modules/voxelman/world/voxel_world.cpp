@@ -1753,7 +1753,7 @@ void VoxelWorld::_validate_property(PropertyInfo &property) const {
 
 void VoxelWorld::_notification(int p_what) {
 	switch (p_what) {
-		case NOTIFICATION_ENTER_TREE: {
+		case NOTIFICATION_POST_ENTER_TREE: {
 #ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
 			if (_use_vertex_lights_3d) {
 				VertexLights3DServer::get_singleton()->connect("map_changed", this, "_on_vertex_lights_3d_map_changed");
