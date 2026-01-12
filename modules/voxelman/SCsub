@@ -62,6 +62,9 @@ sources = [
     "world/jobs/voxel_mesher_job_step.cpp",
     "world/jobs/voxel_light_job.cpp",
     "world/jobs/voxel_prop_job.cpp",
+
+    "chunk_data_managers/voxel_world_chunk_data_manager.cpp",
+    "chunk_data_managers/voxel_world_chunk_data_manager_static_folder_resources.cpp",
 ]
 
 if env["module_texture_packer_enabled"]:

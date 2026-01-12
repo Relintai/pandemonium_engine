@@ -54,8 +54,8 @@
 #include "meshers/marching_cubes/voxel_mesher_marching_cubes.h"
 
 #include "world/block_voxel_structure.h"
-#include "world/voxel_environment_data.h"
 #include "world/voxel_chunk.h"
+#include "world/voxel_environment_data.h"
 #include "world/voxel_structure.h"
 #include "world/voxel_world.h"
 
@@ -91,6 +91,9 @@
 #include "world/jobs/voxel_mesher_job_step.h"
 #include "world/jobs/voxel_prop_job.h"
 #include "world/jobs/voxel_terrain_job.h"
+
+#include "chunk_data_managers/voxel_world_chunk_data_manager.h"
+#include "chunk_data_managers/voxel_world_chunk_data_manager_static_folder_resources.h"
 
 void register_voxelman_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
@@ -151,6 +154,9 @@ void register_voxelman_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<VoxelMesherJobStep>();
 		ClassDB::register_class<VoxelLightJob>();
 		ClassDB::register_class<VoxelPropJob>();
+
+		ClassDB::register_class<VoxelWorldChunkDataManager>();
+		ClassDB::register_class<VoxelWorldChunkDataManagerStaticFolderResources>();
 	}
 
 #ifdef TOOLS_ENABLED

@@ -65,6 +65,9 @@ def get_doc_classes():
         "VoxelLightJob",
         "VoxelPropJob",
         "VoxelMesherJobStep",
+
+        "VoxelWorldChunkDataManager",
+        "VoxelWorldChunkDataManagerStaticFolderResources"
     ]
 
 
