@@ -1118,8 +1118,6 @@ void VoxelChunkDefault::_finalize_build() {
 }
 
 VoxelChunkDefault::VoxelChunkDefault() {
-	_abort_build = false;
-
 	_enabled = true;
 
 	_lod_num = 3;
@@ -1129,8 +1127,6 @@ VoxelChunkDefault::VoxelChunkDefault() {
 }
 
 VoxelChunkDefault::~VoxelChunkDefault() {
-	_abort_build = true;
-
 	_lights.clear();
 
 	debug_mesh_free();

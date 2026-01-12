@@ -1211,6 +1211,8 @@ void VoxelChunk::build() {
 	ERR_FAIL_COND(!get_voxel_world()->is_inside_tree());
 	ERR_FAIL_COND(!is_in_tree());
 
+	_abort_build = false;
+
 	call("_build");
 }
 
@@ -1218,6 +1220,8 @@ void VoxelChunk::build_immediate() {
 	ERR_FAIL_COND(!ObjectDB::instance_validate(get_voxel_world()));
 	ERR_FAIL_COND(!get_voxel_world()->is_inside_tree());
 	ERR_FAIL_COND(!is_in_tree());
+
+	_abort_build = false;
 
 	call("_build_immediate");
 }
@@ -1926,6 +1930,7 @@ VoxelChunk::VoxelChunk() {
 	_is_processing = false;
 	_is_phisics_processing = false;
 	_is_in_tree = false;
+	_abort_build = false;
 
 	_is_visible = true;
 
@@ -1972,6 +1977,8 @@ VoxelChunk::VoxelChunk() {
 }
 
 VoxelChunk::~VoxelChunk() {
+	_abort_build = true;
+
 	if (_library.is_valid() && _library->supports_caching()) {
 		if (material_cache_key_has()) {
 			_library->material_cache_unref(material_cache_key_get());
