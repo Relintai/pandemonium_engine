@@ -250,6 +250,8 @@ protected:
 	virtual int _get_channel_index_info(const ChannelTypeInfo channel_type);
 	virtual void _set_voxel_with_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal, const int selected_voxel, const int isolevel);
 
+	void _editor_button_property_pressed(const StringName &p_property);
+	void _get_property_list(List<PropertyInfo> *p_list) const;
 	virtual void _validate_property(PropertyInfo &property) const;
 	virtual void _notification(int p_what);
 	static void _bind_methods();

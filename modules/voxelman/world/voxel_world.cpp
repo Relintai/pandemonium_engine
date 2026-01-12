@@ -1681,6 +1681,18 @@ void VoxelWorld::_generate_chunk(Ref<VoxelChunk> chunk) {
 	}
 }
 
+void VoxelWorld::_editor_button_property_pressed(const StringName &p_property) {
+	if (p_property == "force_save_all_chunks") {
+		force_save_all_chunks();
+	}
+}
+
+void VoxelWorld::_get_property_list(List<PropertyInfo> *p_list) const {
+	if (_world_chunk_data_manager.is_valid()) {
+		p_list->push_back(PropertyInfo(Variant::NIL, "force_save_all_chunks", PROPERTY_HINT_BUTTON, "_editor_button_property_pressed:Save/EditorIcons"));
+	}
+}
+
 void VoxelWorld::_validate_property(PropertyInfo &property) const {
 	if (property.name == "chunks") {
 		if (_world_chunk_data_manager.is_valid()) {
@@ -2070,6 +2082,8 @@ void VoxelWorld::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_voxel_with_tool", "mode_add", "hit_position", "hit_normal", "selected_voxel", "isolevel"), &VoxelWorld::set_voxel_with_tool);
 	ClassDB::bind_method(D_METHOD("_set_voxel_with_tool", "mode_add", "hit_position", "hit_normal", "selected_voxel", "isolevel"), &VoxelWorld::_set_voxel_with_tool);
+
+	ClassDB::bind_method(D_METHOD("_editor_button_property_pressed"), &VoxelWorld::_editor_button_property_pressed);
 
 #ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
 	ClassDB::bind_method(D_METHOD("_on_vertex_lights_3d_map_changed"), &VoxelWorld::_on_vertex_lights_3d_map_changed);
