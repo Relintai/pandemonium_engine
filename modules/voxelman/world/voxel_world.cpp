@@ -196,7 +196,13 @@ Ref<VoxelWorldChunkDataManager> VoxelWorld::get_world_chunk_data_manager() const
 	return _world_chunk_data_manager;
 }
 void VoxelWorld::set_world_chunk_data_manager(const Ref<VoxelWorldChunkDataManager> &p_data_manager) {
+	if (_world_chunk_data_manager == p_data_manager) {
+		return;
+	}
+
 	_world_chunk_data_manager = p_data_manager;
+
+	property_list_changed_notify();
 }
 
 float VoxelWorld::get_voxel_scale() const {
@@ -1665,6 +1671,17 @@ void VoxelWorld::_generate_chunk(Ref<VoxelChunk> chunk) {
 			}
 		} else {
 			structure->write_to_chunk(chunk);
+		}
+	}
+}
+
+void VoxelWorld::_validate_property(PropertyInfo &property) const {
+	if (property.name == "chunks") {
+		if (_world_chunk_data_manager.is_valid()) {
+			// Show in editor, but don't save with the scene
+			property.usage = PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_NETWORK;
+		} else {
+			property.usage = PROPERTY_USAGE_DEFAULT;
 		}
 	}
 }
