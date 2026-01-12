@@ -639,6 +639,12 @@ void VoxelWorld::chunk_generate(Ref<VoxelChunk> chunk) {
 	chunk->build();
 }
 
+void VoxelWorld::force_save_all_chunks() {
+	ERR_FAIL_COND(!_world_chunk_data_manager.is_valid());
+
+	_world_chunk_data_manager->save_all_chunks(this);
+}
+
 Vector<Variant> VoxelWorld::chunks_get() {
 	VARIANT_ARRAY_GET(_chunks_vector);
 }
@@ -1978,6 +1984,8 @@ void VoxelWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("chunk_get_count"), &VoxelWorld::chunk_get_count);
 
 	ClassDB::bind_method(D_METHOD("chunks_clear"), &VoxelWorld::chunks_clear);
+
+	ClassDB::bind_method(D_METHOD("force_save_all_chunks"), &VoxelWorld::force_save_all_chunks);
 
 	ClassDB::bind_method(D_METHOD("chunks_get"), &VoxelWorld::chunks_get);
 	ClassDB::bind_method(D_METHOD("chunks_set"), &VoxelWorld::chunks_set);
