@@ -1777,13 +1777,15 @@ void VoxelWorld::_notification(int p_what) {
 			for (int i = 0; i < _chunks_vector.size(); ++i) {
 				Ref<VoxelChunk> chunk = _chunks_vector[i];
 
-				if (chunk.is_valid()) {
+				if (chunk.is_valid() && !chunk->get_is_setup()) {
 					chunk_setup(chunk);
 
 					chunk->set_voxel_world(this);
 					chunk->enter_tree();
 
 					chunk->build();
+				} else {
+					chunk->enter_tree();
 				}
 			}
 		} break;
@@ -1891,7 +1893,6 @@ void VoxelWorld::_notification(int p_what) {
 				if (chunk.is_valid()) {
 					if (chunk->get_voxel_world() == this) {
 						chunk->exit_tree();
-						chunk->set_voxel_world(NULL);
 					}
 				}
 			}

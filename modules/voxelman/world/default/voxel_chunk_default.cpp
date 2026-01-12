@@ -768,10 +768,7 @@ void VoxelChunkDefault::_visibility_changed(bool visible) {
 void VoxelChunkDefault::_exit_tree() {
 	VoxelChunk::_exit_tree();
 
-	if (!_is_generating) {
-		rids_free();
-		rids_clear();
-	}
+	visibility_changed(false);
 }
 
 void VoxelChunkDefault::_world_transform_changed() {
