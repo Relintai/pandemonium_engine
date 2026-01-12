@@ -881,6 +881,10 @@ void VoxelChunkDefault::_enter_tree() {
 		}
 	}
 
+	if (_debug_mesh_instance != RID()) {
+		RenderingServer::get_singleton()->instance_set_scenario(_debug_mesh_instance, scenario);
+	}
+
 	RID space = get_voxel_world()->get_world_3d()->get_space();
 
 	colliders_set_space(MESH_INDEX_TERRAIN, space);
@@ -920,6 +924,10 @@ void VoxelChunkDefault::_exit_tree() {
 		if (rid != RID()) {
 			RenderingServer::get_singleton()->instance_set_scenario(rid, RID());
 		}
+	}
+
+	if (_debug_mesh_instance != RID()) {
+		RenderingServer::get_singleton()->instance_set_scenario(_debug_mesh_instance, RID());
 	}
 
 	colliders_set_space(MESH_INDEX_TERRAIN, RID());
@@ -1091,6 +1099,7 @@ void VoxelChunkDefault::_world_light_removed(const Ref<VoxelLight> &light) {
 }
 
 void VoxelChunkDefault::free_chunk() {
+	debug_mesh_free();
 	rids_free();
 }
 
