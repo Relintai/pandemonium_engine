@@ -49,7 +49,7 @@ Ref<VoxelChunk> VoxelWorldBlocky::_create_chunk(int x, int y, int z, Ref<VoxelCh
 		chunk = Ref<VoxelChunk>(memnew(VoxelChunkBlocky));
 	}
 
-	return VoxelWorld::_create_chunk(x, y, z, chunk);
+	return VoxelWorldDefault::_create_chunk(x, y, z, chunk);
 }
 
 void VoxelWorldBlocky::_setup_chunk(Ref<VoxelChunk> p_chunk) {
@@ -125,7 +125,7 @@ void VoxelWorldBlocky::_setup_chunk(Ref<VoxelChunk> p_chunk) {
 		set_num_lods(5);
 	}
 
-	VoxelWorld::_setup_chunk(p_chunk);
+	VoxelWorldDefault::_setup_chunk(p_chunk);
 }
 
 VoxelWorldBlocky::VoxelWorldBlocky() {

@@ -49,7 +49,7 @@ Ref<VoxelChunk> VoxelWorldCubic::_create_chunk(int x, int y, int z, Ref<VoxelChu
 		chunk = Ref<VoxelChunk>(memnew(VoxelChunkCubic));
 	}
 
-	return VoxelWorld::_create_chunk(x, y, z, chunk);
+	return VoxelWorldDefault::_create_chunk(x, y, z, chunk);
 }
 
 void VoxelWorldCubic::_setup_chunk(Ref<VoxelChunk> p_chunk) {
@@ -128,7 +128,7 @@ void VoxelWorldCubic::_setup_chunk(Ref<VoxelChunk> p_chunk) {
 		set_num_lods(5);
 	}
 
-	VoxelWorld::_setup_chunk(p_chunk);
+	VoxelWorldDefault::_setup_chunk(p_chunk);
 }
 
 VoxelWorldCubic::VoxelWorldCubic() {
