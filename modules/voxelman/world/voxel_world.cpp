@@ -384,7 +384,9 @@ void VoxelWorld::chunk_add(Ref<VoxelChunk> chunk, const int x, const int y, cons
 	if (!chunk->get_is_terrain_generated()) {
 		generation_queue_add_to(chunk);
 	} else {
-		chunk->build();
+		if (is_inside_tree()) {
+			chunk->build();
+		}
 	}
 }
 bool VoxelWorld::chunk_has(const int x, const int y, const int z) const {
