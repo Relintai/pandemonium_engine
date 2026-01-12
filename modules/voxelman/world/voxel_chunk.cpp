@@ -51,6 +51,11 @@
 #include "modules/lz4/lz4_compressor.h"
 #endif
 
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+#include "modules/vertex_lights_3d/vertex_lights_3d_server.h"
+#include "scene/resources/world_3d.h"
+#endif
+
 _FORCE_INLINE_ bool VoxelChunk::get_is_build_threaded() const {
 	return _is_build_threaded;
 }
@@ -708,6 +713,27 @@ void VoxelChunk::light_add(Ref<VoxelLight> p_light) {
 
 	VoxelWorld *world = get_voxel_world();
 
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	if (world) {
+		if (world->get_use_vertex_lights_3d()) {
+			RID vertex_light_rid = p_light->get_vertex_lights_3d_rid();
+
+			if (vertex_light_rid == RID()) {
+				vertex_light_rid = VertexLights3DServer::get_singleton()->light_create();
+				p_light->set_vertex_lights_3d_rid(vertex_light_rid);
+
+				VertexLights3DServer::get_singleton()->light_set_attenuation(vertex_light_rid, p_light->get_attenuation());
+				VertexLights3DServer::get_singleton()->light_set_color(vertex_light_rid, p_light->get_color());
+				VertexLights3DServer::get_singleton()->light_set_item_cull_mask(vertex_light_rid, p_light->get_item_cull_mask());
+				VertexLights3DServer::get_singleton()->light_set_mode(vertex_light_rid, (VertexLights3DServer::VertexLight3DMode)(int)p_light->get_light_mode());
+				VertexLights3DServer::get_singleton()->light_set_range(vertex_light_rid, p_light->get_range());
+				VertexLights3DServer::get_singleton()->light_set_map(vertex_light_rid, world->get_world_3d()->get_vertex_lights_3d_map());
+				VertexLights3DServer::get_singleton()->light_set_position(vertex_light_rid, p_light->get_world_data_position() * get_voxel_scale());
+			}
+		}
+	}
+#endif
+
 	if (ObjectDB::instance_validate(world)) {
 		world->world_light_added(p_light);
 	}
@@ -724,6 +750,19 @@ bool VoxelChunk::light_remove(Ref<VoxelLight> p_light) {
 		p_light->disconnect("light_moved", this, "_on_light_moved");
 
 		VoxelWorld *world = get_voxel_world();
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+		if (world) {
+			if (world->get_use_vertex_lights_3d()) {
+				RID vertex_light_rid = p_light->get_vertex_lights_3d_rid();
+
+				if (vertex_light_rid != RID()) {
+					VertexLights3DServer::get_singleton()->free(vertex_light_rid);
+					p_light->set_vertex_lights_3d_rid(RID());
+				}
+			}
+		}
+#endif
 
 		if (ObjectDB::instance_validate(world)) {
 			world->world_light_removed(p_light);
@@ -756,6 +795,19 @@ void VoxelChunk::light_remove_index(const int index) {
 	light->disconnect("light_moved", this, "_on_light_moved");
 
 	VoxelWorld *world = get_voxel_world();
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	if (world) {
+		if (world->get_use_vertex_lights_3d()) {
+			RID vertex_light_rid = light->get_vertex_lights_3d_rid();
+
+			if (vertex_light_rid != RID()) {
+				VertexLights3DServer::get_singleton()->free(vertex_light_rid);
+				light->set_vertex_lights_3d_rid(RID());
+			}
+		}
+	}
+#endif
 
 	if (ObjectDB::instance_validate(world)) {
 		world->world_light_removed(light);
@@ -853,6 +905,18 @@ void VoxelChunk::owned_lights_set(const Vector<Variant> &p_lights) {
 
 void VoxelChunk::_on_light_moved(const Ref<VoxelLight> &p_light) {
 	VoxelWorld *world = get_voxel_world();
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	if (world) {
+		if (world->get_use_vertex_lights_3d()) {
+			RID vertex_light_rid = p_light->get_vertex_lights_3d_rid();
+
+			if (vertex_light_rid != RID()) {
+				VertexLights3DServer::get_singleton()->light_set_position(vertex_light_rid, p_light->get_world_data_position() * get_voxel_scale());
+			}
+		}
+	}
+#endif
 
 	if (ObjectDB::instance_validate(world)) {
 		world->world_light_moved(p_light);
@@ -1942,6 +2006,34 @@ void VoxelChunk::_enter_tree() {
 	for (int i = 0; i < _scenes.size(); ++i) {
 		scene_instance(i);
 	}
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	VoxelWorld *world = get_voxel_world();
+
+	if (world) {
+		if (world->get_use_vertex_lights_3d()) {
+			for (int i = 0; i < _lights.size(); ++i) {
+				Ref<VoxelLight> light = _lights[i];
+
+				RID vertex_light_rid = light->get_vertex_lights_3d_rid();
+
+				if (vertex_light_rid == RID()) {
+					vertex_light_rid = VertexLights3DServer::get_singleton()->light_create();
+					light->set_vertex_lights_3d_rid(vertex_light_rid);
+
+					VertexLights3DServer::get_singleton()->light_set_attenuation(vertex_light_rid, light->get_attenuation());
+					VertexLights3DServer::get_singleton()->light_set_color(vertex_light_rid, light->get_color());
+					VertexLights3DServer::get_singleton()->light_set_item_cull_mask(vertex_light_rid, light->get_item_cull_mask());
+					VertexLights3DServer::get_singleton()->light_set_mode(vertex_light_rid, (VertexLights3DServer::VertexLight3DMode)(int)light->get_light_mode());
+					VertexLights3DServer::get_singleton()->light_set_range(vertex_light_rid, light->get_range());
+					VertexLights3DServer::get_singleton()->light_set_position(vertex_light_rid, light->get_world_data_position() * get_voxel_scale());
+				}
+
+				VertexLights3DServer::get_singleton()->light_set_map(vertex_light_rid, world->get_world_3d()->get_vertex_lights_3d_map());
+			}
+		}
+	}
+#endif
 }
 
 void VoxelChunk::_exit_tree() {
@@ -1969,6 +2061,25 @@ void VoxelChunk::_exit_tree() {
 			material_cache_key_has_set(false);
 		}
 	}
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	VoxelWorld *world = get_voxel_world();
+
+	if (world) {
+		if (world->get_use_vertex_lights_3d()) {
+			for (int i = 0; i < _lights.size(); ++i) {
+				Ref<VoxelLight> light = _lights[i];
+
+				RID vertex_light_rid = light->get_vertex_lights_3d_rid();
+
+				if (vertex_light_rid != RID()) {
+					VertexLights3DServer::get_singleton()->free(vertex_light_rid);
+					light->set_vertex_lights_3d_rid(RID());
+				}
+			}
+		}
+	}
+#endif
 }
 
 void VoxelChunk::_generation_process(const float delta) {
