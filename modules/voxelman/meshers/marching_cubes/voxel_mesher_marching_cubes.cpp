@@ -32,6 +32,8 @@
 #include "core/variant/array.h"
 #include "core/variant/dictionary.h"
 
+#include "../../library/voxel_material_cache.h"
+
 #include "voxel_mesher_marching_cubes.h"
 
 #include "../../world/default/voxel_chunk_default.h"
@@ -211,6 +213,12 @@ void VoxelMesherMarchingCubes::_add_chunk(Ref<VoxelChunk> p_chunk) {
 		start_y = job->get_meta("mc_start_y");
 	}
 
+	Ref<VoxelMaterialCache> mcache;
+
+	if (chunk->material_cache_key_has()) {
+		mcache = _library->material_cache_get(chunk->material_cache_key_get());
+	}
+
 	for (int y = start_y; y < y_size; y += lod_size) {
 		if (job->should_return()) {
 			job->set_meta("mc_start_y", y);
@@ -308,8 +316,16 @@ void VoxelMesherMarchingCubes::_add_chunk(Ref<VoxelChunk> p_chunk) {
 					}
 				}
 
-				Ref<VoxelSurface> surface1 = _library->voxel_surface_get(type_id1 - 1);
-				Ref<VoxelSurface> surface2 = _library->voxel_surface_get(type_id2 - 1);
+				Ref<VoxelSurface> surface1;
+				Ref<VoxelSurface> surface2;
+
+				if (!mcache.is_valid()) {
+					surface1 = _library->voxel_surface_get(type_id1 - 1);
+					surface2 = _library->voxel_surface_get(type_id2 - 1);
+				} else {
+					surface1 = mcache->surface_id_get(type_id1 - 1);
+					surface2 = mcache->surface_id_get(type_id2 - 1);
+				}
 
 				for (int i = 0; i < vertex_count; ++i) {
 					int fv = get_regular_vertex_data_first_vertex(case_code, i);
