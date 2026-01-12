@@ -346,7 +346,7 @@ void VoxelWorld::voxel_structures_set(const Vector<Variant> &structures) {
 
 void VoxelWorld::chunk_add(Ref<VoxelChunk> chunk, const int x, const int y, const int z) {
 	ERR_FAIL_COND(!chunk.is_valid());
-	ERR_FAIL_COND_MSG(chunk->get_voxel_world() != NULL && chunk->get_voxel_world() != this, "Chunk is already owned by an another world!");
+	//ERR_FAIL_COND_MSG(chunk->get_voxel_world() != NULL && chunk->get_voxel_world() != this, "Chunk is already owned by an another world!");
 
 	IntPos pos(x, y, z);
 
