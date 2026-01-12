@@ -918,10 +918,11 @@ void VoxelChunk::voxel_structures_set(const Vector<Variant> &structures) {
 
 //Scenes
 
-void VoxelChunk::scene_add(const Ref<PackedScene> &p_scene, const Transform &p_transform, const Node *p_node, const bool p_original) {
+void VoxelChunk::scene_add(const Ref<PackedScene> &p_scene, const Transform &p_transform, const Node *p_node, const bool p_original, const String &p_name) {
 	ERR_FAIL_COND(!p_scene.is_valid());
 
 	SceneDataStore s;
+	s.name = p_name;
 	s.original = p_original;
 	s.transform = p_transform;
 	s.scene = p_scene;
@@ -975,6 +976,19 @@ void VoxelChunk::scene_set_is_original(const int index, const bool p_original) {
 	ERR_FAIL_INDEX(index, _scenes.size());
 
 	_scenes.write[index].original = p_original;
+
+	emit_changed();
+}
+
+String VoxelChunk::scene_get_name(const int index) {
+	ERR_FAIL_INDEX_V(index, _scenes.size(), String());
+
+	return _scenes.get(index).name;
+}
+void VoxelChunk::scene_set_name(const int index, const String &p_name) {
+	ERR_FAIL_INDEX(index, _scenes.size());
+
+	_scenes.write[index].name = p_name;
 
 	emit_changed();
 }
@@ -1086,6 +1100,7 @@ Array VoxelChunk::scenes_get() {
 		scene_data.push_back(_scenes[i].original);
 		scene_data.push_back(_scenes[i].transform);
 		scene_data.push_back(_scenes[i].scene.get_ref_ptr());
+		scene_data.push_back(_scenes[i].name);
 
 		ret.push_back(scene_data);
 	}
@@ -1098,13 +1113,14 @@ void VoxelChunk::scenes_set(const Array &p_scenes) {
 	for (int i = 0; i < p_scenes.size(); ++i) {
 		Array scene_data = p_scenes[i];
 
-		ERR_CONTINUE(scene_data.size() != 3);
+		ERR_CONTINUE(scene_data.size() != 4);
 
 		bool original = scene_data[0];
 		Transform transform = scene_data[1];
 		Ref<PackedScene> scene = Ref<PackedScene>(scene_data[2]);
+		String name = scene_data[3];
 
-		scene_add(scene, transform, NULL, original);
+		scene_add(scene, transform, NULL, original, name);
 	}
 }
 
@@ -2204,7 +2220,7 @@ void VoxelChunk::_bind_methods() {
 
 	//Scenes
 
-	ClassDB::bind_method(D_METHOD("scene_add", "scene", "transform", "node", "original"), &VoxelChunk::scene_add, DEFVAL(Transform()), DEFVAL(Variant()), DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("scene_add", "scene", "transform", "node", "original", "name"), &VoxelChunk::scene_add, DEFVAL(Transform()), DEFVAL(Variant()), DEFVAL(true), DEFVAL(String()));
 
 	ClassDB::bind_method(D_METHOD("scene_get", "index"), &VoxelChunk::scene_get);
 	ClassDB::bind_method(D_METHOD("scene_set", "index", "scene"), &VoxelChunk::scene_set);
@@ -2214,6 +2230,9 @@ void VoxelChunk::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("scene_get_is_original", "index"), &VoxelChunk::scene_get_is_original);
 	ClassDB::bind_method(D_METHOD("scene_set_is_original", "index", "original"), &VoxelChunk::scene_set_is_original);
+
+	ClassDB::bind_method(D_METHOD("scene_get_name", "index"), &VoxelChunk::scene_get_name);
+	ClassDB::bind_method(D_METHOD("scene_set_name", "index", "name"), &VoxelChunk::scene_set_name);
 
 	ClassDB::bind_method(D_METHOD("scene_get_node", "index"), &VoxelChunk::scene_get_node);
 	ClassDB::bind_method(D_METHOD("scene_set_node", "index", "node"), &VoxelChunk::scene_set_node);

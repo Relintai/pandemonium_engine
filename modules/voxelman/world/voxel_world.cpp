@@ -692,14 +692,14 @@ int VoxelWorld::generation_get_size() const {
 	return _generating.size();
 }
 
-void VoxelWorld::scene_add(const Ref<PackedScene> &p_scene, const Transform &p_transform, const Node *p_node, const bool p_original) {
+void VoxelWorld::scene_add(const Ref<PackedScene> &p_scene, const Transform &p_transform, const Node *p_node, const bool p_original, const String &p_name) {
 	ERR_FAIL_COND(!p_scene.is_valid());
 
 	Vector3 wp;
 	wp = p_transform.xform(wp);
 	Ref<VoxelChunk> chunk = get_or_create_chunk_at_world_position(wp);
 
-	chunk->scene_add(p_scene, p_transform, p_node, p_original);
+	chunk->scene_add(p_scene, p_transform, p_node, p_original, p_name);
 }
 
 #ifdef MODULE_PROPS_ENABLED
@@ -1812,7 +1812,7 @@ void VoxelWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("is_position_walkable", "position"), &VoxelWorld::is_position_walkable);
 	ClassDB::bind_method(D_METHOD("on_chunk_mesh_generation_finished", "chunk"), &VoxelWorld::on_chunk_mesh_generation_finished);
 
-	ClassDB::bind_method(D_METHOD("scene_add", "scene", "transform", "node", "original"), &VoxelWorld::scene_add, DEFVAL(Transform()), DEFVAL(Variant()), DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("scene_add", "scene", "transform", "node", "original", "name"), &VoxelWorld::scene_add, DEFVAL(Transform()), DEFVAL(Variant()), DEFVAL(true), DEFVAL(String()));
 
 #ifdef MODULE_PROPS_ENABLED
 	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "apply_voxel_scale", "original", "name"), &VoxelWorld::prop_add, DEFVAL(true), DEFVAL(true), DEFVAL(String()));
