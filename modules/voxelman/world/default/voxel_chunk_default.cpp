@@ -84,30 +84,36 @@ int VoxelChunkDefault::get_current_lod_level() const {
 void VoxelChunkDefault::set_current_lod_level(const int value) {
 	_current_lod_level = value;
 
-	if ((_build_flags & BUILD_FLAG_CREATE_LODS) == 0)
+	if ((_build_flags & BUILD_FLAG_CREATE_LODS) == 0) {
 		return;
+	}
 
-	if (_current_lod_level < 0)
+	if (_current_lod_level < 0) {
 		_current_lod_level = 0;
+	}
 
-	if (_current_lod_level > _lod_num)
+	if (_current_lod_level > _lod_num) {
 		_current_lod_level = _lod_num;
+	}
 
 	for (int i = 0; i < _lod_num + 1; ++i) {
 		bool vis = false;
 
-		if (i == _current_lod_level)
+		if (i == _current_lod_level) {
 			vis = true;
+		}
 
 		RID rid = mesh_rid_get_index(MESH_INDEX_TERRAIN, MESH_TYPE_INDEX_MESH_INSTANCE, i);
 
-		if (rid != RID())
+		if (rid != RID()) {
 			RenderingServer::get_singleton()->instance_set_visible(rid, vis);
+		}
 
 		rid = mesh_rid_get_index(MESH_INDEX_PROP, MESH_TYPE_INDEX_MESH_INSTANCE, i);
 
-		if (rid != RID())
+		if (rid != RID()) {
 			RenderingServer::get_singleton()->instance_set_visible(rid, vis);
+		}
 	}
 }
 
@@ -717,25 +723,45 @@ void VoxelChunkDefault::draw_debug_mdr_colliders() {
 
 void VoxelChunkDefault::_visibility_changed(bool visible) {
 	if (visible) {
-		set_current_lod_level(_current_lod_level);
+		if ((_build_flags & BUILD_FLAG_CREATE_LODS) == 0) {
+			RID rid = mesh_rid_get_index(MESH_INDEX_TERRAIN, MESH_TYPE_INDEX_MESH_INSTANCE, 0);
+
+			if (rid != RID()) {
+				RenderingServer::get_singleton()->instance_set_visible(rid, true);
+			}
+
+			rid = mesh_rid_get_index(MESH_INDEX_PROP, MESH_TYPE_INDEX_MESH_INSTANCE, 0);
+
+			if (rid != RID()) {
+				RenderingServer::get_singleton()->instance_set_visible(rid, true);
+			}
+
+			return;
+		} else {
+			set_current_lod_level(_current_lod_level);
+		}
+
 		return;
 	}
 
 	for (int i = 0; i < _lod_num + 1; ++i) {
 		RID rid = mesh_rid_get_index(MESH_INDEX_TERRAIN, MESH_TYPE_INDEX_MESH_INSTANCE, i);
 
-		if (rid != RID())
+		if (rid != RID()) {
 			RenderingServer::get_singleton()->instance_set_visible(rid, false);
+		}
 
 		rid = mesh_rid_get_index(MESH_INDEX_LIQUID, MESH_TYPE_INDEX_MESH_INSTANCE, i);
 
-		if (rid != RID())
+		if (rid != RID()) {
 			RenderingServer::get_singleton()->instance_set_visible(rid, false);
+		}
 
 		rid = mesh_rid_get_index(MESH_INDEX_PROP, MESH_TYPE_INDEX_MESH_INSTANCE, i);
 
-		if (rid != RID())
+		if (rid != RID()) {
 			RenderingServer::get_singleton()->instance_set_visible(rid, false);
+		}
 	}
 }
 
