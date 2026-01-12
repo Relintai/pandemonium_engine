@@ -1752,6 +1752,9 @@ void VoxelWorld::_notification(int p_what) {
 				if (chunk.is_valid()) {
 					chunk_setup(chunk);
 
+					chunk->set_voxel_world(this);
+					chunk->enter_tree();
+
 					chunk->build();
 				}
 			}
