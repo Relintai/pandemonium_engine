@@ -47,9 +47,6 @@ public:
 #ifdef MODULE_PROPS_ENABLED
 		OWNER_TYPE_PROP,
 #endif
-#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
-		OWNER_TYPE_VERTEX_LIGHT_3D,
-#endif
 	};
 
 	OwnerType get_owner_type() const;

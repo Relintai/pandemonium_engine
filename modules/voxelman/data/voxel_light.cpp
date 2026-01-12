@@ -177,9 +177,6 @@ void VoxelLight::_bind_methods() {
 #ifdef MODULE_PROPS_ENABLED
 	owner_type_hint += ",Prop";
 #endif
-#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
-	owner_type_hint += ",Vertex Light 3D";
-#endif
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "owner_type", PROPERTY_HINT_ENUM, owner_type_hint), "set_owner_type", "get_owner_type");
 
@@ -229,8 +226,5 @@ void VoxelLight::_bind_methods() {
 	BIND_ENUM_CONSTANT(OWNER_TYPE_NONE);
 #ifdef MODULE_PROPS_ENABLED
 	BIND_ENUM_CONSTANT(OWNER_TYPE_PROP);
-#endif
-#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
-	BIND_ENUM_CONSTANT(OWNER_TYPE_VERTEX_LIGHT_3D);
 #endif
 }
