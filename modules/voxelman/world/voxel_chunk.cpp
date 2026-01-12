@@ -751,6 +751,10 @@ void VoxelChunk::light_remove_index(const int index) {
 
 	Ref<VoxelLight> light = _lights[index];
 
+	_lights.remove(index);
+	light->set_has_owner_chunk(false);
+	light->disconnect("light_moved", this, "_on_light_moved");
+
 	VoxelWorld *world = get_voxel_world();
 
 	if (ObjectDB::instance_validate(world)) {
