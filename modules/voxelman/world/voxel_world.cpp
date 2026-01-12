@@ -57,6 +57,11 @@
 #include "modules/mesh_data_resource/mesh_data_resource.h"
 #endif
 
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+#include "modules/vertex_lights_3d/vertex_lights_3d_server.h"
+#include "scene/resources/world_3d.h"
+#endif
+
 #if TOOLS_ENABLED
 #include "editor/plugins/spatial_editor_plugin.h"
 #include "scene/3d/camera.h"
@@ -201,6 +206,23 @@ void VoxelWorld::set_voxel_scale(const float value) {
 		c->set_voxel_scale(_voxel_scale);
 	}
 }
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+bool VoxelWorld::get_use_vertex_lights_3d() const {
+	return _use_vertex_lights_3d;
+}
+void VoxelWorld::set_use_vertex_lights_3d(const bool value) {
+	_use_vertex_lights_3d = value;
+
+	if (is_inside_tree()) {
+		if (_use_vertex_lights_3d) {
+			VertexLights3DServer::get_singleton()->connect("map_changed", this, "_on_vertex_lights_3d_map_changed");
+		} else {
+			VertexLights3DServer::get_singleton()->disconnect("map_changed", this, "_on_vertex_lights_3d_map_changed");
+		}
+	}
+}
+#endif
 
 int VoxelWorld::get_chunk_spawn_range() const {
 	return _chunk_spawn_range;
@@ -1527,6 +1549,10 @@ VoxelWorld::VoxelWorld() {
 	_player = NULL;
 	_max_frame_chunk_build_steps = 0;
 	_num_frame_chunk_build_steps = 0;
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	_use_vertex_lights_3d = true;
+#endif
 }
 
 VoxelWorld ::~VoxelWorld() {
@@ -1571,6 +1597,12 @@ void VoxelWorld::_generate_chunk(Ref<VoxelChunk> chunk) {
 void VoxelWorld::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+			if (_use_vertex_lights_3d) {
+				VertexLights3DServer::get_singleton()->connect("map_changed", this, "_on_vertex_lights_3d_map_changed");
+			}
+#endif
+
 			if (_chunks_vector.size() != 0) {
 				_is_priority_generation = true;
 			}
@@ -1681,6 +1713,12 @@ void VoxelWorld::_notification(int p_what) {
 
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+			if (_use_vertex_lights_3d) {
+				VertexLights3DServer::get_singleton()->disconnect("map_changed", this, "_on_vertex_lights_3d_map_changed");
+			}
+#endif
+
 			for (int i = 0; i < _chunks_vector.size(); ++i) {
 				Ref<VoxelChunk> chunk = _chunks_vector[i];
 
@@ -1710,6 +1748,26 @@ void VoxelWorld::_notification(int p_what) {
 		} break;
 	}
 }
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+void VoxelWorld::_on_vertex_lights_3d_map_changed(RID p_map) {
+	if (!_use_vertex_lights_3d) {
+		return;
+	}
+
+	if (!is_inside_world()) {
+		return;
+	}
+
+	if (get_world_3d()->get_vertex_lights_3d_map() == p_map) {
+		for (int i = 0; i < _chunks_vector.size(); ++i) {
+			Ref<VoxelChunk> chunk = _chunks_vector[i];
+
+			chunk->build();
+		}
+	}
+}
+#endif
 
 void VoxelWorld::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("chunk_mesh_generation_finished", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
@@ -1779,6 +1837,12 @@ void VoxelWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_chunk_spawn_range"), &VoxelWorld::get_chunk_spawn_range);
 	ClassDB::bind_method(D_METHOD("set_chunk_spawn_range", "value"), &VoxelWorld::set_chunk_spawn_range);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "chunk_spawn_range"), "set_chunk_spawn_range", "get_chunk_spawn_range");
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	ClassDB::bind_method(D_METHOD("get_use_vertex_lights_3d"), &VoxelWorld::get_use_vertex_lights_3d);
+	ClassDB::bind_method(D_METHOD("set_use_vertex_lights_3d", "value"), &VoxelWorld::set_use_vertex_lights_3d);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_vertex_lights_3d"), "set_use_vertex_lights_3d", "get_use_vertex_lights_3d");
+#endif
 
 	ClassDB::bind_method(D_METHOD("get_player_path"), &VoxelWorld::get_player_path);
 	ClassDB::bind_method(D_METHOD("set_player_path", "value"), &VoxelWorld::set_player_path);
@@ -1900,6 +1964,10 @@ void VoxelWorld::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_voxel_with_tool", "mode_add", "hit_position", "hit_normal", "selected_voxel", "isolevel"), &VoxelWorld::set_voxel_with_tool);
 	ClassDB::bind_method(D_METHOD("_set_voxel_with_tool", "mode_add", "hit_position", "hit_normal", "selected_voxel", "isolevel"), &VoxelWorld::_set_voxel_with_tool);
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	ClassDB::bind_method(D_METHOD("_on_vertex_lights_3d_map_changed"), &VoxelWorld::_on_vertex_lights_3d_map_changed);
+#endif
 
 	BIND_ENUM_CONSTANT(CHANNEL_TYPE_INFO_TYPE);
 	BIND_ENUM_CONSTANT(CHANNEL_TYPE_INFO_ISOLEVEL);
