@@ -812,6 +812,10 @@ void VoxelChunkDefault::_visibility_changed(bool visible) {
 			set_current_lod_level(_current_lod_level);
 		}
 
+		if (_debug_mesh_instance) {
+			RenderingServer::get_singleton()->instance_set_visible(_debug_mesh_instance, true);
+		}
+
 		return;
 	}
 
@@ -843,6 +847,10 @@ void VoxelChunkDefault::_visibility_changed(bool visible) {
 		if (rid != RID()) {
 			RenderingServer::get_singleton()->instance_set_visible(rid, false);
 		}
+	}
+
+	if (_debug_mesh_instance) {
+		RenderingServer::get_singleton()->instance_set_visible(_debug_mesh_instance, false);
 	}
 }
 
