@@ -44,6 +44,8 @@
 
 #include "core/object/method_bind_ext.gen.inc"
 
+#include "../chunk_data_managers/voxel_world_chunk_data_manager.h"
+
 #ifdef MODULE_PROPS_ENABLED
 #include "../../props/props/prop_data.h"
 #include "../../props/props/prop_data_entry.h"
@@ -188,6 +190,13 @@ Ref<VoxelLevelGenerator> VoxelWorld::get_level_generator() const {
 }
 void VoxelWorld::set_level_generator(const Ref<VoxelLevelGenerator> &level_generator) {
 	_level_generator = level_generator;
+}
+
+Ref<VoxelWorldChunkDataManager> VoxelWorld::get_world_chunk_data_manager() const {
+	return _world_chunk_data_manager;
+}
+void VoxelWorld::set_world_chunk_data_manager(const Ref<VoxelWorldChunkDataManager> &p_data_manager) {
+	_world_chunk_data_manager = p_data_manager;
 }
 
 float VoxelWorld::get_voxel_scale() const {
@@ -356,6 +365,10 @@ void VoxelWorld::chunk_add(Ref<VoxelChunk> chunk, const int x, const int y, cons
 		}
 	}
 
+	if (_world_chunk_data_manager.is_valid()) {
+		_world_chunk_data_manager->on_world_chunk_added(chunk);
+	}
+
 	if (has_method("_chunk_added")) {
 		call("_chunk_added", chunk);
 	}
@@ -412,9 +425,12 @@ Ref<VoxelChunk> VoxelWorld::chunk_remove(const int x, const int y, const int z) 
 	//_generating.erase(chunk);
 
 	_chunks.erase(pos);
-	emit_signal("chunk_removed", chunk);
 
-	//_chunks.erase(pos);
+	if (_world_chunk_data_manager.is_valid()) {
+		_world_chunk_data_manager->on_world_chunk_removed(chunk);
+	}
+
+	emit_signal("chunk_removed", chunk);
 
 	return chunk;
 }
@@ -444,6 +460,10 @@ Ref<VoxelChunk> VoxelWorld::chunk_remove_index(const int index) {
 	//never remove from this here
 	//_generating.erase(chunk);
 
+	if (_world_chunk_data_manager.is_valid()) {
+		_world_chunk_data_manager->on_world_chunk_removed(chunk);
+	}
+
 	emit_signal("chunk_removed", chunk);
 
 	return chunk;
@@ -463,6 +483,10 @@ void VoxelWorld::chunks_clear() {
 		Ref<VoxelChunk> chunk = _chunks_vector.get(i);
 
 		chunk->exit_tree();
+
+		if (_world_chunk_data_manager.is_valid()) {
+			_world_chunk_data_manager->on_world_chunk_removed(chunk);
+		}
 
 		emit_signal("chunk_removed", chunk);
 	}
@@ -489,8 +513,55 @@ void VoxelWorld::chunks_clear() {
 Ref<VoxelChunk> VoxelWorld::chunk_get_or_create(int x, int y, int z) {
 	Ref<VoxelChunk> chunk = chunk_get(x, y, z);
 
-	if (!chunk.is_valid()) {
-		chunk = chunk_create(x, y, z);
+	if (chunk.is_valid()) {
+		return chunk;
+	}
+
+	// Try to load first
+	if (_world_chunk_data_manager.is_valid()) {
+		chunk = _world_chunk_data_manager->load_chunk(Vector3i(x, y, z));
+
+		if (chunk.is_valid()) {
+			chunk_add(chunk, x, y, z);
+			return chunk;
+		}
+	}
+
+	chunk = chunk_create(x, y, z);
+
+	return chunk;
+}
+
+Ref<VoxelChunk> VoxelWorld::chunk_get_or_load(const int x, const int y, const int z) {
+	Ref<VoxelChunk> chunk = chunk_get(x, y, z);
+
+	if (chunk.is_valid()) {
+		return chunk;
+	}
+
+	// Try to load first
+	if (_world_chunk_data_manager.is_valid()) {
+		chunk = _world_chunk_data_manager->load_chunk(Vector3i(x, y, z));
+
+		if (chunk.is_valid()) {
+			chunk_add(chunk, x, y, z);
+			return chunk;
+		}
+	}
+
+	return chunk;
+}
+
+Ref<VoxelChunk> VoxelWorld::chunk_load(const int x, const int y, const int z) {
+	Ref<VoxelChunk> chunk;
+
+	if (_world_chunk_data_manager.is_valid()) {
+		chunk = _world_chunk_data_manager->load_chunk(Vector3i(x, y, z));
+
+		if (chunk.is_valid()) {
+			chunk_add(chunk, x, y, z);
+			return chunk;
+		}
 	}
 
 	return chunk;
@@ -498,6 +569,10 @@ Ref<VoxelChunk> VoxelWorld::chunk_get_or_create(int x, int y, int z) {
 
 Ref<VoxelChunk> VoxelWorld::chunk_create(const int x, const int y, const int z) {
 	Ref<VoxelChunk> c = call("_create_chunk", x, y, z, Ref<VoxelChunk>());
+
+	if (_world_chunk_data_manager.is_valid()) {
+		_world_chunk_data_manager->on_world_chunk_created(c);
+	}
 
 	generation_queue_add_to(c);
 
@@ -1830,6 +1905,10 @@ void VoxelWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_level_generator", "level_generator"), &VoxelWorld::set_level_generator);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "level_generator", PROPERTY_HINT_RESOURCE_TYPE, "VoxelLevelGenerator"), "set_level_generator", "get_level_generator");
 
+	ClassDB::bind_method(D_METHOD("get_world_chunk_data_manager"), &VoxelWorld::get_world_chunk_data_manager);
+	ClassDB::bind_method(D_METHOD("set_world_chunk_data_manager", "level_generator"), &VoxelWorld::set_world_chunk_data_manager);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "world_chunk_data_manager", PROPERTY_HINT_RESOURCE_TYPE, "VoxelWorldChunkDataManager"), "set_world_chunk_data_manager", "get_world_chunk_data_manager");
+
 	ClassDB::bind_method(D_METHOD("get_voxel_scale"), &VoxelWorld::get_voxel_scale);
 	ClassDB::bind_method(D_METHOD("set_voxel_scale", "value"), &VoxelWorld::set_voxel_scale);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "voxel_scale"), "set_voxel_scale", "get_voxel_scale");
@@ -1906,6 +1985,8 @@ void VoxelWorld::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_generate_chunk", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
 
 	ClassDB::bind_method(D_METHOD("chunk_get_or_create", "x", "y", "z"), &VoxelWorld::chunk_get_or_create);
+	ClassDB::bind_method(D_METHOD("chunk_get_or_load", "x", "z"), &VoxelWorld::chunk_get_or_load);
+	ClassDB::bind_method(D_METHOD("chunk_load", "x", "z"), &VoxelWorld::chunk_load);
 	ClassDB::bind_method(D_METHOD("chunk_create", "x", "y", "z"), &VoxelWorld::chunk_create);
 	ClassDB::bind_method(D_METHOD("chunk_setup", "chunk"), &VoxelWorld::chunk_setup);
 

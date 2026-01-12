@@ -55,6 +55,7 @@ class VoxelStructure;
 class VoxelChunk;
 class PropData;
 class MeshDataResource;
+class VoxelWorldChunkDataManager;
 
 class VoxelWorld : public Spatial {
 	GDCLASS(VoxelWorld, Spatial);
@@ -115,6 +116,9 @@ public:
 	Ref<VoxelLevelGenerator> get_level_generator() const;
 	void set_level_generator(const Ref<VoxelLevelGenerator> &level_generator);
 
+	Ref<VoxelWorldChunkDataManager> get_world_chunk_data_manager() const;
+	void set_world_chunk_data_manager(const Ref<VoxelWorldChunkDataManager> &p_data_manager);
+
 	float get_voxel_scale() const;
 	void set_voxel_scale(const float value);
 
@@ -165,6 +169,8 @@ public:
 	void chunks_clear();
 
 	Ref<VoxelChunk> chunk_get_or_create(const int x, const int y, const int z);
+	Ref<VoxelChunk> chunk_get_or_load(const int x, const int y, const int z);
+	Ref<VoxelChunk> chunk_load(const int x, const int y, const int z);
 	Ref<VoxelChunk> chunk_create(const int x, const int y, const int z);
 	void chunk_setup(Ref<VoxelChunk> chunk);
 
@@ -301,6 +307,7 @@ private:
 
 	Ref<VoxelLibrary> _library;
 	Ref<VoxelLevelGenerator> _level_generator;
+	Ref<VoxelWorldChunkDataManager> _world_chunk_data_manager;
 	float _voxel_scale;
 	int _chunk_spawn_range;
 
