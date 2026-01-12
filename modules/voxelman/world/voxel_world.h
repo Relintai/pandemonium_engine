@@ -214,6 +214,10 @@ public:
 	void set_voxel_with_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal, const int selected_voxel, const int isolevel);
 
 	Vector3i world_position_to_world_data_position(const Vector3 &world_position);
+	Vector3i world_position_to_world_data_position_3d(const Vector3 &world_position);
+	Vector3 world_data_position_to_world_position(const Vector3i &p_position);
+	Vector3 world_data_position_to_world_position_3d(const Vector3i &p_position);
+
 	uint8_t get_voxel_at_world_data_position(const Vector3i &world_data_position, const int channel_index);
 	void set_voxel_at_world_data_position(const Vector3i &world_data_position, const uint8_t data, const int channel_index, const bool p_imediate_build = true, const bool allow_creating_chunks = true);
 	Ref<VoxelChunk> get_chunk_at_world_data_position(const Vector3i &world_data_position);

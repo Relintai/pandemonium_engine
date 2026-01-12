@@ -1117,6 +1117,19 @@ Vector3i VoxelWorld::world_position_to_world_data_position(const Vector3 &world_
 
 	return Vector3i(pos.x, pos.y, pos.z);
 }
+Vector3i VoxelWorld::world_position_to_world_data_position_3d(const Vector3 &world_position) {
+	Vector3 pos = world_position / get_voxel_scale();
+
+	return Vector3i(pos.x, pos.y, pos.z);
+}
+
+Vector3 VoxelWorld::world_data_position_to_world_position(const Vector3i &p_position) {
+	return Vector3(p_position.x, p_position.y, p_position.z) * get_voxel_scale();
+}
+Vector3 VoxelWorld::world_data_position_to_world_position_3d(const Vector3i &p_position) {
+	return Vector3(p_position.x, p_position.y, p_position.z) * get_voxel_scale();
+}
+
 uint8_t VoxelWorld::get_voxel_at_world_data_position(const Vector3i &world_data_position, const int channel_index) {
 	// TODO rework this so it works directly with ints.
 
@@ -1863,6 +1876,10 @@ void VoxelWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("world_data_position_to_chunk_position", "world_data_position"), &VoxelWorld::world_data_position_to_chunk_position);
 
 	ClassDB::bind_method(D_METHOD("world_position_to_world_data_position", "world_position"), &VoxelWorld::world_position_to_world_data_position);
+	ClassDB::bind_method(D_METHOD("world_position_to_world_data_position_3d", "world_position"), &VoxelWorld::world_position_to_world_data_position_3d);
+	ClassDB::bind_method(D_METHOD("world_data_position_to_world_position", "position"), &VoxelWorld::world_data_position_to_world_position);
+	ClassDB::bind_method(D_METHOD("world_data_position_to_world_position_3d", "position"), &VoxelWorld::world_data_position_to_world_position_3d);
+
 	ClassDB::bind_method(D_METHOD("get_voxel_at_world_data_position", "world_data_position", "channel_index"), &VoxelWorld::get_voxel_at_world_data_position);
 	ClassDB::bind_method(D_METHOD("set_voxel_at_world_data_position", "world_data_position", "data", "channel_index", "immediate_build", "allow_creating_chunks"), &VoxelWorld::set_voxel_at_world_data_position, DEFVAL(true), DEFVAL(true));
 	ClassDB::bind_method(D_METHOD("get_chunk_at_world_data_position", "world_data_position"), &VoxelWorld::get_chunk_at_world_data_position);
