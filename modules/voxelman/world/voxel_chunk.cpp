@@ -1843,16 +1843,12 @@ void VoxelChunk::colliders_clear() {
 void VoxelChunk::enter_tree() {
 	_is_in_tree = true;
 
-	if (has_method("_enter_tree")) {
-		call("_enter_tree");
-	}
+	call("_enter_tree");
 }
 void VoxelChunk::exit_tree() {
 	_is_in_tree = false;
 
-	if (has_method("_exit_tree")) {
-		call("_exit_tree");
-	}
+	call("_exit_tree");
 }
 void VoxelChunk::process(const float delta) {
 	if (has_method("_process")) {
