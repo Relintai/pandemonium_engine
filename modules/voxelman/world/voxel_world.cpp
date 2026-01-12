@@ -1906,6 +1906,17 @@ void VoxelWorld::_notification(int p_what) {
 			}
 
 		} break;
+		case NOTIFICATION_VISIBILITY_CHANGED: {
+			bool visible = is_visible_in_tree();
+
+			for (int i = 0; i < _chunks_vector.size(); ++i) {
+				Ref<VoxelChunk> chunk = _chunks_vector[i];
+
+				if (chunk.is_valid()) {
+					chunk->set_visible(visible);
+				}
+			}
+		} break;
 		case MainLoop::NOTIFICATION_QUITTING: {
 			if (_library.is_valid()) {
 				_library->notification(MainLoop::NOTIFICATION_QUITTING);
