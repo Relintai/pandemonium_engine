@@ -54,6 +54,7 @@
 class VoxelStructure;
 class VoxelChunk;
 class PropData;
+class MeshDataResource;
 
 class VoxelWorld : public Spatial {
 	GDCLASS(VoxelWorld, Spatial);
@@ -186,6 +187,11 @@ public:
 
 #ifdef MODULE_PROPS_ENABLED
 	void prop_add(Transform transform, const Ref<PropData> &prop, const bool apply_voxel_scale = true, const bool p_original = true, const String &p_name = String());
+#endif
+
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
+	void mesh_data_resource_add(const Ref<MeshDataResource> &p_mesh, const Transform &p_transform, const Ref<Texture> &p_texture = Ref<Texture>(), const Color &p_color = Color(1, 1, 1, 1), const bool p_original = true, const String &p_name = String());
+	void mesh_data_resource_add_material(const Ref<MeshDataResource> &p_mesh, const Transform &p_transform, const Ref<Texture> &p_texture = Ref<Texture>(), const Ref<Material> &p_material = Ref<Material>(), const bool p_original = true, const String &p_name = String());
 #endif
 
 	//Lights

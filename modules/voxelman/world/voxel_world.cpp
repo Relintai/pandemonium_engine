@@ -42,6 +42,8 @@
 
 #include "modules/modules_enabled.gen.h"
 
+#include "core/object/method_bind_ext.gen.inc"
+
 #ifdef MODULE_PROPS_ENABLED
 #include "../../props/props/prop_data.h"
 #include "../../props/props/prop_data_entry.h"
@@ -52,6 +54,7 @@
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 #include "../../mesh_data_resource/props/prop_data_mesh_data.h"
+#include "modules/mesh_data_resource/mesh_data_resource.h"
 #endif
 
 #if TOOLS_ENABLED
@@ -808,6 +811,30 @@ void VoxelWorld::prop_add(Transform transform, const Ref<PropData> &prop, const 
 		}
 #endif
 	}
+}
+#endif
+
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
+void VoxelWorld::mesh_data_resource_add(const Ref<MeshDataResource> &p_mesh, const Transform &p_transform, const Ref<Texture> &p_texture, const Color &p_color, const bool p_original, const String &p_name) {
+	ERR_FAIL_COND(!p_mesh.is_valid());
+
+	Vector3 wp;
+	wp = p_transform.xform(wp);
+	Ref<VoxelChunk> chunk = get_or_create_chunk_at_world_position(wp);
+
+	chunk->mesh_data_resource_add(chunk->get_global_transform().affine_inverse() * p_transform, p_mesh, p_texture, p_color, false, p_original, p_name);
+	chunk->build();
+}
+
+void VoxelWorld::mesh_data_resource_add_material(const Ref<MeshDataResource> &p_mesh, const Transform &p_transform, const Ref<Texture> &p_texture, const Ref<Material> &p_material, const bool p_original, const String &p_name) {
+	ERR_FAIL_COND(!p_mesh.is_valid());
+
+	Vector3 wp;
+	wp = p_transform.xform(wp);
+	Ref<VoxelChunk> chunk = get_or_create_chunk_at_world_position(wp);
+
+	chunk->mesh_data_resource_add_material(chunk->get_global_transform().affine_inverse() * p_transform, p_mesh, p_texture, p_material, false, p_original, p_name);
+	chunk->build();
 }
 #endif
 
@@ -1816,6 +1843,11 @@ void VoxelWorld::_bind_methods() {
 
 #ifdef MODULE_PROPS_ENABLED
 	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "apply_voxel_scale", "original", "name"), &VoxelWorld::prop_add, DEFVAL(true), DEFVAL(true), DEFVAL(String()));
+#endif
+
+#ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
+	ClassDB::bind_method(D_METHOD("mesh_data_resource_add", "mesh", "transform", "texture", "color", "original", "name"), &VoxelWorld::mesh_data_resource_add, DEFVAL(Ref<Texture>()), DEFVAL(Color(1, 1, 1, 1)), DEFVAL(true), DEFVAL(String()));
+	ClassDB::bind_method(D_METHOD("mesh_data_resource_add_material", "mesh", "transform", "texture", "material", "original", "name"), &VoxelWorld::mesh_data_resource_add_material, DEFVAL(Ref<Texture>()), DEFVAL(Color(1, 1, 1, 1)), DEFVAL(true), DEFVAL(String()));
 #endif
 
 	//Lights
