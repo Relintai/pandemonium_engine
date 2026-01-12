@@ -116,6 +116,13 @@ void VoxelLight::set_specular(const real_t value) {
 	_specular = value;
 }
 
+VoxelLight::LightMode VoxelLight::get_light_mode() const {
+	return _light_mode;
+}
+void VoxelLight::set_light_mode(const LightMode value) {
+	_light_mode = value;
+}
+
 Dictionary VoxelLight::to_dict() {
 	Dictionary data;
 
@@ -134,6 +141,8 @@ Dictionary VoxelLight::to_dict() {
 	data["negative"] = _negative;
 	data["specular"] = _specular;
 
+	data["light_mode"] = (int)_light_mode;
+
 	return data;
 }
 void VoxelLight::from_dict(const Dictionary &p_data) {
@@ -151,6 +160,8 @@ void VoxelLight::from_dict(const Dictionary &p_data) {
 	_indirect_energy = p_data["indirect_energy"];
 	_negative = p_data["negative"];
 	_specular = p_data["specular"];
+
+	_light_mode = (LightMode)((int)p_data["light_mode"]);
 }
 
 VoxelLight::VoxelLight() {
@@ -162,6 +173,7 @@ VoxelLight::VoxelLight() {
 	_indirect_energy = 0;
 	_negative = false;
 	_specular = 0;
+	_light_mode = LIGHT_MODE_ADD;
 }
 
 VoxelLight::~VoxelLight() {
@@ -220,6 +232,10 @@ void VoxelLight::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_specular", "value"), &VoxelLight::set_specular);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "light_specular"), "set_specular", "get_specular");
 
+	ClassDB::bind_method(D_METHOD("get_light_mode"), &VoxelLight::get_light_mode);
+	ClassDB::bind_method(D_METHOD("set_light_mode", "value"), &VoxelLight::set_light_mode);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "light_mode", PROPERTY_HINT_ENUM, "Add,Sub,Mix"), "set_light_mode", "get_light_mode");
+
 	ClassDB::bind_method(D_METHOD("to_dict"), &VoxelLight::to_dict);
 	ClassDB::bind_method(D_METHOD("from_dict", "data"), &VoxelLight::from_dict);
 
@@ -227,4 +243,8 @@ void VoxelLight::_bind_methods() {
 #ifdef MODULE_PROPS_ENABLED
 	BIND_ENUM_CONSTANT(OWNER_TYPE_PROP);
 #endif
+
+	BIND_ENUM_CONSTANT(LIGHT_MODE_ADD);
+	BIND_ENUM_CONSTANT(LIGHT_MODE_SUB);
+	BIND_ENUM_CONSTANT(LIGHT_MODE_MIX);
 }
