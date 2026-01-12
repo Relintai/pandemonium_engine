@@ -703,7 +703,7 @@ void VoxelWorld::scene_add(const Ref<PackedScene> &p_scene, const Transform &p_t
 }
 
 #ifdef MODULE_PROPS_ENABLED
-void VoxelWorld::prop_add(Transform transform, const Ref<PropData> &prop, const bool apply_voxel_scale, const bool p_original) {
+void VoxelWorld::prop_add(Transform transform, const Ref<PropData> &prop, const bool apply_voxel_scale, const bool p_original, const String &p_name) {
 	ERR_FAIL_COND(!prop.is_valid());
 
 	if (apply_voxel_scale) {
@@ -714,7 +714,7 @@ void VoxelWorld::prop_add(Transform transform, const Ref<PropData> &prop, const 
 	wp = transform.xform(wp);
 	Ref<VoxelChunk> chunk = get_or_create_chunk_at_world_position(wp);
 
-	chunk->prop_add(transform, prop, p_original);
+	chunk->prop_add(transform, prop, p_original, p_name);
 	chunk->build();
 
 	int count = prop->get_prop_count();
@@ -1815,7 +1815,7 @@ void VoxelWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("scene_add", "scene", "transform", "node", "original"), &VoxelWorld::scene_add, DEFVAL(Transform()), DEFVAL(Variant()), DEFVAL(true));
 
 #ifdef MODULE_PROPS_ENABLED
-	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "apply_voxel_scale", "original"), &VoxelWorld::prop_add, DEFVAL(true), DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("prop_add", "transform", "prop", "apply_voxel_scale", "original", "name"), &VoxelWorld::prop_add, DEFVAL(true), DEFVAL(true), DEFVAL(String()));
 #endif
 
 	//Lights
