@@ -502,14 +502,14 @@ void VoxelChunkDefault::colliders_free(const int mesh_index) {
 	Dictionary m = _rids[mesh_index];
 	RID rid;
 
-	if (m.has(MESH_TYPE_INDEX_SHAPE)) {
-		RID r = m[MESH_TYPE_INDEX_SHAPE];
+	if (m.has(MESH_TYPE_INDEX_BODY)) {
+		RID r = m[MESH_TYPE_INDEX_BODY];
 
 		PhysicsServer::get_singleton()->free(r);
 	}
 
-	if (m.has(MESH_TYPE_INDEX_BODY)) {
-		RID r = m[MESH_TYPE_INDEX_BODY];
+	if (m.has(MESH_TYPE_INDEX_SHAPE)) {
+		RID r = m[MESH_TYPE_INDEX_SHAPE];
 
 		PhysicsServer::get_singleton()->free(r);
 	}
