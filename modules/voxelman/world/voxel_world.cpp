@@ -2083,6 +2083,8 @@ void VoxelWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_voxel_with_tool", "mode_add", "hit_position", "hit_normal", "selected_voxel", "isolevel"), &VoxelWorld::set_voxel_with_tool);
 	ClassDB::bind_method(D_METHOD("_set_voxel_with_tool", "mode_add", "hit_position", "hit_normal", "selected_voxel", "isolevel"), &VoxelWorld::_set_voxel_with_tool);
 
+	ClassDB::bind_method(D_METHOD("get_editor_camera"), &VoxelWorld::get_editor_camera);
+
 	ClassDB::bind_method(D_METHOD("_editor_button_property_pressed"), &VoxelWorld::_editor_button_property_pressed);
 
 #ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
