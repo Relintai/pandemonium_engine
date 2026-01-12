@@ -381,7 +381,11 @@ void VoxelWorld::chunk_add(Ref<VoxelChunk> chunk, const int x, const int y, cons
 
 	emit_signal("chunk_added", chunk);
 
-	generation_queue_add_to(chunk);
+	if (!chunk->get_is_terrain_generated()) {
+		generation_queue_add_to(chunk);
+	} else {
+		chunk->build();
+	}
 }
 bool VoxelWorld::chunk_has(const int x, const int y, const int z) const {
 	return _chunks.has(IntPos(x, y, z));
@@ -528,6 +532,7 @@ Ref<VoxelChunk> VoxelWorld::chunk_get_or_create(int x, int y, int z) {
 		chunk = _world_chunk_data_manager->load_chunk(Vector3i(x, y, z));
 
 		if (chunk.is_valid()) {
+			chunk_setup(chunk);
 			chunk_add(chunk, x, y, z);
 			return chunk;
 		}
@@ -550,6 +555,7 @@ Ref<VoxelChunk> VoxelWorld::chunk_get_or_load(const int x, const int y, const in
 		chunk = _world_chunk_data_manager->load_chunk(Vector3i(x, y, z));
 
 		if (chunk.is_valid()) {
+			chunk_setup(chunk);
 			chunk_add(chunk, x, y, z);
 			return chunk;
 		}
@@ -565,6 +571,7 @@ Ref<VoxelChunk> VoxelWorld::chunk_load(const int x, const int y, const int z) {
 		chunk = _world_chunk_data_manager->load_chunk(Vector3i(x, y, z));
 
 		if (chunk.is_valid()) {
+			chunk_setup(chunk);
 			chunk_add(chunk, x, y, z);
 			return chunk;
 		}
@@ -574,7 +581,11 @@ Ref<VoxelChunk> VoxelWorld::chunk_load(const int x, const int y, const int z) {
 }
 
 Ref<VoxelChunk> VoxelWorld::chunk_create(const int x, const int y, const int z) {
-	Ref<VoxelChunk> c = call("_create_chunk", x, y, z, Ref<VoxelChunk>());
+	Ref<VoxelChunk> c;
+	c = call("_create_chunk", x, y, z, Ref<VoxelChunk>());
+
+	chunk_setup(c);
+	chunk_add(c, x, y, z);
 
 	if (_world_chunk_data_manager.is_valid()) {
 		_world_chunk_data_manager->on_world_chunk_created(c);
@@ -585,23 +596,12 @@ Ref<VoxelChunk> VoxelWorld::chunk_create(const int x, const int y, const int z) 
 	return c;
 }
 
-void VoxelWorld::chunk_setup(Ref<VoxelChunk> chunk) {
-	ERR_FAIL_COND(!chunk.is_valid());
-
-	call("_create_chunk", chunk->get_position_x(), chunk->get_position_y(), chunk->get_position_z(), chunk);
-}
-
 Ref<VoxelChunk> VoxelWorld::_create_chunk(const int x, const int y, const int z, Ref<VoxelChunk> chunk) {
 	if (!chunk.is_valid()) {
 		chunk.instance();
 	}
 
 	//no meshers here
-
-	ERR_FAIL_COND_V(!chunk.is_valid(), NULL);
-
-	chunk->set_name("Chunk[" + String::num(x) + "," + String::num(y) + "," + String::num(z) + "]");
-
 	chunk->set_voxel_world(this);
 
 	//TODO this will need to be changed
@@ -609,6 +609,7 @@ Ref<VoxelChunk> VoxelWorld::_create_chunk(const int x, const int y, const int z,
 		chunk->call("set_is_build_threaded", _use_threads);
 	}
 
+	chunk->set_name("Chunk[" + String::num(x) + "," + String::num(y) + "," + String::num(z) + "]");
 	chunk->set_position(x, y, z);
 	chunk->set_library(_library);
 	chunk->set_voxel_scale(_voxel_scale);
@@ -619,9 +620,27 @@ Ref<VoxelChunk> VoxelWorld::_create_chunk(const int x, const int y, const int z,
 		chunk->set_visible(false);
 	}
 
-	chunk_add(chunk, x, y, z);
-
 	return chunk;
+}
+
+void VoxelWorld::chunk_setup(Ref<VoxelChunk> chunk) {
+	ERR_FAIL_COND(!chunk.is_valid());
+
+	if (chunk->get_is_setup()) {
+		return;
+	}
+
+	call("_setup_chunk", chunk);
+
+	chunk->set_is_setup(true);
+}
+
+void VoxelWorld::_setup_chunk(Ref<VoxelChunk> p_chunk) {
+	p_chunk->set_voxel_world(this);
+
+	if (!get_active()) {
+		p_chunk->set_visible(false);
+	}
 }
 
 void VoxelWorld::chunk_generate(Ref<VoxelChunk> chunk) {
@@ -2020,6 +2039,7 @@ void VoxelWorld::_bind_methods() {
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk"), "_create_chunk", PropertyInfo(Variant::INT, "x"), PropertyInfo(Variant::INT, "y"), PropertyInfo(Variant::INT, "z"), PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
 	BIND_VMETHOD(MethodInfo("_prepare_chunk_for_generation", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
 	BIND_VMETHOD(MethodInfo("_generate_chunk", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
+	BIND_VMETHOD(MethodInfo("_setup_chunk", PropertyInfo(Variant::OBJECT, "chunk", PROPERTY_HINT_RESOURCE_TYPE, "VoxelChunk")));
 
 	ClassDB::bind_method(D_METHOD("chunk_get_or_create", "x", "y", "z"), &VoxelWorld::chunk_get_or_create);
 	ClassDB::bind_method(D_METHOD("chunk_get_or_load", "x", "z"), &VoxelWorld::chunk_get_or_load);
@@ -2029,6 +2049,7 @@ void VoxelWorld::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("_create_chunk", "x", "y", "z", "chunk"), &VoxelWorld::_create_chunk);
 	ClassDB::bind_method(D_METHOD("_generate_chunk", "chunk"), &VoxelWorld::_generate_chunk);
+	ClassDB::bind_method(D_METHOD("_setup_chunk", "chunk"), &VoxelWorld::_setup_chunk);
 
 	ClassDB::bind_method(D_METHOD("can_chunk_do_build_step"), &VoxelWorld::can_chunk_do_build_step);
 	ClassDB::bind_method(D_METHOD("is_position_walkable", "position"), &VoxelWorld::is_position_walkable);

@@ -49,7 +49,11 @@ Ref<VoxelChunk> VoxelWorldCubic::_create_chunk(int x, int y, int z, Ref<VoxelChu
 		chunk = Ref<VoxelChunk>(memnew(VoxelChunkCubic));
 	}
 
-	if (chunk->job_get_count() == 0) {
+	return VoxelWorld::_create_chunk(x, y, z, chunk);
+}
+
+void VoxelWorldCubic::_setup_chunk(Ref<VoxelChunk> p_chunk) {
+	if (p_chunk->job_get_count() == 0) {
 		Ref<VoxelLightJob> lj;
 		lj.instance();
 
@@ -116,15 +120,15 @@ Ref<VoxelChunk> VoxelWorldCubic::_create_chunk(int x, int y, int z, Ref<VoxelChu
 #endif
 		pj->add_job_step(s);
 
-		chunk->job_add(lj);
-		chunk->job_add(tj);
-		chunk->job_add(pj);
+		p_chunk->job_add(lj);
+		p_chunk->job_add(tj);
+		p_chunk->job_add(pj);
 
 		// TODO this should be removed
 		set_num_lods(5);
 	}
 
-	return VoxelWorld::_create_chunk(x, y, z, chunk);
+	VoxelWorld::_setup_chunk(p_chunk);
 }
 
 VoxelWorldCubic::VoxelWorldCubic() {

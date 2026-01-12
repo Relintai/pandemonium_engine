@@ -107,6 +107,13 @@ void VoxelChunk::set_is_terrain_generated(const bool value) {
 	_is_terrain_generated = value;
 }
 
+bool VoxelChunk::get_is_setup() const {
+	return _is_setup;
+}
+void VoxelChunk::set_is_setup(const bool value) {
+	_is_setup = value;
+}
+
 bool VoxelChunk::is_build_aborted() const {
 	return _abort_build;
 }
@@ -1913,6 +1920,7 @@ bool VoxelChunk::is_safe_to_delete() {
 }
 
 VoxelChunk::VoxelChunk() {
+	_is_setup = false;
 	_is_build_threaded = false;
 	_is_processing = false;
 	_is_phisics_processing = false;
@@ -2255,6 +2263,10 @@ void VoxelChunk::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_is_generating"), &VoxelChunk::get_is_generating);
 	ClassDB::bind_method(D_METHOD("set_is_generating", "value"), &VoxelChunk::set_is_generating);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_generating", PROPERTY_HINT_NONE, "", 0), "set_is_generating", "get_is_generating");
+
+	ClassDB::bind_method(D_METHOD("get_is_setup"), &VoxelChunk::get_is_setup);
+	ClassDB::bind_method(D_METHOD("set_is_setup", "value"), &VoxelChunk::set_is_setup);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_setup", PROPERTY_HINT_NONE, "", 0), "set_is_setup", "get_is_setup");
 
 	ClassDB::bind_method(D_METHOD("is_build_aborted"), &VoxelChunk::is_build_aborted);
 

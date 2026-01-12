@@ -203,7 +203,18 @@ Ref<VoxelChunk> VoxelWorldDefault::_create_chunk(int x, int y, int z, Ref<VoxelC
 		chunk = Ref<VoxelChunk>(memnew(VoxelChunkDefault));
 	}
 
-	if (chunk->job_get_count() == 0) {
+	Ref<VoxelChunkDefault> vcd = chunk;
+
+	if (vcd.is_valid()) {
+		vcd->set_build_flags(_build_flags);
+		vcd->set_lod_num(_num_lods);
+	}
+
+	return VoxelWorld::_create_chunk(x, y, z, chunk);
+}
+
+void VoxelWorldDefault::_setup_chunk(Ref<VoxelChunk> p_chunk) {
+	if (p_chunk->job_get_count() == 0) {
 		Ref<VoxelLightJob> lj;
 		lj.instance();
 
@@ -268,22 +279,15 @@ Ref<VoxelChunk> VoxelWorldDefault::_create_chunk(int x, int y, int z, Ref<VoxelC
 		pj->add_job_step(s);
 
 		// Order matters!
-		chunk->job_add(lj);
-		chunk->job_add(tj);
-		chunk->job_add(pj);
+		p_chunk->job_add(lj);
+		p_chunk->job_add(tj);
+		p_chunk->job_add(pj);
 
 		// TODO this should be removed
 		set_num_lods(5);
 	}
 
-	Ref<VoxelChunkDefault> vcd = chunk;
-
-	if (vcd.is_valid()) {
-		vcd->set_build_flags(_build_flags);
-		vcd->set_lod_num(_num_lods);
-	}
-
-	return VoxelWorld::_create_chunk(x, y, z, chunk);
+	VoxelWorld::_setup_chunk(p_chunk);
 }
 
 void VoxelWorldDefault::_chunk_added(Ref<VoxelChunk> chunk) {

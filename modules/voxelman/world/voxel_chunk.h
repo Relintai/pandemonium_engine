@@ -104,6 +104,9 @@ public:
 	bool get_is_terrain_generated() const;
 	void set_is_terrain_generated(const bool value);
 
+	bool get_is_setup() const;
+	void set_is_setup(const bool value);
+
 	bool is_in_tree() const;
 
 	bool get_dirty() const;
@@ -535,6 +538,8 @@ protected:
 
 	bool _abort_build;
 	bool _queued_generation;
+
+	bool _is_setup;
 };
 
 #endif

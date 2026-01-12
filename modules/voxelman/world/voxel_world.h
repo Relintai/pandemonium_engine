@@ -247,6 +247,7 @@ public:
 protected:
 	virtual void _generate_chunk(Ref<VoxelChunk> chunk);
 	virtual Ref<VoxelChunk> _create_chunk(int x, int y, int z, Ref<VoxelChunk> p_chunk);
+	virtual void _setup_chunk(Ref<VoxelChunk> p_chunk);
 	virtual int _get_channel_index_info(const ChannelTypeInfo channel_type);
 	virtual void _set_voxel_with_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal, const int selected_voxel, const int isolevel);
 
