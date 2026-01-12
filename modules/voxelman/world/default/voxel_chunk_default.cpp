@@ -520,6 +520,29 @@ void VoxelChunkDefault::colliders_free(const int mesh_index) {
 	_rids[mesh_index] = m;
 }
 
+void VoxelChunkDefault::colliders_set_space(const int mesh_index, RID space) {
+	colliders_body_set_space(mesh_index, space);
+	colliders_area_set_space(mesh_index, space);
+}
+
+void VoxelChunkDefault::colliders_body_set_space(const int mesh_index, RID space) {
+	int count = mesh_rid_get_count(mesh_index, MESH_TYPE_INDEX_BODY);
+
+	for (int i = 0; i < count; ++i) {
+		RID body_rid = mesh_rid_get_index(mesh_index, MESH_TYPE_INDEX_BODY, i);
+		PhysicsServer::get_singleton()->body_set_space(body_rid, space);
+	}
+}
+
+void VoxelChunkDefault::colliders_area_set_space(const int mesh_index, RID space) {
+	int count = mesh_rid_get_count(mesh_index, MESH_TYPE_INDEX_AREA);
+
+	for (int i = 0; i < count; ++i) {
+		RID area_rid = mesh_rid_get_index(mesh_index, MESH_TYPE_INDEX_AREA, i);
+		PhysicsServer::get_singleton()->area_set_space(area_rid, space);
+	}
+}
+
 void VoxelChunkDefault::free_index(const int mesh_index) {
 	meshes_free(mesh_index);
 	colliders_free(mesh_index);
@@ -857,6 +880,13 @@ void VoxelChunkDefault::_enter_tree() {
 			RenderingServer::get_singleton()->instance_set_scenario(rid, scenario);
 		}
 	}
+
+	RID space = get_voxel_world()->get_world_3d()->get_space();
+
+	colliders_set_space(MESH_INDEX_TERRAIN, space);
+	colliders_set_space(MESH_INDEX_PROP, space);
+	colliders_set_space(MESH_INDEX_LIQUID, space);
+	colliders_set_space(MESH_INDEX_CLUTTER, space);
 }
 
 void VoxelChunkDefault::_exit_tree() {
@@ -891,6 +921,11 @@ void VoxelChunkDefault::_exit_tree() {
 			RenderingServer::get_singleton()->instance_set_scenario(rid, RID());
 		}
 	}
+
+	colliders_set_space(MESH_INDEX_TERRAIN, RID());
+	colliders_set_space(MESH_INDEX_PROP, RID());
+	colliders_set_space(MESH_INDEX_LIQUID, RID());
+	colliders_set_space(MESH_INDEX_CLUTTER, RID());
 }
 
 void VoxelChunkDefault::_world_transform_changed() {
@@ -1136,7 +1171,12 @@ void VoxelChunkDefault::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("meshes_free", "mesh_index"), &VoxelChunkDefault::meshes_free);
 
 	ClassDB::bind_method(D_METHOD("create_colliders", "mesh_index", "layer_mask"), &VoxelChunkDefault::colliders_create, DEFVAL(1));
+	ClassDB::bind_method(D_METHOD("colliders_create_area", "mesh_index", "layer_mask"), &VoxelChunkDefault::colliders_create_area, DEFVAL(1));
 	ClassDB::bind_method(D_METHOD("free_colliders", "mesh_index"), &VoxelChunkDefault::colliders_free);
+
+	ClassDB::bind_method(D_METHOD("colliders_set_space", "mesh_index", "space"), &VoxelChunkDefault::colliders_set_space);
+	ClassDB::bind_method(D_METHOD("colliders_body_set_space", "mesh_index", "space"), &VoxelChunkDefault::colliders_body_set_space);
+	ClassDB::bind_method(D_METHOD("colliders_area_set_space", "mesh_index", "space"), &VoxelChunkDefault::colliders_area_set_space);
 
 	//Lights
 	ClassDB::bind_method(D_METHOD("get_light", "index"), &VoxelChunkDefault::get_light);
