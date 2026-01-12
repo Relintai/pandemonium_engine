@@ -49,6 +49,12 @@
 #include "../jobs/voxel_terrain_job.h"
 #include "scene/resources/world_3d.h"
 
+#include "modules/modules_enabled.gen.h"
+
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+#include "modules/vertex_lights_3d/vertex_lights_3d_server.h"
+#endif
+
 const String VoxelChunkDefault::BINDING_STRING_BUILD_FLAGS = "Use Isolevel,Use Lighting,Use AO,Use RAO,Generate AO,Generate RAO,Bake Lights,Create Collider,Create Lods";
 
 _FORCE_INLINE_ int VoxelChunkDefault::get_build_flags() const {
@@ -752,9 +758,65 @@ void VoxelChunkDefault::_world_transform_changed() {
 void VoxelChunkDefault::_bake_lights() {
 	clear_baked_lights();
 
+#ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
+	VoxelWorld *world = get_voxel_world();
+
+	if (world && world->get_use_vertex_lights_3d()) {
+		VertexLights3DServer *vls = VertexLights3DServer::get_singleton();
+		RID map = world->get_world_3d()->get_vertex_lights_3d_map();
+
+		uint8_t *channel_isolevel = channel_get(VoxelChunkDefault::DEFAULT_CHANNEL_ISOLEVEL);
+
+		if (!channel_isolevel) {
+			return;
+		}
+
+		uint8_t *channel_color_r = channel_get(VoxelChunkDefault::DEFAULT_CHANNEL_LIGHT_COLOR_R);
+		uint8_t *channel_color_g = channel_get(VoxelChunkDefault::DEFAULT_CHANNEL_LIGHT_COLOR_G);
+		uint8_t *channel_color_b = channel_get(VoxelChunkDefault::DEFAULT_CHANNEL_LIGHT_COLOR_B);
+
+		ERR_FAIL_COND(channel_color_r == NULL || channel_color_g == NULL || channel_color_b == NULL);
+
+		int64_t dsx = static_cast<int64_t>(_data_size_x);
+		int64_t dsy = static_cast<int64_t>(_data_size_y);
+		int64_t dsz = static_cast<int64_t>(_data_size_z);
+		Vector3i chunk_world_data_position = Vector3i(_position_x * _size_x, _position_y * _size_y, _position_z * _size_z);
+
+		for (int x = 0; x < dsx; ++x) {
+			for (int y = 0; y < dsy; ++y) {
+				for (int z = 0; z < dsz; ++z) {
+					int index = get_data_index(x, y, z);
+
+					Vector3i world_data_pos = Vector3i(
+							chunk_world_data_position.x + x, // - _margin_start  Shouldn't this be required?
+							chunk_world_data_position.y + y, // - _margin_start  Shouldn't this be required?
+							chunk_world_data_position.z + z); // - _margin_start
+
+					Vector3 current_world_position = world->world_data_position_to_world_position(world_data_pos);
+
+					Color color = vls->sample_light_value(map, current_world_position);
+
+					int r = color.r * 255.0;
+					int g = color.g * 255.0;
+					int b = color.b * 255.0;
+
+					channel_color_r[index] = r;
+					channel_color_g[index] = g;
+					channel_color_b[index] = b;
+				}
+			}
+		}
+
+	} else {
+		for (int i = 0; i < _lights.size(); ++i) {
+			bake_light(_lights.get(i));
+		}
+	}
+#else
 	for (int i = 0; i < _lights.size(); ++i) {
 		bake_light(_lights.get(i));
 	}
+#endif
 }
 void VoxelChunkDefault::_bake_light(Ref<VoxelLight> light) {
 	ERR_FAIL_COND(!light.is_valid());
