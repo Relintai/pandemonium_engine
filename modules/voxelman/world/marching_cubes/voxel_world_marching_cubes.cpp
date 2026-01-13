@@ -49,7 +49,11 @@ Ref<VoxelChunk> VoxelWorldMarchingCubes::_create_chunk(int x, int y, int z, Ref<
 		chunk = Ref<VoxelChunk>(memnew(VoxelChunkMarchingCubes));
 	}
 
-	if (chunk->job_get_count() == 0) {
+	return VoxelWorldDefault::_create_chunk(x, y, z, chunk);
+}
+
+void VoxelWorldMarchingCubes::_setup_chunk(Ref<VoxelChunk> p_chunk) {
+	if (p_chunk->job_get_count() == 0) {
 		Ref<VoxelLightJob> lj;
 		lj.instance();
 
@@ -117,15 +121,15 @@ Ref<VoxelChunk> VoxelWorldMarchingCubes::_create_chunk(int x, int y, int z, Ref<
 #endif
 		pj->add_job_step(s);
 
-		chunk->job_add(lj);
-		chunk->job_add(tj);
-		chunk->job_add(pj);
+		p_chunk->job_add(lj);
+		p_chunk->job_add(tj);
+		p_chunk->job_add(pj);
 
 		// TODO this should be removed
 		set_num_lods(5);
 	}
 
-	return VoxelWorld::_create_chunk(x, y, z, chunk);
+	VoxelWorldDefault::_setup_chunk(p_chunk);
 }
 
 Vector3 VoxelWorldMarchingCubes::_transform_position_for_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal) {
