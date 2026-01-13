@@ -335,7 +335,7 @@ void TerrainWorld::terrain_structures_set(const Vector<Variant> &structures) {
 
 void TerrainWorld::chunk_add(Ref<TerrainChunk> chunk, const int x, const int z) {
 	ERR_FAIL_COND(!chunk.is_valid());
-	ERR_FAIL_COND_MSG(chunk->get_terrain_world() != NULL && chunk->get_terrain_world() != this, "Chunk is already owned by an another world!");
+	//ERR_FAIL_COND_MSG(chunk->get_terrain_world() != NULL && chunk->get_terrain_world() != this, "Chunk is already owned by an another world!");
 
 	IntPos pos(x, z);
 
