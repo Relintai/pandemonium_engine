@@ -143,6 +143,9 @@ public:
 	void colliders_create(const int mesh_index, const int layer_mask = 1);
 	void colliders_create_area(const int mesh_index, const int layer_mask = 1);
 	void colliders_free(const int mesh_index);
+	void colliders_set_space(const int mesh_index, RID space);
+	void colliders_body_set_space(const int mesh_index, RID space);
+	void colliders_area_set_space(const int mesh_index, RID space);
 
 	void free_index(const int mesh_index);
 

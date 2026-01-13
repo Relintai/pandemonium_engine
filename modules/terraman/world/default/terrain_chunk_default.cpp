@@ -518,6 +518,32 @@ void TerrainChunkDefault::colliders_free(const int mesh_index) {
 	_rids[mesh_index] = m;
 }
 
+void TerrainChunkDefault::colliders_set_space(const int mesh_index, RID space) {
+	colliders_body_set_space(mesh_index, space);
+
+	colliders_area_set_space(mesh_index, space);
+}
+
+void TerrainChunkDefault::colliders_body_set_space(const int mesh_index, RID space) {
+	int count = mesh_rid_get_count(mesh_index, MESH_TYPE_INDEX_BODY);
+
+	for (int i = 0; i < count; ++i) {
+		RID body_rid = mesh_rid_get_index(mesh_index, MESH_TYPE_INDEX_BODY, i);
+
+		PhysicsServer::get_singleton()->body_set_space(body_rid, space);
+	}
+}
+
+void TerrainChunkDefault::colliders_area_set_space(const int mesh_index, RID space) {
+	int count = mesh_rid_get_count(mesh_index, MESH_TYPE_INDEX_AREA);
+
+	for (int i = 0; i < count; ++i) {
+		RID area_rid = mesh_rid_get_index(mesh_index, MESH_TYPE_INDEX_AREA, i);
+
+		PhysicsServer::get_singleton()->area_set_space(area_rid, space);
+	}
+}
+
 void TerrainChunkDefault::free_index(const int mesh_index) {
 	meshes_free(mesh_index);
 	colliders_free(mesh_index);
@@ -851,6 +877,13 @@ void TerrainChunkDefault::_enter_tree() {
 			RenderingServer::get_singleton()->instance_set_scenario(rid, scenario);
 		}
 	}
+
+	RID space = get_voxel_world()->get_world_3d()->get_space();
+
+	colliders_set_space(MESH_INDEX_TERRAIN, space);
+	colliders_set_space(MESH_INDEX_PROP, space);
+	colliders_set_space(MESH_INDEX_LIQUID, space);
+	colliders_set_space(MESH_INDEX_CLUTTER, space);
 }
 
 void TerrainChunkDefault::_exit_tree() {
@@ -885,6 +918,11 @@ void TerrainChunkDefault::_exit_tree() {
 			RenderingServer::get_singleton()->instance_set_scenario(rid, RID());
 		}
 	}
+
+	colliders_set_space(MESH_INDEX_TERRAIN, RID());
+	colliders_set_space(MESH_INDEX_PROP, RID());
+	colliders_set_space(MESH_INDEX_LIQUID, RID());
+	colliders_set_space(MESH_INDEX_CLUTTER, RID());
 }
 
 void TerrainChunkDefault::_world_transform_changed() {
@@ -1130,7 +1168,11 @@ void TerrainChunkDefault::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("meshes_free", "mesh_index"), &TerrainChunkDefault::meshes_free);
 
 	ClassDB::bind_method(D_METHOD("create_colliders", "mesh_index", "layer_mask"), &TerrainChunkDefault::colliders_create, DEFVAL(1));
+	ClassDB::bind_method(D_METHOD("colliders_create_area", "mesh_index", "layer_mask"), &TerrainChunkDefault::colliders_create_area, DEFVAL(1));
 	ClassDB::bind_method(D_METHOD("free_colliders", "mesh_index"), &TerrainChunkDefault::colliders_free);
+	ClassDB::bind_method(D_METHOD("colliders_set_space", "mesh_index", "space"), &TerrainChunkDefault::colliders_set_space);
+	ClassDB::bind_method(D_METHOD("colliders_body_set_space", "mesh_index", "space"), &TerrainChunkDefault::colliders_body_set_space);
+	ClassDB::bind_method(D_METHOD("colliders_area_set_space", "mesh_index", "space"), &TerrainChunkDefault::colliders_area_set_space);
 
 	//Lights
 	ClassDB::bind_method(D_METHOD("get_light", "index"), &TerrainChunkDefault::get_light);
