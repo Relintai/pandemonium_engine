@@ -1215,6 +1215,7 @@ void VoxelChunk::build() {
 		_abort_build = false;
 		_is_generating = false;
 		_queued_generation = false;
+		_current_job = -1;
 	}
 
 	call("_build");
@@ -1229,6 +1230,7 @@ void VoxelChunk::build_immediate() {
 		_abort_build = false;
 		_is_generating = false;
 		_queued_generation = false;
+		_current_job = -1;
 	}
 
 	call("_build_immediate");
@@ -2138,16 +2140,18 @@ void VoxelChunk::_generation_physics_process(const float delta) {
 
 	_THREAD_SAFE_METHOD_
 
-	if (_current_job < 0 || _current_job >= _jobs.size())
+	if (_current_job < 0 || _current_job >= _jobs.size()) {
 		return;
+	}
 
 	Ref<VoxelJob> job = _jobs[_current_job];
 
 	ERR_FAIL_COND(!job.is_valid());
 
 	if (job->get_build_phase_type() == VoxelJob::BUILD_PHASE_TYPE_PHYSICS_PROCESS) {
-		if (!_voxel_world->can_chunk_do_build_step())
+		if (!_voxel_world->can_chunk_do_build_step()) {
 			return;
+		}
 
 		job->physics_process(delta);
 
