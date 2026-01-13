@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="VoxelTerrainJob" inherits="VoxelJob">
 	<brief_description>
+		A voxel job that can be used to create terrain meshes. Used by [VoxelWorld].
 	</brief_description>
 	<description>
+		A voxel job that can be used to create terrain meshes. Used by [VoxelWorld].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,57 +13,67 @@
 			<return type="void" />
 			<argument index="0" name="mesher" type="VoxelMesherJobStep" />
 			<description>
+				Add a job step.
 			</description>
 		</method>
 		<method name="add_liquid_mesher">
 			<return type="void" />
 			<argument index="0" name="mesher" type="VoxelMesher" />
 			<description>
+				Add a liquid mesher.
 			</description>
 		</method>
 		<method name="add_mesher">
 			<return type="void" />
 			<argument index="0" name="mesher" type="VoxelMesher" />
 			<description>
+				Add a mesher.
 			</description>
 		</method>
 		<method name="get_job_step" qualifiers="const">
 			<return type="VoxelMesherJobStep" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns job step.
 			</description>
 		</method>
 		<method name="get_job_step_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns job step count.
 			</description>
 		</method>
 		<method name="get_liquid_mesher" qualifiers="const">
 			<return type="VoxelMesher" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns liquid mesher.
 			</description>
 		</method>
 		<method name="get_liquid_mesher_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the liquid mesher count.
 			</description>
 		</method>
 		<method name="get_mesher" qualifiers="const">
 			<return type="VoxelMesher" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns mesher.
 			</description>
 		</method>
 		<method name="get_mesher_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the mesher count.
 			</description>
 		</method>
 		<method name="remove_job_step">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes a job step.
 			</description>
 		</method>
 		<method name="remove_liquid_mesher">
@@ -74,6 +86,7 @@
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes a mesher.
 			</description>
 		</method>
 		<method name="set_job_step">
@@ -81,6 +94,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="mesher" type="VoxelMesherJobStep" />
 			<description>
+				Sets a job step.
 			</description>
 		</method>
 		<method name="set_liquid_mesher">
@@ -88,6 +102,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="mesher" type="VoxelMesher" />
 			<description>
+				Set liquid mesher.
 			</description>
 		</method>
 		<method name="set_mesher">
@@ -95,6 +110,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="mesher" type="VoxelMesher" />
 			<description>
+				Set mesher.
 			</description>
 		</method>
 	</methods>
