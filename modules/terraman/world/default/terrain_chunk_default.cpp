@@ -1113,8 +1113,6 @@ void TerrainChunkDefault::_finalize_build() {
 }
 
 TerrainChunkDefault::TerrainChunkDefault() {
-	_abort_build = false;
-
 	_enabled = true;
 
 	_lod_num = 3;
@@ -1124,8 +1122,6 @@ TerrainChunkDefault::TerrainChunkDefault() {
 }
 
 TerrainChunkDefault::~TerrainChunkDefault() {
-	_abort_build = true;
-
 	_lights.clear();
 
 	debug_mesh_free();

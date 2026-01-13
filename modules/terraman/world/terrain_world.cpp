@@ -2038,6 +2038,10 @@ void TerrainWorld::_notification(int p_what) {
 					chunk->build();
 				} else {
 					chunk->enter_tree();
+
+					if (chunk->is_build_aborted()) {
+						chunk->build();
+					}
 				}
 			}
 			break;
