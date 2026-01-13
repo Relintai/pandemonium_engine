@@ -647,6 +647,8 @@ void VoxelTerrainJob::_execute_phase() {
 void VoxelTerrainJob::_reset() {
 	VoxelJob::_reset();
 
+	_build_phase_type = BUILD_PHASE_TYPE_NORMAL;
+
 	_build_done = false;
 	_phase = 0;
 
@@ -720,7 +722,6 @@ void VoxelTerrainJob::_reset() {
 	if (has_meta("bptm_lmm")) {
 		remove_meta("bptm_lmm");
 	}
-
 }
 
 void VoxelTerrainJob::_physics_process(float delta) {
