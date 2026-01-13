@@ -1285,6 +1285,7 @@ void TerrainChunk::build() {
 		_abort_build = false;
 		_is_generating = false;
 		_queued_generation = false;
+		_current_job = -1;
 	}
 
 	call("_build");
@@ -1299,6 +1300,7 @@ void TerrainChunk::build_immediate() {
 		_abort_build = false;
 		_is_generating = false;
 		_queued_generation = false;
+		_current_job = -1;
 	}
 
 	call("_build_immediate");
