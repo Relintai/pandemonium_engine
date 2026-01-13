@@ -1211,7 +1211,10 @@ void VoxelChunk::build() {
 	ERR_FAIL_COND(!get_voxel_world()->is_inside_tree());
 	ERR_FAIL_COND(!is_in_tree());
 
-	_abort_build = false;
+	if (_abort_build) {
+		_abort_build = false;
+		_is_generating = false;
+	}
 
 	call("_build");
 }
@@ -1221,7 +1224,10 @@ void VoxelChunk::build_immediate() {
 	ERR_FAIL_COND(!get_voxel_world()->is_inside_tree());
 	ERR_FAIL_COND(!is_in_tree());
 
-	_abort_build = false;
+	if (_abort_build) {
+		_abort_build = false;
+		_is_generating = false;
+	}
 
 	call("_build_immediate");
 }
