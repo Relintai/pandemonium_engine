@@ -526,19 +526,17 @@ void VoxelChunkDefault::colliders_set_space(const int mesh_index, RID space) {
 }
 
 void VoxelChunkDefault::colliders_body_set_space(const int mesh_index, RID space) {
-	int count = mesh_rid_get_count(mesh_index, MESH_TYPE_INDEX_BODY);
+	RID body_rid = mesh_rid_get(mesh_index, MESH_TYPE_INDEX_BODY);
 
-	for (int i = 0; i < count; ++i) {
-		RID body_rid = mesh_rid_get_index(mesh_index, MESH_TYPE_INDEX_BODY, i);
+	if (body_rid != RID()) {
 		PhysicsServer::get_singleton()->body_set_space(body_rid, space);
 	}
 }
 
 void VoxelChunkDefault::colliders_area_set_space(const int mesh_index, RID space) {
-	int count = mesh_rid_get_count(mesh_index, MESH_TYPE_INDEX_AREA);
+	RID area_rid = mesh_rid_get(mesh_index, MESH_TYPE_INDEX_AREA);
 
-	for (int i = 0; i < count; ++i) {
-		RID area_rid = mesh_rid_get_index(mesh_index, MESH_TYPE_INDEX_AREA, i);
+	if (area_rid != RID()) {
 		PhysicsServer::get_singleton()->area_set_space(area_rid, space);
 	}
 }
