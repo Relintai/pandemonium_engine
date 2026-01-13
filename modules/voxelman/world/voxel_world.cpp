@@ -744,7 +744,7 @@ Spatial *VoxelWorld::get_editor_camera() {
 #endif
 }
 
-void VoxelWorld::_set_voxel_with_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal, const int selected_voxel, const int isolevel) {
+Vector3 VoxelWorld::_transform_position_for_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal) {
 	Vector3 pos;
 
 	if (mode_add) {
@@ -752,16 +752,7 @@ void VoxelWorld::_set_voxel_with_tool(const bool mode_add, const Vector3 hit_pos
 	} else {
 		pos = (hit_position + (Vector3(0.1, 0.1, 0.1) * -hit_normal * get_voxel_scale()));
 	}
-
-	int channel_type = get_channel_index_info(VoxelWorld::CHANNEL_TYPE_INFO_TYPE);
-	int channel_isolevel = get_channel_index_info(VoxelWorld::CHANNEL_TYPE_INFO_ISOLEVEL);
-
-	if (channel_isolevel == -1) {
-		set_voxel_at_world_position(pos, selected_voxel, channel_type);
-	} else {
-		set_voxel_at_world_position(pos, selected_voxel, channel_type, false);
-		set_voxel_at_world_position(pos, isolevel, channel_isolevel);
-	}
+	return pos;
 }
 
 bool VoxelWorld::can_chunk_do_build_step() {
@@ -1653,8 +1644,8 @@ void VoxelWorld::set_voxels_at_world_data_position(const Array &p_data, const in
 	}
 }
 
-void VoxelWorld::set_voxel_with_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal, const int selected_voxel, const int isolevel) {
-	call("_set_voxel_with_tool", mode_add, hit_position, hit_normal, selected_voxel, isolevel);
+Vector3 VoxelWorld::transform_position_for_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal) {
+	return call("_transform_position_for_tool", mode_add, hit_position, hit_normal);
 }
 
 int VoxelWorld::get_channel_index_info(const VoxelWorld::ChannelTypeInfo channel_type) {
@@ -2152,15 +2143,13 @@ void VoxelWorld::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_channel_index_info", "channel_type"), &VoxelWorld::get_channel_index_info);
 	ClassDB::bind_method(D_METHOD("_get_channel_index_info", "channel_type"), &VoxelWorld::_get_channel_index_info);
 
-	BIND_VMETHOD(MethodInfo("_set_voxel_with_tool",
+	BIND_VMETHOD(MethodInfo(Variant::VECTOR3, "_transform_position_for_tool",
 			PropertyInfo(Variant::BOOL, "mode_add"),
 			PropertyInfo(Variant::VECTOR3, "hit_position"),
-			PropertyInfo(Variant::VECTOR3, "hit_normal"),
-			PropertyInfo(Variant::INT, "selected_voxel"),
-			PropertyInfo(Variant::INT, "isolevel")));
+			PropertyInfo(Variant::VECTOR3, "hit_normal")));
 
-	ClassDB::bind_method(D_METHOD("set_voxel_with_tool", "mode_add", "hit_position", "hit_normal", "selected_voxel", "isolevel"), &VoxelWorld::set_voxel_with_tool);
-	ClassDB::bind_method(D_METHOD("_set_voxel_with_tool", "mode_add", "hit_position", "hit_normal", "selected_voxel", "isolevel"), &VoxelWorld::_set_voxel_with_tool);
+	ClassDB::bind_method(D_METHOD("transform_position_for_tool", "mode_add", "hit_position", "hit_normal"), &VoxelWorld::transform_position_for_tool);
+	ClassDB::bind_method(D_METHOD("_transform_position_for_tool", "mode_add", "hit_position", "hit_normal"), &VoxelWorld::_transform_position_for_tool);
 
 	ClassDB::bind_method(D_METHOD("get_editor_camera"), &VoxelWorld::get_editor_camera);
 

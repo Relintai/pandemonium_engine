@@ -224,7 +224,7 @@ public:
 	Vector3i world_position_to_chunk_position(const Vector3 &p_world_position);
 	Vector3i world_data_position_to_chunk_position(const Vector3i &p_world_data_position);
 
-	void set_voxel_with_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal, const int selected_voxel, const int isolevel);
+	Vector3 transform_position_for_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal);
 
 	Vector3i world_position_to_world_data_position(const Vector3 &world_position);
 	Vector3i world_position_to_world_data_position_3d(const Vector3 &world_position);
@@ -249,7 +249,7 @@ protected:
 	virtual Ref<VoxelChunk> _create_chunk(int x, int y, int z, Ref<VoxelChunk> p_chunk);
 	virtual void _setup_chunk(Ref<VoxelChunk> p_chunk);
 	virtual int _get_channel_index_info(const ChannelTypeInfo channel_type);
-	virtual void _set_voxel_with_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal, const int selected_voxel, const int isolevel);
+	virtual Vector3 _transform_position_for_tool(const bool mode_add, const Vector3 hit_position, const Vector3 hit_normal);
 
 	void _editor_button_property_pressed(const StringName &p_property);
 	void _get_property_list(List<PropertyInfo> *p_list) const;
