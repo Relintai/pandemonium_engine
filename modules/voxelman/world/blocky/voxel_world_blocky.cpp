@@ -128,6 +128,20 @@ void VoxelWorldBlocky::_setup_chunk(Ref<VoxelChunk> p_chunk) {
 	VoxelWorldDefault::_setup_chunk(p_chunk);
 }
 
+
+int VoxelWorldBlocky::_get_channel_index_info(const VoxelWorld::ChannelTypeInfo channel_type) {
+	switch (channel_type) {
+		case CHANNEL_TYPE_INFO_TYPE:
+			return VoxelChunkDefault::DEFAULT_CHANNEL_TYPE;
+		case CHANNEL_TYPE_INFO_ISOLEVEL:
+			return -1;
+		case CHANNEL_TYPE_INFO_LIQUID_FLOW:
+			return -1;
+		default:
+			return -1;
+	}
+}
+
 VoxelWorldBlocky::VoxelWorldBlocky() {
 	set_data_margin_start(1);
 	set_data_margin_end(1);
