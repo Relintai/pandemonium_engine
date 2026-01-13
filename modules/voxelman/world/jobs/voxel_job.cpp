@@ -80,7 +80,6 @@ void VoxelJob::reset() {
 void VoxelJob::_reset() {
 	_build_done = false;
 	_phase = 0;
-	set_cancelled(false);
 }
 
 void VoxelJob::_execute() {
