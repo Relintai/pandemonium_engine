@@ -204,6 +204,12 @@ void TerrainTerrainJob::phase_physics_process() {
 
 		PhysicsServer::get_singleton()->shape_set_data(chunk->mesh_rid_get(TerrainChunkDefault::MESH_INDEX_TERRAIN, TerrainChunkDefault::MESH_TYPE_INDEX_SHAPE), temp_arr_collider);
 
+#if TOOLS_ENABLED
+		if (SceneTree::get_singleton()->is_debugging_collisions_hint()) {
+			chunk->debug_mesh_add_vertices_to(temp_arr_collider);
+		}
+#endif
+
 		temp_arr_collider.resize(0);
 	}
 
@@ -221,6 +227,12 @@ void TerrainTerrainJob::phase_physics_process() {
 			}*/
 
 		PhysicsServer::get_singleton()->shape_set_data(chunk->mesh_rid_get(TerrainChunkDefault::MESH_INDEX_LIQUID, TerrainChunkDefault::MESH_TYPE_INDEX_SHAPE), temp_arr_collider_liquid);
+
+#if TOOLS_ENABLED
+		if (SceneTree::get_singleton()->is_debugging_collisions_hint()) {
+			chunk->debug_mesh_add_vertices_to(temp_arr_collider_liquid);
+		}
+#endif
 
 		temp_arr_collider_liquid.resize(0);
 	}
