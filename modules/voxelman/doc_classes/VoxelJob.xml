@@ -85,7 +85,7 @@
 		<method name="next_phase">
 			<return type="void" />
 			<description>
-				Go to newxt phase.
+				Go to next phase.
 			</description>
 		</method>
 		<method name="reset">
