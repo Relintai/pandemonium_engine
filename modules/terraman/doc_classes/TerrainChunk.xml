@@ -37,7 +37,7 @@
 			<return type="void" />
 			<description>
 				Build meshes and other data from channel information immediately on the current thread.
-				Uses [TewrrainJob]s.
+				Uses [TerrainJob]s.
 			</description>
 		</method>
 		<method name="_channel_setup" qualifiers="virtual">
@@ -156,7 +156,7 @@
 			<return type="void" />
 			<description>
 				Build meshes and other data from channel information immediately on the current thread.
-				Uses [TewrrainJob]s.
+				Uses [TerrainJob]s.
 			</description>
 		</method>
 		<method name="cancel_build">
