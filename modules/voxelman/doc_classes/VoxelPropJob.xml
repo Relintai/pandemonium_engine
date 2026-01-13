@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="VoxelPropJob" inherits="VoxelJob">
 	<brief_description>
+		A voxel job that can be used to merge prop meshes. Used by [VoxelWorld].
 	</brief_description>
 	<description>
+		A voxel job that can be used to merge prop meshes. Used by [VoxelWorld].
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,23 +13,27 @@
 			<return type="void" />
 			<argument index="0" name="mesher" type="VoxelMesherJobStep" />
 			<description>
+				Add job step.
 			</description>
 		</method>
 		<method name="get_job_step" qualifiers="const">
 			<return type="VoxelMesherJobStep" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns job step.
 			</description>
 		</method>
 		<method name="get_job_step_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns job step count.
 			</description>
 		</method>
 		<method name="remove_job_step">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes job step.
 			</description>
 		</method>
 		<method name="set_job_step">
@@ -35,6 +41,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="mesher" type="VoxelMesherJobStep" />
 			<description>
+				Set job step.
 			</description>
 		</method>
 	</methods>
