@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="VoxelWorld" inherits="Spatial">
 	<brief_description>
+		Base class for the voxel engine which stores and manages [VoxelChunk]s.
 	</brief_description>
 	<description>
+		Base class for the voxel engine.
+		Stores and manages [VoxelChunk]s and other data, also contains necessary and useful virtual methods.
+		Should be inherited from.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,6 +15,7 @@
 			<return type="void" />
 			<argument index="0" name="chunk" type="VoxelChunk" />
 			<description>
+				Called when a chunk was added.
 			</description>
 		</method>
 		<method name="_create_chunk" qualifiers="virtual">
@@ -20,35 +25,52 @@
 			<argument index="2" name="z" type="int" />
 			<argument index="3" name="chunk" type="VoxelChunk" />
 			<description>
+				Called when a chunk needs to be created.
+				In this method all necessary serialized properties should be setup for the chunk to function.
+				For non-serialized properties use [method _setup_chunk].
+				When loading chunks from disk, only [method _setup_chunk] will be called, this one won't.
+				Note the [VoxelChunk] parameter. The first reaced implementation should create the appropiate [VoxelChunk] implementation, then it can call base implementation to do their own initialization on the new instance. Tipically in code this would look like:
+				[code]func _create_chunk(x : int, y : int,  z : int, chunk : VoxelChunk) -&gt; VoxelChunk:
+				  if (!chunk):
+				    chunk = MyVoxelChunk.new()
+
+				  return ._create_chunk(x, y, z, chunk)[/code]
 			</description>
 		</method>
 		<method name="_generate_chunk" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="chunk" type="VoxelChunk" />
 			<description>
+				Called when a chunk needs to be generated.
 			</description>
 		</method>
 		<method name="_generation_finished" qualifiers="virtual">
 			<return type="void" />
 			<description>
+				Called when [member is_priority_generation] is true and all generating chunks finished.
 			</description>
 		</method>
 		<method name="_get_channel_index_info" qualifiers="virtual">
 			<return type="int" />
 			<argument index="0" name="channel_type" type="int" />
 			<description>
+				The editor tools ask the world for chunk channel information using this method.
 			</description>
 		</method>
 		<method name="_prepare_chunk_for_generation" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="chunk" type="VoxelChunk" />
 			<description>
+				This method will get called for chunks before generation so they can be prepared if needed.
+				For example channel allocations can happen here.
 			</description>
 		</method>
 		<method name="_setup_chunk" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="chunk" type="VoxelChunk" />
 			<description>
+				Set up a chunk. Non-serialized properties should be initialized in this method, like [VoxelJob] and [VoxelMesher] setup.
+				[method chunk_setup] call this.
 			</description>
 		</method>
 		<method name="_transform_position_for_tool" qualifiers="virtual">
@@ -57,11 +79,13 @@
 			<argument index="1" name="hit_position" type="Vector3" />
 			<argument index="2" name="hit_normal" type="Vector3" />
 			<description>
+				When the generated meshes are raycast for voxel addition or deletion sometimes it's really hard to tell which data position we need. This method solves the issue on a per/World basis.
 			</description>
 		</method>
 		<method name="can_chunk_do_build_step">
 			<return type="bool" />
 			<description>
+				Returns whether a chunk can do it's next build step in the current frame. See [member max_frame_chunk_build_steps].
 			</description>
 		</method>
 		<method name="chunk_add">
@@ -71,6 +95,7 @@
 			<argument index="2" name="y" type="int" />
 			<argument index="3" name="z" type="int" />
 			<description>
+				Add a chunk at chunk position x, y, z.
 			</description>
 		</method>
 		<method name="chunk_create">
@@ -79,6 +104,7 @@
 			<argument index="1" name="y" type="int" />
 			<argument index="2" name="z" type="int" />
 			<description>
+				Create a chunk at chunk position x, y, z.
 			</description>
 		</method>
 		<method name="chunk_get">
@@ -87,17 +113,20 @@
 			<argument index="1" name="y" type="int" />
 			<argument index="2" name="z" type="int" />
 			<description>
+				Return the chunk at chunk position x, y, z or null if it doesn't exists.
 			</description>
 		</method>
 		<method name="chunk_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the chunk count.
 			</description>
 		</method>
 		<method name="chunk_get_index">
 			<return type="VoxelChunk" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns the chunk at at index.
 			</description>
 		</method>
 		<method name="chunk_get_or_create">
@@ -106,6 +135,7 @@
 			<argument index="1" name="y" type="int" />
 			<argument index="2" name="z" type="int" />
 			<description>
+				Return the chunk at chunk position x, y, z or creates one if it doesn't exists.
 			</description>
 		</method>
 		<method name="chunk_get_or_load">
@@ -114,6 +144,7 @@
 			<argument index="1" name="z" type="int" />
 			<argument index="2" name="arg2" type="int" />
 			<description>
+				Return the chunk at chunk position x, y, z or loads one if it doesn't exists. Returns null if one can't be loaded.
 			</description>
 		</method>
 		<method name="chunk_has" qualifiers="const">
@@ -122,6 +153,7 @@
 			<argument index="1" name="y" type="int" />
 			<argument index="2" name="z" type="int" />
 			<description>
+				Return whether the chunk at chunk position x, y, z exists or not.
 			</description>
 		</method>
 		<method name="chunk_load">
@@ -130,6 +162,7 @@
 			<argument index="1" name="z" type="int" />
 			<argument index="2" name="arg2" type="int" />
 			<description>
+				Loads the chunk at chunk position x, y, z.
 			</description>
 		</method>
 		<method name="chunk_remove">
@@ -138,109 +171,130 @@
 			<argument index="1" name="y" type="int" />
 			<argument index="2" name="z" type="int" />
 			<description>
+				Removes the chunk at chunk position x, y, z.
 			</description>
 		</method>
 		<method name="chunk_remove_index">
 			<return type="VoxelChunk" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes the chunk at the given index.
 			</description>
 		</method>
 		<method name="chunk_setup">
 			<return type="void" />
 			<argument index="0" name="chunk" type="VoxelChunk" />
 			<description>
+				Calls [method _chunk_setup] if [member VoxelChunk.is_setup] is false.
+				[method _chunk_setup] is where a chunk should be setup. Non-serialized properties should be initialized in this method, like [VoxelJob] and [VoxelMesher] setup.
 			</description>
 		</method>
 		<method name="chunks_clear">
 			<return type="void" />
 			<description>
+				Clear all chunks.
 			</description>
 		</method>
 		<method name="force_save_all_chunks">
 			<return type="void" />
 			<description>
+				Save all chunks.
 			</description>
 		</method>
 		<method name="generation_add_to">
 			<return type="void" />
 			<argument index="0" name="chunk" type="VoxelChunk" />
 			<description>
+				Add chunk to the generation list.
 			</description>
 		</method>
 		<method name="generation_get_index">
 			<return type="VoxelChunk" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return the chunk at the given index in the generation list.
 			</description>
 		</method>
 		<method name="generation_get_size" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the generation list's size.
 			</description>
 		</method>
 		<method name="generation_queue_add_to">
 			<return type="void" />
 			<argument index="0" name="chunk" type="VoxelChunk" />
 			<description>
+				Add chunk to the generation queue.
 			</description>
 		</method>
 		<method name="generation_queue_get_index">
 			<return type="VoxelChunk" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return the chunk at the given index in the generation queue.
 			</description>
 		</method>
 		<method name="generation_queue_get_size" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns the generation queue's size.
 			</description>
 		</method>
 		<method name="generation_queue_remove_index">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes the chunk at the given index from the generation queue.
 			</description>
 		</method>
 		<method name="generation_remove_index">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Removes the chunk at the given index from the generation list.
 			</description>
 		</method>
 		<method name="get_channel_index_info">
 			<return type="int" />
 			<argument index="0" name="channel_type" type="int" enum="VoxelWorld.ChannelTypeInfo" />
 			<description>
+				The editor tools ask the world for chunk channel information using this method.
+				Calls [member _get_channel_index_info].
 			</description>
 		</method>
 		<method name="get_chunk_at_world_data_position">
 			<return type="VoxelChunk" />
 			<argument index="0" name="world_data_position" type="Vector3i" />
 			<description>
+				Returns the chunk at the given world data position or null if it doesn't exists.
 			</description>
 		</method>
 		<method name="get_chunk_at_world_position">
 			<return type="VoxelChunk" />
 			<argument index="0" name="world_position" type="Vector3" />
 			<description>
+				Returns the chunk at the given world position or null if it doesn't exists.
 			</description>
 		</method>
 		<method name="get_editor_camera">
 			<return type="Spatial" />
 			<description>
+				Returns the editor camera or null if it's not the editor.
 			</description>
 		</method>
 		<method name="get_or_create_chunk_at_world_data_position">
 			<return type="VoxelChunk" />
 			<argument index="0" name="world_data_position" type="Vector3i" />
 			<description>
+				Returns the chunk at the given world data position will create one if it doesn't exists.
 			</description>
 		</method>
 		<method name="get_or_create_chunk_at_world_position">
 			<return type="VoxelChunk" />
 			<argument index="0" name="world_position" type="Vector3" />
 			<description>
+				Returns the chunk at the given world position will create one if it doesn't exists.
 			</description>
 		</method>
 		<method name="get_voxel_at_world_data_position">
@@ -248,6 +302,7 @@
 			<argument index="0" name="world_data_position" type="Vector3i" />
 			<argument index="1" name="channel_index" type="int" />
 			<description>
+				Returns the value in the channel at the given world data position.
 			</description>
 		</method>
 		<method name="get_voxel_at_world_position">
@@ -255,29 +310,34 @@
 			<argument index="0" name="world_position" type="Vector3" />
 			<argument index="1" name="channel_index" type="int" />
 			<description>
+				Returns the value in the channel at the given world position.
 			</description>
 		</method>
 		<method name="is_position_walkable">
 			<return type="bool" />
 			<argument index="0" name="position" type="Vector3" />
 			<description>
+				Returns whether a world position is walkable (is a chunk loaded there) or not.
 			</description>
 		</method>
 		<method name="light_add">
 			<return type="void" />
 			<argument index="0" name="light" type="VoxelLight" />
 			<description>
+				Add a light.
 			</description>
 		</method>
 		<method name="light_remove">
 			<return type="void" />
 			<argument index="0" name="light" type="VoxelLight" />
 			<description>
+				Remove a light.
 			</description>
 		</method>
 		<method name="lights_clear">
 			<return type="void" />
 			<description>
+				Clear all lights.
 			</description>
 		</method>
 		<method name="mesh_data_resource_add">
@@ -289,6 +349,7 @@
 			<argument index="4" name="original" type="bool" default="true" />
 			<argument index="5" name="name" type="String" default="&quot;&quot;" />
 			<description>
+				Add a [MeshDataResource].
 			</description>
 		</method>
 		<method name="mesh_data_resource_add_material">
@@ -300,12 +361,14 @@
 			<argument index="4" name="original" type="bool" default="true" />
 			<argument index="5" name="name" type="String" default="&quot;&quot;" />
 			<description>
+				Add a [MeshDataResource] with a material.
 			</description>
 		</method>
 		<method name="on_chunk_mesh_generation_finished">
 			<return type="void" />
 			<argument index="0" name="chunk" type="VoxelChunk" />
 			<description>
+				Called when a chunk finished it's mesh generation.
 			</description>
 		</method>
 		<method name="prop_add">
@@ -316,6 +379,7 @@
 			<argument index="3" name="original" type="bool" default="true" />
 			<argument index="4" name="name" type="String" default="&quot;&quot;" />
 			<description>
+				Add prop.
 			</description>
 		</method>
 		<method name="scene_add">
@@ -326,6 +390,7 @@
 			<argument index="3" name="original" type="bool" default="true" />
 			<argument index="4" name="name" type="String" default="&quot;&quot;" />
 			<description>
+				Add scene.
 			</description>
 		</method>
 		<method name="set_voxel_at_world_data_position">
@@ -336,6 +401,7 @@
 			<argument index="3" name="immediate_build" type="bool" default="true" />
 			<argument index="4" name="allow_creating_chunks" type="bool" default="true" />
 			<description>
+				Set voxel data at the given world data position.
 			</description>
 		</method>
 		<method name="set_voxel_at_world_position">
@@ -345,6 +411,7 @@
 			<argument index="2" name="channel_index" type="int" />
 			<argument index="3" name="rebuild" type="bool" default="true" />
 			<description>
+				Set voxel data at the given world position.
 			</description>
 		</method>
 		<method name="set_voxels_at_world_data_position">
@@ -355,6 +422,8 @@
 			<argument index="3" name="allow_creating_chunks" type="bool" default="true" />
 			<argument index="4" name="invalidate_texture_caches" type="bool" default="true" />
 			<description>
+				Set multiple voxel data at the given world data position.
+				The data array should contain: Vector3i world data position 0, uint8 data 0, Vector3i world data position 1, uint8 data 1, ...
 			</description>
 		</method>
 		<method name="transform_position_for_tool">
@@ -363,12 +432,14 @@
 			<argument index="1" name="hit_position" type="Vector3" />
 			<argument index="2" name="hit_normal" type="Vector3" />
 			<description>
+				When the generated meshes are raycast for voxel addition or deletion sometimes it's really hard to tell which data position we need. This method solves the issue on a per/World basis.
 			</description>
 		</method>
 		<method name="voxel_structure_add">
 			<return type="void" />
 			<argument index="0" name="structure" type="VoxelStructure" />
 			<description>
+				Add a voxel structure.
 			</description>
 		</method>
 		<method name="voxel_structure_add_at_position">
@@ -376,176 +447,231 @@
 			<argument index="0" name="structure" type="VoxelStructure" />
 			<argument index="1" name="world_position" type="Vector3" />
 			<description>
+				Add a voxel structure at the given world position.
 			</description>
 		</method>
 		<method name="voxel_structure_get" qualifiers="const">
 			<return type="VoxelStructure" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Return the voxel structure at index.
 			</description>
 		</method>
 		<method name="voxel_structure_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Return the voxel structure count.
 			</description>
 		</method>
 		<method name="voxel_structure_remove">
 			<return type="void" />
 			<argument index="0" name="structure" type="VoxelStructure" />
 			<description>
+				Remove the given voxel structure.
 			</description>
 		</method>
 		<method name="voxel_structure_remove_index">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove the voxel structure at index.
 			</description>
 		</method>
 		<method name="voxel_structures_clear">
 			<return type="void" />
 			<description>
+				Clear voxel structures.
 			</description>
 		</method>
 		<method name="world_area_add">
 			<return type="void" />
 			<argument index="0" name="area" type="VoxelWorldArea" />
 			<description>
+				Add world area.
 			</description>
 		</method>
 		<method name="world_area_get" qualifiers="const">
 			<return type="VoxelWorldArea" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Returns world area at index.
 			</description>
 		</method>
 		<method name="world_area_get_count" qualifiers="const">
 			<return type="int" />
 			<description>
+				Returns world area count.
 			</description>
 		</method>
 		<method name="world_area_remove">
 			<return type="void" />
 			<argument index="0" name="index" type="int" />
 			<description>
+				Remove world area.
 			</description>
 		</method>
 		<method name="world_areas_clear">
 			<return type="void" />
 			<description>
+				Clear world areas.
 			</description>
 		</method>
 		<method name="world_data_position_to_chunk_position">
 			<return type="Vector3i" />
 			<argument index="0" name="world_data_position" type="Vector3i" />
 			<description>
+				Converts world data position to chunk position.
 			</description>
 		</method>
 		<method name="world_data_position_to_world_position">
 			<return type="Vector3" />
 			<argument index="0" name="position" type="Vector3i" />
 			<description>
+				Converts world data position to world position.
 			</description>
 		</method>
 		<method name="world_data_position_to_world_position_3d">
 			<return type="Vector3" />
 			<argument index="0" name="position" type="Vector3i" />
 			<description>
+				Converts 3d world data position to world position.
 			</description>
 		</method>
 		<method name="world_position_to_chunk_position">
 			<return type="Vector3i" />
 			<argument index="0" name="world_position" type="Vector3" />
 			<description>
+				Converts world position to chunk position.
 			</description>
 		</method>
 		<method name="world_position_to_world_data_position">
 			<return type="Vector3i" />
 			<argument index="0" name="world_position" type="Vector3" />
 			<description>
+				Converts world position to world data position.
 			</description>
 		</method>
 		<method name="world_position_to_world_data_position_3d">
 			<return type="Vector3i" />
 			<argument index="0" name="world_position" type="Vector3" />
 			<description>
+				Converts world position to 3d world data position.
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="active" type="bool" setter="set_active" getter="get_active" default="true">
+			Is the world active?
 		</member>
 		<member name="chunk_size_x" type="int" setter="set_chunk_size_x" getter="get_chunk_size_x" default="16">
+			Chunk size on the x axis.
 		</member>
 		<member name="chunk_size_y" type="int" setter="set_chunk_size_y" getter="get_chunk_size_y" default="16">
+			Chunk size on the y axis.
 		</member>
 		<member name="chunk_size_z" type="int" setter="set_chunk_size_z" getter="get_chunk_size_z" default="16">
+			Chunk size on the z axis.
 		</member>
 		<member name="chunk_spawn_range" type="int" setter="set_chunk_spawn_range" getter="get_chunk_spawn_range" default="4">
+			Chunk spawn range.
 		</member>
 		<member name="chunks" type="Array" setter="chunks_set" getter="chunks_get" default="[  ]">
+			All loaded chunks.
 		</member>
 		<member name="current_seed" type="int" setter="set_current_seed" getter="get_current_seed" default="0">
+			The world seed.
 		</member>
 		<member name="data_margin_end" type="int" setter="set_data_margin_end" getter="get_data_margin_end" default="0">
+			Data margin end for the chunks.
 		</member>
 		<member name="data_margin_start" type="int" setter="set_data_margin_start" getter="get_data_margin_start" default="0">
+			Data margin start for the chunks.
 		</member>
 		<member name="editable" type="bool" setter="set_editable" getter="get_editable" default="false">
+			Is this world editable?
+			If this is true the editor plugin will show up and allow editing this world.
 		</member>
 		<member name="is_priority_generation" type="bool" setter="set_is_priority_generation" getter="get_is_priority_generation">
+			Is the current set of generation a priority generation?
+			Priority generation should be used for the initial mesh and terrain generation like during loading screens.
 		</member>
 		<member name="level_generator" type="VoxelLevelGenerator" setter="set_level_generator" getter="get_level_generator">
+			THe active level generator.
 		</member>
 		<member name="library" type="VoxelLibrary" setter="set_library" getter="get_library">
+			The active terrain library.
 		</member>
 		<member name="max_concurrent_generations" type="int" setter="set_max_concurrent_generations" getter="get_max_concurrent_generations" default="3">
+			Maximum allowed concurrent generations.
 		</member>
 		<member name="max_frame_chunk_build_steps" type="int" setter="set_max_frame_chunk_build_steps" getter="get_max_frame_chunk_build_steps" default="0">
+			Maximum number of chunk build steps per frame.
 		</member>
 		<member name="player" type="Spatial" setter="set_player" getter="get_player">
+			The player's body. If set, the world will load and make chunks visible around it.
 		</member>
 		<member name="player_path" type="NodePath" setter="set_player_path" getter="get_player_path" default="NodePath(&quot;&quot;)">
+			The player's body's path. If set, the world will get and set it to [member player].
 		</member>
 		<member name="use_threads" type="bool" setter="set_use_threads" getter="get_use_threads" default="true">
+			Use threads?
 		</member>
 		<member name="use_vertex_lights_3d" type="bool" setter="set_use_vertex_lights_3d" getter="get_use_vertex_lights_3d" default="true">
+			Whether to use the [VertexLights3D] system.
 		</member>
 		<member name="voxel_scale" type="float" setter="set_voxel_scale" getter="get_voxel_scale" default="1.0">
+			The voxel scale.
 		</member>
 		<member name="voxel_structures" type="Array" setter="voxel_structures_set" getter="voxel_structures_get" default="[  ]">
+			Voxel structures.
 		</member>
 		<member name="world_chunk_data_manager" type="VoxelWorldChunkDataManager" setter="set_world_chunk_data_manager" getter="get_world_chunk_data_manager">
+			The active world chunk data manager. These can save and load chunks.
 		</member>
 	</members>
 	<signals>
 		<signal name="chunk_added">
 			<argument index="0" name="chunk" type="VoxelChunk" />
 			<description>
+				Emitted when a chunk is added.
 			</description>
 		</signal>
 		<signal name="chunk_mesh_generation_finished">
 			<argument index="0" name="chunk" type="VoxelChunk" />
 			<description>
+				Emitted when a chunk's mesh generation is finished.
 			</description>
 		</signal>
 		<signal name="chunk_removed">
 			<argument index="0" name="chunk" type="VoxelChunk" />
 			<description>
+				Emitted when a chunk is removed.
 			</description>
 		</signal>
 		<signal name="generation_finished">
 			<description>
+				Emitted when a priority generation finishes.
 			</description>
 		</signal>
 	</signals>
 	<constants>
 		<constant name="CHANNEL_TYPE_INFO_TYPE" value="0" enum="ChannelTypeInfo">
+			Which chunk channel contains type information.
 		</constant>
 		<constant name="CHANNEL_TYPE_INFO_ISOLEVEL" value="1" enum="ChannelTypeInfo">
+			Which chunk channel contains isolevel information.
 		</constant>
-		<constant name="CHANNEL_TYPE_INFO_LIQUID_FLOW" value="2" enum="ChannelTypeInfo">
+		<constant name="CHANNEL_TYPE_INFO_LIQUID_TYPE" value="2" enum="ChannelTypeInfo">
+			Which chunk channel contains liquid type information.
+		</constant>
+		<constant name="CHANNEL_TYPE_INFO_LIQUID_ISOLEVEL" value="3" enum="ChannelTypeInfo">
+			Which chunk channel contains liquid isolevel information.
+		</constant>
+		<constant name="CHANNEL_TYPE_INFO_LIQUID_FLOW" value="4" enum="ChannelTypeInfo">
+			Which chunk channel contains liquid flow information.
 		</constant>
 		<constant name="NOTIFICATION_ACTIVE_STATE_CHANGED" value="9000">
+			Emitted when the world's [member active] state changes.
 		</constant>
 	</constants>
 </class>
