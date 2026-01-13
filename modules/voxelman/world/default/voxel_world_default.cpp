@@ -93,6 +93,13 @@ void VoxelWorldDefault::update_lods() {
 	call("_update_lods");
 }
 
+int VoxelWorldDefault::get_chunk_lod_first_falloff() const {
+	return _chunk_lod_first_falloff;
+}
+void VoxelWorldDefault::set_chunk_lod_first_falloff(const int value) {
+	_chunk_lod_first_falloff = value;
+}
+
 int VoxelWorldDefault::get_chunk_lod_falloff() const {
 	return _chunk_lod_falloff;
 }
@@ -190,7 +197,9 @@ void VoxelWorldDefault::_update_lods() {
 
 		int mr = MAX(MAX(dx, dy), dz);
 
-		mr -= _chunk_lod_falloff;
+		mr -= _chunk_lod_first_falloff;
+		mr /= _chunk_lod_falloff;
+
 		mr = CLAMP(mr, 0, _num_lods);
 
 		if (c->get_current_lod_level() != mr)
@@ -316,6 +325,7 @@ int VoxelWorldDefault::_get_channel_index_info(const VoxelWorld::ChannelTypeInfo
 }
 
 VoxelWorldDefault::VoxelWorldDefault() {
+	_chunk_lod_first_falloff = 2;
 	_chunk_lod_falloff = 4;
 	_lod_update_timer = 0;
 	_lod_update_interval = 0.5;
@@ -392,6 +402,10 @@ void VoxelWorldDefault::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_lod_update_interval"), &VoxelWorldDefault::get_lod_update_interval);
 	ClassDB::bind_method(D_METHOD("set_lod_update_interval", "value"), &VoxelWorldDefault::set_lod_update_interval);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "lod_update_interval"), "set_lod_update_interval", "get_lod_update_interval");
+
+	ClassDB::bind_method(D_METHOD("get_chunk_lod_first_falloff"), &VoxelWorldDefault::get_chunk_lod_first_falloff);
+	ClassDB::bind_method(D_METHOD("set_chunk_lod_first_falloff", "value"), &VoxelWorldDefault::set_chunk_lod_first_falloff);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "chunk_lod_first_falloff"), "set_chunk_lod_first_falloff", "get_chunk_lod_first_falloff");
 
 	ClassDB::bind_method(D_METHOD("get_chunk_lod_falloff"), &VoxelWorldDefault::get_chunk_lod_falloff);
 	ClassDB::bind_method(D_METHOD("set_chunk_lod_falloff", "value"), &VoxelWorldDefault::set_chunk_lod_falloff);

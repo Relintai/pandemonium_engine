@@ -43,6 +43,9 @@
 		<member name="chunk_lod_falloff" type="int" setter="set_chunk_lod_falloff" getter="get_chunk_lod_falloff" default="4">
 			How much distance should it take to lower a lod level.
 		</member>
+		<member name="chunk_lod_first_falloff" type="int" setter="set_chunk_lod_first_falloff" getter="get_chunk_lod_first_falloff" default="2">
+			How much distance should it take to lower a lod level for the first one.
+		</member>
 		<member name="data_margin_end" type="int" setter="set_data_margin_end" getter="get_data_margin_end" overrides="VoxelWorld" default="1" />
 		<member name="data_margin_start" type="int" setter="set_data_margin_start" getter="get_data_margin_start" overrides="VoxelWorld" default="1" />
 		<member name="lod_update_interval" type="float" setter="set_lod_update_interval" getter="get_lod_update_interval" default="0.5">

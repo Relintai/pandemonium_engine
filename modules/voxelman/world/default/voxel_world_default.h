@@ -47,6 +47,9 @@ public:
 	float get_lod_update_interval() const;
 	void set_lod_update_interval(const float value);
 
+	int get_chunk_lod_first_falloff() const;
+	void set_chunk_lod_first_falloff(const int value);
+
 	int get_chunk_lod_falloff() const;
 	void set_chunk_lod_falloff(const int value);
 
@@ -76,6 +79,7 @@ private:
 	bool _use_default_lod_update;
 	float _lod_update_timer;
 	float _lod_update_interval;
+	int _chunk_lod_first_falloff;
 	int _chunk_lod_falloff;
 	int _num_lods;
 };
