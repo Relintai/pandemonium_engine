@@ -2132,12 +2132,12 @@ void TerrainChunk::_enter_tree() {
 }
 
 void TerrainChunk::_exit_tree() {
-	for (int i = 0; i < _scenes.size(); ++i) {
-		scene_queue_free(i);
-	}
-
 	if (_is_generating) {
 		cancel_build();
+	}
+
+	for (int i = 0; i < _scenes.size(); ++i) {
+		scene_queue_free(i);
 	}
 
 	for (int i = 0; i < _jobs.size(); ++i) {
