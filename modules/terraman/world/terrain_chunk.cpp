@@ -1916,16 +1916,12 @@ void TerrainChunk::colliders_clear() {
 void TerrainChunk::enter_tree() {
 	_is_in_tree = true;
 
-	if (has_method("_enter_tree")) {
-		call("_enter_tree");
-	}
+	call("_enter_tree");
 }
 void TerrainChunk::exit_tree() {
 	_is_in_tree = false;
 
-	if (has_method("_exit_tree")) {
-		call("_exit_tree");
-	}
+	call("_exit_tree");
 }
 void TerrainChunk::process(const float delta) {
 	if (has_method("_process")) {
