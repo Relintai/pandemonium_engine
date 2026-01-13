@@ -2006,6 +2006,9 @@ void TerrainWorld::_validate_property(PropertyInfo &property) const {
 void TerrainWorld::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_POST_ENTER_TREE: {
+			_generation_queue.clear();
+			_generating.clear();
+
 #ifdef MODULE_VERTEX_LIGHTS_3D_ENABLED
 			if (_use_vertex_lights_3d) {
 				VertexLights3DServer::get_singleton()->connect("map_changed", this, "_on_vertex_lights_3d_map_changed");
@@ -2040,7 +2043,11 @@ void TerrainWorld::_notification(int p_what) {
 					chunk->enter_tree();
 
 					if (chunk->is_build_aborted()) {
-						chunk->build();
+						if (!chunk->get_is_terrain_generated()) {
+							generation_queue_add_to(chunk);
+						} else {
+							chunk->build();
+						}
 					}
 				}
 			}
