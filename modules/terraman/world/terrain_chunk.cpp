@@ -417,6 +417,7 @@ void TerrainChunk::job_next() {
 
 	j->reset();
 	j->set_complete(false);
+	j->set_cancelled(false);
 
 	if (j->get_build_phase_type() == TerrainJob::BUILD_PHASE_TYPE_NORMAL) {
 		if (!_is_immediate_build) {
