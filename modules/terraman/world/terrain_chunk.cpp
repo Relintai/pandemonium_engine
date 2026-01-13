@@ -101,6 +101,7 @@ bool TerrainChunk::get_is_terrain_generated() const {
 }
 void TerrainChunk::set_is_terrain_generated(const bool value) {
 	_is_terrain_generated = value;
+	emit_changed();
 }
 
 bool TerrainChunk::get_is_setup() const {
