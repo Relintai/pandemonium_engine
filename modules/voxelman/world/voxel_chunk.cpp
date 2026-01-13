@@ -1214,6 +1214,7 @@ void VoxelChunk::build() {
 	if (_abort_build) {
 		_abort_build = false;
 		_is_generating = false;
+		_queued_generation = false;
 	}
 
 	call("_build");
@@ -1227,6 +1228,7 @@ void VoxelChunk::build_immediate() {
 	if (_abort_build) {
 		_abort_build = false;
 		_is_generating = false;
+		_queued_generation = false;
 	}
 
 	call("_build_immediate");
