@@ -684,6 +684,43 @@ void VoxelTerrainJob::_reset() {
 			md->set_build_flags(chunk->get_build_flags());
 		}
 	}
+
+	//phase_terrain_mesh_setup()
+	if (has_meta("tms_m")) {
+		remove_meta("tms_m");
+	}
+
+	if (has_meta("tms_lm")) {
+		remove_meta("tms_lm");
+	}
+
+	//phase_collider()
+	if (has_meta("bpc_aa")) {
+		remove_meta("bpc_aa");
+	}
+
+	if (has_meta("bpc_laa")) {
+		remove_meta("bpc_laa");
+	}
+
+	//phase_terrain_mesh()
+
+	if (has_meta("bptm_ulm")) {
+		remove_meta("bptm_ulm");
+	}
+
+	if (has_meta("bptm_ullm")) {
+		remove_meta("bptm_ullm");
+	}
+
+	if (has_meta("bptm_mm")) {
+		remove_meta("bptm_mm");
+	}
+
+	if (has_meta("bptm_lmm")) {
+		remove_meta("bptm_lmm");
+	}
+
 }
 
 void VoxelTerrainJob::_physics_process(float delta) {
