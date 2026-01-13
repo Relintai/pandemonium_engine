@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="VoxelWorldBlocky" inherits="VoxelWorldDefault">
 	<brief_description>
+		A voxel world implementation that generates the traditional cube meshes.
 	</brief_description>
 	<description>
+		A voxel world implementation that generates the traditional cube meshes.
 	</description>
 	<tutorials>
 	</tutorials>
