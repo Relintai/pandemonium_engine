@@ -140,7 +140,44 @@ EditorPlugin::AfterGUIInput VoxelWorldEditor::do_input_action(Camera *p_camera, 
 			mode_add = false;
 		}
 
-		_world->set_voxel_with_tool(mode_add, res.position, res.normal, selected_voxel, isolevel);
+		Vector3 pos;
+
+		if (mode_add) {
+			pos = (res.position + (Vector3(0.1, 0.1, 0.1) * res.normal * _world->get_voxel_scale()));
+		} else {
+			pos = (res.position + (Vector3(0.1, 0.1, 0.1) * -res.normal * _world->get_voxel_scale()));
+		}
+
+		int channel_type = _world->get_channel_index_info(VoxelWorld::CHANNEL_TYPE_INFO_TYPE);
+		int channel_isolevel = _world->get_channel_index_info(VoxelWorld::CHANNEL_TYPE_INFO_ISOLEVEL);
+
+		uint8_t prev_voxel_type;
+		uint8_t prev_voxel_isolevel = 0;
+
+		prev_voxel_type = _world->get_voxel_at_world_position(pos, channel_type);
+		if (channel_isolevel != -1) {
+			prev_voxel_isolevel = _world->get_voxel_at_world_position(pos, channel_isolevel);
+		}
+
+		UndoRedo *ur = EditorNode::get_undo_redo();
+
+		ur->create_action("Voxelman: Set voxel");
+
+		if (channel_isolevel == -1) {
+			ur->add_do_method(_world, "set_voxel_at_world_position", pos, selected_voxel, channel_type);
+		} else {
+			ur->add_do_method(_world, "set_voxel_at_world_position", pos, selected_voxel, channel_type, false);
+			ur->add_do_method(_world, "set_voxel_at_world_position", pos, isolevel, channel_isolevel);
+		}
+
+		if (channel_isolevel == -1) {
+			ur->add_undo_method(_world, "set_voxel_at_world_position", pos, prev_voxel_type, channel_type);
+		} else {
+			ur->add_undo_method(_world, "set_voxel_at_world_position", pos, prev_voxel_type, channel_type, false);
+			ur->add_undo_method(_world, "set_voxel_at_world_position", pos, prev_voxel_isolevel, channel_isolevel);
+		}
+
+		ur->commit_action();
 
 		return EditorPlugin::AFTER_GUI_INPUT_STOP;
 	}
