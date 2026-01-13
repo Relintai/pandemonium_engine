@@ -442,6 +442,8 @@ void TerrainTerrainJob::_execute_phase() {
 void TerrainTerrainJob::_reset() {
 	TerrainJob::_reset();
 
+	_build_phase_type = BUILD_PHASE_TYPE_NORMAL;
+
 	_build_done = false;
 	_phase = 0;
 
