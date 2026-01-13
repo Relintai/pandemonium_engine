@@ -55,6 +55,12 @@
 			<description>
 			</description>
 		</method>
+		<method name="_setup_chunk" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="chunk" type="VoxelChunk" />
+			<description>
+			</description>
+		</method>
 		<method name="can_chunk_do_build_step">
 			<return type="bool" />
 			<description>
@@ -104,11 +110,27 @@
 			<description>
 			</description>
 		</method>
+		<method name="chunk_get_or_load">
+			<return type="VoxelChunk" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="z" type="int" />
+			<argument index="2" name="arg2" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="chunk_has" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="x" type="int" />
 			<argument index="1" name="y" type="int" />
 			<argument index="2" name="z" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="chunk_load">
+			<return type="VoxelChunk" />
+			<argument index="0" name="x" type="int" />
+			<argument index="1" name="z" type="int" />
+			<argument index="2" name="arg2" type="int" />
 			<description>
 			</description>
 		</method>
@@ -133,6 +155,11 @@
 			</description>
 		</method>
 		<method name="chunks_clear">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="force_save_all_chunks">
 			<return type="void" />
 			<description>
 			</description>
@@ -189,15 +216,39 @@
 			<description>
 			</description>
 		</method>
+		<method name="get_chunk_at_world_data_position">
+			<return type="VoxelChunk" />
+			<argument index="0" name="world_data_position" type="Vector3i" />
+			<description>
+			</description>
+		</method>
 		<method name="get_chunk_at_world_position">
 			<return type="VoxelChunk" />
 			<argument index="0" name="world_position" type="Vector3" />
 			<description>
 			</description>
 		</method>
+		<method name="get_editor_camera">
+			<return type="Spatial" />
+			<description>
+			</description>
+		</method>
+		<method name="get_or_create_chunk_at_world_data_position">
+			<return type="VoxelChunk" />
+			<argument index="0" name="world_data_position" type="Vector3i" />
+			<description>
+			</description>
+		</method>
 		<method name="get_or_create_chunk_at_world_position">
 			<return type="VoxelChunk" />
 			<argument index="0" name="world_position" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="get_voxel_at_world_data_position">
+			<return type="int" />
+			<argument index="0" name="world_data_position" type="Vector3i" />
+			<argument index="1" name="channel_index" type="int" />
 			<description>
 			</description>
 		</method>
@@ -220,20 +271,9 @@
 			<description>
 			</description>
 		</method>
-		<method name="light_get">
-			<return type="VoxelLight" />
-			<argument index="0" name="index" type="int" />
-			<description>
-			</description>
-		</method>
-		<method name="light_get_count" qualifiers="const">
-			<return type="int" />
-			<description>
-			</description>
-		</method>
 		<method name="light_remove">
 			<return type="void" />
-			<argument index="0" name="index" type="int" />
+			<argument index="0" name="light" type="VoxelLight" />
 			<description>
 			</description>
 		</method>
@@ -242,14 +282,25 @@
 			<description>
 			</description>
 		</method>
-		<method name="lights_get">
-			<return type="Array" />
+		<method name="mesh_data_resource_add">
+			<return type="void" />
+			<argument index="0" name="mesh" type="MeshDataResource" />
+			<argument index="1" name="transform" type="Transform" />
+			<argument index="2" name="texture" type="Texture" default="null" />
+			<argument index="3" name="color" type="Color" default="Color( 1, 1, 1, 1 )" />
+			<argument index="4" name="original" type="bool" default="true" />
+			<argument index="5" name="name" type="String" default="&quot;&quot;" />
 			<description>
 			</description>
 		</method>
-		<method name="lights_set">
+		<method name="mesh_data_resource_add_material">
 			<return type="void" />
-			<argument index="0" name="chunks" type="Array" />
+			<argument index="0" name="mesh" type="MeshDataResource" />
+			<argument index="1" name="transform" type="Transform" />
+			<argument index="2" name="texture" type="Texture" default="null" />
+			<argument index="3" name="material" type="Material" default="Color( 1, 1, 1, 1 )" />
+			<argument index="4" name="original" type="bool" default="true" />
+			<argument index="5" name="name" type="String" default="&quot;&quot;" />
 			<description>
 			</description>
 		</method>
@@ -263,7 +314,29 @@
 			<return type="void" />
 			<argument index="0" name="transform" type="Transform" />
 			<argument index="1" name="prop" type="PropData" />
-			<argument index="2" name="apply_voxel_scael" type="bool" default="true" />
+			<argument index="2" name="apply_voxel_scale" type="bool" default="true" />
+			<argument index="3" name="original" type="bool" default="true" />
+			<argument index="4" name="name" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="scene_add">
+			<return type="void" />
+			<argument index="0" name="scene" type="PackedScene" />
+			<argument index="1" name="transform" type="Transform" default="Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )" />
+			<argument index="2" name="node" type="Node" default="null" />
+			<argument index="3" name="original" type="bool" default="true" />
+			<argument index="4" name="name" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="set_voxel_at_world_data_position">
+			<return type="void" />
+			<argument index="0" name="world_data_position" type="Vector3i" />
+			<argument index="1" name="data" type="int" />
+			<argument index="2" name="channel_index" type="int" />
+			<argument index="3" name="immediate_build" type="bool" default="true" />
+			<argument index="4" name="allow_creating_chunks" type="bool" default="true" />
 			<description>
 			</description>
 		</method>
@@ -283,6 +356,16 @@
 			<argument index="2" name="hit_normal" type="Vector3" />
 			<argument index="3" name="selected_voxel" type="int" />
 			<argument index="4" name="isolevel" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_voxels_at_world_data_position">
+			<return type="void" />
+			<argument index="0" name="data" type="Array" />
+			<argument index="1" name="channel_index" type="int" />
+			<argument index="2" name="immediate_build" type="bool" default="false" />
+			<argument index="3" name="allow_creating_chunks" type="bool" default="true" />
+			<argument index="4" name="invalidate_texture_caches" type="bool" default="true" />
 			<description>
 			</description>
 		</method>
@@ -355,8 +438,46 @@
 			<description>
 			</description>
 		</method>
+		<method name="world_data_position_to_chunk_position">
+			<return type="Vector3i" />
+			<argument index="0" name="world_data_position" type="Vector3i" />
+			<description>
+			</description>
+		</method>
+		<method name="world_data_position_to_world_position">
+			<return type="Vector3" />
+			<argument index="0" name="position" type="Vector3i" />
+			<description>
+			</description>
+		</method>
+		<method name="world_data_position_to_world_position_3d">
+			<return type="Vector3" />
+			<argument index="0" name="position" type="Vector3i" />
+			<description>
+			</description>
+		</method>
+		<method name="world_position_to_chunk_position">
+			<return type="Vector3i" />
+			<argument index="0" name="world_position" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="world_position_to_world_data_position">
+			<return type="Vector3i" />
+			<argument index="0" name="world_position" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="world_position_to_world_data_position_3d">
+			<return type="Vector3i" />
+			<argument index="0" name="world_position" type="Vector3" />
+			<description>
+			</description>
+		</method>
 	</methods>
 	<members>
+		<member name="active" type="bool" setter="set_active" getter="get_active" default="true">
+		</member>
 		<member name="chunk_size_x" type="int" setter="set_chunk_size_x" getter="get_chunk_size_x" default="16">
 		</member>
 		<member name="chunk_size_y" type="int" setter="set_chunk_size_y" getter="get_chunk_size_y" default="16">
@@ -375,6 +496,8 @@
 		</member>
 		<member name="editable" type="bool" setter="set_editable" getter="get_editable" default="false">
 		</member>
+		<member name="is_priority_generation" type="bool" setter="set_is_priority_generation" getter="get_is_priority_generation">
+		</member>
 		<member name="level_generator" type="VoxelLevelGenerator" setter="set_level_generator" getter="get_level_generator">
 		</member>
 		<member name="library" type="VoxelLibrary" setter="set_library" getter="get_library">
@@ -389,13 +512,27 @@
 		</member>
 		<member name="use_threads" type="bool" setter="set_use_threads" getter="get_use_threads" default="true">
 		</member>
+		<member name="use_vertex_lights_3d" type="bool" setter="set_use_vertex_lights_3d" getter="get_use_vertex_lights_3d" default="true">
+		</member>
 		<member name="voxel_scale" type="float" setter="set_voxel_scale" getter="get_voxel_scale" default="1.0">
 		</member>
 		<member name="voxel_structures" type="Array" setter="voxel_structures_set" getter="voxel_structures_get" default="[  ]">
 		</member>
+		<member name="world_chunk_data_manager" type="VoxelWorldChunkDataManager" setter="set_world_chunk_data_manager" getter="get_world_chunk_data_manager">
+		</member>
 	</members>
 	<signals>
+		<signal name="chunk_added">
+			<argument index="0" name="chunk" type="VoxelChunk" />
+			<description>
+			</description>
+		</signal>
 		<signal name="chunk_mesh_generation_finished">
+			<argument index="0" name="chunk" type="VoxelChunk" />
+			<description>
+			</description>
+		</signal>
+		<signal name="chunk_removed">
 			<argument index="0" name="chunk" type="VoxelChunk" />
 			<description>
 			</description>
@@ -411,6 +548,8 @@
 		<constant name="CHANNEL_TYPE_INFO_ISOLEVEL" value="1" enum="ChannelTypeInfo">
 		</constant>
 		<constant name="CHANNEL_TYPE_INFO_LIQUID_FLOW" value="2" enum="ChannelTypeInfo">
+		</constant>
+		<constant name="NOTIFICATION_ACTIVE_STATE_CHANGED" value="9000">
 		</constant>
 	</constants>
 </class>

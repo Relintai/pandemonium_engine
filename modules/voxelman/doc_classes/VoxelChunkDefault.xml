@@ -15,6 +15,34 @@
 				Clears all stored [RID]s.
 			</description>
 		</method>
+		<method name="colliders_area_set_space">
+			<return type="void" />
+			<argument index="0" name="mesh_index" type="int" />
+			<argument index="1" name="space" type="RID" />
+			<description>
+			</description>
+		</method>
+		<method name="colliders_body_set_space">
+			<return type="void" />
+			<argument index="0" name="mesh_index" type="int" />
+			<argument index="1" name="space" type="RID" />
+			<description>
+			</description>
+		</method>
+		<method name="colliders_create_area">
+			<return type="void" />
+			<argument index="0" name="mesh_index" type="int" />
+			<argument index="1" name="layer_mask" type="int" default="1" />
+			<description>
+			</description>
+		</method>
+		<method name="colliders_set_space">
+			<return type="void" />
+			<argument index="0" name="mesh_index" type="int" />
+			<argument index="1" name="space" type="RID" />
+			<description>
+			</description>
+		</method>
 		<method name="create_colliders">
 			<return type="void" />
 			<argument index="0" name="mesh_index" type="int" />
