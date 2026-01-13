@@ -122,21 +122,21 @@
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
-				Called by world if a a chunk is added.
+				Called by world if a chunk is added.
 			</description>
 		</method>
 		<method name="on_world_chunk_created">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
-				Called by world if a a chunk is created.
+				Called by world if a chunk is created.
 			</description>
 		</method>
 		<method name="on_world_chunk_removed">
 			<return type="void" />
 			<argument index="0" name="chunk" type="TerrainChunk" />
 			<description>
-				Called by world if a a chunk is removed.
+				Called by world if a chunk is removed.
 			</description>
 		</method>
 		<method name="save_all_chunks">
