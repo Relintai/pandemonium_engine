@@ -140,13 +140,7 @@ EditorPlugin::AfterGUIInput VoxelWorldEditor::do_input_action(Camera *p_camera, 
 			mode_add = false;
 		}
 
-		Vector3 pos;
-
-		if (mode_add) {
-			pos = (res.position + (Vector3(0.1, 0.1, 0.1) * res.normal * _world->get_voxel_scale()));
-		} else {
-			pos = (res.position + (Vector3(0.1, 0.1, 0.1) * -res.normal * _world->get_voxel_scale()));
-		}
+		Vector3 pos =	_world->transform_position_for_tool(mode_add, res.position, res.normal);
 
 		int channel_type = _world->get_channel_index_info(VoxelWorld::CHANNEL_TYPE_INFO_TYPE);
 		int channel_isolevel = _world->get_channel_index_info(VoxelWorld::CHANNEL_TYPE_INFO_ISOLEVEL);
