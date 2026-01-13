@@ -45,19 +45,17 @@
 			<description>
 			</description>
 		</method>
-		<method name="_set_voxel_with_tool" qualifiers="virtual">
-			<return type="void" />
-			<argument index="0" name="mode_add" type="bool" />
-			<argument index="1" name="hit_position" type="Vector3" />
-			<argument index="2" name="hit_normal" type="Vector3" />
-			<argument index="3" name="selected_voxel" type="int" />
-			<argument index="4" name="isolevel" type="int" />
-			<description>
-			</description>
-		</method>
 		<method name="_setup_chunk" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="chunk" type="VoxelChunk" />
+			<description>
+			</description>
+		</method>
+		<method name="_transform_position_for_tool" qualifiers="virtual">
+			<return type="Vector3" />
+			<argument index="0" name="mode_add" type="bool" />
+			<argument index="1" name="hit_position" type="Vector3" />
+			<argument index="2" name="hit_normal" type="Vector3" />
 			<description>
 			</description>
 		</method>
@@ -349,16 +347,6 @@
 			<description>
 			</description>
 		</method>
-		<method name="set_voxel_with_tool">
-			<return type="void" />
-			<argument index="0" name="mode_add" type="bool" />
-			<argument index="1" name="hit_position" type="Vector3" />
-			<argument index="2" name="hit_normal" type="Vector3" />
-			<argument index="3" name="selected_voxel" type="int" />
-			<argument index="4" name="isolevel" type="int" />
-			<description>
-			</description>
-		</method>
 		<method name="set_voxels_at_world_data_position">
 			<return type="void" />
 			<argument index="0" name="data" type="Array" />
@@ -366,6 +354,14 @@
 			<argument index="2" name="immediate_build" type="bool" default="false" />
 			<argument index="3" name="allow_creating_chunks" type="bool" default="true" />
 			<argument index="4" name="invalidate_texture_caches" type="bool" default="true" />
+			<description>
+			</description>
+		</method>
+		<method name="transform_position_for_tool">
+			<return type="Vector3" />
+			<argument index="0" name="mode_add" type="bool" />
+			<argument index="1" name="hit_position" type="Vector3" />
+			<argument index="2" name="hit_normal" type="Vector3" />
 			<description>
 			</description>
 		</method>
