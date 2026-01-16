@@ -349,35 +349,10 @@ public:
 #endif
 	}
 
-	Variant call(PScriptInstance *p_instance, const Variant **p_args, int p_argcount, Variant::CallError &r_err, CallState *p_state = nullptr);
+	Variant call(PScriptInstance *p_instance, const Variant **p_args, int p_argcount, Variant::CallError &r_err);
 
 	PScriptFunction();
 	~PScriptFunction();
-};
-
-class PScriptFunctionState : public Reference {
-	GDCLASS(PScriptFunctionState, Reference);
-	friend class PScriptFunction;
-	PScriptFunction *function;
-	PScriptFunction::CallState state;
-	Variant _signal_callback(const Variant **p_args, int p_argcount, Variant::CallError &r_error);
-	Ref<PScriptFunctionState> first_state;
-
-	SelfList<PScriptFunctionState> scripts_list;
-	SelfList<PScriptFunctionState> instances_list;
-
-protected:
-	static void _bind_methods();
-
-public:
-	bool is_valid(bool p_extended_check = false) const;
-	Variant resume(const Variant &p_arg = Variant());
-
-	void _clear_stack();
-	void _clear_connections();
-
-	PScriptFunctionState();
-	~PScriptFunctionState();
 };
 
 #endif // PSCRIPT_FUNCTION_H

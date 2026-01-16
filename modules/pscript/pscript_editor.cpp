@@ -406,16 +406,6 @@ void PScriptLanguage::get_public_functions(List<MethodInfo> *p_functions) const 
 	}
 	{
 		MethodInfo mi;
-		mi.name = "yield";
-		mi.arguments.push_back(PropertyInfo(Variant::OBJECT, "object"));
-		mi.arguments.push_back(PropertyInfo(Variant::STRING, "signal"));
-		mi.default_arguments.push_back(Variant());
-		mi.default_arguments.push_back(String());
-		mi.return_val = PropertyInfo(Variant::OBJECT, "", PROPERTY_HINT_RESOURCE_TYPE, "PScriptFunctionState");
-		p_functions->push_back(mi);
-	}
-	{
-		MethodInfo mi;
 		mi.name = "assert";
 		mi.return_val.type = Variant::NIL;
 		mi.arguments.push_back(PropertyInfo(Variant::BOOL, "condition"));
@@ -2211,7 +2201,7 @@ static void _find_identifiers(const PScriptCompletionContext &p_context, bool p_
 
 	static const char *_keywords[] = {
 		"and", "in", "not", "or", "false", "PI", "TAU", "INF", "NAN", "self", "true", "as", "assert",
-		"breakpoint", "class", "class_name", "extends", "is", "func", "preload", "setget", "signal", "tool", "yield",
+		"breakpoint", "class", "class_name", "extends", "is", "func", "preload", "setget", "signal", "tool",
 		"const", "enum", "export", "onready", "static", "var", "break", "continue", "if", "elif",
 		"else", "for", "pass", "return", "match", "while", nullptr
 	};
@@ -2806,72 +2796,6 @@ Error PScriptLanguage::complete_code(const String &p_code, const String &p_path,
 
 				ScriptCodeCompletionOption option(method_hint, ScriptCodeCompletionOption::KIND_FUNCTION);
 				options.insert(option.display, option);
-			}
-		} break;
-		case PScriptParser::COMPLETION_YIELD: {
-			const PScriptParser::Node *node = parser.get_completion_node();
-
-			PScriptCompletionContext c = context;
-			c.line = node->line;
-			PScriptCompletionIdentifier type;
-			if (!_guess_expression_type(c, node, type)) {
-				break;
-			}
-
-			PScriptParser::DataType base_type = type.type;
-			while (base_type.has_type) {
-				switch (base_type.kind) {
-					case PScriptParser::DataType::CLASS: {
-						for (int i = 0; i < base_type.class_type->_signals.size(); i++) {
-							ScriptCodeCompletionOption option(base_type.class_type->_signals[i].name.operator String(), ScriptCodeCompletionOption::KIND_SIGNAL);
-							option.insert_text = quote_style + option.display + quote_style;
-							options.insert(option.display, option);
-						}
-						base_type = base_type.class_type->base_type;
-					} break;
-					case PScriptParser::DataType::SCRIPT:
-					case PScriptParser::DataType::PSCRIPT: {
-						Ref<Script> scr = base_type.script_type;
-						if (scr.is_valid()) {
-							List<MethodInfo> signals;
-							scr->get_script_signal_list(&signals);
-							for (List<MethodInfo>::Element *E = signals.front(); E; E = E->next()) {
-								ScriptCodeCompletionOption option(quote_style + E->get().name + quote_style, ScriptCodeCompletionOption::KIND_SIGNAL);
-								options.insert(option.display, option);
-							}
-							Ref<Script> base_script = scr->get_base_script();
-							if (base_script.is_valid()) {
-								base_type.script_type = base_script;
-							} else {
-								base_type.kind = PScriptParser::DataType::NATIVE;
-								base_type.native_type = scr->get_instance_base_type();
-							}
-						} else {
-							base_type.has_type = false;
-						}
-					} break;
-					case PScriptParser::DataType::NATIVE: {
-						base_type.has_type = false;
-
-						StringName class_name = base_type.native_type;
-						if (!ClassDB::class_exists(class_name)) {
-							class_name = String("_") + class_name;
-							if (!ClassDB::class_exists(class_name)) {
-								break;
-							}
-						}
-
-						List<MethodInfo> signals;
-						ClassDB::get_signal_list(class_name, &signals);
-						for (List<MethodInfo>::Element *E = signals.front(); E; E = E->next()) {
-							ScriptCodeCompletionOption option(quote_style + E->get().name + quote_style, ScriptCodeCompletionOption::KIND_SIGNAL);
-							options.insert(option.display, option);
-						}
-					} break;
-					default: {
-						base_type.has_type = false;
-					}
-				}
 			}
 		} break;
 		case PScriptParser::COMPLETION_RESOURCE_PATH: {
@@ -3590,9 +3514,9 @@ Error PScriptLanguage::lookup_code(const String &p_code, const String &p_symbol,
 		}
 	}
 
-	// Need special checks for assert, preload, and yield as they are technically
+	// Need special checks for assert, and preload as they are technically
 	// keywords, so are not registered in PScriptFunctions.
-	if (function_in_pscript_functions || "yield" == p_symbol || "assert" == p_symbol || "preload" == p_symbol) {
+	if (function_in_pscript_functions || "assert" == p_symbol || "preload" == p_symbol) {
 		r_result.type = ScriptLanguage::LookupResult::RESULT_CLASS_METHOD;
 		r_result.class_name = "@PScript";
 		r_result.class_member = p_symbol;

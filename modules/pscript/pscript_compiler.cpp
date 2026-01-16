@@ -677,32 +677,6 @@ int PScriptCompiler::_parse_expression(CodeGen &codegen, const PScriptParser::No
 						}
 					}
 				} break;
-				case PScriptParser::OperatorNode::OP_YIELD: {
-					ERR_FAIL_COND_V(on->arguments.size() && on->arguments.size() != 2, -1);
-
-					Vector<int> arguments;
-					int slevel = p_stack_level;
-					for (int i = 0; i < on->arguments.size(); i++) {
-						int ret = _parse_expression(codegen, on->arguments[i], slevel);
-						if (ret < 0) {
-							return ret;
-						}
-						if ((ret >> PScriptFunction::ADDR_BITS & PScriptFunction::ADDR_TYPE_STACK) == PScriptFunction::ADDR_TYPE_STACK) {
-							slevel++;
-							codegen.alloc_stack(slevel);
-						}
-						arguments.push_back(ret);
-					}
-
-					//push call bytecode
-					codegen.opcodes.push_back(arguments.size() == 0 ? PScriptFunction::OPCODE_YIELD : PScriptFunction::OPCODE_YIELD_SIGNAL); // basic type constructor
-					for (int i = 0; i < arguments.size(); i++) {
-						codegen.opcodes.push_back(arguments[i]); //arguments
-					}
-					codegen.opcodes.push_back(PScriptFunction::OPCODE_YIELD_RESUME);
-					//next will be where to place the result :)
-
-				} break;
 
 				//indexing operator
 				case PScriptParser::OperatorNode::OP_INDEX:

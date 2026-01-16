@@ -532,78 +532,6 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 			constant->datatype = _type_from_variant(constant->value);
 
 			expr = constant;
-		} else if (tokenizer->get_token() == PScriptTokenizer::TK_PR_YIELD) {
-			if (!current_function) {
-				_set_error("\"yield()\" can only be used inside function blocks.");
-				return nullptr;
-			}
-
-			current_function->has_yield = true;
-
-			tokenizer->advance();
-			if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_OPEN) {
-				_set_error("Expected \"(\" after \"yield\".");
-				return nullptr;
-			}
-
-			tokenizer->advance();
-
-			OperatorNode *yield = alloc_node<OperatorNode>();
-			yield->op = OperatorNode::OP_YIELD;
-
-			while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
-				tokenizer->advance();
-			}
-
-			if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
-				expr = yield;
-				tokenizer->advance();
-			} else {
-				parenthesis++;
-
-				Node *object = _parse_and_reduce_expression(p_parent, p_static);
-				if (!object) {
-					return nullptr;
-				}
-				yield->arguments.push_back(object);
-
-				if (tokenizer->get_token() != PScriptTokenizer::TK_COMMA) {
-					_set_error("Expected \",\" after the first argument of \"yield\".");
-					return nullptr;
-				}
-
-				tokenizer->advance();
-
-				if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
-					completion_cursor = StringName();
-					completion_node = object;
-					completion_type = COMPLETION_YIELD;
-					completion_class = current_class;
-					completion_function = current_function;
-					completion_line = tokenizer->get_token_line();
-					completion_argument = 0;
-					completion_block = current_block;
-					completion_found = true;
-					tokenizer->advance();
-				}
-
-				Node *signal = _parse_and_reduce_expression(p_parent, p_static);
-				if (!signal) {
-					return nullptr;
-				}
-				yield->arguments.push_back(signal);
-
-				if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
-					_set_error("Expected \")\" after the second argument of \"yield\".");
-					return nullptr;
-				}
-
-				parenthesis--;
-
-				tokenizer->advance();
-
-				expr = yield;
-			}
 
 		} else if (tokenizer->get_token() == PScriptTokenizer::TK_SELF) {
 			if (p_static) {
@@ -1888,9 +1816,6 @@ PScriptParser::Node *PScriptParser::_reduce_expression(Node *p_node, bool p_to_c
 				}
 
 				return op; //don't reduce yet
-
-			} else if (op->op == OperatorNode::OP_YIELD) {
-				return op;
 
 			} else if (op->op == OperatorNode::OP_INDEX) {
 				//can reduce indices into constant arrays or dictionaries
@@ -6489,23 +6414,6 @@ PScriptParser::DataType PScriptParser::_reduce_node_type(Node *p_node) {
 				case OperatorNode::OP_PARENT_CALL: {
 					node_type = _reduce_function_call_type(op);
 				} break;
-				case OperatorNode::OP_YIELD: {
-					if (op->arguments.size() == 2) {
-						DataType base_type = _reduce_node_type(op->arguments[0]);
-						DataType signal_type = _reduce_node_type(op->arguments[1]);
-						// TODO: Check if signal exists when it's a constant
-						if (base_type.has_type && base_type.kind == DataType::BUILTIN && base_type.builtin_type != Variant::NIL && base_type.builtin_type != Variant::OBJECT) {
-							_set_error("The first argument of \"yield()\" must be an object.", op->line);
-							return DataType();
-						}
-						if (signal_type.has_type && (signal_type.kind != DataType::BUILTIN || signal_type.builtin_type != Variant::STRING)) {
-							_set_error("The second argument of \"yield()\" must be a string.", op->line);
-							return DataType();
-						}
-					}
-					// yield can return anything
-					node_type.has_type = false;
-				} break;
 				case OperatorNode::OP_IS:
 				case OperatorNode::OP_IS_BUILTIN: {
 					if (op->arguments.size() != 2) {
@@ -7186,9 +7094,6 @@ PScriptParser::DataType PScriptParser::_reduce_function_call_type(const Operator
 						if (arg_type.kind == DataType::BUILTIN && arg_type.builtin_type == Variant::INT && par_types[i].kind == DataType::BUILTIN && par_types[i].builtin_type == Variant::REAL) {
 							_add_warning(PScriptWarning::NARROWING_CONVERSION, p_call->line, Variant::get_type_name(tn->vtype));
 						}
-						if (par_types[i].may_yield && p_call->arguments[i + 1]->type == Node::TYPE_OPERATOR) {
-							_add_warning(PScriptWarning::FUNCTION_MAY_YIELD, p_call->line, _find_function_name(static_cast<OperatorNode *>(p_call->arguments[i + 1])));
-						}
 #endif // DEBUG_ENABLED
 					}
 				}
@@ -7426,9 +7331,6 @@ PScriptParser::DataType PScriptParser::_reduce_function_call_type(const Operator
 
 		if (!par_type.has_type) {
 			_mark_line_as_unsafe(p_call->line);
-			if (par_type.may_yield && p_call->arguments[i]->type == Node::TYPE_OPERATOR) {
-				_add_warning(PScriptWarning::FUNCTION_MAY_YIELD, p_call->line, _find_function_name(static_cast<OperatorNode *>(p_call->arguments[i])));
-			}
 		} else if (!_is_type_compatible(arg_types[i - arg_diff], par_type, true)) {
 			// Supertypes are acceptable for dynamic compliance
 			if (!_is_type_compatible(par_type, arg_types[i - arg_diff])) {
@@ -8191,12 +8093,6 @@ void PScriptParser::_check_function_types(FunctionNode *p_function) {
 			return;
 		}
 	}
-
-	if (p_function->has_yield) {
-		// yield() will make the function return a PScriptFunctionState, so the type is ambiguous
-		p_function->return_type.has_type = false;
-		p_function->return_type.may_yield = true;
-	}
 }
 
 void PScriptParser::_check_class_blocks_types(ClassNode *p_class) {
@@ -8304,9 +8200,6 @@ void PScriptParser::_check_block_types(BlockNode *p_block) {
 								_add_warning(PScriptWarning::VOID_ASSIGNMENT, lv->line, _find_function_name(call));
 							}
 						}
-					}
-					if (lv->datatype.has_type && assign_type.may_yield && lv->assign->type == Node::TYPE_OPERATOR) {
-						_add_warning(PScriptWarning::FUNCTION_MAY_YIELD, lv->line, _find_function_name(static_cast<OperatorNode *>(lv->assign)));
 					}
 					for (int i = 0; i < current_class->variables.size(); i++) {
 						if (current_class->variables[i].identifier == lv->name) {
@@ -8434,9 +8327,6 @@ void PScriptParser::_check_block_types(BlockNode *p_block) {
 								}
 							}
 						}
-						if (lh_type.has_type && rh_type.may_yield && op->arguments[1]->type == Node::TYPE_OPERATOR) {
-							_add_warning(PScriptWarning::FUNCTION_MAY_YIELD, op->line, _find_function_name(static_cast<OperatorNode *>(op->arguments[1])));
-						}
 
 #endif // DEBUG_ENABLED
 						bool type_match = lh_type.has_type && rh_type.has_type;
@@ -8506,10 +8396,6 @@ void PScriptParser::_check_block_types(BlockNode *p_block) {
 						if (error_set) {
 							return;
 						}
-					} break;
-					case OperatorNode::OP_YIELD: {
-						_mark_line_as_safe(op->line);
-						_reduce_node_type(op);
 					} break;
 					default: {
 						_mark_line_as_safe(op->line);

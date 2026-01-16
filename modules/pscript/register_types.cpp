@@ -175,7 +175,6 @@ void register_pscript_types(ModuleRegistrationLevel p_level) {
 
 	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
 		ClassDB::register_class<PScript>();
-		ClassDB::register_virtual_class<PScriptFunctionState>();
 	}
 
 #ifdef TOOLS_ENABLED

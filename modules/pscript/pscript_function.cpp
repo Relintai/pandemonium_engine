@@ -213,9 +213,6 @@ String PScriptFunction::_get_call_error(const Variant::CallError &p_err, const S
 		&&OPCODE_CALL_BUILT_IN,               \
 		&&OPCODE_CALL_SELF,                   \
 		&&OPCODE_CALL_SELF_BASE,              \
-		&&OPCODE_YIELD,                       \
-		&&OPCODE_YIELD_SIGNAL,                \
-		&&OPCODE_YIELD_RESUME,                \
 		&&OPCODE_JUMP,                        \
 		&&OPCODE_JUMP_IF,                     \
 		&&OPCODE_JUMP_IF_NOT,                 \
@@ -252,7 +249,7 @@ String PScriptFunction::_get_call_error(const Variant::CallError &p_err, const S
 #define OPCODE_OUT break
 #endif
 
-Variant PScriptFunction::call(PScriptInstance *p_instance, const Variant **p_args, int p_argcount, Variant::CallError &r_err, CallState *p_state) {
+Variant PScriptFunction::call(PScriptInstance *p_instance, const Variant **p_args, int p_argcount, Variant::CallError &r_err) {
 	OPCODES_TABLE;
 
 	if (!_code_ptr) {
@@ -279,90 +276,75 @@ Variant PScriptFunction::call(PScriptInstance *p_instance, const Variant **p_arg
 	int ip = 0;
 	int line = _initial_line;
 
-	if (p_state) {
-		//use existing (supplied) state (yielded)
-		stack = (Variant *)p_state->stack.ptr();
-		call_args = (Variant **)&p_state->stack.ptr()[sizeof(Variant) * p_state->stack_size]; //ptr() to avoid bounds check
-		line = p_state->line;
-		ip = p_state->ip;
-		alloca_size = p_state->stack.size();
-		script = p_state->script;
-		p_instance = p_state->instance;
-		defarg = p_state->defarg;
-		self = p_state->self;
-		//stack[p_state->result_pos]=p_state->result; //assign stack with result
+	if (p_argcount != _argument_count) {
+		if (p_argcount > _argument_count) {
+			r_err.error = Variant::CallError::CALL_ERROR_TOO_MANY_ARGUMENTS;
+			r_err.argument = _argument_count;
 
-	} else {
-		if (p_argcount != _argument_count) {
-			if (p_argcount > _argument_count) {
-				r_err.error = Variant::CallError::CALL_ERROR_TOO_MANY_ARGUMENTS;
-				r_err.argument = _argument_count;
-
-				return Variant();
-			} else if (p_argcount < _argument_count - _default_arg_count) {
-				r_err.error = Variant::CallError::CALL_ERROR_TOO_FEW_ARGUMENTS;
-				r_err.argument = _argument_count - _default_arg_count;
-				return Variant();
-			} else {
-				defarg = _argument_count - p_argcount;
-			}
+			return Variant();
+		} else if (p_argcount < _argument_count - _default_arg_count) {
+			r_err.error = Variant::CallError::CALL_ERROR_TOO_FEW_ARGUMENTS;
+			r_err.argument = _argument_count - _default_arg_count;
+			return Variant();
+		} else {
+			defarg = _argument_count - p_argcount;
 		}
+	}
 
-		alloca_size = sizeof(Variant *) * _call_size + sizeof(Variant) * _stack_size;
+	alloca_size = sizeof(Variant *) * _call_size + sizeof(Variant) * _stack_size;
 
-		if (alloca_size) {
-			uint8_t *aptr = (uint8_t *)alloca(alloca_size);
+	if (alloca_size) {
+		uint8_t *aptr = (uint8_t *)alloca(alloca_size);
 
-			if (_stack_size) {
-				stack = (Variant *)aptr;
-				for (int i = 0; i < p_argcount; i++) {
-					if (!argument_types[i].has_type) {
-						memnew_placement(&stack[i], Variant(*p_args[i]));
+		if (_stack_size) {
+			stack = (Variant *)aptr;
+			for (int i = 0; i < p_argcount; i++) {
+				if (!argument_types[i].has_type) {
+					memnew_placement(&stack[i], Variant(*p_args[i]));
+					continue;
+				}
+
+				if (!argument_types[i].is_type(*p_args[i], true)) {
+					if (argument_types[i].is_type(Variant(), true)) {
+						memnew_placement(&stack[i], Variant);
 						continue;
-					}
-
-					if (!argument_types[i].is_type(*p_args[i], true)) {
-						if (argument_types[i].is_type(Variant(), true)) {
-							memnew_placement(&stack[i], Variant);
-							continue;
-						} else {
-							r_err.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
-							r_err.argument = i;
-							r_err.expected = argument_types[i].kind == PScriptDataType::BUILTIN ? argument_types[i].builtin_type : Variant::OBJECT;
-							return Variant();
-						}
-					}
-					if (argument_types[i].kind == PScriptDataType::BUILTIN) {
-						Variant arg = Variant::construct(argument_types[i].builtin_type, &p_args[i], 1, r_err);
-						memnew_placement(&stack[i], Variant(arg));
 					} else {
-						memnew_placement(&stack[i], Variant(*p_args[i]));
+						r_err.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
+						r_err.argument = i;
+						r_err.expected = argument_types[i].kind == PScriptDataType::BUILTIN ? argument_types[i].builtin_type : Variant::OBJECT;
+						return Variant();
 					}
 				}
-				for (int i = p_argcount; i < _stack_size; i++) {
-					memnew_placement(&stack[i], Variant);
+				if (argument_types[i].kind == PScriptDataType::BUILTIN) {
+					Variant arg = Variant::construct(argument_types[i].builtin_type, &p_args[i], 1, r_err);
+					memnew_placement(&stack[i], Variant(arg));
+				} else {
+					memnew_placement(&stack[i], Variant(*p_args[i]));
 				}
-			} else {
-				stack = nullptr;
 			}
-
-			if (_call_size) {
-				call_args = (Variant **)&aptr[sizeof(Variant) * _stack_size];
-			} else {
-				call_args = nullptr;
+			for (int i = p_argcount; i < _stack_size; i++) {
+				memnew_placement(&stack[i], Variant);
 			}
-
 		} else {
 			stack = nullptr;
+		}
+
+		if (_call_size) {
+			call_args = (Variant **)&aptr[sizeof(Variant) * _stack_size];
+		} else {
 			call_args = nullptr;
 		}
 
-		if (p_instance) {
-			self = p_instance->owner;
-			script = p_instance->script.ptr();
-		} else {
-			script = _script;
-		}
+	} else {
+		stack = nullptr;
+		call_args = nullptr;
+	}
+
+	if (p_instance) {
+		self = p_instance->owner;
+		script = p_instance->script.ptr();
+	} else {
+		script = _script;
 	}
 
 #ifdef DEBUG_ENABLED
@@ -378,7 +360,7 @@ Variant PScriptFunction::call(PScriptInstance *p_instance, const Variant **p_arg
 		PScriptLanguage::get_singleton()->enter_function(p_instance, this, stack, &ip, &line);
 	}
 
-#define P_ERR_BREAK(m_cond)                                                                                           \
+#define P_ERR_BREAK(m_cond)                                                                                            \
 	{                                                                                                                  \
 		if (unlikely(m_cond)) {                                                                                        \
 			_err_print_error(FUNCTION_STR, __FILE__, __LINE__, "Condition ' " _STR(m_cond) " ' is true. Breaking..:"); \
@@ -416,7 +398,6 @@ Variant PScriptFunction::call(PScriptInstance *p_instance, const Variant **p_arg
 		profile.frame_call_count.increment();
 	}
 	bool exit_ok = false;
-	bool yielded = false;
 #endif
 
 #ifdef DEBUG_ENABLED
@@ -1207,114 +1188,6 @@ Variant PScriptFunction::call(PScriptInstance *p_instance, const Variant **p_arg
 			}
 			DISPATCH_OPCODE;
 
-			OPCODE(OPCODE_YIELD)
-			OPCODE(OPCODE_YIELD_SIGNAL) {
-				int ipofs = 1;
-				if (_code_ptr[ip] == OPCODE_YIELD_SIGNAL) {
-					CHECK_SPACE(4);
-					ipofs += 2;
-				} else {
-					CHECK_SPACE(2);
-				}
-
-				Ref<PScriptFunctionState> pfs = memnew(PScriptFunctionState);
-				pfs->function = this;
-
-				pfs->state.stack.resize(alloca_size);
-				//copy variant stack
-				for (int i = 0; i < _stack_size; i++) {
-					memnew_placement(&pfs->state.stack.write[sizeof(Variant) * i], Variant(stack[i]));
-				}
-				pfs->state.stack_size = _stack_size;
-				pfs->state.self = self;
-				pfs->state.alloca_size = alloca_size;
-				pfs->state.ip = ip + ipofs;
-				pfs->state.line = line;
-				pfs->state.script = _script;
-				PScriptLanguage::singleton->lock.lock();
-
-				_script->pending_func_states.add(&pfs->scripts_list);
-				if (p_instance) {
-					pfs->state.instance = p_instance;
-					p_instance->pending_func_states.add(&pfs->instances_list);
-				} else {
-					pfs->state.instance = nullptr;
-				}
-				PScriptLanguage::singleton->lock.unlock();
-#ifdef DEBUG_ENABLED
-				pfs->state.function_name = name;
-				pfs->state.script_path = _script->get_path();
-#endif
-				//pfs->state.result_pos=ip+ipofs-1;
-				pfs->state.defarg = defarg;
-				pfs->function = this;
-
-				retvalue = pfs;
-
-				if (_code_ptr[ip] == OPCODE_YIELD_SIGNAL) {
-					//do the oneshot connect
-					GET_VARIANT_PTR(argobj, 1);
-					GET_VARIANT_PTR(argname, 2);
-
-#ifdef DEBUG_ENABLED
-					if (argobj->get_type() != Variant::OBJECT) {
-						err_text = "First argument of yield() not of type object.";
-						OPCODE_BREAK;
-					}
-					if (argname->get_type() != Variant::STRING) {
-						err_text = "Second argument of yield() not a string (for signal name).";
-						OPCODE_BREAK;
-					}
-#endif
-
-					Object *obj = argobj->operator Object *();
-					String signal = argname->operator String();
-
-					if (argobj->is_invalid_object()) {
-						err_text = "First argument of yield() is a previously freed instance.";
-						OPCODE_BREAK;
-					}
-#ifdef DEBUG_ENABLED
-					if (!obj) {
-						err_text = "First argument of yield() is null.";
-						OPCODE_BREAK;
-					}
-					if (signal.length() == 0) {
-						err_text = "Second argument of yield() is an empty string (for signal name).";
-						OPCODE_BREAK;
-					}
-
-					Error err = obj->connect(signal, pfs.ptr(), "_signal_callback", varray(pfs), Object::CONNECT_ONESHOT);
-					if (err != OK) {
-						err_text = "Error connecting to signal: " + signal + " during yield().";
-						OPCODE_BREAK;
-					}
-#else
-					obj->connect(signal, pfs.ptr(), "_signal_callback", varray(pfs), Object::CONNECT_ONESHOT);
-#endif
-				}
-
-#ifdef DEBUG_ENABLED
-				exit_ok = true;
-				yielded = true;
-#endif
-				OPCODE_BREAK;
-			}
-
-			OPCODE(OPCODE_YIELD_RESUME) {
-				CHECK_SPACE(2);
-#ifdef DEBUG_ENABLED
-				if (!p_state) {
-					err_text = ("Invalid Resume (bug?)");
-					OPCODE_BREAK;
-				}
-#endif
-				GET_VARIANT_PTR(result, 1);
-				*result = p_state->result;
-				ip += 2;
-			}
-			DISPATCH_OPCODE;
-
 			OPCODE(OPCODE_JUMP) {
 				CHECK_SPACE(2);
 				int to = _code_ptr[ip + 1];
@@ -1570,26 +1443,17 @@ Variant PScriptFunction::call(PScriptInstance *p_instance, const Variant **p_arg
 		}
 	}
 
-	// Check if this is the last time the function is resuming from yield
-	// Will be true if never yielded as well
-	// When it's the last resume it will postpone the exit from stack,
-	// so the debugger knows which function triggered the resume of the next function (if any)
-	if (!p_state || yielded) {
-		if (ScriptDebugger::get_singleton()) {
-			PScriptLanguage::get_singleton()->exit_function();
-		}
-#endif
-
-		if (_stack_size) {
-			//free stack
-			for (int i = 0; i < _stack_size; i++) {
-				stack[i].~Variant();
-			}
-		}
-
-#ifdef DEBUG_ENABLED
+	if (ScriptDebugger::get_singleton()) {
+		PScriptLanguage::get_singleton()->exit_function();
 	}
 #endif
+
+	if (_stack_size) {
+		//free stack
+		for (int i = 0; i < _stack_size; i++) {
+			stack[i].~Variant();
+		}
+	}
 
 	return retvalue;
 }
@@ -1732,160 +1596,3 @@ PScriptFunction::~PScriptFunction() {
 #endif
 }
 
-/////////////////////
-
-Variant PScriptFunctionState::_signal_callback(const Variant **p_args, int p_argcount, Variant::CallError &r_error) {
-	Variant arg;
-	r_error.error = Variant::CallError::CALL_OK;
-
-	if (p_argcount == 0) {
-		r_error.error = Variant::CallError::CALL_ERROR_TOO_FEW_ARGUMENTS;
-		r_error.argument = 1;
-		return Variant();
-	} else if (p_argcount == 1) {
-		//noooneee
-	} else if (p_argcount == 2) {
-		arg = *p_args[0];
-	} else {
-		Array extra_args;
-		for (int i = 0; i < p_argcount - 1; i++) {
-			extra_args.push_back(*p_args[i]);
-		}
-		arg = extra_args;
-	}
-
-	Ref<PScriptFunctionState> self = *p_args[p_argcount - 1];
-
-	if (self.is_null()) {
-		r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
-		r_error.argument = p_argcount - 1;
-		r_error.expected = Variant::OBJECT;
-		return Variant();
-	}
-
-	return resume(arg);
-}
-
-bool PScriptFunctionState::is_valid(bool p_extended_check) const {
-	if (function == nullptr) {
-		return false;
-	}
-
-	if (p_extended_check) {
-#ifndef NO_THREADS
-		MutexLock lock(PScriptLanguage::get_singleton()->lock);
-#endif
-		// Script gone?
-		if (!scripts_list.in_list()) {
-			return false;
-		}
-		// Class instance gone? (if not static function)
-		if (state.instance && !instances_list.in_list()) {
-			return false;
-		}
-	}
-
-	return true;
-}
-
-Variant PScriptFunctionState::resume(const Variant &p_arg) {
-	ERR_FAIL_COND_V(!function, Variant());
-	{
-#ifndef NO_THREADS
-		MutexLock lock(PScriptLanguage::singleton->lock);
-#endif
-		if (!scripts_list.in_list()) {
-#ifdef DEBUG_ENABLED
-			ERR_FAIL_V_MSG(Variant(), "Resumed function '" + state.function_name + "()' after yield, but script is gone. At script: " + state.script_path + ":" + itos(state.line));
-#else
-			return Variant();
-#endif
-		}
-		if (state.instance && !instances_list.in_list()) {
-#ifdef DEBUG_ENABLED
-			ERR_FAIL_V_MSG(Variant(), "Resumed function '" + state.function_name + "()' after yield, but class instance is gone. At script: " + state.script_path + ":" + itos(state.line));
-#else
-			return Variant();
-#endif
-		}
-		// Do these now to avoid locking again after the call
-		scripts_list.remove_from_list();
-		instances_list.remove_from_list();
-	}
-
-	state.result = p_arg;
-	Variant::CallError err;
-	Variant ret = function->call(nullptr, nullptr, 0, err, &state);
-
-	bool completed = true;
-
-	// If the return value is a PScriptFunctionState reference,
-	// then the function did yield again after resuming.
-	if (ret.is_ref()) {
-		PScriptFunctionState *pfs = Object::cast_to<PScriptFunctionState>(ret);
-		if (pfs && pfs->function == function) {
-			completed = false;
-			pfs->first_state = first_state.is_valid() ? first_state : Ref<PScriptFunctionState>(this);
-		}
-	}
-
-	function = nullptr; //cleaned up;
-	state.result = Variant();
-
-	if (completed) {
-		if (first_state.is_valid()) {
-			first_state->emit_signal("completed", ret);
-		} else {
-			emit_signal("completed", ret);
-		}
-
-#ifdef DEBUG_ENABLED
-		if (ScriptDebugger::get_singleton()) {
-			PScriptLanguage::get_singleton()->exit_function();
-		}
-#endif
-	}
-
-	return ret;
-}
-
-void PScriptFunctionState::_clear_stack() {
-	if (state.stack_size) {
-		Variant *stack = (Variant *)state.stack.ptr();
-		for (int i = 0; i < state.stack_size; i++) {
-			stack[i].~Variant();
-		}
-		state.stack_size = 0;
-	}
-}
-
-void PScriptFunctionState::_clear_connections() {
-	List<Object::Connection> conns;
-	get_signals_connected_to_this(&conns);
-	for (List<Object::Connection>::Element *E = conns.front(); E; E = E->next()) {
-		Object::Connection &c = E->get();
-		c.source->disconnect(c.signal, c.target, c.method);
-	}
-}
-
-void PScriptFunctionState::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("resume", "arg"), &PScriptFunctionState::resume, DEFVAL(Variant()));
-	ClassDB::bind_method(D_METHOD("is_valid", "extended_check"), &PScriptFunctionState::is_valid, DEFVAL(false));
-	ClassDB::bind_vararg_method(METHOD_FLAGS_DEFAULT, "_signal_callback", &PScriptFunctionState::_signal_callback, MethodInfo("_signal_callback"));
-
-	ADD_SIGNAL(MethodInfo("completed", PropertyInfo(Variant::NIL, "result", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NIL_IS_VARIANT)));
-}
-
-PScriptFunctionState::PScriptFunctionState() :
-		scripts_list(this),
-		instances_list(this) {
-	function = nullptr;
-}
-
-PScriptFunctionState::~PScriptFunctionState() {
-	_clear_stack();
-	PScriptLanguage::singleton->lock.lock();
-	scripts_list.remove_from_list();
-	instances_list.remove_from_list();
-	PScriptLanguage::singleton->lock.unlock();
-}

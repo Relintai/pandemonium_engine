@@ -58,7 +58,6 @@ public:
 		bool has_type;
 		bool is_constant;
 		bool is_meta_type; // Whether the value can be used as a type
-		bool may_yield; // For function calls
 
 		Variant::Type builtin_type;
 		StringName native_type;
@@ -99,7 +98,6 @@ public:
 				has_type(false),
 				is_constant(false),
 				is_meta_type(false),
-				may_yield(false),
 				builtin_type(Variant::NIL),
 				class_type(nullptr) {}
 	};
@@ -203,7 +201,6 @@ public:
 
 	struct FunctionNode : public Node {
 		bool _static;
-		bool has_yield;
 		bool has_unreachable_code;
 		StringName name;
 		DataType return_type;
@@ -222,7 +219,6 @@ public:
 		FunctionNode() {
 			type = TYPE_FUNCTION;
 			_static = false;
-			has_yield = false;
 			has_unreachable_code = false;
 		}
 	};
@@ -337,7 +333,6 @@ public:
 			//call/constructor operator
 			OP_CALL,
 			OP_PARENT_CALL,
-			OP_YIELD,
 			OP_IS,
 			OP_IS_BUILTIN,
 			//indexing operator
@@ -504,7 +499,6 @@ public:
 		COMPLETION_RESOURCE_PATH,
 		COMPLETION_INDEX,
 		COMPLETION_VIRTUAL_FUNC,
-		COMPLETION_YIELD,
 		COMPLETION_ASSIGN,
 		COMPLETION_TYPE_HINT,
 		COMPLETION_TYPE_HINT_INDEX,

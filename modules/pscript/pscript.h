@@ -111,9 +111,6 @@ class PScript : public Script {
 	String fully_qualified_name;
 	SelfList<PScript> script_list;
 
-	SelfList<PScriptFunctionState>::List pending_func_states;
-	void _clear_pending_func_states();
-
 	PScriptInstance *_create_instance(const Variant **p_args, int p_argcount, Object *p_owner, bool p_isref, Variant::CallError &r_error);
 
 	void _set_subclass_path(Ref<PScript> &p_sc, const String &p_path);
@@ -240,8 +237,6 @@ class PScriptInstance : public ScriptInstance {
 	Vector<Variant> members;
 	bool base_ref;
 
-	SelfList<PScriptFunctionState>::List pending_func_states;
-
 	void _ml_call_reversed(PScript *sptr, const StringName &p_method, const Variant **p_args, int p_argcount);
 
 public:
@@ -286,7 +281,6 @@ struct PScriptWarning {
 		STANDALONE_EXPRESSION, // Expression not assigned to a variable
 		VOID_ASSIGNMENT, // Function returns void but it's assigned to a variable
 		NARROWING_CONVERSION, // Float value into an integer slot, precision is lost
-		FUNCTION_MAY_YIELD, // Typed assign of function call that yields (it may return a function state)
 		VARIABLE_CONFLICTS_FUNCTION, // Variable has the same name of a function
 		FUNCTION_CONFLICTS_VARIABLE, // Function has the same name of a variable
 		FUNCTION_CONFLICTS_CONSTANT, // Function has the same name of a constant
@@ -321,8 +315,6 @@ struct PScriptWarning {
 #endif // DEBUG_ENABLED
 
 class PScriptLanguage : public ScriptLanguage {
-	friend class PScriptFunctionState;
-
 	static PScriptLanguage *singleton;
 
 	Variant *_global_array;
