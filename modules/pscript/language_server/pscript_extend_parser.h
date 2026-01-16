@@ -60,10 +60,10 @@ class ExtendPScriptParser : public PScriptParser {
 	ClassMembers members;
 	HashMap<String, ClassMembers> inner_classes;
 
-	void upate_diagnostics();
+	void update_diagnostics();
 
-	void upate_symbols();
-	void upate_document_links(const String &p_code);
+	void update_symbols();
+	void update_document_links(const String &p_code);
 	void parse_class_symbol(const PScriptParser::ClassNode *p_class, lsp::DocumentSymbol &r_symbol);
 	void parse_function_symbol(const PScriptParser::FunctionNode *p_func, lsp::DocumentSymbol &r_symbol);
 

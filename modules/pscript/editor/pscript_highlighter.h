@@ -80,7 +80,7 @@ private:
 public:
 	virtual Ref<EditorSyntaxHighlighter> _create() const;
 
-	virtual void _upate_cache();
+	virtual void _update_cache();
 	virtual Dictionary _get_line_syntax_highlighting(int p_line);
 
 	virtual String _get_name() const;

@@ -36,7 +36,7 @@
 #include "pscript_language_protocol.h"
 #include "pscript_workspace.h"
 
-void ExtendPScriptParser::upate_diagnostics() {
+void ExtendPScriptParser::update_diagnostics() {
 	diagnostics.clear();
 
 	if (has_error()) {
@@ -80,7 +80,7 @@ void ExtendPScriptParser::upate_diagnostics() {
 	}
 }
 
-void ExtendPScriptParser::upate_symbols() {
+void ExtendPScriptParser::update_symbols() {
 	members.clear();
 
 	const PScriptParser::Node *head = get_parse_tree();
@@ -107,7 +107,7 @@ void ExtendPScriptParser::upate_symbols() {
 	}
 }
 
-void ExtendPScriptParser::upate_document_links(const String &p_code) {
+void ExtendPScriptParser::update_document_links(const String &p_code) {
 	document_links.clear();
 
 	PScriptTokenizerText tokenizer;
@@ -811,8 +811,8 @@ Error ExtendPScriptParser::parse(const String &p_code, const String &p_path) {
 	lines = p_code.split("\n");
 
 	Error err = PScriptParser::parse(p_code, p_path.get_base_dir(), false, p_path, false, nullptr, false);
-	upate_diagnostics();
-	upate_symbols();
-	upate_document_links(p_code);
+	update_diagnostics();
+	update_symbols();
+	update_document_links(p_code);
 	return err;
 }

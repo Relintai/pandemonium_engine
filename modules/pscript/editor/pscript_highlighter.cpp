@@ -436,7 +436,7 @@ Array PScriptSyntaxHighlighter::_get_supported_languages() const {
 	return languages;
 }
 
-void PScriptSyntaxHighlighter::_upate_cache() {
+void PScriptSyntaxHighlighter::_update_cache() {
 	keywords.clear();
 	member_keywords.clear();
 	color_regions.clear();

@@ -371,7 +371,7 @@ static const int Full = 1;
 
 /**
  * Documents are synced by sending the full content on open.
- * After that only incremental upates to the document are
+ * After that only incremental updates to the document are
  * send.
  */
 static const int Incremental = 2;
@@ -882,7 +882,7 @@ static const int PlainText = 1;
  * A snippet can define tab stops and placeholders with `$1`, `$2`
  * and `${3:foo}`. `$0` defines the final tab stop, it defaults to
  * the end of the snippet. Placeholders with equal identifiers are linked,
- * that is typing in one will upate others too.
+ * that is typing in one will update others too.
  */
 static const int Snippet = 2;
 }; // namespace InsertTextFormat

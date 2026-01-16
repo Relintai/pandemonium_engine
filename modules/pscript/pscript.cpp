@@ -335,7 +335,7 @@ PlaceHolderScriptInstance *PScript::placeholder_instance_create(Object *p_this) 
 #ifdef TOOLS_ENABLED
 	PlaceHolderScriptInstance *si = memnew(PlaceHolderScriptInstance(PScriptLanguage::get_singleton(), Ref<Script>(this), p_this));
 	placeholders.insert(si);
-	_upate_exports(nullptr, false, si);
+	_update_exports(nullptr, false, si);
 	return si;
 #else
 	return NULL;
@@ -367,9 +367,9 @@ void PScript::set_source_code(const String &p_code) {
 }
 
 #ifdef TOOLS_ENABLED
-void PScript::_upate_exports_values(RBMap<StringName, Variant> &values, List<PropertyInfo> &propnames) {
+void PScript::_update_exports_values(RBMap<StringName, Variant> &values, List<PropertyInfo> &propnames) {
 	if (base_cache.is_valid()) {
-		base_cache->_upate_exports_values(values, propnames);
+		base_cache->_update_exports_values(values, propnames);
 	}
 
 	for (RBMap<StringName, Variant>::Element *E = member_default_values_cache.front(); E; E = E->next()) {
@@ -382,7 +382,7 @@ void PScript::_upate_exports_values(RBMap<StringName, Variant> &values, List<Pro
 }
 #endif
 
-bool PScript::_upate_exports(bool *r_err, bool p_recursive_call, PlaceHolderScriptInstance *p_instance_to_upate) {
+bool PScript::_update_exports(bool *r_err, bool p_recursive_call, PlaceHolderScriptInstance *p_instance_to_update) {
 #ifdef TOOLS_ENABLED
 
 	static Vector<PScript *> base_caches;
@@ -509,7 +509,7 @@ bool PScript::_upate_exports(bool *r_err, bool p_recursive_call, PlaceHolderScri
 				ERR_FAIL_V_MSG(false, "Cyclic inheritance in script class.");
 			}
 		}
-		if (base_cache->_upate_exports(r_err, true)) {
+		if (base_cache->_update_exports(r_err, true)) {
 			if (r_err && *r_err) {
 				return false;
 			}
@@ -517,19 +517,19 @@ bool PScript::_upate_exports(bool *r_err, bool p_recursive_call, PlaceHolderScri
 		}
 	}
 
-	if ((changed || p_instance_to_upate) && placeholders.size()) { //hm :(
+	if ((changed || p_instance_to_update) && placeholders.size()) { //hm :(
 
-		// upate placeholders if any
+		// update placeholders if any
 		RBMap<StringName, Variant> values;
 		List<PropertyInfo> propnames;
-		_upate_exports_values(values, propnames);
+		_update_exports_values(values, propnames);
 
 		if (changed) {
 			for (RBSet<PlaceHolderScriptInstance *>::Element *E = placeholders.front(); E; E = E->next()) {
-				E->get()->upate(propnames, values);
+				E->get()->update(propnames, values);
 			}
 		} else {
-			p_instance_to_upate->upate(propnames, values);
+			p_instance_to_update->update(propnames, values);
 		}
 	}
 
@@ -540,11 +540,11 @@ bool PScript::_upate_exports(bool *r_err, bool p_recursive_call, PlaceHolderScri
 #endif
 }
 
-void PScript::upate_exports() {
+void PScript::update_exports() {
 #ifdef TOOLS_ENABLED
 
 	bool cyclic_error = false;
-	_upate_exports(&cyclic_error);
+	_update_exports(&cyclic_error);
 	if (cyclic_error) {
 		return;
 	}
@@ -557,7 +557,7 @@ void PScript::upate_exports() {
 		if (!s) {
 			continue;
 		}
-		s->upate_exports();
+		s->update_exports();
 	}
 
 #endif
@@ -1567,7 +1567,7 @@ void PScriptLanguage::reload_all_scripts() {
 
 	//as scripts are going to be reloaded, must proceed without locking here
 
-	scripts.sort_custom<PScriptDepSort>(); //upate in inheritance dependency order
+	scripts.sort_custom<PScriptDepSort>(); //update in inheritance dependency order
 
 	for (List<Ref<PScript>>::Element *E = scripts.front(); E; E = E->next()) {
 		print_verbose("PScript: Reloading: " + E->get()->get_path());
@@ -1600,7 +1600,7 @@ void PScriptLanguage::reload_tool_script(const Ref<Script> &p_script, bool p_sof
 
 	//as scripts are going to be reloaded, must proceed without locking here
 
-	scripts.sort_custom<PScriptDepSort>(); //upate in inheritance dependency order
+	scripts.sort_custom<PScriptDepSort>(); //update in inheritance dependency order
 
 	for (List<Ref<PScript>>::Element *E = scripts.front(); E; E = E->next()) {
 		bool reload = E->get() == p_script || to_reload.has(E->get()->get_base());

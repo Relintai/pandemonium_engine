@@ -95,7 +95,7 @@ class PScript : public Script {
 	RBSet<ObjectID> inheriters_cache;
 	bool source_changed_cache;
 	bool placeholder_fallback_enabled;
-	void _upate_exports_values(RBMap<StringName, Variant> &values, List<PropertyInfo> &propnames);
+	void _update_exports_values(RBMap<StringName, Variant> &values, List<PropertyInfo> &propnames);
 
 #endif
 	RBMap<StringName, PropertyInfo> member_info;
@@ -121,7 +121,7 @@ class PScript : public Script {
 
 #ifdef TOOLS_ENABLED
 	RBSet<PlaceHolderScriptInstance *> placeholders;
-	//void _upate_placeholder(PlaceHolderScriptInstance *p_placeholder);
+	//void _update_placeholder(PlaceHolderScriptInstance *p_placeholder);
 	virtual void _placeholder_erased(PlaceHolderScriptInstance *p_placeholder);
 #endif
 
@@ -131,7 +131,7 @@ class PScript : public Script {
 
 #endif
 
-	bool _upate_exports(bool *r_err = nullptr, bool p_recursive_call = false, PlaceHolderScriptInstance *p_instance_to_upate = nullptr);
+	bool _update_exports(bool *r_err = nullptr, bool p_recursive_call = false, PlaceHolderScriptInstance *p_instance_to_update = nullptr);
 
 	void _save_orphaned_subclasses();
 
@@ -184,7 +184,7 @@ public:
 	virtual bool has_source_code() const;
 	virtual String get_source_code() const;
 	virtual void set_source_code(const String &p_code);
-	virtual void upate_exports();
+	virtual void update_exports();
 
 	virtual Error reload(bool p_keep_state = false);
 

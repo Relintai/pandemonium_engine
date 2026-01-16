@@ -421,7 +421,7 @@ void PScriptTextDocument::sync_script_content(const String &p_path, const String
 	String path = PScriptLanguageProtocol::get_singleton()->get_workspace()->get_file_path(p_path);
 	PScriptLanguageProtocol::get_singleton()->get_workspace()->parse_script(path, p_content);
 
-	EditorFileSystem::get_singleton()->upate_file(path);
+	EditorFileSystem::get_singleton()->update_file(path);
 	Error error;
 	Ref<PScript> script = ResourceLoader::load(path, "", false, &error);
 	if (error == OK) {

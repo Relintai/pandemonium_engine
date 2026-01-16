@@ -344,7 +344,7 @@ void PScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_c
 			VALIDATE_ARG_COUNT(1);
 			VALIDATE_ARG_NUM(0);
 			r_ret = Math::step_decimals((double)*p_args[0]);
-			WARN_DEPRECATED_MSG("PScript method 'decimals' is deprecated and has been renamed to 'step_decimals', please upate your code accordingly.");
+			WARN_DEPRECATED_MSG("PScript method 'decimals' is deprecated and has been renamed to 'step_decimals', please update your code accordingly.");
 		} break;
 		case MATH_STEP_DECIMALS: {
 			VALIDATE_ARG_COUNT(1);
