@@ -517,7 +517,7 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 
 		} else if (tokenizer->get_token() == PScriptTokenizer::TK_SELF) {
 			if (p_static) {
-				_set_error("\"self\" isn't allowed in a static function or constant expression.");
+				_set_error("\"this\" isn't allowed in a static function or constant expression.");
 				return nullptr;
 			}
 			//constant defined by tokenizer

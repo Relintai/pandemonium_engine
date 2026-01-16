@@ -2200,7 +2200,7 @@ static void _find_identifiers(const PScriptCompletionContext &p_context, bool p_
 	}
 
 	static const char *_keywords[] = {
-		"and", "in", "not", "or", "false", "PI", "TAU", "INF", "NAN", "self", "true", "as", "assert",
+		"and", "in", "not", "or", "false", "PI", "TAU", "INF", "NAN", "this", "true", "as", "assert",
 		"breakpoint", "class", "class_name", "extends", "is", "func", "preload", "setget", "signal", "tool",
 		"const", "enum", "export", "onready", "static", "var", "break", "continue", "if", "elif",
 		"else", "for", "return", "match", "while", nullptr
