@@ -2977,11 +2977,6 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 						;
 					}
 
-					if (tokenizer->get_token() == PScriptTokenizer::TK_CURLY_BRACKET_CLOSE) { //not at current indent level
-						p_block->end_line = tokenizer->get_token_line();
-						return;
-					}
-
 					// TODO will likely need to coinsume newlines here aswell
 
 					if (tokenizer->get_token() == PScriptTokenizer::TK_CF_ELIF) {
