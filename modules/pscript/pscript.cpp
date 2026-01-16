@@ -1712,7 +1712,7 @@ void PScriptLanguage::get_reserved_words(List<String> *p_words) const {
 		"TAU",
 		"INF",
 		"NAN",
-		"self",
+		"this",
 		"true",
 		"void",
 		// functions
@@ -1742,7 +1742,6 @@ void PScriptLanguage::get_reserved_words(List<String> *p_words) const {
 		"elif",
 		"else",
 		"for",
-		"pass",
 		"return",
 		"match",
 		"while",
