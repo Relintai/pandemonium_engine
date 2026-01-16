@@ -80,8 +80,6 @@ bool PScriptParser::_end_statement() {
 	if (tokenizer->get_token() == PScriptTokenizer::TK_SEMICOLON) {
 		tokenizer->advance();
 		return true; //handle next
-	} else if (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE || tokenizer->get_token() == PScriptTokenizer::TK_EOF) {
-		return true; //will be handled properly
 	}
 
 	return false;
