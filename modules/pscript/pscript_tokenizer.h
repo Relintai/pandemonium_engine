@@ -107,6 +107,7 @@ public:
 		TK_PR_VAR,
 		TK_PR_AS,
 		TK_PR_VOID,
+		TK_PR_VARIANT,
 		TK_PR_ENUM,
 		TK_PR_PRELOAD,
 		TK_PR_ASSERT,

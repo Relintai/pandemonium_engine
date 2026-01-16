@@ -5513,6 +5513,10 @@ bool PScriptParser::_parse_type(DataType &r_type, bool p_can_be_void) {
 			r_type.kind = DataType::BUILTIN;
 			r_type.builtin_type = Variant::NIL;
 		} break;
+		case PScriptTokenizer::TK_PR_VARIANT: {
+			r_type.kind = DataType::BUILTIN;
+			r_type.has_type = false;
+		} break;
 		case PScriptTokenizer::TK_BUILT_IN_TYPE: {
 			r_type.builtin_type = tokenizer->get_token_type();
 			if (tokenizer->get_token_type() == Variant::OBJECT) {

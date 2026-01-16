@@ -1715,6 +1715,7 @@ void PScriptLanguage::get_reserved_words(List<String> *p_words) const {
 		"this",
 		"true",
 		"void",
+		"Variant",
 		// functions
 		"as",
 		"assert",
