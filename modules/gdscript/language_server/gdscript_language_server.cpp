@@ -133,7 +133,7 @@ void GDScriptLanguageServer::stop() {
 	EditorNode::get_log()->add_message("--- GDScript language server stopped ---", EditorLog::MSG_TYPE_EDITOR);
 }
 
-void register_lsp_types() {
+void register_gd_lsp_types() {
 	ClassDB::register_class<GDScriptLanguageProtocol>();
 	ClassDB::register_class<GDScriptTextDocument>();
 	ClassDB::register_class<GDScriptWorkspace>();

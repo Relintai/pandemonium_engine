@@ -62,6 +62,6 @@ public:
 	void stop();
 };
 
-void register_lsp_types();
+void register_gd_lsp_types();
 
 #endif // GDSCRIPT_LANGUAGE_SERVER_H
