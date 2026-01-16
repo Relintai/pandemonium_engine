@@ -114,6 +114,8 @@ const char *PScriptTokenizer::token_names[TK_MAX] = {
 	"'}'",
 	"'('",
 	"')'",
+	"'|{'",
+	"'}|'",
 	"','",
 	"';'",
 	"'.'",
@@ -705,7 +707,12 @@ void PScriptTokenizerText::_advance() {
 				_make_token(TK_CURLY_BRACKET_OPEN);
 				break;
 			case '}':
-				_make_token(TK_CURLY_BRACKET_CLOSE);
+				if (GETCHAR(1) == '|') {
+					_make_token(TK_DICTIONARY_CLOSE);
+					INCPOS(1);
+				} else {
+					_make_token(TK_CURLY_BRACKET_CLOSE);
+				}
 				break;
 			case '[':
 				_make_token(TK_BRACKET_OPEN);
@@ -762,6 +769,9 @@ void PScriptTokenizerText::_advance() {
 					INCPOS(1);
 				} else if (GETCHAR(1) == '=') {
 					_make_token(TK_OP_ASSIGN_BIT_OR);
+					INCPOS(1);
+				} else if (GETCHAR(1) == '{') {
+					_make_token(TK_DICTIONARY_OPEN);
 					INCPOS(1);
 				} else {
 					_make_token(TK_OP_BIT_OR);

@@ -911,8 +911,8 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 			}
 
 			expr = arr;
-		} else if (tokenizer->get_token() == PScriptTokenizer::TK_CURLY_BRACKET_OPEN) {
-			// array
+		} else if (tokenizer->get_token() == PScriptTokenizer::TK_DICTIONARY_OPEN) {
+			// Dictionary
 			tokenizer->advance();
 
 			DictionaryNode *dict = alloc_node<DictionaryNode>();
@@ -936,7 +936,7 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 					_set_error("Unterminated dictionary");
 					return nullptr;
 
-				} else if (tokenizer->get_token() == PScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
+				} else if (tokenizer->get_token() == PScriptTokenizer::TK_DICTIONARY_CLOSE) {
 					if (expecting == DICT_EXPECT_COLON) {
 						_set_error("':' expected");
 						return nullptr;
@@ -951,7 +951,7 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 					tokenizer->advance(); //ignore newline
 				} else if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
 					if (expecting == DICT_EXPECT_KEY) {
-						_set_error("key or '}' expected");
+						_set_error("key or '}|' expected");
 						return nullptr;
 					}
 					if (expecting == DICT_EXPECT_VALUE) {
@@ -968,7 +968,7 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 
 				} else if (tokenizer->get_token() == PScriptTokenizer::TK_COLON) {
 					if (expecting == DICT_EXPECT_KEY) {
-						_set_error("key or '}' expected");
+						_set_error("key or '}|' expected");
 						return nullptr;
 					}
 					if (expecting == DICT_EXPECT_VALUE) {
@@ -976,7 +976,7 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 						return nullptr;
 					}
 					if (expecting == DICT_EXPECT_COMMA) {
-						_set_error("',' or '}' expected");
+						_set_error("',' or '}|' expected");
 						return nullptr;
 					}
 
@@ -984,7 +984,7 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 					tokenizer->advance(); //ignore newline
 				} else {
 					if (expecting == DICT_EXPECT_COMMA) {
-						_set_error("',' or '}' expected");
+						_set_error("',' or '}|' expected");
 						return nullptr;
 					}
 					if (expecting == DICT_EXPECT_COLON) {
