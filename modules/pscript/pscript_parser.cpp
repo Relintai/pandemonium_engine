@@ -3566,7 +3566,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 					if (tokenizer->get_token() == PScriptTokenizer::TK_COLON && tokenizer->get_token(1) == PScriptTokenizer::TK_OP_ASSIGN) {
 						_set_error("Unexpected ':=', use '=' instead. Expected end of statement after expression.");
 					} else {
-						_set_error(vformat("Expected end of statement after expression, got %s instead.", tokenizer->get_token_name(tokenizer->get_token())));
+						_set_error(vformat("Expected ';' after expression, got %s instead.", tokenizer->get_token_name(tokenizer->get_token())));
 					}
 					return;
 				}
