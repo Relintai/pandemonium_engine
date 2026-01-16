@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  pdscript_parser.cpp                                                  */
+/*  pscript_parser.cpp                                                  */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,7 +29,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "pdscript_parser.h"
+#include "pscript_parser.h"
 
 #include "core/config/engine.h"
 #include "core/config/project_settings.h"
@@ -39,10 +39,10 @@
 #include "core/object/script_language.h"
 #include "core/os/file_access.h"
 #include "core/string/print_string.h"
-#include "pdscript.h"
+#include "pscript.h"
 
 template <class T>
-T *PDScriptParser::alloc_node() {
+T *PScriptParser::alloc_node() {
 	T *t = memnew(T);
 
 	t->next = list;
@@ -73,23 +73,23 @@ static String _lookup_autoload_path_for_identifier(const String &p_identifier) {
 }
 
 #ifdef DEBUG_ENABLED
-static String _find_function_name(const PDScriptParser::OperatorNode *p_call);
+static String _find_function_name(const PScriptParser::OperatorNode *p_call);
 #endif // DEBUG_ENABLED
 
-bool PDScriptParser::_end_statement() {
-	if (tokenizer->get_token() == PDScriptTokenizer::TK_SEMICOLON) {
+bool PScriptParser::_end_statement() {
+	if (tokenizer->get_token() == PScriptTokenizer::TK_SEMICOLON) {
 		tokenizer->advance();
 		return true; //handle next
-	} else if (tokenizer->get_token() == PDScriptTokenizer::TK_NEWLINE || tokenizer->get_token() == PDScriptTokenizer::TK_EOF) {
+	} else if (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE || tokenizer->get_token() == PScriptTokenizer::TK_EOF) {
 		return true; //will be handled properly
 	}
 
 	return false;
 }
 
-void PDScriptParser::_set_end_statement_error(String p_name) {
+void PScriptParser::_set_end_statement_error(String p_name) {
 	String error_msg;
-	if (tokenizer->get_token() == PDScriptTokenizer::TK_IDENTIFIER) {
+	if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER) {
 		error_msg = vformat("Expected end of statement (\"%s\"), got %s (\"%s\") instead.", p_name, tokenizer->get_token_name(tokenizer->get_token()), tokenizer->get_token_identifier());
 	} else {
 		error_msg = vformat("Expected end of statement (\"%s\"), got %s instead.", p_name, tokenizer->get_token_name(tokenizer->get_token()));
@@ -97,8 +97,8 @@ void PDScriptParser::_set_end_statement_error(String p_name) {
 	_set_error(error_msg);
 }
 
-bool PDScriptParser::_enter_indent_block(BlockNode *p_block) {
-	if (tokenizer->get_token() != PDScriptTokenizer::TK_COLON) {
+bool PScriptParser::_enter_indent_block(BlockNode *p_block) {
+	if (tokenizer->get_token() != PScriptTokenizer::TK_COLON) {
 		// report location at the previous token (on the previous line)
 		int error_line = tokenizer->get_token_line(-1);
 		int error_column = tokenizer->get_token_column(-1);
@@ -107,11 +107,11 @@ bool PDScriptParser::_enter_indent_block(BlockNode *p_block) {
 	}
 	tokenizer->advance();
 
-	if (tokenizer->get_token() == PDScriptTokenizer::TK_EOF) {
+	if (tokenizer->get_token() == PScriptTokenizer::TK_EOF) {
 		return false;
 	}
 
-	if (tokenizer->get_token() != PDScriptTokenizer::TK_NEWLINE) {
+	if (tokenizer->get_token() != PScriptTokenizer::TK_NEWLINE) {
 		// be more python-like
 		IndentLevel current_level = indent_level.back()->get();
 		indent_level.push_back(current_level);
@@ -121,11 +121,11 @@ bool PDScriptParser::_enter_indent_block(BlockNode *p_block) {
 	}
 
 	while (true) {
-		if (tokenizer->get_token() != PDScriptTokenizer::TK_NEWLINE) {
+		if (tokenizer->get_token() != PScriptTokenizer::TK_NEWLINE) {
 			return false; //wtf
-		} else if (tokenizer->get_token(1) == PDScriptTokenizer::TK_EOF) {
+		} else if (tokenizer->get_token(1) == PScriptTokenizer::TK_EOF) {
 			return false;
-		} else if (tokenizer->get_token(1) != PDScriptTokenizer::TK_NEWLINE) {
+		} else if (tokenizer->get_token(1) != PScriptTokenizer::TK_NEWLINE) {
 			int indent = tokenizer->get_token_line_indent();
 			int tabs = tokenizer->get_token_line_tab_indent();
 			IndentLevel current_level = indent_level.back()->get();
@@ -153,18 +153,18 @@ bool PDScriptParser::_enter_indent_block(BlockNode *p_block) {
 	}
 }
 
-bool PDScriptParser::_parse_arguments(Node *p_parent, Vector<Node *> &p_args, bool p_static, bool p_can_codecomplete, bool p_parsing_constant) {
-	if (tokenizer->get_token() == PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+bool PScriptParser::_parse_arguments(Node *p_parent, Vector<Node *> &p_args, bool p_static, bool p_can_codecomplete, bool p_parsing_constant) {
+	if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 		tokenizer->advance();
 	} else {
 		parenthesis++;
 		int argidx = 0;
 
 		while (true) {
-			if (tokenizer->get_token() == PDScriptTokenizer::TK_CURSOR) {
+			if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
 				_make_completable_call(argidx);
 				completion_node = p_parent;
-			} else if (tokenizer->get_token() == PDScriptTokenizer::TK_CONSTANT && tokenizer->get_token_constant().get_type() == Variant::STRING && tokenizer->get_token(1) == PDScriptTokenizer::TK_CURSOR) {
+			} else if (tokenizer->get_token() == PScriptTokenizer::TK_CONSTANT && tokenizer->get_token_constant().get_type() == Variant::STRING && tokenizer->get_token(1) == PScriptTokenizer::TK_CURSOR) {
 				//completing a string argument..
 				completion_cursor = tokenizer->get_token_constant();
 
@@ -181,12 +181,12 @@ bool PDScriptParser::_parse_arguments(Node *p_parent, Vector<Node *> &p_args, bo
 
 			p_args.push_back(arg);
 
-			if (tokenizer->get_token() == PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+			if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 				tokenizer->advance();
 				break;
 
-			} else if (tokenizer->get_token() == PDScriptTokenizer::TK_COMMA) {
-				if (tokenizer->get_token(1) == PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+			} else if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
+				if (tokenizer->get_token(1) == PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 					_set_error("Expression expected");
 					return false;
 				}
@@ -205,7 +205,7 @@ bool PDScriptParser::_parse_arguments(Node *p_parent, Vector<Node *> &p_args, bo
 	return true;
 }
 
-void PDScriptParser::_make_completable_call(int p_arg) {
+void PScriptParser::_make_completable_call(int p_arg) {
 	completion_cursor = StringName();
 	completion_type = COMPLETION_CALL_ARGUMENTS;
 	completion_class = current_class;
@@ -217,13 +217,13 @@ void PDScriptParser::_make_completable_call(int p_arg) {
 	tokenizer->advance();
 }
 
-bool PDScriptParser::_get_completable_identifier(CompletionType p_type, StringName &identifier) {
+bool PScriptParser::_get_completable_identifier(CompletionType p_type, StringName &identifier) {
 	identifier = StringName();
 	if (tokenizer->is_token_literal()) {
 		identifier = tokenizer->get_token_literal();
 		tokenizer->advance();
 	}
-	if (tokenizer->get_token() == PDScriptTokenizer::TK_CURSOR) {
+	if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
 		completion_cursor = identifier;
 		completion_type = p_type;
 		completion_class = current_class;
@@ -239,7 +239,7 @@ bool PDScriptParser::_get_completable_identifier(CompletionType p_type, StringNa
 			tokenizer->advance();
 		}
 
-		if (tokenizer->get_token() == PDScriptTokenizer::TK_PARENTHESIS_OPEN) {
+		if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_OPEN) {
 			completion_ident_is_call = true;
 		}
 		return true;
@@ -248,7 +248,7 @@ bool PDScriptParser::_get_completable_identifier(CompletionType p_type, StringNa
 	return false;
 }
 
-PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_static, bool p_allow_assign, bool p_parsing_constant) {
+PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_static, bool p_allow_assign, bool p_parsing_constant) {
 	//Vector<Node*> expressions;
 	//Vector<OperatorNode::Operator> operators;
 
@@ -265,22 +265,22 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 
 		if (parenthesis > 0) {
 			//remove empty space (only allowed if inside parenthesis
-			while (tokenizer->get_token() == PDScriptTokenizer::TK_NEWLINE) {
+			while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
 				tokenizer->advance();
 			}
 		}
 
 		// Check that the next token is not TK_CURSOR and if it is, the offset should be incremented.
 		int next_valid_offset = 1;
-		if (tokenizer->get_token(next_valid_offset) == PDScriptTokenizer::TK_CURSOR) {
+		if (tokenizer->get_token(next_valid_offset) == PScriptTokenizer::TK_CURSOR) {
 			next_valid_offset++;
 			// There is a chunk of the identifier that also needs to be ignored (not always there!)
-			if (tokenizer->get_token(next_valid_offset) == PDScriptTokenizer::TK_IDENTIFIER) {
+			if (tokenizer->get_token(next_valid_offset) == PScriptTokenizer::TK_IDENTIFIER) {
 				next_valid_offset++;
 			}
 		}
 
-		if (tokenizer->get_token() == PDScriptTokenizer::TK_PARENTHESIS_OPEN) {
+		if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_OPEN) {
 			//subexpression ()
 			tokenizer->advance();
 			parenthesis++;
@@ -290,14 +290,14 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 				return nullptr;
 			}
 
-			if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+			if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 				_set_error("Expected ')' in expression");
 				return nullptr;
 			}
 
 			tokenizer->advance();
 			expr = subexpr;
-		} else if (tokenizer->get_token() == PDScriptTokenizer::TK_DOLLAR) {
+		} else if (tokenizer->get_token() == PScriptTokenizer::TK_DOLLAR) {
 			tokenizer->advance();
 
 			String path;
@@ -308,7 +308,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 
 			while (!done) {
 				switch (tokenizer->get_token()) {
-					case PDScriptTokenizer::TK_CURSOR: {
+					case PScriptTokenizer::TK_CURSOR: {
 						completion_type = COMPLETION_GET_NODE;
 						completion_class = current_class;
 						completion_function = current_function;
@@ -319,7 +319,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 						completion_found = true;
 						tokenizer->advance();
 					} break;
-					case PDScriptTokenizer::TK_CONSTANT: {
+					case PScriptTokenizer::TK_CONSTANT: {
 						if (!need_identifier) {
 							done = true;
 							break;
@@ -335,7 +335,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 						need_identifier = false;
 
 					} break;
-					case PDScriptTokenizer::TK_OP_DIV: {
+					case PScriptTokenizer::TK_OP_DIV: {
 						if (need_identifier) {
 							done = true;
 							break;
@@ -385,55 +385,55 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 
 			expr = op;
 
-		} else if (tokenizer->get_token() == PDScriptTokenizer::TK_CURSOR) {
+		} else if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
 			tokenizer->advance();
 			continue; //no point in cursor in the middle of expression
 
-		} else if (tokenizer->get_token() == PDScriptTokenizer::TK_CONSTANT) {
+		} else if (tokenizer->get_token() == PScriptTokenizer::TK_CONSTANT) {
 			//constant defined by tokenizer
 			ConstantNode *constant = alloc_node<ConstantNode>();
 			constant->value = tokenizer->get_token_constant();
 			constant->datatype = _type_from_variant(constant->value);
 			tokenizer->advance();
 			expr = constant;
-		} else if (tokenizer->get_token() == PDScriptTokenizer::TK_CONST_PI) {
+		} else if (tokenizer->get_token() == PScriptTokenizer::TK_CONST_PI) {
 			//constant defined by tokenizer
 			ConstantNode *constant = alloc_node<ConstantNode>();
 			constant->value = Math_PI;
 			constant->datatype = _type_from_variant(constant->value);
 			tokenizer->advance();
 			expr = constant;
-		} else if (tokenizer->get_token() == PDScriptTokenizer::TK_CONST_TAU) {
+		} else if (tokenizer->get_token() == PScriptTokenizer::TK_CONST_TAU) {
 			//constant defined by tokenizer
 			ConstantNode *constant = alloc_node<ConstantNode>();
 			constant->value = Math_TAU;
 			constant->datatype = _type_from_variant(constant->value);
 			tokenizer->advance();
 			expr = constant;
-		} else if (tokenizer->get_token() == PDScriptTokenizer::TK_CONST_INF) {
+		} else if (tokenizer->get_token() == PScriptTokenizer::TK_CONST_INF) {
 			//constant defined by tokenizer
 			ConstantNode *constant = alloc_node<ConstantNode>();
 			constant->value = Math_INF;
 			constant->datatype = _type_from_variant(constant->value);
 			tokenizer->advance();
 			expr = constant;
-		} else if (tokenizer->get_token() == PDScriptTokenizer::TK_CONST_NAN) {
+		} else if (tokenizer->get_token() == PScriptTokenizer::TK_CONST_NAN) {
 			//constant defined by tokenizer
 			ConstantNode *constant = alloc_node<ConstantNode>();
 			constant->value = Math_NAN;
 			constant->datatype = _type_from_variant(constant->value);
 			tokenizer->advance();
 			expr = constant;
-		} else if (tokenizer->get_token() == PDScriptTokenizer::TK_PR_PRELOAD) {
+		} else if (tokenizer->get_token() == PScriptTokenizer::TK_PR_PRELOAD) {
 			//constant defined by tokenizer
 			tokenizer->advance();
-			if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_OPEN) {
+			if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_OPEN) {
 				_set_error("Expected '(' after 'preload'");
 				return nullptr;
 			}
 			tokenizer->advance();
 
-			if (tokenizer->get_token() == PDScriptTokenizer::TK_CURSOR) {
+			if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
 				completion_cursor = StringName();
 				completion_node = p_parent;
 				completion_type = COMPLETION_RESOURCE_PATH;
@@ -516,13 +516,13 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 				}
 			}
 
-			if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+			if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 				_set_error("Expected ')' after 'preload' path");
 				return nullptr;
 			}
 
-			Ref<PDScript> pds = res;
-			if (pds.is_valid() && !pds->is_valid()) {
+			Ref<PScript> ps = res;
+			if (ps.is_valid() && !ps->is_valid()) {
 				_set_error("Couldn't fully preload the script, possible cyclic reference or compilation error. Use \"load()\" instead if a cyclic reference is intended.");
 				return nullptr;
 			}
@@ -534,7 +534,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 			constant->datatype = _type_from_variant(constant->value);
 
 			expr = constant;
-		} else if (tokenizer->get_token() == PDScriptTokenizer::TK_PR_YIELD) {
+		} else if (tokenizer->get_token() == PScriptTokenizer::TK_PR_YIELD) {
 			if (!current_function) {
 				_set_error("\"yield()\" can only be used inside function blocks.");
 				return nullptr;
@@ -543,7 +543,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 			current_function->has_yield = true;
 
 			tokenizer->advance();
-			if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_OPEN) {
+			if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_OPEN) {
 				_set_error("Expected \"(\" after \"yield\".");
 				return nullptr;
 			}
@@ -553,11 +553,11 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 			OperatorNode *yield = alloc_node<OperatorNode>();
 			yield->op = OperatorNode::OP_YIELD;
 
-			while (tokenizer->get_token() == PDScriptTokenizer::TK_NEWLINE) {
+			while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
 				tokenizer->advance();
 			}
 
-			if (tokenizer->get_token() == PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+			if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 				expr = yield;
 				tokenizer->advance();
 			} else {
@@ -569,14 +569,14 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 				}
 				yield->arguments.push_back(object);
 
-				if (tokenizer->get_token() != PDScriptTokenizer::TK_COMMA) {
+				if (tokenizer->get_token() != PScriptTokenizer::TK_COMMA) {
 					_set_error("Expected \",\" after the first argument of \"yield\".");
 					return nullptr;
 				}
 
 				tokenizer->advance();
 
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_CURSOR) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
 					completion_cursor = StringName();
 					completion_node = object;
 					completion_type = COMPLETION_YIELD;
@@ -595,7 +595,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 				}
 				yield->arguments.push_back(signal);
 
-				if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+				if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 					_set_error("Expected \")\" after the second argument of \"yield\".");
 					return nullptr;
 				}
@@ -607,7 +607,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 				expr = yield;
 			}
 
-		} else if (tokenizer->get_token() == PDScriptTokenizer::TK_SELF) {
+		} else if (tokenizer->get_token() == PScriptTokenizer::TK_SELF) {
 			if (p_static) {
 				_set_error("\"self\" isn't allowed in a static function or constant expression.");
 				return nullptr;
@@ -616,7 +616,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 			SelfNode *self = alloc_node<SelfNode>();
 			tokenizer->advance();
 			expr = self;
-		} else if (tokenizer->get_token() == PDScriptTokenizer::TK_BUILT_IN_TYPE && tokenizer->get_token(1) == PDScriptTokenizer::TK_PERIOD) {
+		} else if (tokenizer->get_token() == PScriptTokenizer::TK_BUILT_IN_TYPE && tokenizer->get_token(1) == PScriptTokenizer::TK_PERIOD) {
 			Variant::Type bi_type = tokenizer->get_token_type();
 			tokenizer->advance(2);
 
@@ -631,7 +631,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 				return nullptr;
 			}
 			if (!Variant::has_constant(bi_type, identifier)) {
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_PARENTHESIS_OPEN &&
+				if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_OPEN &&
 						Variant::is_method_const(bi_type, identifier) &&
 						Variant::get_method_return_type(bi_type, identifier) == bi_type) {
 					tokenizer->advance();
@@ -680,7 +680,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 				expr = cn;
 			}
 
-		} else if (tokenizer->get_token(next_valid_offset) == PDScriptTokenizer::TK_PARENTHESIS_OPEN && tokenizer->is_token_literal()) {
+		} else if (tokenizer->get_token(next_valid_offset) == PScriptTokenizer::TK_PARENTHESIS_OPEN && tokenizer->is_token_literal()) {
 			// We check with is_token_literal, as this allows us to use match/sync/etc. as a name
 			//function or constructor
 
@@ -690,11 +690,11 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 			//Do a quick Array and Dictionary Check.  Replace if either require no arguments.
 			bool replaced = false;
 
-			if (tokenizer->get_token() == PDScriptTokenizer::TK_BUILT_IN_TYPE) {
+			if (tokenizer->get_token() == PScriptTokenizer::TK_BUILT_IN_TYPE) {
 				Variant::Type ct = tokenizer->get_token_type();
 				if (!p_parsing_constant) {
 					if (ct == Variant::ARRAY) {
-						if (tokenizer->get_token(2) == PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+						if (tokenizer->get_token(2) == PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 							ArrayNode *arr = alloc_node<ArrayNode>();
 							expr = arr;
 							replaced = true;
@@ -702,7 +702,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 						}
 					}
 					if (ct == Variant::DICTIONARY) {
-						if (tokenizer->get_token(2) == PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+						if (tokenizer->get_token(2) == PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 							DictionaryNode *dict = alloc_node<DictionaryNode>();
 							expr = dict;
 							replaced = true;
@@ -717,7 +717,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 					op->arguments.push_back(tn);
 					tokenizer->advance(2);
 				}
-			} else if (tokenizer->get_token() == PDScriptTokenizer::TK_BUILT_IN_FUNC) {
+			} else if (tokenizer->get_token() == PScriptTokenizer::TK_BUILT_IN_FUNC) {
 				BuiltInFunctionNode *bn = alloc_node<BuiltInFunctionNode>();
 				bn->function = tokenizer->get_token_built_in_func();
 				op->arguments.push_back(bn);
@@ -736,7 +736,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 				tokenizer->advance(1);
 			}
 
-			if (tokenizer->get_token() == PDScriptTokenizer::TK_CURSOR) {
+			if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
 				_make_completable_call(0);
 				completion_node = op;
 			}
@@ -770,26 +770,26 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 #ifdef DEBUG_ENABLED
 					LocalVarNode *lv = b->variables[identifier];
 					switch (tokenizer->get_token()) {
-						case PDScriptTokenizer::TK_OP_ASSIGN_ADD:
-						case PDScriptTokenizer::TK_OP_ASSIGN_BIT_AND:
-						case PDScriptTokenizer::TK_OP_ASSIGN_BIT_OR:
-						case PDScriptTokenizer::TK_OP_ASSIGN_BIT_XOR:
-						case PDScriptTokenizer::TK_OP_ASSIGN_DIV:
-						case PDScriptTokenizer::TK_OP_ASSIGN_MOD:
-						case PDScriptTokenizer::TK_OP_ASSIGN_MUL:
-						case PDScriptTokenizer::TK_OP_ASSIGN_SHIFT_LEFT:
-						case PDScriptTokenizer::TK_OP_ASSIGN_SHIFT_RIGHT:
-						case PDScriptTokenizer::TK_OP_ASSIGN_SUB: {
+						case PScriptTokenizer::TK_OP_ASSIGN_ADD:
+						case PScriptTokenizer::TK_OP_ASSIGN_BIT_AND:
+						case PScriptTokenizer::TK_OP_ASSIGN_BIT_OR:
+						case PScriptTokenizer::TK_OP_ASSIGN_BIT_XOR:
+						case PScriptTokenizer::TK_OP_ASSIGN_DIV:
+						case PScriptTokenizer::TK_OP_ASSIGN_MOD:
+						case PScriptTokenizer::TK_OP_ASSIGN_MUL:
+						case PScriptTokenizer::TK_OP_ASSIGN_SHIFT_LEFT:
+						case PScriptTokenizer::TK_OP_ASSIGN_SHIFT_RIGHT:
+						case PScriptTokenizer::TK_OP_ASSIGN_SUB: {
 							if (lv->assignments == 0) {
 								if (!lv->datatype.has_type) {
 									_set_error("Using assignment with operation on a variable that was never assigned.");
 									return nullptr;
 								}
-								_add_warning(PDScriptWarning::UNASSIGNED_VARIABLE_OP_ASSIGN, -1, identifier.operator String());
+								_add_warning(PScriptWarning::UNASSIGNED_VARIABLE_OP_ASSIGN, -1, identifier.operator String());
 							}
 							FALLTHROUGH;
 						}
-						case PDScriptTokenizer::TK_OP_ASSIGN: {
+						case PScriptTokenizer::TK_OP_ASSIGN: {
 							lv->assignments += 1;
 							lv->usages--; // Assignment is not really usage
 						} break;
@@ -807,20 +807,20 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 				if (cln->constant_expressions.has(identifier)) {
 					expr = cln->constant_expressions[identifier].expression;
 					bfn = true;
-				} else if (PDScriptLanguage::get_singleton()->get_global_map().has(identifier)) {
+				} else if (PScriptLanguage::get_singleton()->get_global_map().has(identifier)) {
 					//check from constants
 					ConstantNode *constant = alloc_node<ConstantNode>();
-					constant->value = PDScriptLanguage::get_singleton()->get_global_array()[PDScriptLanguage::get_singleton()->get_global_map()[identifier]];
+					constant->value = PScriptLanguage::get_singleton()->get_global_array()[PScriptLanguage::get_singleton()->get_global_map()[identifier]];
 					constant->datatype = _type_from_variant(constant->value);
 					constant->line = id_line;
 					expr = constant;
 					bfn = true;
 				}
 
-				if (!bfn && PDScriptLanguage::get_singleton()->get_named_globals_map().has(identifier)) {
+				if (!bfn && PScriptLanguage::get_singleton()->get_named_globals_map().has(identifier)) {
 					//check from singletons
 					ConstantNode *constant = alloc_node<ConstantNode>();
-					constant->value = PDScriptLanguage::get_singleton()->get_named_globals_map()[identifier];
+					constant->value = PScriptLanguage::get_singleton()->get_named_globals_map()[identifier];
 					expr = constant;
 					bfn = true;
 				}
@@ -840,7 +840,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 					if (!bfn) {
 						// Using current_class instead of cln here, since cln is const*
 						_determine_inheritance(current_class, false);
-						if (cln->base_type.has_type && cln->base_type.kind == DataType::PDSCRIPT && cln->base_type.script_type->is_valid()) {
+						if (cln->base_type.has_type && cln->base_type.kind == DataType::PSCRIPT && cln->base_type.script_type->is_valid()) {
 							RBMap<StringName, Variant> parent_constants;
 							current_class->base_type.script_type->get_constants(&parent_constants);
 							if (parent_constants.has(identifier)) {
@@ -860,17 +860,17 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 					int arg_idx = current_function->arguments.find(identifier);
 					if (arg_idx != -1) {
 						switch (tokenizer->get_token()) {
-							case PDScriptTokenizer::TK_OP_ASSIGN_ADD:
-							case PDScriptTokenizer::TK_OP_ASSIGN_BIT_AND:
-							case PDScriptTokenizer::TK_OP_ASSIGN_BIT_OR:
-							case PDScriptTokenizer::TK_OP_ASSIGN_BIT_XOR:
-							case PDScriptTokenizer::TK_OP_ASSIGN_DIV:
-							case PDScriptTokenizer::TK_OP_ASSIGN_MOD:
-							case PDScriptTokenizer::TK_OP_ASSIGN_MUL:
-							case PDScriptTokenizer::TK_OP_ASSIGN_SHIFT_LEFT:
-							case PDScriptTokenizer::TK_OP_ASSIGN_SHIFT_RIGHT:
-							case PDScriptTokenizer::TK_OP_ASSIGN_SUB:
-							case PDScriptTokenizer::TK_OP_ASSIGN: {
+							case PScriptTokenizer::TK_OP_ASSIGN_ADD:
+							case PScriptTokenizer::TK_OP_ASSIGN_BIT_AND:
+							case PScriptTokenizer::TK_OP_ASSIGN_BIT_OR:
+							case PScriptTokenizer::TK_OP_ASSIGN_BIT_XOR:
+							case PScriptTokenizer::TK_OP_ASSIGN_DIV:
+							case PScriptTokenizer::TK_OP_ASSIGN_MOD:
+							case PScriptTokenizer::TK_OP_ASSIGN_MUL:
+							case PScriptTokenizer::TK_OP_ASSIGN_SHIFT_LEFT:
+							case PScriptTokenizer::TK_OP_ASSIGN_SHIFT_RIGHT:
+							case PScriptTokenizer::TK_OP_ASSIGN_SUB:
+							case PScriptTokenizer::TK_OP_ASSIGN: {
 								// Assignment is not really usage
 							} break;
 							default: {
@@ -886,23 +886,23 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 				expr = id;
 			}
 
-		} else if (tokenizer->get_token() == PDScriptTokenizer::TK_OP_ADD || tokenizer->get_token() == PDScriptTokenizer::TK_OP_SUB || tokenizer->get_token() == PDScriptTokenizer::TK_OP_NOT || tokenizer->get_token() == PDScriptTokenizer::TK_OP_BIT_INVERT) {
+		} else if (tokenizer->get_token() == PScriptTokenizer::TK_OP_ADD || tokenizer->get_token() == PScriptTokenizer::TK_OP_SUB || tokenizer->get_token() == PScriptTokenizer::TK_OP_NOT || tokenizer->get_token() == PScriptTokenizer::TK_OP_BIT_INVERT) {
 			//single prefix operators like !expr +expr -expr ++expr --expr
 			alloc_node<OperatorNode>();
 			Expression e;
 			e.is_op = true;
 
 			switch (tokenizer->get_token()) {
-				case PDScriptTokenizer::TK_OP_ADD:
+				case PScriptTokenizer::TK_OP_ADD:
 					e.op = OperatorNode::OP_POS;
 					break;
-				case PDScriptTokenizer::TK_OP_SUB:
+				case PScriptTokenizer::TK_OP_SUB:
 					e.op = OperatorNode::OP_NEG;
 					break;
-				case PDScriptTokenizer::TK_OP_NOT:
+				case PScriptTokenizer::TK_OP_NOT:
 					e.op = OperatorNode::OP_NOT;
 					break;
-				case PDScriptTokenizer::TK_OP_BIT_INVERT:
+				case PScriptTokenizer::TK_OP_BIT_INVERT:
 					e.op = OperatorNode::OP_BIT_INVERT;
 					break;
 				default: {
@@ -911,7 +911,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 
 			tokenizer->advance();
 
-			if (e.op != OperatorNode::OP_NOT && tokenizer->get_token() == PDScriptTokenizer::TK_OP_NOT) {
+			if (e.op != OperatorNode::OP_NOT && tokenizer->get_token() == PScriptTokenizer::TK_OP_NOT) {
 				_set_error("Misplaced 'not'.");
 				return nullptr;
 			}
@@ -926,7 +926,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 			op->arguments.push_back(subexpr);
 			expr=op;*/
 
-		} else if (tokenizer->get_token() == PDScriptTokenizer::TK_PR_IS && tokenizer->get_token(1) == PDScriptTokenizer::TK_BUILT_IN_TYPE) {
+		} else if (tokenizer->get_token() == PScriptTokenizer::TK_PR_IS && tokenizer->get_token(1) == PScriptTokenizer::TK_BUILT_IN_TYPE) {
 			// 'is' operator with built-in type
 			if (!expr) {
 				_set_error("Expected identifier before 'is' operator");
@@ -944,7 +944,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 			tokenizer->advance();
 
 			expr = op;
-		} else if (tokenizer->get_token() == PDScriptTokenizer::TK_BRACKET_OPEN) {
+		} else if (tokenizer->get_token() == PScriptTokenizer::TK_BRACKET_OPEN) {
 			// array
 			tokenizer->advance();
 
@@ -952,16 +952,16 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 			bool expecting_comma = false;
 
 			while (true) {
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_EOF) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_EOF) {
 					_set_error("Unterminated array");
 					return nullptr;
 
-				} else if (tokenizer->get_token() == PDScriptTokenizer::TK_BRACKET_CLOSE) {
+				} else if (tokenizer->get_token() == PScriptTokenizer::TK_BRACKET_CLOSE) {
 					tokenizer->advance();
 					break;
-				} else if (tokenizer->get_token() == PDScriptTokenizer::TK_NEWLINE) {
+				} else if (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
 					tokenizer->advance(); //ignore newline
-				} else if (tokenizer->get_token() == PDScriptTokenizer::TK_COMMA) {
+				} else if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
 					if (!expecting_comma) {
 						_set_error("expression or ']' expected");
 						return nullptr;
@@ -985,7 +985,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 			}
 
 			expr = arr;
-		} else if (tokenizer->get_token() == PDScriptTokenizer::TK_CURLY_BRACKET_OPEN) {
+		} else if (tokenizer->get_token() == PScriptTokenizer::TK_CURLY_BRACKET_OPEN) {
 			// array
 			tokenizer->advance();
 
@@ -1006,11 +1006,11 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 			DictExpect expecting = DICT_EXPECT_KEY;
 
 			while (true) {
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_EOF) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_EOF) {
 					_set_error("Unterminated dictionary");
 					return nullptr;
 
-				} else if (tokenizer->get_token() == PDScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
+				} else if (tokenizer->get_token() == PScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
 					if (expecting == DICT_EXPECT_COLON) {
 						_set_error("':' expected");
 						return nullptr;
@@ -1021,9 +1021,9 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 					}
 					tokenizer->advance();
 					break;
-				} else if (tokenizer->get_token() == PDScriptTokenizer::TK_NEWLINE) {
+				} else if (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
 					tokenizer->advance(); //ignore newline
-				} else if (tokenizer->get_token() == PDScriptTokenizer::TK_COMMA) {
+				} else if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
 					if (expecting == DICT_EXPECT_KEY) {
 						_set_error("key or '}' expected");
 						return nullptr;
@@ -1040,7 +1040,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 					expecting = DICT_EXPECT_KEY;
 					tokenizer->advance(); //ignore newline
 
-				} else if (tokenizer->get_token() == PDScriptTokenizer::TK_COLON) {
+				} else if (tokenizer->get_token() == PScriptTokenizer::TK_COLON) {
 					if (expecting == DICT_EXPECT_KEY) {
 						_set_error("key or '}' expected");
 						return nullptr;
@@ -1067,7 +1067,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 					}
 
 					if (expecting == DICT_EXPECT_KEY) {
-						if (tokenizer->is_token_literal() && tokenizer->get_token(1) == PDScriptTokenizer::TK_OP_ASSIGN) {
+						if (tokenizer->is_token_literal() && tokenizer->get_token(1) == PScriptTokenizer::TK_OP_ASSIGN) {
 							// We check with is_token_literal, as this allows us to use match/sync/etc. as a name
 							//lua style identifier, easier to write
 							ConstantNode *cn = alloc_node<ConstantNode>();
@@ -1115,7 +1115,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 
 			expr = dict;
 
-		} else if (tokenizer->get_token() == PDScriptTokenizer::TK_PERIOD && (tokenizer->is_token_literal(1) || tokenizer->get_token(1) == PDScriptTokenizer::TK_CURSOR)) {
+		} else if (tokenizer->get_token() == PScriptTokenizer::TK_PERIOD && (tokenizer->is_token_literal(1) || tokenizer->get_token(1) == PScriptTokenizer::TK_CURSOR)) {
 			// We check with is_token_literal, as this allows us to use match/sync/etc. as a name
 			// parent call
 
@@ -1133,7 +1133,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 			id->name = identifier;
 			op->arguments.push_back(id);
 
-			if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_OPEN) {
+			if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_OPEN) {
 				if (!is_completion) {
 					_set_error("Expected '(' for parent function call.");
 					return nullptr;
@@ -1147,7 +1147,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 
 			expr = op;
 
-		} else if (tokenizer->get_token() == PDScriptTokenizer::TK_BUILT_IN_TYPE && expression.size() > 0 && expression[expression.size() - 1].is_op && expression[expression.size() - 1].op == OperatorNode::OP_IS) {
+		} else if (tokenizer->get_token() == PScriptTokenizer::TK_BUILT_IN_TYPE && expression.size() > 0 && expression[expression.size() - 1].is_op && expression[expression.size() - 1].op == OperatorNode::OP_IS) {
 			Expression e = expression[expression.size() - 1];
 			e.op = OperatorNode::OP_IS_BUILTIN;
 			expression.write[expression.size() - 1] = e;
@@ -1162,7 +1162,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 			return nullptr; //nothing
 		}
 
-		ERR_FAIL_COND_V_MSG(!expr, nullptr, "PDScriptParser bug, couldn't figure out what expression is.");
+		ERR_FAIL_COND_V_MSG(!expr, nullptr, "PScriptParser bug, couldn't figure out what expression is.");
 
 		/******************/
 		/* Parse Indexing */
@@ -1171,14 +1171,14 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 		while (true) {
 			//expressions can be indexed any number of times
 
-			if (tokenizer->get_token() == PDScriptTokenizer::TK_PERIOD) {
+			if (tokenizer->get_token() == PScriptTokenizer::TK_PERIOD) {
 				//indexing using "."
 
-				if (tokenizer->get_token(1) != PDScriptTokenizer::TK_CURSOR && !tokenizer->is_token_literal(1)) {
+				if (tokenizer->get_token(1) != PScriptTokenizer::TK_CURSOR && !tokenizer->is_token_literal(1)) {
 					// We check with is_token_literal, as this allows us to use match/sync/etc. as a name
 					_set_error("Expected identifier as member");
 					return nullptr;
-				} else if (tokenizer->get_token(2) == PDScriptTokenizer::TK_PARENTHESIS_OPEN) {
+				} else if (tokenizer->get_token(2) == PScriptTokenizer::TK_PARENTHESIS_OPEN) {
 					//call!!
 					OperatorNode *op = alloc_node<OperatorNode>();
 					op->op = OperatorNode::OP_CALL;
@@ -1198,7 +1198,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 					op->arguments.push_back(id); // call func
 					//get arguments
 					tokenizer->advance(1);
-					if (tokenizer->get_token() == PDScriptTokenizer::TK_CURSOR) {
+					if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
 						_make_completable_call(0);
 						completion_node = op;
 					}
@@ -1233,7 +1233,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 					expr = op;
 				}
 
-			} else if (tokenizer->get_token() == PDScriptTokenizer::TK_BRACKET_OPEN) {
+			} else if (tokenizer->get_token() == PScriptTokenizer::TK_BRACKET_OPEN) {
 				//indexing using "[]"
 				OperatorNode *op = alloc_node<OperatorNode>();
 				op->op = OperatorNode::OP_INDEX;
@@ -1247,7 +1247,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 					return nullptr;
 				}
 
-				if (tokenizer->get_token() != PDScriptTokenizer::TK_BRACKET_CLOSE) {
+				if (tokenizer->get_token() != PScriptTokenizer::TK_BRACKET_CLOSE) {
 					_set_error("Expected ']'");
 					return nullptr;
 				}
@@ -1267,7 +1267,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 		/*****************/
 
 		bool has_casting = expr->type == Node::TYPE_CAST;
-		if (tokenizer->get_token() == PDScriptTokenizer::TK_PR_AS) {
+		if (tokenizer->get_token() == PScriptTokenizer::TK_PR_AS) {
 			if (has_casting) {
 				_set_error("Unexpected 'as'.");
 				return nullptr;
@@ -1288,7 +1288,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 
 		if (parenthesis > 0) {
 			//remove empty space (only allowed if inside parenthesis
-			while (tokenizer->get_token() == PDScriptTokenizer::TK_NEWLINE) {
+			while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
 				tokenizer->advance();
 			}
 		}
@@ -1313,59 +1313,59 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 
 		switch (tokenizer->get_token()) { //see operator
 
-			case PDScriptTokenizer::TK_OP_IN:
+			case PScriptTokenizer::TK_OP_IN:
 				op = OperatorNode::OP_IN;
 				break;
-			case PDScriptTokenizer::TK_OP_EQUAL:
+			case PScriptTokenizer::TK_OP_EQUAL:
 				op = OperatorNode::OP_EQUAL;
 				break;
-			case PDScriptTokenizer::TK_OP_NOT_EQUAL:
+			case PScriptTokenizer::TK_OP_NOT_EQUAL:
 				op = OperatorNode::OP_NOT_EQUAL;
 				break;
-			case PDScriptTokenizer::TK_OP_LESS:
+			case PScriptTokenizer::TK_OP_LESS:
 				op = OperatorNode::OP_LESS;
 				break;
-			case PDScriptTokenizer::TK_OP_LESS_EQUAL:
+			case PScriptTokenizer::TK_OP_LESS_EQUAL:
 				op = OperatorNode::OP_LESS_EQUAL;
 				break;
-			case PDScriptTokenizer::TK_OP_GREATER:
+			case PScriptTokenizer::TK_OP_GREATER:
 				op = OperatorNode::OP_GREATER;
 				break;
-			case PDScriptTokenizer::TK_OP_GREATER_EQUAL:
+			case PScriptTokenizer::TK_OP_GREATER_EQUAL:
 				op = OperatorNode::OP_GREATER_EQUAL;
 				break;
-			case PDScriptTokenizer::TK_OP_AND:
+			case PScriptTokenizer::TK_OP_AND:
 				op = OperatorNode::OP_AND;
 				break;
-			case PDScriptTokenizer::TK_OP_OR:
+			case PScriptTokenizer::TK_OP_OR:
 				op = OperatorNode::OP_OR;
 				break;
-			case PDScriptTokenizer::TK_OP_ADD:
+			case PScriptTokenizer::TK_OP_ADD:
 				op = OperatorNode::OP_ADD;
 				break;
-			case PDScriptTokenizer::TK_OP_SUB:
+			case PScriptTokenizer::TK_OP_SUB:
 				op = OperatorNode::OP_SUB;
 				break;
-			case PDScriptTokenizer::TK_OP_MUL:
+			case PScriptTokenizer::TK_OP_MUL:
 				op = OperatorNode::OP_MUL;
 				break;
-			case PDScriptTokenizer::TK_OP_DIV:
+			case PScriptTokenizer::TK_OP_DIV:
 				op = OperatorNode::OP_DIV;
 				break;
-			case PDScriptTokenizer::TK_OP_MOD:
+			case PScriptTokenizer::TK_OP_MOD:
 				op = OperatorNode::OP_MOD;
 				break;
-			//case PDScriptTokenizer::TK_OP_NEG: op=OperatorNode::OP_NEG ; break;
-			case PDScriptTokenizer::TK_OP_SHIFT_LEFT:
+			//case PScriptTokenizer::TK_OP_NEG: op=OperatorNode::OP_NEG ; break;
+			case PScriptTokenizer::TK_OP_SHIFT_LEFT:
 				op = OperatorNode::OP_SHIFT_LEFT;
 				break;
-			case PDScriptTokenizer::TK_OP_SHIFT_RIGHT:
+			case PScriptTokenizer::TK_OP_SHIFT_RIGHT:
 				op = OperatorNode::OP_SHIFT_RIGHT;
 				break;
-			case PDScriptTokenizer::TK_OP_ASSIGN: {
+			case PScriptTokenizer::TK_OP_ASSIGN: {
 				_VALIDATE_ASSIGN op = OperatorNode::OP_ASSIGN;
 
-				if (tokenizer->get_token(1) == PDScriptTokenizer::TK_CURSOR) {
+				if (tokenizer->get_token(1) == PScriptTokenizer::TK_CURSOR) {
 					//code complete assignment
 					completion_type = COMPLETION_ASSIGN;
 					completion_node = expr;
@@ -1378,52 +1378,52 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 				}
 
 			} break;
-			case PDScriptTokenizer::TK_OP_ASSIGN_ADD:
+			case PScriptTokenizer::TK_OP_ASSIGN_ADD:
 				_VALIDATE_ASSIGN op = OperatorNode::OP_ASSIGN_ADD;
 				break;
-			case PDScriptTokenizer::TK_OP_ASSIGN_SUB:
+			case PScriptTokenizer::TK_OP_ASSIGN_SUB:
 				_VALIDATE_ASSIGN op = OperatorNode::OP_ASSIGN_SUB;
 				break;
-			case PDScriptTokenizer::TK_OP_ASSIGN_MUL:
+			case PScriptTokenizer::TK_OP_ASSIGN_MUL:
 				_VALIDATE_ASSIGN op = OperatorNode::OP_ASSIGN_MUL;
 				break;
-			case PDScriptTokenizer::TK_OP_ASSIGN_DIV:
+			case PScriptTokenizer::TK_OP_ASSIGN_DIV:
 				_VALIDATE_ASSIGN op = OperatorNode::OP_ASSIGN_DIV;
 				break;
-			case PDScriptTokenizer::TK_OP_ASSIGN_MOD:
+			case PScriptTokenizer::TK_OP_ASSIGN_MOD:
 				_VALIDATE_ASSIGN op = OperatorNode::OP_ASSIGN_MOD;
 				break;
-			case PDScriptTokenizer::TK_OP_ASSIGN_SHIFT_LEFT:
+			case PScriptTokenizer::TK_OP_ASSIGN_SHIFT_LEFT:
 				_VALIDATE_ASSIGN op = OperatorNode::OP_ASSIGN_SHIFT_LEFT;
 				break;
-			case PDScriptTokenizer::TK_OP_ASSIGN_SHIFT_RIGHT:
+			case PScriptTokenizer::TK_OP_ASSIGN_SHIFT_RIGHT:
 				_VALIDATE_ASSIGN op = OperatorNode::OP_ASSIGN_SHIFT_RIGHT;
 				break;
-			case PDScriptTokenizer::TK_OP_ASSIGN_BIT_AND:
+			case PScriptTokenizer::TK_OP_ASSIGN_BIT_AND:
 				_VALIDATE_ASSIGN op = OperatorNode::OP_ASSIGN_BIT_AND;
 				break;
-			case PDScriptTokenizer::TK_OP_ASSIGN_BIT_OR:
+			case PScriptTokenizer::TK_OP_ASSIGN_BIT_OR:
 				_VALIDATE_ASSIGN op = OperatorNode::OP_ASSIGN_BIT_OR;
 				break;
-			case PDScriptTokenizer::TK_OP_ASSIGN_BIT_XOR:
+			case PScriptTokenizer::TK_OP_ASSIGN_BIT_XOR:
 				_VALIDATE_ASSIGN op = OperatorNode::OP_ASSIGN_BIT_XOR;
 				break;
-			case PDScriptTokenizer::TK_OP_BIT_AND:
+			case PScriptTokenizer::TK_OP_BIT_AND:
 				op = OperatorNode::OP_BIT_AND;
 				break;
-			case PDScriptTokenizer::TK_OP_BIT_OR:
+			case PScriptTokenizer::TK_OP_BIT_OR:
 				op = OperatorNode::OP_BIT_OR;
 				break;
-			case PDScriptTokenizer::TK_OP_BIT_XOR:
+			case PScriptTokenizer::TK_OP_BIT_XOR:
 				op = OperatorNode::OP_BIT_XOR;
 				break;
-			case PDScriptTokenizer::TK_PR_IS:
+			case PScriptTokenizer::TK_PR_IS:
 				op = OperatorNode::OP_IS;
 				break;
-			case PDScriptTokenizer::TK_CF_IF:
+			case PScriptTokenizer::TK_CF_IF:
 				op = OperatorNode::OP_TERNARY_IF;
 				break;
-			case PDScriptTokenizer::TK_CF_ELSE:
+			case PScriptTokenizer::TK_CF_ELSE:
 				op = OperatorNode::OP_TERNARY_ELSE;
 				break;
 			default:
@@ -1592,7 +1592,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 					break;
 
 				default: {
-					_set_error("PDScriptParser bug, invalid operator in expression: " + itos(expression[i].op));
+					_set_error("PScriptParser bug, invalid operator in expression: " + itos(expression[i].op));
 					return nullptr;
 				}
 			}
@@ -1731,7 +1731,7 @@ PDScriptParser::Node *PDScriptParser::_parse_expression(Node *p_parent, bool p_s
 	return expression[0].node;
 }
 
-PDScriptParser::Node *PDScriptParser::_reduce_expression(Node *p_node, bool p_to_const) {
+PScriptParser::Node *PScriptParser::_reduce_expression(Node *p_node, bool p_to_const) {
 	switch (p_node->type) {
 		case Node::TYPE_BUILT_IN_FUNCTION: {
 			//many may probably be optimizable
@@ -1824,7 +1824,7 @@ PDScriptParser::Node *PDScriptParser::_reduce_expression(Node *p_node, bool p_to
 
 			} else if (op->op == OperatorNode::OP_CALL) {
 				//can reduce base type constructors
-				if ((op->arguments[0]->type == Node::TYPE_TYPE || (op->arguments[0]->type == Node::TYPE_BUILT_IN_FUNCTION && PDScriptFunctions::is_deterministic(static_cast<BuiltInFunctionNode *>(op->arguments[0])->function))) && last_not_constant == 0) {
+				if ((op->arguments[0]->type == Node::TYPE_TYPE || (op->arguments[0]->type == Node::TYPE_BUILT_IN_FUNCTION && PScriptFunctions::is_deterministic(static_cast<BuiltInFunctionNode *>(op->arguments[0])->function))) && last_not_constant == 0) {
 					//native type constructor or intrinsic function
 					const Variant **vptr = nullptr;
 					Vector<Variant *> ptrs;
@@ -1846,8 +1846,8 @@ PDScriptParser::Node *PDScriptParser::_reduce_expression(Node *p_node, bool p_to
 						v = Variant::construct(tn->vtype, vptr, ptrs.size(), ce);
 
 					} else {
-						PDScriptFunctions::Function func = static_cast<BuiltInFunctionNode *>(op->arguments[0])->function;
-						PDScriptFunctions::call(func, vptr, ptrs.size(), v, ce);
+						PScriptFunctions::Function func = static_cast<BuiltInFunctionNode *>(op->arguments[0])->function;
+						PScriptFunctions::call(func, vptr, ptrs.size(), v, ce);
 					}
 
 					if (ce.error != Variant::CallError::CALL_OK) {
@@ -1857,8 +1857,8 @@ PDScriptParser::Node *PDScriptParser::_reduce_expression(Node *p_node, bool p_to
 							errwhere = "'" + Variant::get_type_name(tn->vtype) + "' constructor";
 
 						} else {
-							PDScriptFunctions::Function func = static_cast<BuiltInFunctionNode *>(op->arguments[0])->function;
-							errwhere = String("'") + PDScriptFunctions::get_func_name(func) + "' intrinsic function";
+							PScriptFunctions::Function func = static_cast<BuiltInFunctionNode *>(op->arguments[0])->function;
+							errwhere = String("'") + PScriptFunctions::get_func_name(func) + "' intrinsic function";
 						}
 
 						switch (ce.error) {
@@ -2100,7 +2100,7 @@ PDScriptParser::Node *PDScriptParser::_reduce_expression(Node *p_node, bool p_to
 	}
 }
 
-PDScriptParser::Node *PDScriptParser::_parse_and_reduce_expression(Node *p_parent, bool p_static, bool p_reduce_const, bool p_allow_assign) {
+PScriptParser::Node *PScriptParser::_parse_and_reduce_expression(Node *p_parent, bool p_static, bool p_reduce_const, bool p_allow_assign) {
 	Node *expr = _parse_expression(p_parent, p_static, p_allow_assign, p_reduce_const);
 	if (!expr || error_set) {
 		return nullptr;
@@ -2112,7 +2112,7 @@ PDScriptParser::Node *PDScriptParser::_parse_and_reduce_expression(Node *p_paren
 	return expr;
 }
 
-bool PDScriptParser::_reduce_export_var_type(Variant &p_value, int p_line) {
+bool PScriptParser::_reduce_export_var_type(Variant &p_value, int p_line) {
 	if (p_value.get_type() == Variant::ARRAY) {
 		Array arr = p_value;
 		for (int i = 0; i < arr.size(); i++) {
@@ -2147,7 +2147,7 @@ bool PDScriptParser::_reduce_export_var_type(Variant &p_value, int p_line) {
 	return false;
 }
 
-const Variant *PDScriptParser::_try_to_find_constant_value_for_expression(const Node *p_expr) const {
+const Variant *PScriptParser::_try_to_find_constant_value_for_expression(const Node *p_expr) const {
 	if (p_expr->type == Node::TYPE_CONSTANT) {
 		return &(static_cast<const ConstantNode *>(p_expr)->value);
 	} else if (p_expr->type == Node::TYPE_IDENTIFIER) {
@@ -2163,7 +2163,7 @@ const Variant *PDScriptParser::_try_to_find_constant_value_for_expression(const 
 	} else if (p_expr->type == Node::TYPE_OPERATOR) {
 		// Check if expression `p_expr` is a named enum (e.g. `State.IDLE`).
 		const OperatorNode *op_node = static_cast<const OperatorNode *>(p_expr);
-		if (op_node->op == PDScriptParser::OperatorNode::OP_INDEX_NAMED) {
+		if (op_node->op == PScriptParser::OperatorNode::OP_INDEX_NAMED) {
 			const Vector<Node *> &op_args = op_node->arguments;
 			if (op_args.size() < 2) {
 				return nullptr; // Invalid expression.
@@ -2190,56 +2190,56 @@ const Variant *PDScriptParser::_try_to_find_constant_value_for_expression(const 
 	return nullptr;
 }
 
-bool PDScriptParser::_recover_from_completion() {
+bool PScriptParser::_recover_from_completion() {
 	if (!completion_found) {
 		return false; //can't recover if no completion
 	}
 	//skip stuff until newline
-	while (tokenizer->get_token() != PDScriptTokenizer::TK_NEWLINE && tokenizer->get_token() != PDScriptTokenizer::TK_EOF && tokenizer->get_token() != PDScriptTokenizer::TK_ERROR) {
+	while (tokenizer->get_token() != PScriptTokenizer::TK_NEWLINE && tokenizer->get_token() != PScriptTokenizer::TK_EOF && tokenizer->get_token() != PScriptTokenizer::TK_ERROR) {
 		tokenizer->advance();
 	}
 	completion_found = false;
 	error_set = false;
-	if (tokenizer->get_token() == PDScriptTokenizer::TK_ERROR) {
+	if (tokenizer->get_token() == PScriptTokenizer::TK_ERROR) {
 		error_set = true;
 	}
 
 	return true;
 }
 
-PDScriptParser::PatternNode *PDScriptParser::_parse_pattern(bool p_static) {
+PScriptParser::PatternNode *PScriptParser::_parse_pattern(bool p_static) {
 	PatternNode *pattern = alloc_node<PatternNode>();
 
-	PDScriptTokenizer::Token token = tokenizer->get_token();
+	PScriptTokenizer::Token token = tokenizer->get_token();
 	if (error_set) {
 		return nullptr;
 	}
 
-	if (token == PDScriptTokenizer::TK_EOF) {
+	if (token == PScriptTokenizer::TK_EOF) {
 		return nullptr;
 	}
 
 	switch (token) {
 		// array
-		case PDScriptTokenizer::TK_BRACKET_OPEN: {
+		case PScriptTokenizer::TK_BRACKET_OPEN: {
 			tokenizer->advance();
-			pattern->pt_type = PDScriptParser::PatternNode::PT_ARRAY;
+			pattern->pt_type = PScriptParser::PatternNode::PT_ARRAY;
 			while (true) {
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_BRACKET_CLOSE) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_BRACKET_CLOSE) {
 					tokenizer->advance();
 					break;
 				}
 
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_PERIOD && tokenizer->get_token(1) == PDScriptTokenizer::TK_PERIOD) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_PERIOD && tokenizer->get_token(1) == PScriptTokenizer::TK_PERIOD) {
 					// match everything
 					tokenizer->advance(2);
 					PatternNode *sub_pattern = alloc_node<PatternNode>();
-					sub_pattern->pt_type = PDScriptParser::PatternNode::PT_IGNORE_REST;
+					sub_pattern->pt_type = PScriptParser::PatternNode::PT_IGNORE_REST;
 					pattern->array.push_back(sub_pattern);
-					if (tokenizer->get_token() == PDScriptTokenizer::TK_COMMA && tokenizer->get_token(1) == PDScriptTokenizer::TK_BRACKET_CLOSE) {
+					if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA && tokenizer->get_token(1) == PScriptTokenizer::TK_BRACKET_CLOSE) {
 						tokenizer->advance(2);
 						break;
-					} else if (tokenizer->get_token() == PDScriptTokenizer::TK_BRACKET_CLOSE) {
+					} else if (tokenizer->get_token() == PScriptTokenizer::TK_BRACKET_CLOSE) {
 						tokenizer->advance(1);
 						break;
 					} else {
@@ -2255,10 +2255,10 @@ PDScriptParser::PatternNode *PDScriptParser::_parse_pattern(bool p_static) {
 
 				pattern->array.push_back(sub_pattern);
 
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_COMMA) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
 					tokenizer->advance();
 					continue;
-				} else if (tokenizer->get_token() == PDScriptTokenizer::TK_BRACKET_CLOSE) {
+				} else if (tokenizer->get_token() == PScriptTokenizer::TK_BRACKET_CLOSE) {
 					tokenizer->advance();
 					break;
 				} else {
@@ -2268,13 +2268,13 @@ PDScriptParser::PatternNode *PDScriptParser::_parse_pattern(bool p_static) {
 			}
 		} break;
 		// bind
-		case PDScriptTokenizer::TK_PR_VAR: {
+		case PScriptTokenizer::TK_PR_VAR: {
 			tokenizer->advance();
 			if (!tokenizer->is_token_literal()) {
 				_set_error("Expected identifier for binding variable name.");
 				return nullptr;
 			}
-			pattern->pt_type = PDScriptParser::PatternNode::PT_BIND;
+			pattern->pt_type = PScriptParser::PatternNode::PT_BIND;
 			pattern->bind = tokenizer->get_token_literal();
 			// Check if variable name is already used
 			BlockNode *bl = current_block;
@@ -2292,25 +2292,25 @@ PDScriptParser::PatternNode *PDScriptParser::_parse_pattern(bool p_static) {
 			tokenizer->advance();
 		} break;
 		// dictionary
-		case PDScriptTokenizer::TK_CURLY_BRACKET_OPEN: {
+		case PScriptTokenizer::TK_CURLY_BRACKET_OPEN: {
 			tokenizer->advance();
-			pattern->pt_type = PDScriptParser::PatternNode::PT_DICTIONARY;
+			pattern->pt_type = PScriptParser::PatternNode::PT_DICTIONARY;
 			while (true) {
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
 					tokenizer->advance();
 					break;
 				}
 
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_PERIOD && tokenizer->get_token(1) == PDScriptTokenizer::TK_PERIOD) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_PERIOD && tokenizer->get_token(1) == PScriptTokenizer::TK_PERIOD) {
 					// match everything
 					tokenizer->advance(2);
 					PatternNode *sub_pattern = alloc_node<PatternNode>();
 					sub_pattern->pt_type = PatternNode::PT_IGNORE_REST;
 					pattern->array.push_back(sub_pattern);
-					if (tokenizer->get_token() == PDScriptTokenizer::TK_COMMA && tokenizer->get_token(1) == PDScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
+					if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA && tokenizer->get_token(1) == PScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
 						tokenizer->advance(2);
 						break;
-					} else if (tokenizer->get_token() == PDScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
+					} else if (tokenizer->get_token() == PScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
 						tokenizer->advance(1);
 						break;
 					} else {
@@ -2325,12 +2325,12 @@ PDScriptParser::PatternNode *PDScriptParser::_parse_pattern(bool p_static) {
 					return nullptr;
 				}
 
-				if (key->type != PDScriptParser::Node::TYPE_CONSTANT) {
+				if (key->type != PScriptParser::Node::TYPE_CONSTANT) {
 					_set_error("Not a constant expression as key");
 					return nullptr;
 				}
 
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_COLON) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_COLON) {
 					tokenizer->advance();
 
 					PatternNode *value = _parse_pattern(p_static);
@@ -2344,10 +2344,10 @@ PDScriptParser::PatternNode *PDScriptParser::_parse_pattern(bool p_static) {
 					pattern->dictionary.insert(static_cast<ConstantNode *>(key), NULL);
 				}
 
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_COMMA) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
 					tokenizer->advance();
 					continue;
-				} else if (tokenizer->get_token() == PDScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
+				} else if (tokenizer->get_token() == PScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
 					tokenizer->advance();
 					break;
 				} else {
@@ -2356,7 +2356,7 @@ PDScriptParser::PatternNode *PDScriptParser::_parse_pattern(bool p_static) {
 				}
 			}
 		} break;
-		case PDScriptTokenizer::TK_WILDCARD: {
+		case PScriptTokenizer::TK_WILDCARD: {
 			tokenizer->advance();
 			pattern->pt_type = PatternNode::PT_WILDCARD;
 		} break;
@@ -2400,7 +2400,7 @@ PDScriptParser::PatternNode *PDScriptParser::_parse_pattern(bool p_static) {
 	return pattern;
 }
 
-void PDScriptParser::_parse_pattern_block(BlockNode *p_block, Vector<PatternBranchNode *> &p_branches, bool p_static) {
+void PScriptParser::_parse_pattern_block(BlockNode *p_block, Vector<PatternBranchNode *> &p_branches, bool p_static) {
 	IndentLevel current_level = indent_level.back()->get();
 
 	p_block->has_return = true;
@@ -2408,11 +2408,11 @@ void PDScriptParser::_parse_pattern_block(BlockNode *p_block, Vector<PatternBran
 	bool catch_all_appeared = false;
 
 	while (true) {
-		while (tokenizer->get_token() == PDScriptTokenizer::TK_NEWLINE && _parse_newline()) {
+		while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE && _parse_newline()) {
 			;
 		}
 
-		// PDScriptTokenizer::Token token = tokenizer->get_token();
+		// PScriptTokenizer::Token token = tokenizer->get_token();
 		if (error_set) {
 			return;
 		}
@@ -2440,12 +2440,12 @@ void PDScriptParser::_parse_pattern_block(BlockNode *p_block, Vector<PatternBran
 #ifdef DEBUG_ENABLED
 		// Branches after a wildcard or binding are unreachable
 		if (catch_all_appeared && !current_function->has_unreachable_code) {
-			_add_warning(PDScriptWarning::UNREACHABLE_CODE, -1, current_function->name.operator String());
+			_add_warning(PScriptWarning::UNREACHABLE_CODE, -1, current_function->name.operator String());
 			current_function->has_unreachable_code = true;
 		}
 #endif
 
-		while (tokenizer->get_token() == PDScriptTokenizer::TK_COMMA) {
+		while (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
 			tokenizer->advance();
 			branch->patterns.push_back(_parse_pattern(p_static));
 			if (!branch->patterns[branch->patterns.size() - 1]) {
@@ -2486,7 +2486,7 @@ void PDScriptParser::_parse_pattern_block(BlockNode *p_block, Vector<PatternBran
 	}
 }
 
-void PDScriptParser::_generate_pattern(PatternNode *p_pattern, Node *p_node_to_match, Node *&p_resulting_node, RBMap<StringName, Node *> &p_bindings) {
+void PScriptParser::_generate_pattern(PatternNode *p_pattern, Node *p_node_to_match, Node *&p_resulting_node, RBMap<StringName, Node *> &p_bindings) {
 	const DataType &to_match_type = p_node_to_match->get_datatype();
 
 	switch (p_pattern->pt_type) {
@@ -2508,7 +2508,7 @@ void PDScriptParser::_generate_pattern(PatternNode *p_pattern, Node *p_node_to_m
 			} else {
 				// runtime typecheck
 				BuiltInFunctionNode *typeof_node = alloc_node<BuiltInFunctionNode>();
-				typeof_node->function = PDScriptFunctions::TYPE_OF;
+				typeof_node->function = PScriptFunctions::TYPE_OF;
 
 				OperatorNode *typeof_match_value = alloc_node<OperatorNode>();
 				typeof_match_value->op = OperatorNode::OP_CALL;
@@ -2576,7 +2576,7 @@ void PDScriptParser::_generate_pattern(PatternNode *p_pattern, Node *p_node_to_m
 				} else {
 					// runtime typecheck
 					BuiltInFunctionNode *typeof_node = alloc_node<BuiltInFunctionNode>();
-					typeof_node->function = PDScriptFunctions::TYPE_OF;
+					typeof_node->function = PScriptFunctions::TYPE_OF;
 
 					OperatorNode *typeof_match_value = alloc_node<OperatorNode>();
 					typeof_match_value->op = OperatorNode::OP_CALL;
@@ -2668,7 +2668,7 @@ void PDScriptParser::_generate_pattern(PatternNode *p_pattern, Node *p_node_to_m
 				} else {
 					// runtime typecheck
 					BuiltInFunctionNode *typeof_node = alloc_node<BuiltInFunctionNode>();
-					typeof_node->function = PDScriptFunctions::TYPE_OF;
+					typeof_node->function = PScriptFunctions::TYPE_OF;
 
 					OperatorNode *typeof_match_value = alloc_node<OperatorNode>();
 					typeof_match_value->op = OperatorNode::OP_CALL;
@@ -2768,7 +2768,7 @@ void PDScriptParser::_generate_pattern(PatternNode *p_pattern, Node *p_node_to_m
 	}
 }
 
-void PDScriptParser::_transform_match_statment(MatchNode *p_match_statement) {
+void PScriptParser::_transform_match_statment(MatchNode *p_match_statement) {
 	IdentifierNode *id = alloc_node<IdentifierNode>();
 	id->name = "#match_value";
 	id->line = p_match_statement->line;
@@ -2865,7 +2865,7 @@ void PDScriptParser::_transform_match_statment(MatchNode *p_match_statement) {
 	}
 }
 
-void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
+void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 	IndentLevel current_level = indent_level.back()->get();
 
 #ifdef DEBUG_ENABLED
@@ -2893,7 +2893,7 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 		}
 		is_first_line = false;
 
-		PDScriptTokenizer::Token token = tokenizer->get_token();
+		PScriptTokenizer::Token token = tokenizer->get_token();
 		if (error_set) {
 			return;
 		}
@@ -2912,30 +2912,30 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 
 #ifdef DEBUG_ENABLED
 		switch (token) {
-			case PDScriptTokenizer::TK_EOF:
-			case PDScriptTokenizer::TK_ERROR:
-			case PDScriptTokenizer::TK_NEWLINE:
-			case PDScriptTokenizer::TK_CF_PASS: {
+			case PScriptTokenizer::TK_EOF:
+			case PScriptTokenizer::TK_ERROR:
+			case PScriptTokenizer::TK_NEWLINE:
+			case PScriptTokenizer::TK_CF_PASS: {
 				// will check later
 			} break;
 			default: {
 				if (p_block->has_return && !current_function->has_unreachable_code) {
-					_add_warning(PDScriptWarning::UNREACHABLE_CODE, -1, current_function->name.operator String());
+					_add_warning(PScriptWarning::UNREACHABLE_CODE, -1, current_function->name.operator String());
 					current_function->has_unreachable_code = true;
 				}
 			} break;
 		}
 #endif // DEBUG_ENABLED
 		switch (token) {
-			case PDScriptTokenizer::TK_EOF:
+			case PScriptTokenizer::TK_EOF:
 				p_block->end_line = tokenizer->get_token_line();
-			case PDScriptTokenizer::TK_ERROR: {
+			case PScriptTokenizer::TK_ERROR: {
 				return; //go back
 
 				//end of file!
 
 			} break;
-			case PDScriptTokenizer::TK_NEWLINE: {
+			case PScriptTokenizer::TK_NEWLINE: {
 				int line = tokenizer->get_token_line();
 
 				if (!_parse_newline()) {
@@ -2952,19 +2952,19 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				p_block->statements.push_back(nl2);
 
 			} break;
-			case PDScriptTokenizer::TK_CF_PASS: {
-				if (tokenizer->get_token(1) != PDScriptTokenizer::TK_SEMICOLON && tokenizer->get_token(1) != PDScriptTokenizer::TK_NEWLINE && tokenizer->get_token(1) != PDScriptTokenizer::TK_EOF) {
+			case PScriptTokenizer::TK_CF_PASS: {
+				if (tokenizer->get_token(1) != PScriptTokenizer::TK_SEMICOLON && tokenizer->get_token(1) != PScriptTokenizer::TK_NEWLINE && tokenizer->get_token(1) != PScriptTokenizer::TK_EOF) {
 					_set_error("Expected \";\" or a line break.");
 					return;
 				}
 				_mark_line_as_safe(tokenizer->get_token_line());
 				tokenizer->advance();
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_SEMICOLON) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_SEMICOLON) {
 					// Ignore semicolon after 'pass'.
 					tokenizer->advance();
 				}
 			} break;
-			case PDScriptTokenizer::TK_PR_VAR: {
+			case PScriptTokenizer::TK_PR_VAR: {
 				// Variable declaration and (eventual) initialization.
 
 				tokenizer->advance();
@@ -3000,8 +3000,8 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 
 				Node *assigned = nullptr;
 
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_COLON) {
-					if (tokenizer->get_token(1) == PDScriptTokenizer::TK_OP_ASSIGN) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_COLON) {
+					if (tokenizer->get_token(1) == PScriptTokenizer::TK_OP_ASSIGN) {
 						lv->datatype = DataType();
 						lv->datatype.infer_type = true;
 						tokenizer->advance();
@@ -3011,7 +3011,7 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 					}
 				}
 
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_OP_ASSIGN) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_OP_ASSIGN) {
 					tokenizer->advance();
 					Node *subexpr = _parse_and_reduce_expression(p_block, p_static);
 					if (!subexpr) {
@@ -3049,7 +3049,7 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				}
 
 			} break;
-			case PDScriptTokenizer::TK_CF_IF: {
+			case PScriptTokenizer::TK_CF_IF: {
 				tokenizer->advance();
 
 				Node *condition = _parse_and_reduce_expression(p_block, p_static);
@@ -3090,7 +3090,7 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				bool have_else = false;
 
 				while (true) {
-					while (tokenizer->get_token() == PDScriptTokenizer::TK_NEWLINE && _parse_newline()) {
+					while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE && _parse_newline()) {
 						;
 					}
 
@@ -3099,7 +3099,7 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 						return;
 					}
 
-					if (tokenizer->get_token() == PDScriptTokenizer::TK_CF_ELIF) {
+					if (tokenizer->get_token() == PScriptTokenizer::TK_CF_ELIF) {
 						if (indent_level.back()->get().indent > current_level.indent) {
 							_set_error("Invalid indentation.");
 							return;
@@ -3146,7 +3146,7 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 
 						all_have_return = all_have_return && cf_else->body->has_return;
 
-					} else if (tokenizer->get_token() == PDScriptTokenizer::TK_CF_ELSE) {
+					} else if (tokenizer->get_token() == PScriptTokenizer::TK_CF_ELSE) {
 						if (indent_level.back()->get().indent > current_level.indent) {
 							_set_error("Invalid indentation.");
 							return;
@@ -3184,7 +3184,7 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				p_block->has_return = all_have_return && have_else;
 
 			} break;
-			case PDScriptTokenizer::TK_CF_WHILE: {
+			case PScriptTokenizer::TK_CF_WHILE: {
 				tokenizer->advance();
 				Node *condition2 = _parse_and_reduce_expression(p_block, p_static);
 				if (!condition2) {
@@ -3219,7 +3219,7 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				}
 				p_block->statements.push_back(cf_while);
 			} break;
-			case PDScriptTokenizer::TK_CF_FOR: {
+			case PScriptTokenizer::TK_CF_FOR: {
 				tokenizer->advance();
 
 				if (!tokenizer->is_token_literal(0, true)) {
@@ -3231,7 +3231,7 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 #ifdef DEBUG_ENABLED
 				for (int j = 0; j < current_class->variables.size(); j++) {
 					if (current_class->variables[j].identifier == id->name) {
-						_add_warning(PDScriptWarning::SHADOWED_VARIABLE, id->line, id->name, itos(current_class->variables[j].line));
+						_add_warning(PScriptWarning::SHADOWED_VARIABLE, id->line, id->name, itos(current_class->variables[j].line));
 					}
 				}
 #endif // DEBUG_ENABLED
@@ -3247,7 +3247,7 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 
 				tokenizer->advance();
 
-				if (tokenizer->get_token() != PDScriptTokenizer::TK_OP_IN) {
+				if (tokenizer->get_token() != PScriptTokenizer::TK_OP_IN) {
 					_set_error("\"in\" expected after identifier.");
 					return;
 				}
@@ -3266,7 +3266,7 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 
 				if (container->type == Node::TYPE_OPERATOR) {
 					OperatorNode *op = static_cast<OperatorNode *>(container);
-					if (op->op == OperatorNode::OP_CALL && op->arguments[0]->type == Node::TYPE_BUILT_IN_FUNCTION && static_cast<BuiltInFunctionNode *>(op->arguments[0])->function == PDScriptFunctions::GEN_RANGE) {
+					if (op->op == OperatorNode::OP_CALL && op->arguments[0]->type == Node::TYPE_BUILT_IN_FUNCTION && static_cast<BuiltInFunctionNode *>(op->arguments[0])->function == PScriptFunctions::GEN_RANGE) {
 						//iterating a range, so see if range() can be optimized without allocating memory, by replacing it by vectors (which can work as iterable too!)
 
 						Vector<Node *> args;
@@ -3375,7 +3375,7 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				}
 				p_block->statements.push_back(cf_for);
 			} break;
-			case PDScriptTokenizer::TK_CF_CONTINUE: {
+			case PScriptTokenizer::TK_CF_CONTINUE: {
 				BlockNode *upper_block = p_block;
 				bool is_continue_valid = false;
 				while (upper_block) {
@@ -3401,7 +3401,7 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 					return;
 				}
 			} break;
-			case PDScriptTokenizer::TK_CF_BREAK: {
+			case PScriptTokenizer::TK_CF_BREAK: {
 				BlockNode *upper_block = p_block;
 				bool is_break_valid = false;
 				while (upper_block) {
@@ -3427,13 +3427,13 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 					return;
 				}
 			} break;
-			case PDScriptTokenizer::TK_CF_RETURN: {
+			case PScriptTokenizer::TK_CF_RETURN: {
 				tokenizer->advance();
 				ControlFlowNode *cf_return = alloc_node<ControlFlowNode>();
 				cf_return->cf_type = ControlFlowNode::CF_RETURN;
 				cf_return->line = tokenizer->get_token_line(-1);
 
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_SEMICOLON || tokenizer->get_token() == PDScriptTokenizer::TK_NEWLINE || tokenizer->get_token() == PDScriptTokenizer::TK_EOF) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_SEMICOLON || tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE || tokenizer->get_token() == PScriptTokenizer::TK_EOF) {
 					//expect end of statement
 					p_block->statements.push_back(cf_return);
 					if (!_end_statement()) {
@@ -3458,7 +3458,7 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				p_block->has_return = true;
 
 			} break;
-			case PDScriptTokenizer::TK_CF_MATCH: {
+			case PScriptTokenizer::TK_CF_MATCH: {
 				tokenizer->advance();
 
 				MatchNode *match_node = alloc_node<MatchNode>();
@@ -3502,10 +3502,10 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 
 				_end_statement();
 			} break;
-			case PDScriptTokenizer::TK_PR_ASSERT: {
+			case PScriptTokenizer::TK_PR_ASSERT: {
 				tokenizer->advance();
 
-				if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_OPEN) {
+				if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_OPEN) {
 					_set_error("Expected '(' after assert");
 					return;
 				}
@@ -3544,7 +3544,7 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 					return;
 				}
 			} break;
-			case PDScriptTokenizer::TK_PR_BREAKPOINT: {
+			case PScriptTokenizer::TK_PR_BREAKPOINT: {
 				tokenizer->advance();
 				BreakpointNode *bn = alloc_node<BreakpointNode>();
 				p_block->statements.push_back(bn);
@@ -3565,7 +3565,7 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				p_block->statements.push_back(expression);
 				if (!_end_statement()) {
 					// Attempt to guess a better error message if the user "retypes" a variable
-					if (tokenizer->get_token() == PDScriptTokenizer::TK_COLON && tokenizer->get_token(1) == PDScriptTokenizer::TK_OP_ASSIGN) {
+					if (tokenizer->get_token() == PScriptTokenizer::TK_COLON && tokenizer->get_token(1) == PScriptTokenizer::TK_OP_ASSIGN) {
 						_set_error("Unexpected ':=', use '=' instead. Expected end of statement after expression.");
 					} else {
 						_set_error(vformat("Expected end of statement after expression, got %s instead.", tokenizer->get_token_name(tokenizer->get_token())));
@@ -3578,8 +3578,8 @@ void PDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 	}
 }
 
-bool PDScriptParser::_parse_newline() {
-	if (tokenizer->get_token(1) != PDScriptTokenizer::TK_EOF && tokenizer->get_token(1) != PDScriptTokenizer::TK_NEWLINE) {
+bool PScriptParser::_parse_newline() {
+	if (tokenizer->get_token(1) != PScriptTokenizer::TK_EOF && tokenizer->get_token(1) != PScriptTokenizer::TK_NEWLINE) {
 		IndentLevel current_level = indent_level.back()->get();
 		int indent = tokenizer->get_token_line_indent();
 		int tabs = tokenizer->get_token_line_tab_indent();
@@ -3627,7 +3627,7 @@ bool PDScriptParser::_parse_newline() {
 	return true;
 }
 
-void PDScriptParser::_parse_extends(ClassNode *p_class) {
+void PScriptParser::_parse_extends(ClassNode *p_class) {
 	if (p_class->extends_used) {
 		_set_error("\"extends\" can only be present once per script.");
 		return;
@@ -3642,14 +3642,14 @@ void PDScriptParser::_parse_extends(ClassNode *p_class) {
 
 	tokenizer->advance();
 
-	if (tokenizer->get_token() == PDScriptTokenizer::TK_BUILT_IN_TYPE && tokenizer->get_token_type() == Variant::OBJECT) {
+	if (tokenizer->get_token() == PScriptTokenizer::TK_BUILT_IN_TYPE && tokenizer->get_token_type() == Variant::OBJECT) {
 		p_class->extends_class.push_back(Variant::get_type_name(Variant::OBJECT));
 		tokenizer->advance();
 		return;
 	}
 
 	// see if inheritance happens from a file
-	if (tokenizer->get_token() == PDScriptTokenizer::TK_CONSTANT) {
+	if (tokenizer->get_token() == PScriptTokenizer::TK_CONSTANT) {
 		Variant constant = tokenizer->get_token_constant();
 		if (constant.get_type() != Variant::STRING) {
 			_set_error("\"extends\" constant must be a string.");
@@ -3666,7 +3666,7 @@ void PDScriptParser::_parse_extends(ClassNode *p_class) {
 		}
 		dependencies.push_back(parent);
 
-		if (tokenizer->get_token() != PDScriptTokenizer::TK_PERIOD) {
+		if (tokenizer->get_token() != PScriptTokenizer::TK_PERIOD) {
 			return;
 		} else {
 			tokenizer->advance();
@@ -3675,13 +3675,13 @@ void PDScriptParser::_parse_extends(ClassNode *p_class) {
 
 	while (true) {
 		switch (tokenizer->get_token()) {
-			case PDScriptTokenizer::TK_IDENTIFIER: {
+			case PScriptTokenizer::TK_IDENTIFIER: {
 				StringName identifier = tokenizer->get_token_identifier();
 				p_class->extends_class.push_back(identifier);
 			} break;
 
-			case PDScriptTokenizer::TK_CURSOR:
-			case PDScriptTokenizer::TK_PERIOD:
+			case PScriptTokenizer::TK_CURSOR:
+			case PScriptTokenizer::TK_PERIOD:
 				break;
 
 			default: {
@@ -3693,10 +3693,10 @@ void PDScriptParser::_parse_extends(ClassNode *p_class) {
 		tokenizer->advance(1);
 
 		switch (tokenizer->get_token()) {
-			case PDScriptTokenizer::TK_IDENTIFIER:
-			case PDScriptTokenizer::TK_PERIOD:
+			case PScriptTokenizer::TK_IDENTIFIER:
+			case PScriptTokenizer::TK_PERIOD:
 				continue;
-			case PDScriptTokenizer::TK_CURSOR:
+			case PScriptTokenizer::TK_CURSOR:
 				completion_type = COMPLETION_EXTENDS;
 				completion_class = current_class;
 				completion_function = current_function;
@@ -3711,11 +3711,11 @@ void PDScriptParser::_parse_extends(ClassNode *p_class) {
 	}
 }
 
-void PDScriptParser::_parse_class(ClassNode *p_class) {
+void PScriptParser::_parse_class(ClassNode *p_class) {
 	IndentLevel current_level = indent_level.back()->get();
 
 	while (true) {
-		PDScriptTokenizer::Token token = tokenizer->get_token();
+		PScriptTokenizer::Token token = tokenizer->get_token();
 		if (error_set) {
 			return;
 		}
@@ -3726,16 +3726,16 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 		}
 
 		switch (token) {
-			case PDScriptTokenizer::TK_CURSOR: {
+			case PScriptTokenizer::TK_CURSOR: {
 				tokenizer->advance();
 			} break;
-			case PDScriptTokenizer::TK_EOF:
+			case PScriptTokenizer::TK_EOF:
 				p_class->end_line = tokenizer->get_token_line();
-			case PDScriptTokenizer::TK_ERROR: {
+			case PScriptTokenizer::TK_ERROR: {
 				return; //go back
 				//end of file!
 			} break;
-			case PDScriptTokenizer::TK_NEWLINE: {
+			case PScriptTokenizer::TK_NEWLINE: {
 				if (!_parse_newline()) {
 					if (!error_set) {
 						p_class->end_line = tokenizer->get_token_line();
@@ -3743,7 +3743,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 					return;
 				}
 			} break;
-			case PDScriptTokenizer::TK_PR_EXTENDS: {
+			case PScriptTokenizer::TK_PR_EXTENDS: {
 				_mark_line_as_safe(tokenizer->get_token_line());
 				_parse_extends(p_class);
 				if (error_set) {
@@ -3755,7 +3755,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 				}
 
 			} break;
-			case PDScriptTokenizer::TK_PR_CLASS_NAME: {
+			case PScriptTokenizer::TK_PR_CLASS_NAME: {
 				_mark_line_as_safe(tokenizer->get_token_line());
 				if (p_class->owner) {
 					_set_error("\"class_name\" is only valid for the main class namespace.");
@@ -3765,7 +3765,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 					_set_error("\"class_name\" isn't allowed in built-in scripts.");
 					return;
 				}
-				if (tokenizer->get_token(1) != PDScriptTokenizer::TK_IDENTIFIER) {
+				if (tokenizer->get_token(1) != PScriptTokenizer::TK_IDENTIFIER) {
 					_set_error("\"class_name\" syntax: \"class_name <UniqueName>\"");
 					return;
 				}
@@ -3799,10 +3799,10 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 
 				tokenizer->advance(2);
 
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_COMMA) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
 					tokenizer->advance();
 
-					if ((tokenizer->get_token() == PDScriptTokenizer::TK_CONSTANT && tokenizer->get_token_constant().get_type() == Variant::STRING)) {
+					if ((tokenizer->get_token() == PScriptTokenizer::TK_CONSTANT && tokenizer->get_token_constant().get_type() == Variant::STRING)) {
 #ifdef TOOLS_ENABLED
 						if (Engine::get_singleton()->is_editor_hint()) {
 							Variant constant = tokenizer->get_token_constant();
@@ -3824,13 +3824,13 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 						return;
 					}
 
-				} else if (tokenizer->get_token() == PDScriptTokenizer::TK_CONSTANT) {
+				} else if (tokenizer->get_token() == PScriptTokenizer::TK_CONSTANT) {
 					_set_error("The class icon must be separated by a comma.");
 					return;
 				}
 
 			} break;
-			case PDScriptTokenizer::TK_PR_TOOL: {
+			case PScriptTokenizer::TK_PR_TOOL: {
 				if (p_class->tool) {
 					_set_error("The \"tool\" keyword can only be present once per script.");
 					return;
@@ -3840,12 +3840,12 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 				tokenizer->advance();
 
 			} break;
-			case PDScriptTokenizer::TK_PR_CLASS: {
+			case PScriptTokenizer::TK_PR_CLASS: {
 				//class inside class :D
 
 				StringName name;
 
-				if (tokenizer->get_token(1) != PDScriptTokenizer::TK_IDENTIFIER) {
+				if (tokenizer->get_token(1) != PScriptTokenizer::TK_IDENTIFIER) {
 					_set_error("\"class\" syntax: \"class <Name>:\" or \"class <Name> extends <BaseClass>:\"");
 					return;
 				}
@@ -3893,7 +3893,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 
 				p_class->subclasses.push_back(newclass);
 
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_PR_EXTENDS) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_PR_EXTENDS) {
 					_parse_extends(newclass);
 					if (error_set) {
 						return;
@@ -3910,25 +3910,25 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 
 			} break;
 			/* this is for functions....
-			case PDScriptTokenizer::TK_CF_PASS: {
+			case PScriptTokenizer::TK_CF_PASS: {
 
 				tokenizer->advance(1);
 			} break;
 			*/
-			case PDScriptTokenizer::TK_PR_STATIC: {
+			case PScriptTokenizer::TK_PR_STATIC: {
 				tokenizer->advance();
-				if (tokenizer->get_token() != PDScriptTokenizer::TK_PR_FUNCTION) {
+				if (tokenizer->get_token() != PScriptTokenizer::TK_PR_FUNCTION) {
 					_set_error("Expected \"func\".");
 					return;
 				}
 
 				FALLTHROUGH;
 			}
-			case PDScriptTokenizer::TK_PR_FUNCTION: {
+			case PScriptTokenizer::TK_PR_FUNCTION: {
 				bool _static = false;
 				pending_newline = -1;
 
-				if (tokenizer->get_token(-1) == PDScriptTokenizer::TK_PR_STATIC) {
+				if (tokenizer->get_token(-1) == PScriptTokenizer::TK_PR_STATIC) {
 					_static = true;
 				}
 
@@ -3956,21 +3956,21 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 
 #ifdef DEBUG_ENABLED
 				if (p_class->constant_expressions.has(name)) {
-					_add_warning(PDScriptWarning::FUNCTION_CONFLICTS_CONSTANT, -1, name);
+					_add_warning(PScriptWarning::FUNCTION_CONFLICTS_CONSTANT, -1, name);
 				}
 				for (int i = 0; i < p_class->variables.size(); i++) {
 					if (p_class->variables[i].identifier == name) {
-						_add_warning(PDScriptWarning::FUNCTION_CONFLICTS_VARIABLE, -1, name);
+						_add_warning(PScriptWarning::FUNCTION_CONFLICTS_VARIABLE, -1, name);
 					}
 				}
 				for (int i = 0; i < p_class->subclasses.size(); i++) {
 					if (p_class->subclasses[i]->name == name) {
-						_add_warning(PDScriptWarning::FUNCTION_CONFLICTS_CONSTANT, -1, name);
+						_add_warning(PScriptWarning::FUNCTION_CONFLICTS_CONSTANT, -1, name);
 					}
 				}
 #endif // DEBUG_ENABLED
 
-				if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_OPEN) {
+				if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_OPEN) {
 					_set_error("Expected \"(\" after the identifier (syntax: \"func <identifier>([arguments]):\" ).");
 					return;
 				}
@@ -3986,16 +3986,16 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 
 				int fnline = tokenizer->get_token_line();
 
-				if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+				if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 					//has arguments
 					bool defaulting = false;
 					while (true) {
-						if (tokenizer->get_token() == PDScriptTokenizer::TK_NEWLINE) {
+						if (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
 							tokenizer->advance();
 							continue;
 						}
 
-						if (tokenizer->get_token() == PDScriptTokenizer::TK_PR_VAR) {
+						if (tokenizer->get_token() == PScriptTokenizer::TK_PR_VAR) {
 							tokenizer->advance(); //var before the identifier is allowed
 						}
 
@@ -4019,8 +4019,8 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 						tokenizer->advance();
 
 						DataType argtype;
-						if (tokenizer->get_token() == PDScriptTokenizer::TK_COLON) {
-							if (tokenizer->get_token(1) == PDScriptTokenizer::TK_OP_ASSIGN) {
+						if (tokenizer->get_token() == PScriptTokenizer::TK_COLON) {
+							if (tokenizer->get_token(1) == PScriptTokenizer::TK_OP_ASSIGN) {
 								argtype.infer_type = true;
 								tokenizer->advance();
 							} else if (!_parse_type(argtype)) {
@@ -4030,14 +4030,14 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 						}
 						argument_types.push_back(argtype);
 
-						if (defaulting && tokenizer->get_token() != PDScriptTokenizer::TK_OP_ASSIGN) {
+						if (defaulting && tokenizer->get_token() != PScriptTokenizer::TK_OP_ASSIGN) {
 							_set_error("Default parameter expected.");
 							return;
 						}
 
 						//tokenizer->advance();
 
-						if (tokenizer->get_token() == PDScriptTokenizer::TK_OP_ASSIGN) {
+						if (tokenizer->get_token() == PScriptTokenizer::TK_OP_ASSIGN) {
 							defaulting = true;
 							tokenizer->advance(1);
 							Node *defval = _parse_and_reduce_expression(p_class, _static);
@@ -4064,14 +4064,14 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 							default_values.push_back(on);
 						}
 
-						while (tokenizer->get_token() == PDScriptTokenizer::TK_NEWLINE) {
+						while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
 							tokenizer->advance();
 						}
 
-						if (tokenizer->get_token() == PDScriptTokenizer::TK_COMMA) {
+						if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
 							tokenizer->advance();
 							continue;
-						} else if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+						} else if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 							_set_error("Expected \",\" or \")\".");
 							return;
 						}
@@ -4111,15 +4111,15 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 						id->name = "_init";
 						cparent->arguments.push_back(id);
 
-						if (tokenizer->get_token() == PDScriptTokenizer::TK_PERIOD) {
+						if (tokenizer->get_token() == PScriptTokenizer::TK_PERIOD) {
 							tokenizer->advance();
-							if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_OPEN) {
+							if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_OPEN) {
 								_set_error("Expected \"(\" for parent constructor arguments.");
 								return;
 							}
 							tokenizer->advance();
 
-							if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+							if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 								//has arguments
 								parenthesis++;
 								while (true) {
@@ -4131,10 +4131,10 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 									current_function = nullptr;
 									cparent->arguments.push_back(arg);
 
-									if (tokenizer->get_token() == PDScriptTokenizer::TK_COMMA) {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
 										tokenizer->advance();
 										continue;
-									} else if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+									} else if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 										_set_error("Expected \",\" or \")\".");
 										return;
 									}
@@ -4147,7 +4147,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 							tokenizer->advance();
 						}
 					} else {
-						if (tokenizer->get_token() == PDScriptTokenizer::TK_PERIOD) {
+						if (tokenizer->get_token() == PScriptTokenizer::TK_PERIOD) {
 							_set_error("Parent constructor call found for a class without inheritance.");
 							return;
 						}
@@ -4155,7 +4155,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 				}
 
 				DataType return_type;
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_FORWARD_ARROW) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_FORWARD_ARROW) {
 					if (!_parse_type(return_type, true)) {
 						_set_error("Expected a return type for the function.");
 						return;
@@ -4183,7 +4183,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 
 				//arguments
 			} break;
-			case PDScriptTokenizer::TK_PR_SIGNAL: {
+			case PScriptTokenizer::TK_PR_SIGNAL: {
 				_mark_line_as_safe(tokenizer->get_token_line());
 				tokenizer->advance();
 
@@ -4206,15 +4206,15 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 
 				tokenizer->advance();
 
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_PARENTHESIS_OPEN) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_OPEN) {
 					tokenizer->advance();
 					while (true) {
-						if (tokenizer->get_token() == PDScriptTokenizer::TK_NEWLINE) {
+						if (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
 							tokenizer->advance();
 							continue;
 						}
 
-						if (tokenizer->get_token() == PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+						if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 							tokenizer->advance();
 							break;
 						}
@@ -4227,13 +4227,13 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 						sig.arguments.push_back(tokenizer->get_token_identifier());
 						tokenizer->advance();
 
-						while (tokenizer->get_token() == PDScriptTokenizer::TK_NEWLINE) {
+						while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
 							tokenizer->advance();
 						}
 
-						if (tokenizer->get_token() == PDScriptTokenizer::TK_COMMA) {
+						if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
 							tokenizer->advance();
-						} else if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+						} else if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 							_set_error("Expected \",\" or \")\" after a \"signal\" parameter identifier.");
 							return;
 						}
@@ -4247,14 +4247,14 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 					return;
 				}
 			} break;
-			case PDScriptTokenizer::TK_PR_EXPORT: {
+			case PScriptTokenizer::TK_PR_EXPORT: {
 				tokenizer->advance();
 
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_PARENTHESIS_OPEN) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_OPEN) {
 #define _ADVANCE_AND_CONSUME_NEWLINES \
 	do {                              \
 		tokenizer->advance();         \
-	} while (tokenizer->get_token() == PDScriptTokenizer::TK_NEWLINE)
+	} while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE)
 
 					_ADVANCE_AND_CONSUME_NEWLINES;
 					parenthesis++;
@@ -4262,9 +4262,9 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 					String hint_prefix = "";
 					bool is_arrayed = false;
 
-					while (tokenizer->get_token() == PDScriptTokenizer::TK_BUILT_IN_TYPE &&
+					while (tokenizer->get_token() == PScriptTokenizer::TK_BUILT_IN_TYPE &&
 							tokenizer->get_token_type() == Variant::ARRAY &&
-							tokenizer->get_token(1) == PDScriptTokenizer::TK_COMMA) {
+							tokenizer->get_token(1) == PScriptTokenizer::TK_COMMA) {
 						tokenizer->advance(); // Array
 						tokenizer->advance(); // Comma
 						if (is_arrayed) {
@@ -4274,7 +4274,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 						}
 					}
 
-					if (tokenizer->get_token() == PDScriptTokenizer::TK_BUILT_IN_TYPE) {
+					if (tokenizer->get_token() == PScriptTokenizer::TK_BUILT_IN_TYPE) {
 						Variant::Type type = tokenizer->get_token_type();
 						if (type == Variant::NIL) {
 							_set_error("Can't export null type.");
@@ -4288,20 +4288,20 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 						current_export.usage |= PROPERTY_USAGE_SCRIPT_VARIABLE;
 						_ADVANCE_AND_CONSUME_NEWLINES;
 
-						if (tokenizer->get_token() == PDScriptTokenizer::TK_COMMA) {
+						if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
 							// hint expected next!
 							_ADVANCE_AND_CONSUME_NEWLINES;
 
 							switch (type) {
 								case Variant::INT: {
-									if (tokenizer->get_token() == PDScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "FLAGS") {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "FLAGS") {
 										_ADVANCE_AND_CONSUME_NEWLINES;
 
-										if (tokenizer->get_token() == PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+										if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 											WARN_DEPRECATED_MSG("Exporting bit flags hint requires string constants.");
 											break;
 										}
-										if (tokenizer->get_token() != PDScriptTokenizer::TK_COMMA) {
+										if (tokenizer->get_token() != PScriptTokenizer::TK_COMMA) {
 											_set_error("Expected \",\" in the bit flags hint.");
 											return;
 										}
@@ -4311,7 +4311,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 
 										bool first = true;
 										while (true) {
-											if (tokenizer->get_token() != PDScriptTokenizer::TK_CONSTANT || tokenizer->get_token_constant().get_type() != Variant::STRING) {
+											if (tokenizer->get_token() != PScriptTokenizer::TK_CONSTANT || tokenizer->get_token_constant().get_type() != Variant::STRING) {
 												current_export = PropertyInfo();
 												_set_error("Expected a string constant in the named bit flags hint.");
 												return;
@@ -4327,11 +4327,11 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 											current_export.hint_string += c.xml_escape();
 
 											_ADVANCE_AND_CONSUME_NEWLINES;
-											if (tokenizer->get_token() == PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+											if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 												break;
 											}
 
-											if (tokenizer->get_token() != PDScriptTokenizer::TK_COMMA) {
+											if (tokenizer->get_token() != PScriptTokenizer::TK_COMMA) {
 												current_export = PropertyInfo();
 												_set_error("Expected \")\" or \",\" in the named bit flags hint.");
 												return;
@@ -4342,9 +4342,9 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 										break;
 									}
 
-									if (tokenizer->get_token() == PDScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "LAYERS_2D_RENDER") {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "LAYERS_2D_RENDER") {
 										_ADVANCE_AND_CONSUME_NEWLINES;
-										if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+										if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 											_set_error("Expected \")\" in the layers 2D render hint.");
 											return;
 										}
@@ -4352,9 +4352,9 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 										break;
 									}
 
-									if (tokenizer->get_token() == PDScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "LAYERS_2D_PHYSICS") {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "LAYERS_2D_PHYSICS") {
 										_ADVANCE_AND_CONSUME_NEWLINES;
-										if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+										if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 											_set_error("Expected \")\" in the layers 2D physics hint.");
 											return;
 										}
@@ -4362,9 +4362,9 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 										break;
 									}
 
-									if (tokenizer->get_token() == PDScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "LAYERS_2D_NAVIGATION") {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "LAYERS_2D_NAVIGATION") {
 										_ADVANCE_AND_CONSUME_NEWLINES;
-										if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+										if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 											_set_error("Expected \")\" in the layers 2D navigation hint.");
 											return;
 										}
@@ -4372,9 +4372,9 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 										break;
 									}
 
-									if (tokenizer->get_token() == PDScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "LAYERS_3D_RENDER") {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "LAYERS_3D_RENDER") {
 										_ADVANCE_AND_CONSUME_NEWLINES;
-										if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+										if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 											_set_error("Expected \")\" in the layers 3D render hint.");
 											return;
 										}
@@ -4382,9 +4382,9 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 										break;
 									}
 
-									if (tokenizer->get_token() == PDScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "LAYERS_3D_PHYSICS") {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "LAYERS_3D_PHYSICS") {
 										_ADVANCE_AND_CONSUME_NEWLINES;
-										if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+										if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 											_set_error("Expected \")\" in the layers 3D physics hint.");
 											return;
 										}
@@ -4392,9 +4392,9 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 										break;
 									}
 
-									if (tokenizer->get_token() == PDScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "LAYERS_3D_NAVIGATION") {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "LAYERS_3D_NAVIGATION") {
 										_ADVANCE_AND_CONSUME_NEWLINES;
-										if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+										if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 											_set_error("Expected \")\" in the layers 3D navigation hint.");
 											return;
 										}
@@ -4402,9 +4402,9 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 										break;
 									}
 
-									if (tokenizer->get_token() == PDScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "PROPERTY_HINT_LAYERS_AVOIDANCE") {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "PROPERTY_HINT_LAYERS_AVOIDANCE") {
 										_ADVANCE_AND_CONSUME_NEWLINES;
-										if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+										if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 											_set_error("Expected \")\" in the avoidance 3D navigation hint.");
 											return;
 										}
@@ -4412,12 +4412,12 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 										break;
 									}
 
-									if (tokenizer->get_token() == PDScriptTokenizer::TK_CONSTANT && tokenizer->get_token_constant().get_type() == Variant::STRING) {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_CONSTANT && tokenizer->get_token_constant().get_type() == Variant::STRING) {
 										//enumeration
 										current_export.hint = PROPERTY_HINT_ENUM;
 										bool first = true;
 										while (true) {
-											if (tokenizer->get_token() != PDScriptTokenizer::TK_CONSTANT || tokenizer->get_token_constant().get_type() != Variant::STRING) {
+											if (tokenizer->get_token() != PScriptTokenizer::TK_CONSTANT || tokenizer->get_token_constant().get_type() != Variant::STRING) {
 												current_export = PropertyInfo();
 												_set_error("Expected a string constant in the enumeration hint.");
 												return;
@@ -4433,11 +4433,11 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 											current_export.hint_string += c.xml_escape();
 
 											_ADVANCE_AND_CONSUME_NEWLINES;
-											if (tokenizer->get_token() == PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+											if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 												break;
 											}
 
-											if (tokenizer->get_token() != PDScriptTokenizer::TK_COMMA) {
+											if (tokenizer->get_token() != PScriptTokenizer::TK_COMMA) {
 												current_export = PropertyInfo();
 												_set_error("Expected \")\" or \",\" in the enumeration hint.");
 												return;
@@ -4452,10 +4452,10 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 									FALLTHROUGH;
 								}
 								case Variant::REAL: {
-									if (tokenizer->get_token() == PDScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "EASE") {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "EASE") {
 										current_export.hint = PROPERTY_HINT_EXP_EASING;
 										_ADVANCE_AND_CONSUME_NEWLINES;
-										if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+										if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 											_set_error("Expected \")\" in the hint.");
 											return;
 										}
@@ -4463,13 +4463,13 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 									}
 
 									// range
-									if (tokenizer->get_token() == PDScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "EXP") {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "EXP") {
 										current_export.hint = PROPERTY_HINT_EXP_RANGE;
 										_ADVANCE_AND_CONSUME_NEWLINES;
 
-										if (tokenizer->get_token() == PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+										if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 											break;
-										} else if (tokenizer->get_token() != PDScriptTokenizer::TK_COMMA) {
+										} else if (tokenizer->get_token() != PScriptTokenizer::TK_COMMA) {
 											_set_error("Expected \")\" or \",\" in the exponential range hint.");
 											return;
 										}
@@ -4480,11 +4480,11 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 
 									float sign = 1.0;
 
-									if (tokenizer->get_token() == PDScriptTokenizer::TK_OP_SUB) {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_OP_SUB) {
 										sign = -1;
 										_ADVANCE_AND_CONSUME_NEWLINES;
 									}
-									if (tokenizer->get_token() != PDScriptTokenizer::TK_CONSTANT || !tokenizer->get_token_constant().is_num()) {
+									if (tokenizer->get_token() != PScriptTokenizer::TK_CONSTANT || !tokenizer->get_token_constant().is_num()) {
 										current_export = PropertyInfo();
 										_set_error("Expected a range in the numeric hint.");
 										return;
@@ -4493,12 +4493,12 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 									current_export.hint_string = rtos(sign * double(tokenizer->get_token_constant()));
 									_ADVANCE_AND_CONSUME_NEWLINES;
 
-									if (tokenizer->get_token() == PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 										current_export.hint_string = "0," + current_export.hint_string;
 										break;
 									}
 
-									if (tokenizer->get_token() != PDScriptTokenizer::TK_COMMA) {
+									if (tokenizer->get_token() != PScriptTokenizer::TK_COMMA) {
 										current_export = PropertyInfo();
 										_set_error("Expected \",\" or \")\" in the numeric range hint.");
 										return;
@@ -4507,12 +4507,12 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 									_ADVANCE_AND_CONSUME_NEWLINES;
 
 									sign = 1.0;
-									if (tokenizer->get_token() == PDScriptTokenizer::TK_OP_SUB) {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_OP_SUB) {
 										sign = -1;
 										_ADVANCE_AND_CONSUME_NEWLINES;
 									}
 
-									if (tokenizer->get_token() != PDScriptTokenizer::TK_CONSTANT || !tokenizer->get_token_constant().is_num()) {
+									if (tokenizer->get_token() != PScriptTokenizer::TK_CONSTANT || !tokenizer->get_token_constant().is_num()) {
 										current_export = PropertyInfo();
 										_set_error("Expected a number as upper bound in the numeric range hint.");
 										return;
@@ -4521,11 +4521,11 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 									current_export.hint_string += "," + rtos(sign * double(tokenizer->get_token_constant()));
 									_ADVANCE_AND_CONSUME_NEWLINES;
 
-									if (tokenizer->get_token() == PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 										break;
 									}
 
-									if (tokenizer->get_token() != PDScriptTokenizer::TK_COMMA) {
+									if (tokenizer->get_token() != PScriptTokenizer::TK_COMMA) {
 										current_export = PropertyInfo();
 										_set_error("Expected \",\" or \")\" in the numeric range hint.");
 										return;
@@ -4533,12 +4533,12 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 
 									_ADVANCE_AND_CONSUME_NEWLINES;
 									sign = 1.0;
-									if (tokenizer->get_token() == PDScriptTokenizer::TK_OP_SUB) {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_OP_SUB) {
 										sign = -1;
 										_ADVANCE_AND_CONSUME_NEWLINES;
 									}
 
-									if (tokenizer->get_token() != PDScriptTokenizer::TK_CONSTANT || !tokenizer->get_token_constant().is_num()) {
+									if (tokenizer->get_token() != PScriptTokenizer::TK_CONSTANT || !tokenizer->get_token_constant().is_num()) {
 										current_export = PropertyInfo();
 										_set_error("Expected a number as step in the numeric range hint.");
 										return;
@@ -4549,12 +4549,12 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 
 								} break;
 								case Variant::STRING: {
-									if (tokenizer->get_token() == PDScriptTokenizer::TK_CONSTANT && tokenizer->get_token_constant().get_type() == Variant::STRING) {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_CONSTANT && tokenizer->get_token_constant().get_type() == Variant::STRING) {
 										//enumeration
 										current_export.hint = PROPERTY_HINT_ENUM;
 										bool first = true;
 										while (true) {
-											if (tokenizer->get_token() != PDScriptTokenizer::TK_CONSTANT || tokenizer->get_token_constant().get_type() != Variant::STRING) {
+											if (tokenizer->get_token() != PScriptTokenizer::TK_CONSTANT || tokenizer->get_token_constant().get_type() != Variant::STRING) {
 												current_export = PropertyInfo();
 												_set_error("Expected a string constant in the enumeration hint.");
 												return;
@@ -4569,11 +4569,11 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 
 											current_export.hint_string += c.xml_escape();
 											_ADVANCE_AND_CONSUME_NEWLINES;
-											if (tokenizer->get_token() == PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+											if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 												break;
 											}
 
-											if (tokenizer->get_token() != PDScriptTokenizer::TK_COMMA) {
+											if (tokenizer->get_token() != PScriptTokenizer::TK_COMMA) {
 												current_export = PropertyInfo();
 												_set_error("Expected \")\" or \",\" in the enumeration hint.");
 												return;
@@ -4584,15 +4584,15 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 										break;
 									}
 
-									if (tokenizer->get_token() == PDScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "DIR") {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "DIR") {
 										_ADVANCE_AND_CONSUME_NEWLINES;
 
-										if (tokenizer->get_token() == PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+										if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 											current_export.hint = PROPERTY_HINT_DIR;
-										} else if (tokenizer->get_token() == PDScriptTokenizer::TK_COMMA) {
+										} else if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
 											_ADVANCE_AND_CONSUME_NEWLINES;
 
-											if (tokenizer->get_token() != PDScriptTokenizer::TK_IDENTIFIER || !(tokenizer->get_token_identifier() == "GLOBAL")) {
+											if (tokenizer->get_token() != PScriptTokenizer::TK_IDENTIFIER || !(tokenizer->get_token_identifier() == "GLOBAL")) {
 												_set_error("Expected \"GLOBAL\" after comma in the directory hint.");
 												return;
 											}
@@ -4603,7 +4603,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 											current_export.hint = PROPERTY_HINT_GLOBAL_DIR;
 											_ADVANCE_AND_CONSUME_NEWLINES;
 
-											if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+											if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 												_set_error("Expected \")\" in the hint.");
 												return;
 											}
@@ -4614,14 +4614,14 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 										break;
 									}
 
-									if (tokenizer->get_token() == PDScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "FILE") {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "FILE") {
 										current_export.hint = PROPERTY_HINT_FILE;
 										_ADVANCE_AND_CONSUME_NEWLINES;
 
-										if (tokenizer->get_token() == PDScriptTokenizer::TK_COMMA) {
+										if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
 											_ADVANCE_AND_CONSUME_NEWLINES;
 
-											if (tokenizer->get_token() == PDScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "GLOBAL") {
+											if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "GLOBAL") {
 												if (!p_class->tool) {
 													_set_error("Global filesystem hints may only be used in tool scripts.");
 													return;
@@ -4629,9 +4629,9 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 												current_export.hint = PROPERTY_HINT_GLOBAL_FILE;
 												_ADVANCE_AND_CONSUME_NEWLINES;
 
-												if (tokenizer->get_token() == PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+												if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 													break;
-												} else if (tokenizer->get_token() == PDScriptTokenizer::TK_COMMA) {
+												} else if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
 													_ADVANCE_AND_CONSUME_NEWLINES;
 												} else {
 													_set_error("Expected \")\" or \",\" in the hint.");
@@ -4639,7 +4639,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 												}
 											}
 
-											if (tokenizer->get_token() != PDScriptTokenizer::TK_CONSTANT || tokenizer->get_token_constant().get_type() != Variant::STRING) {
+											if (tokenizer->get_token() != PScriptTokenizer::TK_CONSTANT || tokenizer->get_token_constant().get_type() != Variant::STRING) {
 												if (current_export.hint == PROPERTY_HINT_GLOBAL_FILE) {
 													_set_error("Expected string constant with filter.");
 												} else {
@@ -4651,17 +4651,17 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 											_ADVANCE_AND_CONSUME_NEWLINES;
 										}
 
-										if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+										if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 											_set_error("Expected \")\" in the hint.");
 											return;
 										}
 										break;
 									}
 
-									if (tokenizer->get_token() == PDScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "MULTILINE") {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "MULTILINE") {
 										current_export.hint = PROPERTY_HINT_MULTILINE_TEXT;
 										_ADVANCE_AND_CONSUME_NEWLINES;
-										if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+										if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 											_set_error("Expected \")\" in the hint.");
 											return;
 										}
@@ -4669,7 +4669,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 									}
 								} break;
 								case Variant::COLOR: {
-									if (tokenizer->get_token() != PDScriptTokenizer::TK_IDENTIFIER) {
+									if (tokenizer->get_token() != PScriptTokenizer::TK_IDENTIFIER) {
 										current_export = PropertyInfo();
 										_set_error("Color type hint expects RGB or RGBA as hints.");
 										return;
@@ -4717,7 +4717,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 
 						if (constant.get_type() == Variant::OBJECT) {
 							StringName class_name;
-							PDScriptNativeClass *native_class = Object::cast_to<PDScriptNativeClass>(constant);
+							PScriptNativeClass *native_class = Object::cast_to<PScriptNativeClass>(constant);
 
 							if (native_class) {
 								if (ClassDB::is_parent_class(native_class->get_name(), "Resource")) {
@@ -4733,7 +4733,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 									script_class = res_script->get_global_class_name();
 
 									if (script_class == "") {
-										// Note this will currently fail for pdscript if the scripts are remapped in an exported .pck!
+										// Note this will currently fail for pscript if the scripts are remapped in an exported .pck!
 										script_class = res_script->get_language()->get_global_class_name(res_script->get_path());
 									}
 
@@ -4761,10 +4761,10 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 							// Enumeration
 							bool is_flags = false;
 
-							if (tokenizer->get_token() == PDScriptTokenizer::TK_COMMA) {
+							if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
 								_ADVANCE_AND_CONSUME_NEWLINES;
 
-								if (tokenizer->get_token() == PDScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "FLAGS") {
+								if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "FLAGS") {
 									is_flags = true;
 									_ADVANCE_AND_CONSUME_NEWLINES;
 								} else {
@@ -4804,7 +4804,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 						}
 					}
 
-					if (tokenizer->get_token() != PDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+					if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 						current_export = PropertyInfo();
 						_set_error("Expected \")\" or \",\" after the export hint.");
 						return;
@@ -4825,7 +4825,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 #undef _ADVANCE_AND_CONSUME_NEWLINES
 				}
 
-				if (tokenizer->get_token() != PDScriptTokenizer::TK_PR_VAR && tokenizer->get_token() != PDScriptTokenizer::TK_PR_ONREADY) {
+				if (tokenizer->get_token() != PScriptTokenizer::TK_PR_VAR && tokenizer->get_token() != PScriptTokenizer::TK_PR_ONREADY) {
 					current_export = PropertyInfo();
 					_set_error("Expected \"var\", \"onready\".");
 					return;
@@ -4833,28 +4833,28 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 
 				continue;
 			} break;
-			case PDScriptTokenizer::TK_PR_ONREADY: {
+			case PScriptTokenizer::TK_PR_ONREADY: {
 				//may be fallthrough from export, ignore if so
 				tokenizer->advance();
-				if (tokenizer->get_token() != PDScriptTokenizer::TK_PR_VAR) {
+				if (tokenizer->get_token() != PScriptTokenizer::TK_PR_VAR) {
 					_set_error("Expected \"var\".");
 					return;
 				}
 
 				continue;
 			} break;
-			case PDScriptTokenizer::TK_PR_VAR: {
+			case PScriptTokenizer::TK_PR_VAR: {
 				// variable declaration and (eventual) initialization
 
 				ClassNode::Member member;
 
-				bool autoexport = tokenizer->get_token(-1) == PDScriptTokenizer::TK_PR_EXPORT;
+				bool autoexport = tokenizer->get_token(-1) == PScriptTokenizer::TK_PR_EXPORT;
 				if (current_export.type != Variant::NIL) {
 					member._export = current_export;
 					current_export = PropertyInfo();
 				}
 
-				bool onready = tokenizer->get_token(-1) == PDScriptTokenizer::TK_PR_ONREADY;
+				bool onready = tokenizer->get_token(-1) == PScriptTokenizer::TK_PR_ONREADY;
 
 				tokenizer->advance();
 				if (!tokenizer->is_token_literal(0, true)) {
@@ -4897,21 +4897,21 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 #ifdef DEBUG_ENABLED
 				for (int i = 0; i < current_class->functions.size(); i++) {
 					if (current_class->functions[i]->name == member.identifier) {
-						_add_warning(PDScriptWarning::VARIABLE_CONFLICTS_FUNCTION, member.line, member.identifier);
+						_add_warning(PScriptWarning::VARIABLE_CONFLICTS_FUNCTION, member.line, member.identifier);
 						break;
 					}
 				}
 				for (int i = 0; i < current_class->static_functions.size(); i++) {
 					if (current_class->static_functions[i]->name == member.identifier) {
-						_add_warning(PDScriptWarning::VARIABLE_CONFLICTS_FUNCTION, member.line, member.identifier);
+						_add_warning(PScriptWarning::VARIABLE_CONFLICTS_FUNCTION, member.line, member.identifier);
 						break;
 					}
 				}
 #endif // DEBUG_ENABLED
 				tokenizer->advance();
 
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_COLON) {
-					if (tokenizer->get_token(1) == PDScriptTokenizer::TK_OP_ASSIGN) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_COLON) {
+					if (tokenizer->get_token(1) == PScriptTokenizer::TK_OP_ASSIGN) {
 						member.data_type = DataType();
 						member.data_type.infer_type = true;
 						tokenizer->advance();
@@ -4936,7 +4936,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 							_set_error(vformat("Invalid native export type. \"%s\" is not a Resource type.", member.data_type.native_type), member.line);
 							return;
 						}
-					} else if (member.data_type.kind == DataType::SCRIPT || member.data_type.kind == DataType::PDSCRIPT) {
+					} else if (member.data_type.kind == DataType::SCRIPT || member.data_type.kind == DataType::PSCRIPT) {
 						if (member.data_type.script_type.is_null()) {
 							_set_error("Invalid script export type. Could not load member script value.", member.line);
 							return;
@@ -4979,7 +4979,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 				member.default_value = Variant::construct(member._export.type, nullptr, 0, ce);
 #endif
 
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_OP_ASSIGN) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_OP_ASSIGN) {
 #ifdef DEBUG_ENABLED
 					int line = tokenizer->get_token_line();
 #endif
@@ -5047,7 +5047,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 									_set_error("Can't convert the provided value to the export type.");
 									return;
 								} else if (!member.data_type.has_type) {
-									_add_warning(PDScriptWarning::EXPORT_HINT_TYPE_MISTMATCH, member.line, Variant::get_type_name(cn->value.get_type()), Variant::get_type_name(member._export.type));
+									_add_warning(PScriptWarning::EXPORT_HINT_TYPE_MISTMATCH, member.line, Variant::get_type_name(cn->value.get_type()), Variant::get_type_name(member._export.type));
 								}
 							}
 						}
@@ -5113,10 +5113,10 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 					member.initial_assignment = op;
 				}
 
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_PR_SETGET) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_PR_SETGET) {
 					tokenizer->advance();
 
-					if (tokenizer->get_token() != PDScriptTokenizer::TK_COMMA) {
+					if (tokenizer->get_token() != PScriptTokenizer::TK_COMMA) {
 						//just comma means using only getter
 						if (!tokenizer->is_token_literal()) {
 							_set_error("Expected an identifier for the setter function after \"setget\".");
@@ -5127,7 +5127,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 						tokenizer->advance();
 					}
 
-					if (tokenizer->get_token() == PDScriptTokenizer::TK_COMMA) {
+					if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
 						//there is a getter
 						tokenizer->advance();
 
@@ -5147,7 +5147,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 					return;
 				}
 			} break;
-			case PDScriptTokenizer::TK_PR_CONST: {
+			case PScriptTokenizer::TK_PR_CONST: {
 				// constant declaration and initialization
 
 				ClassNode::Constant constant;
@@ -5190,8 +5190,8 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 
 				tokenizer->advance();
 
-				if (tokenizer->get_token() == PDScriptTokenizer::TK_COLON) {
-					if (tokenizer->get_token(1) == PDScriptTokenizer::TK_OP_ASSIGN) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_COLON) {
+					if (tokenizer->get_token(1) == PScriptTokenizer::TK_OP_ASSIGN) {
 						constant.type = DataType();
 						constant.type.infer_type = true;
 						tokenizer->advance();
@@ -5201,7 +5201,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 					}
 				}
 
-				if (tokenizer->get_token() != PDScriptTokenizer::TK_OP_ASSIGN) {
+				if (tokenizer->get_token() != PScriptTokenizer::TK_OP_ASSIGN) {
 					_set_error("Constants must be assigned immediately.");
 					return;
 				}
@@ -5231,7 +5231,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 				}
 
 			} break;
-			case PDScriptTokenizer::TK_PR_ENUM: {
+			case PScriptTokenizer::TK_PR_ENUM: {
 				//multiple constant declarations..
 
 				int last_assign = -1; // Incremented by 1 right before the assignment.
@@ -5272,23 +5272,23 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 
 					tokenizer->advance();
 				}
-				if (tokenizer->get_token() != PDScriptTokenizer::TK_CURLY_BRACKET_OPEN) {
+				if (tokenizer->get_token() != PScriptTokenizer::TK_CURLY_BRACKET_OPEN) {
 					_set_error("Expected \"{\" in the enum declaration.");
 					return;
 				}
 				tokenizer->advance();
 
 				while (true) {
-					if (tokenizer->get_token() == PDScriptTokenizer::TK_NEWLINE) {
+					if (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
 						tokenizer->advance(); // Ignore newlines
-					} else if (tokenizer->get_token() == PDScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
+					} else if (tokenizer->get_token() == PScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
 						tokenizer->advance();
 						break; // End of enum
 					} else if (!tokenizer->is_token_literal(0, true)) {
-						if (tokenizer->get_token() == PDScriptTokenizer::TK_EOF) {
+						if (tokenizer->get_token() == PScriptTokenizer::TK_EOF) {
 							_set_error("Unexpected end of file.");
 						} else {
-							_set_error(String("Unexpected ") + PDScriptTokenizer::get_token_name(tokenizer->get_token()) + ", expected an identifier.");
+							_set_error(String("Unexpected ") + PScriptTokenizer::get_token_name(tokenizer->get_token()) + ", expected an identifier.");
 						}
 
 						return;
@@ -5299,7 +5299,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 
 						ConstantNode *enum_value_expr;
 
-						if (tokenizer->get_token() == PDScriptTokenizer::TK_OP_ASSIGN) {
+						if (tokenizer->get_token() == PScriptTokenizer::TK_OP_ASSIGN) {
 							tokenizer->advance();
 
 							Node *subexpr = _parse_and_reduce_expression(p_class, true, true);
@@ -5331,7 +5331,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 							enum_value_expr->datatype = _type_from_variant(enum_value_expr->value);
 						}
 
-						if (tokenizer->get_token() == PDScriptTokenizer::TK_COMMA) {
+						if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
 							tokenizer->advance();
 						} else if (tokenizer->is_token_literal(0, true)) {
 							_set_error("Unexpected identifier.");
@@ -5397,7 +5397,7 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 
 			} break;
 
-			case PDScriptTokenizer::TK_CONSTANT: {
+			case PScriptTokenizer::TK_CONSTANT: {
 				if (tokenizer->get_token_constant().get_type() == Variant::STRING) {
 					tokenizer->advance();
 					// Ignore
@@ -5407,12 +5407,12 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 				}
 			} break;
 
-			case PDScriptTokenizer::TK_CF_PASS: {
+			case PScriptTokenizer::TK_CF_PASS: {
 				tokenizer->advance();
 			} break;
 
 			default: {
-				if (token == PDScriptTokenizer::TK_IDENTIFIER) {
+				if (token == PScriptTokenizer::TK_IDENTIFIER) {
 					completion_type = COMPLETION_IDENTIFIER;
 					completion_class = current_class;
 					completion_function = current_function;
@@ -5430,14 +5430,14 @@ void PDScriptParser::_parse_class(ClassNode *p_class) {
 	}
 }
 
-void PDScriptParser::_determine_inheritance(ClassNode *p_class, bool p_recursive) {
+void PScriptParser::_determine_inheritance(ClassNode *p_class, bool p_recursive) {
 	if (p_class->base_type.has_type) {
 		// Already determined
 	} else if (p_class->extends_used) {
 		//do inheritance
 		String path = p_class->extends_file;
 
-		Ref<PDScript> script;
+		Ref<PScript> script;
 		StringName native;
 		ClassNode *base_class = nullptr;
 
@@ -5486,7 +5486,7 @@ void PDScriptParser::_determine_inheritance(ClassNode *p_class, bool p_recursive
 			int extend_iter = 1;
 			String base = p_class->extends_class[0];
 			ClassNode *p = p_class->owner;
-			Ref<PDScript> base_script;
+			Ref<PScript> base_script;
 
 			if (ScriptServer::is_global_class(base)) {
 				base_script = ResourceLoader::load(ScriptServer::get_global_class_path(base));
@@ -5562,7 +5562,7 @@ void PDScriptParser::_determine_inheritance(ClassNode *p_class, bool p_recursive
 
 			if (base_script.is_valid()) {
 				String ident = base;
-				Ref<PDScript> find_subclass = base_script;
+				Ref<PScript> find_subclass = base_script;
 
 				for (int i = extend_iter; i < p_class->extends_class.size(); i++) {
 					String subclass = p_class->extends_class[i];
@@ -5572,7 +5572,7 @@ void PDScriptParser::_determine_inheritance(ClassNode *p_class, bool p_recursive
 					if (find_subclass->get_subclasses().has(subclass)) {
 						find_subclass = find_subclass->get_subclasses()[subclass];
 					} else if (find_subclass->get_constants().has(subclass)) {
-						Ref<PDScript> new_base_class = find_subclass->get_constants()[subclass];
+						Ref<PScript> new_base_class = find_subclass->get_constants()[subclass];
 						if (new_base_class.is_null()) {
 							_set_error("Constant isn't a class: " + ident, p_class->line);
 							return;
@@ -5592,7 +5592,7 @@ void PDScriptParser::_determine_inheritance(ClassNode *p_class, bool p_recursive
 					return;
 				}
 				//if not found, try engine classes
-				if (!PDScriptLanguage::get_singleton()->get_global_map().has(base)) {
+				if (!PScriptLanguage::get_singleton()->get_global_map().has(base)) {
 					_set_error("Unknown class: \"" + base + "\"", p_class->line);
 					return;
 				}
@@ -5607,7 +5607,7 @@ void PDScriptParser::_determine_inheritance(ClassNode *p_class, bool p_recursive
 			p_class->base_type.class_type = base_class;
 		} else if (script.is_valid()) {
 			p_class->base_type.has_type = true;
-			p_class->base_type.kind = DataType::PDSCRIPT;
+			p_class->base_type.kind = DataType::PSCRIPT;
 			p_class->base_type.script_type = script;
 			p_class->base_type.native_type = script->get_instance_base_type();
 		} else if (native != StringName()) {
@@ -5634,7 +5634,7 @@ void PDScriptParser::_determine_inheritance(ClassNode *p_class, bool p_recursive
 	}
 }
 
-String PDScriptParser::DataType::to_string() const {
+String PScriptParser::DataType::to_string() const {
 	if (!has_type) {
 		return "var";
 	}
@@ -5647,16 +5647,16 @@ String PDScriptParser::DataType::to_string() const {
 		} break;
 		case NATIVE: {
 			if (is_meta_type) {
-				return "PDScriptNativeClass";
+				return "PScriptNativeClass";
 			}
 			return native_type.operator String();
 		} break;
 
-		case PDSCRIPT: {
-			Ref<PDScript> pds = script_type;
-			const String &pds_class = pds->get_script_class_name();
-			if (!pds_class.empty()) {
-				return pds_class;
+		case PSCRIPT: {
+			Ref<PScript> ps = script_type;
+			const String &ps_class = ps->get_script_class_name();
+			if (!ps_class.empty()) {
+				return ps_class;
 			}
 			FALLTHROUGH;
 		}
@@ -5677,7 +5677,7 @@ String PDScriptParser::DataType::to_string() const {
 		case CLASS: {
 			ERR_FAIL_COND_V(!class_type, String());
 			if (is_meta_type) {
-				return "PDScript";
+				return "PScript";
 			}
 			if (class_type->name == StringName()) {
 				return "self";
@@ -5691,7 +5691,7 @@ String PDScriptParser::DataType::to_string() const {
 	return "Unresolved";
 }
 
-bool PDScriptParser::_parse_type(DataType &r_type, bool p_can_be_void) {
+bool PScriptParser::_parse_type(DataType &r_type, bool p_can_be_void) {
 	tokenizer->advance();
 	r_type.has_type = true;
 
@@ -5699,7 +5699,7 @@ bool PDScriptParser::_parse_type(DataType &r_type, bool p_can_be_void) {
 	bool can_index = false;
 	String full_name;
 
-	if (tokenizer->get_token() == PDScriptTokenizer::TK_CURSOR) {
+	if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
 		completion_cursor = StringName();
 		completion_type = COMPLETION_TYPE_HINT;
 		completion_class = current_class;
@@ -5713,14 +5713,14 @@ bool PDScriptParser::_parse_type(DataType &r_type, bool p_can_be_void) {
 	}
 
 	switch (tokenizer->get_token()) {
-		case PDScriptTokenizer::TK_PR_VOID: {
+		case PScriptTokenizer::TK_PR_VOID: {
 			if (!p_can_be_void) {
 				return false;
 			}
 			r_type.kind = DataType::BUILTIN;
 			r_type.builtin_type = Variant::NIL;
 		} break;
-		case PDScriptTokenizer::TK_BUILT_IN_TYPE: {
+		case PScriptTokenizer::TK_BUILT_IN_TYPE: {
 			r_type.builtin_type = tokenizer->get_token_type();
 			if (tokenizer->get_token_type() == Variant::OBJECT) {
 				r_type.kind = DataType::NATIVE;
@@ -5729,7 +5729,7 @@ bool PDScriptParser::_parse_type(DataType &r_type, bool p_can_be_void) {
 				r_type.kind = DataType::BUILTIN;
 			}
 		} break;
-		case PDScriptTokenizer::TK_IDENTIFIER: {
+		case PScriptTokenizer::TK_IDENTIFIER: {
 			r_type.native_type = tokenizer->get_token_identifier();
 			if (ClassDB::class_exists(r_type.native_type) || ClassDB::class_exists("_" + r_type.native_type.operator String())) {
 				r_type.kind = DataType::NATIVE;
@@ -5746,7 +5746,7 @@ bool PDScriptParser::_parse_type(DataType &r_type, bool p_can_be_void) {
 
 	tokenizer->advance();
 
-	if (tokenizer->get_token() == PDScriptTokenizer::TK_CURSOR) {
+	if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
 		completion_cursor = r_type.native_type;
 		completion_type = COMPLETION_TYPE_HINT;
 		completion_class = current_class;
@@ -5762,7 +5762,7 @@ bool PDScriptParser::_parse_type(DataType &r_type, bool p_can_be_void) {
 	if (can_index) {
 		while (!finished) {
 			switch (tokenizer->get_token()) {
-				case PDScriptTokenizer::TK_PERIOD: {
+				case PScriptTokenizer::TK_PERIOD: {
 					if (!can_index) {
 						_set_error("Unexpected \".\".");
 						return false;
@@ -5770,8 +5770,8 @@ bool PDScriptParser::_parse_type(DataType &r_type, bool p_can_be_void) {
 					can_index = false;
 					tokenizer->advance();
 				} break;
-				case PDScriptTokenizer::TK_CURSOR:
-				case PDScriptTokenizer::TK_IDENTIFIER: {
+				case PScriptTokenizer::TK_CURSOR:
+				case PScriptTokenizer::TK_IDENTIFIER: {
 					if (can_index) {
 						_set_error("Unexpected identifier.");
 						return false;
@@ -5795,7 +5795,7 @@ bool PDScriptParser::_parse_type(DataType &r_type, bool p_can_be_void) {
 			}
 		}
 
-		if (tokenizer->get_token(-1) == PDScriptTokenizer::TK_PERIOD) {
+		if (tokenizer->get_token(-1) == PScriptTokenizer::TK_PERIOD) {
 			_set_error("Expected a subclass identifier.");
 			return false;
 		}
@@ -5806,7 +5806,7 @@ bool PDScriptParser::_parse_type(DataType &r_type, bool p_can_be_void) {
 	return true;
 }
 
-PDScriptParser::DataType PDScriptParser::_resolve_type(const DataType &p_source, int p_line) {
+PScriptParser::DataType PScriptParser::_resolve_type(const DataType &p_source, int p_line) {
 	if (!p_source.has_type) {
 		return p_source;
 	}
@@ -5834,14 +5834,14 @@ PDScriptParser::DataType PDScriptParser::_resolve_type(const DataType &p_source,
 					result.class_type = static_cast<ClassNode *>(head);
 				} else {
 					Ref<Script> script = ResourceLoader::load(script_path);
-					Ref<PDScript> pds = script;
-					if (pds.is_valid()) {
-						if (!pds->is_valid()) {
+					Ref<PScript> ps = script;
+					if (ps.is_valid()) {
+						if (!ps->is_valid()) {
 							_set_error("The class \"" + id + "\" couldn't be fully loaded (script error or cyclic dependency).", p_line);
 							return DataType();
 						}
-						result.kind = DataType::PDSCRIPT;
-						result.script_type = pds;
+						result.kind = DataType::PSCRIPT;
+						result.script_type = ps;
 					} else if (script.is_valid()) {
 						result.kind = DataType::SCRIPT;
 						result.script_type = script;
@@ -5857,14 +5857,14 @@ PDScriptParser::DataType PDScriptParser::_resolve_type(const DataType &p_source,
 			String autoload_path = _lookup_autoload_path_for_identifier(id);
 			if (!autoload_path.empty()) {
 				Ref<Script> script = ResourceLoader::load(autoload_path);
-				Ref<PDScript> pds = script;
-				if (pds.is_valid()) {
-					if (!pds->is_valid()) {
+				Ref<PScript> ps = script;
+				if (ps.is_valid()) {
+					if (!ps->is_valid()) {
 						_set_error("Class '" + id + "' could not be fully loaded (script error or cyclic inheritance).", p_line);
 						return DataType();
 					}
-					result.kind = DataType::PDSCRIPT;
-					result.script_type = pds;
+					result.kind = DataType::PSCRIPT;
+					result.script_type = ps;
 				} else if (script.is_valid()) {
 					result.kind = DataType::SCRIPT;
 					result.script_type = script;
@@ -5887,10 +5887,10 @@ PDScriptParser::DataType PDScriptParser::_resolve_type(const DataType &p_source,
 					ERR_FAIL_V(result);
 				}
 				const ConstantNode *cn = static_cast<const ConstantNode *>(p->constant_expressions[id].expression);
-				Ref<PDScript> pds = cn->value;
-				if (pds.is_valid()) {
-					result.kind = DataType::PDSCRIPT;
-					result.script_type = pds;
+				Ref<PScript> ps = cn->value;
+				if (ps.is_valid()) {
+					result.kind = DataType::PSCRIPT;
+					result.script_type = ps;
 					found = true;
 				} else {
 					Ref<Script> scr = cn->value;
@@ -5938,7 +5938,7 @@ PDScriptParser::DataType PDScriptParser::_resolve_type(const DataType &p_source,
 		}
 
 		// Still look for class constants in parent scripts
-		if (!found && (base_type.kind == DataType::PDSCRIPT || base_type.kind == DataType::SCRIPT)) {
+		if (!found && (base_type.kind == DataType::PSCRIPT || base_type.kind == DataType::SCRIPT)) {
 			Ref<Script> scr = base_type.script_type;
 			ERR_FAIL_COND_V(scr.is_null(), result);
 			while (scr.is_valid()) {
@@ -5946,11 +5946,11 @@ PDScriptParser::DataType PDScriptParser::_resolve_type(const DataType &p_source,
 				scr->get_constants(&constants);
 
 				if (constants.has(id)) {
-					Ref<PDScript> pds = constants[id];
+					Ref<PScript> ps = constants[id];
 
-					if (pds.is_valid()) {
-						result.kind = DataType::PDSCRIPT;
-						result.script_type = pds;
+					if (ps.is_valid()) {
+						result.kind = DataType::PSCRIPT;
+						result.script_type = ps;
 						found = true;
 					} else {
 						Ref<Script> scr2 = constants[id];
@@ -5988,7 +5988,7 @@ PDScriptParser::DataType PDScriptParser::_resolve_type(const DataType &p_source,
 	return result;
 }
 
-PDScriptParser::DataType PDScriptParser::_type_from_variant(const Variant &p_value) const {
+PScriptParser::DataType PScriptParser::_type_from_variant(const Variant &p_value) const {
 	DataType result;
 	result.has_type = true;
 	result.is_constant = true;
@@ -6010,9 +6010,9 @@ PDScriptParser::DataType PDScriptParser::_type_from_variant(const Variant &p_val
 		}
 		if (scr.is_valid()) {
 			result.script_type = scr;
-			Ref<PDScript> pds = scr;
-			if (pds.is_valid()) {
-				result.kind = DataType::PDSCRIPT;
+			Ref<PScript> ps = scr;
+			if (ps.is_valid()) {
+				result.kind = DataType::PSCRIPT;
 			} else {
 				result.kind = DataType::SCRIPT;
 			}
@@ -6025,7 +6025,7 @@ PDScriptParser::DataType PDScriptParser::_type_from_variant(const Variant &p_val
 	return result;
 }
 
-PDScriptParser::DataType PDScriptParser::_type_from_property(const PropertyInfo &p_property, bool p_nil_is_variant) const {
+PScriptParser::DataType PScriptParser::_type_from_property(const PropertyInfo &p_property, bool p_nil_is_variant) const {
 	DataType ret;
 	if (p_property.type == Variant::NIL && (p_nil_is_variant || (p_property.usage & PROPERTY_USAGE_NIL_IS_VARIANT))) {
 		// Variant
@@ -6040,9 +6040,9 @@ PDScriptParser::DataType PDScriptParser::_type_from_property(const PropertyInfo 
 			if (ScriptServer::is_global_class(p_property.class_name)) {
 				String p = ScriptServer::get_global_class_path(p_property.class_name);
 				ret.native_type = ScriptServer::get_global_class_native_base(p_property.class_name);
-				if (PDScriptLanguage::get_singleton()->get_extension() == p.get_extension()) {
-					ret.kind = DataType::PDSCRIPT;
-					ret.script_type = ResourceLoader::load(p, "PDScript");
+				if (PScriptLanguage::get_singleton()->get_extension() == p.get_extension()) {
+					ret.kind = DataType::PSCRIPT;
+					ret.script_type = ResourceLoader::load(p, "PScript");
 				} else {
 					ret.kind = DataType::SCRIPT;
 					ret.script_type = ResourceLoader::load(p, "Script");
@@ -6057,38 +6057,38 @@ PDScriptParser::DataType PDScriptParser::_type_from_property(const PropertyInfo 
 	return ret;
 }
 
-PDScriptParser::DataType PDScriptParser::_type_from_pdtype(const PDScriptDataType &p_pdtype) const {
+PScriptParser::DataType PScriptParser::_type_from_ptype(const PScriptDataType &p_ptype) const {
 	DataType result;
-	if (!p_pdtype.has_type) {
+	if (!p_ptype.has_type) {
 		return result;
 	}
 
 	result.has_type = true;
-	result.builtin_type = p_pdtype.builtin_type;
-	result.native_type = p_pdtype.native_type;
-	result.script_type = Ref<Script>(p_pdtype.script_type);
+	result.builtin_type = p_ptype.builtin_type;
+	result.native_type = p_ptype.native_type;
+	result.script_type = Ref<Script>(p_ptype.script_type);
 
-	switch (p_pdtype.kind) {
-		case PDScriptDataType::UNINITIALIZED: {
+	switch (p_ptype.kind) {
+		case PScriptDataType::UNINITIALIZED: {
 			ERR_PRINT("Uninitialized datatype. Please report a bug.");
 		} break;
-		case PDScriptDataType::BUILTIN: {
+		case PScriptDataType::BUILTIN: {
 			result.kind = DataType::BUILTIN;
 		} break;
-		case PDScriptDataType::NATIVE: {
+		case PScriptDataType::NATIVE: {
 			result.kind = DataType::NATIVE;
 		} break;
-		case PDScriptDataType::PDSCRIPT: {
-			result.kind = DataType::PDSCRIPT;
+		case PScriptDataType::PSCRIPT: {
+			result.kind = DataType::PSCRIPT;
 		} break;
-		case PDScriptDataType::SCRIPT: {
+		case PScriptDataType::SCRIPT: {
 			result.kind = DataType::SCRIPT;
 		} break;
 	}
 	return result;
 }
 
-PDScriptParser::DataType PDScriptParser::_get_operation_type(const Variant::Operator p_op, const DataType &p_a, const DataType &p_b, bool &r_valid) const {
+PScriptParser::DataType PScriptParser::_get_operation_type(const Variant::Operator p_op, const DataType &p_a, const DataType &p_b, bool &r_valid) const {
 	if (!p_a.has_type || !p_b.has_type) {
 		r_valid = true;
 		return DataType();
@@ -6145,7 +6145,7 @@ PDScriptParser::DataType PDScriptParser::_get_operation_type(const Variant::Oper
 	return DataType();
 }
 
-Variant::Operator PDScriptParser::_get_variant_operation(const OperatorNode::Operator &p_op) const {
+Variant::Operator PScriptParser::_get_variant_operation(const OperatorNode::Operator &p_op) const {
 	switch (p_op) {
 		case OperatorNode::OP_NEG: {
 			return Variant::OP_NEGATE;
@@ -6232,7 +6232,7 @@ Variant::Operator PDScriptParser::_get_variant_operation(const OperatorNode::Ope
 	}
 }
 
-bool PDScriptParser::_is_type_compatible(const DataType &p_container, const DataType &p_expression, bool p_allow_implicit_conversion) const {
+bool PScriptParser::_is_type_compatible(const DataType &p_container, const DataType &p_expression, bool p_allow_implicit_conversion) const {
 	// Ignore for completion
 	if (!check_types || for_completion) {
 		return true;
@@ -6287,13 +6287,13 @@ bool PDScriptParser::_is_type_compatible(const DataType &p_container, const Data
 				return false;
 			}
 			if (p_expression.is_meta_type) {
-				expr_native = PDScriptNativeClass::get_class_static();
+				expr_native = PScriptNativeClass::get_class_static();
 			} else {
 				expr_native = p_expression.native_type;
 			}
 		} break;
 		case DataType::SCRIPT:
-		case DataType::PDSCRIPT: {
+		case DataType::PSCRIPT: {
 			if (p_container.kind == DataType::CLASS) {
 				// This cannot be resolved without cyclic dependencies, so just bail out
 				return false;
@@ -6307,7 +6307,7 @@ bool PDScriptParser::_is_type_compatible(const DataType &p_container, const Data
 		} break;
 		case DataType::CLASS: {
 			if (p_expression.is_meta_type) {
-				expr_native = PDScript::get_class_static();
+				expr_native = PScript::get_class_static();
 			} else {
 				expr_class = p_expression.class_type;
 				ClassNode *base = expr_class;
@@ -6331,16 +6331,16 @@ bool PDScriptParser::_is_type_compatible(const DataType &p_container, const Data
 	switch (p_container.kind) {
 		case DataType::NATIVE: {
 			if (p_container.is_meta_type) {
-				return ClassDB::is_parent_class(expr_native, PDScriptNativeClass::get_class_static());
+				return ClassDB::is_parent_class(expr_native, PScriptNativeClass::get_class_static());
 			} else {
 				StringName container_native = ClassDB::class_exists(p_container.native_type) ? p_container.native_type : StringName("_" + p_container.native_type);
 				return ClassDB::is_parent_class(expr_native, container_native);
 			}
 		} break;
 		case DataType::SCRIPT:
-		case DataType::PDSCRIPT: {
+		case DataType::PSCRIPT: {
 			if (p_container.is_meta_type) {
-				return ClassDB::is_parent_class(expr_native, PDScript::get_class_static());
+				return ClassDB::is_parent_class(expr_native, PScript::get_class_static());
 			}
 			if (expr_class == head && p_container.script_type->get_path() == self_path) {
 				// Special case: container is self script and expression is self
@@ -6356,7 +6356,7 @@ bool PDScriptParser::_is_type_compatible(const DataType &p_container, const Data
 		} break;
 		case DataType::CLASS: {
 			if (p_container.is_meta_type) {
-				return ClassDB::is_parent_class(expr_native, PDScript::get_class_static());
+				return ClassDB::is_parent_class(expr_native, PScript::get_class_static());
 			}
 			if (p_container.class_type == head && expr_script.is_valid() && expr_script->get_path() == self_path) {
 				// Special case: container is self and expression is self script
@@ -6378,7 +6378,7 @@ bool PDScriptParser::_is_type_compatible(const DataType &p_container, const Data
 	return false;
 }
 
-PDScriptParser::Node *PDScriptParser::_get_default_value_for_type(const DataType &p_type, int p_line) {
+PScriptParser::Node *PScriptParser::_get_default_value_for_type(const DataType &p_type, int p_line) {
 	Node *result;
 
 	if (p_type.has_type && p_type.kind == DataType::BUILTIN && p_type.builtin_type != Variant::NIL && p_type.builtin_type != Variant::OBJECT) {
@@ -6403,7 +6403,7 @@ PDScriptParser::Node *PDScriptParser::_get_default_value_for_type(const DataType
 	return result;
 }
 
-PDScriptParser::DataType PDScriptParser::_reduce_node_type(Node *p_node) {
+PScriptParser::DataType PScriptParser::_reduce_node_type(Node *p_node) {
 #ifdef DEBUG_ENABLED
 	if (p_node->get_datatype().has_type && p_node->type != Node::TYPE_ARRAY && p_node->type != Node::TYPE_DICTIONARY) {
 #else
@@ -6495,7 +6495,7 @@ PDScriptParser::DataType PDScriptParser::_reduce_node_type(Node *p_node) {
 				}
 			} else {
 #ifdef DEBUG_ENABLED
-				_add_warning(PDScriptWarning::UNSAFE_CAST, cn->line, cn->cast_type.to_string());
+				_add_warning(PScriptWarning::UNSAFE_CAST, cn->line, cn->cast_type.to_string());
 #endif // DEBUG_ENABLED
 				_mark_line_as_unsafe(cn->line);
 			}
@@ -6627,7 +6627,7 @@ PDScriptParser::DataType PDScriptParser::_reduce_node_type(Node *p_node) {
 #ifdef DEBUG_ENABLED
 					if (var_op == Variant::OP_DIVIDE && argument_a_type.kind == DataType::BUILTIN && argument_a_type.builtin_type == Variant::INT &&
 							argument_b_type.kind == DataType::BUILTIN && argument_b_type.builtin_type == Variant::INT) {
-						_add_warning(PDScriptWarning::INTEGER_DIVISION, op->line);
+						_add_warning(PScriptWarning::INTEGER_DIVISION, op->line);
 					}
 #endif // DEBUG_ENABLED
 
@@ -6652,7 +6652,7 @@ PDScriptParser::DataType PDScriptParser::_reduce_node_type(Node *p_node) {
 						node_type = false_type;
 					} else {
 #ifdef DEBUG_ENABLED
-						_add_warning(PDScriptWarning::INCOMPATIBLE_TERNARY, op->line);
+						_add_warning(PScriptWarning::INCOMPATIBLE_TERNARY, op->line);
 #endif // DEBUG_ENABLED
 					}
 				} break;
@@ -6719,7 +6719,7 @@ PDScriptParser::DataType PDScriptParser::_reduce_node_type(Node *p_node) {
 #ifdef DEBUG_ENABLED
 							if (!node_type.has_type) {
 								_mark_line_as_unsafe(op->line);
-								_add_warning(PDScriptWarning::UNSAFE_PROPERTY_ACCESS, op->line, member_id->name.operator String(), base_type.to_string());
+								_add_warning(PScriptWarning::UNSAFE_PROPERTY_ACCESS, op->line, member_id->name.operator String(), base_type.to_string());
 							}
 #endif // DEBUG_ENABLED
 						}
@@ -6814,7 +6814,7 @@ PDScriptParser::DataType PDScriptParser::_reduce_node_type(Node *p_node) {
 								return DataType();
 							}
 
-							if (op->arguments[1]->type == PDScriptParser::Node::TYPE_CONSTANT) {
+							if (op->arguments[1]->type == PScriptParser::Node::TYPE_CONSTANT) {
 								ConstantNode *cn = static_cast<ConstantNode *>(op->arguments[1]);
 								// Index is a constant, just try it if possible
 								switch (base_type.builtin_type) {
@@ -6950,7 +6950,7 @@ PDScriptParser::DataType PDScriptParser::_reduce_node_type(Node *p_node) {
 	return node_type;
 }
 
-bool PDScriptParser::_get_function_signature(DataType &p_base_type, const StringName &p_function, DataType &r_return_type, List<DataType> &r_arg_types, int &r_default_arg_count, bool &r_static, bool &r_vararg) const {
+bool PScriptParser::_get_function_signature(DataType &p_base_type, const StringName &p_function, DataType &r_return_type, List<DataType> &r_arg_types, int &r_default_arg_count, bool &r_static, bool &r_vararg) const {
 	r_static = false;
 	r_default_arg_count = 0;
 
@@ -6999,13 +6999,13 @@ bool PDScriptParser::_get_function_signature(DataType &p_base_type, const String
 	}
 
 	// Nothing in current file, check parent script
-	Ref<PDScript> base_pdscript;
+	Ref<PScript> base_pscript;
 	Ref<Script> base_script;
 	StringName native;
-	if (p_base_type.kind == DataType::PDSCRIPT) {
-		base_pdscript = p_base_type.script_type;
-		if (base_pdscript.is_null() || !base_pdscript->is_valid()) {
-			// PDScript wasn't properly compíled, don't bother trying
+	if (p_base_type.kind == DataType::PSCRIPT) {
+		base_pscript = p_base_type.script_type;
+		if (base_pscript.is_null() || !base_pscript->is_valid()) {
+			// PScript wasn't properly compíled, don't bother trying
 			return false;
 		}
 	} else if (p_base_type.kind == DataType::SCRIPT) {
@@ -7014,23 +7014,23 @@ bool PDScriptParser::_get_function_signature(DataType &p_base_type, const String
 		native = p_base_type.native_type;
 	}
 
-	while (base_pdscript.is_valid()) {
-		native = base_pdscript->get_instance_base_type();
+	while (base_pscript.is_valid()) {
+		native = base_pscript->get_instance_base_type();
 
-		RBMap<StringName, PDScriptFunction *> funcs = base_pdscript->get_member_functions();
+		RBMap<StringName, PScriptFunction *> funcs = base_pscript->get_member_functions();
 
 		if (funcs.has(p_function)) {
-			PDScriptFunction *f = funcs[p_function];
+			PScriptFunction *f = funcs[p_function];
 			r_static = f->is_static();
 			r_default_arg_count = f->get_default_argument_count();
-			r_return_type = _type_from_pdtype(f->get_return_type());
+			r_return_type = _type_from_ptype(f->get_return_type());
 			for (int i = 0; i < f->get_argument_count(); i++) {
-				r_arg_types.push_back(_type_from_pdtype(f->get_argument_type(i)));
+				r_arg_types.push_back(_type_from_ptype(f->get_argument_type(i)));
 			}
 			return true;
 		}
 
-		base_pdscript = base_pdscript->get_base_script();
+		base_pscript = base_pscript->get_base_script();
 	}
 
 	while (base_script.is_valid()) {
@@ -7088,7 +7088,7 @@ bool PDScriptParser::_get_function_signature(DataType &p_base_type, const String
 		}
 
 		// If the base is a script, it might be trying to access members of the Script class itself
-		if (original_type.is_meta_type && !(p_function == "new") && (original_type.kind == DataType::SCRIPT || original_type.kind == DataType::PDSCRIPT)) {
+		if (original_type.is_meta_type && !(p_function == "new") && (original_type.kind == DataType::SCRIPT || original_type.kind == DataType::PSCRIPT)) {
 			method = ClassDB::get_method(original_type.script_type->get_class_name(), p_function);
 
 			if (method) {
@@ -7134,7 +7134,7 @@ bool PDScriptParser::_get_function_signature(DataType &p_base_type, const String
 #endif
 }
 
-PDScriptParser::DataType PDScriptParser::_reduce_function_call_type(const OperatorNode *p_call) {
+PScriptParser::DataType PScriptParser::_reduce_function_call_type(const OperatorNode *p_call) {
 	if (p_call->arguments.size() < 1) {
 		_set_error("Parser bug: function call without enough arguments.", p_call->line);
 		ERR_FAIL_V(DataType());
@@ -7150,7 +7150,7 @@ PDScriptParser::DataType PDScriptParser::_reduce_function_call_type(const Operat
 #endif
 
 	switch (p_call->arguments[0]->type) {
-		case PDScriptParser::Node::TYPE_TYPE: {
+		case PScriptParser::Node::TYPE_TYPE: {
 			// Built-in constructor, special case
 			TypeNode *tn = static_cast<TypeNode *>(p_call->arguments[0]);
 
@@ -7206,10 +7206,10 @@ PDScriptParser::DataType PDScriptParser::_reduce_function_call_type(const Operat
 					} else {
 #ifdef DEBUG_ENABLED
 						if (arg_type.kind == DataType::BUILTIN && arg_type.builtin_type == Variant::INT && par_types[i].kind == DataType::BUILTIN && par_types[i].builtin_type == Variant::REAL) {
-							_add_warning(PDScriptWarning::NARROWING_CONVERSION, p_call->line, Variant::get_type_name(tn->vtype));
+							_add_warning(PScriptWarning::NARROWING_CONVERSION, p_call->line, Variant::get_type_name(tn->vtype));
 						}
 						if (par_types[i].may_yield && p_call->arguments[i + 1]->type == Node::TYPE_OPERATOR) {
-							_add_warning(PDScriptWarning::FUNCTION_MAY_YIELD, p_call->line, _find_function_name(static_cast<OperatorNode *>(p_call->arguments[i + 1])));
+							_add_warning(PScriptWarning::FUNCTION_MAY_YIELD, p_call->line, _find_function_name(static_cast<OperatorNode *>(p_call->arguments[i + 1])));
 						}
 #endif // DEBUG_ENABLED
 					}
@@ -7241,9 +7241,9 @@ PDScriptParser::DataType PDScriptParser::_reduce_function_call_type(const Operat
 			}
 			return DataType();
 		} break;
-		case PDScriptParser::Node::TYPE_BUILT_IN_FUNCTION: {
+		case PScriptParser::Node::TYPE_BUILT_IN_FUNCTION: {
 			BuiltInFunctionNode *func = static_cast<BuiltInFunctionNode *>(p_call->arguments[0]);
-			MethodInfo mi = PDScriptFunctions::get_info(func->function);
+			MethodInfo mi = PScriptFunctions::get_info(func->function);
 
 			return_type = _type_from_property(mi.return_val, false);
 
@@ -7385,12 +7385,12 @@ PDScriptParser::DataType PDScriptParser::_reduce_function_call_type(const Operat
 				valid = _get_member_type(original_type, func_id->name, tmp_type);
 				if (valid) {
 					if (tmp_type.is_constant) {
-						_add_warning(PDScriptWarning::CONSTANT_USED_AS_FUNCTION, p_call->line, callee_name, original_type.to_string());
+						_add_warning(PScriptWarning::CONSTANT_USED_AS_FUNCTION, p_call->line, callee_name, original_type.to_string());
 					} else {
-						_add_warning(PDScriptWarning::PROPERTY_USED_AS_FUNCTION, p_call->line, callee_name, original_type.to_string());
+						_add_warning(PScriptWarning::PROPERTY_USED_AS_FUNCTION, p_call->line, callee_name, original_type.to_string());
 					}
 				}
-				_add_warning(PDScriptWarning::UNSAFE_METHOD_ACCESS, p_call->line, callee_name, original_type.to_string());
+				_add_warning(PScriptWarning::UNSAFE_METHOD_ACCESS, p_call->line, callee_name, original_type.to_string());
 				_mark_line_as_unsafe(p_call->line);
 #endif // DEBUG_ENABLED
 				return DataType();
@@ -7449,7 +7449,7 @@ PDScriptParser::DataType PDScriptParser::_reduce_function_call_type(const Operat
 		if (!par_type.has_type) {
 			_mark_line_as_unsafe(p_call->line);
 			if (par_type.may_yield && p_call->arguments[i]->type == Node::TYPE_OPERATOR) {
-				_add_warning(PDScriptWarning::FUNCTION_MAY_YIELD, p_call->line, _find_function_name(static_cast<OperatorNode *>(p_call->arguments[i])));
+				_add_warning(PScriptWarning::FUNCTION_MAY_YIELD, p_call->line, _find_function_name(static_cast<OperatorNode *>(p_call->arguments[i])));
 			}
 		} else if (!_is_type_compatible(arg_types[i - arg_diff], par_type, true)) {
 			// Supertypes are acceptable for dynamic compliance
@@ -7464,7 +7464,7 @@ PDScriptParser::DataType PDScriptParser::_reduce_function_call_type(const Operat
 			}
 		} else {
 			if (arg_type.kind == DataType::BUILTIN && arg_type.builtin_type == Variant::INT && par_type.kind == DataType::BUILTIN && par_type.builtin_type == Variant::REAL) {
-				_add_warning(PDScriptWarning::NARROWING_CONVERSION, p_call->line, callee_name);
+				_add_warning(PScriptWarning::NARROWING_CONVERSION, p_call->line, callee_name);
 			}
 		}
 	}
@@ -7473,7 +7473,7 @@ PDScriptParser::DataType PDScriptParser::_reduce_function_call_type(const Operat
 	return return_type;
 }
 
-bool PDScriptParser::_get_member_type(const DataType &p_base_type, const StringName &p_member, DataType &r_member_type, bool *r_is_const) const {
+bool PScriptParser::_get_member_type(const DataType &p_base_type, const StringName &p_member, DataType &r_member_type, bool *r_is_const) const {
 	DataType base_type = p_base_type;
 
 	// Check classes in current file
@@ -7523,11 +7523,11 @@ bool PDScriptParser::_get_member_type(const DataType &p_base_type, const StringN
 		}
 	}
 
-	Ref<PDScript> pds;
-	if (base_type.kind == DataType::PDSCRIPT) {
-		pds = base_type.script_type;
-		if (pds.is_null() || !pds->is_valid()) {
-			// PDScript wasn't properly compíled, don't bother trying
+	Ref<PScript> ps;
+	if (base_type.kind == DataType::PSCRIPT) {
+		ps = base_type.script_type;
+		if (ps.is_null() || !ps->is_valid()) {
+			// PScript wasn't properly compíled, don't bother trying
 			return false;
 		}
 	}
@@ -7542,25 +7542,25 @@ bool PDScriptParser::_get_member_type(const DataType &p_base_type, const StringN
 		native = base_type.native_type;
 	}
 
-	// Check PDScripts
-	while (pds.is_valid()) {
-		if (pds->get_constants().has(p_member)) {
-			Variant c = pds->get_constants()[p_member];
+	// Check PScripts
+	while (ps.is_valid()) {
+		if (ps->get_constants().has(p_member)) {
+			Variant c = ps->get_constants()[p_member];
 			r_member_type = _type_from_variant(c);
 			return true;
 		}
 
 		if (!base_type.is_meta_type) {
-			if (pds->get_members().has(p_member)) {
-				r_member_type = _type_from_pdtype(pds->get_member_type(p_member));
+			if (ps->get_members().has(p_member)) {
+				r_member_type = _type_from_ptype(ps->get_member_type(p_member));
 				return true;
 			}
 		}
 
-		native = pds->get_instance_base_type();
-		if (pds->get_base_script().is_valid()) {
-			pds = pds->get_base_script();
-			scr = pds->get_base_script();
+		native = ps->get_instance_base_type();
+		if (ps->get_base_script().is_valid()) {
+			ps = ps->get_base_script();
+			scr = ps->get_base_script();
 			bool is_meta = base_type.is_meta_type;
 			base_type = _type_from_variant(scr.operator Variant());
 			base_type.is_meta_type = is_meta;
@@ -7651,7 +7651,7 @@ bool PDScriptParser::_get_member_type(const DataType &p_base_type, const StringN
 	}
 
 	// If the base is a script, it might be trying to access members of the Script class itself
-	if (p_base_type.is_meta_type && (p_base_type.kind == DataType::SCRIPT || p_base_type.kind == DataType::PDSCRIPT)) {
+	if (p_base_type.is_meta_type && (p_base_type.kind == DataType::SCRIPT || p_base_type.kind == DataType::PSCRIPT)) {
 		native = p_base_type.script_type->get_class_name();
 		ClassDB::get_integer_constant(native, p_member, &valid);
 		if (valid) {
@@ -7694,7 +7694,7 @@ bool PDScriptParser::_get_member_type(const DataType &p_base_type, const StringN
 	return false;
 }
 
-PDScriptParser::DataType PDScriptParser::_reduce_identifier_type(const DataType *p_base_type, const StringName &p_identifier, int p_line, bool p_is_indexing) {
+PScriptParser::DataType PScriptParser::_reduce_identifier_type(const DataType *p_base_type, const StringName &p_identifier, int p_line, bool p_is_indexing) {
 	if (p_base_type && !p_base_type->has_type) {
 		return DataType();
 	}
@@ -7780,13 +7780,13 @@ PDScriptParser::DataType PDScriptParser::_reduce_identifier_type(const DataType 
 				result.script_type = scr;
 				result.is_constant = true;
 				result.is_meta_type = true;
-				Ref<PDScript> pds = scr;
-				if (pds.is_valid()) {
-					if (!pds->is_valid()) {
+				Ref<PScript> ps = scr;
+				if (ps.is_valid()) {
+					if (!ps->is_valid()) {
 						_set_error("The class \"" + p_identifier + "\" couldn't be fully loaded (script error or cyclic dependency).");
 						return DataType();
 					}
-					result.kind = DataType::PDSCRIPT;
+					result.kind = DataType::PSCRIPT;
 				} else {
 					result.kind = DataType::SCRIPT;
 				}
@@ -7796,14 +7796,14 @@ PDScriptParser::DataType PDScriptParser::_reduce_identifier_type(const DataType 
 			return DataType();
 		}
 
-		if (PDScriptLanguage::get_singleton()->get_global_map().has(p_identifier)) {
-			int idx = PDScriptLanguage::get_singleton()->get_global_map()[p_identifier];
-			Variant g = PDScriptLanguage::get_singleton()->get_global_array()[idx];
+		if (PScriptLanguage::get_singleton()->get_global_map().has(p_identifier)) {
+			int idx = PScriptLanguage::get_singleton()->get_global_map()[p_identifier];
+			Variant g = PScriptLanguage::get_singleton()->get_global_array()[idx];
 			return _type_from_variant(g);
 		}
 
-		if (PDScriptLanguage::get_singleton()->get_named_globals_map().has(p_identifier)) {
-			Variant g = PDScriptLanguage::get_singleton()->get_named_globals_map()[p_identifier];
+		if (PScriptLanguage::get_singleton()->get_named_globals_map().has(p_identifier)) {
+			Variant g = PScriptLanguage::get_singleton()->get_named_globals_map()[p_identifier];
 			return _type_from_variant(g);
 		}
 
@@ -7817,13 +7817,13 @@ PDScriptParser::DataType PDScriptParser::_reduce_identifier_type(const DataType 
 				result.is_constant = true;
 				result.script_type = singleton;
 
-				Ref<PDScript> pds = singleton;
-				if (pds.is_valid()) {
-					if (!pds->is_valid()) {
+				Ref<PScript> ps = singleton;
+				if (ps.is_valid()) {
+					if (!ps->is_valid()) {
 						_set_error("Couldn't fully load the singleton script \"" + p_identifier + "\" (possible cyclic reference or parse error).", p_line);
 						return DataType();
 					}
-					result.kind = DataType::PDSCRIPT;
+					result.kind = DataType::PSCRIPT;
 				} else {
 					result.kind = DataType::SCRIPT;
 				}
@@ -7842,7 +7842,7 @@ PDScriptParser::DataType PDScriptParser::_reduce_identifier_type(const DataType 
 		bool _static;
 		bool vararg;
 		if (_get_function_signature(base_type, p_identifier, tmp_type, arg_types, argcount, _static, vararg)) {
-			_add_warning(PDScriptWarning::FUNCTION_USED_AS_PROPERTY, p_line, p_identifier.operator String(), base_type.to_string());
+			_add_warning(PScriptWarning::FUNCTION_USED_AS_PROPERTY, p_line, p_identifier.operator String(), base_type.to_string());
 		}
 	}
 #endif // DEBUG_ENABLED
@@ -7851,7 +7851,7 @@ PDScriptParser::DataType PDScriptParser::_reduce_identifier_type(const DataType 
 	return DataType();
 }
 
-void PDScriptParser::_check_class_level_types(ClassNode *p_class) {
+void PScriptParser::_check_class_level_types(ClassNode *p_class) {
 	// Names of internal object properties that we check to avoid overriding them.
 	// "__meta__" could also be in here, but since it doesn't really affect object metadata,
 	// it is okay to override it on script.
@@ -7932,7 +7932,7 @@ void PDScriptParser::_check_class_level_types(ClassNode *p_class) {
 					// Replace assignment with implicit conversion
 					BuiltInFunctionNode *convert = alloc_node<BuiltInFunctionNode>();
 					convert->line = v.line;
-					convert->function = PDScriptFunctions::TYPE_CONVERT;
+					convert->function = PScriptFunctions::TYPE_CONVERT;
 
 					ConstantNode *tgt_type = alloc_node<ConstantNode>();
 					tgt_type->line = v.line;
@@ -7967,7 +7967,7 @@ void PDScriptParser::_check_class_level_types(ClassNode *p_class) {
 		// Check export hint
 		if (v._export.type != Variant::NIL) {
 			DataType export_type = _type_from_property(v._export);
-			if (export_type.kind == DataType::PDSCRIPT || export_type.kind == DataType::SCRIPT) {
+			if (export_type.kind == DataType::PSCRIPT || export_type.kind == DataType::SCRIPT) {
 				String class_name = v._export.class_name;
 				if (ScriptServer::is_global_class(class_name)) {
 					class_name = ScriptServer::get_global_class_native_base(class_name);
@@ -8083,7 +8083,7 @@ void PDScriptParser::_check_class_level_types(ClassNode *p_class) {
 	}
 
 	StringName native;
-	if (base.kind == DataType::PDSCRIPT || base.kind == DataType::SCRIPT) {
+	if (base.kind == DataType::PSCRIPT || base.kind == DataType::SCRIPT) {
 		Ref<Script> scr = base.script_type;
 		if (scr.is_valid() && scr->is_valid()) {
 			native = scr->get_instance_base_type();
@@ -8118,7 +8118,7 @@ void PDScriptParser::_check_class_level_types(ClassNode *p_class) {
 	}
 }
 
-void PDScriptParser::_check_function_types(FunctionNode *p_function) {
+void PScriptParser::_check_function_types(FunctionNode *p_function) {
 	p_function->return_type = _resolve_type(p_function->return_type, p_function->line);
 
 	// Arguments
@@ -8157,11 +8157,11 @@ void PDScriptParser::_check_function_types(FunctionNode *p_function) {
 		}
 #ifdef DEBUG_ENABLED
 		if (p_function->arguments_usage[i] == 0 && !p_function->arguments[i].operator String().begins_with("_")) {
-			_add_warning(PDScriptWarning::UNUSED_ARGUMENT, p_function->line, p_function->name, p_function->arguments[i].operator String());
+			_add_warning(PScriptWarning::UNUSED_ARGUMENT, p_function->line, p_function->name, p_function->arguments[i].operator String());
 		}
 		for (int j = 0; j < current_class->variables.size(); j++) {
 			if (current_class->variables[j].identifier == p_function->arguments[i]) {
-				_add_warning(PDScriptWarning::SHADOWED_VARIABLE, p_function->line, p_function->arguments[i], itos(current_class->variables[j].line));
+				_add_warning(PScriptWarning::SHADOWED_VARIABLE, p_function->line, p_function->arguments[i], itos(current_class->variables[j].line));
 			}
 		}
 #endif // DEBUG_ENABLED
@@ -8233,13 +8233,13 @@ void PDScriptParser::_check_function_types(FunctionNode *p_function) {
 	}
 
 	if (p_function->has_yield) {
-		// yield() will make the function return a PDScriptFunctionState, so the type is ambiguous
+		// yield() will make the function return a PScriptFunctionState, so the type is ambiguous
 		p_function->return_type.has_type = false;
 		p_function->return_type.may_yield = true;
 	}
 }
 
-void PDScriptParser::_check_class_blocks_types(ClassNode *p_class) {
+void PScriptParser::_check_class_blocks_types(ClassNode *p_class) {
 	// Function blocks
 	for (int i = 0; i < p_class->static_functions.size(); i++) {
 		current_function = p_class->static_functions[i];
@@ -8269,12 +8269,12 @@ void PDScriptParser::_check_class_blocks_types(ClassNode *p_class) {
 	// Warnings
 	for (int i = 0; i < p_class->variables.size(); i++) {
 		if (p_class->variables[i].usages == 0) {
-			_add_warning(PDScriptWarning::UNUSED_CLASS_VARIABLE, p_class->variables[i].line, p_class->variables[i].identifier);
+			_add_warning(PScriptWarning::UNUSED_CLASS_VARIABLE, p_class->variables[i].line, p_class->variables[i].identifier);
 		}
 	}
 	for (int i = 0; i < p_class->_signals.size(); i++) {
 		if (p_class->_signals[i].emissions == 0) {
-			_add_warning(PDScriptWarning::UNUSED_SIGNAL, p_class->_signals[i].line, p_class->_signals[i].name);
+			_add_warning(PScriptWarning::UNUSED_SIGNAL, p_class->_signals[i].line, p_class->_signals[i].name);
 		}
 	}
 #endif // DEBUG_ENABLED
@@ -8291,18 +8291,18 @@ void PDScriptParser::_check_class_blocks_types(ClassNode *p_class) {
 }
 
 #ifdef DEBUG_ENABLED
-static String _find_function_name(const PDScriptParser::OperatorNode *p_call) {
+static String _find_function_name(const PScriptParser::OperatorNode *p_call) {
 	switch (p_call->arguments[0]->type) {
-		case PDScriptParser::Node::TYPE_TYPE: {
-			return Variant::get_type_name(static_cast<PDScriptParser::TypeNode *>(p_call->arguments[0])->vtype);
+		case PScriptParser::Node::TYPE_TYPE: {
+			return Variant::get_type_name(static_cast<PScriptParser::TypeNode *>(p_call->arguments[0])->vtype);
 		} break;
-		case PDScriptParser::Node::TYPE_BUILT_IN_FUNCTION: {
-			return PDScriptFunctions::get_func_name(static_cast<PDScriptParser::BuiltInFunctionNode *>(p_call->arguments[0])->function);
+		case PScriptParser::Node::TYPE_BUILT_IN_FUNCTION: {
+			return PScriptFunctions::get_func_name(static_cast<PScriptParser::BuiltInFunctionNode *>(p_call->arguments[0])->function);
 		} break;
 		default: {
-			int id_index = p_call->op == PDScriptParser::OperatorNode::OP_PARENT_CALL ? 0 : 1;
-			if (p_call->arguments.size() > id_index && p_call->arguments[id_index]->type == PDScriptParser::Node::TYPE_IDENTIFIER) {
-				return static_cast<PDScriptParser::IdentifierNode *>(p_call->arguments[id_index])->name;
+			int id_index = p_call->op == PScriptParser::OperatorNode::OP_PARENT_CALL ? 0 : 1;
+			if (p_call->arguments.size() > id_index && p_call->arguments[id_index]->type == PScriptParser::Node::TYPE_IDENTIFIER) {
+				return static_cast<PScriptParser::IdentifierNode *>(p_call->arguments[id_index])->name;
 			}
 		} break;
 	}
@@ -8310,7 +8310,7 @@ static String _find_function_name(const PDScriptParser::OperatorNode *p_call) {
 }
 #endif // DEBUG_ENABLED
 
-void PDScriptParser::_check_block_types(BlockNode *p_block) {
+void PScriptParser::_check_block_types(BlockNode *p_block) {
 	Node *last_var_assign = nullptr;
 
 	// Check each statement
@@ -8341,16 +8341,16 @@ void PDScriptParser::_check_block_types(BlockNode *p_block) {
 						if (lv->assign->type == Node::TYPE_OPERATOR) {
 							OperatorNode *call = static_cast<OperatorNode *>(lv->assign);
 							if (call->op == OperatorNode::OP_CALL || call->op == OperatorNode::OP_PARENT_CALL) {
-								_add_warning(PDScriptWarning::VOID_ASSIGNMENT, lv->line, _find_function_name(call));
+								_add_warning(PScriptWarning::VOID_ASSIGNMENT, lv->line, _find_function_name(call));
 							}
 						}
 					}
 					if (lv->datatype.has_type && assign_type.may_yield && lv->assign->type == Node::TYPE_OPERATOR) {
-						_add_warning(PDScriptWarning::FUNCTION_MAY_YIELD, lv->line, _find_function_name(static_cast<OperatorNode *>(lv->assign)));
+						_add_warning(PScriptWarning::FUNCTION_MAY_YIELD, lv->line, _find_function_name(static_cast<OperatorNode *>(lv->assign)));
 					}
 					for (int i = 0; i < current_class->variables.size(); i++) {
 						if (current_class->variables[i].identifier == lv->name) {
-							_add_warning(PDScriptWarning::SHADOWED_VARIABLE, lv->line, lv->name, itos(current_class->variables[i].line));
+							_add_warning(PScriptWarning::SHADOWED_VARIABLE, lv->line, lv->name, itos(current_class->variables[i].line));
 						}
 					}
 #endif // DEBUG_ENABLED
@@ -8370,7 +8370,7 @@ void PDScriptParser::_check_block_types(BlockNode *p_block) {
 							// Replace assignment with implicit conversion
 							BuiltInFunctionNode *convert = alloc_node<BuiltInFunctionNode>();
 							convert->line = lv->line;
-							convert->function = PDScriptFunctions::TYPE_CONVERT;
+							convert->function = PScriptFunctions::TYPE_CONVERT;
 
 							ConstantNode *tgt_type = alloc_node<ConstantNode>();
 							tgt_type->line = lv->line;
@@ -8387,7 +8387,7 @@ void PDScriptParser::_check_block_types(BlockNode *p_block) {
 							lv->assign_op->arguments.write[1] = convert_call;
 #ifdef DEBUG_ENABLED
 							if (lv->datatype.builtin_type == Variant::INT && assign_type.builtin_type == Variant::REAL) {
-								_add_warning(PDScriptWarning::NARROWING_CONVERSION, lv->line);
+								_add_warning(PScriptWarning::NARROWING_CONVERSION, lv->line);
 							}
 #endif // DEBUG_ENABLED
 						}
@@ -8481,12 +8481,12 @@ void PDScriptParser::_check_block_types(BlockNode *p_block) {
 							if (op->arguments[1]->type == Node::TYPE_OPERATOR) {
 								OperatorNode *call = static_cast<OperatorNode *>(op->arguments[1]);
 								if (call->op == OperatorNode::OP_CALL || call->op == OperatorNode::OP_PARENT_CALL) {
-									_add_warning(PDScriptWarning::VOID_ASSIGNMENT, op->line, _find_function_name(call));
+									_add_warning(PScriptWarning::VOID_ASSIGNMENT, op->line, _find_function_name(call));
 								}
 							}
 						}
 						if (lh_type.has_type && rh_type.may_yield && op->arguments[1]->type == Node::TYPE_OPERATOR) {
-							_add_warning(PDScriptWarning::FUNCTION_MAY_YIELD, op->line, _find_function_name(static_cast<OperatorNode *>(op->arguments[1])));
+							_add_warning(PScriptWarning::FUNCTION_MAY_YIELD, op->line, _find_function_name(static_cast<OperatorNode *>(op->arguments[1])));
 						}
 
 #endif // DEBUG_ENABLED
@@ -8509,7 +8509,7 @@ void PDScriptParser::_check_block_types(BlockNode *p_block) {
 									// Replace assignment with implicit conversion
 									BuiltInFunctionNode *convert = alloc_node<BuiltInFunctionNode>();
 									convert->line = op->line;
-									convert->function = PDScriptFunctions::TYPE_CONVERT;
+									convert->function = PScriptFunctions::TYPE_CONVERT;
 
 									ConstantNode *tgt_type = alloc_node<ConstantNode>();
 									tgt_type->line = op->line;
@@ -8528,7 +8528,7 @@ void PDScriptParser::_check_block_types(BlockNode *p_block) {
 								}
 #ifdef DEBUG_ENABLED
 								if (lh_type.builtin_type == Variant::INT && rh_type.builtin_type == Variant::REAL) {
-									_add_warning(PDScriptWarning::NARROWING_CONVERSION, op->line);
+									_add_warning(PScriptWarning::NARROWING_CONVERSION, op->line);
 								}
 #endif // DEBUG_ENABLED
 							}
@@ -8551,7 +8551,7 @@ void PDScriptParser::_check_block_types(BlockNode *p_block) {
 							if (func_name.empty()) {
 								func_name = "<undetected name>";
 							}
-							_add_warning(PDScriptWarning::RETURN_VALUE_DISCARDED, op->line, func_name);
+							_add_warning(PScriptWarning::RETURN_VALUE_DISCARDED, op->line, func_name);
 						}
 #endif // DEBUG_ENABLED
 						if (error_set) {
@@ -8567,9 +8567,9 @@ void PDScriptParser::_check_block_types(BlockNode *p_block) {
 						_reduce_node_type(op); // Test for safety anyway
 #ifdef DEBUG_ENABLED
 						if (op->op == OperatorNode::OP_TERNARY_IF) {
-							_add_warning(PDScriptWarning::STANDALONE_TERNARY, statement->line);
+							_add_warning(PScriptWarning::STANDALONE_TERNARY, statement->line);
 						} else {
-							_add_warning(PDScriptWarning::STANDALONE_EXPRESSION, statement->line);
+							_add_warning(PScriptWarning::STANDALONE_EXPRESSION, statement->line);
 						}
 #endif // DEBUG_ENABLED
 					}
@@ -8642,7 +8642,7 @@ void PDScriptParser::_check_block_types(BlockNode *p_block) {
 				_mark_line_as_safe(statement->line);
 				_reduce_node_type(statement); // Test for safety anyway
 #ifdef DEBUG_ENABLED
-				_add_warning(PDScriptWarning::STANDALONE_EXPRESSION, statement->line);
+				_add_warning(PScriptWarning::STANDALONE_EXPRESSION, statement->line);
 #endif // DEBUG_ENABLED
 			}
 		}
@@ -8664,16 +8664,16 @@ void PDScriptParser::_check_block_types(BlockNode *p_block) {
 		LocalVarNode *lv = E->get();
 		if (!lv->name.operator String().begins_with("_")) {
 			if (lv->usages == 0) {
-				_add_warning(PDScriptWarning::UNUSED_VARIABLE, lv->line, lv->name);
+				_add_warning(PScriptWarning::UNUSED_VARIABLE, lv->line, lv->name);
 			} else if (lv->assignments == 0) {
-				_add_warning(PDScriptWarning::UNASSIGNED_VARIABLE, lv->line, lv->name);
+				_add_warning(PScriptWarning::UNASSIGNED_VARIABLE, lv->line, lv->name);
 			}
 		}
 	}
 #endif // DEBUG_ENABLED
 }
 
-void PDScriptParser::_set_error(const String &p_error, int p_line, int p_column) {
+void PScriptParser::_set_error(const String &p_error, int p_line, int p_column) {
 	if (error_set) {
 		return; //allow no further errors
 	}
@@ -8685,7 +8685,7 @@ void PDScriptParser::_set_error(const String &p_error, int p_line, int p_column)
 }
 
 #ifdef DEBUG_ENABLED
-void PDScriptParser::_add_warning(int p_code, int p_line, const String &p_symbol1, const String &p_symbol2, const String &p_symbol3, const String &p_symbol4) {
+void PScriptParser::_add_warning(int p_code, int p_line, const String &p_symbol1, const String &p_symbol2, const String &p_symbol3, const String &p_symbol4) {
 	Vector<String> symbols;
 	if (!p_symbol1.empty()) {
 		symbols.push_back(p_symbol1);
@@ -8702,35 +8702,35 @@ void PDScriptParser::_add_warning(int p_code, int p_line, const String &p_symbol
 	_add_warning(p_code, p_line, symbols);
 }
 
-void PDScriptParser::_add_warning(int p_code, int p_line, const Vector<String> &p_symbols) {
-	GLOBAL_CACHED(global_warnings_exclude_addons, bool, "debug/pdscript/warnings/exclude_addons")
+void PScriptParser::_add_warning(int p_code, int p_line, const Vector<String> &p_symbols) {
+	GLOBAL_CACHED(global_warnings_exclude_addons, bool, "debug/pscript/warnings/exclude_addons")
 
 	if (global_warnings_exclude_addons && base_path.begins_with("res://addons/")) {
 		return;
 	}
 
-	GLOBAL_CACHED(global_warnings_enable, bool, "debug/pdscript/warnings/enable");
+	GLOBAL_CACHED(global_warnings_enable, bool, "debug/pscript/warnings/enable");
 
 	if (tokenizer->is_ignoring_warnings() || !global_warnings_enable) {
 		return;
 	}
 
-	String warn_name = PDScriptWarning::get_name_from_code((PDScriptWarning::Code)p_code).to_lower();
+	String warn_name = PScriptWarning::get_name_from_code((PScriptWarning::Code)p_code).to_lower();
 
 	if (tokenizer->get_warning_global_skips().has(warn_name)) {
 		return;
 	}
-	if (!GLOBAL_GET("debug/pdscript/warnings/" + warn_name)) {
+	if (!GLOBAL_GET("debug/pscript/warnings/" + warn_name)) {
 		return;
 	}
 
-	PDScriptWarning warn;
-	warn.code = (PDScriptWarning::Code)p_code;
+	PScriptWarning warn;
+	warn.code = (PScriptWarning::Code)p_code;
 	warn.symbols = p_symbols;
 	warn.line = p_line == -1 ? tokenizer->get_token_line() : p_line;
 
-	List<PDScriptWarning>::Element *before = nullptr;
-	for (List<PDScriptWarning>::Element *E = warnings.front(); E; E = E->next()) {
+	List<PScriptWarning>::Element *before = nullptr;
+	for (List<PScriptWarning>::Element *E = warnings.front(); E; E = E->next()) {
 		if (E->get().line > warn.line) {
 			break;
 		}
@@ -8744,22 +8744,22 @@ void PDScriptParser::_add_warning(int p_code, int p_line, const Vector<String> &
 }
 #endif // DEBUG_ENABLED
 
-String PDScriptParser::get_error() const {
+String PScriptParser::get_error() const {
 	return error;
 }
 
-int PDScriptParser::get_error_line() const {
+int PScriptParser::get_error_line() const {
 	return error_line;
 }
-int PDScriptParser::get_error_column() const {
+int PScriptParser::get_error_column() const {
 	return error_column;
 }
 
-bool PDScriptParser::has_error() const {
+bool PScriptParser::has_error() const {
 	return error_set;
 }
 
-Error PDScriptParser::_parse(const String &p_base_path) {
+Error PScriptParser::_parse(const String &p_base_path) {
 	base_path = p_base_path;
 
 	//assume class
@@ -8772,7 +8772,7 @@ Error PDScriptParser::_parse(const String &p_base_path) {
 
 	_parse_class(main_class);
 
-	if (tokenizer->get_token() == PDScriptTokenizer::TK_ERROR) {
+	if (tokenizer->get_token() == PScriptTokenizer::TK_ERROR) {
 		error_set = false;
 		_set_error("Parse error: " + tokenizer->get_token_error());
 	}
@@ -8827,11 +8827,11 @@ Error PDScriptParser::_parse(const String &p_base_path) {
 
 	// Resolve warning ignores
 	Vector<Pair<int, String>> warning_skips = tokenizer->get_warning_skips();
-	GLOBAL_CACHED(global_treat_warnings_as_errors, bool, "debug/pdscript/warnings/treat_warnings_as_errors");
+	GLOBAL_CACHED(global_treat_warnings_as_errors, bool, "debug/pscript/warnings/treat_warnings_as_errors");
 
 	bool warning_is_error = global_treat_warnings_as_errors;
-	for (List<PDScriptWarning>::Element *E = warnings.front(); E;) {
-		PDScriptWarning &w = E->get();
+	for (List<PScriptWarning>::Element *E = warnings.front(); E;) {
+		PScriptWarning &w = E->get();
 		int skip_index = -1;
 		for (int i = 0; i < warning_skips.size(); i++) {
 			if (warning_skips[i].first > w.line) {
@@ -8839,10 +8839,10 @@ Error PDScriptParser::_parse(const String &p_base_path) {
 			}
 			skip_index = i;
 		}
-		List<PDScriptWarning>::Element *next = E->next();
+		List<PScriptWarning>::Element *next = E->next();
 		bool erase = false;
 		if (skip_index != -1) {
-			if (warning_skips[skip_index].second == PDScriptWarning::get_name_from_code(w.code).to_lower()) {
+			if (warning_skips[skip_index].second == PScriptWarning::get_name_from_code(w.code).to_lower()) {
 				erase = true;
 			}
 			warning_skips.remove(skip_index);
@@ -8860,11 +8860,11 @@ Error PDScriptParser::_parse(const String &p_base_path) {
 	return OK;
 }
 
-Error PDScriptParser::parse_bytecode(const Vector<uint8_t> &p_bytecode, const String &p_base_path, const String &p_self_path) {
+Error PScriptParser::parse_bytecode(const Vector<uint8_t> &p_bytecode, const String &p_base_path, const String &p_self_path) {
 	clear();
 
 	self_path = p_self_path;
-	PDScriptTokenizerBuffer *tb = memnew(PDScriptTokenizerBuffer);
+	PScriptTokenizerBuffer *tb = memnew(PScriptTokenizerBuffer);
 	tb->set_code_buffer(p_bytecode);
 	tokenizer = tb;
 	Error ret = _parse(p_base_path);
@@ -8873,11 +8873,11 @@ Error PDScriptParser::parse_bytecode(const Vector<uint8_t> &p_bytecode, const St
 	return ret;
 }
 
-Error PDScriptParser::parse(const String &p_code, const String &p_base_path, bool p_just_validate, const String &p_self_path, bool p_for_completion, RBSet<int> *r_safe_lines, bool p_dependencies_only) {
+Error PScriptParser::parse(const String &p_code, const String &p_base_path, bool p_just_validate, const String &p_self_path, bool p_for_completion, RBSet<int> *r_safe_lines, bool p_dependencies_only) {
 	clear();
 
 	self_path = p_self_path;
-	PDScriptTokenizerText *tt = memnew(PDScriptTokenizerText);
+	PScriptTokenizerText *tt = memnew(PScriptTokenizerText);
 	tt->set_code(p_code);
 
 	validating = p_just_validate;
@@ -8893,15 +8893,15 @@ Error PDScriptParser::parse(const String &p_code, const String &p_base_path, boo
 	return ret;
 }
 
-bool PDScriptParser::is_tool_script() const {
+bool PScriptParser::is_tool_script() const {
 	return (head && head->type == Node::TYPE_CLASS && static_cast<const ClassNode *>(head)->tool);
 }
 
-const PDScriptParser::Node *PDScriptParser::get_parse_tree() const {
+const PScriptParser::Node *PScriptParser::get_parse_tree() const {
 	return head;
 }
 
-void PDScriptParser::clear() {
+void PScriptParser::clear() {
 	while (list) {
 		Node *l = list;
 		list = list->next;
@@ -8942,47 +8942,47 @@ void PDScriptParser::clear() {
 #endif // DEBUG_ENABLED
 }
 
-PDScriptParser::CompletionType PDScriptParser::get_completion_type() {
+PScriptParser::CompletionType PScriptParser::get_completion_type() {
 	return completion_type;
 }
 
-StringName PDScriptParser::get_completion_cursor() {
+StringName PScriptParser::get_completion_cursor() {
 	return completion_cursor;
 }
 
-int PDScriptParser::get_completion_line() {
+int PScriptParser::get_completion_line() {
 	return completion_line;
 }
 
-Variant::Type PDScriptParser::get_completion_built_in_constant() {
+Variant::Type PScriptParser::get_completion_built_in_constant() {
 	return completion_built_in_constant;
 }
 
-PDScriptParser::Node *PDScriptParser::get_completion_node() {
+PScriptParser::Node *PScriptParser::get_completion_node() {
 	return completion_node;
 }
 
-PDScriptParser::BlockNode *PDScriptParser::get_completion_block() {
+PScriptParser::BlockNode *PScriptParser::get_completion_block() {
 	return completion_block;
 }
 
-PDScriptParser::ClassNode *PDScriptParser::get_completion_class() {
+PScriptParser::ClassNode *PScriptParser::get_completion_class() {
 	return completion_class;
 }
 
-PDScriptParser::FunctionNode *PDScriptParser::get_completion_function() {
+PScriptParser::FunctionNode *PScriptParser::get_completion_function() {
 	return completion_function;
 }
 
-int PDScriptParser::get_completion_argument_index() {
+int PScriptParser::get_completion_argument_index() {
 	return completion_argument;
 }
 
-int PDScriptParser::get_completion_identifier_is_function() {
+int PScriptParser::get_completion_identifier_is_function() {
 	return completion_ident_is_call;
 }
 
-PDScriptParser::PDScriptParser() {
+PScriptParser::PScriptParser() {
 	head = nullptr;
 	list = nullptr;
 	tokenizer = nullptr;
@@ -8990,6 +8990,6 @@ PDScriptParser::PDScriptParser() {
 	clear();
 }
 
-PDScriptParser::~PDScriptParser() {
+PScriptParser::~PScriptParser() {
 	clear();
 }

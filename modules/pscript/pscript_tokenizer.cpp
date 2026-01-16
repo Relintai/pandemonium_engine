@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  pdscript_tokenizer.cpp                                               */
+/*  pscript_tokenizer.cpp                                               */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,16 +29,16 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "pdscript_tokenizer.h"
+#include "pscript_tokenizer.h"
 
 #include "core/containers/rb_map.h"
 #include "core/io/marshalls.h"
 #include "core/string/print_string.h"
-#include "pdscript_functions.h"
+#include "pscript_functions.h"
 
-OAHashMap<String, int> *PDScriptTokenizer::token_hashtable = NULL;
+OAHashMap<String, int> *PScriptTokenizer::token_hashtable = NULL;
 
-const char *PDScriptTokenizer::token_names[TK_MAX] = {
+const char *PScriptTokenizer::token_names[TK_MAX] = {
 	"Empty",
 	"Identifier",
 	"Constant",
@@ -184,59 +184,59 @@ static const _bit _type_list[] = {
 };
 
 struct _kws {
-	PDScriptTokenizer::Token token;
+	PScriptTokenizer::Token token;
 	const char *text;
 };
 
 static const _kws _keyword_list[] = {
 	//ops
-	{ PDScriptTokenizer::TK_OP_IN, "in" },
-	{ PDScriptTokenizer::TK_OP_NOT, "not" },
-	{ PDScriptTokenizer::TK_OP_OR, "or" },
-	{ PDScriptTokenizer::TK_OP_AND, "and" },
+	{ PScriptTokenizer::TK_OP_IN, "in" },
+	{ PScriptTokenizer::TK_OP_NOT, "not" },
+	{ PScriptTokenizer::TK_OP_OR, "or" },
+	{ PScriptTokenizer::TK_OP_AND, "and" },
 	//func
-	{ PDScriptTokenizer::TK_PR_FUNCTION, "func" },
-	{ PDScriptTokenizer::TK_PR_CLASS, "class" },
-	{ PDScriptTokenizer::TK_PR_CLASS_NAME, "class_name" },
-	{ PDScriptTokenizer::TK_PR_EXTENDS, "extends" },
-	{ PDScriptTokenizer::TK_PR_IS, "is" },
-	{ PDScriptTokenizer::TK_PR_ONREADY, "onready" },
-	{ PDScriptTokenizer::TK_PR_TOOL, "tool" },
-	{ PDScriptTokenizer::TK_PR_STATIC, "static" },
-	{ PDScriptTokenizer::TK_PR_EXPORT, "export" },
-	{ PDScriptTokenizer::TK_PR_SETGET, "setget" },
-	{ PDScriptTokenizer::TK_PR_VAR, "var" },
-	{ PDScriptTokenizer::TK_PR_AS, "as" },
-	{ PDScriptTokenizer::TK_PR_VOID, "void" },
-	{ PDScriptTokenizer::TK_PR_PRELOAD, "preload" },
-	{ PDScriptTokenizer::TK_PR_ASSERT, "assert" },
-	{ PDScriptTokenizer::TK_PR_YIELD, "yield" },
-	{ PDScriptTokenizer::TK_PR_SIGNAL, "signal" },
-	{ PDScriptTokenizer::TK_PR_BREAKPOINT, "breakpoint" },
-	{ PDScriptTokenizer::TK_PR_CONST, "const" },
-	{ PDScriptTokenizer::TK_PR_ENUM, "enum" },
+	{ PScriptTokenizer::TK_PR_FUNCTION, "func" },
+	{ PScriptTokenizer::TK_PR_CLASS, "class" },
+	{ PScriptTokenizer::TK_PR_CLASS_NAME, "class_name" },
+	{ PScriptTokenizer::TK_PR_EXTENDS, "extends" },
+	{ PScriptTokenizer::TK_PR_IS, "is" },
+	{ PScriptTokenizer::TK_PR_ONREADY, "onready" },
+	{ PScriptTokenizer::TK_PR_TOOL, "tool" },
+	{ PScriptTokenizer::TK_PR_STATIC, "static" },
+	{ PScriptTokenizer::TK_PR_EXPORT, "export" },
+	{ PScriptTokenizer::TK_PR_SETGET, "setget" },
+	{ PScriptTokenizer::TK_PR_VAR, "var" },
+	{ PScriptTokenizer::TK_PR_AS, "as" },
+	{ PScriptTokenizer::TK_PR_VOID, "void" },
+	{ PScriptTokenizer::TK_PR_PRELOAD, "preload" },
+	{ PScriptTokenizer::TK_PR_ASSERT, "assert" },
+	{ PScriptTokenizer::TK_PR_YIELD, "yield" },
+	{ PScriptTokenizer::TK_PR_SIGNAL, "signal" },
+	{ PScriptTokenizer::TK_PR_BREAKPOINT, "breakpoint" },
+	{ PScriptTokenizer::TK_PR_CONST, "const" },
+	{ PScriptTokenizer::TK_PR_ENUM, "enum" },
 	//controlflow
-	{ PDScriptTokenizer::TK_CF_IF, "if" },
-	{ PDScriptTokenizer::TK_CF_ELIF, "elif" },
-	{ PDScriptTokenizer::TK_CF_ELSE, "else" },
-	{ PDScriptTokenizer::TK_CF_FOR, "for" },
-	{ PDScriptTokenizer::TK_CF_WHILE, "while" },
-	{ PDScriptTokenizer::TK_CF_BREAK, "break" },
-	{ PDScriptTokenizer::TK_CF_CONTINUE, "continue" },
-	{ PDScriptTokenizer::TK_CF_RETURN, "return" },
-	{ PDScriptTokenizer::TK_CF_MATCH, "match" },
-	{ PDScriptTokenizer::TK_CF_PASS, "pass" },
-	{ PDScriptTokenizer::TK_SELF, "self" },
-	{ PDScriptTokenizer::TK_CONST_PI, "PI" },
-	{ PDScriptTokenizer::TK_CONST_TAU, "TAU" },
-	{ PDScriptTokenizer::TK_WILDCARD, "_" },
-	{ PDScriptTokenizer::TK_CONST_INF, "INF" },
-	{ PDScriptTokenizer::TK_CONST_NAN, "NAN" },
-	{ PDScriptTokenizer::TK_ERROR, nullptr }
+	{ PScriptTokenizer::TK_CF_IF, "if" },
+	{ PScriptTokenizer::TK_CF_ELIF, "elif" },
+	{ PScriptTokenizer::TK_CF_ELSE, "else" },
+	{ PScriptTokenizer::TK_CF_FOR, "for" },
+	{ PScriptTokenizer::TK_CF_WHILE, "while" },
+	{ PScriptTokenizer::TK_CF_BREAK, "break" },
+	{ PScriptTokenizer::TK_CF_CONTINUE, "continue" },
+	{ PScriptTokenizer::TK_CF_RETURN, "return" },
+	{ PScriptTokenizer::TK_CF_MATCH, "match" },
+	{ PScriptTokenizer::TK_CF_PASS, "pass" },
+	{ PScriptTokenizer::TK_SELF, "self" },
+	{ PScriptTokenizer::TK_CONST_PI, "PI" },
+	{ PScriptTokenizer::TK_CONST_TAU, "TAU" },
+	{ PScriptTokenizer::TK_WILDCARD, "_" },
+	{ PScriptTokenizer::TK_CONST_INF, "INF" },
+	{ PScriptTokenizer::TK_CONST_NAN, "NAN" },
+	{ PScriptTokenizer::TK_ERROR, nullptr }
 };
 
 // Prepare the hash table for parsing as a one off at startup.
-void PDScriptTokenizer::initialize() {
+void PScriptTokenizer::initialize() {
 	token_hashtable = memnew((OAHashMap<String, int>));
 
 	token_hashtable->insert("null", 0);
@@ -253,8 +253,8 @@ void PDScriptTokenizer::initialize() {
 
 	// built in funcs
 	id = TOKEN_HASH_TABLE_BUILTIN_START;
-	for (int j = 0; j < PDScriptFunctions::FUNC_MAX; j++) {
-		token_hashtable->insert(PDScriptFunctions::get_func_name(PDScriptFunctions::Function(j)), id++);
+	for (int j = 0; j < PScriptFunctions::FUNC_MAX; j++) {
+		token_hashtable->insert(PScriptFunctions::get_func_name(PScriptFunctions::Function(j)), id++);
 	}
 
 	// keywords
@@ -266,7 +266,7 @@ void PDScriptTokenizer::initialize() {
 	}
 }
 
-void PDScriptTokenizer::terminate() {
+void PScriptTokenizer::terminate() {
 	if (token_hashtable) {
 		memdelete(token_hashtable);
 		token_hashtable = nullptr;
@@ -274,8 +274,8 @@ void PDScriptTokenizer::terminate() {
 }
 
 // return whether found
-bool PDScriptTokenizerText::_parse_identifier(const String &p_str) {
-	// N.B. PDScriptTokenizer::initialize() must have been called before using this function,
+bool PScriptTokenizerText::_parse_identifier(const String &p_str) {
+	// N.B. PScriptTokenizer::initialize() must have been called before using this function,
 	// else token_hashtable will be NULL.
 	const int *found = token_hashtable->lookup_ptr(p_str);
 
@@ -308,7 +308,7 @@ bool PDScriptTokenizerText::_parse_identifier(const String &p_str) {
 			// built in func
 			if (id < TOKEN_HASH_TABLE_KEYWORD_START) {
 				int idx = id - TOKEN_HASH_TABLE_BUILTIN_START;
-				_make_built_in_func(PDScriptFunctions::Function(idx));
+				_make_built_in_func(PScriptFunctions::Function(idx));
 				return true;
 			}
 
@@ -325,12 +325,12 @@ bool PDScriptTokenizerText::_parse_identifier(const String &p_str) {
 	return false;
 }
 
-const char *PDScriptTokenizer::get_token_name(Token p_token) {
+const char *PScriptTokenizer::get_token_name(Token p_token) {
 	ERR_FAIL_INDEX_V(p_token, TK_MAX, "<error>");
 	return token_names[p_token];
 }
 
-bool PDScriptTokenizer::is_token_literal(int p_offset, bool variable_safe) const {
+bool PScriptTokenizer::is_token_literal(int p_offset, bool variable_safe) const {
 	switch (get_token(p_offset)) {
 		// Can always be literal:
 		case TK_IDENTIFIER:
@@ -395,7 +395,7 @@ bool PDScriptTokenizer::is_token_literal(int p_offset, bool variable_safe) const
 	}
 }
 
-StringName PDScriptTokenizer::get_token_literal(int p_offset) const {
+StringName PScriptTokenizer::get_token_literal(int p_offset) const {
 	Token token = get_token(p_offset);
 	switch (token) {
 		case TK_IDENTIFIER:
@@ -412,7 +412,7 @@ StringName PDScriptTokenizer::get_token_literal(int p_offset) const {
 			}
 		} break; // Shouldn't get here, stuff happens
 		case TK_BUILT_IN_FUNC:
-			return PDScriptFunctions::get_func_name(get_token_built_in_func(p_offset));
+			return PScriptFunctions::get_func_name(get_token_built_in_func(p_offset));
 		case TK_CONSTANT: {
 			const Variant value = get_token_constant(p_offset);
 
@@ -458,7 +458,7 @@ static bool _is_bin(CharType c) {
 	return (c == '0' || c == '1');
 }
 
-void PDScriptTokenizerText::_make_token(Token p_type) {
+void PScriptTokenizerText::_make_token(Token p_type) {
 	TokenData &tk = tk_rb[tk_rb_pos];
 
 	tk.type = p_type;
@@ -467,7 +467,7 @@ void PDScriptTokenizerText::_make_token(Token p_type) {
 
 	tk_rb_pos = (tk_rb_pos + 1) % TK_RB_SIZE;
 }
-void PDScriptTokenizerText::_make_identifier(const StringName &p_identifier) {
+void PScriptTokenizerText::_make_identifier(const StringName &p_identifier) {
 	TokenData &tk = tk_rb[tk_rb_pos];
 
 	tk.type = TK_IDENTIFIER;
@@ -478,7 +478,7 @@ void PDScriptTokenizerText::_make_identifier(const StringName &p_identifier) {
 	tk_rb_pos = (tk_rb_pos + 1) % TK_RB_SIZE;
 }
 
-void PDScriptTokenizerText::_make_built_in_func(PDScriptFunctions::Function p_func) {
+void PScriptTokenizerText::_make_built_in_func(PScriptFunctions::Function p_func) {
 	TokenData &tk = tk_rb[tk_rb_pos];
 
 	tk.type = TK_BUILT_IN_FUNC;
@@ -488,7 +488,7 @@ void PDScriptTokenizerText::_make_built_in_func(PDScriptFunctions::Function p_fu
 
 	tk_rb_pos = (tk_rb_pos + 1) % TK_RB_SIZE;
 }
-void PDScriptTokenizerText::_make_constant(const Variant &p_constant) {
+void PScriptTokenizerText::_make_constant(const Variant &p_constant) {
 	TokenData &tk = tk_rb[tk_rb_pos];
 
 	tk.type = TK_CONSTANT;
@@ -499,7 +499,7 @@ void PDScriptTokenizerText::_make_constant(const Variant &p_constant) {
 	tk_rb_pos = (tk_rb_pos + 1) % TK_RB_SIZE;
 }
 
-void PDScriptTokenizerText::_make_type(const Variant::Type &p_type) {
+void PScriptTokenizerText::_make_type(const Variant::Type &p_type) {
 	TokenData &tk = tk_rb[tk_rb_pos];
 
 	tk.type = TK_BUILT_IN_TYPE;
@@ -510,7 +510,7 @@ void PDScriptTokenizerText::_make_type(const Variant::Type &p_type) {
 	tk_rb_pos = (tk_rb_pos + 1) % TK_RB_SIZE;
 }
 
-void PDScriptTokenizerText::_make_error(const String &p_error) {
+void PScriptTokenizerText::_make_error(const String &p_error) {
 	error_flag = true;
 	last_error = p_error;
 
@@ -522,7 +522,7 @@ void PDScriptTokenizerText::_make_error(const String &p_error) {
 	tk_rb_pos = (tk_rb_pos + 1) % TK_RB_SIZE;
 }
 
-void PDScriptTokenizerText::_make_newline(int p_indentation, int p_tabs) {
+void PScriptTokenizerText::_make_newline(int p_indentation, int p_tabs) {
 	TokenData &tk = tk_rb[tk_rb_pos];
 	tk.type = TK_NEWLINE;
 	tk.constant = Vector2(p_indentation, p_tabs);
@@ -531,7 +531,7 @@ void PDScriptTokenizerText::_make_newline(int p_indentation, int p_tabs) {
 	tk_rb_pos = (tk_rb_pos + 1) % TK_RB_SIZE;
 }
 
-void PDScriptTokenizerText::_advance() {
+void PScriptTokenizerText::_advance() {
 	if (error_flag) {
 		//parser broke
 		_make_error(last_error);
@@ -1093,7 +1093,7 @@ void PDScriptTokenizerText::_advance() {
 	}
 }
 
-void PDScriptTokenizerText::set_code(const String &p_code) {
+void PScriptTokenizerText::set_code(const String &p_code) {
 	code = p_code;
 	len = p_code.length();
 	if (len) {
@@ -1115,7 +1115,7 @@ void PDScriptTokenizerText::set_code(const String &p_code) {
 	}
 }
 
-PDScriptTokenizerText::Token PDScriptTokenizerText::get_token(int p_offset) const {
+PScriptTokenizerText::Token PScriptTokenizerText::get_token(int p_offset) const {
 	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, TK_ERROR);
 	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, TK_ERROR);
 
@@ -1123,7 +1123,7 @@ PDScriptTokenizerText::Token PDScriptTokenizerText::get_token(int p_offset) cons
 	return tk_rb[ofs].type;
 }
 
-int PDScriptTokenizerText::get_token_line(int p_offset) const {
+int PScriptTokenizerText::get_token_line(int p_offset) const {
 	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, -1);
 	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, -1);
 
@@ -1131,7 +1131,7 @@ int PDScriptTokenizerText::get_token_line(int p_offset) const {
 	return tk_rb[ofs].line;
 }
 
-int PDScriptTokenizerText::get_token_column(int p_offset) const {
+int PScriptTokenizerText::get_token_column(int p_offset) const {
 	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, -1);
 	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, -1);
 
@@ -1139,7 +1139,7 @@ int PDScriptTokenizerText::get_token_column(int p_offset) const {
 	return tk_rb[ofs].col;
 }
 
-const Variant &PDScriptTokenizerText::get_token_constant(int p_offset) const {
+const Variant &PScriptTokenizerText::get_token_constant(int p_offset) const {
 	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, tk_rb[0].constant);
 	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, tk_rb[0].constant);
 
@@ -1148,7 +1148,7 @@ const Variant &PDScriptTokenizerText::get_token_constant(int p_offset) const {
 	return tk_rb[ofs].constant;
 }
 
-StringName PDScriptTokenizerText::get_token_identifier(int p_offset) const {
+StringName PScriptTokenizerText::get_token_identifier(int p_offset) const {
 	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, StringName());
 	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, StringName());
 
@@ -1157,16 +1157,16 @@ StringName PDScriptTokenizerText::get_token_identifier(int p_offset) const {
 	return tk_rb[ofs].identifier;
 }
 
-PDScriptFunctions::Function PDScriptTokenizerText::get_token_built_in_func(int p_offset) const {
-	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, PDScriptFunctions::FUNC_MAX);
-	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, PDScriptFunctions::FUNC_MAX);
+PScriptFunctions::Function PScriptTokenizerText::get_token_built_in_func(int p_offset) const {
+	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, PScriptFunctions::FUNC_MAX);
+	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, PScriptFunctions::FUNC_MAX);
 
 	int ofs = (TK_RB_SIZE + tk_rb_pos + p_offset - MAX_LOOKAHEAD - 1) % TK_RB_SIZE;
-	ERR_FAIL_COND_V(tk_rb[ofs].type != TK_BUILT_IN_FUNC, PDScriptFunctions::FUNC_MAX);
+	ERR_FAIL_COND_V(tk_rb[ofs].type != TK_BUILT_IN_FUNC, PScriptFunctions::FUNC_MAX);
 	return tk_rb[ofs].func;
 }
 
-Variant::Type PDScriptTokenizerText::get_token_type(int p_offset) const {
+Variant::Type PScriptTokenizerText::get_token_type(int p_offset) const {
 	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, Variant::NIL);
 	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, Variant::NIL);
 
@@ -1175,7 +1175,7 @@ Variant::Type PDScriptTokenizerText::get_token_type(int p_offset) const {
 	return tk_rb[ofs].vtype;
 }
 
-int PDScriptTokenizerText::get_token_line_indent(int p_offset) const {
+int PScriptTokenizerText::get_token_line_indent(int p_offset) const {
 	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, 0);
 	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, 0);
 
@@ -1184,7 +1184,7 @@ int PDScriptTokenizerText::get_token_line_indent(int p_offset) const {
 	return tk_rb[ofs].constant.operator Vector2().x;
 }
 
-int PDScriptTokenizerText::get_token_line_tab_indent(int p_offset) const {
+int PScriptTokenizerText::get_token_line_tab_indent(int p_offset) const {
 	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, 0);
 	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, 0);
 
@@ -1193,7 +1193,7 @@ int PDScriptTokenizerText::get_token_line_tab_indent(int p_offset) const {
 	return tk_rb[ofs].constant.operator Vector2().y;
 }
 
-String PDScriptTokenizerText::get_token_error(int p_offset) const {
+String PScriptTokenizerText::get_token_error(int p_offset) const {
 	ERR_FAIL_COND_V(p_offset <= -MAX_LOOKAHEAD, String());
 	ERR_FAIL_COND_V(p_offset >= MAX_LOOKAHEAD, String());
 
@@ -1202,7 +1202,7 @@ String PDScriptTokenizerText::get_token_error(int p_offset) const {
 	return tk_rb[ofs].constant;
 }
 
-void PDScriptTokenizerText::advance(int p_amount) {
+void PScriptTokenizerText::advance(int p_amount) {
 	ERR_FAIL_COND(p_amount <= 0);
 	for (int i = 0; i < p_amount; i++) {
 		_advance();
@@ -1213,7 +1213,7 @@ void PDScriptTokenizerText::advance(int p_amount) {
 
 #define BYTECODE_VERSION 13
 
-Error PDScriptTokenizerBuffer::set_code_buffer(const Vector<uint8_t> &p_buffer) {
+Error PScriptTokenizerBuffer::set_code_buffer(const Vector<uint8_t> &p_buffer) {
 	const uint8_t *buf = p_buffer.ptr();
 	int total_len = p_buffer.size();
 	ERR_FAIL_COND_V(p_buffer.size() < 24 || p_buffer[0] != 'G' || p_buffer[1] != 'D' || p_buffer[2] != 'S' || p_buffer[3] != 'C', ERR_INVALID_DATA);
@@ -1296,7 +1296,7 @@ Error PDScriptTokenizerBuffer::set_code_buffer(const Vector<uint8_t> &p_buffer) 
 	return OK;
 }
 
-Vector<uint8_t> PDScriptTokenizerBuffer::parse_code_string(const String &p_code) {
+Vector<uint8_t> PScriptTokenizerBuffer::parse_code_string(const String &p_code) {
 	Vector<uint8_t> buf;
 
 	RBMap<StringName, int> identifier_map;
@@ -1304,7 +1304,7 @@ Vector<uint8_t> PDScriptTokenizerBuffer::parse_code_string(const String &p_code)
 	RBMap<uint32_t, int> line_map;
 	Vector<uint32_t> token_array;
 
-	PDScriptTokenizerText tt;
+	PScriptTokenizerText tt;
 	tt.set_code(p_code);
 	int line = -1;
 
@@ -1446,17 +1446,17 @@ Vector<uint8_t> PDScriptTokenizerBuffer::parse_code_string(const String &p_code)
 	return buf;
 }
 
-PDScriptTokenizerBuffer::Token PDScriptTokenizerBuffer::get_token(int p_offset) const {
+PScriptTokenizerBuffer::Token PScriptTokenizerBuffer::get_token(int p_offset) const {
 	int offset = token + p_offset;
 
 	if (offset < 0 || offset >= tokens.size()) {
 		return TK_EOF;
 	}
 
-	return PDScriptTokenizerBuffer::Token(tokens[offset] & TOKEN_MASK);
+	return PScriptTokenizerBuffer::Token(tokens[offset] & TOKEN_MASK);
 }
 
-StringName PDScriptTokenizerBuffer::get_token_identifier(int p_offset) const {
+StringName PScriptTokenizerBuffer::get_token_identifier(int p_offset) const {
 	int offset = token + p_offset;
 
 	ERR_FAIL_INDEX_V(offset, tokens.size(), StringName());
@@ -1466,20 +1466,20 @@ StringName PDScriptTokenizerBuffer::get_token_identifier(int p_offset) const {
 	return identifiers[identifier];
 }
 
-PDScriptFunctions::Function PDScriptTokenizerBuffer::get_token_built_in_func(int p_offset) const {
+PScriptFunctions::Function PScriptTokenizerBuffer::get_token_built_in_func(int p_offset) const {
 	int offset = token + p_offset;
-	ERR_FAIL_INDEX_V(offset, tokens.size(), PDScriptFunctions::FUNC_MAX);
-	return PDScriptFunctions::Function(tokens[offset] >> TOKEN_BITS);
+	ERR_FAIL_INDEX_V(offset, tokens.size(), PScriptFunctions::FUNC_MAX);
+	return PScriptFunctions::Function(tokens[offset] >> TOKEN_BITS);
 }
 
-Variant::Type PDScriptTokenizerBuffer::get_token_type(int p_offset) const {
+Variant::Type PScriptTokenizerBuffer::get_token_type(int p_offset) const {
 	int offset = token + p_offset;
 	ERR_FAIL_INDEX_V(offset, tokens.size(), Variant::NIL);
 
 	return Variant::Type(tokens[offset] >> TOKEN_BITS);
 }
 
-int PDScriptTokenizerBuffer::get_token_line(int p_offset) const {
+int PScriptTokenizerBuffer::get_token_line(int p_offset) const {
 	int offset = token + p_offset;
 	int pos = lines.find_nearest(offset);
 
@@ -1493,7 +1493,7 @@ int PDScriptTokenizerBuffer::get_token_line(int p_offset) const {
 	uint32_t l = lines.getv(pos);
 	return l & TOKEN_LINE_MASK;
 }
-int PDScriptTokenizerBuffer::get_token_column(int p_offset) const {
+int PScriptTokenizerBuffer::get_token_column(int p_offset) const {
 	int offset = token + p_offset;
 	int pos = lines.find_nearest(offset);
 	if (pos < 0) {
@@ -1506,26 +1506,26 @@ int PDScriptTokenizerBuffer::get_token_column(int p_offset) const {
 	uint32_t l = lines.getv(pos);
 	return l >> TOKEN_LINE_BITS;
 }
-int PDScriptTokenizerBuffer::get_token_line_indent(int p_offset) const {
+int PScriptTokenizerBuffer::get_token_line_indent(int p_offset) const {
 	int offset = token + p_offset;
 	ERR_FAIL_INDEX_V(offset, tokens.size(), 0);
 	return tokens[offset] >> TOKEN_BITS;
 }
-const Variant &PDScriptTokenizerBuffer::get_token_constant(int p_offset) const {
+const Variant &PScriptTokenizerBuffer::get_token_constant(int p_offset) const {
 	int offset = token + p_offset;
 	ERR_FAIL_INDEX_V(offset, tokens.size(), nil);
 	uint32_t constant = tokens[offset] >> TOKEN_BITS;
 	ERR_FAIL_UNSIGNED_INDEX_V(constant, (uint32_t)constants.size(), nil);
 	return constants[constant];
 }
-String PDScriptTokenizerBuffer::get_token_error(int p_offset) const {
+String PScriptTokenizerBuffer::get_token_error(int p_offset) const {
 	ERR_FAIL_V(String());
 }
 
-void PDScriptTokenizerBuffer::advance(int p_amount) {
+void PScriptTokenizerBuffer::advance(int p_amount) {
 	ERR_FAIL_INDEX(p_amount + token, tokens.size());
 	token += p_amount;
 }
-PDScriptTokenizerBuffer::PDScriptTokenizerBuffer() {
+PScriptTokenizerBuffer::PScriptTokenizerBuffer() {
 	token = 0;
 }

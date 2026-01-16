@@ -1,8 +1,8 @@
-#ifndef PDSCRIPT_FUNCTION_H
-#define PDSCRIPT_FUNCTION_H
+#ifndef PSCRIPT_FUNCTION_H
+#define PSCRIPT_FUNCTION_H
 
 /*************************************************************************/
-/*  pdscript_function.h                                                  */
+/*  pscript_function.h                                                  */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -40,17 +40,17 @@
 #include "core/string/string_name.h"
 #include "core/variant/variant.h"
 
-class PDScriptInstance;
-class PDScript;
+class PScriptInstance;
+class PScript;
 
-struct PDScriptDataType {
+struct PScriptDataType {
 	bool has_type;
 	enum {
 		UNINITIALIZED,
 		BUILTIN,
 		NATIVE,
 		SCRIPT,
-		PDSCRIPT,
+		PSCRIPT,
 	} kind;
 	Variant::Type builtin_type;
 	StringName native_type;
@@ -96,7 +96,7 @@ struct PDScriptDataType {
 				return true;
 			} break;
 			case SCRIPT:
-			case PDSCRIPT: {
+			case PSCRIPT: {
 				if (p_variant.get_type() == Variant::NIL) {
 					return true;
 				}
@@ -138,7 +138,7 @@ struct PDScriptDataType {
 					info.class_name = native_type;
 				} break;
 				case SCRIPT:
-				case PDSCRIPT: {
+				case PSCRIPT: {
 					info.type = Variant::OBJECT;
 					info.class_name = script_type->get_instance_base_type();
 				} break;
@@ -150,14 +150,14 @@ struct PDScriptDataType {
 		return info;
 	}
 
-	PDScriptDataType() :
+	PScriptDataType() :
 			has_type(false),
 			kind(UNINITIALIZED),
 			builtin_type(Variant::NIL),
 			script_type(nullptr) {}
 };
 
-class PDScriptFunction {
+class PScriptFunction {
 public:
 	enum Opcode {
 		OPCODE_OPERATOR,
@@ -226,7 +226,7 @@ public:
 	};
 
 private:
-	friend class PDScriptCompiler;
+	friend class PScriptCompiler;
 
 	StringName source;
 
@@ -249,7 +249,7 @@ private:
 	int _initial_line;
 	bool _static;
 
-	PDScript *_script;
+	PScript *_script;
 
 	StringName name;
 	Vector<Variant> constants;
@@ -259,8 +259,8 @@ private:
 #endif
 	Vector<int> default_arguments;
 	Vector<int> code;
-	Vector<PDScriptDataType> argument_types;
-	PDScriptDataType return_type;
+	Vector<PScriptDataType> argument_types;
+	PScriptDataType return_type;
 
 #ifdef TOOLS_ENABLED
 	Vector<StringName> arg_names;
@@ -269,12 +269,12 @@ private:
 
 	List<StackDebug> stack_debug;
 
-	_FORCE_INLINE_ Variant *_get_variant(int p_address, PDScriptInstance *p_instance, PDScript *p_script, Variant &self, Variant &static_ref, Variant *p_stack, String &r_error) const;
+	_FORCE_INLINE_ Variant *_get_variant(int p_address, PScriptInstance *p_instance, PScript *p_script, Variant &self, Variant &static_ref, Variant *p_stack, String &r_error) const;
 	_FORCE_INLINE_ String _get_call_error(const Variant::CallError &p_err, const String &p_where, const Variant **argptrs) const;
 
-	friend class PDScriptLanguage;
+	friend class PScriptLanguage;
 
-	SelfList<PDScriptFunction> function_list;
+	SelfList<PScriptFunction> function_list;
 #ifdef DEBUG_ENABLED
 	CharString func_cname;
 	const char *_func_cname;
@@ -296,8 +296,8 @@ private:
 
 public:
 	struct CallState {
-		PDScript *script;
-		PDScriptInstance *instance;
+		PScript *script;
+		PScriptInstance *instance;
 #ifdef DEBUG_ENABLED
 		StringName function_name;
 		String script_path;
@@ -322,9 +322,9 @@ public:
 	int get_max_stack_size() const;
 	int get_default_argument_count() const;
 	int get_default_argument_addr(int p_idx) const;
-	PDScriptDataType get_return_type() const;
-	PDScriptDataType get_argument_type(int p_idx) const;
-	PDScript *get_script() const { return _script; }
+	PScriptDataType get_return_type() const;
+	PScriptDataType get_argument_type(int p_idx) const;
+	PScript *get_script() const { return _script; }
 	StringName get_source() const { return source; }
 
 	void debug_get_stack_member_state(int p_line, List<Pair<StringName, int>> *r_stackvars) const;
@@ -349,22 +349,22 @@ public:
 #endif
 	}
 
-	Variant call(PDScriptInstance *p_instance, const Variant **p_args, int p_argcount, Variant::CallError &r_err, CallState *p_state = nullptr);
+	Variant call(PScriptInstance *p_instance, const Variant **p_args, int p_argcount, Variant::CallError &r_err, CallState *p_state = nullptr);
 
-	PDScriptFunction();
-	~PDScriptFunction();
+	PScriptFunction();
+	~PScriptFunction();
 };
 
-class PDScriptFunctionState : public Reference {
-	GDCLASS(PDScriptFunctionState, Reference);
-	friend class PDScriptFunction;
-	PDScriptFunction *function;
-	PDScriptFunction::CallState state;
+class PScriptFunctionState : public Reference {
+	GDCLASS(PScriptFunctionState, Reference);
+	friend class PScriptFunction;
+	PScriptFunction *function;
+	PScriptFunction::CallState state;
 	Variant _signal_callback(const Variant **p_args, int p_argcount, Variant::CallError &r_error);
-	Ref<PDScriptFunctionState> first_state;
+	Ref<PScriptFunctionState> first_state;
 
-	SelfList<PDScriptFunctionState> scripts_list;
-	SelfList<PDScriptFunctionState> instances_list;
+	SelfList<PScriptFunctionState> scripts_list;
+	SelfList<PScriptFunctionState> instances_list;
 
 protected:
 	static void _bind_methods();
@@ -376,8 +376,8 @@ public:
 	void _clear_stack();
 	void _clear_connections();
 
-	PDScriptFunctionState();
-	~PDScriptFunctionState();
+	PScriptFunctionState();
+	~PScriptFunctionState();
 };
 
-#endif // PDSCRIPT_FUNCTION_H
+#endif // PSCRIPT_FUNCTION_H

@@ -1,8 +1,8 @@
-#ifndef PDSCRIPT_PARSER_H
-#define PDSCRIPT_PARSER_H
+#ifndef PSCRIPT_PARSER_H
+#define PSCRIPT_PARSER_H
 
 /*************************************************************************/
-/*  pdscript_parser.h                                                    */
+/*  pscript_parser.h                                                    */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -35,13 +35,13 @@
 #include "core/containers/rb_map.h"
 #include "core/object/object.h"
 #include "core/object/script_language.h"
-#include "pdscript_functions.h"
-#include "pdscript_tokenizer.h"
+#include "pscript_functions.h"
+#include "pscript_tokenizer.h"
 
-struct PDScriptDataType;
-struct PDScriptWarning;
+struct PScriptDataType;
+struct PScriptWarning;
 
-class PDScriptParser {
+class PScriptParser {
 public:
 	struct ClassNode;
 
@@ -50,7 +50,7 @@ public:
 			BUILTIN,
 			NATIVE,
 			SCRIPT,
-			PDSCRIPT,
+			PSCRIPT,
 			CLASS,
 			UNRESOLVED
 		} kind;
@@ -82,7 +82,7 @@ public:
 				case NATIVE: {
 					return native_type == other.native_type;
 				} break;
-				case PDSCRIPT:
+				case PSCRIPT:
 				case SCRIPT: {
 					return script_type == other.script_type;
 				} break;
@@ -257,7 +257,7 @@ public:
 		TypeNode() { type = TYPE_TYPE; }
 	};
 	struct BuiltInFunctionNode : public Node {
-		PDScriptFunctions::Function function;
+		PScriptFunctions::Function function;
 		BuiltInFunctionNode() { type = TYPE_BUILT_IN_FUNCTION; }
 	};
 
@@ -513,7 +513,7 @@ public:
 	};
 
 private:
-	PDScriptTokenizer *tokenizer;
+	PScriptTokenizer *tokenizer;
 
 	Node *head;
 	Node *list;
@@ -535,7 +535,7 @@ private:
 #endif // DEBUG_ENABLED
 
 #ifdef DEBUG_ENABLED
-	List<PDScriptWarning> warnings;
+	List<PScriptWarning> warnings;
 #endif // DEBUG_ENABLED
 
 	int pending_newline;
@@ -618,7 +618,7 @@ private:
 	DataType _resolve_type(const DataType &p_source, int p_line);
 	DataType _type_from_variant(const Variant &p_value) const;
 	DataType _type_from_property(const PropertyInfo &p_property, bool p_nil_is_variant = true) const;
-	DataType _type_from_pdtype(const PDScriptDataType &p_pdtype) const;
+	DataType _type_from_ptype(const PScriptDataType &p_ptype) const;
 	DataType _get_operation_type(const Variant::Operator p_op, const DataType &p_a, const DataType &p_b, bool &r_valid) const;
 	Variant::Operator _get_variant_operation(const OperatorNode::Operator &p_op) const;
 	bool _get_function_signature(DataType &p_base_type, const StringName &p_function, DataType &r_return_type, List<DataType> &r_arg_types, int &r_default_arg_count, bool &r_static, bool &r_vararg) const;
@@ -656,7 +656,7 @@ public:
 	int get_error_line() const;
 	int get_error_column() const;
 #ifdef DEBUG_ENABLED
-	const List<PDScriptWarning> &get_warnings() const { return warnings; }
+	const List<PScriptWarning> &get_warnings() const { return warnings; }
 #endif // DEBUG_ENABLED
 	Error parse(const String &p_code, const String &p_base_path = "", bool p_just_validate = false, const String &p_self_path = "", bool p_for_completion = false, RBSet<int> *r_safe_lines = nullptr, bool p_dependencies_only = false);
 	Error parse_bytecode(const Vector<uint8_t> &p_bytecode, const String &p_base_path = "", const String &p_self_path = "");
@@ -680,8 +680,8 @@ public:
 	const List<String> &get_dependencies() const { return dependencies; }
 
 	void clear();
-	PDScriptParser();
-	~PDScriptParser();
+	PScriptParser();
+	~PScriptParser();
 };
 
-#endif // PDSCRIPT_PARSER_H
+#endif // PSCRIPT_PARSER_H

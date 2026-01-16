@@ -1,8 +1,8 @@
-#ifndef PDSCRIPT_LANGUAGE_SERVER_H
-#define PDSCRIPT_LANGUAGE_SERVER_H
+#ifndef PSCRIPT_LANGUAGE_SERVER_H
+#define PSCRIPT_LANGUAGE_SERVER_H
 
 /*************************************************************************/
-/*  pdscript_language_server.h                                           */
+/*  pscript_language_server.h                                           */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -32,14 +32,14 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "../pdscript_parser.h"
+#include "../pscript_parser.h"
 #include "editor/editor_plugin.h"
-#include "pdscript_language_protocol.h"
+#include "pscript_language_protocol.h"
 
-class PDScriptLanguageServer : public EditorPlugin {
-	GDCLASS(PDScriptLanguageServer, EditorPlugin);
+class PScriptLanguageServer : public EditorPlugin {
+	GDCLASS(PScriptLanguageServer, EditorPlugin);
 
-	PDScriptLanguageProtocol protocol;
+	PScriptLanguageProtocol protocol;
 
 	Thread thread;
 	bool thread_running;
@@ -57,11 +57,11 @@ private:
 
 public:
 	static int port_override;
-	PDScriptLanguageServer();
+	PScriptLanguageServer();
 	void start();
 	void stop();
 };
 
-void register_pd_lsp_types();
+void register_p_lsp_types();
 
-#endif // PDSCRIPT_LANGUAGE_SERVER_H
+#endif // PSCRIPT_LANGUAGE_SERVER_H

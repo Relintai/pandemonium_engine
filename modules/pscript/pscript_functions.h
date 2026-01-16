@@ -1,8 +1,8 @@
-#ifndef PDSCRIPT_FUNCTIONS_H
-#define PDSCRIPT_FUNCTIONS_H
+#ifndef PSCRIPT_FUNCTIONS_H
+#define PSCRIPT_FUNCTIONS_H
 
 /*************************************************************************/
-/*  pdscript_functions.h                                                 */
+/*  pscript_functions.h                                                 */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -34,7 +34,7 @@
 
 #include "core/variant/variant.h"
 
-class PDScriptFunctions {
+class PScriptFunctions {
 public:
 	enum Function {
 		MATH_SIN,
@@ -138,4 +138,4 @@ public:
 	static MethodInfo get_info(Function p_func);
 };
 
-#endif // PDSCRIPT_FUNCTIONS_H
+#endif // PSCRIPT_FUNCTIONS_H

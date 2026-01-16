@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  pdscript_compiler.cpp                                                */
+/*  pscript_compiler.cpp                                                */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,11 +29,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "pdscript_compiler.h"
+#include "pscript_compiler.h"
 
-#include "pdscript.h"
+#include "pscript.h"
 
-bool PDScriptCompiler::_is_class_member_property(CodeGen &codegen, const StringName &p_name) {
+bool PScriptCompiler::_is_class_member_property(CodeGen &codegen, const StringName &p_name) {
 	if (codegen.function_node && codegen.function_node->_static) {
 		return false;
 	}
@@ -45,9 +45,9 @@ bool PDScriptCompiler::_is_class_member_property(CodeGen &codegen, const StringN
 	return _is_class_member_property(codegen.script, p_name);
 }
 
-bool PDScriptCompiler::_is_class_member_property(PDScript *owner, const StringName &p_name) {
-	PDScript *scr = owner;
-	PDScriptNativeClass *nc = nullptr;
+bool PScriptCompiler::_is_class_member_property(PScript *owner, const StringName &p_name) {
+	PScript *scr = owner;
+	PScriptNativeClass *nc = nullptr;
 	while (scr) {
 		if (scr->native.is_valid()) {
 			nc = scr->native.ptr();
@@ -60,7 +60,7 @@ bool PDScriptCompiler::_is_class_member_property(PDScript *owner, const StringNa
 	return ClassDB::has_property(nc->get_name(), p_name);
 }
 
-void PDScriptCompiler::_set_error(const String &p_error, const PDScriptParser::Node *p_node) {
+void PScriptCompiler::_set_error(const String &p_error, const PScriptParser::Node *p_node) {
 	if (error != "") {
 		return;
 	}
@@ -75,7 +75,7 @@ void PDScriptCompiler::_set_error(const String &p_error, const PDScriptParser::N
 	}
 }
 
-bool PDScriptCompiler::_create_unary_operator(CodeGen &codegen, const PDScriptParser::OperatorNode *on, Variant::Operator op, int p_stack_level) {
+bool PScriptCompiler::_create_unary_operator(CodeGen &codegen, const PScriptParser::OperatorNode *on, Variant::Operator op, int p_stack_level) {
 	ERR_FAIL_COND_V(on->arguments.size() != 1, false);
 
 	int src_address_a = _parse_expression(codegen, on->arguments[0], p_stack_level);
@@ -83,22 +83,22 @@ bool PDScriptCompiler::_create_unary_operator(CodeGen &codegen, const PDScriptPa
 		return false;
 	}
 
-	codegen.opcodes.push_back(PDScriptFunction::OPCODE_OPERATOR); // perform operator
+	codegen.opcodes.push_back(PScriptFunction::OPCODE_OPERATOR); // perform operator
 	codegen.opcodes.push_back(op); //which operator
 	codegen.opcodes.push_back(src_address_a); // argument 1
 	codegen.opcodes.push_back(src_address_a); // argument 2 (repeated)
-	//codegen.opcodes.push_back(PDScriptFunction::ADDR_TYPE_NIL); // argument 2 (unary only takes one parameter)
+	//codegen.opcodes.push_back(PScriptFunction::ADDR_TYPE_NIL); // argument 2 (unary only takes one parameter)
 	return true;
 }
 
-bool PDScriptCompiler::_create_binary_operator(CodeGen &codegen, const PDScriptParser::OperatorNode *on, Variant::Operator op, int p_stack_level, bool p_initializer, int p_index_addr) {
+bool PScriptCompiler::_create_binary_operator(CodeGen &codegen, const PScriptParser::OperatorNode *on, Variant::Operator op, int p_stack_level, bool p_initializer, int p_index_addr) {
 	ERR_FAIL_COND_V(on->arguments.size() != 2, false);
 
 	int src_address_a = _parse_expression(codegen, on->arguments[0], p_stack_level, false, p_initializer, p_index_addr);
 	if (src_address_a < 0) {
 		return false;
 	}
-	if (src_address_a & PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS) {
+	if (src_address_a & PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS) {
 		p_stack_level++; //uses stack for return, increase stack
 	}
 
@@ -107,70 +107,70 @@ bool PDScriptCompiler::_create_binary_operator(CodeGen &codegen, const PDScriptP
 		return false;
 	}
 
-	codegen.opcodes.push_back(PDScriptFunction::OPCODE_OPERATOR); // perform operator
+	codegen.opcodes.push_back(PScriptFunction::OPCODE_OPERATOR); // perform operator
 	codegen.opcodes.push_back(op); //which operator
 	codegen.opcodes.push_back(src_address_a); // argument 1
 	codegen.opcodes.push_back(src_address_b); // argument 2 (unary only takes one parameter)
 	return true;
 }
 
-PDScriptDataType PDScriptCompiler::_pdtype_from_datatype(const PDScriptParser::DataType &p_datatype, PDScript *p_owner) const {
+PScriptDataType PScriptCompiler::_ptype_from_datatype(const PScriptParser::DataType &p_datatype, PScript *p_owner) const {
 	if (!p_datatype.has_type) {
-		return PDScriptDataType();
+		return PScriptDataType();
 	}
 
-	PDScriptDataType result;
+	PScriptDataType result;
 	result.has_type = true;
 
 	switch (p_datatype.kind) {
-		case PDScriptParser::DataType::BUILTIN: {
-			result.kind = PDScriptDataType::BUILTIN;
+		case PScriptParser::DataType::BUILTIN: {
+			result.kind = PScriptDataType::BUILTIN;
 			result.builtin_type = p_datatype.builtin_type;
 		} break;
-		case PDScriptParser::DataType::NATIVE: {
-			result.kind = PDScriptDataType::NATIVE;
+		case PScriptParser::DataType::NATIVE: {
+			result.kind = PScriptDataType::NATIVE;
 			result.native_type = p_datatype.native_type;
 		} break;
-		case PDScriptParser::DataType::SCRIPT: {
-			result.kind = PDScriptDataType::SCRIPT;
+		case PScriptParser::DataType::SCRIPT: {
+			result.kind = PScriptDataType::SCRIPT;
 			result.script_type_ref = Ref<Script>(p_datatype.script_type);
 			result.script_type = result.script_type_ref.ptr();
 			result.native_type = result.script_type->get_instance_base_type();
 		} break;
-		case PDScriptParser::DataType::PDSCRIPT: {
-			result.kind = PDScriptDataType::PDSCRIPT;
+		case PScriptParser::DataType::PSCRIPT: {
+			result.kind = PScriptDataType::PSCRIPT;
 			result.script_type_ref = Ref<Script>(p_datatype.script_type);
 			result.script_type = result.script_type_ref.ptr();
 			result.native_type = result.script_type->get_instance_base_type();
 		} break;
-		case PDScriptParser::DataType::CLASS: {
+		case PScriptParser::DataType::CLASS: {
 			// Locate class by constructing the path to it and following that path
-			PDScriptParser::ClassNode *class_type = p_datatype.class_type;
+			PScriptParser::ClassNode *class_type = p_datatype.class_type;
 			List<StringName> names;
 			while (class_type->owner) {
 				names.push_back(class_type->name);
 				class_type = class_type->owner;
 			}
 
-			Ref<PDScript> script = Ref<PDScript>(main_script);
+			Ref<PScript> script = Ref<PScript>(main_script);
 			while (names.back()) {
 				if (!script->subclasses.has(names.back()->get())) {
 					ERR_PRINT("Parser bug: Cannot locate datatype class.");
 					result.has_type = false;
-					return PDScriptDataType();
+					return PScriptDataType();
 				}
 				script = script->subclasses[names.back()->get()];
 				names.pop_back();
 			}
 
-			result.kind = PDScriptDataType::PDSCRIPT;
+			result.kind = PScriptDataType::PSCRIPT;
 			result.script_type_ref = Ref<Script>(script);
 			result.script_type = result.script_type_ref.ptr();
 			result.native_type = script->get_instance_base_type();
 		} break;
 		default: {
 			ERR_PRINT("Parser bug: converting unresolved type.");
-			return PDScriptDataType();
+			return PScriptDataType();
 		}
 	}
 
@@ -183,42 +183,42 @@ PDScriptDataType PDScriptCompiler::_pdtype_from_datatype(const PDScriptParser::D
 	return result;
 }
 
-int PDScriptCompiler::_parse_assign_right_expression(CodeGen &codegen, const PDScriptParser::OperatorNode *p_expression, int p_stack_level, int p_index_addr) {
+int PScriptCompiler::_parse_assign_right_expression(CodeGen &codegen, const PScriptParser::OperatorNode *p_expression, int p_stack_level, int p_index_addr) {
 	Variant::Operator var_op = Variant::OP_MAX;
 
 	switch (p_expression->op) {
-		case PDScriptParser::OperatorNode::OP_ASSIGN_ADD:
+		case PScriptParser::OperatorNode::OP_ASSIGN_ADD:
 			var_op = Variant::OP_ADD;
 			break;
-		case PDScriptParser::OperatorNode::OP_ASSIGN_SUB:
+		case PScriptParser::OperatorNode::OP_ASSIGN_SUB:
 			var_op = Variant::OP_SUBTRACT;
 			break;
-		case PDScriptParser::OperatorNode::OP_ASSIGN_MUL:
+		case PScriptParser::OperatorNode::OP_ASSIGN_MUL:
 			var_op = Variant::OP_MULTIPLY;
 			break;
-		case PDScriptParser::OperatorNode::OP_ASSIGN_DIV:
+		case PScriptParser::OperatorNode::OP_ASSIGN_DIV:
 			var_op = Variant::OP_DIVIDE;
 			break;
-		case PDScriptParser::OperatorNode::OP_ASSIGN_MOD:
+		case PScriptParser::OperatorNode::OP_ASSIGN_MOD:
 			var_op = Variant::OP_MODULE;
 			break;
-		case PDScriptParser::OperatorNode::OP_ASSIGN_SHIFT_LEFT:
+		case PScriptParser::OperatorNode::OP_ASSIGN_SHIFT_LEFT:
 			var_op = Variant::OP_SHIFT_LEFT;
 			break;
-		case PDScriptParser::OperatorNode::OP_ASSIGN_SHIFT_RIGHT:
+		case PScriptParser::OperatorNode::OP_ASSIGN_SHIFT_RIGHT:
 			var_op = Variant::OP_SHIFT_RIGHT;
 			break;
-		case PDScriptParser::OperatorNode::OP_ASSIGN_BIT_AND:
+		case PScriptParser::OperatorNode::OP_ASSIGN_BIT_AND:
 			var_op = Variant::OP_BIT_AND;
 			break;
-		case PDScriptParser::OperatorNode::OP_ASSIGN_BIT_OR:
+		case PScriptParser::OperatorNode::OP_ASSIGN_BIT_OR:
 			var_op = Variant::OP_BIT_OR;
 			break;
-		case PDScriptParser::OperatorNode::OP_ASSIGN_BIT_XOR:
+		case PScriptParser::OperatorNode::OP_ASSIGN_BIT_XOR:
 			var_op = Variant::OP_BIT_XOR;
 			break;
-		case PDScriptParser::OperatorNode::OP_INIT_ASSIGN:
-		case PDScriptParser::OperatorNode::OP_ASSIGN: {
+		case PScriptParser::OperatorNode::OP_INIT_ASSIGN:
+		case PScriptParser::OperatorNode::OP_ASSIGN: {
 			//none
 		} break;
 		default: {
@@ -226,7 +226,7 @@ int PDScriptCompiler::_parse_assign_right_expression(CodeGen &codegen, const PDS
 		}
 	}
 
-	bool initializer = p_expression->op == PDScriptParser::OperatorNode::OP_INIT_ASSIGN;
+	bool initializer = p_expression->op == PScriptParser::OperatorNode::OP_INIT_ASSIGN;
 
 	if (var_op == Variant::OP_MAX) {
 		return _parse_expression(codegen, p_expression->arguments[1], p_stack_level, false, initializer);
@@ -236,38 +236,38 @@ int PDScriptCompiler::_parse_assign_right_expression(CodeGen &codegen, const PDS
 		return -1;
 	}
 
-	int dst_addr = (p_stack_level) | (PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS);
+	int dst_addr = (p_stack_level) | (PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS);
 	codegen.opcodes.push_back(dst_addr); // append the stack level as destination address of the opcode
 	codegen.alloc_stack(p_stack_level);
 	return dst_addr;
 }
 
-int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::Node *p_expression, int p_stack_level, bool p_root, bool p_initializer, int p_index_addr) {
+int PScriptCompiler::_parse_expression(CodeGen &codegen, const PScriptParser::Node *p_expression, int p_stack_level, bool p_root, bool p_initializer, int p_index_addr) {
 	switch (p_expression->type) {
 		//should parse variable declaration and adjust stack accordingly...
-		case PDScriptParser::Node::TYPE_IDENTIFIER: {
+		case PScriptParser::Node::TYPE_IDENTIFIER: {
 			//return identifier
 			//wait, identifier could be a local variable or something else... careful here, must reference properly
 			//as stack may be more interesting to work with
 
 			//This could be made much simpler by just indexing "self", but done this way (with custom self-addressing modes) increases performance a lot.
 
-			const PDScriptParser::IdentifierNode *in = static_cast<const PDScriptParser::IdentifierNode *>(p_expression);
+			const PScriptParser::IdentifierNode *in = static_cast<const PScriptParser::IdentifierNode *>(p_expression);
 
 			StringName identifier = in->name;
 
 			// TRY STACK!
 			if (!p_initializer && codegen.stack_identifiers.has(identifier)) {
 				int pos = codegen.stack_identifiers[identifier];
-				return pos | (PDScriptFunction::ADDR_TYPE_STACK_VARIABLE << PDScriptFunction::ADDR_BITS);
+				return pos | (PScriptFunction::ADDR_TYPE_STACK_VARIABLE << PScriptFunction::ADDR_BITS);
 			}
 
 			// TRY CLASS MEMBER
 			if (_is_class_member_property(codegen, identifier)) {
 				//get property
-				codegen.opcodes.push_back(PDScriptFunction::OPCODE_GET_MEMBER); // perform operator
+				codegen.opcodes.push_back(PScriptFunction::OPCODE_GET_MEMBER); // perform operator
 				codegen.opcodes.push_back(codegen.get_name_map_pos(identifier)); // argument 2 (unary only takes one parameter)
-				int dst_addr = (p_stack_level) | (PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS);
+				int dst_addr = (p_stack_level) | (PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS);
 				codegen.opcodes.push_back(dst_addr); // append the stack level as destination address of the opcode
 				codegen.alloc_stack(p_stack_level);
 				return dst_addr;
@@ -279,21 +279,21 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 				//static function
 				if (codegen.script->member_indices.has(identifier)) {
 					int idx = codegen.script->member_indices[identifier].index;
-					return idx | (PDScriptFunction::ADDR_TYPE_MEMBER << PDScriptFunction::ADDR_BITS); //argument (stack root)
+					return idx | (PScriptFunction::ADDR_TYPE_MEMBER << PScriptFunction::ADDR_BITS); //argument (stack root)
 				}
 			}
 
 			//TRY CLASS CONSTANTS
 
-			PDScript *owner = codegen.script;
+			PScript *owner = codegen.script;
 			while (owner) {
-				PDScript *scr = owner;
-				PDScriptNativeClass *nc = nullptr;
+				PScript *scr = owner;
+				PScriptNativeClass *nc = nullptr;
 				while (scr) {
 					if (scr->constants.has(identifier)) {
 						//int idx=scr->constants[identifier];
 						int idx = codegen.get_name_map_pos(identifier);
-						return idx | (PDScriptFunction::ADDR_TYPE_CLASS_CONSTANT << PDScriptFunction::ADDR_BITS); //argument (stack root)
+						return idx | (PScriptFunction::ADDR_TYPE_CLASS_CONSTANT << PScriptFunction::ADDR_BITS); //argument (stack root)
 					}
 					if (scr->native.is_valid()) {
 						nc = scr->native.ptr();
@@ -318,22 +318,22 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 							idx = codegen.constant_map[key];
 						}
 
-						return idx | (PDScriptFunction::ADDR_TYPE_LOCAL_CONSTANT << PDScriptFunction::ADDR_BITS); //make it a local constant (faster access)
+						return idx | (PScriptFunction::ADDR_TYPE_LOCAL_CONSTANT << PScriptFunction::ADDR_BITS); //make it a local constant (faster access)
 					}
 				}
 
 				owner = owner->_owner;
 			}
 
-			if (PDScriptLanguage::get_singleton()->get_global_map().has(identifier)) {
-				int idx = PDScriptLanguage::get_singleton()->get_global_map()[identifier];
-				return idx | (PDScriptFunction::ADDR_TYPE_GLOBAL << PDScriptFunction::ADDR_BITS); //argument (stack root)
+			if (PScriptLanguage::get_singleton()->get_global_map().has(identifier)) {
+				int idx = PScriptLanguage::get_singleton()->get_global_map()[identifier];
+				return idx | (PScriptFunction::ADDR_TYPE_GLOBAL << PScriptFunction::ADDR_BITS); //argument (stack root)
 			}
 
 			/* TRY GLOBAL CLASSES */
 
 			if (ScriptServer::is_global_class(identifier)) {
-				const PDScriptParser::ClassNode *class_node = codegen.class_node;
+				const PScriptParser::ClassNode *class_node = codegen.class_node;
 				while (class_node->owner) {
 					class_node = class_node->owner;
 				}
@@ -360,17 +360,17 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 					idx = codegen.constant_map[key];
 				}
 
-				return idx | (PDScriptFunction::ADDR_TYPE_LOCAL_CONSTANT << PDScriptFunction::ADDR_BITS); //make it a local constant (faster access)
+				return idx | (PScriptFunction::ADDR_TYPE_LOCAL_CONSTANT << PScriptFunction::ADDR_BITS); //make it a local constant (faster access)
 			}
 
 #ifdef TOOLS_ENABLED
-			if (PDScriptLanguage::get_singleton()->get_named_globals_map().has(identifier)) {
+			if (PScriptLanguage::get_singleton()->get_named_globals_map().has(identifier)) {
 				int idx = codegen.named_globals.find(identifier);
 				if (idx == -1) {
 					idx = codegen.named_globals.size();
 					codegen.named_globals.push_back(identifier);
 				}
-				return idx | (PDScriptFunction::ADDR_TYPE_NAMED_GLOBAL << PDScriptFunction::ADDR_BITS);
+				return idx | (PScriptFunction::ADDR_TYPE_NAMED_GLOBAL << PScriptFunction::ADDR_BITS);
 			}
 #endif
 
@@ -381,9 +381,9 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 			return -1;
 
 		} break;
-		case PDScriptParser::Node::TYPE_CONSTANT: {
+		case PScriptParser::Node::TYPE_CONSTANT: {
 			//return constant
-			const PDScriptParser::ConstantNode *cn = static_cast<const PDScriptParser::ConstantNode *>(p_expression);
+			const PScriptParser::ConstantNode *cn = static_cast<const PScriptParser::ConstantNode *>(p_expression);
 
 			int idx;
 
@@ -395,19 +395,19 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 				idx = codegen.constant_map[cn->value];
 			}
 
-			return idx | (PDScriptFunction::ADDR_TYPE_LOCAL_CONSTANT << PDScriptFunction::ADDR_BITS); //argument (stack root)
+			return idx | (PScriptFunction::ADDR_TYPE_LOCAL_CONSTANT << PScriptFunction::ADDR_BITS); //argument (stack root)
 
 		} break;
-		case PDScriptParser::Node::TYPE_SELF: {
+		case PScriptParser::Node::TYPE_SELF: {
 			//return constant
 			if (codegen.function_node && codegen.function_node->_static) {
 				_set_error("'self' not present in static function!", p_expression);
 				return -1;
 			}
-			return (PDScriptFunction::ADDR_TYPE_SELF << PDScriptFunction::ADDR_BITS);
+			return (PScriptFunction::ADDR_TYPE_SELF << PScriptFunction::ADDR_BITS);
 		} break;
-		case PDScriptParser::Node::TYPE_ARRAY: {
-			const PDScriptParser::ArrayNode *an = static_cast<const PDScriptParser::ArrayNode *>(p_expression);
+		case PScriptParser::Node::TYPE_ARRAY: {
+			const PScriptParser::ArrayNode *an = static_cast<const PScriptParser::ArrayNode *>(p_expression);
 			Vector<int> values;
 
 			int slevel = p_stack_level;
@@ -417,7 +417,7 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 				if (ret < 0) {
 					return ret;
 				}
-				if ((ret >> PDScriptFunction::ADDR_BITS & PDScriptFunction::ADDR_TYPE_STACK) == PDScriptFunction::ADDR_TYPE_STACK) {
+				if ((ret >> PScriptFunction::ADDR_BITS & PScriptFunction::ADDR_TYPE_STACK) == PScriptFunction::ADDR_TYPE_STACK) {
 					slevel++;
 					codegen.alloc_stack(slevel);
 				}
@@ -425,20 +425,20 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 				values.push_back(ret);
 			}
 
-			codegen.opcodes.push_back(PDScriptFunction::OPCODE_CONSTRUCT_ARRAY);
+			codegen.opcodes.push_back(PScriptFunction::OPCODE_CONSTRUCT_ARRAY);
 			codegen.opcodes.push_back(values.size());
 			for (int i = 0; i < values.size(); i++) {
 				codegen.opcodes.push_back(values[i]);
 			}
 
-			int dst_addr = (p_stack_level) | (PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS);
+			int dst_addr = (p_stack_level) | (PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS);
 			codegen.opcodes.push_back(dst_addr); // append the stack level as destination address of the opcode
 			codegen.alloc_stack(p_stack_level);
 			return dst_addr;
 
 		} break;
-		case PDScriptParser::Node::TYPE_DICTIONARY: {
-			const PDScriptParser::DictionaryNode *dn = static_cast<const PDScriptParser::DictionaryNode *>(p_expression);
+		case PScriptParser::Node::TYPE_DICTIONARY: {
+			const PScriptParser::DictionaryNode *dn = static_cast<const PScriptParser::DictionaryNode *>(p_expression);
 			Vector<int> values;
 
 			int slevel = p_stack_level;
@@ -448,7 +448,7 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 				if (ret < 0) {
 					return ret;
 				}
-				if ((ret >> PDScriptFunction::ADDR_BITS & PDScriptFunction::ADDR_TYPE_STACK) == PDScriptFunction::ADDR_TYPE_STACK) {
+				if ((ret >> PScriptFunction::ADDR_BITS & PScriptFunction::ADDR_TYPE_STACK) == PScriptFunction::ADDR_TYPE_STACK) {
 					slevel++;
 					codegen.alloc_stack(slevel);
 				}
@@ -459,7 +459,7 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 				if (ret < 0) {
 					return ret;
 				}
-				if ((ret >> PDScriptFunction::ADDR_BITS & PDScriptFunction::ADDR_TYPE_STACK) == PDScriptFunction::ADDR_TYPE_STACK) {
+				if ((ret >> PScriptFunction::ADDR_BITS & PScriptFunction::ADDR_TYPE_STACK) == PScriptFunction::ADDR_TYPE_STACK) {
 					slevel++;
 					codegen.alloc_stack(slevel);
 				}
@@ -467,57 +467,57 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 				values.push_back(ret);
 			}
 
-			codegen.opcodes.push_back(PDScriptFunction::OPCODE_CONSTRUCT_DICTIONARY);
+			codegen.opcodes.push_back(PScriptFunction::OPCODE_CONSTRUCT_DICTIONARY);
 			codegen.opcodes.push_back(dn->elements.size());
 			for (int i = 0; i < values.size(); i++) {
 				codegen.opcodes.push_back(values[i]);
 			}
 
-			int dst_addr = (p_stack_level) | (PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS);
+			int dst_addr = (p_stack_level) | (PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS);
 			codegen.opcodes.push_back(dst_addr); // append the stack level as destination address of the opcode
 			codegen.alloc_stack(p_stack_level);
 			return dst_addr;
 
 		} break;
-		case PDScriptParser::Node::TYPE_CAST: {
-			const PDScriptParser::CastNode *cn = static_cast<const PDScriptParser::CastNode *>(p_expression);
+		case PScriptParser::Node::TYPE_CAST: {
+			const PScriptParser::CastNode *cn = static_cast<const PScriptParser::CastNode *>(p_expression);
 
 			int slevel = p_stack_level;
 			int src_addr = _parse_expression(codegen, cn->source_node, slevel);
 			if (src_addr < 0) {
 				return src_addr;
 			}
-			if (src_addr & PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS) {
+			if (src_addr & PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS) {
 				slevel++;
 				codegen.alloc_stack(slevel);
 			}
 
-			PDScriptDataType cast_type = _pdtype_from_datatype(cn->cast_type);
+			PScriptDataType cast_type = _ptype_from_datatype(cn->cast_type);
 
 			switch (cast_type.kind) {
-				case PDScriptDataType::BUILTIN: {
-					codegen.opcodes.push_back(PDScriptFunction::OPCODE_CAST_TO_BUILTIN);
+				case PScriptDataType::BUILTIN: {
+					codegen.opcodes.push_back(PScriptFunction::OPCODE_CAST_TO_BUILTIN);
 					codegen.opcodes.push_back(cast_type.builtin_type);
 				} break;
-				case PDScriptDataType::NATIVE: {
+				case PScriptDataType::NATIVE: {
 					int class_idx;
-					if (PDScriptLanguage::get_singleton()->get_global_map().has(cast_type.native_type)) {
-						class_idx = PDScriptLanguage::get_singleton()->get_global_map()[cast_type.native_type];
-						class_idx |= (PDScriptFunction::ADDR_TYPE_GLOBAL << PDScriptFunction::ADDR_BITS); //argument (stack root)
+					if (PScriptLanguage::get_singleton()->get_global_map().has(cast_type.native_type)) {
+						class_idx = PScriptLanguage::get_singleton()->get_global_map()[cast_type.native_type];
+						class_idx |= (PScriptFunction::ADDR_TYPE_GLOBAL << PScriptFunction::ADDR_BITS); //argument (stack root)
 					} else {
 						_set_error("Invalid native class type '" + String(cast_type.native_type) + "'.", cn);
 						return -1;
 					}
-					codegen.opcodes.push_back(PDScriptFunction::OPCODE_CAST_TO_NATIVE); // perform operator
+					codegen.opcodes.push_back(PScriptFunction::OPCODE_CAST_TO_NATIVE); // perform operator
 					codegen.opcodes.push_back(class_idx); // variable type
 				} break;
-				case PDScriptDataType::SCRIPT:
-				case PDScriptDataType::PDSCRIPT: {
+				case PScriptDataType::SCRIPT:
+				case PScriptDataType::PSCRIPT: {
 					Variant script = cast_type.script_type;
 					int idx = codegen.get_constant_pos(script);
-					idx |= PDScriptFunction::ADDR_TYPE_LOCAL_CONSTANT << PDScriptFunction::ADDR_BITS; //make it a local constant (faster access)
+					idx |= PScriptFunction::ADDR_TYPE_LOCAL_CONSTANT << PScriptFunction::ADDR_BITS; //make it a local constant (faster access)
 
-					codegen.opcodes.push_back(PDScriptFunction::OPCODE_CAST_TO_SCRIPT); // perform operator
+					codegen.opcodes.push_back(PScriptFunction::OPCODE_CAST_TO_SCRIPT); // perform operator
 					codegen.opcodes.push_back(idx); // variable type
 				} break;
 				default: {
@@ -527,22 +527,22 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 			}
 
 			codegen.opcodes.push_back(src_addr); // source address
-			int dst_addr = (p_stack_level) | (PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS);
+			int dst_addr = (p_stack_level) | (PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS);
 			codegen.opcodes.push_back(dst_addr); // append the stack level as destination address of the opcode
 			codegen.alloc_stack(p_stack_level);
 			return dst_addr;
 
 		} break;
-		case PDScriptParser::Node::TYPE_OPERATOR: {
+		case PScriptParser::Node::TYPE_OPERATOR: {
 			//hell breaks loose
 
-			const PDScriptParser::OperatorNode *on = static_cast<const PDScriptParser::OperatorNode *>(p_expression);
+			const PScriptParser::OperatorNode *on = static_cast<const PScriptParser::OperatorNode *>(p_expression);
 			switch (on->op) {
 				//call/constructor operator
-				case PDScriptParser::OperatorNode::OP_PARENT_CALL: {
+				case PScriptParser::OperatorNode::OP_PARENT_CALL: {
 					ERR_FAIL_COND_V(on->arguments.size() < 1, -1);
 
-					const PDScriptParser::IdentifierNode *in = (const PDScriptParser::IdentifierNode *)on->arguments[0];
+					const PScriptParser::IdentifierNode *in = (const PScriptParser::IdentifierNode *)on->arguments[0];
 
 					Vector<int> arguments;
 					int slevel = p_stack_level;
@@ -551,7 +551,7 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 						if (ret < 0) {
 							return ret;
 						}
-						if ((ret >> PDScriptFunction::ADDR_BITS & PDScriptFunction::ADDR_TYPE_STACK) == PDScriptFunction::ADDR_TYPE_STACK) {
+						if ((ret >> PScriptFunction::ADDR_BITS & PScriptFunction::ADDR_TYPE_STACK) == PScriptFunction::ADDR_TYPE_STACK) {
 							slevel++;
 							codegen.alloc_stack(slevel);
 						}
@@ -559,7 +559,7 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 					}
 
 					//push call bytecode
-					codegen.opcodes.push_back(PDScriptFunction::OPCODE_CALL_SELF_BASE); // basic type constructor
+					codegen.opcodes.push_back(PScriptFunction::OPCODE_CALL_SELF_BASE); // basic type constructor
 
 					codegen.opcodes.push_back(codegen.get_name_map_pos(in->name)); //instance
 					codegen.opcodes.push_back(arguments.size()); //argument count
@@ -569,12 +569,12 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 					}
 
 				} break;
-				case PDScriptParser::OperatorNode::OP_CALL: {
-					if (on->arguments[0]->type == PDScriptParser::Node::TYPE_TYPE) {
+				case PScriptParser::OperatorNode::OP_CALL: {
+					if (on->arguments[0]->type == PScriptParser::Node::TYPE_TYPE) {
 						//construct a basic type
 						ERR_FAIL_COND_V(on->arguments.size() < 1, -1);
 
-						const PDScriptParser::TypeNode *tn = (const PDScriptParser::TypeNode *)on->arguments[0];
+						const PScriptParser::TypeNode *tn = (const PScriptParser::TypeNode *)on->arguments[0];
 						int vtype = tn->vtype;
 
 						Vector<int> arguments;
@@ -584,7 +584,7 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 							if (ret < 0) {
 								return ret;
 							}
-							if ((ret >> PDScriptFunction::ADDR_BITS & PDScriptFunction::ADDR_TYPE_STACK) == PDScriptFunction::ADDR_TYPE_STACK) {
+							if ((ret >> PScriptFunction::ADDR_BITS & PScriptFunction::ADDR_TYPE_STACK) == PScriptFunction::ADDR_TYPE_STACK) {
 								slevel++;
 								codegen.alloc_stack(slevel);
 							}
@@ -592,7 +592,7 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 						}
 
 						//push call bytecode
-						codegen.opcodes.push_back(PDScriptFunction::OPCODE_CONSTRUCT); // basic type constructor
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_CONSTRUCT); // basic type constructor
 						codegen.opcodes.push_back(vtype); //instance
 						codegen.opcodes.push_back(arguments.size()); //argument count
 						codegen.alloc_call(arguments.size());
@@ -600,7 +600,7 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 							codegen.opcodes.push_back(arguments[i]); //arguments
 						}
 
-					} else if (on->arguments[0]->type == PDScriptParser::Node::TYPE_BUILT_IN_FUNCTION) {
+					} else if (on->arguments[0]->type == PScriptParser::Node::TYPE_BUILT_IN_FUNCTION) {
 						//built in function
 
 						ERR_FAIL_COND_V(on->arguments.size() < 1, -1);
@@ -613,7 +613,7 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 								return ret;
 							}
 
-							if ((ret >> PDScriptFunction::ADDR_BITS & PDScriptFunction::ADDR_TYPE_STACK) == PDScriptFunction::ADDR_TYPE_STACK) {
+							if ((ret >> PScriptFunction::ADDR_BITS & PScriptFunction::ADDR_TYPE_STACK) == PScriptFunction::ADDR_TYPE_STACK) {
 								slevel++;
 								codegen.alloc_stack(slevel);
 							}
@@ -621,8 +621,8 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 							arguments.push_back(ret);
 						}
 
-						codegen.opcodes.push_back(PDScriptFunction::OPCODE_CALL_BUILT_IN);
-						codegen.opcodes.push_back(static_cast<const PDScriptParser::BuiltInFunctionNode *>(on->arguments[0])->function);
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_CALL_BUILT_IN);
+						codegen.opcodes.push_back(static_cast<const PScriptParser::BuiltInFunctionNode *>(on->arguments[0])->function);
 						codegen.opcodes.push_back(on->arguments.size() - 1);
 						codegen.alloc_call(on->arguments.size() - 1);
 						for (int i = 0; i < arguments.size(); i++) {
@@ -633,9 +633,9 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 						//regular function
 						ERR_FAIL_COND_V(on->arguments.size() < 2, -1);
 
-						const PDScriptParser::Node *instance = on->arguments[0];
+						const PScriptParser::Node *instance = on->arguments[0];
 
-						if (instance->type == PDScriptParser::Node::TYPE_SELF) {
+						if (instance->type == PScriptParser::Node::TYPE_SELF) {
 							//room for optimization
 						}
 
@@ -645,15 +645,15 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 						for (int i = 0; i < on->arguments.size(); i++) {
 							int ret;
 
-							if (i == 0 && on->arguments[i]->type == PDScriptParser::Node::TYPE_SELF && codegen.function_node && codegen.function_node->_static) {
+							if (i == 0 && on->arguments[i]->type == PScriptParser::Node::TYPE_SELF && codegen.function_node && codegen.function_node->_static) {
 								//static call to self
-								ret = (PDScriptFunction::ADDR_TYPE_CLASS << PDScriptFunction::ADDR_BITS);
+								ret = (PScriptFunction::ADDR_TYPE_CLASS << PScriptFunction::ADDR_BITS);
 							} else if (i == 1) {
-								if (on->arguments[i]->type != PDScriptParser::Node::TYPE_IDENTIFIER) {
+								if (on->arguments[i]->type != PScriptParser::Node::TYPE_IDENTIFIER) {
 									_set_error("Attempt to call a non-identifier.", on);
 									return -1;
 								}
-								PDScriptParser::IdentifierNode *id = static_cast<PDScriptParser::IdentifierNode *>(on->arguments[i]);
+								PScriptParser::IdentifierNode *id = static_cast<PScriptParser::IdentifierNode *>(on->arguments[i]);
 								ret = codegen.get_name_map_pos(id->name);
 
 							} else {
@@ -661,7 +661,7 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 								if (ret < 0) {
 									return ret;
 								}
-								if ((ret >> PDScriptFunction::ADDR_BITS & PDScriptFunction::ADDR_TYPE_STACK) == PDScriptFunction::ADDR_TYPE_STACK) {
+								if ((ret >> PScriptFunction::ADDR_BITS & PScriptFunction::ADDR_TYPE_STACK) == PScriptFunction::ADDR_TYPE_STACK) {
 									slevel++;
 									codegen.alloc_stack(slevel);
 								}
@@ -669,7 +669,7 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 							arguments.push_back(ret);
 						}
 
-						codegen.opcodes.push_back(p_root ? PDScriptFunction::OPCODE_CALL : PDScriptFunction::OPCODE_CALL_RETURN); // perform operator
+						codegen.opcodes.push_back(p_root ? PScriptFunction::OPCODE_CALL : PScriptFunction::OPCODE_CALL_RETURN); // perform operator
 						codegen.opcodes.push_back(on->arguments.size() - 2);
 						codegen.alloc_call(on->arguments.size() - 2);
 						for (int i = 0; i < arguments.size(); i++) {
@@ -677,7 +677,7 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 						}
 					}
 				} break;
-				case PDScriptParser::OperatorNode::OP_YIELD: {
+				case PScriptParser::OperatorNode::OP_YIELD: {
 					ERR_FAIL_COND_V(on->arguments.size() && on->arguments.size() != 2, -1);
 
 					Vector<int> arguments;
@@ -687,7 +687,7 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 						if (ret < 0) {
 							return ret;
 						}
-						if ((ret >> PDScriptFunction::ADDR_BITS & PDScriptFunction::ADDR_TYPE_STACK) == PDScriptFunction::ADDR_TYPE_STACK) {
+						if ((ret >> PScriptFunction::ADDR_BITS & PScriptFunction::ADDR_TYPE_STACK) == PScriptFunction::ADDR_TYPE_STACK) {
 							slevel++;
 							codegen.alloc_stack(slevel);
 						}
@@ -695,22 +695,22 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 					}
 
 					//push call bytecode
-					codegen.opcodes.push_back(arguments.size() == 0 ? PDScriptFunction::OPCODE_YIELD : PDScriptFunction::OPCODE_YIELD_SIGNAL); // basic type constructor
+					codegen.opcodes.push_back(arguments.size() == 0 ? PScriptFunction::OPCODE_YIELD : PScriptFunction::OPCODE_YIELD_SIGNAL); // basic type constructor
 					for (int i = 0; i < arguments.size(); i++) {
 						codegen.opcodes.push_back(arguments[i]); //arguments
 					}
-					codegen.opcodes.push_back(PDScriptFunction::OPCODE_YIELD_RESUME);
+					codegen.opcodes.push_back(PScriptFunction::OPCODE_YIELD_RESUME);
 					//next will be where to place the result :)
 
 				} break;
 
 				//indexing operator
-				case PDScriptParser::OperatorNode::OP_INDEX:
-				case PDScriptParser::OperatorNode::OP_INDEX_NAMED: {
+				case PScriptParser::OperatorNode::OP_INDEX:
+				case PScriptParser::OperatorNode::OP_INDEX_NAMED: {
 					ERR_FAIL_COND_V(on->arguments.size() != 2, -1);
 
 					int slevel = p_stack_level;
-					bool named = (on->op == PDScriptParser::OperatorNode::OP_INDEX_NAMED);
+					bool named = (on->op == PScriptParser::OperatorNode::OP_INDEX_NAMED);
 
 					int from = _parse_expression(codegen, on->arguments[0], slevel);
 					if (from < 0) {
@@ -721,13 +721,13 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 					if (p_index_addr != 0) {
 						index = p_index_addr;
 					} else if (named) {
-						if (on->arguments[0]->type == PDScriptParser::Node::TYPE_SELF && codegen.script && codegen.function_node && !codegen.function_node->_static) {
-							PDScriptParser::IdentifierNode *identifier = static_cast<PDScriptParser::IdentifierNode *>(on->arguments[1]);
-							const RBMap<StringName, PDScript::MemberInfo>::Element *MI = codegen.script->member_indices.find(identifier->name);
+						if (on->arguments[0]->type == PScriptParser::Node::TYPE_SELF && codegen.script && codegen.function_node && !codegen.function_node->_static) {
+							PScriptParser::IdentifierNode *identifier = static_cast<PScriptParser::IdentifierNode *>(on->arguments[1]);
+							const RBMap<StringName, PScript::MemberInfo>::Element *MI = codegen.script->member_indices.find(identifier->name);
 
 #ifdef DEBUG_ENABLED
 							if (MI && MI->get().getter == codegen.function_node->name) {
-								String n = static_cast<PDScriptParser::IdentifierNode *>(on->arguments[1])->name;
+								String n = static_cast<PScriptParser::IdentifierNode *>(on->arguments[1])->name;
 								_set_error("Must use '" + n + "' instead of 'self." + n + "' in getter.", on);
 								return -1;
 							}
@@ -735,22 +735,22 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 
 							if (MI && MI->get().getter == "") {
 								// Faster than indexing self (as if no self. had been used)
-								return (MI->get().index) | (PDScriptFunction::ADDR_TYPE_MEMBER << PDScriptFunction::ADDR_BITS);
+								return (MI->get().index) | (PScriptFunction::ADDR_TYPE_MEMBER << PScriptFunction::ADDR_BITS);
 							}
 						}
 
-						index = codegen.get_name_map_pos(static_cast<PDScriptParser::IdentifierNode *>(on->arguments[1])->name);
+						index = codegen.get_name_map_pos(static_cast<PScriptParser::IdentifierNode *>(on->arguments[1])->name);
 
 					} else {
-						if (on->arguments[1]->type == PDScriptParser::Node::TYPE_CONSTANT && static_cast<const PDScriptParser::ConstantNode *>(on->arguments[1])->value.get_type() == Variant::STRING) {
+						if (on->arguments[1]->type == PScriptParser::Node::TYPE_CONSTANT && static_cast<const PScriptParser::ConstantNode *>(on->arguments[1])->value.get_type() == Variant::STRING) {
 							//also, somehow, named (speed up anyway)
-							StringName name = static_cast<const PDScriptParser::ConstantNode *>(on->arguments[1])->value;
+							StringName name = static_cast<const PScriptParser::ConstantNode *>(on->arguments[1])->value;
 							index = codegen.get_name_map_pos(name);
 							named = true;
 
 						} else {
 							//regular indexing
-							if (from & PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS) {
+							if (from & PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS) {
 								slevel++;
 								codegen.alloc_stack(slevel);
 							}
@@ -762,19 +762,19 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 						}
 					}
 
-					codegen.opcodes.push_back(named ? PDScriptFunction::OPCODE_GET_NAMED : PDScriptFunction::OPCODE_GET); // perform operator
+					codegen.opcodes.push_back(named ? PScriptFunction::OPCODE_GET_NAMED : PScriptFunction::OPCODE_GET); // perform operator
 					codegen.opcodes.push_back(from); // argument 1
 					codegen.opcodes.push_back(index); // argument 2 (unary only takes one parameter)
 
 				} break;
-				case PDScriptParser::OperatorNode::OP_AND: {
+				case PScriptParser::OperatorNode::OP_AND: {
 					// AND operator with early out on failure
 
 					int res = _parse_expression(codegen, on->arguments[0], p_stack_level);
 					if (res < 0) {
 						return res;
 					}
-					codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP_IF_NOT);
+					codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP_IF_NOT);
 					codegen.opcodes.push_back(res);
 					int jump_fail_pos = codegen.opcodes.size();
 					codegen.opcodes.push_back(0);
@@ -784,31 +784,31 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 						return res;
 					}
 
-					codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP_IF_NOT);
+					codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP_IF_NOT);
 					codegen.opcodes.push_back(res);
 					int jump_fail_pos2 = codegen.opcodes.size();
 					codegen.opcodes.push_back(0);
 
 					codegen.alloc_stack(p_stack_level); //it will be used..
-					codegen.opcodes.push_back(PDScriptFunction::OPCODE_ASSIGN_TRUE);
-					codegen.opcodes.push_back(p_stack_level | PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS);
-					codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP);
+					codegen.opcodes.push_back(PScriptFunction::OPCODE_ASSIGN_TRUE);
+					codegen.opcodes.push_back(p_stack_level | PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS);
+					codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
 					codegen.opcodes.push_back(codegen.opcodes.size() + 3);
 					codegen.opcodes.write[jump_fail_pos] = codegen.opcodes.size();
 					codegen.opcodes.write[jump_fail_pos2] = codegen.opcodes.size();
-					codegen.opcodes.push_back(PDScriptFunction::OPCODE_ASSIGN_FALSE);
-					codegen.opcodes.push_back(p_stack_level | PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS);
-					return p_stack_level | PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS;
+					codegen.opcodes.push_back(PScriptFunction::OPCODE_ASSIGN_FALSE);
+					codegen.opcodes.push_back(p_stack_level | PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS);
+					return p_stack_level | PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS;
 
 				} break;
-				case PDScriptParser::OperatorNode::OP_OR: {
+				case PScriptParser::OperatorNode::OP_OR: {
 					// OR operator with early out on success
 
 					int res = _parse_expression(codegen, on->arguments[0], p_stack_level);
 					if (res < 0) {
 						return res;
 					}
-					codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP_IF);
+					codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP_IF);
 					codegen.opcodes.push_back(res);
 					int jump_success_pos = codegen.opcodes.size();
 					codegen.opcodes.push_back(0);
@@ -818,32 +818,32 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 						return res;
 					}
 
-					codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP_IF);
+					codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP_IF);
 					codegen.opcodes.push_back(res);
 					int jump_success_pos2 = codegen.opcodes.size();
 					codegen.opcodes.push_back(0);
 
 					codegen.alloc_stack(p_stack_level); //it will be used..
-					codegen.opcodes.push_back(PDScriptFunction::OPCODE_ASSIGN_FALSE);
-					codegen.opcodes.push_back(p_stack_level | PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS);
-					codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP);
+					codegen.opcodes.push_back(PScriptFunction::OPCODE_ASSIGN_FALSE);
+					codegen.opcodes.push_back(p_stack_level | PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS);
+					codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
 					codegen.opcodes.push_back(codegen.opcodes.size() + 3);
 					codegen.opcodes.write[jump_success_pos] = codegen.opcodes.size();
 					codegen.opcodes.write[jump_success_pos2] = codegen.opcodes.size();
-					codegen.opcodes.push_back(PDScriptFunction::OPCODE_ASSIGN_TRUE);
-					codegen.opcodes.push_back(p_stack_level | PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS);
-					return p_stack_level | PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS;
+					codegen.opcodes.push_back(PScriptFunction::OPCODE_ASSIGN_TRUE);
+					codegen.opcodes.push_back(p_stack_level | PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS);
+					return p_stack_level | PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS;
 
 				} break;
 				// ternary operators
-				case PDScriptParser::OperatorNode::OP_TERNARY_IF: {
+				case PScriptParser::OperatorNode::OP_TERNARY_IF: {
 					// x IF a ELSE y operator with early out on failure
 
 					int res = _parse_expression(codegen, on->arguments[0], p_stack_level);
 					if (res < 0) {
 						return res;
 					}
-					codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP_IF_NOT);
+					codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP_IF_NOT);
 					codegen.opcodes.push_back(res);
 					int jump_fail_pos = codegen.opcodes.size();
 					codegen.opcodes.push_back(0);
@@ -854,10 +854,10 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 					}
 
 					codegen.alloc_stack(p_stack_level); //it will be used..
-					codegen.opcodes.push_back(PDScriptFunction::OPCODE_ASSIGN);
-					codegen.opcodes.push_back(p_stack_level | PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS);
+					codegen.opcodes.push_back(PScriptFunction::OPCODE_ASSIGN);
+					codegen.opcodes.push_back(p_stack_level | PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS);
 					codegen.opcodes.push_back(res);
-					codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP);
+					codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
 					int jump_past_pos = codegen.opcodes.size();
 					codegen.opcodes.push_back(0);
 
@@ -867,150 +867,150 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 						return res;
 					}
 
-					codegen.opcodes.push_back(PDScriptFunction::OPCODE_ASSIGN);
-					codegen.opcodes.push_back(p_stack_level | PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS);
+					codegen.opcodes.push_back(PScriptFunction::OPCODE_ASSIGN);
+					codegen.opcodes.push_back(p_stack_level | PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS);
 					codegen.opcodes.push_back(res);
 
 					codegen.opcodes.write[jump_past_pos] = codegen.opcodes.size();
 
-					return p_stack_level | PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS;
+					return p_stack_level | PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS;
 
 				} break;
 				//unary operators
-				case PDScriptParser::OperatorNode::OP_NEG: {
+				case PScriptParser::OperatorNode::OP_NEG: {
 					if (!_create_unary_operator(codegen, on, Variant::OP_NEGATE, p_stack_level)) {
 						return -1;
 					}
 				} break;
-				case PDScriptParser::OperatorNode::OP_POS: {
+				case PScriptParser::OperatorNode::OP_POS: {
 					if (!_create_unary_operator(codegen, on, Variant::OP_POSITIVE, p_stack_level)) {
 						return -1;
 					}
 				} break;
-				case PDScriptParser::OperatorNode::OP_NOT: {
+				case PScriptParser::OperatorNode::OP_NOT: {
 					if (!_create_unary_operator(codegen, on, Variant::OP_NOT, p_stack_level)) {
 						return -1;
 					}
 				} break;
-				case PDScriptParser::OperatorNode::OP_BIT_INVERT: {
+				case PScriptParser::OperatorNode::OP_BIT_INVERT: {
 					if (!_create_unary_operator(codegen, on, Variant::OP_BIT_NEGATE, p_stack_level)) {
 						return -1;
 					}
 				} break;
 				//binary operators (in precedence order)
-				case PDScriptParser::OperatorNode::OP_IN: {
+				case PScriptParser::OperatorNode::OP_IN: {
 					if (!_create_binary_operator(codegen, on, Variant::OP_IN, p_stack_level)) {
 						return -1;
 					}
 				} break;
-				case PDScriptParser::OperatorNode::OP_EQUAL: {
+				case PScriptParser::OperatorNode::OP_EQUAL: {
 					if (!_create_binary_operator(codegen, on, Variant::OP_EQUAL, p_stack_level)) {
 						return -1;
 					}
 				} break;
-				case PDScriptParser::OperatorNode::OP_NOT_EQUAL: {
+				case PScriptParser::OperatorNode::OP_NOT_EQUAL: {
 					if (!_create_binary_operator(codegen, on, Variant::OP_NOT_EQUAL, p_stack_level)) {
 						return -1;
 					}
 				} break;
-				case PDScriptParser::OperatorNode::OP_LESS: {
+				case PScriptParser::OperatorNode::OP_LESS: {
 					if (!_create_binary_operator(codegen, on, Variant::OP_LESS, p_stack_level)) {
 						return -1;
 					}
 				} break;
-				case PDScriptParser::OperatorNode::OP_LESS_EQUAL: {
+				case PScriptParser::OperatorNode::OP_LESS_EQUAL: {
 					if (!_create_binary_operator(codegen, on, Variant::OP_LESS_EQUAL, p_stack_level)) {
 						return -1;
 					}
 				} break;
-				case PDScriptParser::OperatorNode::OP_GREATER: {
+				case PScriptParser::OperatorNode::OP_GREATER: {
 					if (!_create_binary_operator(codegen, on, Variant::OP_GREATER, p_stack_level)) {
 						return -1;
 					}
 				} break;
-				case PDScriptParser::OperatorNode::OP_GREATER_EQUAL: {
+				case PScriptParser::OperatorNode::OP_GREATER_EQUAL: {
 					if (!_create_binary_operator(codegen, on, Variant::OP_GREATER_EQUAL, p_stack_level)) {
 						return -1;
 					}
 				} break;
-				case PDScriptParser::OperatorNode::OP_ADD: {
+				case PScriptParser::OperatorNode::OP_ADD: {
 					if (!_create_binary_operator(codegen, on, Variant::OP_ADD, p_stack_level)) {
 						return -1;
 					}
 				} break;
-				case PDScriptParser::OperatorNode::OP_SUB: {
+				case PScriptParser::OperatorNode::OP_SUB: {
 					if (!_create_binary_operator(codegen, on, Variant::OP_SUBTRACT, p_stack_level)) {
 						return -1;
 					}
 				} break;
-				case PDScriptParser::OperatorNode::OP_MUL: {
+				case PScriptParser::OperatorNode::OP_MUL: {
 					if (!_create_binary_operator(codegen, on, Variant::OP_MULTIPLY, p_stack_level)) {
 						return -1;
 					}
 				} break;
-				case PDScriptParser::OperatorNode::OP_DIV: {
+				case PScriptParser::OperatorNode::OP_DIV: {
 					if (!_create_binary_operator(codegen, on, Variant::OP_DIVIDE, p_stack_level)) {
 						return -1;
 					}
 				} break;
-				case PDScriptParser::OperatorNode::OP_MOD: {
+				case PScriptParser::OperatorNode::OP_MOD: {
 					if (!_create_binary_operator(codegen, on, Variant::OP_MODULE, p_stack_level)) {
 						return -1;
 					}
 				} break;
-				//case PDScriptParser::OperatorNode::OP_SHIFT_LEFT: { if (!_create_binary_operator(codegen,on,Variant::OP_SHIFT_LEFT,p_stack_level)) return -1;} break;
-				//case PDScriptParser::OperatorNode::OP_SHIFT_RIGHT: { if (!_create_binary_operator(codegen,on,Variant::OP_SHIFT_RIGHT,p_stack_level)) return -1;} break;
-				case PDScriptParser::OperatorNode::OP_BIT_AND: {
+				//case PScriptParser::OperatorNode::OP_SHIFT_LEFT: { if (!_create_binary_operator(codegen,on,Variant::OP_SHIFT_LEFT,p_stack_level)) return -1;} break;
+				//case PScriptParser::OperatorNode::OP_SHIFT_RIGHT: { if (!_create_binary_operator(codegen,on,Variant::OP_SHIFT_RIGHT,p_stack_level)) return -1;} break;
+				case PScriptParser::OperatorNode::OP_BIT_AND: {
 					if (!_create_binary_operator(codegen, on, Variant::OP_BIT_AND, p_stack_level)) {
 						return -1;
 					}
 				} break;
-				case PDScriptParser::OperatorNode::OP_BIT_OR: {
+				case PScriptParser::OperatorNode::OP_BIT_OR: {
 					if (!_create_binary_operator(codegen, on, Variant::OP_BIT_OR, p_stack_level)) {
 						return -1;
 					}
 				} break;
-				case PDScriptParser::OperatorNode::OP_BIT_XOR: {
+				case PScriptParser::OperatorNode::OP_BIT_XOR: {
 					if (!_create_binary_operator(codegen, on, Variant::OP_BIT_XOR, p_stack_level)) {
 						return -1;
 					}
 				} break;
 				//shift
-				case PDScriptParser::OperatorNode::OP_SHIFT_LEFT: {
+				case PScriptParser::OperatorNode::OP_SHIFT_LEFT: {
 					if (!_create_binary_operator(codegen, on, Variant::OP_SHIFT_LEFT, p_stack_level)) {
 						return -1;
 					}
 				} break;
-				case PDScriptParser::OperatorNode::OP_SHIFT_RIGHT: {
+				case PScriptParser::OperatorNode::OP_SHIFT_RIGHT: {
 					if (!_create_binary_operator(codegen, on, Variant::OP_SHIFT_RIGHT, p_stack_level)) {
 						return -1;
 					}
 				} break;
 				//assignment operators
-				case PDScriptParser::OperatorNode::OP_ASSIGN_ADD:
-				case PDScriptParser::OperatorNode::OP_ASSIGN_SUB:
-				case PDScriptParser::OperatorNode::OP_ASSIGN_MUL:
-				case PDScriptParser::OperatorNode::OP_ASSIGN_DIV:
-				case PDScriptParser::OperatorNode::OP_ASSIGN_MOD:
-				case PDScriptParser::OperatorNode::OP_ASSIGN_SHIFT_LEFT:
-				case PDScriptParser::OperatorNode::OP_ASSIGN_SHIFT_RIGHT:
-				case PDScriptParser::OperatorNode::OP_ASSIGN_BIT_AND:
-				case PDScriptParser::OperatorNode::OP_ASSIGN_BIT_OR:
-				case PDScriptParser::OperatorNode::OP_ASSIGN_BIT_XOR:
-				case PDScriptParser::OperatorNode::OP_INIT_ASSIGN:
-				case PDScriptParser::OperatorNode::OP_ASSIGN: {
+				case PScriptParser::OperatorNode::OP_ASSIGN_ADD:
+				case PScriptParser::OperatorNode::OP_ASSIGN_SUB:
+				case PScriptParser::OperatorNode::OP_ASSIGN_MUL:
+				case PScriptParser::OperatorNode::OP_ASSIGN_DIV:
+				case PScriptParser::OperatorNode::OP_ASSIGN_MOD:
+				case PScriptParser::OperatorNode::OP_ASSIGN_SHIFT_LEFT:
+				case PScriptParser::OperatorNode::OP_ASSIGN_SHIFT_RIGHT:
+				case PScriptParser::OperatorNode::OP_ASSIGN_BIT_AND:
+				case PScriptParser::OperatorNode::OP_ASSIGN_BIT_OR:
+				case PScriptParser::OperatorNode::OP_ASSIGN_BIT_XOR:
+				case PScriptParser::OperatorNode::OP_INIT_ASSIGN:
+				case PScriptParser::OperatorNode::OP_ASSIGN: {
 					ERR_FAIL_COND_V(on->arguments.size() != 2, -1);
 
-					if (on->arguments[0]->type == PDScriptParser::Node::TYPE_OPERATOR && (static_cast<PDScriptParser::OperatorNode *>(on->arguments[0])->op == PDScriptParser::OperatorNode::OP_INDEX || static_cast<PDScriptParser::OperatorNode *>(on->arguments[0])->op == PDScriptParser::OperatorNode::OP_INDEX_NAMED)) {
+					if (on->arguments[0]->type == PScriptParser::Node::TYPE_OPERATOR && (static_cast<PScriptParser::OperatorNode *>(on->arguments[0])->op == PScriptParser::OperatorNode::OP_INDEX || static_cast<PScriptParser::OperatorNode *>(on->arguments[0])->op == PScriptParser::OperatorNode::OP_INDEX_NAMED)) {
 						// SET (chained) MODE!
 #ifdef DEBUG_ENABLED
-						if (static_cast<PDScriptParser::OperatorNode *>(on->arguments[0])->op == PDScriptParser::OperatorNode::OP_INDEX_NAMED) {
-							const PDScriptParser::OperatorNode *inon = static_cast<PDScriptParser::OperatorNode *>(on->arguments[0]);
+						if (static_cast<PScriptParser::OperatorNode *>(on->arguments[0])->op == PScriptParser::OperatorNode::OP_INDEX_NAMED) {
+							const PScriptParser::OperatorNode *inon = static_cast<PScriptParser::OperatorNode *>(on->arguments[0]);
 
-							if (inon->arguments[0]->type == PDScriptParser::Node::TYPE_SELF && codegen.script && codegen.function_node && !codegen.function_node->_static) {
-								const RBMap<StringName, PDScript::MemberInfo>::Element *MI = codegen.script->member_indices.find(static_cast<PDScriptParser::IdentifierNode *>(inon->arguments[1])->name);
+							if (inon->arguments[0]->type == PScriptParser::Node::TYPE_SELF && codegen.script && codegen.function_node && !codegen.function_node->_static) {
+								const RBMap<StringName, PScript::MemberInfo>::Element *MI = codegen.script->member_indices.find(static_cast<PScriptParser::IdentifierNode *>(inon->arguments[1])->name);
 								if (MI && MI->get().setter == codegen.function_node->name) {
-									String n = static_cast<PDScriptParser::IdentifierNode *>(inon->arguments[1])->name;
+									String n = static_cast<PScriptParser::IdentifierNode *>(inon->arguments[1])->name;
 									_set_error("Must use '" + n + "' instead of 'self." + n + "' in setter.", inon);
 									return -1;
 								}
@@ -1020,31 +1020,31 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 
 						int slevel = p_stack_level;
 
-						PDScriptParser::OperatorNode *op = static_cast<PDScriptParser::OperatorNode *>(on->arguments[0]);
+						PScriptParser::OperatorNode *op = static_cast<PScriptParser::OperatorNode *>(on->arguments[0]);
 
 						/* Find chain of sets */
 
 						StringName assign_property;
 
-						List<PDScriptParser::OperatorNode *> chain;
+						List<PScriptParser::OperatorNode *> chain;
 
 						{
 							//create get/set chain
-							PDScriptParser::OperatorNode *n = op;
+							PScriptParser::OperatorNode *n = op;
 							while (true) {
 								chain.push_back(n);
-								if (n->arguments[0]->type != PDScriptParser::Node::TYPE_OPERATOR) {
+								if (n->arguments[0]->type != PScriptParser::Node::TYPE_OPERATOR) {
 									//check for a built-in property
-									if (n->arguments[0]->type == PDScriptParser::Node::TYPE_IDENTIFIER) {
-										PDScriptParser::IdentifierNode *identifier = static_cast<PDScriptParser::IdentifierNode *>(n->arguments[0]);
+									if (n->arguments[0]->type == PScriptParser::Node::TYPE_IDENTIFIER) {
+										PScriptParser::IdentifierNode *identifier = static_cast<PScriptParser::IdentifierNode *>(n->arguments[0]);
 										if (_is_class_member_property(codegen, identifier->name)) {
 											assign_property = identifier->name;
 										}
 									}
 									break;
 								}
-								n = static_cast<PDScriptParser::OperatorNode *>(n->arguments[0]);
-								if (n->op != PDScriptParser::OperatorNode::OP_INDEX && n->op != PDScriptParser::OperatorNode::OP_INDEX_NAMED) {
+								n = static_cast<PScriptParser::OperatorNode *>(n->arguments[0]);
+								if (n->op != PScriptParser::OperatorNode::OP_INDEX && n->op != PScriptParser::OperatorNode::OP_INDEX_NAMED) {
 									break;
 								}
 							}
@@ -1059,7 +1059,7 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 						}
 						int retval = prev_pos;
 
-						if (retval & PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS) {
+						if (retval & PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS) {
 							slevel++;
 							codegen.alloc_stack(slevel);
 						}
@@ -1072,28 +1072,28 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 							// in Node2D
 							setchain.push_back(prev_pos);
 							setchain.push_back(codegen.get_name_map_pos(assign_property));
-							setchain.push_back(PDScriptFunction::OPCODE_SET_MEMBER);
+							setchain.push_back(PScriptFunction::OPCODE_SET_MEMBER);
 						}
 
-						for (List<PDScriptParser::OperatorNode *>::Element *E = chain.back(); E; E = E->prev()) {
+						for (List<PScriptParser::OperatorNode *>::Element *E = chain.back(); E; E = E->prev()) {
 							if (E == chain.front()) { //ignore first
 								break;
 							}
 
-							bool named = E->get()->op == PDScriptParser::OperatorNode::OP_INDEX_NAMED;
+							bool named = E->get()->op == PScriptParser::OperatorNode::OP_INDEX_NAMED;
 							int key_idx;
 
 							if (named) {
-								key_idx = codegen.get_name_map_pos(static_cast<const PDScriptParser::IdentifierNode *>(E->get()->arguments[1])->name);
+								key_idx = codegen.get_name_map_pos(static_cast<const PScriptParser::IdentifierNode *>(E->get()->arguments[1])->name);
 								//printf("named key %x\n",key_idx);
 
 							} else {
-								if (prev_pos & (PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS)) {
+								if (prev_pos & (PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS)) {
 									slevel++;
 									codegen.alloc_stack(slevel);
 								}
 
-								PDScriptParser::Node *key = E->get()->arguments[1];
+								PScriptParser::Node *key = E->get()->arguments[1];
 								key_idx = _parse_expression(codegen, key, slevel);
 								//printf("expr key %x\n",key_idx);
 
@@ -1104,12 +1104,12 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 								return key_idx;
 							}
 
-							codegen.opcodes.push_back(named ? PDScriptFunction::OPCODE_GET_NAMED : PDScriptFunction::OPCODE_GET);
+							codegen.opcodes.push_back(named ? PScriptFunction::OPCODE_GET_NAMED : PScriptFunction::OPCODE_GET);
 							codegen.opcodes.push_back(prev_pos);
 							codegen.opcodes.push_back(key_idx);
 							slevel++;
 							codegen.alloc_stack(slevel);
-							int dst_pos = (PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS) | slevel;
+							int dst_pos = (PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS) | slevel;
 
 							codegen.opcodes.push_back(dst_pos);
 
@@ -1118,7 +1118,7 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 							setchain.push_back(dst_pos);
 							setchain.push_back(key_idx);
 							setchain.push_back(prev_pos);
-							setchain.push_back(named ? PDScriptFunction::OPCODE_SET_NAMED : PDScriptFunction::OPCODE_SET);
+							setchain.push_back(named ? PScriptFunction::OPCODE_SET_NAMED : PScriptFunction::OPCODE_SET);
 
 							prev_pos = dst_pos;
 						}
@@ -1128,8 +1128,8 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 						int set_index;
 						bool named = false;
 
-						if (op->op == PDScriptParser::OperatorNode::OP_INDEX_NAMED) {
-							set_index = codegen.get_name_map_pos(static_cast<const PDScriptParser::IdentifierNode *>(op->arguments[1])->name);
+						if (op->op == PScriptParser::OperatorNode::OP_INDEX_NAMED) {
+							set_index = codegen.get_name_map_pos(static_cast<const PScriptParser::IdentifierNode *>(op->arguments[1])->name);
 							named = true;
 						} else {
 							set_index = _parse_expression(codegen, op->arguments[1], slevel + 1);
@@ -1140,7 +1140,7 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 							return set_index;
 						}
 
-						if (set_index & PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS) {
+						if (set_index & PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS) {
 							slevel++;
 							codegen.alloc_stack(slevel);
 						}
@@ -1150,7 +1150,7 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 							return set_value;
 						}
 
-						codegen.opcodes.push_back(named ? PDScriptFunction::OPCODE_SET_NAMED : PDScriptFunction::OPCODE_SET);
+						codegen.opcodes.push_back(named ? PScriptFunction::OPCODE_SET_NAMED : PScriptFunction::OPCODE_SET);
 						codegen.opcodes.push_back(prev_pos);
 						codegen.opcodes.push_back(set_index);
 						codegen.opcodes.push_back(set_value);
@@ -1161,7 +1161,7 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 
 						return retval;
 
-					} else if (on->arguments[0]->type == PDScriptParser::Node::TYPE_IDENTIFIER && _is_class_member_property(codegen, static_cast<PDScriptParser::IdentifierNode *>(on->arguments[0])->name)) {
+					} else if (on->arguments[0]->type == PScriptParser::Node::TYPE_IDENTIFIER && _is_class_member_property(codegen, static_cast<PScriptParser::IdentifierNode *>(on->arguments[0])->name)) {
 						//assignment to member property
 
 						int slevel = p_stack_level;
@@ -1171,24 +1171,24 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 							return -1;
 						}
 
-						StringName name = static_cast<PDScriptParser::IdentifierNode *>(on->arguments[0])->name;
+						StringName name = static_cast<PScriptParser::IdentifierNode *>(on->arguments[0])->name;
 
-						codegen.opcodes.push_back(PDScriptFunction::OPCODE_SET_MEMBER);
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_SET_MEMBER);
 						codegen.opcodes.push_back(codegen.get_name_map_pos(name));
 						codegen.opcodes.push_back(src_address);
 
-						return PDScriptFunction::ADDR_TYPE_NIL << PDScriptFunction::ADDR_BITS;
+						return PScriptFunction::ADDR_TYPE_NIL << PScriptFunction::ADDR_BITS;
 					} else {
 						//REGULAR ASSIGNMENT MODE!!
 
 						int slevel = p_stack_level;
 
-						int dst_address_a = _parse_expression(codegen, on->arguments[0], slevel, false, on->op == PDScriptParser::OperatorNode::OP_INIT_ASSIGN);
+						int dst_address_a = _parse_expression(codegen, on->arguments[0], slevel, false, on->op == PScriptParser::OperatorNode::OP_INIT_ASSIGN);
 						if (dst_address_a < 0) {
 							return -1;
 						}
 
-						if (dst_address_a & PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS) {
+						if (dst_address_a & PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS) {
 							slevel++;
 							codegen.alloc_stack(slevel);
 						}
@@ -1198,38 +1198,38 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 							return -1;
 						}
 
-						PDScriptDataType assign_type = _pdtype_from_datatype(on->arguments[0]->get_datatype());
+						PScriptDataType assign_type = _ptype_from_datatype(on->arguments[0]->get_datatype());
 
 						if (assign_type.has_type && !on->datatype.has_type) {
 							// Typed assignment
 							switch (assign_type.kind) {
-								case PDScriptDataType::BUILTIN: {
-									codegen.opcodes.push_back(PDScriptFunction::OPCODE_ASSIGN_TYPED_BUILTIN); // perform operator
+								case PScriptDataType::BUILTIN: {
+									codegen.opcodes.push_back(PScriptFunction::OPCODE_ASSIGN_TYPED_BUILTIN); // perform operator
 									codegen.opcodes.push_back(assign_type.builtin_type); // variable type
 									codegen.opcodes.push_back(dst_address_a); // argument 1
 									codegen.opcodes.push_back(src_address_b); // argument 2
 								} break;
-								case PDScriptDataType::NATIVE: {
+								case PScriptDataType::NATIVE: {
 									int class_idx;
-									if (PDScriptLanguage::get_singleton()->get_global_map().has(assign_type.native_type)) {
-										class_idx = PDScriptLanguage::get_singleton()->get_global_map()[assign_type.native_type];
-										class_idx |= (PDScriptFunction::ADDR_TYPE_GLOBAL << PDScriptFunction::ADDR_BITS); //argument (stack root)
+									if (PScriptLanguage::get_singleton()->get_global_map().has(assign_type.native_type)) {
+										class_idx = PScriptLanguage::get_singleton()->get_global_map()[assign_type.native_type];
+										class_idx |= (PScriptFunction::ADDR_TYPE_GLOBAL << PScriptFunction::ADDR_BITS); //argument (stack root)
 									} else {
 										_set_error("Invalid native class type '" + String(assign_type.native_type) + "'.", on->arguments[0]);
 										return -1;
 									}
-									codegen.opcodes.push_back(PDScriptFunction::OPCODE_ASSIGN_TYPED_NATIVE); // perform operator
+									codegen.opcodes.push_back(PScriptFunction::OPCODE_ASSIGN_TYPED_NATIVE); // perform operator
 									codegen.opcodes.push_back(class_idx); // variable type
 									codegen.opcodes.push_back(dst_address_a); // argument 1
 									codegen.opcodes.push_back(src_address_b); // argument 2
 								} break;
-								case PDScriptDataType::SCRIPT:
-								case PDScriptDataType::PDSCRIPT: {
+								case PScriptDataType::SCRIPT:
+								case PScriptDataType::PSCRIPT: {
 									Variant script = assign_type.script_type;
 									int idx = codegen.get_constant_pos(script);
-									idx |= PDScriptFunction::ADDR_TYPE_LOCAL_CONSTANT << PDScriptFunction::ADDR_BITS; //make it a local constant (faster access)
+									idx |= PScriptFunction::ADDR_TYPE_LOCAL_CONSTANT << PScriptFunction::ADDR_BITS; //make it a local constant (faster access)
 
-									codegen.opcodes.push_back(PDScriptFunction::OPCODE_ASSIGN_TYPED_SCRIPT); // perform operator
+									codegen.opcodes.push_back(PScriptFunction::OPCODE_ASSIGN_TYPED_SCRIPT); // perform operator
 									codegen.opcodes.push_back(idx); // variable type
 									codegen.opcodes.push_back(dst_address_a); // argument 1
 									codegen.opcodes.push_back(src_address_b); // argument 2
@@ -1238,21 +1238,21 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 									ERR_PRINT("Compiler bug: unresolved assign.");
 
 									// Shouldn't get here, but fail-safe to a regular assignment
-									codegen.opcodes.push_back(PDScriptFunction::OPCODE_ASSIGN); // perform operator
+									codegen.opcodes.push_back(PScriptFunction::OPCODE_ASSIGN); // perform operator
 									codegen.opcodes.push_back(dst_address_a); // argument 1
 									codegen.opcodes.push_back(src_address_b); // argument 2 (unary only takes one parameter)
 								}
 							}
 						} else {
 							// Either untyped assignment or already type-checked by the parser
-							codegen.opcodes.push_back(PDScriptFunction::OPCODE_ASSIGN); // perform operator
+							codegen.opcodes.push_back(PScriptFunction::OPCODE_ASSIGN); // perform operator
 							codegen.opcodes.push_back(dst_address_a); // argument 1
 							codegen.opcodes.push_back(src_address_b); // argument 2 (unary only takes one parameter)
 						}
 						return dst_address_a; //if anything, returns whatever was assigned or correct stack position
 					}
 				} break;
-				case PDScriptParser::OperatorNode::OP_IS: {
+				case PScriptParser::OperatorNode::OP_IS: {
 					ERR_FAIL_COND_V(on->arguments.size() != 2, false);
 
 					int slevel = p_stack_level;
@@ -1262,7 +1262,7 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 						return -1;
 					}
 
-					if (src_address_a & PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS) {
+					if (src_address_a & PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS) {
 						slevel++; //uses stack for return, increase stack
 					}
 
@@ -1271,14 +1271,14 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 						return -1;
 					}
 
-					codegen.opcodes.push_back(PDScriptFunction::OPCODE_EXTENDS_TEST); // perform operator
+					codegen.opcodes.push_back(PScriptFunction::OPCODE_EXTENDS_TEST); // perform operator
 					codegen.opcodes.push_back(src_address_a); // argument 1
 					codegen.opcodes.push_back(src_address_b); // argument 2 (unary only takes one parameter)
 
 				} break;
-				case PDScriptParser::OperatorNode::OP_IS_BUILTIN: {
+				case PScriptParser::OperatorNode::OP_IS_BUILTIN: {
 					ERR_FAIL_COND_V(on->arguments.size() != 2, false);
-					ERR_FAIL_COND_V(on->arguments[1]->type != PDScriptParser::Node::TYPE_TYPE, false);
+					ERR_FAIL_COND_V(on->arguments[1]->type != PScriptParser::Node::TYPE_TYPE, false);
 
 					int slevel = p_stack_level;
 
@@ -1287,13 +1287,13 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 						return -1;
 					}
 
-					if (src_address_a & PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS) {
+					if (src_address_a & PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS) {
 						slevel++; //uses stack for return, increase stack
 					}
 
-					const PDScriptParser::TypeNode *tn = static_cast<const PDScriptParser::TypeNode *>(on->arguments[1]);
+					const PScriptParser::TypeNode *tn = static_cast<const PScriptParser::TypeNode *>(on->arguments[1]);
 
-					codegen.opcodes.push_back(PDScriptFunction::OPCODE_IS_BUILTIN); // perform operator
+					codegen.opcodes.push_back(PScriptFunction::OPCODE_IS_BUILTIN); // perform operator
 					codegen.opcodes.push_back(src_address_a); // argument 1
 					codegen.opcodes.push_back((int)tn->vtype); // argument 2 (unary only takes one parameter)
 				} break;
@@ -1303,7 +1303,7 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 				} break;
 			}
 
-			int dst_addr = (p_stack_level) | (PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS);
+			int dst_addr = (p_stack_level) | (PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS);
 			codegen.opcodes.push_back(dst_addr); // append the stack level as destination address of the opcode
 			codegen.alloc_stack(p_stack_level);
 			return dst_addr;
@@ -1315,32 +1315,32 @@ int PDScriptCompiler::_parse_expression(CodeGen &codegen, const PDScriptParser::
 	}
 }
 
-Error PDScriptCompiler::_parse_block(CodeGen &codegen, const PDScriptParser::BlockNode *p_block, int p_stack_level, int p_break_addr, int p_continue_addr) {
+Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::BlockNode *p_block, int p_stack_level, int p_break_addr, int p_continue_addr) {
 	codegen.push_stack_identifiers();
 	codegen.current_line = p_block->line;
 
 	for (int i = 0; i < p_block->statements.size(); i++) {
-		const PDScriptParser::Node *s = p_block->statements[i];
+		const PScriptParser::Node *s = p_block->statements[i];
 
 		switch (s->type) {
-			case PDScriptParser::Node::TYPE_NEWLINE: {
+			case PScriptParser::Node::TYPE_NEWLINE: {
 #ifdef DEBUG_ENABLED
-				const PDScriptParser::NewLineNode *nl = static_cast<const PDScriptParser::NewLineNode *>(s);
-				codegen.opcodes.push_back(PDScriptFunction::OPCODE_LINE);
+				const PScriptParser::NewLineNode *nl = static_cast<const PScriptParser::NewLineNode *>(s);
+				codegen.opcodes.push_back(PScriptFunction::OPCODE_LINE);
 				codegen.opcodes.push_back(nl->line);
 				codegen.current_line = nl->line;
 #endif
 			} break;
-			case PDScriptParser::Node::TYPE_CONTROL_FLOW: {
+			case PScriptParser::Node::TYPE_CONTROL_FLOW: {
 				// try subblocks
 
-				const PDScriptParser::ControlFlowNode *cf = static_cast<const PDScriptParser::ControlFlowNode *>(s);
+				const PScriptParser::ControlFlowNode *cf = static_cast<const PScriptParser::ControlFlowNode *>(s);
 
 				switch (cf->cf_type) {
-					case PDScriptParser::ControlFlowNode::CF_MATCH: {
-						PDScriptParser::MatchNode *match = cf->match;
+					case PScriptParser::ControlFlowNode::CF_MATCH: {
+						PScriptParser::MatchNode *match = cf->match;
 
-						PDScriptParser::IdentifierNode *id = memnew(PDScriptParser::IdentifierNode);
+						PScriptParser::IdentifierNode *id = memnew(PScriptParser::IdentifierNode);
 						id->name = "#match_value";
 
 						// var #match_value
@@ -1348,8 +1348,8 @@ Error PDScriptCompiler::_parse_block(CodeGen &codegen, const PDScriptParser::Blo
 						codegen.add_stack_identifier(id->name, p_stack_level++);
 						codegen.alloc_stack(p_stack_level);
 
-						PDScriptParser::OperatorNode *op = memnew(PDScriptParser::OperatorNode);
-						op->op = PDScriptParser::OperatorNode::OP_ASSIGN;
+						PScriptParser::OperatorNode *op = memnew(PScriptParser::OperatorNode);
+						op->op = PScriptParser::OperatorNode::OP_ASSIGN;
 						op->arguments.push_back(id);
 						op->arguments.push_back(match->val_to_match);
 
@@ -1361,14 +1361,14 @@ Error PDScriptCompiler::_parse_block(CodeGen &codegen, const PDScriptParser::Blo
 						}
 
 						// break address
-						codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP);
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
 						codegen.opcodes.push_back(codegen.opcodes.size() + 3);
 						int break_addr = codegen.opcodes.size();
-						codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP);
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
 						codegen.opcodes.push_back(0); // break addr
 
 						for (int j = 0; j < match->compiled_pattern_branches.size(); j++) {
-							PDScriptParser::MatchNode::CompiledPatternBranch branch = match->compiled_pattern_branches[j];
+							PScriptParser::MatchNode::CompiledPatternBranch branch = match->compiled_pattern_branches[j];
 
 							// jump over continue
 							// jump unconditionally
@@ -1381,11 +1381,11 @@ Error PDScriptCompiler::_parse_block(CodeGen &codegen, const PDScriptParser::Blo
 								return ERR_PARSE_ERROR;
 							}
 
-							codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP_IF);
+							codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP_IF);
 							codegen.opcodes.push_back(ret2);
 							codegen.opcodes.push_back(codegen.opcodes.size() + 3);
 							int continue_addr = codegen.opcodes.size();
-							codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP);
+							codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
 							codegen.opcodes.push_back(0);
 
 							Error err = _parse_block(codegen, branch.body, p_stack_level, p_break_addr, continue_addr);
@@ -1395,7 +1395,7 @@ Error PDScriptCompiler::_parse_block(CodeGen &codegen, const PDScriptParser::Blo
 								return ERR_PARSE_ERROR;
 							}
 
-							codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP);
+							codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
 							codegen.opcodes.push_back(break_addr);
 
 							codegen.opcodes.write[continue_addr + 1] = codegen.opcodes.size();
@@ -1408,13 +1408,13 @@ Error PDScriptCompiler::_parse_block(CodeGen &codegen, const PDScriptParser::Blo
 
 					} break;
 
-					case PDScriptParser::ControlFlowNode::CF_IF: {
+					case PScriptParser::ControlFlowNode::CF_IF: {
 						int ret2 = _parse_expression(codegen, cf->arguments[0], p_stack_level, false);
 						if (ret2 < 0) {
 							return ERR_PARSE_ERROR;
 						}
 
-						codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP_IF_NOT);
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP_IF_NOT);
 						codegen.opcodes.push_back(ret2);
 						int else_addr = codegen.opcodes.size();
 						codegen.opcodes.push_back(0); //temporary
@@ -1425,12 +1425,12 @@ Error PDScriptCompiler::_parse_block(CodeGen &codegen, const PDScriptParser::Blo
 						}
 
 						if (cf->body_else) {
-							codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP);
+							codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
 							int end_addr = codegen.opcodes.size();
 							codegen.opcodes.push_back(0);
 							codegen.opcodes.write[else_addr] = codegen.opcodes.size();
 
-							codegen.opcodes.push_back(PDScriptFunction::OPCODE_LINE);
+							codegen.opcodes.push_back(PScriptFunction::OPCODE_LINE);
 							codegen.opcodes.push_back(cf->body_else->line);
 							codegen.current_line = cf->body_else->line;
 
@@ -1446,16 +1446,16 @@ Error PDScriptCompiler::_parse_block(CodeGen &codegen, const PDScriptParser::Blo
 						}
 
 					} break;
-					case PDScriptParser::ControlFlowNode::CF_FOR: {
+					case PScriptParser::ControlFlowNode::CF_FOR: {
 						int slevel = p_stack_level;
 						int iter_stack_pos = slevel;
-						int iterator_pos = (slevel++) | (PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS);
-						int counter_pos = (slevel++) | (PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS);
-						int container_pos = (slevel++) | (PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS);
+						int iterator_pos = (slevel++) | (PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS);
+						int counter_pos = (slevel++) | (PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS);
+						int container_pos = (slevel++) | (PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS);
 						codegen.alloc_stack(slevel);
 
 						codegen.push_stack_identifiers();
-						codegen.add_stack_identifier(static_cast<const PDScriptParser::IdentifierNode *>(cf->arguments[0])->name, iter_stack_pos);
+						codegen.add_stack_identifier(static_cast<const PScriptParser::IdentifierNode *>(cf->arguments[0])->name, iter_stack_pos);
 
 						int ret2 = _parse_expression(codegen, cf->arguments[1], slevel, false);
 						if (ret2 < 0) {
@@ -1463,25 +1463,25 @@ Error PDScriptCompiler::_parse_block(CodeGen &codegen, const PDScriptParser::Blo
 						}
 
 						//assign container
-						codegen.opcodes.push_back(PDScriptFunction::OPCODE_ASSIGN);
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_ASSIGN);
 						codegen.opcodes.push_back(container_pos);
 						codegen.opcodes.push_back(ret2);
 
 						//begin loop
-						codegen.opcodes.push_back(PDScriptFunction::OPCODE_ITERATE_BEGIN);
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_ITERATE_BEGIN);
 						codegen.opcodes.push_back(counter_pos);
 						codegen.opcodes.push_back(container_pos);
 						codegen.opcodes.push_back(codegen.opcodes.size() + 4);
 						codegen.opcodes.push_back(iterator_pos);
-						codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP); //skip code for next
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP); //skip code for next
 						codegen.opcodes.push_back(codegen.opcodes.size() + 8);
 						//break loop
 						int break_pos = codegen.opcodes.size();
-						codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP); //skip code for next
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP); //skip code for next
 						codegen.opcodes.push_back(0); //skip code for next
 						//next loop
 						int continue_pos = codegen.opcodes.size();
-						codegen.opcodes.push_back(PDScriptFunction::OPCODE_ITERATE);
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_ITERATE);
 						codegen.opcodes.push_back(counter_pos);
 						codegen.opcodes.push_back(container_pos);
 						codegen.opcodes.push_back(break_pos);
@@ -1492,18 +1492,18 @@ Error PDScriptCompiler::_parse_block(CodeGen &codegen, const PDScriptParser::Blo
 							return err;
 						}
 
-						codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP);
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
 						codegen.opcodes.push_back(continue_pos);
 						codegen.opcodes.write[break_pos + 1] = codegen.opcodes.size();
 
 						codegen.pop_stack_identifiers();
 
 					} break;
-					case PDScriptParser::ControlFlowNode::CF_WHILE: {
-						codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP);
+					case PScriptParser::ControlFlowNode::CF_WHILE: {
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
 						codegen.opcodes.push_back(codegen.opcodes.size() + 3);
 						int break_addr = codegen.opcodes.size();
-						codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP);
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
 						codegen.opcodes.push_back(0);
 						int continue_addr = codegen.opcodes.size();
 
@@ -1511,39 +1511,39 @@ Error PDScriptCompiler::_parse_block(CodeGen &codegen, const PDScriptParser::Blo
 						if (ret2 < 0) {
 							return ERR_PARSE_ERROR;
 						}
-						codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP_IF_NOT);
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP_IF_NOT);
 						codegen.opcodes.push_back(ret2);
 						codegen.opcodes.push_back(break_addr);
 						Error err = _parse_block(codegen, cf->body, p_stack_level, break_addr, continue_addr);
 						if (err) {
 							return err;
 						}
-						codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP);
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
 						codegen.opcodes.push_back(continue_addr);
 
 						codegen.opcodes.write[break_addr + 1] = codegen.opcodes.size();
 
 					} break;
-					case PDScriptParser::ControlFlowNode::CF_BREAK: {
+					case PScriptParser::ControlFlowNode::CF_BREAK: {
 						if (p_break_addr < 0) {
 							_set_error("'break'' not within loop", cf);
 							return ERR_COMPILATION_FAILED;
 						}
-						codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP);
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
 						codegen.opcodes.push_back(p_break_addr);
 
 					} break;
-					case PDScriptParser::ControlFlowNode::CF_CONTINUE: {
+					case PScriptParser::ControlFlowNode::CF_CONTINUE: {
 						if (p_continue_addr < 0) {
 							_set_error("'continue' not within loop", cf);
 							return ERR_COMPILATION_FAILED;
 						}
 
-						codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP);
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
 						codegen.opcodes.push_back(p_continue_addr);
 
 					} break;
-					case PDScriptParser::ControlFlowNode::CF_RETURN: {
+					case PScriptParser::ControlFlowNode::CF_RETURN: {
 						int ret2;
 
 						if (cf->arguments.size()) {
@@ -1553,20 +1553,20 @@ Error PDScriptCompiler::_parse_block(CodeGen &codegen, const PDScriptParser::Blo
 							}
 
 						} else {
-							ret2 = PDScriptFunction::ADDR_TYPE_NIL << PDScriptFunction::ADDR_BITS;
+							ret2 = PScriptFunction::ADDR_TYPE_NIL << PScriptFunction::ADDR_BITS;
 						}
 
-						codegen.opcodes.push_back(PDScriptFunction::OPCODE_RETURN);
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_RETURN);
 						codegen.opcodes.push_back(ret2);
 
 					} break;
 				}
 			} break;
-			case PDScriptParser::Node::TYPE_ASSERT: {
+			case PScriptParser::Node::TYPE_ASSERT: {
 #ifdef DEBUG_ENABLED
 				// try subblocks
 
-				const PDScriptParser::AssertNode *as = static_cast<const PDScriptParser::AssertNode *>(s);
+				const PScriptParser::AssertNode *as = static_cast<const PScriptParser::AssertNode *>(s);
 
 				int ret2 = _parse_expression(codegen, as->condition, p_stack_level, false);
 				if (ret2 < 0) {
@@ -1581,19 +1581,19 @@ Error PDScriptCompiler::_parse_block(CodeGen &codegen, const PDScriptParser::Blo
 					}
 				}
 
-				codegen.opcodes.push_back(PDScriptFunction::OPCODE_ASSERT);
+				codegen.opcodes.push_back(PScriptFunction::OPCODE_ASSERT);
 				codegen.opcodes.push_back(ret2);
 				codegen.opcodes.push_back(message_ret);
 #endif
 			} break;
-			case PDScriptParser::Node::TYPE_BREAKPOINT: {
+			case PScriptParser::Node::TYPE_BREAKPOINT: {
 #ifdef DEBUG_ENABLED
 				// try subblocks
-				codegen.opcodes.push_back(PDScriptFunction::OPCODE_BREAKPOINT);
+				codegen.opcodes.push_back(PScriptFunction::OPCODE_BREAKPOINT);
 #endif
 			} break;
-			case PDScriptParser::Node::TYPE_LOCAL_VAR: {
-				const PDScriptParser::LocalVarNode *lv = static_cast<const PDScriptParser::LocalVarNode *>(s);
+			case PScriptParser::Node::TYPE_LOCAL_VAR: {
+				const PScriptParser::LocalVarNode *lv = static_cast<const PScriptParser::LocalVarNode *>(s);
 
 				// since we are using properties now for most class access, allow shadowing of class members to make user's life easier.
 				//
@@ -1619,7 +1619,7 @@ Error PDScriptCompiler::_parse_block(CodeGen &codegen, const PDScriptParser::Blo
 	return OK;
 }
 
-Error PDScriptCompiler::_parse_function(PDScript *p_script, const PDScriptParser::ClassNode *p_class, const PDScriptParser::FunctionNode *p_func, bool p_for_ready) {
+Error PScriptCompiler::_parse_function(PScript *p_script, const PScriptParser::ClassNode *p_class, const PScriptParser::FunctionNode *p_func, bool p_for_ready) {
 	Vector<int> bytecode;
 	CodeGen codegen;
 
@@ -1664,10 +1664,10 @@ Error PDScriptCompiler::_parse_function(PDScript *p_script, const PDScriptParser
 		//parse initializer for class members
 		if (!p_func && p_class->extends_used && p_script->native.is_null()) {
 			//call implicit parent constructor
-			codegen.opcodes.push_back(PDScriptFunction::OPCODE_CALL_SELF_BASE);
+			codegen.opcodes.push_back(PScriptFunction::OPCODE_CALL_SELF_BASE);
 			codegen.opcodes.push_back(codegen.get_name_map_pos("_init"));
 			codegen.opcodes.push_back(0);
-			codegen.opcodes.push_back((PDScriptFunction::ADDR_TYPE_STACK << PDScriptFunction::ADDR_BITS) | 0);
+			codegen.opcodes.push_back((PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS) | 0);
 		}
 		Error err = _parse_block(codegen, p_class->initializer, stack_level);
 		if (err) {
@@ -1693,15 +1693,15 @@ Error PDScriptCompiler::_parse_function(PDScript *p_script, const PDScriptParser
 
 	if (p_func) {
 		if (p_func->default_values.size()) {
-			codegen.opcodes.push_back(PDScriptFunction::OPCODE_JUMP_TO_DEF_ARGUMENT);
+			codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP_TO_DEF_ARGUMENT);
 			defarg_addr.push_back(codegen.opcodes.size());
 			for (int i = 0; i < p_func->default_values.size(); i++) {
 				_parse_expression(codegen, p_func->default_values[i], stack_level, true);
 				defarg_addr.push_back(codegen.opcodes.size());
 #ifdef TOOLS_ENABLED
-				const PDScriptParser::OperatorNode *assign = static_cast<const PDScriptParser::OperatorNode *>(p_func->default_values[i]);
-				if (assign->arguments.size() >= 2 && assign->arguments[1]->type == PDScriptParser::Node::TYPE_CONSTANT) {
-					const PDScriptParser::ConstantNode *cn = static_cast<const PDScriptParser::ConstantNode *>(assign->arguments[1]);
+				const PScriptParser::OperatorNode *assign = static_cast<const PScriptParser::OperatorNode *>(p_func->default_values[i]);
+				if (assign->arguments.size() >= 2 && assign->arguments[1]->type == PScriptParser::Node::TYPE_CONSTANT) {
+					const PScriptParser::ConstantNode *cn = static_cast<const PScriptParser::ConstantNode *>(assign->arguments[1]);
 					default_arg_values.push_back(cn->value);
 				} else {
 					default_arg_values.push_back(Variant());
@@ -1726,99 +1726,99 @@ Error PDScriptCompiler::_parse_function(PDScript *p_script, const PDScriptParser
 		}
 	}
 
-	codegen.opcodes.push_back(PDScriptFunction::OPCODE_END);
+	codegen.opcodes.push_back(PScriptFunction::OPCODE_END);
 
 	/*
 	if (String(p_func->name)=="") { //initializer func
-		pdfunc = &p_script->initializer;
+		pfunc = &p_script->initializer;
 	*/
 	//} else { //regular func
-	p_script->member_functions[func_name] = memnew(PDScriptFunction);
-	PDScriptFunction *pdfunc = p_script->member_functions[func_name];
+	p_script->member_functions[func_name] = memnew(PScriptFunction);
+	PScriptFunction *pfunc = p_script->member_functions[func_name];
 	//}
 
 	if (p_func) {
-		pdfunc->_static = p_func->_static;
-		pdfunc->argument_types.resize(p_func->argument_types.size());
+		pfunc->_static = p_func->_static;
+		pfunc->argument_types.resize(p_func->argument_types.size());
 		for (int i = 0; i < p_func->argument_types.size(); i++) {
-			pdfunc->argument_types.write[i] = _pdtype_from_datatype(p_func->argument_types[i], p_script);
+			pfunc->argument_types.write[i] = _ptype_from_datatype(p_func->argument_types[i], p_script);
 		}
-		pdfunc->return_type = _pdtype_from_datatype(p_func->return_type, p_script);
+		pfunc->return_type = _ptype_from_datatype(p_func->return_type, p_script);
 	} else {
-		pdfunc->_static = false;
-		pdfunc->return_type = PDScriptDataType();
-		pdfunc->return_type.has_type = true;
-		pdfunc->return_type.kind = PDScriptDataType::BUILTIN;
-		pdfunc->return_type.builtin_type = Variant::NIL;
+		pfunc->_static = false;
+		pfunc->return_type = PScriptDataType();
+		pfunc->return_type.has_type = true;
+		pfunc->return_type.kind = PScriptDataType::BUILTIN;
+		pfunc->return_type.builtin_type = Variant::NIL;
 	}
 
 #ifdef TOOLS_ENABLED
-	pdfunc->arg_names = argnames;
-	pdfunc->default_arg_values = default_arg_values;
+	pfunc->arg_names = argnames;
+	pfunc->default_arg_values = default_arg_values;
 #endif
 	//constants
 	if (codegen.constant_map.size()) {
-		pdfunc->_constant_count = codegen.constant_map.size();
-		pdfunc->constants.resize(codegen.constant_map.size());
-		pdfunc->_constants_ptr = pdfunc->constants.ptrw();
+		pfunc->_constant_count = codegen.constant_map.size();
+		pfunc->constants.resize(codegen.constant_map.size());
+		pfunc->_constants_ptr = pfunc->constants.ptrw();
 		const Variant *K = nullptr;
 		while ((K = codegen.constant_map.next(K))) {
 			int idx = codegen.constant_map[*K];
-			pdfunc->constants.write[idx] = *K;
+			pfunc->constants.write[idx] = *K;
 		}
 	} else {
-		pdfunc->_constants_ptr = nullptr;
-		pdfunc->_constant_count = 0;
+		pfunc->_constants_ptr = nullptr;
+		pfunc->_constant_count = 0;
 	}
 	//global names
 	if (codegen.name_map.size()) {
-		pdfunc->global_names.resize(codegen.name_map.size());
-		pdfunc->_global_names_ptr = &pdfunc->global_names[0];
+		pfunc->global_names.resize(codegen.name_map.size());
+		pfunc->_global_names_ptr = &pfunc->global_names[0];
 		for (RBMap<StringName, int>::Element *E = codegen.name_map.front(); E; E = E->next()) {
-			pdfunc->global_names.write[E->get()] = E->key();
+			pfunc->global_names.write[E->get()] = E->key();
 		}
-		pdfunc->_global_names_count = pdfunc->global_names.size();
+		pfunc->_global_names_count = pfunc->global_names.size();
 
 	} else {
-		pdfunc->_global_names_ptr = nullptr;
-		pdfunc->_global_names_count = 0;
+		pfunc->_global_names_ptr = nullptr;
+		pfunc->_global_names_count = 0;
 	}
 
 #ifdef TOOLS_ENABLED
 	// Named globals
 	if (codegen.named_globals.size()) {
-		pdfunc->named_globals.resize(codegen.named_globals.size());
-		pdfunc->_named_globals_ptr = pdfunc->named_globals.ptr();
+		pfunc->named_globals.resize(codegen.named_globals.size());
+		pfunc->_named_globals_ptr = pfunc->named_globals.ptr();
 		for (int i = 0; i < codegen.named_globals.size(); i++) {
-			pdfunc->named_globals.write[i] = codegen.named_globals[i];
+			pfunc->named_globals.write[i] = codegen.named_globals[i];
 		}
-		pdfunc->_named_globals_count = pdfunc->named_globals.size();
+		pfunc->_named_globals_count = pfunc->named_globals.size();
 	}
 #endif
 
 	if (codegen.opcodes.size()) {
-		pdfunc->code = codegen.opcodes;
-		pdfunc->_code_ptr = &pdfunc->code[0];
-		pdfunc->_code_size = codegen.opcodes.size();
+		pfunc->code = codegen.opcodes;
+		pfunc->_code_ptr = &pfunc->code[0];
+		pfunc->_code_size = codegen.opcodes.size();
 
 	} else {
-		pdfunc->_code_ptr = nullptr;
-		pdfunc->_code_size = 0;
+		pfunc->_code_ptr = nullptr;
+		pfunc->_code_size = 0;
 	}
 
 	if (defarg_addr.size()) {
-		pdfunc->default_arguments = defarg_addr;
-		pdfunc->_default_arg_count = defarg_addr.size() - 1;
-		pdfunc->_default_arg_ptr = &pdfunc->default_arguments[0];
+		pfunc->default_arguments = defarg_addr;
+		pfunc->_default_arg_count = defarg_addr.size() - 1;
+		pfunc->_default_arg_ptr = &pfunc->default_arguments[0];
 	} else {
-		pdfunc->_default_arg_count = 0;
-		pdfunc->_default_arg_ptr = nullptr;
+		pfunc->_default_arg_count = 0;
+		pfunc->_default_arg_ptr = nullptr;
 	}
 
-	pdfunc->_argument_count = p_func ? p_func->arguments.size() : 0;
-	pdfunc->_stack_size = codegen.stack_max;
-	pdfunc->_call_size = codegen.call_max;
-	pdfunc->name = func_name;
+	pfunc->_argument_count = p_func ? p_func->arguments.size() : 0;
+	pfunc->_stack_size = codegen.stack_max;
+	pfunc->_call_size = codegen.call_max;
+	pfunc->name = func_name;
 #ifdef DEBUG_ENABLED
 	if (ScriptDebugger::get_singleton()) {
 		String signature;
@@ -1841,42 +1841,42 @@ Error PDScriptCompiler::_parse_function(PDScript *p_script, const PDScriptParser
 			signature += "::" + String(func_name);
 		}
 
-		pdfunc->profile.signature = signature;
+		pfunc->profile.signature = signature;
 	}
 #endif
-	pdfunc->_script = p_script;
-	pdfunc->source = source;
+	pfunc->_script = p_script;
+	pfunc->source = source;
 
 #ifdef DEBUG_ENABLED
 
 	{
-		pdfunc->func_cname = (String(source) + " - " + String(func_name)).utf8();
-		pdfunc->_func_cname = pdfunc->func_cname.get_data();
+		pfunc->func_cname = (String(source) + " - " + String(func_name)).utf8();
+		pfunc->_func_cname = pfunc->func_cname.get_data();
 	}
 
 #endif
 	if (p_func) {
-		pdfunc->_initial_line = p_func->line;
+		pfunc->_initial_line = p_func->line;
 #ifdef TOOLS_ENABLED
 
 		p_script->member_lines[func_name] = p_func->line;
 #endif
 	} else {
-		pdfunc->_initial_line = 0;
+		pfunc->_initial_line = 0;
 	}
 
 	if (codegen.debug_stack) {
-		pdfunc->stack_debug = codegen.stack_debug;
+		pfunc->stack_debug = codegen.stack_debug;
 	}
 
 	if (is_initializer) {
-		p_script->initializer = pdfunc;
+		p_script->initializer = pfunc;
 	}
 
 	return OK;
 }
 
-Error PDScriptCompiler::_parse_class_level(PDScript *p_script, const PDScriptParser::ClassNode *p_class, bool p_keep_state) {
+Error PScriptCompiler::_parse_class_level(PScript *p_script, const PScriptParser::ClassNode *p_class, bool p_keep_state) {
 	parsing_classes.insert(p_script);
 
 	if (p_class->owner && p_class->owner->owner) {
@@ -1893,12 +1893,12 @@ Error PDScriptCompiler::_parse_class_level(PDScript *p_script, const PDScriptPar
 		}
 	}
 
-	p_script->native = Ref<PDScriptNativeClass>();
-	p_script->base = Ref<PDScript>();
+	p_script->native = Ref<PScriptNativeClass>();
+	p_script->base = Ref<PScript>();
 	p_script->_base = nullptr;
 	p_script->members.clear();
 	p_script->constants.clear();
-	for (RBMap<StringName, PDScriptFunction *>::Element *E = p_script->member_functions.front(); E; E = E->next()) {
+	for (RBMap<StringName, PScriptFunction *>::Element *E = p_script->member_functions.front(); E; E = E->next()) {
 		memdelete(E->get());
 	}
 	p_script->member_functions.clear();
@@ -1910,24 +1910,24 @@ Error PDScriptCompiler::_parse_class_level(PDScript *p_script, const PDScriptPar
 	p_script->tool = p_class->tool;
 	p_script->name = p_class->name;
 
-	Ref<PDScriptNativeClass> native;
+	Ref<PScriptNativeClass> native;
 
-	PDScriptDataType base_type = _pdtype_from_datatype(p_class->base_type);
+	PScriptDataType base_type = _ptype_from_datatype(p_class->base_type);
 	// Inheritance
 	switch (base_type.kind) {
-		case PDScriptDataType::NATIVE: {
-			int native_idx = PDScriptLanguage::get_singleton()->get_global_map()[base_type.native_type];
-			native = PDScriptLanguage::get_singleton()->get_global_array()[native_idx];
+		case PScriptDataType::NATIVE: {
+			int native_idx = PScriptLanguage::get_singleton()->get_global_map()[base_type.native_type];
+			native = PScriptLanguage::get_singleton()->get_global_array()[native_idx];
 			ERR_FAIL_COND_V(native.is_null(), ERR_BUG);
 			p_script->native = native;
 		} break;
-		case PDScriptDataType::PDSCRIPT: {
-			Ref<PDScript> base = Ref<Script>(base_type.script_type);
+		case PScriptDataType::PSCRIPT: {
+			Ref<PScript> base = Ref<Script>(base_type.script_type);
 			p_script->base = base;
 			p_script->_base = base.ptr();
 			p_script->member_indices = base->member_indices;
 
-			if (p_class->base_type.kind == PDScriptParser::DataType::CLASS) {
+			if (p_class->base_type.kind == PScriptParser::DataType::CLASS) {
 				if (!parsed_classes.has(p_script->_base)) {
 					if (parsing_classes.has(p_script->_base)) {
 						_set_error("Cyclic class reference for '" + String(p_class->name) + "'.", p_class);
@@ -1949,11 +1949,11 @@ Error PDScriptCompiler::_parse_class_level(PDScript *p_script, const PDScriptPar
 	for (int i = 0; i < p_class->variables.size(); i++) {
 		StringName name = p_class->variables[i].identifier;
 
-		PDScript::MemberInfo minfo;
+		PScript::MemberInfo minfo;
 		minfo.index = p_script->member_indices.size();
 		minfo.setter = p_class->variables[i].setter;
 		minfo.getter = p_class->variables[i].getter;
-		minfo.data_type = _pdtype_from_datatype(p_class->variables[i].data_type, p_script);
+		minfo.data_type = _ptype_from_datatype(p_class->variables[i].data_type, p_script);
 
 		PropertyInfo prop_info = minfo.data_type;
 		prop_info.name = name;
@@ -1985,12 +1985,12 @@ Error PDScriptCompiler::_parse_class_level(PDScript *p_script, const PDScriptPar
 #endif
 	}
 
-	for (RBMap<StringName, PDScriptParser::ClassNode::Constant>::Element *E = p_class->constant_expressions.front(); E; E = E->next()) {
+	for (RBMap<StringName, PScriptParser::ClassNode::Constant>::Element *E = p_class->constant_expressions.front(); E; E = E->next()) {
 		StringName name = E->key();
 
-		ERR_CONTINUE(E->get().expression->type != PDScriptParser::Node::TYPE_CONSTANT);
+		ERR_CONTINUE(E->get().expression->type != PScriptParser::Node::TYPE_CONSTANT);
 
-		PDScriptParser::ConstantNode *constant = static_cast<PDScriptParser::ConstantNode *>(E->get().expression);
+		PScriptParser::ConstantNode *constant = static_cast<PScriptParser::ConstantNode *>(E->get().expression);
 
 		p_script->constants.insert(name, constant->value);
 #ifdef TOOLS_ENABLED
@@ -2002,7 +2002,7 @@ Error PDScriptCompiler::_parse_class_level(PDScript *p_script, const PDScriptPar
 	for (int i = 0; i < p_class->_signals.size(); i++) {
 		StringName name = p_class->_signals[i].name;
 
-		PDScript *c = p_script;
+		PScript *c = p_script;
 
 		while (c) {
 			if (c->_signals.has(name)) {
@@ -2034,8 +2034,8 @@ Error PDScriptCompiler::_parse_class_level(PDScript *p_script, const PDScriptPar
 
 	for (int i = 0; i < p_class->subclasses.size(); i++) {
 		StringName name = p_class->subclasses[i]->name;
-		Ref<PDScript> &subclass = p_script->subclasses[name];
-		PDScript *subclass_ptr = subclass.ptr();
+		Ref<PScript> &subclass = p_script->subclasses[name];
+		PScript *subclass_ptr = subclass.ptr();
 
 		// Subclass might still be parsing, just skip it
 		if (!parsed_classes.has(subclass_ptr) && !parsing_classes.has(subclass_ptr)) {
@@ -2056,7 +2056,7 @@ Error PDScriptCompiler::_parse_class_level(PDScript *p_script, const PDScriptPar
 	return OK;
 }
 
-Error PDScriptCompiler::_parse_class_blocks(PDScript *p_script, const PDScriptParser::ClassNode *p_class, bool p_keep_state) {
+Error PScriptCompiler::_parse_class_blocks(PScript *p_script, const PScriptParser::ClassNode *p_class, bool p_keep_state) {
 	//parse methods
 
 	bool has_initializer = false;
@@ -2117,14 +2117,14 @@ Error PDScriptCompiler::_parse_class_blocks(PDScript *p_script, const PDScriptPa
 					//re-create as an instance
 					p_script->placeholders.erase(psi); //remove placeholder
 
-					PDScriptInstance *instance = memnew(PDScriptInstance);
+					PScriptInstance *instance = memnew(PScriptInstance);
 					instance->base_ref = Object::cast_to<Reference>(E->get());
 					instance->members.resize(p_script->member_indices.size());
-					instance->script = Ref<PDScript>(p_script);
+					instance->script = Ref<PScript>(p_script);
 					instance->owner = E->get();
 
 					//needed for hot reloading
-					for (RBMap<StringName, PDScript::MemberInfo>::Element *F = p_script->member_indices.front(); F; F = F->next()) {
+					for (RBMap<StringName, PScript::MemberInfo>::Element *F = p_script->member_indices.front(); F; F = F->next()) {
 						instance->member_indices_cache[F->key()] = F->get().index;
 					}
 					instance->owner->set_script_instance(instance);
@@ -2140,7 +2140,7 @@ Error PDScriptCompiler::_parse_class_blocks(PDScript *p_script, const PDScriptPa
 				}
 #endif
 			} else {
-				PDScriptInstance *gi = static_cast<PDScriptInstance *>(si);
+				PScriptInstance *gi = static_cast<PScriptInstance *>(si);
 				gi->reload_members();
 			}
 
@@ -2151,7 +2151,7 @@ Error PDScriptCompiler::_parse_class_blocks(PDScript *p_script, const PDScriptPa
 
 	for (int i = 0; i < p_class->subclasses.size(); i++) {
 		StringName name = p_class->subclasses[i]->name;
-		PDScript *subclass = p_script->subclasses[name].ptr();
+		PScript *subclass = p_script->subclasses[name].ptr();
 
 		Error err = _parse_class_blocks(subclass, p_class->subclasses[i], p_keep_state);
 		if (err) {
@@ -2163,8 +2163,8 @@ Error PDScriptCompiler::_parse_class_blocks(PDScript *p_script, const PDScriptPa
 	return OK;
 }
 
-void PDScriptCompiler::_make_scripts(PDScript *p_script, const PDScriptParser::ClassNode *p_class, bool p_keep_state) {
-	RBMap<StringName, Ref<PDScript>> old_subclasses;
+void PScriptCompiler::_make_scripts(PScript *p_script, const PScriptParser::ClassNode *p_class, bool p_keep_state) {
+	RBMap<StringName, Ref<PScript>> old_subclasses;
 
 	if (p_keep_state) {
 		old_subclasses = p_script->subclasses;
@@ -2175,13 +2175,13 @@ void PDScriptCompiler::_make_scripts(PDScript *p_script, const PDScriptParser::C
 	for (int i = 0; i < p_class->subclasses.size(); i++) {
 		StringName name = p_class->subclasses[i]->name;
 
-		Ref<PDScript> subclass;
+		Ref<PScript> subclass;
 		String fully_qualified_name = p_script->fully_qualified_name + "::" + name;
 
 		if (old_subclasses.has(name)) {
 			subclass = old_subclasses[name];
 		} else {
-			Ref<PDScript> orphan_subclass = PDScriptLanguage::get_singleton()->get_orphan_subclass(fully_qualified_name);
+			Ref<PScript> orphan_subclass = PScriptLanguage::get_singleton()->get_orphan_subclass(fully_qualified_name);
 			if (orphan_subclass.is_valid()) {
 				subclass = orphan_subclass;
 			} else {
@@ -2197,14 +2197,14 @@ void PDScriptCompiler::_make_scripts(PDScript *p_script, const PDScriptParser::C
 	}
 }
 
-Error PDScriptCompiler::compile(const PDScriptParser *p_parser, PDScript *p_script, bool p_keep_state) {
+Error PScriptCompiler::compile(const PScriptParser *p_parser, PScript *p_script, bool p_keep_state) {
 	err_line = -1;
 	err_column = -1;
 	error = "";
 	parser = p_parser;
 	main_script = p_script;
-	const PDScriptParser::Node *root = parser->get_parse_tree();
-	ERR_FAIL_COND_V(root->type != PDScriptParser::Node::TYPE_CLASS, ERR_INVALID_DATA);
+	const PScriptParser::Node *root = parser->get_parse_tree();
+	ERR_FAIL_COND_V(root->type != PScriptParser::Node::TYPE_CLASS, ERR_INVALID_DATA);
 
 	source = p_script->get_path();
 
@@ -2212,16 +2212,16 @@ Error PDScriptCompiler::compile(const PDScriptParser *p_parser, PDScript *p_scri
 	p_script->fully_qualified_name = p_script->path;
 
 	// Create scripts for subclasses beforehand so they can be referenced
-	_make_scripts(p_script, static_cast<const PDScriptParser::ClassNode *>(root), p_keep_state);
+	_make_scripts(p_script, static_cast<const PScriptParser::ClassNode *>(root), p_keep_state);
 
 	p_script->_owner = nullptr;
-	Error err = _parse_class_level(p_script, static_cast<const PDScriptParser::ClassNode *>(root), p_keep_state);
+	Error err = _parse_class_level(p_script, static_cast<const PScriptParser::ClassNode *>(root), p_keep_state);
 
 	if (err) {
 		return err;
 	}
 
-	err = _parse_class_blocks(p_script, static_cast<const PDScriptParser::ClassNode *>(root), p_keep_state);
+	err = _parse_class_blocks(p_script, static_cast<const PScriptParser::ClassNode *>(root), p_keep_state);
 
 	if (err) {
 		return err;
@@ -2230,15 +2230,15 @@ Error PDScriptCompiler::compile(const PDScriptParser *p_parser, PDScript *p_scri
 	return OK;
 }
 
-String PDScriptCompiler::get_error() const {
+String PScriptCompiler::get_error() const {
 	return error;
 }
-int PDScriptCompiler::get_error_line() const {
+int PScriptCompiler::get_error_line() const {
 	return err_line;
 }
-int PDScriptCompiler::get_error_column() const {
+int PScriptCompiler::get_error_column() const {
 	return err_column;
 }
 
-PDScriptCompiler::PDScriptCompiler() {
+PScriptCompiler::PScriptCompiler() {
 }

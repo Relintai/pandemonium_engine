@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  pdscript_functions.cpp                                               */
+/*  pscript_functions.cpp                                               */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,7 +29,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "pdscript_functions.h"
+#include "pscript_functions.h"
 
 #include "core/io/json.h"
 #include "core/io/marshalls.h"
@@ -39,9 +39,9 @@
 #include "core/object/reference.h"
 #include "core/os/os.h"
 #include "core/variant/variant_parser.h"
-#include "pdscript.h"
+#include "pscript.h"
 
-const char *PDScriptFunctions::get_func_name(Function p_func) {
+const char *PScriptFunctions::get_func_name(Function p_func) {
 	ERR_FAIL_INDEX_V(p_func, FUNC_MAX, "");
 
 	static const char *_names[FUNC_MAX] = {
@@ -142,7 +142,7 @@ const char *PDScriptFunctions::get_func_name(Function p_func) {
 	return _names[p_func];
 }
 
-void PDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_count, Variant &r_ret, Variant::CallError &r_error) {
+void PScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_count, Variant &r_ret, Variant::CallError &r_error) {
 	r_error.error = Variant::CallError::CALL_OK;
 #ifdef DEBUG_ENABLED
 
@@ -344,7 +344,7 @@ void PDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 			VALIDATE_ARG_COUNT(1);
 			VALIDATE_ARG_NUM(0);
 			r_ret = Math::step_decimals((double)*p_args[0]);
-			WARN_DEPRECATED_MSG("PDScript method 'decimals' is deprecated and has been renamed to 'step_decimals', please update your code accordingly.");
+			WARN_DEPRECATED_MSG("PScript method 'decimals' is deprecated and has been renamed to 'step_decimals', please upate your code accordingly.");
 		} break;
 		case MATH_STEP_DECIMALS: {
 			VALIDATE_ARG_COUNT(1);
@@ -755,7 +755,7 @@ void PDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 				str += p_args[i]->operator String();
 			}
 
-			ScriptLanguage *script = PDScriptLanguage::get_singleton();
+			ScriptLanguage *script = PScriptLanguage::get_singleton();
 			if (script->debug_get_stack_level_count() > 0) {
 				str += "\n   At: " + script->debug_get_stack_level_source(0) + ":" + itos(script->debug_get_stack_level_line(0)) + ":" + script->debug_get_stack_level_function(0) + "()";
 			}
@@ -1043,15 +1043,15 @@ void PDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 				if (!obj) {
 					r_ret = Variant();
 
-				} else if (!obj->get_script_instance() || obj->get_script_instance()->get_language() != PDScriptLanguage::get_singleton()) {
+				} else if (!obj->get_script_instance() || obj->get_script_instance()->get_language() != PScriptLanguage::get_singleton()) {
 					r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
 					r_error.argument = 0;
 					r_error.expected = Variant::DICTIONARY;
 					r_ret = RTR("Not a script with an instance");
 					return;
 				} else {
-					PDScriptInstance *ins = static_cast<PDScriptInstance *>(obj->get_script_instance());
-					Ref<PDScript> base = ins->get_script();
+					PScriptInstance *ins = static_cast<PScriptInstance *>(obj->get_script_instance());
+					Ref<PScript> base = ins->get_script();
 					if (base.is_null()) {
 						r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
 						r_error.argument = 0;
@@ -1060,7 +1060,7 @@ void PDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 						return;
 					}
 
-					PDScript *p = base.ptr();
+					PScript *p = base.ptr();
 					Vector<StringName> sname;
 
 					while (p->_owner) {
@@ -1086,7 +1086,7 @@ void PDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 					d["@subpath"] = cp;
 					d["@path"] = p->get_path();
 
-					for (RBMap<StringName, PDScript::MemberInfo>::Element *E = base->member_indices.front(); E; E = E->next()) {
+					for (RBMap<StringName, PScript::MemberInfo>::Element *E = base->member_indices.front(); E; E = E->next()) {
 						if (!d.has(E->key())) {
 							d[E->key()] = ins->members[E->get().index];
 						}
@@ -1128,9 +1128,9 @@ void PDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 				return;
 			}
 
-			Ref<PDScript> pdscr = scr;
+			Ref<PScript> pscr = scr;
 
-			if (!pdscr.is_valid()) {
+			if (!pscr.is_valid()) {
 				r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
 				r_error.argument = 0;
 				r_error.expected = Variant::OBJECT;
@@ -1145,8 +1145,8 @@ void PDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 			}
 
 			for (int i = 0; i < sub.get_name_count(); i++) {
-				pdscr = pdscr->subclasses[sub.get_name(i)];
-				if (!pdscr.is_valid()) {
+				pscr = pscr->subclasses[sub.get_name(i)];
+				if (!pscr.is_valid()) {
 					r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
 					r_error.argument = 0;
 					r_error.expected = Variant::OBJECT;
@@ -1156,17 +1156,17 @@ void PDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 				}
 			}
 
-			r_ret = pdscr->_new(nullptr, 0, r_error);
+			r_ret = pscr->_new(nullptr, 0, r_error);
 
 			if (r_error.error != Variant::CallError::CALL_OK) {
 				r_ret = Variant();
 				return;
 			}
 
-			PDScriptInstance *ins = static_cast<PDScriptInstance *>(static_cast<Object *>(r_ret)->get_script_instance());
-			Ref<PDScript> pd_ref = ins->get_script();
+			PScriptInstance *ins = static_cast<PScriptInstance *>(static_cast<Object *>(r_ret)->get_script_instance());
+			Ref<PScript> p_ref = ins->get_script();
 
-			for (RBMap<StringName, PDScript::MemberInfo>::Element *E = pd_ref->member_indices.front(); E; E = E->next()) {
+			for (RBMap<StringName, PScript::MemberInfo>::Element *E = p_ref->member_indices.front(); E; E = E->next()) {
 				if (d.has(E->key())) {
 					ins->members.write[E->get().index] = d[E->key()];
 				}
@@ -1291,7 +1291,7 @@ void PDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 		case PRINT_STACK: {
 			VALIDATE_ARG_COUNT(0);
 
-			ScriptLanguage *script = PDScriptLanguage::get_singleton();
+			ScriptLanguage *script = PScriptLanguage::get_singleton();
 			for (int i = 0; i < script->debug_get_stack_level_count(); i++) {
 				print_line("Frame " + itos(i) + " - " + script->debug_get_stack_level_source(i) + ":" + itos(script->debug_get_stack_level_line(i)) + " in function '" + script->debug_get_stack_level_function(i) + "'");
 			};
@@ -1300,7 +1300,7 @@ void PDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 		case GET_STACK: {
 			VALIDATE_ARG_COUNT(0);
 
-			ScriptLanguage *script = PDScriptLanguage::get_singleton();
+			ScriptLanguage *script = PScriptLanguage::get_singleton();
 			Array ret;
 			for (int i = 0; i < script->debug_get_stack_level_count(); i++) {
 				Dictionary frame;
@@ -1419,7 +1419,7 @@ void PDScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_
 	}
 }
 
-bool PDScriptFunctions::is_deterministic(Function p_func) {
+bool PScriptFunctions::is_deterministic(Function p_func) {
 	//man i couldn't have chosen a worse function name,
 	//way too controversial..
 
@@ -1487,7 +1487,7 @@ bool PDScriptFunctions::is_deterministic(Function p_func) {
 	return false;
 }
 
-MethodInfo PDScriptFunctions::get_info(Function p_func) {
+MethodInfo PScriptFunctions::get_info(Function p_func) {
 #ifdef DEBUG_ENABLED
 	//using a switch, so the compiler generates a jumptable
 

@@ -16,6 +16,6 @@ if env["tools"]:
     else:
         # Using a define in the disabled case, to avoid having an extra define
         # in regular builds where all modules are enabled.
-        env_pdscript.Append(CPPDEFINES=["PDSCRIPT_NO_LSP"])
+        env_pdscript.Append(CPPDEFINES=["PSCRIPT_NO_LSP"])
         # Also needed in main env to unexpose --pd-lsp-port option.
-        env.Append(CPPDEFINES=["PDSCRIPT_NO_LSP"])
+        env.Append(CPPDEFINES=["PSCRIPT_NO_LSP"])

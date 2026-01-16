@@ -1,5 +1,5 @@
-#ifndef PDSCRIPT_REGISTER_TYPES_H
-#define PDSCRIPT_REGISTER_TYPES_H
+#ifndef PSCRIPT_REGISTER_TYPES_H
+#define PSCRIPT_REGISTER_TYPES_H
 
 /*************************************************************************/
 /*  register_types.h                                                     */
@@ -34,7 +34,7 @@
 
 #include "modules/register_module_types.h"
 
-void register_pdscript_types(ModuleRegistrationLevel p_level);
-void unregister_pdscript_types(ModuleRegistrationLevel p_level);
+void register_pscript_types(ModuleRegistrationLevel p_level);
+void unregister_pscript_types(ModuleRegistrationLevel p_level);
 
-#endif // PDSCRIPT_REGISTER_TYPES_H
+#endif // PSCRIPT_REGISTER_TYPES_H

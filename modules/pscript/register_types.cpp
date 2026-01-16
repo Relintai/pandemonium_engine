@@ -35,33 +35,33 @@
 #include "core/io/resource_loader.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
-#include "pdscript.h"
-#include "pdscript_tokenizer.h"
+#include "pscript.h"
+#include "pscript_tokenizer.h"
 
 #include "modules/modules_enabled.gen.h"
 
-PDScriptLanguage *script_language_pd = nullptr;
-Ref<ResourceFormatLoaderPDScript> resource_loader_pd;
-Ref<ResourceFormatSaverPDScript> resource_saver_pd;
+PScriptLanguage *script_language_p = nullptr;
+Ref<ResourceFormatLoaderPScript> resource_loader_p;
+Ref<ResourceFormatSaverPScript> resource_saver_p;
 
 #ifdef TOOLS_ENABLED
 
 #include "editor/editor_export.h"
 #include "editor/editor_node.h"
 #include "editor/editor_settings.h"
-#include "editor/pdscript_highlighter.h"
+#include "editor/pscript_highlighter.h"
 
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
 #include "editor_code_editor/editor_script_editor.h"
 #endif
 
-#ifndef PDSCRIPT_NO_LSP
+#ifndef PSCRIPT_NO_LSP
 #include "core/config/engine.h"
-#include "language_server/pdscript_language_server.h"
-#endif // !PDSCRIPT_NO_LSP
+#include "language_server/pscript_language_server.h"
+#endif // !PSCRIPT_NO_LSP
 
-class EditorExportPDScript : public EditorExportPlugin {
-	GDCLASS(EditorExportPDScript, EditorExportPlugin);
+class EditorExportPScript : public EditorExportPlugin {
+	GDCLASS(EditorExportPScript, EditorExportPlugin);
 
 public:
 	virtual void _export_file(const String &p_path, const String &p_type, const RBSet<String> &p_features) {
@@ -75,7 +75,7 @@ public:
 			script_key = preset->get_script_encryption_key().to_lower();
 		}
 
-		if (!p_path.ends_with(".pd") || script_mode == EditorExportPreset::MODE_SCRIPT_TEXT) {
+		if (!p_path.ends_with(".p") || script_mode == EditorExportPreset::MODE_SCRIPT_TEXT) {
 			return;
 		}
 
@@ -86,11 +86,11 @@ public:
 
 		String txt;
 		txt.parse_utf8((const char *)file.ptr(), file.size());
-		file = PDScriptTokenizerBuffer::parse_code_string(txt);
+		file = PScriptTokenizerBuffer::parse_code_string(txt);
 
 		if (!file.empty()) {
 			if (script_mode == EditorExportPreset::MODE_SCRIPT_ENCRYPTED) {
-				String tmp_path = EditorSettings::get_singleton()->get_cache_dir().plus_file("script.pde");
+				String tmp_path = EditorSettings::get_singleton()->get_cache_dir().plus_file("script.pe");
 				FileAccess *fa = FileAccess::open(tmp_path, FileAccess::WRITE);
 
 				Vector<uint8_t> key;
@@ -128,54 +128,54 @@ public:
 				memdelete(fae);
 
 				file = FileAccess::get_file_as_array(tmp_path);
-				add_file(p_path.get_basename() + ".pde", file, true);
+				add_file(p_path.get_basename() + ".pe", file, true);
 
 				// Clean up temporary file.
 				DirAccess::remove_file_or_error(tmp_path);
 
 			} else {
-				add_file(p_path.get_basename() + ".pdc", file, true);
+				add_file(p_path.get_basename() + ".pc", file, true);
 			}
 		}
 	}
 };
 
 static void _editor_init() {
-	Ref<EditorExportPDScript> pd_export;
-	pd_export.instance();
-	EditorExport::get_singleton()->add_export_plugin(pd_export);
+	Ref<EditorExportPScript> p_export;
+	p_export.instance();
+	EditorExport::get_singleton()->add_export_plugin(p_export);
 
 #ifdef MODULE_EDITOR_CODE_EDITOR_ENABLED
-	Ref<PDScriptSyntaxHighlighter> pdscript_syntax_highlighter;
-	pdscript_syntax_highlighter.instance();
-	EditorScriptEditor::get_singleton()->register_syntax_highlighter(pdscript_syntax_highlighter);
+	Ref<PScriptSyntaxHighlighter> pscript_syntax_highlighter;
+	pscript_syntax_highlighter.instance();
+	EditorScriptEditor::get_singleton()->register_syntax_highlighter(pscript_syntax_highlighter);
 #endif
 
-#ifndef PDSCRIPT_NO_LSP
-	register_pd_lsp_types();
-	PDScriptLanguageServer *lsp_plugin = memnew(PDScriptLanguageServer);
+#ifndef PSCRIPT_NO_LSP
+	register_p_lsp_types();
+	PScriptLanguageServer *lsp_plugin = memnew(PScriptLanguageServer);
 	EditorNode::get_singleton()->add_editor_plugin(lsp_plugin);
-	Engine::get_singleton()->add_singleton(Engine::Singleton("PDScriptLanguageProtocol", PDScriptLanguageProtocol::get_singleton()));
-#endif // !PDSCRIPT_NO_LSP
+	Engine::get_singleton()->add_singleton(Engine::Singleton("PScriptLanguageProtocol", PScriptLanguageProtocol::get_singleton()));
+#endif // !PSCRIPT_NO_LSP
 }
 
 #endif // TOOLS_ENABLED
 
-void register_pdscript_types(ModuleRegistrationLevel p_level) {
+void register_pscript_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
-		script_language_pd = memnew(PDScriptLanguage);
-		ScriptServer::register_language(script_language_pd);
+		script_language_p = memnew(PScriptLanguage);
+		ScriptServer::register_language(script_language_p);
 
-		resource_loader_pd.instance();
-		ResourceLoader::add_resource_format_loader(resource_loader_pd);
+		resource_loader_p.instance();
+		ResourceLoader::add_resource_format_loader(resource_loader_p);
 
-		resource_saver_pd.instance();
-		ResourceSaver::add_resource_format_saver(resource_saver_pd);
+		resource_saver_p.instance();
+		ResourceSaver::add_resource_format_saver(resource_saver_p);
 	}
 
 	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
-		ClassDB::register_class<PDScript>();
-		ClassDB::register_virtual_class<PDScriptFunctionState>();
+		ClassDB::register_class<PScript>();
+		ClassDB::register_virtual_class<PScriptFunctionState>();
 	}
 
 #ifdef TOOLS_ENABLED
@@ -185,18 +185,18 @@ void register_pdscript_types(ModuleRegistrationLevel p_level) {
 #endif // TOOLS_ENABLED
 }
 
-void unregister_pdscript_types(ModuleRegistrationLevel p_level) {
+void unregister_pscript_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SINGLETON) {
-		ScriptServer::unregister_language(script_language_pd);
+		ScriptServer::unregister_language(script_language_p);
 
-		if (script_language_pd) {
-			memdelete(script_language_pd);
+		if (script_language_p) {
+			memdelete(script_language_p);
 		}
 
-		ResourceLoader::remove_resource_format_loader(resource_loader_pd);
-		resource_loader_pd.unref();
+		ResourceLoader::remove_resource_format_loader(resource_loader_p);
+		resource_loader_p.unref();
 
-		ResourceSaver::remove_resource_format_saver(resource_saver_pd);
-		resource_saver_pd.unref();
+		ResourceSaver::remove_resource_format_saver(resource_saver_p);
+		resource_saver_p.unref();
 	}
 }

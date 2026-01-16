@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  pdscript_workspace.cpp                                               */
+/*  pscript_workspace.cpp                                               */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,35 +29,35 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "pdscript_workspace.h"
+#include "pscript_workspace.h"
 
-#include "../pdscript.h"
-#include "../pdscript_parser.h"
+#include "../pscript.h"
+#include "../pscript_parser.h"
 #include "core/config/project_settings.h"
 #include "core/object/script_language.h"
 #include "editor/editor_file_system.h"
 #include "editor/editor_help.h"
 #include "editor/editor_node.h"
 #include "editor/editor_settings.h"
-#include "pdscript_language_protocol.h"
+#include "pscript_language_protocol.h"
 #include "scene/resources/packed_scene.h"
 
-void PDScriptWorkspace::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("didDeleteFiles"), &PDScriptWorkspace::did_delete_files);
-	ClassDB::bind_method(D_METHOD("symbol"), &PDScriptWorkspace::symbol);
-	ClassDB::bind_method(D_METHOD("parse_script", "path", "content"), &PDScriptWorkspace::parse_script);
-	ClassDB::bind_method(D_METHOD("parse_local_script", "path"), &PDScriptWorkspace::parse_local_script);
-	ClassDB::bind_method(D_METHOD("get_file_path", "uri"), &PDScriptWorkspace::get_file_path);
-	ClassDB::bind_method(D_METHOD("get_file_uri", "path"), &PDScriptWorkspace::get_file_uri);
-	ClassDB::bind_method(D_METHOD("publish_diagnostics", "path"), &PDScriptWorkspace::publish_diagnostics);
-	ClassDB::bind_method(D_METHOD("generate_script_api", "path"), &PDScriptWorkspace::generate_script_api);
-	ClassDB::bind_method(D_METHOD("apply_new_signal", "obj", "function", "args"), &PDScriptWorkspace::apply_new_signal);
+void PScriptWorkspace::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("didDeleteFiles"), &PScriptWorkspace::did_delete_files);
+	ClassDB::bind_method(D_METHOD("symbol"), &PScriptWorkspace::symbol);
+	ClassDB::bind_method(D_METHOD("parse_script", "path", "content"), &PScriptWorkspace::parse_script);
+	ClassDB::bind_method(D_METHOD("parse_local_script", "path"), &PScriptWorkspace::parse_local_script);
+	ClassDB::bind_method(D_METHOD("get_file_path", "uri"), &PScriptWorkspace::get_file_path);
+	ClassDB::bind_method(D_METHOD("get_file_uri", "path"), &PScriptWorkspace::get_file_uri);
+	ClassDB::bind_method(D_METHOD("publish_diagnostics", "path"), &PScriptWorkspace::publish_diagnostics);
+	ClassDB::bind_method(D_METHOD("generate_script_api", "path"), &PScriptWorkspace::generate_script_api);
+	ClassDB::bind_method(D_METHOD("apply_new_signal", "obj", "function", "args"), &PScriptWorkspace::apply_new_signal);
 }
 
-void PDScriptWorkspace::apply_new_signal(Object *obj, String function, PoolStringArray args) {
+void PScriptWorkspace::apply_new_signal(Object *obj, String function, PoolStringArray args) {
 	Ref<Script> script = obj->get_script();
 
-	if (script->get_language()->get_name() != "PDScript") {
+	if (script->get_language()->get_name() != "PScript") {
 		return;
 	}
 
@@ -103,10 +103,10 @@ void PDScriptWorkspace::apply_new_signal(Object *obj, String function, PoolStrin
 	lsp::ApplyWorkspaceEditParams params;
 	params.edit.add_edit(uri, text_edit);
 
-	PDScriptLanguageProtocol::get_singleton()->request_client("workspace/applyEdit", params.to_json());
+	PScriptLanguageProtocol::get_singleton()->request_client("workspace/applyEdit", params.to_json());
 }
 
-void PDScriptWorkspace::did_delete_files(const Dictionary &p_params) {
+void PScriptWorkspace::did_delete_files(const Dictionary &p_params) {
 	Array files = p_params["files"];
 	for (int i = 0; i < files.size(); ++i) {
 		Dictionary file = files[i];
@@ -116,9 +116,9 @@ void PDScriptWorkspace::did_delete_files(const Dictionary &p_params) {
 	}
 }
 
-void PDScriptWorkspace::remove_cache_parser(const String &p_path) {
-	RBMap<String, ExtendPDScriptParser *>::Element *parser = parse_results.find(p_path);
-	RBMap<String, ExtendPDScriptParser *>::Element *script = scripts.find(p_path);
+void PScriptWorkspace::remove_cache_parser(const String &p_path) {
+	RBMap<String, ExtendPScriptParser *>::Element *parser = parse_results.find(p_path);
+	RBMap<String, ExtendPScriptParser *>::Element *script = scripts.find(p_path);
 	if (parser && script) {
 		if (script->get() && script->get() == parser->get()) {
 			memdelete(script->get());
@@ -137,7 +137,7 @@ void PDScriptWorkspace::remove_cache_parser(const String &p_path) {
 	}
 }
 
-const lsp::DocumentSymbol *PDScriptWorkspace::get_native_symbol(const String &p_class, const String &p_member) const {
+const lsp::DocumentSymbol *PScriptWorkspace::get_native_symbol(const String &p_class, const String &p_member) const {
 	StringName class_name = p_class;
 	StringName empty;
 
@@ -162,15 +162,15 @@ const lsp::DocumentSymbol *PDScriptWorkspace::get_native_symbol(const String &p_
 	return nullptr;
 }
 
-const lsp::DocumentSymbol *PDScriptWorkspace::get_script_symbol(const String &p_path) const {
-	const RBMap<String, ExtendPDScriptParser *>::Element *S = scripts.find(p_path);
+const lsp::DocumentSymbol *PScriptWorkspace::get_script_symbol(const String &p_path) const {
+	const RBMap<String, ExtendPScriptParser *>::Element *S = scripts.find(p_path);
 	if (S) {
 		return &(S->get()->get_symbols());
 	}
 	return nullptr;
 }
 
-const lsp::DocumentSymbol *PDScriptWorkspace::get_parameter_symbol(const lsp::DocumentSymbol *p_parent, const String &symbol_identifier) {
+const lsp::DocumentSymbol *PScriptWorkspace::get_parameter_symbol(const lsp::DocumentSymbol *p_parent, const String &symbol_identifier) {
 	for (int i = 0; i < p_parent->children.size(); ++i) {
 		const lsp::DocumentSymbol *parameter_symbol = &p_parent->children[i];
 		if (!parameter_symbol->detail.empty() && parameter_symbol->name == symbol_identifier) {
@@ -181,7 +181,7 @@ const lsp::DocumentSymbol *PDScriptWorkspace::get_parameter_symbol(const lsp::Do
 	return nullptr;
 }
 
-const lsp::DocumentSymbol *PDScriptWorkspace::get_local_symbol(const ExtendPDScriptParser *p_parser, const String &p_symbol_identifier) {
+const lsp::DocumentSymbol *PScriptWorkspace::get_local_symbol(const ExtendPScriptParser *p_parser, const String &p_symbol_identifier) {
 	const lsp::DocumentSymbol *class_symbol = &p_parser->get_symbols();
 
 	for (int i = 0; i < class_symbol->children.size(); ++i) {
@@ -200,7 +200,7 @@ const lsp::DocumentSymbol *PDScriptWorkspace::get_local_symbol(const ExtendPDScr
 	return nullptr;
 }
 
-void PDScriptWorkspace::reload_all_workspace_scripts() {
+void PScriptWorkspace::reload_all_workspace_scripts() {
 	List<String> paths;
 	list_script_files("res://", paths);
 	for (List<String>::Element *E = paths.front(); E; E = E->next()) {
@@ -211,7 +211,7 @@ void PDScriptWorkspace::reload_all_workspace_scripts() {
 		err = parse_script(path, content);
 
 		if (err != OK) {
-			RBMap<String, ExtendPDScriptParser *>::Element *S = parse_results.find(path);
+			RBMap<String, ExtendPScriptParser *>::Element *S = parse_results.find(path);
 			String err_msg = "Failed parse script " + path;
 			if (S) {
 				err_msg += "\n" + S->get()->get_error();
@@ -221,7 +221,7 @@ void PDScriptWorkspace::reload_all_workspace_scripts() {
 	}
 }
 
-void PDScriptWorkspace::list_script_files(const String &p_root_dir, List<String> &r_files) {
+void PScriptWorkspace::list_script_files(const String &p_root_dir, List<String> &r_files) {
 	Error err;
 	DirAccessRef dir = DirAccess::open(p_root_dir, &err);
 	if (OK == err) {
@@ -230,7 +230,7 @@ void PDScriptWorkspace::list_script_files(const String &p_root_dir, List<String>
 		while (file_name.length()) {
 			if (dir->current_is_dir() && file_name != "." && file_name != ".." && file_name != "./") {
 				list_script_files(p_root_dir.plus_file(file_name), r_files);
-			} else if (file_name.ends_with(".pd")) {
+			} else if (file_name.ends_with(".p")) {
 				String script_file = p_root_dir.plus_file(file_name);
 				r_files.push_back(script_file);
 			}
@@ -239,8 +239,8 @@ void PDScriptWorkspace::list_script_files(const String &p_root_dir, List<String>
 	}
 }
 
-ExtendPDScriptParser *PDScriptWorkspace::get_parse_successed_script(const String &p_path) {
-	const RBMap<String, ExtendPDScriptParser *>::Element *S = scripts.find(p_path);
+ExtendPScriptParser *PScriptWorkspace::get_parse_successed_script(const String &p_path) {
+	const RBMap<String, ExtendPScriptParser *>::Element *S = scripts.find(p_path);
 	if (!S) {
 		parse_local_script(p_path);
 		S = scripts.find(p_path);
@@ -251,8 +251,8 @@ ExtendPDScriptParser *PDScriptWorkspace::get_parse_successed_script(const String
 	return nullptr;
 }
 
-ExtendPDScriptParser *PDScriptWorkspace::get_parse_result(const String &p_path) {
-	const RBMap<String, ExtendPDScriptParser *>::Element *S = parse_results.find(p_path);
+ExtendPScriptParser *PScriptWorkspace::get_parse_result(const String &p_path) {
+	const RBMap<String, ExtendPScriptParser *>::Element *S = parse_results.find(p_path);
 	if (!S) {
 		parse_local_script(p_path);
 		S = parse_results.find(p_path);
@@ -263,11 +263,11 @@ ExtendPDScriptParser *PDScriptWorkspace::get_parse_result(const String &p_path) 
 	return nullptr;
 }
 
-Array PDScriptWorkspace::symbol(const Dictionary &p_params) {
+Array PScriptWorkspace::symbol(const Dictionary &p_params) {
 	String query = p_params["query"];
 	Array arr;
 	if (!query.empty()) {
-		for (RBMap<String, ExtendPDScriptParser *>::Element *E = scripts.front(); E; E = E->next()) {
+		for (RBMap<String, ExtendPScriptParser *>::Element *E = scripts.front(); E; E = E->next()) {
 			Vector<lsp::DocumentedSymbolInformation> script_symbols;
 			E->get()->get_symbols().symbol_tree_as_list(E->key(), script_symbols);
 			for (int i = 0; i < script_symbols.size(); ++i) {
@@ -282,7 +282,7 @@ Array PDScriptWorkspace::symbol(const Dictionary &p_params) {
 	return arr;
 }
 
-Error PDScriptWorkspace::initialize() {
+Error PScriptWorkspace::initialize() {
 	if (initialized) {
 		return OK;
 	}
@@ -398,7 +398,7 @@ Error PDScriptWorkspace::initialize() {
 
 	reload_all_workspace_scripts();
 
-	if (PDScriptLanguageProtocol::get_singleton()->is_smart_resolve_enabled()) {
+	if (PScriptLanguageProtocol::get_singleton()->is_smart_resolve_enabled()) {
 		for (RBMap<StringName, lsp::DocumentSymbol>::Element *E = native_symbols.front(); E; E = E->next()) {
 			ClassMembers members;
 			const lsp::DocumentSymbol &class_symbol = E->get();
@@ -410,7 +410,7 @@ Error PDScriptWorkspace::initialize() {
 		}
 
 		// cache member completions
-		for (RBMap<String, ExtendPDScriptParser *>::Element *S = scripts.front(); S; S = S->next()) {
+		for (RBMap<String, ExtendPScriptParser *>::Element *S = scripts.front(); S; S = S->next()) {
 			S->get()->get_member_completions();
 		}
 	}
@@ -421,11 +421,11 @@ Error PDScriptWorkspace::initialize() {
 	return OK;
 }
 
-Error PDScriptWorkspace::parse_script(const String &p_path, const String &p_content) {
-	ExtendPDScriptParser *parser = memnew(ExtendPDScriptParser);
+Error PScriptWorkspace::parse_script(const String &p_path, const String &p_content) {
+	ExtendPScriptParser *parser = memnew(ExtendPScriptParser);
 	Error err = parser->parse(p_content, p_path);
-	RBMap<String, ExtendPDScriptParser *>::Element *last_parser = parse_results.find(p_path);
-	RBMap<String, ExtendPDScriptParser *>::Element *last_script = scripts.find(p_path);
+	RBMap<String, ExtendPScriptParser *>::Element *last_parser = parse_results.find(p_path);
+	RBMap<String, ExtendPScriptParser *>::Element *last_script = scripts.find(p_path);
 
 	if (err == OK) {
 		remove_cache_parser(p_path);
@@ -444,7 +444,7 @@ Error PDScriptWorkspace::parse_script(const String &p_path, const String &p_cont
 	return err;
 }
 
-Dictionary PDScriptWorkspace::rename(const lsp::TextDocumentPositionParams &p_doc_pos, const String &new_name) {
+Dictionary PScriptWorkspace::rename(const lsp::TextDocumentPositionParams &p_doc_pos, const String &new_name) {
 	Error err;
 	String path = get_file_path(p_doc_pos.textDocument.uri);
 
@@ -488,7 +488,7 @@ Dictionary PDScriptWorkspace::rename(const lsp::TextDocumentPositionParams &p_do
 	return edit.to_json();
 }
 
-Error PDScriptWorkspace::parse_local_script(const String &p_path) {
+Error PScriptWorkspace::parse_local_script(const String &p_path) {
 	Error err;
 	String content = FileAccess::get_file_as_string(p_path, &err);
 	if (err == OK) {
@@ -497,23 +497,23 @@ Error PDScriptWorkspace::parse_local_script(const String &p_path) {
 	return err;
 }
 
-String PDScriptWorkspace::get_file_path(const String &p_uri) const {
+String PScriptWorkspace::get_file_path(const String &p_uri) const {
 	String path = p_uri.http_unescape();
 	String base_uri = root_uri.http_unescape();
 	path = path.replacen(base_uri + "/", "res://");
 	return path;
 }
 
-String PDScriptWorkspace::get_file_uri(const String &p_path) const {
+String PScriptWorkspace::get_file_uri(const String &p_path) const {
 	String uri = p_path;
 	uri = uri.replace("res://", root_uri + "/");
 	return uri;
 }
 
-void PDScriptWorkspace::publish_diagnostics(const String &p_path) {
+void PScriptWorkspace::publish_diagnostics(const String &p_path) {
 	Dictionary params;
 	Array errors;
-	const RBMap<String, ExtendPDScriptParser *>::Element *ele = parse_results.find(p_path);
+	const RBMap<String, ExtendPScriptParser *>::Element *ele = parse_results.find(p_path);
 	if (ele) {
 		const Vector<lsp::Diagnostic> &list = ele->get()->get_diagnostics();
 		errors.resize(list.size());
@@ -523,10 +523,10 @@ void PDScriptWorkspace::publish_diagnostics(const String &p_path) {
 	}
 	params["diagnostics"] = errors;
 	params["uri"] = get_file_uri(p_path);
-	PDScriptLanguageProtocol::get_singleton()->notify_client("textDocument/publishDiagnostics", params);
+	PScriptLanguageProtocol::get_singleton()->notify_client("textDocument/publishDiagnostics", params);
 }
 
-void PDScriptWorkspace::_get_owners(EditorFileSystemDirectory *efsd, String p_path, List<String> &owners) {
+void PScriptWorkspace::_get_owners(EditorFileSystemDirectory *efsd, String p_path, List<String> &owners) {
 	if (!efsd) {
 		return;
 	}
@@ -552,7 +552,7 @@ void PDScriptWorkspace::_get_owners(EditorFileSystemDirectory *efsd, String p_pa
 	}
 }
 
-Node *PDScriptWorkspace::_get_owner_scene_node(String p_path) {
+Node *PScriptWorkspace::_get_owner_scene_node(String p_path) {
 	Node *owner_scene_node = nullptr;
 	List<String> owners;
 
@@ -571,12 +571,12 @@ Node *PDScriptWorkspace::_get_owner_scene_node(String p_path) {
 	return owner_scene_node;
 }
 
-void PDScriptWorkspace::completion(const lsp::CompletionParams &p_params, List<ScriptCodeCompletionOption> *r_options) {
+void PScriptWorkspace::completion(const lsp::CompletionParams &p_params, List<ScriptCodeCompletionOption> *r_options) {
 	String path = get_file_path(p_params.textDocument.uri);
 	String call_hint;
 	bool forced = false;
 
-	if (const ExtendPDScriptParser *parser = get_parse_result(path)) {
+	if (const ExtendPScriptParser *parser = get_parse_result(path)) {
 		Node *owner_scene_node = _get_owner_scene_node(path);
 
 		Array stack;
@@ -586,7 +586,7 @@ void PDScriptWorkspace::completion(const lsp::CompletionParams &p_params, List<S
 			stack.push_back(owner_scene_node);
 			while (!stack.empty()) {
 				current = stack.pop_back();
-				Ref<PDScript> script = current->get_script();
+				Ref<PScript> script = current->get_script();
 				if (script.is_valid() && script->get_path() == path) {
 					break;
 				}
@@ -595,25 +595,25 @@ void PDScriptWorkspace::completion(const lsp::CompletionParams &p_params, List<S
 				}
 			}
 
-			Ref<PDScript> script = current->get_script();
+			Ref<PScript> script = current->get_script();
 			if (!script.is_valid() || script->get_path() != path) {
 				current = owner_scene_node;
 			}
 		}
 
 		String code = parser->get_text_for_completion(p_params.position);
-		PDScriptLanguage::get_singleton()->complete_code(code, path, current, r_options, forced, call_hint);
+		PScriptLanguage::get_singleton()->complete_code(code, path, current, r_options, forced, call_hint);
 		if (owner_scene_node) {
 			memdelete(owner_scene_node);
 		}
 	}
 }
 
-const lsp::DocumentSymbol *PDScriptWorkspace::resolve_symbol(const lsp::TextDocumentPositionParams &p_doc_pos, const String &p_symbol_name, bool p_func_required) {
+const lsp::DocumentSymbol *PScriptWorkspace::resolve_symbol(const lsp::TextDocumentPositionParams &p_doc_pos, const String &p_symbol_name, bool p_func_required) {
 	const lsp::DocumentSymbol *symbol = nullptr;
 
 	String path = get_file_path(p_doc_pos.textDocument.uri);
-	if (const ExtendPDScriptParser *parser = get_parse_result(path)) {
+	if (const ExtendPScriptParser *parser = get_parse_result(path)) {
 		String symbol_identifier = p_symbol_name;
 		Vector<String> identifier_parts = symbol_identifier.split("(");
 		if (identifier_parts.size()) {
@@ -637,14 +637,14 @@ const lsp::DocumentSymbol *PDScriptWorkspace::resolve_symbol(const lsp::TextDocu
 				if (symbol_identifier == "new" && parser->get_lines()[p_doc_pos.position.line].replace(" ", "").replace("\t", "").find("new(") > -1) {
 					symbol_identifier = "_init";
 				}
-				if (OK == PDScriptLanguage::get_singleton()->lookup_code(parser->get_text_for_lookup_symbol(pos, symbol_identifier, p_func_required), symbol_identifier, path, nullptr, ret)) {
+				if (OK == PScriptLanguage::get_singleton()->lookup_code(parser->get_text_for_lookup_symbol(pos, symbol_identifier, p_func_required), symbol_identifier, path, nullptr, ret)) {
 					if (ret.type == ScriptLanguage::LookupResult::RESULT_SCRIPT_LOCATION) {
 						String target_script_path = path;
 						if (!ret.script.is_null()) {
 							target_script_path = ret.script->get_path();
 						}
 
-						if (const ExtendPDScriptParser *target_parser = get_parse_result(target_script_path)) {
+						if (const ExtendPScriptParser *target_parser = get_parse_result(target_script_path)) {
 							symbol = target_parser->get_symbol_defined_at_line(LINE_NUMBER_TO_INDEX(ret.location));
 
 							if (symbol && symbol->kind == lsp::SymbolKind::Function && symbol->name != symbol_identifier) {
@@ -673,9 +673,9 @@ const lsp::DocumentSymbol *PDScriptWorkspace::resolve_symbol(const lsp::TextDocu
 	return symbol;
 }
 
-void PDScriptWorkspace::resolve_related_symbols(const lsp::TextDocumentPositionParams &p_doc_pos, List<const lsp::DocumentSymbol *> &r_list) {
+void PScriptWorkspace::resolve_related_symbols(const lsp::TextDocumentPositionParams &p_doc_pos, List<const lsp::DocumentSymbol *> &r_list) {
 	String path = get_file_path(p_doc_pos.textDocument.uri);
-	if (const ExtendPDScriptParser *parser = get_parse_result(path)) {
+	if (const ExtendPScriptParser *parser = get_parse_result(path)) {
 		String symbol_identifier;
 		Vector2i offset;
 		symbol_identifier = parser->get_identifier_under_position(p_doc_pos.position, offset);
@@ -689,8 +689,8 @@ void PDScriptWorkspace::resolve_related_symbols(const lsp::TextDocumentPositionP
 			class_ptr = native_members.next(class_ptr);
 		}
 
-		for (RBMap<String, ExtendPDScriptParser *>::Element *E = scripts.front(); E; E = E->next()) {
-			const ExtendPDScriptParser *script = E->get();
+		for (RBMap<String, ExtendPScriptParser *>::Element *E = scripts.front(); E; E = E->next()) {
+			const ExtendPScriptParser *script = E->get();
 			const ClassMembers &members = script->get_members();
 			if (const lsp::DocumentSymbol *const *symbol = members.getptr(symbol_identifier)) {
 				r_list.push_back(*symbol);
@@ -710,7 +710,7 @@ void PDScriptWorkspace::resolve_related_symbols(const lsp::TextDocumentPositionP
 	}
 }
 
-const lsp::DocumentSymbol *PDScriptWorkspace::resolve_native_symbol(const lsp::NativeSymbolInspectParams &p_params) {
+const lsp::DocumentSymbol *PScriptWorkspace::resolve_native_symbol(const lsp::NativeSymbolInspectParams &p_params) {
 	if (RBMap<StringName, lsp::DocumentSymbol>::Element *E = native_symbols.find(p_params.native_class)) {
 		const lsp::DocumentSymbol &symbol = E->get();
 		if (p_params.symbol_name.empty() || p_params.symbol_name == symbol.name) {
@@ -727,8 +727,8 @@ const lsp::DocumentSymbol *PDScriptWorkspace::resolve_native_symbol(const lsp::N
 	return nullptr;
 }
 
-void PDScriptWorkspace::resolve_document_links(const String &p_uri, List<lsp::DocumentLink> &r_list) {
-	if (const ExtendPDScriptParser *parser = get_parse_successed_script(get_file_path(p_uri))) {
+void PScriptWorkspace::resolve_document_links(const String &p_uri, List<lsp::DocumentLink> &r_list) {
+	if (const ExtendPScriptParser *parser = get_parse_successed_script(get_file_path(p_uri))) {
 		const List<lsp::DocumentLink> &links = parser->get_document_links();
 		for (const List<lsp::DocumentLink>::Element *E = links.front(); E; E = E->next()) {
 			r_list.push_back(E->get());
@@ -736,16 +736,16 @@ void PDScriptWorkspace::resolve_document_links(const String &p_uri, List<lsp::Do
 	}
 }
 
-Dictionary PDScriptWorkspace::generate_script_api(const String &p_path) {
+Dictionary PScriptWorkspace::generate_script_api(const String &p_path) {
 	Dictionary api;
-	if (const ExtendPDScriptParser *parser = get_parse_successed_script(p_path)) {
+	if (const ExtendPScriptParser *parser = get_parse_successed_script(p_path)) {
 		api = parser->generate_api();
 	}
 	return api;
 }
 
-Error PDScriptWorkspace::resolve_signature(const lsp::TextDocumentPositionParams &p_doc_pos, lsp::SignatureHelp &r_signature) {
-	if (const ExtendPDScriptParser *parser = get_parse_result(get_file_path(p_doc_pos.textDocument.uri))) {
+Error PScriptWorkspace::resolve_signature(const lsp::TextDocumentPositionParams &p_doc_pos, lsp::SignatureHelp &r_signature) {
+	if (const ExtendPScriptParser *parser = get_parse_result(get_file_path(p_doc_pos.textDocument.uri))) {
 		lsp::TextDocumentPositionParams text_pos;
 		text_pos.textDocument = p_doc_pos.textDocument;
 
@@ -754,8 +754,8 @@ Error PDScriptWorkspace::resolve_signature(const lsp::TextDocumentPositionParams
 
 			if (const lsp::DocumentSymbol *symbol = resolve_symbol(text_pos)) {
 				symbols.push_back(symbol);
-			} else if (PDScriptLanguageProtocol::get_singleton()->is_smart_resolve_enabled()) {
-				PDScriptLanguageProtocol::get_singleton()->get_workspace()->resolve_related_symbols(text_pos, symbols);
+			} else if (PScriptLanguageProtocol::get_singleton()->is_smart_resolve_enabled()) {
+				PScriptLanguageProtocol::get_singleton()->get_workspace()->resolve_related_symbols(text_pos, symbols);
 			}
 
 			for (List<const lsp::DocumentSymbol *>::Element *E = symbols.front(); E; E = E->next()) {
@@ -784,18 +784,18 @@ Error PDScriptWorkspace::resolve_signature(const lsp::TextDocumentPositionParams
 	return ERR_METHOD_NOT_FOUND;
 }
 
-PDScriptWorkspace::PDScriptWorkspace() {
+PScriptWorkspace::PScriptWorkspace() {
 	ProjectSettings::get_singleton()->get_resource_path();
 }
 
-PDScriptWorkspace::~PDScriptWorkspace() {
+PScriptWorkspace::~PScriptWorkspace() {
 	RBSet<String> cached_parsers;
 
-	for (RBMap<String, ExtendPDScriptParser *>::Element *E = parse_results.front(); E; E = E->next()) {
+	for (RBMap<String, ExtendPScriptParser *>::Element *E = parse_results.front(); E; E = E->next()) {
 		cached_parsers.insert(E->key());
 	}
 
-	for (RBMap<String, ExtendPDScriptParser *>::Element *E = scripts.front(); E; E = E->next()) {
+	for (RBMap<String, ExtendPScriptParser *>::Element *E = scripts.front(); E; E = E->next()) {
 		cached_parsers.insert(E->key());
 	}
 

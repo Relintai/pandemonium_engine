@@ -1,8 +1,8 @@
-#ifndef PDSCRIPT_LANGUAGE_PROTOCOL_H
-#define PDSCRIPT_LANGUAGE_PROTOCOL_H
+#ifndef PSCRIPT_LANGUAGE_PROTOCOL_H
+#define PSCRIPT_LANGUAGE_PROTOCOL_H
 
 /*************************************************************************/
-/*  pdscript_language_protocol.h                                         */
+/*  pscript_language_protocol.h                                         */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -35,16 +35,16 @@
 #include "core/io/stream_peer.h"
 #include "core/io/stream_peer_tcp.h"
 #include "core/io/tcp_server.h"
-#include "pdscript_text_document.h"
-#include "pdscript_workspace.h"
+#include "pscript_text_document.h"
+#include "pscript_workspace.h"
 #include "lsp.hpp"
 #include "modules/jsonrpc/jsonrpc.h"
 
 #define LSP_MAX_BUFFER_SIZE 4194304
 #define LSP_MAX_CLIENTS 8
 
-class PDScriptLanguageProtocol : public JSONRPC {
-	GDCLASS(PDScriptLanguageProtocol, JSONRPC)
+class PScriptLanguageProtocol : public JSONRPC {
+	GDCLASS(PScriptLanguageProtocol, JSONRPC)
 
 private:
 	struct LSPeer : Reference {
@@ -67,7 +67,7 @@ private:
 		ContentModified = -32801,
 	};
 
-	static PDScriptLanguageProtocol *singleton;
+	static PScriptLanguageProtocol *singleton;
 
 	HashMap<int, Ref<LSPeer>> clients;
 	Ref<TCP_Server> server;
@@ -75,8 +75,8 @@ private:
 	int next_client_id = 0;
 	int next_server_id = 0;
 
-	Ref<PDScriptTextDocument> text_document;
-	Ref<PDScriptWorkspace> workspace;
+	Ref<PScriptTextDocument> text_document;
+	Ref<PScriptWorkspace> workspace;
 
 	Error on_client_connected();
 	void on_client_disconnected(const int &p_client_id);
@@ -93,9 +93,9 @@ protected:
 	void initialized(const Variant &p_params);
 
 public:
-	_FORCE_INLINE_ static PDScriptLanguageProtocol *get_singleton() { return singleton; }
-	_FORCE_INLINE_ Ref<PDScriptWorkspace> get_workspace() { return workspace; }
-	_FORCE_INLINE_ Ref<PDScriptTextDocument> get_text_document() { return text_document; }
+	_FORCE_INLINE_ static PScriptLanguageProtocol *get_singleton() { return singleton; }
+	_FORCE_INLINE_ Ref<PScriptWorkspace> get_workspace() { return workspace; }
+	_FORCE_INLINE_ Ref<PScriptTextDocument> get_text_document() { return text_document; }
 	_FORCE_INLINE_ bool is_initialized() const { return _initialized; }
 
 	void poll(int p_limit_usec);
@@ -108,7 +108,7 @@ public:
 	bool is_smart_resolve_enabled() const;
 	bool is_goto_native_symbols_enabled() const;
 
-	PDScriptLanguageProtocol();
+	PScriptLanguageProtocol();
 };
 
-#endif // PDSCRIPT_LANGUAGE_PROTOCOL_H
+#endif // PSCRIPT_LANGUAGE_PROTOCOL_H

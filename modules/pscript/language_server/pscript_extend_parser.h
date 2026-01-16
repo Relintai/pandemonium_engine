@@ -1,8 +1,8 @@
-#ifndef PDSCRIPT_EXTEND_PARSER_H
-#define PDSCRIPT_EXTEND_PARSER_H
+#ifndef PSCRIPT_EXTEND_PARSER_H
+#define PSCRIPT_EXTEND_PARSER_H
 
 /*************************************************************************/
-/*  pdscript_extend_parser.h                                             */
+/*  pscript_extend_parser.h                                             */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -32,7 +32,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "../pdscript_parser.h"
+#include "../pscript_parser.h"
 #include "core/variant/variant.h"
 #include "lsp.hpp"
 
@@ -50,7 +50,7 @@
 
 typedef HashMap<String, const lsp::DocumentSymbol *> ClassMembers;
 
-class ExtendPDScriptParser : public PDScriptParser {
+class ExtendPScriptParser : public PScriptParser {
 	String path;
 	Vector<String> lines;
 
@@ -60,15 +60,15 @@ class ExtendPDScriptParser : public PDScriptParser {
 	ClassMembers members;
 	HashMap<String, ClassMembers> inner_classes;
 
-	void update_diagnostics();
+	void upate_diagnostics();
 
-	void update_symbols();
-	void update_document_links(const String &p_code);
-	void parse_class_symbol(const PDScriptParser::ClassNode *p_class, lsp::DocumentSymbol &r_symbol);
-	void parse_function_symbol(const PDScriptParser::FunctionNode *p_func, lsp::DocumentSymbol &r_symbol);
+	void upate_symbols();
+	void upate_document_links(const String &p_code);
+	void parse_class_symbol(const PScriptParser::ClassNode *p_class, lsp::DocumentSymbol &r_symbol);
+	void parse_function_symbol(const PScriptParser::FunctionNode *p_func, lsp::DocumentSymbol &r_symbol);
 
-	Dictionary dump_function_api(const PDScriptParser::FunctionNode *p_func) const;
-	Dictionary dump_class_api(const PDScriptParser::ClassNode *p_class) const;
+	Dictionary dump_function_api(const PScriptParser::FunctionNode *p_func) const;
+	Dictionary dump_class_api(const PScriptParser::ClassNode *p_class) const;
 
 	String parse_documentation(int p_line, bool p_docs_down = false);
 	const lsp::DocumentSymbol *search_symbol_defined_at_line(int p_line, const lsp::DocumentSymbol &p_parent) const;
@@ -100,4 +100,4 @@ public:
 	Error parse(const String &p_code, const String &p_path);
 };
 
-#endif // PDSCRIPT_EXTEND_PARSER_H
+#endif // PSCRIPT_EXTEND_PARSER_H

@@ -1,8 +1,8 @@
-#ifndef PDSCRIPT_HIGHLIGHTER_H
-#define PDSCRIPT_HIGHLIGHTER_H
+#ifndef PSCRIPT_HIGHLIGHTER_H
+#define PSCRIPT_HIGHLIGHTER_H
 
 /*************************************************************************/
-/*  pdscript_highlighter.h                                               */
+/*  pscript_highlighter.h                                               */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -35,8 +35,8 @@
 #include "editor_modules/editor_code_editor/editor_syntax_highlighter.h"
 #include "scene/gui/text_edit.h"
 
-class PDScriptSyntaxHighlighter : public EditorSyntaxHighlighter {
-	GDCLASS(PDScriptSyntaxHighlighter, EditorSyntaxHighlighter);
+class PScriptSyntaxHighlighter : public EditorSyntaxHighlighter {
+	GDCLASS(PScriptSyntaxHighlighter, EditorSyntaxHighlighter);
 
 private:
 	struct ColorRegion {
@@ -80,11 +80,11 @@ private:
 public:
 	virtual Ref<EditorSyntaxHighlighter> _create() const;
 
-	virtual void _update_cache();
+	virtual void _upate_cache();
 	virtual Dictionary _get_line_syntax_highlighting(int p_line);
 
 	virtual String _get_name() const;
 	virtual Array _get_supported_languages() const;
 };
 
-#endif // PDSCRIPT_HIGHLIGHTER_H
+#endif // PSCRIPT_HIGHLIGHTER_H

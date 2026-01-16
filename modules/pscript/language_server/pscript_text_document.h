@@ -1,8 +1,8 @@
-#ifndef PDSCRIPT_TEXT_DOCUMENT_H
-#define PDSCRIPT_TEXT_DOCUMENT_H
+#ifndef PSCRIPT_TEXT_DOCUMENT_H
+#define PSCRIPT_TEXT_DOCUMENT_H
 
 /*************************************************************************/
-/*  pdscript_text_document.h                                             */
+/*  pscript_text_document.h                                             */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -36,8 +36,8 @@
 #include "core/os/file_access.h"
 #include "lsp.hpp"
 
-class PDScriptTextDocument : public Reference {
-	GDCLASS(PDScriptTextDocument, Reference)
+class PScriptTextDocument : public Reference {
+	GDCLASS(PScriptTextDocument, Reference)
 protected:
 	static void _bind_methods();
 
@@ -75,8 +75,8 @@ public:
 
 	void initialize();
 
-	PDScriptTextDocument();
-	virtual ~PDScriptTextDocument();
+	PScriptTextDocument();
+	virtual ~PScriptTextDocument();
 };
 
-#endif // PDSCRIPT_TEXT_DOCUMENT_H
+#endif // PSCRIPT_TEXT_DOCUMENT_H

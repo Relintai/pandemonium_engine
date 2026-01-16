@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  pdscript.cpp                                                         */
+/*  pscript.cpp                                                         */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,7 +29,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "pdscript.h"
+#include "pscript.h"
 
 #include "core/config/engine.h"
 #include "core/config/project_settings.h"
@@ -38,15 +38,15 @@
 #include "core/io/file_access_encrypted.h"
 #include "core/os/file_access.h"
 #include "core/os/os.h"
-#include "pdscript_compiler.h"
+#include "pscript_compiler.h"
 
 ///////////////////////////
 
-PDScriptNativeClass::PDScriptNativeClass(const StringName &p_name) {
+PScriptNativeClass::PScriptNativeClass(const StringName &p_name) {
 	name = p_name;
 }
 
-bool PDScriptNativeClass::_get(const StringName &p_name, Variant &r_ret) const {
+bool PScriptNativeClass::_get(const StringName &p_name, Variant &r_ret) const {
 	bool ok;
 	int v = ClassDB::get_integer_constant(name, p_name, &ok);
 
@@ -58,11 +58,11 @@ bool PDScriptNativeClass::_get(const StringName &p_name, Variant &r_ret) const {
 	}
 }
 
-void PDScriptNativeClass::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("new"), &PDScriptNativeClass::_new);
+void PScriptNativeClass::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("new"), &PScriptNativeClass::_new);
 }
 
-Variant PDScriptNativeClass::_new() {
+Variant PScriptNativeClass::_new() {
 	Object *o = instance();
 	ERR_FAIL_COND_V_MSG(!o, Variant(), "Class type: '" + String(name) + "' is not instantiable.");
 
@@ -74,33 +74,33 @@ Variant PDScriptNativeClass::_new() {
 	}
 }
 
-Object *PDScriptNativeClass::instance() {
+Object *PScriptNativeClass::instance() {
 	return ClassDB::instance(name);
 }
 
-void PDScript::_clear_pending_func_states() {
-	PDScriptLanguage::get_singleton()->lock.lock();
-	while (SelfList<PDScriptFunctionState> *E = pending_func_states.first()) {
+void PScript::_clear_pending_func_states() {
+	PScriptLanguage::get_singleton()->lock.lock();
+	while (SelfList<PScriptFunctionState> *E = pending_func_states.first()) {
 		// Order matters since clearing the stack may already cause
-		// the PDSCriptFunctionState to be destroyed and thus removed from the list.
+		// the PSCriptFunctionState to be destroyed and thus removed from the list.
 		pending_func_states.remove(E);
-		PDScriptFunctionState *state = E->self();
+		PScriptFunctionState *state = E->self();
 		ObjectID state_id = state->get_instance_id();
 		state->_clear_connections();
 		if (ObjectDB::get_instance(state_id)) {
 			state->_clear_stack();
 		}
 	}
-	PDScriptLanguage::get_singleton()->lock.unlock();
+	PScriptLanguage::get_singleton()->lock.unlock();
 }
 
-PDScriptInstance *PDScript::_create_instance(const Variant **p_args, int p_argcount, Object *p_owner, bool p_isref, Variant::CallError &r_error) {
+PScriptInstance *PScript::_create_instance(const Variant **p_args, int p_argcount, Object *p_owner, bool p_isref, Variant::CallError &r_error) {
 	/* STEP 1, CREATE */
 
-	PDScriptInstance *instance = memnew(PDScriptInstance);
+	PScriptInstance *instance = memnew(PScriptInstance);
 	instance->base_ref = p_isref;
 	instance->members.resize(member_indices.size());
-	instance->script = Ref<PDScript>(this);
+	instance->script = Ref<PScript>(this);
 	instance->owner = p_owner;
 #ifdef DEBUG_ENABLED
 	//needed for hot reloading
@@ -112,21 +112,21 @@ PDScriptInstance *PDScript::_create_instance(const Variant **p_args, int p_argco
 
 	/* STEP 2, INITIALIZE AND CONSTRUCT */
 
-	PDScriptLanguage::singleton->lock.lock();
+	PScriptLanguage::singleton->lock.lock();
 	instances.insert(instance->owner);
-	PDScriptLanguage::singleton->lock.unlock();
+	PScriptLanguage::singleton->lock.unlock();
 
 	initializer->call(instance, p_args, p_argcount, r_error);
 
 	if (r_error.error != Variant::CallError::CALL_OK) {
-		instance->script = Ref<PDScript>();
+		instance->script = Ref<PScript>();
 		instance->owner->set_script_instance(nullptr);
 #ifndef NO_THREADS
-		PDScriptLanguage::singleton->lock.lock();
+		PScriptLanguage::singleton->lock.lock();
 #endif
 		instances.erase(p_owner);
 #ifndef NO_THREADS
-		PDScriptLanguage::singleton->lock.unlock();
+		PScriptLanguage::singleton->lock.unlock();
 #endif
 
 		ERR_FAIL_COND_V(r_error.error != Variant::CallError::CALL_OK, nullptr); //error constructing
@@ -136,7 +136,7 @@ PDScriptInstance *PDScript::_create_instance(const Variant **p_args, int p_argco
 	return instance;
 }
 
-Variant PDScript::_new(const Variant **p_args, int p_argcount, Variant::CallError &r_error) {
+Variant PScript::_new(const Variant **p_args, int p_argcount, Variant::CallError &r_error) {
 	/* STEP 1, CREATE */
 
 	if (!valid) {
@@ -148,7 +148,7 @@ Variant PDScript::_new(const Variant **p_args, int p_argcount, Variant::CallErro
 	REF ref;
 	Object *owner = nullptr;
 
-	PDScript *_baseptr = this;
+	PScript *_baseptr = this;
 	while (_baseptr->_base) {
 		_baseptr = _baseptr->_base;
 	}
@@ -166,7 +166,7 @@ Variant PDScript::_new(const Variant **p_args, int p_argcount, Variant::CallErro
 		ref = REF(r);
 	}
 
-	PDScriptInstance *instance = _create_instance(p_args, p_argcount, owner, r != nullptr, r_error);
+	PScriptInstance *instance = _create_instance(p_args, p_argcount, owner, r != nullptr, r_error);
 	if (!instance) {
 		if (ref.is_null()) {
 			memdelete(owner); //no owner, sorry
@@ -181,7 +181,7 @@ Variant PDScript::_new(const Variant **p_args, int p_argcount, Variant::CallErro
 	}
 }
 
-bool PDScript::can_instance() const {
+bool PScript::can_instance() const {
 #ifdef TOOLS_ENABLED
 	return valid && (tool || ScriptServer::is_scripting_enabled());
 #else
@@ -189,15 +189,15 @@ bool PDScript::can_instance() const {
 #endif
 }
 
-Ref<Script> PDScript::get_base_script() const {
+Ref<Script> PScript::get_base_script() const {
 	if (_base) {
-		return Ref<PDScript>(_base);
+		return Ref<PScript>(_base);
 	} else {
 		return Ref<Script>();
 	}
 }
 
-StringName PDScript::get_instance_base_type() const {
+StringName PScript::get_instance_base_type() const {
 	if (native.is_valid()) {
 		return native->get_name();
 	}
@@ -207,24 +207,24 @@ StringName PDScript::get_instance_base_type() const {
 	return StringName();
 }
 
-struct _PDScriptMemberSort {
+struct _PScriptMemberSort {
 	int index;
 	StringName name;
-	_FORCE_INLINE_ bool operator<(const _PDScriptMemberSort &p_member) const { return index < p_member.index; }
+	_FORCE_INLINE_ bool operator<(const _PScriptMemberSort &p_member) const { return index < p_member.index; }
 };
 
 #ifdef TOOLS_ENABLED
 
-void PDScript::_placeholder_erased(PlaceHolderScriptInstance *p_placeholder) {
+void PScript::_placeholder_erased(PlaceHolderScriptInstance *p_placeholder) {
 	placeholders.erase(p_placeholder);
 }
 #endif
 
-void PDScript::get_script_method_list(List<MethodInfo> *p_list) const {
-	const PDScript *current = this;
+void PScript::get_script_method_list(List<MethodInfo> *p_list) const {
+	const PScript *current = this;
 	while (current) {
-		for (const RBMap<StringName, PDScriptFunction *>::Element *E = current->member_functions.front(); E; E = E->next()) {
-			PDScriptFunction *func = E->get();
+		for (const RBMap<StringName, PScriptFunction *>::Element *E = current->member_functions.front(); E; E = E->next()) {
+			PScriptFunction *func = E->get();
 			MethodInfo mi;
 			mi.name = E->key();
 			mi.return_val = func->get_return_type();
@@ -243,14 +243,14 @@ void PDScript::get_script_method_list(List<MethodInfo> *p_list) const {
 	}
 }
 
-void PDScript::get_script_property_list(List<PropertyInfo> *p_list) const {
-	const PDScript *sptr = this;
+void PScript::get_script_property_list(List<PropertyInfo> *p_list) const {
+	const PScript *sptr = this;
 	List<PropertyInfo> props;
 
 	while (sptr) {
-		Vector<_PDScriptMemberSort> msort;
+		Vector<_PScriptMemberSort> msort;
 		for (RBMap<StringName, PropertyInfo>::Element *E = sptr->member_info.front(); E; E = E->next()) {
-			_PDScriptMemberSort ms;
+			_PScriptMemberSort ms;
 			ERR_CONTINUE(!sptr->member_indices.has(E->key()));
 			ms.index = sptr->member_indices[E->key()].index;
 			ms.name = E->key();
@@ -271,17 +271,17 @@ void PDScript::get_script_property_list(List<PropertyInfo> *p_list) const {
 	}
 }
 
-bool PDScript::has_method(const StringName &p_method) const {
+bool PScript::has_method(const StringName &p_method) const {
 	return member_functions.has(p_method);
 }
 
-MethodInfo PDScript::get_method_info(const StringName &p_method) const {
-	const RBMap<StringName, PDScriptFunction *>::Element *E = member_functions.find(p_method);
+MethodInfo PScript::get_method_info(const StringName &p_method) const {
+	const RBMap<StringName, PScriptFunction *>::Element *E = member_functions.find(p_method);
 	if (!E) {
 		return MethodInfo();
 	}
 
-	PDScriptFunction *func = E->get();
+	PScriptFunction *func = E->get();
 	MethodInfo mi;
 	mi.name = E->key();
 	mi.return_val = func->get_return_type();
@@ -296,7 +296,7 @@ MethodInfo PDScript::get_method_info(const StringName &p_method) const {
 	return mi;
 }
 
-bool PDScript::get_property_default_value(const StringName &p_property, Variant &r_value) const {
+bool PScript::get_property_default_value(const StringName &p_property, Variant &r_value) const {
 #ifdef TOOLS_ENABLED
 
 	const RBMap<StringName, Variant>::Element *E = member_default_values_cache.find(p_property);
@@ -312,8 +312,8 @@ bool PDScript::get_property_default_value(const StringName &p_property, Variant 
 	return false;
 }
 
-ScriptInstance *PDScript::instance_create(Object *p_this) {
-	PDScript *top = this;
+ScriptInstance *PScript::instance_create(Object *p_this) {
+	PScript *top = this;
 	while (top->_base) {
 		top = top->_base;
 	}
@@ -321,7 +321,7 @@ ScriptInstance *PDScript::instance_create(Object *p_this) {
 	if (top->native.is_valid()) {
 		if (!ClassDB::is_parent_class(p_this->get_class_name(), top->native->get_name())) {
 			if (ScriptDebugger::get_singleton()) {
-				PDScriptLanguage::get_singleton()->debug_break_parse(_get_debug_path(), 1, "Script inherits from native type '" + String(top->native->get_name()) + "', so it can't be instanced in object of type: '" + p_this->get_class() + "'");
+				PScriptLanguage::get_singleton()->debug_break_parse(_get_debug_path(), 1, "Script inherits from native type '" + String(top->native->get_name()) + "', so it can't be instanced in object of type: '" + p_this->get_class() + "'");
 			}
 			ERR_FAIL_V_MSG(nullptr, "Script inherits from native type '" + String(top->native->get_name()) + "', so it can't be instanced in object of type '" + p_this->get_class() + "'" + ".");
 		}
@@ -331,32 +331,32 @@ ScriptInstance *PDScript::instance_create(Object *p_this) {
 	return _create_instance(nullptr, 0, p_this, Object::cast_to<Reference>(p_this) != nullptr, unchecked_error);
 }
 
-PlaceHolderScriptInstance *PDScript::placeholder_instance_create(Object *p_this) {
+PlaceHolderScriptInstance *PScript::placeholder_instance_create(Object *p_this) {
 #ifdef TOOLS_ENABLED
-	PlaceHolderScriptInstance *si = memnew(PlaceHolderScriptInstance(PDScriptLanguage::get_singleton(), Ref<Script>(this), p_this));
+	PlaceHolderScriptInstance *si = memnew(PlaceHolderScriptInstance(PScriptLanguage::get_singleton(), Ref<Script>(this), p_this));
 	placeholders.insert(si);
-	_update_exports(nullptr, false, si);
+	_upate_exports(nullptr, false, si);
 	return si;
 #else
 	return NULL;
 #endif
 }
 
-bool PDScript::instance_has(const Object *p_this) const {
-	PDScriptLanguage::singleton->lock.lock();
+bool PScript::instance_has(const Object *p_this) const {
+	PScriptLanguage::singleton->lock.lock();
 	bool hasit = instances.has((Object *)p_this);
-	PDScriptLanguage::singleton->lock.unlock();
+	PScriptLanguage::singleton->lock.unlock();
 
 	return hasit;
 }
 
-bool PDScript::has_source_code() const {
+bool PScript::has_source_code() const {
 	return source != "";
 }
-String PDScript::get_source_code() const {
+String PScript::get_source_code() const {
 	return source;
 }
-void PDScript::set_source_code(const String &p_code) {
+void PScript::set_source_code(const String &p_code) {
 	if (source == p_code) {
 		return;
 	}
@@ -367,9 +367,9 @@ void PDScript::set_source_code(const String &p_code) {
 }
 
 #ifdef TOOLS_ENABLED
-void PDScript::_update_exports_values(RBMap<StringName, Variant> &values, List<PropertyInfo> &propnames) {
+void PScript::_upate_exports_values(RBMap<StringName, Variant> &values, List<PropertyInfo> &propnames) {
 	if (base_cache.is_valid()) {
-		base_cache->_update_exports_values(values, propnames);
+		base_cache->_upate_exports_values(values, propnames);
 	}
 
 	for (RBMap<StringName, Variant>::Element *E = member_default_values_cache.front(); E; E = E->next()) {
@@ -382,10 +382,10 @@ void PDScript::_update_exports_values(RBMap<StringName, Variant> &values, List<P
 }
 #endif
 
-bool PDScript::_update_exports(bool *r_err, bool p_recursive_call, PlaceHolderScriptInstance *p_instance_to_update) {
+bool PScript::_upate_exports(bool *r_err, bool p_recursive_call, PlaceHolderScriptInstance *p_instance_to_upate) {
 #ifdef TOOLS_ENABLED
 
-	static Vector<PDScript *> base_caches;
+	static Vector<PScript *> base_caches;
 	if (!p_recursive_call) {
 		base_caches.clear();
 	}
@@ -407,18 +407,18 @@ bool PDScript::_update_exports(bool *r_err, bool p_recursive_call, PlaceHolderSc
 			basedir = basedir.get_base_dir();
 		}
 
-		PDScriptParser parser;
+		PScriptParser parser;
 		Error err = parser.parse(source, basedir, true, path);
 
 		if (err == OK) {
-			const PDScriptParser::Node *root = parser.get_parse_tree();
-			ERR_FAIL_COND_V(root->type != PDScriptParser::Node::TYPE_CLASS, false);
+			const PScriptParser::Node *root = parser.get_parse_tree();
+			ERR_FAIL_COND_V(root->type != PScriptParser::Node::TYPE_CLASS, false);
 
-			const PDScriptParser::ClassNode *c = static_cast<const PDScriptParser::ClassNode *>(root);
+			const PScriptParser::ClassNode *c = static_cast<const PScriptParser::ClassNode *>(root);
 
 			if (base_cache.is_valid()) {
 				base_cache->inheriters_cache.erase(get_instance_id());
-				base_cache = Ref<PDScript>();
+				base_cache = Ref<PScript>();
 			}
 
 			if (c->extends_used) {
@@ -443,7 +443,7 @@ bool PDScript::_update_exports(bool *r_err, bool p_recursive_call, PlaceHolderSc
 
 				if (path != "") {
 					if (path != get_path()) {
-						Ref<PDScript> bf = ResourceLoader::load(path);
+						Ref<PScript> bf = ResourceLoader::load(path);
 
 						if (bf.is_valid()) {
 							base_cache = bf;
@@ -509,7 +509,7 @@ bool PDScript::_update_exports(bool *r_err, bool p_recursive_call, PlaceHolderSc
 				ERR_FAIL_V_MSG(false, "Cyclic inheritance in script class.");
 			}
 		}
-		if (base_cache->_update_exports(r_err, true)) {
+		if (base_cache->_upate_exports(r_err, true)) {
 			if (r_err && *r_err) {
 				return false;
 			}
@@ -517,19 +517,19 @@ bool PDScript::_update_exports(bool *r_err, bool p_recursive_call, PlaceHolderSc
 		}
 	}
 
-	if ((changed || p_instance_to_update) && placeholders.size()) { //hm :(
+	if ((changed || p_instance_to_upate) && placeholders.size()) { //hm :(
 
-		// update placeholders if any
+		// upate placeholders if any
 		RBMap<StringName, Variant> values;
 		List<PropertyInfo> propnames;
-		_update_exports_values(values, propnames);
+		_upate_exports_values(values, propnames);
 
 		if (changed) {
 			for (RBSet<PlaceHolderScriptInstance *>::Element *E = placeholders.front(); E; E = E->next()) {
-				E->get()->update(propnames, values);
+				E->get()->upate(propnames, values);
 			}
 		} else {
-			p_instance_to_update->update(propnames, values);
+			p_instance_to_upate->upate(propnames, values);
 		}
 	}
 
@@ -540,11 +540,11 @@ bool PDScript::_update_exports(bool *r_err, bool p_recursive_call, PlaceHolderSc
 #endif
 }
 
-void PDScript::update_exports() {
+void PScript::upate_exports() {
 #ifdef TOOLS_ENABLED
 
 	bool cyclic_error = false;
-	_update_exports(&cyclic_error);
+	_upate_exports(&cyclic_error);
 	if (cyclic_error) {
 		return;
 	}
@@ -553,24 +553,24 @@ void PDScript::update_exports() {
 
 	for (RBSet<ObjectID>::Element *E = copy.front(); E; E = E->next()) {
 		Object *id = ObjectDB::get_instance(E->get());
-		PDScript *s = Object::cast_to<PDScript>(id);
+		PScript *s = Object::cast_to<PScript>(id);
 		if (!s) {
 			continue;
 		}
-		s->update_exports();
+		s->upate_exports();
 	}
 
 #endif
 }
 
-void PDScript::_set_subclass_path(Ref<PDScript> &p_sc, const String &p_path) {
+void PScript::_set_subclass_path(Ref<PScript> &p_sc, const String &p_path) {
 	p_sc->path = p_path;
-	for (RBMap<StringName, Ref<PDScript>>::Element *E = p_sc->subclasses.front(); E; E = E->next()) {
+	for (RBMap<StringName, Ref<PScript>>::Element *E = p_sc->subclasses.front(); E; E = E->next()) {
 		_set_subclass_path(E->get(), p_path);
 	}
 }
 
-String PDScript::_get_debug_path() const {
+String PScript::_get_debug_path() const {
 	if ((get_path().empty() || get_path().find("::") != -1) && !get_name().empty()) {
 		return get_name() + " (" + get_path().get_slice("::", 0) + ")";
 	} else {
@@ -578,10 +578,10 @@ String PDScript::_get_debug_path() const {
 	}
 }
 
-Error PDScript::reload(bool p_keep_state) {
-	PDScriptLanguage::singleton->lock.lock();
+Error PScript::reload(bool p_keep_state) {
+	PScriptLanguage::singleton->lock.lock();
 	bool has_instances = instances.size();
-	PDScriptLanguage::singleton->lock.unlock();
+	PScriptLanguage::singleton->lock.unlock();
 
 	ERR_FAIL_COND_V(!p_keep_state && has_instances, ERR_ALREADY_IN_USE);
 
@@ -601,35 +601,35 @@ Error PDScript::reload(bool p_keep_state) {
 	}
 
 	valid = false;
-	PDScriptParser parser;
+	PScriptParser parser;
 	Error err = parser.parse(source, basedir, false, path);
 	if (err) {
 		if (ScriptDebugger::get_singleton()) {
-			PDScriptLanguage::get_singleton()->debug_break_parse(_get_debug_path(), parser.get_error_line(), "Parser Error: " + parser.get_error());
+			PScriptLanguage::get_singleton()->debug_break_parse(_get_debug_path(), parser.get_error_line(), "Parser Error: " + parser.get_error());
 		}
-		_err_print_error("PDScript::reload", path.empty() ? "built-in" : (const char *)path.utf8().get_data(), parser.get_error_line(), ("Parse Error: " + parser.get_error()).utf8().get_data(), ERR_HANDLER_SCRIPT);
+		_err_print_error("PScript::reload", path.empty() ? "built-in" : (const char *)path.utf8().get_data(), parser.get_error_line(), ("Parse Error: " + parser.get_error()).utf8().get_data(), ERR_HANDLER_SCRIPT);
 		return ERR_PARSE_ERROR;
 	}
 
 	bool can_run = ScriptServer::is_scripting_enabled() || parser.is_tool_script();
 
-	PDScriptCompiler compiler;
+	PScriptCompiler compiler;
 	err = compiler.compile(&parser, this, p_keep_state);
 
 	if (err) {
 		if (can_run) {
 			if (ScriptDebugger::get_singleton()) {
-				PDScriptLanguage::get_singleton()->debug_break_parse(_get_debug_path(), compiler.get_error_line(), "Parser Error: " + compiler.get_error());
+				PScriptLanguage::get_singleton()->debug_break_parse(_get_debug_path(), compiler.get_error_line(), "Parser Error: " + compiler.get_error());
 			}
-			_err_print_error("PDScript::reload", path.empty() ? "built-in" : (const char *)path.utf8().get_data(), compiler.get_error_line(), ("Compile Error: " + compiler.get_error()).utf8().get_data(), ERR_HANDLER_SCRIPT);
+			_err_print_error("PScript::reload", path.empty() ? "built-in" : (const char *)path.utf8().get_data(), compiler.get_error_line(), ("Compile Error: " + compiler.get_error()).utf8().get_data(), ERR_HANDLER_SCRIPT);
 			return ERR_COMPILATION_FAILED;
 		} else {
 			return err;
 		}
 	}
 #ifdef DEBUG_ENABLED
-	for (const List<PDScriptWarning>::Element *E = parser.get_warnings().front(); E; E = E->next()) {
-		const PDScriptWarning &warning = E->get();
+	for (const List<PScriptWarning>::Element *E = parser.get_warnings().front(); E; E = E->next()) {
+		const PScriptWarning &warning = E->get();
 		if (ScriptDebugger::get_singleton()) {
 			Vector<ScriptLanguage::StackInfo> si;
 			ScriptDebugger::get_singleton()->send_error("", get_path(), warning.line, warning.get_name(), warning.get_message(), ERR_HANDLER_WARNING, si);
@@ -639,7 +639,7 @@ Error PDScript::reload(bool p_keep_state) {
 
 	valid = true;
 
-	for (RBMap<StringName, Ref<PDScript>>::Element *E = subclasses.front(); E; E = E->next()) {
+	for (RBMap<StringName, Ref<PScript>>::Element *E = subclasses.front(); E; E = E->next()) {
 		_set_subclass_path(E->get(), path);
 	}
 	_clear_pending_func_states();
@@ -647,11 +647,11 @@ Error PDScript::reload(bool p_keep_state) {
 	return OK;
 }
 
-ScriptLanguage *PDScript::get_language() const {
-	return PDScriptLanguage::get_singleton();
+ScriptLanguage *PScript::get_language() const {
+	return PScriptLanguage::get_singleton();
 }
 
-void PDScript::get_constants(RBMap<StringName, Variant> *p_constants) {
+void PScript::get_constants(RBMap<StringName, Variant> *p_constants) {
 	if (p_constants) {
 		for (RBMap<StringName, Variant>::Element *E = constants.front(); E; E = E->next()) {
 			(*p_constants)[E->key()] = E->value();
@@ -659,7 +659,7 @@ void PDScript::get_constants(RBMap<StringName, Variant> *p_constants) {
 	}
 }
 
-void PDScript::get_members(RBSet<StringName> *p_members) {
+void PScript::get_members(RBSet<StringName> *p_members) {
 	if (p_members) {
 		for (RBSet<StringName>::Element *E = members.front(); E; E = E->next()) {
 			p_members->insert(E->get());
@@ -667,10 +667,10 @@ void PDScript::get_members(RBSet<StringName> *p_members) {
 	}
 }
 
-Variant PDScript::call(const StringName &p_method, const Variant **p_args, int p_argcount, Variant::CallError &r_error) {
-	PDScript *top = this;
+Variant PScript::call(const StringName &p_method, const Variant **p_args, int p_argcount, Variant::CallError &r_error) {
+	PScript *top = this;
 	while (top) {
-		RBMap<StringName, PDScriptFunction *>::Element *E = top->member_functions.find(p_method);
+		RBMap<StringName, PScriptFunction *>::Element *E = top->member_functions.find(p_method);
 		if (E) {
 			ERR_FAIL_COND_V_MSG(!E->get()->is_static(), Variant(), "Can't call non-static function '" + String(p_method) + "' in script.");
 
@@ -684,9 +684,9 @@ Variant PDScript::call(const StringName &p_method, const Variant **p_args, int p
 	return Script::call(p_method, p_args, p_argcount, r_error);
 }
 
-bool PDScript::_get(const StringName &p_name, Variant &r_ret) const {
+bool PScript::_get(const StringName &p_name, Variant &r_ret) const {
 	{
-		const PDScript *top = this;
+		const PScript *top = this;
 		while (top) {
 			{
 				const RBMap<StringName, Variant>::Element *E = top->constants.find(p_name);
@@ -697,7 +697,7 @@ bool PDScript::_get(const StringName &p_name, Variant &r_ret) const {
 			}
 
 			{
-				const RBMap<StringName, Ref<PDScript>>::Element *E = subclasses.find(p_name);
+				const RBMap<StringName, Ref<PScript>>::Element *E = subclasses.find(p_name);
 				if (E) {
 					r_ret = E->get();
 					return true;
@@ -706,7 +706,7 @@ bool PDScript::_get(const StringName &p_name, Variant &r_ret) const {
 			top = top->_base;
 		}
 
-		if (p_name == PDScriptLanguage::get_singleton()->strings._script_source) {
+		if (p_name == PScriptLanguage::get_singleton()->strings._script_source) {
 			r_ret = get_source_code();
 			return true;
 		}
@@ -714,8 +714,8 @@ bool PDScript::_get(const StringName &p_name, Variant &r_ret) const {
 
 	return false;
 }
-bool PDScript::_set(const StringName &p_name, const Variant &p_value) {
-	if (p_name == PDScriptLanguage::get_singleton()->strings._script_source) {
+bool PScript::_set(const StringName &p_name, const Variant &p_value) {
+	if (p_name == PScriptLanguage::get_singleton()->strings._script_source) {
 		set_source_code(p_value);
 		reload();
 	} else {
@@ -725,25 +725,25 @@ bool PDScript::_set(const StringName &p_name, const Variant &p_value) {
 	return true;
 }
 
-void PDScript::_get_property_list(List<PropertyInfo> *p_properties) const {
+void PScript::_get_property_list(List<PropertyInfo> *p_properties) const {
 	p_properties->push_back(PropertyInfo(Variant::STRING, "script/source", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NOEDITOR | PROPERTY_USAGE_INTERNAL));
 }
 
-void PDScript::_bind_methods() {
-	ClassDB::bind_vararg_method(METHOD_FLAGS_DEFAULT, "new", &PDScript::_new, MethodInfo("new"));
+void PScript::_bind_methods() {
+	ClassDB::bind_vararg_method(METHOD_FLAGS_DEFAULT, "new", &PScript::_new, MethodInfo("new"));
 
-	ClassDB::bind_method(D_METHOD("get_as_byte_code"), &PDScript::get_as_byte_code);
+	ClassDB::bind_method(D_METHOD("get_as_byte_code"), &PScript::get_as_byte_code);
 }
 
-Vector<uint8_t> PDScript::get_as_byte_code() const {
-	PDScriptTokenizerBuffer tokenizer;
+Vector<uint8_t> PScript::get_as_byte_code() const {
+	PScriptTokenizerBuffer tokenizer;
 	return tokenizer.parse_code_string(source);
 };
 
-Error PDScript::load_byte_code(const String &p_path) {
+Error PScript::load_byte_code(const String &p_path) {
 	Vector<uint8_t> bytecode;
 
-	if (p_path.ends_with("pde")) {
+	if (p_path.ends_with("pe")) {
 		FileAccess *fa = FileAccess::open(p_path, FileAccess::READ);
 		ERR_FAIL_COND_V(!fa, ERR_CANT_OPEN);
 
@@ -789,31 +789,31 @@ Error PDScript::load_byte_code(const String &p_path) {
 	}
 
 	valid = false;
-	PDScriptParser parser;
+	PScriptParser parser;
 	Error err = parser.parse_bytecode(bytecode, basedir, get_path());
 	if (err) {
-		_err_print_error("PDScript::load_byte_code", path.empty() ? "built-in" : (const char *)path.utf8().get_data(), parser.get_error_line(), ("Parse Error: " + parser.get_error()).utf8().get_data(), ERR_HANDLER_SCRIPT);
+		_err_print_error("PScript::load_byte_code", path.empty() ? "built-in" : (const char *)path.utf8().get_data(), parser.get_error_line(), ("Parse Error: " + parser.get_error()).utf8().get_data(), ERR_HANDLER_SCRIPT);
 		ERR_FAIL_V(ERR_PARSE_ERROR);
 	}
 
-	PDScriptCompiler compiler;
+	PScriptCompiler compiler;
 	err = compiler.compile(&parser, this);
 
 	if (err) {
-		_err_print_error("PDScript::load_byte_code", path.empty() ? "built-in" : (const char *)path.utf8().get_data(), compiler.get_error_line(), ("Compile Error: " + compiler.get_error()).utf8().get_data(), ERR_HANDLER_SCRIPT);
+		_err_print_error("PScript::load_byte_code", path.empty() ? "built-in" : (const char *)path.utf8().get_data(), compiler.get_error_line(), ("Compile Error: " + compiler.get_error()).utf8().get_data(), ERR_HANDLER_SCRIPT);
 		ERR_FAIL_V(ERR_COMPILATION_FAILED);
 	}
 
 	valid = true;
 
-	for (RBMap<StringName, Ref<PDScript>>::Element *E = subclasses.front(); E; E = E->next()) {
+	for (RBMap<StringName, Ref<PScript>>::Element *E = subclasses.front(); E; E = E->next()) {
 		_set_subclass_path(E->get(), path);
 	}
 
 	return OK;
 }
 
-Error PDScript::load_source_code(const String &p_path) {
+Error PScript::load_source_code(const String &p_path) {
 	PoolVector<uint8_t> sourcef;
 	Error err;
 	FileAccess *f = FileAccess::open(p_path, FileAccess::READ, &err);
@@ -843,11 +843,11 @@ Error PDScript::load_source_code(const String &p_path) {
 	return OK;
 }
 
-const RBMap<StringName, PDScriptFunction *> &PDScript::debug_get_member_functions() const {
+const RBMap<StringName, PScriptFunction *> &PScript::debug_get_member_functions() const {
 	return member_functions;
 }
 
-StringName PDScript::debug_get_member_by_index(int p_idx) const {
+StringName PScript::debug_get_member_by_index(int p_idx) const {
 	for (const RBMap<StringName, MemberInfo>::Element *E = member_indices.front(); E; E = E->next()) {
 		if (E->get().index == p_idx) {
 			return E->key();
@@ -857,17 +857,17 @@ StringName PDScript::debug_get_member_by_index(int p_idx) const {
 	return "<error>";
 }
 
-Ref<PDScript> PDScript::get_base() const {
+Ref<PScript> PScript::get_base() const {
 	return base;
 }
 
-bool PDScript::inherits_script(const Ref<Script> &p_script) const {
-	Ref<PDScript> pd = p_script;
-	if (pd.is_null()) {
+bool PScript::inherits_script(const Ref<Script> &p_script) const {
+	Ref<PScript> p = p_script;
+	if (p.is_null()) {
 		return false;
 	}
 
-	const PDScript *s = this;
+	const PScript *s = this;
 
 	while (s) {
 		if (s == p_script.ptr()) {
@@ -879,7 +879,7 @@ bool PDScript::inherits_script(const Ref<Script> &p_script) const {
 	return false;
 }
 
-bool PDScript::has_script_signal(const StringName &p_signal) const {
+bool PScript::has_script_signal(const StringName &p_signal) const {
 	if (_signals.has(p_signal)) {
 		return true;
 	}
@@ -893,7 +893,7 @@ bool PDScript::has_script_signal(const StringName &p_signal) const {
 #endif
 	return false;
 }
-void PDScript::get_script_signal_list(List<MethodInfo> *r_signals) const {
+void PScript::get_script_signal_list(List<MethodInfo> *r_signals) const {
 	for (const RBMap<StringName, Vector<StringName>>::Element *E = _signals.front(); E; E = E->next()) {
 		MethodInfo mi;
 		mi.name = E->key();
@@ -916,7 +916,7 @@ void PDScript::get_script_signal_list(List<MethodInfo> *r_signals) const {
 #endif
 }
 
-PDScript::PDScript() :
+PScript::PScript() :
 		script_list(this) {
 	valid = false;
 	subclass_count = 0;
@@ -930,20 +930,20 @@ PDScript::PDScript() :
 #endif
 
 #ifdef DEBUG_ENABLED
-	PDScriptLanguage::get_singleton()->lock.lock();
-	PDScriptLanguage::get_singleton()->script_list.add(&script_list);
-	PDScriptLanguage::get_singleton()->lock.unlock();
+	PScriptLanguage::get_singleton()->lock.lock();
+	PScriptLanguage::get_singleton()->script_list.add(&script_list);
+	PScriptLanguage::get_singleton()->lock.unlock();
 #endif
 }
 
-void PDScript::_save_orphaned_subclasses() {
+void PScript::_save_orphaned_subclasses() {
 	struct ClassRefWithName {
 		ObjectID id;
 		String fully_qualified_name;
 	};
 	Vector<ClassRefWithName> weak_subclasses;
 	// collect subclasses ObjectID and name
-	for (RBMap<StringName, Ref<PDScript>>::Element *E = subclasses.front(); E; E = E->next()) {
+	for (RBMap<StringName, Ref<PScript>>::Element *E = subclasses.front(); E; E = E->next()) {
 		E->get()->_owner = nullptr; //bye, you are no longer owned cause I died
 		ClassRefWithName subclass;
 		subclass.id = E->get()->get_instance_id();
@@ -964,23 +964,23 @@ void PDScript::_save_orphaned_subclasses() {
 			continue;
 		}
 		// subclass is not released
-		PDScriptLanguage::get_singleton()->add_orphan_subclass(subclass.fully_qualified_name, subclass.id);
+		PScriptLanguage::get_singleton()->add_orphan_subclass(subclass.fully_qualified_name, subclass.id);
 	}
 }
 
-PDScript::~PDScript() {
+PScript::~PScript() {
 	_clear_pending_func_states();
 
-	for (RBMap<StringName, PDScriptFunction *>::Element *E = member_functions.front(); E; E = E->next()) {
+	for (RBMap<StringName, PScriptFunction *>::Element *E = member_functions.front(); E; E = E->next()) {
 		memdelete(E->get());
 	}
 
 	_save_orphaned_subclasses();
 
 #ifdef DEBUG_ENABLED
-	PDScriptLanguage::get_singleton()->lock.lock();
-	PDScriptLanguage::get_singleton()->script_list.remove(&script_list);
-	PDScriptLanguage::get_singleton()->lock.unlock();
+	PScriptLanguage::get_singleton()->lock.lock();
+	PScriptLanguage::get_singleton()->script_list.remove(&script_list);
+	PScriptLanguage::get_singleton()->lock.unlock();
 #endif
 }
 
@@ -988,12 +988,12 @@ PDScript::~PDScript() {
 //         INSTANCE         //
 //////////////////////////////
 
-bool PDScriptInstance::set(const StringName &p_name, const Variant &p_value) {
+bool PScriptInstance::set(const StringName &p_name, const Variant &p_value) {
 	//member
 	{
-		const RBMap<StringName, PDScript::MemberInfo>::Element *E = script->member_indices.find(p_name);
+		const RBMap<StringName, PScript::MemberInfo>::Element *E = script->member_indices.find(p_name);
 		if (E) {
-			const PDScript::MemberInfo *member = &E->get();
+			const PScript::MemberInfo *member = &E->get();
 			if (member->setter) {
 				const Variant *val = &p_value;
 				Variant::CallError err;
@@ -1023,9 +1023,9 @@ bool PDScriptInstance::set(const StringName &p_name, const Variant &p_value) {
 		}
 	}
 
-	PDScript *sptr = script.ptr();
+	PScript *sptr = script.ptr();
 	while (sptr) {
-		RBMap<StringName, PDScriptFunction *>::Element *E = sptr->member_functions.find(PDScriptLanguage::get_singleton()->strings._set);
+		RBMap<StringName, PScriptFunction *>::Element *E = sptr->member_functions.find(PScriptLanguage::get_singleton()->strings._set);
 		if (E) {
 			Variant name = p_name;
 			const Variant *args[2] = { &name, &p_value };
@@ -1042,15 +1042,15 @@ bool PDScriptInstance::set(const StringName &p_name, const Variant &p_value) {
 	return false;
 }
 
-bool PDScriptInstance::get(const StringName &p_name, Variant &r_ret) const {
-	const PDScript *sptr = script.ptr();
+bool PScriptInstance::get(const StringName &p_name, Variant &r_ret) const {
+	const PScript *sptr = script.ptr();
 	while (sptr) {
 		{
-			const RBMap<StringName, PDScript::MemberInfo>::Element *E = script->member_indices.find(p_name);
+			const RBMap<StringName, PScript::MemberInfo>::Element *E = script->member_indices.find(p_name);
 			if (E) {
 				if (E->get().getter) {
 					Variant::CallError err;
-					r_ret = const_cast<PDScriptInstance *>(this)->call(E->get().getter, nullptr, 0, err);
+					r_ret = const_cast<PScriptInstance *>(this)->call(E->get().getter, nullptr, 0, err);
 					if (err.error == Variant::CallError::CALL_OK) {
 						return true;
 					}
@@ -1061,7 +1061,7 @@ bool PDScriptInstance::get(const StringName &p_name, Variant &r_ret) const {
 		}
 
 		{
-			const PDScript *sl = sptr;
+			const PScript *sl = sptr;
 			while (sl) {
 				const RBMap<StringName, Variant>::Element *E = sl->constants.find(p_name);
 				if (E) {
@@ -1073,13 +1073,13 @@ bool PDScriptInstance::get(const StringName &p_name, Variant &r_ret) const {
 		}
 
 		{
-			const RBMap<StringName, PDScriptFunction *>::Element *E = sptr->member_functions.find(PDScriptLanguage::get_singleton()->strings._get);
+			const RBMap<StringName, PScriptFunction *>::Element *E = sptr->member_functions.find(PScriptLanguage::get_singleton()->strings._get);
 			if (E) {
 				Variant name = p_name;
 				const Variant *args[1] = { &name };
 
 				Variant::CallError err;
-				Variant ret = const_cast<PDScriptFunction *>(E->get())->call(const_cast<PDScriptInstance *>(this), (const Variant **)args, 1, err);
+				Variant ret = const_cast<PScriptFunction *>(E->get())->call(const_cast<PScriptInstance *>(this), (const Variant **)args, 1, err);
 				if (err.error == Variant::CallError::CALL_OK && ret.get_type() != Variant::NIL) {
 					r_ret = ret;
 					return true;
@@ -1092,8 +1092,8 @@ bool PDScriptInstance::get(const StringName &p_name, Variant &r_ret) const {
 	return false;
 }
 
-Variant::Type PDScriptInstance::get_property_type(const StringName &p_name, bool *r_is_valid) const {
-	const PDScript *sptr = script.ptr();
+Variant::Type PScriptInstance::get_property_type(const StringName &p_name, bool *r_is_valid) const {
+	const PScript *sptr = script.ptr();
 	while (sptr) {
 		if (sptr->member_info.has(p_name)) {
 			if (r_is_valid) {
@@ -1110,17 +1110,17 @@ Variant::Type PDScriptInstance::get_property_type(const StringName &p_name, bool
 	return Variant::NIL;
 }
 
-void PDScriptInstance::get_property_list(List<PropertyInfo> *p_properties) const {
+void PScriptInstance::get_property_list(List<PropertyInfo> *p_properties) const {
 	// exported members, not done yet!
 
-	const PDScript *sptr = script.ptr();
+	const PScript *sptr = script.ptr();
 	List<PropertyInfo> props;
 
 	while (sptr) {
-		const RBMap<StringName, PDScriptFunction *>::Element *E = sptr->member_functions.find(PDScriptLanguage::get_singleton()->strings._get_property_list);
+		const RBMap<StringName, PScriptFunction *>::Element *E = sptr->member_functions.find(PScriptLanguage::get_singleton()->strings._get_property_list);
 		if (E) {
 			Variant::CallError err;
-			Variant ret = const_cast<PDScriptFunction *>(E->get())->call(const_cast<PDScriptInstance *>(this), nullptr, 0, err);
+			Variant ret = const_cast<PScriptFunction *>(E->get())->call(const_cast<PScriptInstance *>(this), nullptr, 0, err);
 			if (err.error == Variant::CallError::CALL_OK) {
 				ERR_FAIL_COND_MSG(ret.get_type() != Variant::ARRAY, "Wrong type for _get_property_list, must be an array of dictionaries.");
 
@@ -1151,9 +1151,9 @@ void PDScriptInstance::get_property_list(List<PropertyInfo> *p_properties) const
 
 		//instance a fake script for editing the values
 
-		Vector<_PDScriptMemberSort> msort;
+		Vector<_PScriptMemberSort> msort;
 		for (RBMap<StringName, PropertyInfo>::Element *F = sptr->member_info.front(); F; F = F->next()) {
-			_PDScriptMemberSort ms;
+			_PScriptMemberSort ms;
 			ERR_CONTINUE(!sptr->member_indices.has(F->key()));
 			ms.index = sptr->member_indices[F->key()].index;
 			ms.name = F->key();
@@ -1174,11 +1174,11 @@ void PDScriptInstance::get_property_list(List<PropertyInfo> *p_properties) const
 	}
 }
 
-void PDScriptInstance::get_method_list(List<MethodInfo> *p_list) const {
-	const PDScript *sptr = script.ptr();
+void PScriptInstance::get_method_list(List<MethodInfo> *p_list) const {
+	const PScript *sptr = script.ptr();
 	while (sptr) {
-		for (RBMap<StringName, PDScriptFunction *>::Element *E = sptr->member_functions.front(); E; E = E->next()) {
-			PDScriptFunction *func = E->get();
+		for (RBMap<StringName, PScriptFunction *>::Element *E = sptr->member_functions.front(); E; E = E->next()) {
+			PScriptFunction *func = E->get();
 			MethodInfo mi;
 			mi.name = E->key();
 			mi.return_val = func->get_return_type();
@@ -1197,10 +1197,10 @@ void PDScriptInstance::get_method_list(List<MethodInfo> *p_list) const {
 	}
 }
 
-bool PDScriptInstance::has_method(const StringName &p_method) const {
-	const PDScript *sptr = script.ptr();
+bool PScriptInstance::has_method(const StringName &p_method) const {
+	const PScript *sptr = script.ptr();
 	while (sptr) {
-		const RBMap<StringName, PDScriptFunction *>::Element *E = sptr->member_functions.find(p_method);
+		const RBMap<StringName, PScriptFunction *>::Element *E = sptr->member_functions.find(p_method);
 		if (E) {
 			return true;
 		}
@@ -1209,10 +1209,10 @@ bool PDScriptInstance::has_method(const StringName &p_method) const {
 
 	return false;
 }
-Variant PDScriptInstance::call(const StringName &p_method, const Variant **p_args, int p_argcount, Variant::CallError &r_error) {
-	PDScript *sptr = script.ptr();
+Variant PScriptInstance::call(const StringName &p_method, const Variant **p_args, int p_argcount, Variant::CallError &r_error) {
+	PScript *sptr = script.ptr();
 	while (sptr) {
-		RBMap<StringName, PDScriptFunction *>::Element *E = sptr->member_functions.find(p_method);
+		RBMap<StringName, PScriptFunction *>::Element *E = sptr->member_functions.find(p_method);
 		if (E) {
 			return E->get()->call(this, p_args, p_argcount, r_error);
 		}
@@ -1222,12 +1222,12 @@ Variant PDScriptInstance::call(const StringName &p_method, const Variant **p_arg
 	return Variant();
 }
 
-void PDScriptInstance::call_multilevel(const StringName &p_method, const Variant **p_args, int p_argcount) {
-	PDScript *sptr = script.ptr();
+void PScriptInstance::call_multilevel(const StringName &p_method, const Variant **p_args, int p_argcount) {
+	PScript *sptr = script.ptr();
 	Variant::CallError ce;
 
 	while (sptr) {
-		RBMap<StringName, PDScriptFunction *>::Element *E = sptr->member_functions.find(p_method);
+		RBMap<StringName, PScriptFunction *>::Element *E = sptr->member_functions.find(p_method);
 		if (E) {
 			E->get()->call(this, p_args, p_argcount, ce);
 		}
@@ -1235,33 +1235,33 @@ void PDScriptInstance::call_multilevel(const StringName &p_method, const Variant
 	}
 }
 
-void PDScriptInstance::_ml_call_reversed(PDScript *sptr, const StringName &p_method, const Variant **p_args, int p_argcount) {
+void PScriptInstance::_ml_call_reversed(PScript *sptr, const StringName &p_method, const Variant **p_args, int p_argcount) {
 	if (sptr->_base) {
 		_ml_call_reversed(sptr->_base, p_method, p_args, p_argcount);
 	}
 
 	Variant::CallError ce;
 
-	RBMap<StringName, PDScriptFunction *>::Element *E = sptr->member_functions.find(p_method);
+	RBMap<StringName, PScriptFunction *>::Element *E = sptr->member_functions.find(p_method);
 	if (E) {
 		E->get()->call(this, p_args, p_argcount, ce);
 	}
 }
 
-void PDScriptInstance::call_multilevel_reversed(const StringName &p_method, const Variant **p_args, int p_argcount) {
+void PScriptInstance::call_multilevel_reversed(const StringName &p_method, const Variant **p_args, int p_argcount) {
 	if (script.ptr()) {
 		_ml_call_reversed(script.ptr(), p_method, p_args, p_argcount);
 	}
 }
 
-void PDScriptInstance::notification(int p_notification) {
+void PScriptInstance::notification(int p_notification) {
 	//notification is not virtual, it gets called at ALL levels just like in C.
 	Variant value = p_notification;
 	const Variant *args[1] = { &value };
 
-	PDScript *sptr = script.ptr();
+	PScript *sptr = script.ptr();
 	while (sptr) {
-		RBMap<StringName, PDScriptFunction *>::Element *E = sptr->member_functions.find(PDScriptLanguage::get_singleton()->strings._notification);
+		RBMap<StringName, PScriptFunction *>::Element *E = sptr->member_functions.find(PScriptLanguage::get_singleton()->strings._notification);
 		if (E) {
 			Variant::CallError err;
 			E->get()->call(this, args, 1, err);
@@ -1273,7 +1273,7 @@ void PDScriptInstance::notification(int p_notification) {
 	}
 }
 
-String PDScriptInstance::to_string(bool *r_valid) {
+String PScriptInstance::to_string(bool *r_valid) {
 	if (has_method(CoreStringNames::get_singleton()->_to_string)) {
 		Variant::CallError ce;
 		Variant ret = call(CoreStringNames::get_singleton()->_to_string, nullptr, 0, ce);
@@ -1296,15 +1296,15 @@ String PDScriptInstance::to_string(bool *r_valid) {
 	return String();
 }
 
-Ref<Script> PDScriptInstance::get_script() const {
+Ref<Script> PScriptInstance::get_script() const {
 	return script;
 }
 
-ScriptLanguage *PDScriptInstance::get_language() {
-	return PDScriptLanguage::get_singleton();
+ScriptLanguage *PScriptInstance::get_language() {
+	return PScriptLanguage::get_singleton();
 }
 
-void PDScriptInstance::reload_members() {
+void PScriptInstance::reload_members() {
 #ifdef DEBUG_ENABLED
 
 	members.resize(script->member_indices.size()); //resize
@@ -1313,7 +1313,7 @@ void PDScriptInstance::reload_members() {
 	new_members.resize(script->member_indices.size());
 
 	//pass the values to the new indices
-	for (RBMap<StringName, PDScript::MemberInfo>::Element *E = script->member_indices.front(); E; E = E->next()) {
+	for (RBMap<StringName, PScript::MemberInfo>::Element *E = script->member_indices.front(); E; E = E->next()) {
 		if (member_indices_cache.has(E->key())) {
 			Variant value = members[member_indices_cache[E->key()]];
 			new_members.write[E->get().index] = value;
@@ -1325,26 +1325,26 @@ void PDScriptInstance::reload_members() {
 
 	//pass the values to the new indices
 	member_indices_cache.clear();
-	for (RBMap<StringName, PDScript::MemberInfo>::Element *E = script->member_indices.front(); E; E = E->next()) {
+	for (RBMap<StringName, PScript::MemberInfo>::Element *E = script->member_indices.front(); E; E = E->next()) {
 		member_indices_cache[E->key()] = E->get().index;
 	}
 
 #endif
 }
 
-PDScriptInstance::PDScriptInstance() {
+PScriptInstance::PScriptInstance() {
 	owner = nullptr;
 	base_ref = false;
 }
 
-PDScriptInstance::~PDScriptInstance() {
-	PDScriptLanguage::singleton->lock.lock();
+PScriptInstance::~PScriptInstance() {
+	PScriptLanguage::singleton->lock.lock();
 
-	while (SelfList<PDScriptFunctionState> *E = pending_func_states.first()) {
+	while (SelfList<PScriptFunctionState> *E = pending_func_states.first()) {
 		// Order matters since clearing the stack may already cause
-		// the PDSCriptFunctionState to be destroyed and thus removed from the list.
+		// the PSCriptFunctionState to be destroyed and thus removed from the list.
 		pending_func_states.remove(E);
-		PDScriptFunctionState *state = E->self();
+		PScriptFunctionState *state = E->self();
 		ObjectID state_id = state->get_instance_id();
 		state->_clear_connections();
 		if (ObjectDB::get_instance(state_id)) {
@@ -1356,20 +1356,20 @@ PDScriptInstance::~PDScriptInstance() {
 		script->instances.erase(owner);
 	}
 
-	PDScriptLanguage::singleton->lock.unlock();
+	PScriptLanguage::singleton->lock.unlock();
 }
 
 /************* SCRIPT LANGUAGE **************/
 
-PDScriptLanguage *PDScriptLanguage::singleton = nullptr;
+PScriptLanguage *PScriptLanguage::singleton = nullptr;
 
-String PDScriptLanguage::get_name() const {
-	return "PDScript";
+String PScriptLanguage::get_name() const {
+	return "PScript";
 }
 
 /* LANGUAGE FUNCTIONS */
 
-void PDScriptLanguage::_add_global(const StringName &p_name, const Variant &p_value) {
+void PScriptLanguage::_add_global(const StringName &p_name, const Variant &p_value) {
 	if (globals.has(p_name)) {
 		//overwrite existing
 		global_array.write[globals[p_name]] = p_value;
@@ -1380,20 +1380,20 @@ void PDScriptLanguage::_add_global(const StringName &p_name, const Variant &p_va
 	_global_array = global_array.ptrw();
 }
 
-void PDScriptLanguage::add_global_constant(const StringName &p_variable, const Variant &p_value) {
+void PScriptLanguage::add_global_constant(const StringName &p_variable, const Variant &p_value) {
 	_add_global(p_variable, p_value);
 }
 
-void PDScriptLanguage::add_named_global_constant(const StringName &p_name, const Variant &p_value) {
+void PScriptLanguage::add_named_global_constant(const StringName &p_name, const Variant &p_value) {
 	named_globals[p_name] = p_value;
 }
 
-void PDScriptLanguage::remove_named_global_constant(const StringName &p_name) {
+void PScriptLanguage::remove_named_global_constant(const StringName &p_name) {
 	ERR_FAIL_COND(!named_globals.has(p_name));
 	named_globals.erase(p_name);
 }
 
-void PDScriptLanguage::init() {
+void PScriptLanguage::init() {
 	//populate global constants
 	int gcc = GlobalConstants::get_global_constant_count();
 	for (int i = 0; i < gcc; i++) {
@@ -1419,7 +1419,7 @@ void PDScriptLanguage::init() {
 		if (globals.has(n)) {
 			continue;
 		}
-		Ref<PDScriptNativeClass> nc = memnew(PDScriptNativeClass(E->get()));
+		Ref<PScriptNativeClass> nc = memnew(PScriptNativeClass(E->get()));
 		_add_global(n, nc);
 	}
 
@@ -1432,24 +1432,24 @@ void PDScriptLanguage::init() {
 	}
 }
 
-String PDScriptLanguage::get_type() const {
-	return "PDScript";
+String PScriptLanguage::get_type() const {
+	return "PScript";
 }
-String PDScriptLanguage::get_extension() const {
-	return "pd";
+String PScriptLanguage::get_extension() const {
+	return "p";
 }
-Error PDScriptLanguage::execute_file(const String &p_path) {
+Error PScriptLanguage::execute_file(const String &p_path) {
 	// ??
 	return OK;
 }
-void PDScriptLanguage::finish() {
+void PScriptLanguage::finish() {
 }
 
-void PDScriptLanguage::profiling_start() {
+void PScriptLanguage::profiling_start() {
 #ifdef DEBUG_ENABLED
 	lock.lock();
 
-	SelfList<PDScriptFunction> *elem = function_list.first();
+	SelfList<PScriptFunction> *elem = function_list.first();
 	while (elem) {
 		elem->self()->profile.call_count.set(0);
 		elem->self()->profile.self_time.set(0);
@@ -1468,7 +1468,7 @@ void PDScriptLanguage::profiling_start() {
 #endif
 }
 
-void PDScriptLanguage::profiling_stop() {
+void PScriptLanguage::profiling_stop() {
 #ifdef DEBUG_ENABLED
 	lock.lock();
 	profiling = false;
@@ -1476,12 +1476,12 @@ void PDScriptLanguage::profiling_stop() {
 #endif
 }
 
-int PDScriptLanguage::profiling_get_accumulated_data(ProfilingInfo *p_info_arr, int p_info_max) {
+int PScriptLanguage::profiling_get_accumulated_data(ProfilingInfo *p_info_arr, int p_info_max) {
 	int current = 0;
 #ifdef DEBUG_ENABLED
 	lock.lock();
 
-	SelfList<PDScriptFunction> *elem = function_list.first();
+	SelfList<PScriptFunction> *elem = function_list.first();
 	while (elem) {
 		if (current >= p_info_max) {
 			break;
@@ -1500,13 +1500,13 @@ int PDScriptLanguage::profiling_get_accumulated_data(ProfilingInfo *p_info_arr, 
 	return current;
 }
 
-int PDScriptLanguage::profiling_get_frame_data(ProfilingInfo *p_info_arr, int p_info_max) {
+int PScriptLanguage::profiling_get_frame_data(ProfilingInfo *p_info_arr, int p_info_max) {
 	int current = 0;
 
 #ifdef DEBUG_ENABLED
 	lock.lock();
 
-	SelfList<PDScriptFunction> *elem = function_list.first();
+	SelfList<PScriptFunction> *elem = function_list.first();
 	while (elem) {
 		if (current >= p_info_max) {
 			break;
@@ -1527,13 +1527,13 @@ int PDScriptLanguage::profiling_get_frame_data(ProfilingInfo *p_info_arr, int p_
 	return current;
 }
 
-struct PDScriptDepSort {
+struct PScriptDepSort {
 	//must support sorting so inheritance works properly (parent must be reloaded first)
-	bool operator()(const Ref<PDScript> &A, const Ref<PDScript> &B) const {
+	bool operator()(const Ref<PScript> &A, const Ref<PScript> &B) const {
 		if (A == B) {
 			return false; //shouldn't happen but..
 		}
-		const PDScript *I = B->get_base().ptr();
+		const PScript *I = B->get_base().ptr();
 		while (I) {
 			if (I == A.ptr()) {
 				// A is a base of B
@@ -1547,18 +1547,18 @@ struct PDScriptDepSort {
 	}
 };
 
-void PDScriptLanguage::reload_all_scripts() {
+void PScriptLanguage::reload_all_scripts() {
 #ifdef DEBUG_ENABLED
-	print_verbose("PDScript: Reloading all scripts");
+	print_verbose("PScript: Reloading all scripts");
 	lock.lock();
 
-	List<Ref<PDScript>> scripts;
+	List<Ref<PScript>> scripts;
 
-	SelfList<PDScript> *elem = script_list.first();
+	SelfList<PScript> *elem = script_list.first();
 	while (elem) {
 		if (elem->self()->get_path().is_resource_file()) {
-			print_verbose("PDScript: Found: " + elem->self()->get_path());
-			scripts.push_back(Ref<PDScript>(elem->self())); //cast to pdscript to avoid being erased by accident
+			print_verbose("PScript: Found: " + elem->self()->get_path());
+			scripts.push_back(Ref<PScript>(elem->self())); //cast to pscript to avoid being erased by accident
 		}
 		elem = elem->next();
 	}
@@ -1567,27 +1567,27 @@ void PDScriptLanguage::reload_all_scripts() {
 
 	//as scripts are going to be reloaded, must proceed without locking here
 
-	scripts.sort_custom<PDScriptDepSort>(); //update in inheritance dependency order
+	scripts.sort_custom<PScriptDepSort>(); //upate in inheritance dependency order
 
-	for (List<Ref<PDScript>>::Element *E = scripts.front(); E; E = E->next()) {
-		print_verbose("PDScript: Reloading: " + E->get()->get_path());
+	for (List<Ref<PScript>>::Element *E = scripts.front(); E; E = E->next()) {
+		print_verbose("PScript: Reloading: " + E->get()->get_path());
 		E->get()->load_source_code(E->get()->get_path());
 		E->get()->reload(true);
 	}
 #endif
 }
 
-void PDScriptLanguage::reload_tool_script(const Ref<Script> &p_script, bool p_soft_reload) {
+void PScriptLanguage::reload_tool_script(const Ref<Script> &p_script, bool p_soft_reload) {
 #ifdef DEBUG_ENABLED
 
 	lock.lock();
 
-	List<Ref<PDScript>> scripts;
+	List<Ref<PScript>> scripts;
 
-	SelfList<PDScript> *elem = script_list.first();
+	SelfList<PScript> *elem = script_list.first();
 	while (elem) {
 		if (elem->self()->get_path().is_resource_file()) {
-			scripts.push_back(Ref<PDScript>(elem->self())); //cast to pdscript to avoid being erased by accident
+			scripts.push_back(Ref<PScript>(elem->self())); //cast to pscript to avoid being erased by accident
 		}
 		elem = elem->next();
 	}
@@ -1596,13 +1596,13 @@ void PDScriptLanguage::reload_tool_script(const Ref<Script> &p_script, bool p_so
 
 	//when someone asks you why dynamically typed languages are easier to write....
 
-	RBMap<Ref<PDScript>, RBMap<ObjectID, List<Pair<StringName, Variant>>>> to_reload;
+	RBMap<Ref<PScript>, RBMap<ObjectID, List<Pair<StringName, Variant>>>> to_reload;
 
 	//as scripts are going to be reloaded, must proceed without locking here
 
-	scripts.sort_custom<PDScriptDepSort>(); //update in inheritance dependency order
+	scripts.sort_custom<PScriptDepSort>(); //upate in inheritance dependency order
 
-	for (List<Ref<PDScript>>::Element *E = scripts.front(); E; E = E->next()) {
+	for (List<Ref<PScript>>::Element *E = scripts.front(); E; E = E->next()) {
 		bool reload = E->get() == p_script || to_reload.has(E->get()->get_base());
 
 		if (!reload) {
@@ -1652,8 +1652,8 @@ void PDScriptLanguage::reload_tool_script(const Ref<Script> &p_script, bool p_so
 		}
 	}
 
-	for (RBMap<Ref<PDScript>, RBMap<ObjectID, List<Pair<StringName, Variant>>>>::Element *E = to_reload.front(); E; E = E->next()) {
-		Ref<PDScript> scr = E->key();
+	for (RBMap<Ref<PScript>, RBMap<ObjectID, List<Pair<StringName, Variant>>>>::Element *E = to_reload.front(); E; E = E->next()) {
+		Ref<PScript> scr = E->key();
 		scr->reload(p_soft_reload);
 
 		//restore state if saved
@@ -1701,14 +1701,14 @@ void PDScriptLanguage::reload_tool_script(const Ref<Script> &p_script, bool p_so
 #endif
 }
 
-void PDScriptLanguage::frame() {
+void PScriptLanguage::frame() {
 	calls = 0;
 
 #ifdef DEBUG_ENABLED
 	if (profiling) {
 		lock.lock();
 
-		SelfList<PDScriptFunction> *elem = function_list.first();
+		SelfList<PScriptFunction> *elem = function_list.first();
 		while (elem) {
 			elem->self()->profile.last_frame_call_count = elem->self()->profile.frame_call_count.get();
 			elem->self()->profile.last_frame_self_time = elem->self()->profile.frame_self_time.get();
@@ -1726,7 +1726,7 @@ void PDScriptLanguage::frame() {
 }
 
 /* EDITOR FUNCTIONS */
-void PDScriptLanguage::get_reserved_words(List<String> *p_words) const {
+void PScriptLanguage::get_reserved_words(List<String> *p_words) const {
 	static const char *_reserved_words[] = {
 		// operators
 		"and",
@@ -1788,12 +1788,12 @@ void PDScriptLanguage::get_reserved_words(List<String> *p_words) const {
 		w++;
 	}
 
-	for (int i = 0; i < PDScriptFunctions::FUNC_MAX; i++) {
-		p_words->push_back(PDScriptFunctions::get_func_name(PDScriptFunctions::Function(i)));
+	for (int i = 0; i < PScriptFunctions::FUNC_MAX; i++) {
+		p_words->push_back(PScriptFunctions::get_func_name(PScriptFunctions::Function(i)));
 	}
 }
 
-bool PDScriptLanguage::is_control_flow_keyword(String p_keyword) const {
+bool PScriptLanguage::is_control_flow_keyword(String p_keyword) const {
 	return p_keyword == "break" ||
 			p_keyword == "continue" ||
 			p_keyword == "elif" ||
@@ -1806,11 +1806,11 @@ bool PDScriptLanguage::is_control_flow_keyword(String p_keyword) const {
 			p_keyword == "while";
 }
 
-bool PDScriptLanguage::handles_global_class_type(const String &p_type) const {
-	return p_type == "PDScript";
+bool PScriptLanguage::handles_global_class_type(const String &p_type) const {
+	return p_type == "PScript";
 }
 
-String PDScriptLanguage::get_global_class_name(const String &p_path, String *r_base_type, String *r_icon_path) const {
+String PScriptLanguage::get_global_class_name(const String &p_path, String *r_base_type, String *r_icon_path) const {
 	PoolVector<uint8_t> sourcef;
 	Error err;
 	FileAccessRef f = FileAccess::open(p_path, FileAccess::READ, &err);
@@ -1820,11 +1820,11 @@ String PDScriptLanguage::get_global_class_name(const String &p_path, String *r_b
 
 	String source = f->get_as_utf8_string();
 
-	PDScriptParser parser;
+	PScriptParser parser;
 	parser.parse(source, p_path.get_base_dir(), true, p_path, false, nullptr, true);
 
-	if (parser.get_parse_tree() && parser.get_parse_tree()->type == PDScriptParser::Node::TYPE_CLASS) {
-		const PDScriptParser::ClassNode *c = static_cast<const PDScriptParser::ClassNode *>(parser.get_parse_tree());
+	if (parser.get_parse_tree() && parser.get_parse_tree()->type == PScriptParser::Node::TYPE_CLASS) {
+		const PScriptParser::ClassNode *c = static_cast<const PScriptParser::ClassNode *>(parser.get_parse_tree());
 		if (r_icon_path) {
 			if (c->icon_path.empty() || c->icon_path.is_abs_path()) {
 				*r_icon_path = c->icon_path;
@@ -1833,9 +1833,9 @@ String PDScriptLanguage::get_global_class_name(const String &p_path, String *r_b
 			}
 		}
 		if (r_base_type) {
-			const PDScriptParser::ClassNode *subclass = c;
+			const PScriptParser::ClassNode *subclass = c;
 			String path = p_path;
-			PDScriptParser subparser;
+			PScriptParser subparser;
 			while (subclass) {
 				if (subclass->extends_used) {
 					if (subclass->extends_file) {
@@ -1864,15 +1864,15 @@ String PDScriptLanguage::get_global_class_name(const String &p_path, String *r_b
 								break;
 							}
 							path = subpath;
-							if (!subparser.get_parse_tree() || subparser.get_parse_tree()->type != PDScriptParser::Node::TYPE_CLASS) {
+							if (!subparser.get_parse_tree() || subparser.get_parse_tree()->type != PScriptParser::Node::TYPE_CLASS) {
 								break;
 							}
-							subclass = static_cast<const PDScriptParser::ClassNode *>(subparser.get_parse_tree());
+							subclass = static_cast<const PScriptParser::ClassNode *>(subparser.get_parse_tree());
 
 							while (extend_classes.size() > 0) {
 								bool found = false;
 								for (int i = 0; i < subclass->subclasses.size(); i++) {
-									const PDScriptParser::ClassNode *inner_class = subclass->subclasses[i];
+									const PScriptParser::ClassNode *inner_class = subclass->subclasses[i];
 									if (inner_class->name == extend_classes[0]) {
 										extend_classes.remove(0);
 										found = true;
@@ -1905,7 +1905,7 @@ String PDScriptLanguage::get_global_class_name(const String &p_path, String *r_b
 }
 
 #ifdef DEBUG_ENABLED
-String PDScriptWarning::get_message() const {
+String PScriptWarning::get_message() const {
 #define CHECK_SYMBOLS(m_amount) ERR_FAIL_COND_V(symbols.size() < m_amount, String());
 
 	switch (code) {
@@ -1949,7 +1949,7 @@ String PDScriptWarning::get_message() const {
 		} break;
 		case FUNCTION_MAY_YIELD: {
 			CHECK_SYMBOLS(1);
-			return "Assigned variable is typed but the function '" + symbols[0] + "()' may yield and return a PDScriptFunctionState instead.";
+			return "Assigned variable is typed but the function '" + symbols[0] + "()' may yield and return a PScriptFunctionState instead.";
 		} break;
 		case VARIABLE_CONFLICTS_FUNCTION: {
 			CHECK_SYMBOLS(1);
@@ -2019,16 +2019,16 @@ String PDScriptWarning::get_message() const {
 		case WARNING_MAX:
 			break; // Can't happen, but silences warning
 	}
-	ERR_FAIL_V_MSG(String(), "Invalid PDScript warning code: " + get_name_from_code(code) + ".");
+	ERR_FAIL_V_MSG(String(), "Invalid PScript warning code: " + get_name_from_code(code) + ".");
 
 #undef CHECK_SYMBOLS
 }
 
-String PDScriptWarning::get_name() const {
+String PScriptWarning::get_name() const {
 	return get_name_from_code(code);
 }
 
-String PDScriptWarning::get_name_from_code(Code p_code) {
+String PScriptWarning::get_name_from_code(Code p_code) {
 	ERR_FAIL_COND_V(p_code < 0 || p_code >= WARNING_MAX, String());
 
 	static const char *names[] = {
@@ -2066,27 +2066,27 @@ String PDScriptWarning::get_name_from_code(Code p_code) {
 	return names[(int)p_code];
 }
 
-PDScriptWarning::Code PDScriptWarning::get_code_from_name(const String &p_name) {
+PScriptWarning::Code PScriptWarning::get_code_from_name(const String &p_name) {
 	for (int i = 0; i < WARNING_MAX; i++) {
 		if (get_name_from_code((Code)i) == p_name) {
 			return (Code)i;
 		}
 	}
 
-	ERR_FAIL_V_MSG(WARNING_MAX, "Invalid PDScript warning name: " + p_name);
+	ERR_FAIL_V_MSG(WARNING_MAX, "Invalid PScript warning name: " + p_name);
 }
 
 #endif // DEBUG_ENABLED
 
 #if !defined(NO_THREADS)
-thread_local PDScriptLanguage::CallStack PDScriptLanguage::_call_stack;
-thread_local int PDScriptLanguage::_debug_parse_err_line = -1;
-thread_local String PDScriptLanguage::_debug_parse_err_file;
-thread_local String PDScriptLanguage::_debug_error;
+thread_local PScriptLanguage::CallStack PScriptLanguage::_call_stack;
+thread_local int PScriptLanguage::_debug_parse_err_line = -1;
+thread_local String PScriptLanguage::_debug_parse_err_file;
+thread_local String PScriptLanguage::_debug_error;
 #endif
 
-PDScriptLanguage::PDScriptLanguage() {
-	PDScriptTokenizer::initialize();
+PScriptLanguage::PScriptLanguage() {
+	PScriptTokenizer::initialize();
 
 	calls = 0;
 	ERR_FAIL_COND(singleton);
@@ -2103,8 +2103,8 @@ PDScriptLanguage::PDScriptLanguage() {
 	profiling = false;
 	script_frame_time = 0;
 
-	int dmcs = GLOBAL_DEF("debug/settings/pdscript/max_call_stack", 1024);
-	ProjectSettings::get_singleton()->set_custom_property_info("debug/settings/pdscript/max_call_stack", PropertyInfo(Variant::INT, "debug/settings/pdscript/max_call_stack", PROPERTY_HINT_RANGE, "1024,4096,1,or_greater")); //minimum is 1024
+	int dmcs = GLOBAL_DEF("debug/settings/pscript/max_call_stack", 1024);
+	ProjectSettings::get_singleton()->set_custom_property_info("debug/settings/pscript/max_call_stack", PropertyInfo(Variant::INT, "debug/settings/pscript/max_call_stack", PROPERTY_HINT_RANGE, "1024,4096,1,or_greater")); //minimum is 1024
 
 	if (ScriptDebugger::get_singleton()) {
 		//debugging enabled!
@@ -2115,48 +2115,48 @@ PDScriptLanguage::PDScriptLanguage() {
 	}
 
 #ifdef DEBUG_ENABLED
-	GLOBAL_DEF("debug/pdscript/warnings/enable", true);
-	GLOBAL_DEF("debug/pdscript/warnings/treat_warnings_as_errors", false);
-	GLOBAL_DEF("debug/pdscript/warnings/exclude_addons", true);
-	GLOBAL_DEF("debug/pdscript/completion/autocomplete_setters_and_getters", false);
-	for (int i = 0; i < (int)PDScriptWarning::WARNING_MAX; i++) {
-		String warning = PDScriptWarning::get_name_from_code((PDScriptWarning::Code)i).to_lower();
+	GLOBAL_DEF("debug/pscript/warnings/enable", true);
+	GLOBAL_DEF("debug/pscript/warnings/treat_warnings_as_errors", false);
+	GLOBAL_DEF("debug/pscript/warnings/exclude_addons", true);
+	GLOBAL_DEF("debug/pscript/completion/autocomplete_setters_and_getters", false);
+	for (int i = 0; i < (int)PScriptWarning::WARNING_MAX; i++) {
+		String warning = PScriptWarning::get_name_from_code((PScriptWarning::Code)i).to_lower();
 
 		bool default_enabled = !warning.begins_with("unsafe_") &&
-				i != PDScriptWarning::UNUSED_CLASS_VARIABLE &&
-				i != PDScriptWarning::UNUSED_ARGUMENT &&
-				i != PDScriptWarning::RETURN_VALUE_DISCARDED &&
-				i != PDScriptWarning::INTEGER_DIVISION &&
-				i != PDScriptWarning::UNUSED_SIGNAL;
+				i != PScriptWarning::UNUSED_CLASS_VARIABLE &&
+				i != PScriptWarning::UNUSED_ARGUMENT &&
+				i != PScriptWarning::RETURN_VALUE_DISCARDED &&
+				i != PScriptWarning::INTEGER_DIVISION &&
+				i != PScriptWarning::UNUSED_SIGNAL;
 
-		GLOBAL_DEF("debug/pdscript/warnings/" + warning, default_enabled);
+		GLOBAL_DEF("debug/pscript/warnings/" + warning, default_enabled);
 	}
 #endif // DEBUG_ENABLED
 }
 
-PDScriptLanguage::~PDScriptLanguage() {
-	PDScriptTokenizer::terminate();
+PScriptLanguage::~PScriptLanguage() {
+	PScriptTokenizer::terminate();
 
 	_call_stack.free();
 
 	// Clear dependencies between scripts, to ensure cyclic references are broken (to avoid leaks at exit).
-	SelfList<PDScript> *s = script_list.first();
+	SelfList<PScript> *s = script_list.first();
 	while (s) {
-		PDScript *script = s->self();
+		PScript *script = s->self();
 		// This ensures the current script is not released before we can check what's the next one
 		// in the list (we can't get the next upfront because we don't know if the reference breaking
 		// will cause it -or any other after it, for that matter- to be released so the next one
 		// is not the same as before).
 		script->reference();
 
-		for (RBMap<StringName, PDScriptFunction *>::Element *E = script->member_functions.front(); E; E = E->next()) {
-			PDScriptFunction *func = E->get();
+		for (RBMap<StringName, PScriptFunction *>::Element *E = script->member_functions.front(); E; E = E->next()) {
+			PScriptFunction *func = E->get();
 			for (int i = 0; i < func->argument_types.size(); i++) {
 				func->argument_types.write[i].script_type_ref = Ref<Script>();
 			}
 			func->return_type.script_type_ref = Ref<Script>();
 		}
-		for (RBMap<StringName, PDScript::MemberInfo>::Element *E = script->member_indices.front(); E; E = E->next()) {
+		for (RBMap<StringName, PScript::MemberInfo>::Element *E = script->member_indices.front(); E; E = E->next()) {
 			E->get().data_type.script_type_ref = Ref<Script>();
 		}
 
@@ -2167,36 +2167,36 @@ PDScriptLanguage::~PDScriptLanguage() {
 	singleton = nullptr;
 }
 
-void PDScriptLanguage::add_orphan_subclass(const String &p_qualified_name, const ObjectID &p_subclass) {
+void PScriptLanguage::add_orphan_subclass(const String &p_qualified_name, const ObjectID &p_subclass) {
 	orphan_subclasses[p_qualified_name] = p_subclass;
 }
 
-Ref<PDScript> PDScriptLanguage::get_orphan_subclass(const String &p_qualified_name) {
+Ref<PScript> PScriptLanguage::get_orphan_subclass(const String &p_qualified_name) {
 	RBMap<String, ObjectID>::Element *orphan_subclass_element = orphan_subclasses.find(p_qualified_name);
 	if (!orphan_subclass_element) {
-		return Ref<PDScript>();
+		return Ref<PScript>();
 	}
 	ObjectID orphan_subclass = orphan_subclass_element->get();
 	Object *obj = ObjectDB::get_instance(orphan_subclass);
 	orphan_subclasses.erase(orphan_subclass_element);
 	if (!obj) {
-		return Ref<PDScript>();
+		return Ref<PScript>();
 	}
-	return Ref<PDScript>(Object::cast_to<PDScript>(obj));
+	return Ref<PScript>(Object::cast_to<PScript>(obj));
 }
 
 /*************** RESOURCE ***************/
 
-RES ResourceFormatLoaderPDScript::load(const String &p_path, const String &p_original_path, Error *r_error, bool p_no_subresource_cache) {
+RES ResourceFormatLoaderPScript::load(const String &p_path, const String &p_original_path, Error *r_error, bool p_no_subresource_cache) {
 	if (r_error) {
 		*r_error = ERR_FILE_CANT_OPEN;
 	}
 
-	PDScript *script = memnew(PDScript);
+	PScript *script = memnew(PScript);
 
-	Ref<PDScript> scriptres(script);
+	Ref<PScript> scriptres(script);
 
-	if (p_path.ends_with(".pde") || p_path.ends_with(".pdc")) {
+	if (p_path.ends_with(".pe") || p_path.ends_with(".pc")) {
 		script->set_script_path(p_original_path); // script needs this.
 		script->set_path(p_original_path, true);
 		Error err = script->load_byte_code(p_path);
@@ -2218,25 +2218,25 @@ RES ResourceFormatLoaderPDScript::load(const String &p_path, const String &p_ori
 	return scriptres;
 }
 
-void ResourceFormatLoaderPDScript::get_recognized_extensions(List<String> *p_extensions) const {
-	p_extensions->push_back("pd");
-	p_extensions->push_back("pdc");
-	p_extensions->push_back("pde");
+void ResourceFormatLoaderPScript::get_recognized_extensions(List<String> *p_extensions) const {
+	p_extensions->push_back("p");
+	p_extensions->push_back("pc");
+	p_extensions->push_back("pe");
 }
 
-bool ResourceFormatLoaderPDScript::handles_type(const String &p_type) const {
-	return (p_type == "Script" || p_type == "PDScript");
+bool ResourceFormatLoaderPScript::handles_type(const String &p_type) const {
+	return (p_type == "Script" || p_type == "PScript");
 }
 
-String ResourceFormatLoaderPDScript::get_resource_type(const String &p_path) const {
+String ResourceFormatLoaderPScript::get_resource_type(const String &p_path) const {
 	String el = p_path.get_extension().to_lower();
-	if (el == "pd" || el == "pdc" || el == "pde") {
-		return "PDScript";
+	if (el == "p" || el == "pc" || el == "pe") {
+		return "PScript";
 	}
 	return "";
 }
 
-void ResourceFormatLoaderPDScript::get_dependencies(const String &p_path, List<String> *p_dependencies, bool p_add_types) {
+void ResourceFormatLoaderPScript::get_dependencies(const String &p_path, List<String> *p_dependencies, bool p_add_types) {
 	FileAccessRef file = FileAccess::open(p_path, FileAccess::READ);
 	ERR_FAIL_COND_MSG(!file, "Cannot open file '" + p_path + "'.");
 
@@ -2245,7 +2245,7 @@ void ResourceFormatLoaderPDScript::get_dependencies(const String &p_path, List<S
 		return;
 	}
 
-	PDScriptParser parser;
+	PScriptParser parser;
 	if (OK != parser.parse(source, p_path.get_base_dir(), true, p_path, false, nullptr, true)) {
 		return;
 	}
@@ -2255,8 +2255,8 @@ void ResourceFormatLoaderPDScript::get_dependencies(const String &p_path, List<S
 	}
 }
 
-Error ResourceFormatSaverPDScript::save(const String &p_path, const RES &p_resource, uint32_t p_flags) {
-	Ref<PDScript> sqscr = p_resource;
+Error ResourceFormatSaverPScript::save(const String &p_path, const RES &p_resource, uint32_t p_flags) {
+	Ref<PScript> sqscr = p_resource;
 	ERR_FAIL_COND_V(sqscr.is_null(), ERR_INVALID_PARAMETER);
 
 	String source = sqscr->get_source_code();
@@ -2264,7 +2264,7 @@ Error ResourceFormatSaverPDScript::save(const String &p_path, const RES &p_resou
 	Error err;
 	FileAccess *file = FileAccess::open(p_path, FileAccess::WRITE, &err);
 
-	ERR_FAIL_COND_V_MSG(err, err, "Cannot save PDScript file '" + p_path + "'.");
+	ERR_FAIL_COND_V_MSG(err, err, "Cannot save PScript file '" + p_path + "'.");
 
 	file->store_string(source);
 	if (file->get_error() != OK && file->get_error() != ERR_FILE_EOF) {
@@ -2275,17 +2275,17 @@ Error ResourceFormatSaverPDScript::save(const String &p_path, const RES &p_resou
 	memdelete(file);
 
 	if (ScriptServer::is_reload_scripts_on_save_enabled()) {
-		PDScriptLanguage::get_singleton()->reload_tool_script(p_resource, false);
+		PScriptLanguage::get_singleton()->reload_tool_script(p_resource, false);
 	}
 
 	return OK;
 }
 
-void ResourceFormatSaverPDScript::get_recognized_extensions(const RES &p_resource, List<String> *p_extensions) const {
-	if (Object::cast_to<PDScript>(*p_resource)) {
-		p_extensions->push_back("pd");
+void ResourceFormatSaverPScript::get_recognized_extensions(const RES &p_resource, List<String> *p_extensions) const {
+	if (Object::cast_to<PScript>(*p_resource)) {
+		p_extensions->push_back("p");
 	}
 }
-bool ResourceFormatSaverPDScript::recognize(const RES &p_resource) const {
-	return Object::cast_to<PDScript>(*p_resource) != nullptr;
+bool ResourceFormatSaverPScript::recognize(const RES &p_resource) const {
+	return Object::cast_to<PScript>(*p_resource) != nullptr;
 }

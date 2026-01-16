@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  pdscript_language_server.cpp                                         */
+/*  pscript_language_server.cpp                                         */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,7 +29,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "pdscript_language_server.h"
+#include "pscript_language_server.h"
 
 #include "core/os/file_access.h"
 #include "core/os/os.h"
@@ -37,9 +37,9 @@
 #include "editor/editor_node.h"
 #include "editor/editor_settings.h"
 
-int PDScriptLanguageServer::port_override = -1;
+int PScriptLanguageServer::port_override = -1;
 
-PDScriptLanguageServer::PDScriptLanguageServer() {
+PScriptLanguageServer::PScriptLanguageServer() {
 	enabled = false;
 	thread_running = false;
 	started = false;
@@ -57,7 +57,7 @@ PDScriptLanguageServer::PDScriptLanguageServer() {
 	_EDITOR_DEF("network/language_server/poll_limit_usec", poll_limit_usec);
 }
 
-void PDScriptLanguageServer::_notification(int p_what) {
+void PScriptLanguageServer::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE:
 			start();
@@ -76,7 +76,7 @@ void PDScriptLanguageServer::_notification(int p_what) {
 			}
 
 			String host = String(_EDITOR_GET("network/language_server/remote_host"));
-			int port = (PDScriptLanguageServer::port_override > -1) ? PDScriptLanguageServer::port_override : (int)_EDITOR_GET("network/language_server/remote_port");
+			int port = (PScriptLanguageServer::port_override > -1) ? PScriptLanguageServer::port_override : (int)_EDITOR_GET("network/language_server/remote_port");
 			bool use_thread = (bool)_EDITOR_GET("network/language_server/use_thread");
 			int remote_poll_limit = (int)_EDITOR_GET("network/language_server/poll_limit_usec");
 			if (host != this->host || port != this->port || use_thread != this->use_thread || remote_poll_limit != poll_limit_usec) {
@@ -87,8 +87,8 @@ void PDScriptLanguageServer::_notification(int p_what) {
 	}
 }
 
-void PDScriptLanguageServer::thread_main(void *p_userdata) {
-	PDScriptLanguageServer *self = static_cast<PDScriptLanguageServer *>(p_userdata);
+void PScriptLanguageServer::thread_main(void *p_userdata) {
+	PScriptLanguageServer *self = static_cast<PScriptLanguageServer *>(p_userdata);
 	while (self->thread_running) {
 		// Poll 20 times per second
 		self->protocol.poll(self->poll_limit_usec);
@@ -96,10 +96,10 @@ void PDScriptLanguageServer::thread_main(void *p_userdata) {
 	}
 }
 
-void PDScriptLanguageServer::start() {
+void PScriptLanguageServer::start() {
 	enabled = _EDITOR_GET("network/language_server/enabled");
 	host = String(_EDITOR_GET("network/language_server/remote_host"));
-	port = (PDScriptLanguageServer::port_override > -1) ? PDScriptLanguageServer::port_override : (int)_EDITOR_GET("network/language_server/remote_port");
+	port = (PScriptLanguageServer::port_override > -1) ? PScriptLanguageServer::port_override : (int)_EDITOR_GET("network/language_server/remote_port");
 	use_thread = (bool)_EDITOR_GET("network/language_server/use_thread");
 	poll_limit_usec = (int)_EDITOR_GET("network/language_server/poll_limit_usec");
 
@@ -108,17 +108,17 @@ void PDScriptLanguageServer::start() {
 	}
 
 	if (protocol.start(port, IP_Address(host)) == OK) {
-		EditorNode::get_log()->add_message("--- PDScript language server started on port " + itos(port) + " ---", EditorLog::MSG_TYPE_EDITOR);
+		EditorNode::get_log()->add_message("--- PScript language server started on port " + itos(port) + " ---", EditorLog::MSG_TYPE_EDITOR);
 		if (use_thread) {
 			thread_running = true;
-			thread.start(PDScriptLanguageServer::thread_main, this);
+			thread.start(PScriptLanguageServer::thread_main, this);
 		}
 		set_process_internal(!use_thread);
 		started = true;
 	}
 }
 
-void PDScriptLanguageServer::stop() {
+void PScriptLanguageServer::stop() {
 	if (!enabled) {
 		return;
 	}
@@ -130,11 +130,11 @@ void PDScriptLanguageServer::stop() {
 	}
 	protocol.stop();
 	started = false;
-	EditorNode::get_log()->add_message("--- PDScript language server stopped ---", EditorLog::MSG_TYPE_EDITOR);
+	EditorNode::get_log()->add_message("--- PScript language server stopped ---", EditorLog::MSG_TYPE_EDITOR);
 }
 
-void register_pd_lsp_types() {
-	ClassDB::register_class<PDScriptLanguageProtocol>();
-	ClassDB::register_class<PDScriptTextDocument>();
-	ClassDB::register_class<PDScriptWorkspace>();
+void register_p_lsp_types() {
+	ClassDB::register_class<PScriptLanguageProtocol>();
+	ClassDB::register_class<PScriptTextDocument>();
+	ClassDB::register_class<PScriptWorkspace>();
 }

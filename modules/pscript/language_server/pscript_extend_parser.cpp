@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  pdscript_extend_parser.cpp                                           */
+/*  pscript_extend_parser.cpp                                           */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,21 +29,21 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "pdscript_extend_parser.h"
+#include "pscript_extend_parser.h"
 
-#include "../pdscript.h"
+#include "../pscript.h"
 #include "core/io/json.h"
-#include "pdscript_language_protocol.h"
-#include "pdscript_workspace.h"
+#include "pscript_language_protocol.h"
+#include "pscript_workspace.h"
 
-void ExtendPDScriptParser::update_diagnostics() {
+void ExtendPScriptParser::upate_diagnostics() {
 	diagnostics.clear();
 
 	if (has_error()) {
 		lsp::Diagnostic diagnostic;
 		diagnostic.severity = lsp::DiagnosticSeverity::Error;
 		diagnostic.message = get_error();
-		diagnostic.source = "pdscript";
+		diagnostic.source = "pscript";
 		diagnostic.code = -1;
 		lsp::Range range;
 		lsp::Position pos;
@@ -58,13 +58,13 @@ void ExtendPDScriptParser::update_diagnostics() {
 		diagnostics.push_back(diagnostic);
 	}
 
-	const List<PDScriptWarning> &warnings = get_warnings();
-	for (const List<PDScriptWarning>::Element *E = warnings.front(); E; E = E->next()) {
-		const PDScriptWarning &warning = E->get();
+	const List<PScriptWarning> &warnings = get_warnings();
+	for (const List<PScriptWarning>::Element *E = warnings.front(); E; E = E->next()) {
+		const PScriptWarning &warning = E->get();
 		lsp::Diagnostic diagnostic;
 		diagnostic.severity = lsp::DiagnosticSeverity::Warning;
 		diagnostic.message = "(" + warning.get_name() + "): " + warning.get_message();
-		diagnostic.source = "pdscript";
+		diagnostic.source = "pscript";
 		diagnostic.code = warning.code;
 		lsp::Range range;
 		lsp::Position pos;
@@ -80,15 +80,15 @@ void ExtendPDScriptParser::update_diagnostics() {
 	}
 }
 
-void ExtendPDScriptParser::update_symbols() {
+void ExtendPScriptParser::upate_symbols() {
 	members.clear();
 
-	const PDScriptParser::Node *head = get_parse_tree();
+	const PScriptParser::Node *head = get_parse_tree();
 
 	if (head && head->type == Node::TYPE_CLASS) {
-		const PDScriptParser::ClassNode *pdclass = static_cast<const PDScriptParser::ClassNode *>(head);
+		const PScriptParser::ClassNode *pclass = static_cast<const PScriptParser::ClassNode *>(head);
 
-		parse_class_symbol(pdclass, class_symbol);
+		parse_class_symbol(pclass, class_symbol);
 
 		for (int i = 0; i < class_symbol.children.size(); i++) {
 			const lsp::DocumentSymbol &symbol = class_symbol.children[i];
@@ -107,17 +107,17 @@ void ExtendPDScriptParser::update_symbols() {
 	}
 }
 
-void ExtendPDScriptParser::update_document_links(const String &p_code) {
+void ExtendPScriptParser::upate_document_links(const String &p_code) {
 	document_links.clear();
 
-	PDScriptTokenizerText tokenizer;
+	PScriptTokenizerText tokenizer;
 	FileAccessRef fs = FileAccess::create(FileAccess::ACCESS_RESOURCES);
 	tokenizer.set_code(p_code);
 	while (true) {
-		PDScriptTokenizerText::Token token = tokenizer.get_token();
-		if (token == PDScriptTokenizer::TK_EOF || token == PDScriptTokenizer::TK_ERROR) {
+		PScriptTokenizerText::Token token = tokenizer.get_token();
+		if (token == PScriptTokenizer::TK_EOF || token == PScriptTokenizer::TK_ERROR) {
 			break;
-		} else if (token == PDScriptTokenizer::TK_CONSTANT) {
+		} else if (token == PScriptTokenizer::TK_CONSTANT) {
 			const Variant &const_val = tokenizer.get_token_constant();
 			if (const_val.get_type() == Variant::STRING) {
 				String path = const_val;
@@ -129,7 +129,7 @@ void ExtendPDScriptParser::update_document_links(const String &p_code) {
 				if (exists) {
 					String value = const_val;
 					lsp::DocumentLink link;
-					link.target = PDScriptLanguageProtocol::get_singleton()->get_workspace()->get_file_uri(path);
+					link.target = PScriptLanguageProtocol::get_singleton()->get_workspace()->get_file_uri(path);
 					link.range.start.line = LINE_NUMBER_TO_INDEX(tokenizer.get_token_line());
 					link.range.end.line = link.range.start.line;
 					link.range.end.character = LINE_NUMBER_TO_INDEX(tokenizer.get_token_column());
@@ -142,7 +142,7 @@ void ExtendPDScriptParser::update_document_links(const String &p_code) {
 	}
 }
 
-void ExtendPDScriptParser::parse_class_symbol(const PDScriptParser::ClassNode *p_class, lsp::DocumentSymbol &r_symbol) {
+void ExtendPScriptParser::parse_class_symbol(const PScriptParser::ClassNode *p_class, lsp::DocumentSymbol &r_symbol) {
 	const String uri = get_uri();
 
 	r_symbol.uri = uri;
@@ -163,7 +163,7 @@ void ExtendPDScriptParser::parse_class_symbol(const PDScriptParser::ClassNode *p
 	r_symbol.documentation = parse_documentation(is_root_class ? 0 : LINE_NUMBER_TO_INDEX(p_class->line), is_root_class);
 
 	for (int i = 0; i < p_class->variables.size(); ++i) {
-		const PDScriptParser::ClassNode::Member &m = p_class->variables[i];
+		const PScriptParser::ClassNode::Member &m = p_class->variables[i];
 
 		lsp::DocumentSymbol symbol;
 		symbol.name = m.identifier;
@@ -179,7 +179,7 @@ void ExtendPDScriptParser::parse_class_symbol(const PDScriptParser::ClassNode *p
 			symbol.detail += "export ";
 		}
 		symbol.detail += "var " + m.identifier;
-		if (m.data_type.kind != PDScriptParser::DataType::UNRESOLVED) {
+		if (m.data_type.kind != PScriptParser::DataType::UNRESOLVED) {
 			symbol.detail += ": " + m.data_type.to_string();
 		}
 		if (m.default_value.get_type() != Variant::NIL) {
@@ -194,7 +194,7 @@ void ExtendPDScriptParser::parse_class_symbol(const PDScriptParser::ClassNode *p
 	}
 
 	for (int i = 0; i < p_class->_signals.size(); ++i) {
-		const PDScriptParser::ClassNode::Signal &signal = p_class->_signals[i];
+		const PScriptParser::ClassNode::Signal &signal = p_class->_signals[i];
 
 		lsp::DocumentSymbol symbol;
 		symbol.name = signal.name;
@@ -221,13 +221,13 @@ void ExtendPDScriptParser::parse_class_symbol(const PDScriptParser::ClassNode *p
 		r_symbol.children.push_back(symbol);
 	}
 
-	for (RBMap<StringName, PDScriptParser::ClassNode::Constant>::Element *E = p_class->constant_expressions.front(); E; E = E->next()) {
+	for (RBMap<StringName, PScriptParser::ClassNode::Constant>::Element *E = p_class->constant_expressions.front(); E; E = E->next()) {
 		lsp::DocumentSymbol symbol;
-		const PDScriptParser::ClassNode::Constant &c = E->value();
+		const PScriptParser::ClassNode::Constant &c = E->value();
 
 		ERR_FAIL_COND(c.expression->type != Node::TYPE_CONSTANT);
 
-		const PDScriptParser::ConstantNode *node = static_cast<const PDScriptParser::ConstantNode *>(c.expression);
+		const PScriptParser::ConstantNode *node = static_cast<const PScriptParser::ConstantNode *>(c.expression);
 
 		symbol.name = E->key();
 		symbol.kind = lsp::SymbolKind::Constant;
@@ -243,7 +243,7 @@ void ExtendPDScriptParser::parse_class_symbol(const PDScriptParser::ClassNode *p
 		symbol.script_path = path;
 
 		symbol.detail = "const " + symbol.name;
-		if (c.type.kind != PDScriptParser::DataType::UNRESOLVED) {
+		if (c.type.kind != PScriptParser::DataType::UNRESOLVED) {
 			symbol.detail += ": " + c.type.to_string();
 		}
 
@@ -253,7 +253,7 @@ void ExtendPDScriptParser::parse_class_symbol(const PDScriptParser::ClassNode *p
 			if (res.is_valid() && !res->get_path().empty()) {
 				value_text = "preload(\"" + res->get_path() + "\")";
 				if (symbol.documentation.empty()) {
-					if (RBMap<String, ExtendPDScriptParser *>::Element *S = PDScriptLanguageProtocol::get_singleton()->get_workspace()->scripts.find(res->get_path())) {
+					if (RBMap<String, ExtendPScriptParser *>::Element *S = PScriptLanguageProtocol::get_singleton()->get_workspace()->scripts.find(res->get_path())) {
 						symbol.documentation = S->get()->class_symbol.documentation;
 					}
 				}
@@ -271,28 +271,28 @@ void ExtendPDScriptParser::parse_class_symbol(const PDScriptParser::ClassNode *p
 	}
 
 	for (int i = 0; i < p_class->functions.size(); ++i) {
-		const PDScriptParser::FunctionNode *func = p_class->functions[i];
+		const PScriptParser::FunctionNode *func = p_class->functions[i];
 		lsp::DocumentSymbol symbol;
 		parse_function_symbol(func, symbol);
 		r_symbol.children.push_back(symbol);
 	}
 
 	for (int i = 0; i < p_class->static_functions.size(); ++i) {
-		const PDScriptParser::FunctionNode *func = p_class->static_functions[i];
+		const PScriptParser::FunctionNode *func = p_class->static_functions[i];
 		lsp::DocumentSymbol symbol;
 		parse_function_symbol(func, symbol);
 		r_symbol.children.push_back(symbol);
 	}
 
 	for (int i = 0; i < p_class->subclasses.size(); ++i) {
-		const PDScriptParser::ClassNode *subclass = p_class->subclasses[i];
+		const PScriptParser::ClassNode *subclass = p_class->subclasses[i];
 		lsp::DocumentSymbol symbol;
 		parse_class_symbol(subclass, symbol);
 		r_symbol.children.push_back(symbol);
 	}
 }
 
-void ExtendPDScriptParser::parse_function_symbol(const PDScriptParser::FunctionNode *p_func, lsp::DocumentSymbol &r_symbol) {
+void ExtendPScriptParser::parse_function_symbol(const PScriptParser::FunctionNode *p_func, lsp::DocumentSymbol &r_symbol) {
 	const String uri = get_uri();
 
 	r_symbol.name = p_func->name;
@@ -324,22 +324,22 @@ void ExtendPDScriptParser::parse_function_symbol(const PDScriptParser::FunctionN
 			arguments += ", ";
 		}
 		arguments += String(p_func->arguments[i]);
-		if (p_func->argument_types[i].kind != PDScriptParser::DataType::UNRESOLVED) {
+		if (p_func->argument_types[i].kind != PScriptParser::DataType::UNRESOLVED) {
 			arguments += ": " + p_func->argument_types[i].to_string();
 		}
 		int default_value_idx = i - (p_func->arguments.size() - p_func->default_values.size());
 		if (default_value_idx >= 0) {
-			const PDScriptParser::Node *current_defval_node = p_func->default_values[default_value_idx];
-			const PDScriptParser::ConstantNode *const_node = NULL;
+			const PScriptParser::Node *current_defval_node = p_func->default_values[default_value_idx];
+			const PScriptParser::ConstantNode *const_node = NULL;
 
 			if (current_defval_node->type == Node::TYPE_OPERATOR) {
-				const PDScriptParser::OperatorNode *operator_node = static_cast<const PDScriptParser::OperatorNode *>(current_defval_node);
+				const PScriptParser::OperatorNode *operator_node = static_cast<const PScriptParser::OperatorNode *>(current_defval_node);
 
 				if (operator_node->next->type == Node::TYPE_CONSTANT) {
-					const_node = static_cast<const PDScriptParser::ConstantNode *>(operator_node->next);
+					const_node = static_cast<const PScriptParser::ConstantNode *>(operator_node->next);
 				}
 			} else if (current_defval_node->type == Node::TYPE_CONSTANT) {
-				const_node = static_cast<const PDScriptParser::ConstantNode *>(current_defval_node);
+				const_node = static_cast<const PScriptParser::ConstantNode *>(current_defval_node);
 			}
 
 			if (const_node) {
@@ -349,28 +349,28 @@ void ExtendPDScriptParser::parse_function_symbol(const PDScriptParser::FunctionN
 		}
 	}
 	r_symbol.detail += arguments + ")";
-	if (p_func->return_type.kind != PDScriptParser::DataType::UNRESOLVED) {
+	if (p_func->return_type.kind != PScriptParser::DataType::UNRESOLVED) {
 		r_symbol.detail += " -> " + p_func->return_type.to_string();
 	}
 
-	List<PDScriptParser::BlockNode *> function_blocks;
-	List<PDScriptParser::BlockNode *> block_stack;
+	List<PScriptParser::BlockNode *> function_blocks;
+	List<PScriptParser::BlockNode *> block_stack;
 	block_stack.push_back(p_func->body);
 
 	while (!block_stack.empty()) {
-		PDScriptParser::BlockNode *block = block_stack[0];
+		PScriptParser::BlockNode *block = block_stack[0];
 		block_stack.pop_front();
 
 		function_blocks.push_back(block);
-		for (const List<PDScriptParser::BlockNode *>::Element *E = block->sub_blocks.front(); E; E = E->next()) {
+		for (const List<PScriptParser::BlockNode *>::Element *E = block->sub_blocks.front(); E; E = E->next()) {
 			block_stack.push_back(E->get());
 		}
 	}
 
-	for (const List<PDScriptParser::BlockNode *>::Element *B = function_blocks.front(); B; B = B->next()) {
+	for (const List<PScriptParser::BlockNode *>::Element *B = function_blocks.front(); B; B = B->next()) {
 		for (const RBMap<StringName, LocalVarNode *>::Element *E = B->get()->variables.front(); E; E = E->next()) {
 			lsp::DocumentSymbol symbol;
-			const PDScriptParser::LocalVarNode *var = E->value();
+			const PScriptParser::LocalVarNode *var = E->value();
 			symbol.name = E->key();
 			symbol.kind = lsp::SymbolKind::Variable;
 			symbol.range.start.line = LINE_NUMBER_TO_INDEX(E->get()->line);
@@ -380,7 +380,7 @@ void ExtendPDScriptParser::parse_function_symbol(const PDScriptParser::FunctionN
 			symbol.uri = uri;
 			symbol.script_path = path;
 			symbol.detail = "var " + symbol.name;
-			if (var->datatype.kind != PDScriptParser::DataType::UNRESOLVED) {
+			if (var->datatype.kind != PScriptParser::DataType::UNRESOLVED) {
 				symbol.detail += ": " + var->datatype.to_string();
 			}
 			symbol.documentation = parse_documentation(line);
@@ -389,7 +389,7 @@ void ExtendPDScriptParser::parse_function_symbol(const PDScriptParser::FunctionN
 	}
 }
 
-String ExtendPDScriptParser::parse_documentation(int p_line, bool p_docs_down) {
+String ExtendPScriptParser::parse_documentation(int p_line, bool p_docs_down) {
 	ERR_FAIL_INDEX_V(p_line, lines.size(), String());
 
 	List<String> doc_lines;
@@ -438,7 +438,7 @@ String ExtendPDScriptParser::parse_documentation(int p_line, bool p_docs_down) {
 	return doc;
 }
 
-String ExtendPDScriptParser::get_text_for_completion(const lsp::Position &p_cursor) const {
+String ExtendPScriptParser::get_text_for_completion(const lsp::Position &p_cursor) const {
 	String longthing;
 	int len = lines.size();
 	for (int i = 0; i < len; i++) {
@@ -458,7 +458,7 @@ String ExtendPDScriptParser::get_text_for_completion(const lsp::Position &p_curs
 	return longthing;
 }
 
-String ExtendPDScriptParser::get_text_for_lookup_symbol(const lsp::Position &p_cursor, const String &p_symbol, bool p_func_required) const {
+String ExtendPScriptParser::get_text_for_lookup_symbol(const lsp::Position &p_cursor, const String &p_symbol, bool p_func_required) const {
 	String longthing;
 	int len = lines.size();
 	for (int i = 0; i < len; i++) {
@@ -496,7 +496,7 @@ String ExtendPDScriptParser::get_text_for_lookup_symbol(const lsp::Position &p_c
 	return longthing;
 }
 
-String ExtendPDScriptParser::get_identifier_under_position(const lsp::Position &p_position, Vector2i &p_offset) const {
+String ExtendPScriptParser::get_identifier_under_position(const lsp::Position &p_position, Vector2i &p_offset) const {
 	ERR_FAIL_INDEX_V(p_position.line, lines.size(), "");
 	String line = lines[p_position.line];
 	if (line.empty()) {
@@ -532,11 +532,11 @@ String ExtendPDScriptParser::get_identifier_under_position(const lsp::Position &
 	return "";
 }
 
-String ExtendPDScriptParser::get_uri() const {
-	return PDScriptLanguageProtocol::get_singleton()->get_workspace()->get_file_uri(path);
+String ExtendPScriptParser::get_uri() const {
+	return PScriptLanguageProtocol::get_singleton()->get_workspace()->get_file_uri(path);
 }
 
-const lsp::DocumentSymbol *ExtendPDScriptParser::search_symbol_defined_at_line(int p_line, const lsp::DocumentSymbol &p_parent) const {
+const lsp::DocumentSymbol *ExtendPScriptParser::search_symbol_defined_at_line(int p_line, const lsp::DocumentSymbol &p_parent) const {
 	const lsp::DocumentSymbol *ret = nullptr;
 	if (p_line < p_parent.range.start.line) {
 		return ret;
@@ -553,7 +553,7 @@ const lsp::DocumentSymbol *ExtendPDScriptParser::search_symbol_defined_at_line(i
 	return ret;
 }
 
-Error ExtendPDScriptParser::get_left_function_call(const lsp::Position &p_position, lsp::Position &r_func_pos, int &r_arg_index) const {
+Error ExtendPScriptParser::get_left_function_call(const lsp::Position &p_position, lsp::Position &r_func_pos, int &r_arg_index) const {
 	ERR_FAIL_INDEX_V(p_position.line, lines.size(), ERR_INVALID_PARAMETER);
 
 	int bracket_stack = 0;
@@ -597,14 +597,14 @@ Error ExtendPDScriptParser::get_left_function_call(const lsp::Position &p_positi
 	return ERR_METHOD_NOT_FOUND;
 }
 
-const lsp::DocumentSymbol *ExtendPDScriptParser::get_symbol_defined_at_line(int p_line) const {
+const lsp::DocumentSymbol *ExtendPScriptParser::get_symbol_defined_at_line(int p_line) const {
 	if (p_line <= 0) {
 		return &class_symbol;
 	}
 	return search_symbol_defined_at_line(p_line, class_symbol);
 }
 
-const lsp::DocumentSymbol *ExtendPDScriptParser::get_member_symbol(const String &p_name, const String &p_subclass) const {
+const lsp::DocumentSymbol *ExtendPScriptParser::get_member_symbol(const String &p_name, const String &p_subclass) const {
 	if (p_subclass.empty()) {
 		const lsp::DocumentSymbol *const *ptr = members.getptr(p_name);
 		if (ptr) {
@@ -622,11 +622,11 @@ const lsp::DocumentSymbol *ExtendPDScriptParser::get_member_symbol(const String 
 	return nullptr;
 }
 
-const List<lsp::DocumentLink> &ExtendPDScriptParser::get_document_links() const {
+const List<lsp::DocumentLink> &ExtendPScriptParser::get_document_links() const {
 	return document_links;
 }
 
-const Array &ExtendPDScriptParser::get_member_completions() {
+const Array &ExtendPScriptParser::get_member_completions() {
 	if (member_completions.empty()) {
 		const String *name = members.next(nullptr);
 		while (name) {
@@ -658,7 +658,7 @@ const Array &ExtendPDScriptParser::get_member_completions() {
 	return member_completions;
 }
 
-Dictionary ExtendPDScriptParser::dump_function_api(const PDScriptParser::FunctionNode *p_func) const {
+Dictionary ExtendPScriptParser::dump_function_api(const PScriptParser::FunctionNode *p_func) const {
 	Dictionary func;
 	ERR_FAIL_NULL_V(p_func, func);
 	func["name"] = p_func->name;
@@ -671,17 +671,17 @@ Dictionary ExtendPDScriptParser::dump_function_api(const PDScriptParser::Functio
 		int default_value_idx = i - (p_func->arguments.size() - p_func->default_values.size());
 
 		if (default_value_idx >= 0) {
-			const PDScriptParser::Node *current_defval_node = p_func->default_values[default_value_idx];
-			const PDScriptParser::ConstantNode *const_node = NULL;
+			const PScriptParser::Node *current_defval_node = p_func->default_values[default_value_idx];
+			const PScriptParser::ConstantNode *const_node = NULL;
 
 			if (current_defval_node->type == Node::TYPE_OPERATOR) {
-				const PDScriptParser::OperatorNode *operator_node = static_cast<const PDScriptParser::OperatorNode *>(current_defval_node);
+				const PScriptParser::OperatorNode *operator_node = static_cast<const PScriptParser::OperatorNode *>(current_defval_node);
 
 				if (operator_node->next->type == Node::TYPE_CONSTANT) {
-					const_node = static_cast<const PDScriptParser::ConstantNode *>(operator_node->next);
+					const_node = static_cast<const PScriptParser::ConstantNode *>(operator_node->next);
 				}
 			} else if (current_defval_node->type == Node::TYPE_CONSTANT) {
-				const_node = static_cast<const PDScriptParser::ConstantNode *>(current_defval_node);
+				const_node = static_cast<const PScriptParser::ConstantNode *>(current_defval_node);
 			}
 
 			if (const_node) {
@@ -699,7 +699,7 @@ Dictionary ExtendPDScriptParser::dump_function_api(const PDScriptParser::Functio
 	return func;
 }
 
-Dictionary ExtendPDScriptParser::dump_class_api(const PDScriptParser::ClassNode *p_class) const {
+Dictionary ExtendPScriptParser::dump_class_api(const PScriptParser::ClassNode *p_class) const {
 	Dictionary class_api;
 
 	ERR_FAIL_NULL_V(p_class, class_api);
@@ -726,12 +726,12 @@ Dictionary ExtendPDScriptParser::dump_class_api(const PDScriptParser::ClassNode 
 	class_api["sub_classes"] = subclasses;
 
 	Array constants;
-	for (RBMap<StringName, PDScriptParser::ClassNode::Constant>::Element *E = p_class->constant_expressions.front(); E; E = E->next()) {
-		const PDScriptParser::ClassNode::Constant &c = E->value();
+	for (RBMap<StringName, PScriptParser::ClassNode::Constant>::Element *E = p_class->constant_expressions.front(); E; E = E->next()) {
+		const PScriptParser::ClassNode::Constant &c = E->value();
 
 		ERR_FAIL_COND_V(c.expression->type != Node::TYPE_CONSTANT, class_api);
 
-		const PDScriptParser::ConstantNode *node = static_cast<const PDScriptParser::ConstantNode *>(c.expression);
+		const PScriptParser::ConstantNode *node = static_cast<const PScriptParser::ConstantNode *>(c.expression);
 
 		Dictionary api;
 		api["name"] = E->key();
@@ -747,7 +747,7 @@ Dictionary ExtendPDScriptParser::dump_class_api(const PDScriptParser::ClassNode 
 
 	Array members;
 	for (int i = 0; i < p_class->variables.size(); ++i) {
-		const PDScriptParser::ClassNode::Member &m = p_class->variables[i];
+		const PScriptParser::ClassNode::Member &m = p_class->variables[i];
 		Dictionary api;
 		api["name"] = m.identifier;
 		api["data_type"] = m.data_type.to_string();
@@ -765,7 +765,7 @@ Dictionary ExtendPDScriptParser::dump_class_api(const PDScriptParser::ClassNode 
 
 	Array signals;
 	for (int i = 0; i < p_class->_signals.size(); ++i) {
-		const PDScriptParser::ClassNode::Signal &signal = p_class->_signals[i];
+		const PScriptParser::ClassNode::Signal &signal = p_class->_signals[i];
 		Dictionary api;
 		api["name"] = signal.name;
 		Array args;
@@ -796,23 +796,23 @@ Dictionary ExtendPDScriptParser::dump_class_api(const PDScriptParser::ClassNode 
 	return class_api;
 }
 
-Dictionary ExtendPDScriptParser::generate_api() const {
+Dictionary ExtendPScriptParser::generate_api() const {
 	Dictionary api;
-	const PDScriptParser::Node *head = get_parse_tree();
+	const PScriptParser::Node *head = get_parse_tree();
 	if (head && head->type == Node::TYPE_CLASS) {
-		const PDScriptParser::ClassNode *pdclass = static_cast<const PDScriptParser::ClassNode *>(head);
-		api = dump_class_api(pdclass);
+		const PScriptParser::ClassNode *pclass = static_cast<const PScriptParser::ClassNode *>(head);
+		api = dump_class_api(pclass);
 	}
 	return api;
 }
 
-Error ExtendPDScriptParser::parse(const String &p_code, const String &p_path) {
+Error ExtendPScriptParser::parse(const String &p_code, const String &p_path) {
 	path = p_path;
 	lines = p_code.split("\n");
 
-	Error err = PDScriptParser::parse(p_code, p_path.get_base_dir(), false, p_path, false, nullptr, false);
-	update_diagnostics();
-	update_symbols();
-	update_document_links(p_code);
+	Error err = PScriptParser::parse(p_code, p_path.get_base_dir(), false, p_path, false, nullptr, false);
+	upate_diagnostics();
+	upate_symbols();
+	upate_document_links(p_code);
 	return err;
 }

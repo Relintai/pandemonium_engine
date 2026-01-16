@@ -1,8 +1,8 @@
-#ifndef PDSCRIPT_WORKSPACE_H
-#define PDSCRIPT_WORKSPACE_H
+#ifndef PSCRIPT_WORKSPACE_H
+#define PSCRIPT_WORKSPACE_H
 
 /*************************************************************************/
-/*  pdscript_workspace.h                                                 */
+/*  pscript_workspace.h                                                 */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -32,20 +32,20 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "../pdscript_parser.h"
+#include "../pscript_parser.h"
 #include "core/variant/variant.h"
 #include "editor/editor_file_system.h"
-#include "pdscript_extend_parser.h"
+#include "pscript_extend_parser.h"
 #include "lsp.hpp"
 
-class PDScriptWorkspace : public Reference {
-	GDCLASS(PDScriptWorkspace, Reference);
+class PScriptWorkspace : public Reference {
+	GDCLASS(PScriptWorkspace, Reference);
 
 private:
 	void _get_owners(EditorFileSystemDirectory *efsd, String p_path, List<String> &owners);
 	Node *_get_owner_scene_node(String p_path);
 	const lsp::DocumentSymbol *get_parameter_symbol(const lsp::DocumentSymbol *p_parent, const String &symbol_identifier);
-	const lsp::DocumentSymbol *get_local_symbol(const ExtendPDScriptParser *p_parser, const String &p_symbol_identifier);
+	const lsp::DocumentSymbol *get_local_symbol(const ExtendPScriptParser *p_parser, const String &p_symbol_identifier);
 
 protected:
 	static void _bind_methods();
@@ -58,8 +58,8 @@ protected:
 
 	void reload_all_workspace_scripts();
 
-	ExtendPDScriptParser *get_parse_successed_script(const String &p_path);
-	ExtendPDScriptParser *get_parse_result(const String &p_path);
+	ExtendPScriptParser *get_parse_successed_script(const String &p_path);
+	ExtendPScriptParser *get_parse_result(const String &p_path);
 
 	void list_script_files(const String &p_root_dir, List<String> &r_files);
 
@@ -69,8 +69,8 @@ public:
 	String root;
 	String root_uri;
 
-	RBMap<String, ExtendPDScriptParser *> scripts;
-	RBMap<String, ExtendPDScriptParser *> parse_results;
+	RBMap<String, ExtendPScriptParser *> scripts;
+	RBMap<String, ExtendPScriptParser *> parse_results;
 	HashMap<StringName, ClassMembers> native_members;
 
 public:
@@ -98,8 +98,8 @@ public:
 
 	void did_delete_files(const Dictionary &p_params);
 
-	PDScriptWorkspace();
-	~PDScriptWorkspace();
+	PScriptWorkspace();
+	~PScriptWorkspace();
 };
 
-#endif // PDSCRIPT_WORKSPACE_H
+#endif // PSCRIPT_WORKSPACE_H

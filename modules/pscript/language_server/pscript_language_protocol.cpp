@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  pdscript_language_protocol.cpp                                       */
+/*  pscript_language_protocol.cpp                                       */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,7 +29,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "pdscript_language_protocol.h"
+#include "pscript_language_protocol.h"
 
 #include "core/config/project_settings.h"
 #include "core/io/json.h"
@@ -38,9 +38,9 @@
 #include "editor/editor_node.h"
 #include "editor/editor_settings.h"
 
-PDScriptLanguageProtocol *PDScriptLanguageProtocol::singleton = nullptr;
+PScriptLanguageProtocol *PScriptLanguageProtocol::singleton = nullptr;
 
-Error PDScriptLanguageProtocol::LSPeer::handle_data() {
+Error PScriptLanguageProtocol::LSPeer::handle_data() {
 	int read = 0;
 	// Read headers
 	if (!has_header) {
@@ -96,7 +96,7 @@ Error PDScriptLanguageProtocol::LSPeer::handle_data() {
 		has_header = false;
 
 		// Response
-		String output = PDScriptLanguageProtocol::get_singleton()->process_message(msg);
+		String output = PScriptLanguageProtocol::get_singleton()->process_message(msg);
 		if (!output.empty()) {
 			res_queue.push_back(output.utf8());
 		}
@@ -104,7 +104,7 @@ Error PDScriptLanguageProtocol::LSPeer::handle_data() {
 	return OK;
 }
 
-Error PDScriptLanguageProtocol::LSPeer::send_data() {
+Error PScriptLanguageProtocol::LSPeer::send_data() {
 	int sent = 0;
 	while (!res_queue.empty()) {
 		CharString c_res = res_queue[0];
@@ -124,7 +124,7 @@ Error PDScriptLanguageProtocol::LSPeer::send_data() {
 	return OK;
 }
 
-Error PDScriptLanguageProtocol::on_client_connected() {
+Error PScriptLanguageProtocol::on_client_connected() {
 	Ref<StreamPeerTCP> tcp_peer = server->take_connection();
 	ERR_FAIL_COND_V_MSG(clients.size() >= LSP_MAX_CLIENTS, FAILED, "Max client limits reached");
 	Ref<LSPeer> peer = memnew(LSPeer);
@@ -135,12 +135,12 @@ Error PDScriptLanguageProtocol::on_client_connected() {
 	return OK;
 }
 
-void PDScriptLanguageProtocol::on_client_disconnected(const int &p_client_id) {
+void PScriptLanguageProtocol::on_client_disconnected(const int &p_client_id) {
 	clients.erase(p_client_id);
 	EditorNode::get_log()->add_message("Disconnected", EditorLog::MSG_TYPE_EDITOR);
 }
 
-String PDScriptLanguageProtocol::process_message(const String &p_text) {
+String PScriptLanguageProtocol::process_message(const String &p_text) {
 	String ret = process_string(p_text);
 	if (ret.empty()) {
 		return ret;
@@ -149,7 +149,7 @@ String PDScriptLanguageProtocol::process_message(const String &p_text) {
 	}
 }
 
-String PDScriptLanguageProtocol::format_output(const String &p_text) {
+String PScriptLanguageProtocol::format_output(const String &p_text) {
 	String header = "Content-Length: ";
 	CharString charstr = p_text.utf8();
 	size_t len = charstr.length();
@@ -159,19 +159,19 @@ String PDScriptLanguageProtocol::format_output(const String &p_text) {
 	return header + p_text;
 }
 
-void PDScriptLanguageProtocol::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("initialize", "params"), &PDScriptLanguageProtocol::initialize);
-	ClassDB::bind_method(D_METHOD("initialized", "params"), &PDScriptLanguageProtocol::initialized);
-	ClassDB::bind_method(D_METHOD("on_client_connected"), &PDScriptLanguageProtocol::on_client_connected);
-	ClassDB::bind_method(D_METHOD("on_client_disconnected"), &PDScriptLanguageProtocol::on_client_disconnected);
-	ClassDB::bind_method(D_METHOD("notify_client", "method", "params", "client_id"), &PDScriptLanguageProtocol::notify_client, DEFVAL(Variant()), DEFVAL(-1));
-	ClassDB::bind_method(D_METHOD("is_smart_resolve_enabled"), &PDScriptLanguageProtocol::is_smart_resolve_enabled);
-	ClassDB::bind_method(D_METHOD("get_text_document"), &PDScriptLanguageProtocol::get_text_document);
-	ClassDB::bind_method(D_METHOD("get_workspace"), &PDScriptLanguageProtocol::get_workspace);
-	ClassDB::bind_method(D_METHOD("is_initialized"), &PDScriptLanguageProtocol::is_initialized);
+void PScriptLanguageProtocol::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("initialize", "params"), &PScriptLanguageProtocol::initialize);
+	ClassDB::bind_method(D_METHOD("initialized", "params"), &PScriptLanguageProtocol::initialized);
+	ClassDB::bind_method(D_METHOD("on_client_connected"), &PScriptLanguageProtocol::on_client_connected);
+	ClassDB::bind_method(D_METHOD("on_client_disconnected"), &PScriptLanguageProtocol::on_client_disconnected);
+	ClassDB::bind_method(D_METHOD("notify_client", "method", "params", "client_id"), &PScriptLanguageProtocol::notify_client, DEFVAL(Variant()), DEFVAL(-1));
+	ClassDB::bind_method(D_METHOD("is_smart_resolve_enabled"), &PScriptLanguageProtocol::is_smart_resolve_enabled);
+	ClassDB::bind_method(D_METHOD("get_text_document"), &PScriptLanguageProtocol::get_text_document);
+	ClassDB::bind_method(D_METHOD("get_workspace"), &PScriptLanguageProtocol::get_workspace);
+	ClassDB::bind_method(D_METHOD("is_initialized"), &PScriptLanguageProtocol::is_initialized);
 }
 
-Dictionary PDScriptLanguageProtocol::initialize(const Dictionary &p_params) {
+Dictionary PScriptLanguageProtocol::initialize(const Dictionary &p_params) {
 	lsp::InitializeResult ret;
 
 	String root_uri = p_params["rootUri"];
@@ -192,10 +192,10 @@ Dictionary PDScriptLanguageProtocol::initialize(const Dictionary &p_params) {
 
 		Dictionary params;
 		params["path"] = workspace->root;
-		Dictionary request = make_notification("pdscript_client/changeWorkspace", params);
+		Dictionary request = make_notification("pscript_client/changeWorkspace", params);
 
 		ERR_FAIL_COND_V_MSG(!clients.has(latest_client_id), ret.to_json(),
-				vformat("PDScriptLanguageProtocol: Can't initialize invalid peer '%d'.", latest_client_id));
+				vformat("PScriptLanguageProtocol: Can't initialize invalid peer '%d'.", latest_client_id));
 		Ref<LSPeer> peer = clients.get(latest_client_id);
 		if (peer != nullptr) {
 			String msg = JSON::print(request);
@@ -213,24 +213,24 @@ Dictionary PDScriptLanguageProtocol::initialize(const Dictionary &p_params) {
 	return ret.to_json();
 }
 
-void PDScriptLanguageProtocol::initialized(const Variant &p_params) {
+void PScriptLanguageProtocol::initialized(const Variant &p_params) {
 	lsp::GodotCapabilities capabilities;
 
 	DocData *doc = EditorHelp::get_doc_data();
 	for (RBMap<String, DocData::ClassDoc>::Element *E = doc->class_list.front(); E; E = E->next()) {
-		lsp::GodotNativeClassInfo pdclass;
-		pdclass.name = E->get().name;
-		pdclass.class_doc = &(E->get());
+		lsp::GodotNativeClassInfo pclass;
+		pclass.name = E->get().name;
+		pclass.class_doc = &(E->get());
 		if (ClassDB::ClassInfo *ptr = ClassDB::classes.getptr(StringName(E->get().name))) {
-			pdclass.class_info = ptr;
+			pclass.class_info = ptr;
 		}
-		capabilities.native_classes.push_back(pdclass);
+		capabilities.native_classes.push_back(pclass);
 	}
 
-	notify_client("pdscript/capabilities", capabilities.to_json());
+	notify_client("pscript/capabilities", capabilities.to_json());
 }
 
-void PDScriptLanguageProtocol::poll(int p_limit_usec) {
+void PScriptLanguageProtocol::poll(int p_limit_usec) {
 	uint64_t target_ticks = OS::get_singleton()->get_ticks_usec() + p_limit_usec;
 
 	if (server->is_connection_available()) {
@@ -268,11 +268,11 @@ void PDScriptLanguageProtocol::poll(int p_limit_usec) {
 	}
 }
 
-Error PDScriptLanguageProtocol::start(int p_port, const IP_Address &p_bind_ip) {
+Error PScriptLanguageProtocol::start(int p_port, const IP_Address &p_bind_ip) {
 	return server->listen(p_port, p_bind_ip);
 }
 
-void PDScriptLanguageProtocol::stop() {
+void PScriptLanguageProtocol::stop() {
 	const int *id = nullptr;
 	while ((id = clients.next(id))) {
 		Ref<LSPeer> peer = clients.get(*id);
@@ -282,10 +282,10 @@ void PDScriptLanguageProtocol::stop() {
 	server->stop();
 }
 
-void PDScriptLanguageProtocol::notify_client(const String &p_method, const Variant &p_params, int p_client_id) {
+void PScriptLanguageProtocol::notify_client(const String &p_method, const Variant &p_params, int p_client_id) {
 	if (p_client_id == -1) {
 		ERR_FAIL_COND_MSG(latest_client_id == -1,
-				"PDScript LSP: Can't notify client as none was connected.");
+				"PScript LSP: Can't notify client as none was connected.");
 		p_client_id = latest_client_id;
 	}
 	ERR_FAIL_COND(!clients.has(p_client_id));
@@ -298,10 +298,10 @@ void PDScriptLanguageProtocol::notify_client(const String &p_method, const Varia
 	peer->res_queue.push_back(msg.utf8());
 }
 
-void PDScriptLanguageProtocol::request_client(const String &p_method, const Variant &p_params, int p_client_id) {
+void PScriptLanguageProtocol::request_client(const String &p_method, const Variant &p_params, int p_client_id) {
 	if (p_client_id == -1) {
 		ERR_FAIL_COND_MSG(latest_client_id == -1,
-				"PDScript LSP: Can't notify client as none was connected.");
+				"PScript LSP: Can't notify client as none was connected.");
 		p_client_id = latest_client_id;
 	}
 	ERR_FAIL_COND(!clients.has(p_client_id));
@@ -315,15 +315,15 @@ void PDScriptLanguageProtocol::request_client(const String &p_method, const Vari
 	peer->res_queue.push_back(msg.utf8());
 }
 
-bool PDScriptLanguageProtocol::is_smart_resolve_enabled() const {
+bool PScriptLanguageProtocol::is_smart_resolve_enabled() const {
 	return bool(_EDITOR_GET("network/language_server/enable_smart_resolve"));
 }
 
-bool PDScriptLanguageProtocol::is_goto_native_symbols_enabled() const {
+bool PScriptLanguageProtocol::is_goto_native_symbols_enabled() const {
 	return bool(_EDITOR_GET("network/language_server/show_native_symbols_in_editor"));
 }
 
-PDScriptLanguageProtocol::PDScriptLanguageProtocol() {
+PScriptLanguageProtocol::PScriptLanguageProtocol() {
 	server.instance();
 	singleton = this;
 	workspace.instance();

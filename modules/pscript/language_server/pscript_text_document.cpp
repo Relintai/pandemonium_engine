@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  pdscript_text_document.cpp                                           */
+/*  pscript_text_document.cpp                                           */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,47 +29,47 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "pdscript_text_document.h"
+#include "pscript_text_document.h"
 
-#include "../pdscript.h"
+#include "../pscript.h"
 #include "core/os/os.h"
 #include "editor/editor_settings.h"
 #include "editor_modules/editor_code_editor/editor_script_editor.h"
-#include "pdscript_extend_parser.h"
-#include "pdscript_language_protocol.h"
+#include "pscript_extend_parser.h"
+#include "pscript_language_protocol.h"
 
-void PDScriptTextDocument::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("didOpen"), &PDScriptTextDocument::didOpen);
-	ClassDB::bind_method(D_METHOD("didClose"), &PDScriptTextDocument::didClose);
-	ClassDB::bind_method(D_METHOD("didChange"), &PDScriptTextDocument::didChange);
-	ClassDB::bind_method(D_METHOD("didSave"), &PDScriptTextDocument::didSave);
-	ClassDB::bind_method(D_METHOD("nativeSymbol"), &PDScriptTextDocument::nativeSymbol);
-	ClassDB::bind_method(D_METHOD("documentSymbol"), &PDScriptTextDocument::documentSymbol);
-	ClassDB::bind_method(D_METHOD("completion"), &PDScriptTextDocument::completion);
-	ClassDB::bind_method(D_METHOD("resolve"), &PDScriptTextDocument::resolve);
-	ClassDB::bind_method(D_METHOD("rename"), &PDScriptTextDocument::rename);
-	ClassDB::bind_method(D_METHOD("foldingRange"), &PDScriptTextDocument::foldingRange);
-	ClassDB::bind_method(D_METHOD("codeLens"), &PDScriptTextDocument::codeLens);
-	ClassDB::bind_method(D_METHOD("documentLink"), &PDScriptTextDocument::documentLink);
-	ClassDB::bind_method(D_METHOD("colorPresentation"), &PDScriptTextDocument::colorPresentation);
-	ClassDB::bind_method(D_METHOD("hover"), &PDScriptTextDocument::hover);
-	ClassDB::bind_method(D_METHOD("definition"), &PDScriptTextDocument::definition);
-	ClassDB::bind_method(D_METHOD("declaration"), &PDScriptTextDocument::declaration);
-	ClassDB::bind_method(D_METHOD("signatureHelp"), &PDScriptTextDocument::signatureHelp);
-	ClassDB::bind_method(D_METHOD("show_native_symbol_in_editor"), &PDScriptTextDocument::show_native_symbol_in_editor);
+void PScriptTextDocument::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("didOpen"), &PScriptTextDocument::didOpen);
+	ClassDB::bind_method(D_METHOD("didClose"), &PScriptTextDocument::didClose);
+	ClassDB::bind_method(D_METHOD("didChange"), &PScriptTextDocument::didChange);
+	ClassDB::bind_method(D_METHOD("didSave"), &PScriptTextDocument::didSave);
+	ClassDB::bind_method(D_METHOD("nativeSymbol"), &PScriptTextDocument::nativeSymbol);
+	ClassDB::bind_method(D_METHOD("documentSymbol"), &PScriptTextDocument::documentSymbol);
+	ClassDB::bind_method(D_METHOD("completion"), &PScriptTextDocument::completion);
+	ClassDB::bind_method(D_METHOD("resolve"), &PScriptTextDocument::resolve);
+	ClassDB::bind_method(D_METHOD("rename"), &PScriptTextDocument::rename);
+	ClassDB::bind_method(D_METHOD("foldingRange"), &PScriptTextDocument::foldingRange);
+	ClassDB::bind_method(D_METHOD("codeLens"), &PScriptTextDocument::codeLens);
+	ClassDB::bind_method(D_METHOD("documentLink"), &PScriptTextDocument::documentLink);
+	ClassDB::bind_method(D_METHOD("colorPresentation"), &PScriptTextDocument::colorPresentation);
+	ClassDB::bind_method(D_METHOD("hover"), &PScriptTextDocument::hover);
+	ClassDB::bind_method(D_METHOD("definition"), &PScriptTextDocument::definition);
+	ClassDB::bind_method(D_METHOD("declaration"), &PScriptTextDocument::declaration);
+	ClassDB::bind_method(D_METHOD("signatureHelp"), &PScriptTextDocument::signatureHelp);
+	ClassDB::bind_method(D_METHOD("show_native_symbol_in_editor"), &PScriptTextDocument::show_native_symbol_in_editor);
 }
 
-void PDScriptTextDocument::didOpen(const Variant &p_param) {
+void PScriptTextDocument::didOpen(const Variant &p_param) {
 	lsp::TextDocumentItem doc = load_document_item(p_param);
 	sync_script_content(doc.uri, doc.text);
 }
 
-void PDScriptTextDocument::didClose(const Variant &p_param) {
+void PScriptTextDocument::didClose(const Variant &p_param) {
 	// Left empty on purpose. Godot does nothing special on closing a document,
 	// but it satisfies LSP clients that require didClose be implemented.
 }
 
-void PDScriptTextDocument::didChange(const Variant &p_param) {
+void PScriptTextDocument::didChange(const Variant &p_param) {
 	lsp::TextDocumentItem doc = load_document_item(p_param);
 	Dictionary dict = p_param;
 	Array contentChanges = dict["contentChanges"];
@@ -81,7 +81,7 @@ void PDScriptTextDocument::didChange(const Variant &p_param) {
 	sync_script_content(doc.uri, doc.text);
 }
 
-void PDScriptTextDocument::didSave(const Variant &p_param) {
+void PScriptTextDocument::didSave(const Variant &p_param) {
 	lsp::TextDocumentItem doc = load_document_item(p_param);
 	Dictionary dict = p_param;
 	String text = dict["text"];
@@ -89,21 +89,21 @@ void PDScriptTextDocument::didSave(const Variant &p_param) {
 	sync_script_content(doc.uri, text);
 }
 
-lsp::TextDocumentItem PDScriptTextDocument::load_document_item(const Variant &p_param) {
+lsp::TextDocumentItem PScriptTextDocument::load_document_item(const Variant &p_param) {
 	lsp::TextDocumentItem doc;
 	Dictionary params = p_param;
 	doc.load(params["textDocument"]);
 	return doc;
 }
 
-void PDScriptTextDocument::notify_client_show_symbol(const lsp::DocumentSymbol *symbol) {
+void PScriptTextDocument::notify_client_show_symbol(const lsp::DocumentSymbol *symbol) {
 	ERR_FAIL_NULL(symbol);
-	PDScriptLanguageProtocol::get_singleton()->notify_client("pdscript/show_native_symbol", symbol->to_json(true));
+	PScriptLanguageProtocol::get_singleton()->notify_client("pscript/show_native_symbol", symbol->to_json(true));
 }
 
-void PDScriptTextDocument::initialize() {
-	if (PDScriptLanguageProtocol::get_singleton()->is_smart_resolve_enabled()) {
-		const HashMap<StringName, ClassMembers> &native_members = PDScriptLanguageProtocol::get_singleton()->get_workspace()->native_members;
+void PScriptTextDocument::initialize() {
+	if (PScriptLanguageProtocol::get_singleton()->is_smart_resolve_enabled()) {
+		const HashMap<StringName, ClassMembers> &native_members = PScriptLanguageProtocol::get_singleton()->get_workspace()->native_members;
 
 		const StringName *class_ptr = native_members.next(nullptr);
 		while (class_ptr) {
@@ -124,13 +124,13 @@ void PDScriptTextDocument::initialize() {
 	}
 }
 
-Variant PDScriptTextDocument::nativeSymbol(const Dictionary &p_params) {
+Variant PScriptTextDocument::nativeSymbol(const Dictionary &p_params) {
 	Variant ret;
 
 	lsp::NativeSymbolInspectParams params;
 	params.load(p_params);
 
-	if (const lsp::DocumentSymbol *symbol = PDScriptLanguageProtocol::get_singleton()->get_workspace()->resolve_native_symbol(params)) {
+	if (const lsp::DocumentSymbol *symbol = PScriptLanguageProtocol::get_singleton()->get_workspace()->resolve_native_symbol(params)) {
 		ret = symbol->to_json(true);
 		notify_client_show_symbol(symbol);
 	}
@@ -138,12 +138,12 @@ Variant PDScriptTextDocument::nativeSymbol(const Dictionary &p_params) {
 	return ret;
 }
 
-Array PDScriptTextDocument::documentSymbol(const Dictionary &p_params) {
+Array PScriptTextDocument::documentSymbol(const Dictionary &p_params) {
 	Dictionary params = p_params["textDocument"];
 	String uri = params["uri"];
-	String path = PDScriptLanguageProtocol::get_singleton()->get_workspace()->get_file_path(uri);
+	String path = PScriptLanguageProtocol::get_singleton()->get_workspace()->get_file_path(uri);
 	Array arr;
-	if (const RBMap<String, ExtendPDScriptParser *>::Element *parser = PDScriptLanguageProtocol::get_singleton()->get_workspace()->scripts.find(path)) {
+	if (const RBMap<String, ExtendPScriptParser *>::Element *parser = PScriptLanguageProtocol::get_singleton()->get_workspace()->scripts.find(path)) {
 		Vector<lsp::DocumentedSymbolInformation> list;
 		parser->get()->get_symbols().symbol_tree_as_list(uri, list);
 		for (int i = 0; i < list.size(); i++) {
@@ -153,7 +153,7 @@ Array PDScriptTextDocument::documentSymbol(const Dictionary &p_params) {
 	return arr;
 }
 
-Array PDScriptTextDocument::completion(const Dictionary &p_params) {
+Array PScriptTextDocument::completion(const Dictionary &p_params) {
 	Array arr;
 
 	lsp::CompletionParams params;
@@ -161,7 +161,7 @@ Array PDScriptTextDocument::completion(const Dictionary &p_params) {
 	Dictionary request_data = params.to_json();
 
 	List<ScriptCodeCompletionOption> options;
-	PDScriptLanguageProtocol::get_singleton()->get_workspace()->completion(params, &options);
+	PScriptLanguageProtocol::get_singleton()->get_workspace()->completion(params, &options);
 
 	if (!options.empty()) {
 		int i = 0;
@@ -210,11 +210,11 @@ Array PDScriptTextDocument::completion(const Dictionary &p_params) {
 			arr[i] = item.to_json();
 			i++;
 		}
-	} else if (PDScriptLanguageProtocol::get_singleton()->is_smart_resolve_enabled()) {
+	} else if (PScriptLanguageProtocol::get_singleton()->is_smart_resolve_enabled()) {
 		arr = native_member_completions.duplicate();
 
-		for (RBMap<String, ExtendPDScriptParser *>::Element *E = PDScriptLanguageProtocol::get_singleton()->get_workspace()->scripts.front(); E; E = E->next()) {
-			ExtendPDScriptParser *script = E->get();
+		for (RBMap<String, ExtendPScriptParser *>::Element *E = PScriptLanguageProtocol::get_singleton()->get_workspace()->scripts.front(); E; E = E->next()) {
+			ExtendPScriptParser *script = E->get();
 			const Array &items = script->get_member_completions();
 
 			const int start_size = arr.size();
@@ -227,15 +227,15 @@ Array PDScriptTextDocument::completion(const Dictionary &p_params) {
 	return arr;
 }
 
-Dictionary PDScriptTextDocument::rename(const Dictionary &p_params) {
+Dictionary PScriptTextDocument::rename(const Dictionary &p_params) {
 	lsp::TextDocumentPositionParams params;
 	params.load(p_params);
 	String new_name = p_params["newName"];
 
-	return PDScriptLanguageProtocol::get_singleton()->get_workspace()->rename(params, new_name);
+	return PScriptLanguageProtocol::get_singleton()->get_workspace()->rename(params, new_name);
 }
 
-Dictionary PDScriptTextDocument::resolve(const Dictionary &p_params) {
+Dictionary PScriptTextDocument::resolve(const Dictionary &p_params) {
 	lsp::CompletionItem item;
 	item.load(p_params);
 
@@ -246,7 +246,7 @@ Dictionary PDScriptTextDocument::resolve(const Dictionary &p_params) {
 
 	if (data.get_type() == Variant::DICTIONARY) {
 		params.load(p_params["data"]);
-		symbol = PDScriptLanguageProtocol::get_singleton()->get_workspace()->resolve_symbol(params, item.label, item.kind == lsp::CompletionItemKind::Method || item.kind == lsp::CompletionItemKind::Function);
+		symbol = PScriptLanguageProtocol::get_singleton()->get_workspace()->resolve_symbol(params, item.label, item.kind == lsp::CompletionItemKind::Method || item.kind == lsp::CompletionItemKind::Function);
 
 	} else if (data.get_type() == Variant::STRING) {
 		String query = data;
@@ -262,14 +262,14 @@ Dictionary PDScriptTextDocument::resolve(const Dictionary &p_params) {
 				inner_class_name = param_symbols[1];
 			}
 
-			if (const ClassMembers *members = PDScriptLanguageProtocol::get_singleton()->get_workspace()->native_members.getptr(class_name)) {
+			if (const ClassMembers *members = PScriptLanguageProtocol::get_singleton()->get_workspace()->native_members.getptr(class_name)) {
 				if (const lsp::DocumentSymbol *const *member = members->getptr(member_name)) {
 					symbol = *member;
 				}
 			}
 
 			if (!symbol) {
-				if (const RBMap<String, ExtendPDScriptParser *>::Element *E = PDScriptLanguageProtocol::get_singleton()->get_workspace()->scripts.find(class_name)) {
+				if (const RBMap<String, ExtendPScriptParser *>::Element *E = PScriptLanguageProtocol::get_singleton()->get_workspace()->scripts.find(class_name)) {
 					symbol = E->get()->get_member_symbol(member_name, inner_class_name);
 				}
 			}
@@ -290,40 +290,40 @@ Dictionary PDScriptTextDocument::resolve(const Dictionary &p_params) {
 	return item.to_json(true);
 }
 
-Array PDScriptTextDocument::foldingRange(const Dictionary &p_params) {
+Array PScriptTextDocument::foldingRange(const Dictionary &p_params) {
 	Array arr;
 	return arr;
 }
 
-Array PDScriptTextDocument::codeLens(const Dictionary &p_params) {
+Array PScriptTextDocument::codeLens(const Dictionary &p_params) {
 	Array arr;
 	return arr;
 }
 
-Array PDScriptTextDocument::documentLink(const Dictionary &p_params) {
+Array PScriptTextDocument::documentLink(const Dictionary &p_params) {
 	Array ret;
 
 	lsp::DocumentLinkParams params;
 	params.load(p_params);
 
 	List<lsp::DocumentLink> links;
-	PDScriptLanguageProtocol::get_singleton()->get_workspace()->resolve_document_links(params.textDocument.uri, links);
+	PScriptLanguageProtocol::get_singleton()->get_workspace()->resolve_document_links(params.textDocument.uri, links);
 	for (const List<lsp::DocumentLink>::Element *E = links.front(); E; E = E->next()) {
 		ret.push_back(E->get().to_json());
 	}
 	return ret;
 }
 
-Array PDScriptTextDocument::colorPresentation(const Dictionary &p_params) {
+Array PScriptTextDocument::colorPresentation(const Dictionary &p_params) {
 	Array arr;
 	return arr;
 }
 
-Variant PDScriptTextDocument::hover(const Dictionary &p_params) {
+Variant PScriptTextDocument::hover(const Dictionary &p_params) {
 	lsp::TextDocumentPositionParams params;
 	params.load(p_params);
 
-	const lsp::DocumentSymbol *symbol = PDScriptLanguageProtocol::get_singleton()->get_workspace()->resolve_symbol(params);
+	const lsp::DocumentSymbol *symbol = PScriptLanguageProtocol::get_singleton()->get_workspace()->resolve_symbol(params);
 	if (symbol) {
 		lsp::Hover hover;
 		hover.contents = symbol->render();
@@ -331,11 +331,11 @@ Variant PDScriptTextDocument::hover(const Dictionary &p_params) {
 		hover.range.end = params.position;
 		return hover.to_json();
 
-	} else if (PDScriptLanguageProtocol::get_singleton()->is_smart_resolve_enabled()) {
+	} else if (PScriptLanguageProtocol::get_singleton()->is_smart_resolve_enabled()) {
 		Dictionary ret;
 		Array contents;
 		List<const lsp::DocumentSymbol *> list;
-		PDScriptLanguageProtocol::get_singleton()->get_workspace()->resolve_related_symbols(params, list);
+		PScriptLanguageProtocol::get_singleton()->get_workspace()->resolve_related_symbols(params, list);
 		for (List<const lsp::DocumentSymbol *>::Element *E = list.front(); E; E = E->next()) {
 			if (const lsp::DocumentSymbol *s = E->get()) {
 				contents.push_back(s->render().value);
@@ -348,7 +348,7 @@ Variant PDScriptTextDocument::hover(const Dictionary &p_params) {
 	return Variant();
 }
 
-Array PDScriptTextDocument::definition(const Dictionary &p_params) {
+Array PScriptTextDocument::definition(const Dictionary &p_params) {
 	lsp::TextDocumentPositionParams params;
 	params.load(p_params);
 	List<const lsp::DocumentSymbol *> symbols;
@@ -356,14 +356,14 @@ Array PDScriptTextDocument::definition(const Dictionary &p_params) {
 	return arr;
 }
 
-Variant PDScriptTextDocument::declaration(const Dictionary &p_params) {
+Variant PScriptTextDocument::declaration(const Dictionary &p_params) {
 	lsp::TextDocumentPositionParams params;
 	params.load(p_params);
 	List<const lsp::DocumentSymbol *> symbols;
 	Array arr = this->find_symbols(params, symbols);
 	if (arr.empty() && !symbols.empty() && !symbols.front()->get()->native_class.empty()) { // Find a native symbol
 		const lsp::DocumentSymbol *symbol = symbols.front()->get();
-		if (PDScriptLanguageProtocol::get_singleton()->is_goto_native_symbols_enabled()) {
+		if (PScriptLanguageProtocol::get_singleton()->is_goto_native_symbols_enabled()) {
 			String id;
 			switch (symbol->kind) {
 				case lsp::SymbolKind::Class:
@@ -395,35 +395,35 @@ Variant PDScriptTextDocument::declaration(const Dictionary &p_params) {
 	return arr;
 }
 
-Variant PDScriptTextDocument::signatureHelp(const Dictionary &p_params) {
+Variant PScriptTextDocument::signatureHelp(const Dictionary &p_params) {
 	Variant ret;
 
 	lsp::TextDocumentPositionParams params;
 	params.load(p_params);
 
 	lsp::SignatureHelp s;
-	if (OK == PDScriptLanguageProtocol::get_singleton()->get_workspace()->resolve_signature(params, s)) {
+	if (OK == PScriptLanguageProtocol::get_singleton()->get_workspace()->resolve_signature(params, s)) {
 		ret = s.to_json();
 	}
 
 	return ret;
 }
 
-PDScriptTextDocument::PDScriptTextDocument() {
+PScriptTextDocument::PScriptTextDocument() {
 	file_checker = FileAccess::create(FileAccess::ACCESS_RESOURCES);
 }
 
-PDScriptTextDocument::~PDScriptTextDocument() {
+PScriptTextDocument::~PScriptTextDocument() {
 	memdelete(file_checker);
 }
 
-void PDScriptTextDocument::sync_script_content(const String &p_path, const String &p_content) {
-	String path = PDScriptLanguageProtocol::get_singleton()->get_workspace()->get_file_path(p_path);
-	PDScriptLanguageProtocol::get_singleton()->get_workspace()->parse_script(path, p_content);
+void PScriptTextDocument::sync_script_content(const String &p_path, const String &p_content) {
+	String path = PScriptLanguageProtocol::get_singleton()->get_workspace()->get_file_path(p_path);
+	PScriptLanguageProtocol::get_singleton()->get_workspace()->parse_script(path, p_content);
 
-	EditorFileSystem::get_singleton()->update_file(path);
+	EditorFileSystem::get_singleton()->upate_file(path);
 	Error error;
-	Ref<PDScript> script = ResourceLoader::load(path, "", false, &error);
+	Ref<PScript> script = ResourceLoader::load(path, "", false, &error);
 	if (error == OK) {
 		if (script->load_source_code(path) == OK) {
 			script->reload(true);
@@ -431,26 +431,26 @@ void PDScriptTextDocument::sync_script_content(const String &p_path, const Strin
 	}
 }
 
-void PDScriptTextDocument::show_native_symbol_in_editor(const String &p_symbol_id) {
+void PScriptTextDocument::show_native_symbol_in_editor(const String &p_symbol_id) {
 	EditorScriptEditor::get_singleton()->call_deferred("_help_class_goto", p_symbol_id);
 	OS::get_singleton()->move_window_to_foreground();
 }
 
-Array PDScriptTextDocument::find_symbols(const lsp::TextDocumentPositionParams &p_location, List<const lsp::DocumentSymbol *> &r_list) {
+Array PScriptTextDocument::find_symbols(const lsp::TextDocumentPositionParams &p_location, List<const lsp::DocumentSymbol *> &r_list) {
 	Array arr;
-	const lsp::DocumentSymbol *symbol = PDScriptLanguageProtocol::get_singleton()->get_workspace()->resolve_symbol(p_location);
+	const lsp::DocumentSymbol *symbol = PScriptLanguageProtocol::get_singleton()->get_workspace()->resolve_symbol(p_location);
 	if (symbol) {
 		lsp::Location location;
 		location.uri = symbol->uri;
 		location.range = symbol->range;
-		const String &path = PDScriptLanguageProtocol::get_singleton()->get_workspace()->get_file_path(symbol->uri);
+		const String &path = PScriptLanguageProtocol::get_singleton()->get_workspace()->get_file_path(symbol->uri);
 		if (file_checker->file_exists(path)) {
 			arr.push_back(location.to_json());
 		}
 		r_list.push_back(symbol);
-	} else if (PDScriptLanguageProtocol::get_singleton()->is_smart_resolve_enabled()) {
+	} else if (PScriptLanguageProtocol::get_singleton()->is_smart_resolve_enabled()) {
 		List<const lsp::DocumentSymbol *> list;
-		PDScriptLanguageProtocol::get_singleton()->get_workspace()->resolve_related_symbols(p_location, list);
+		PScriptLanguageProtocol::get_singleton()->get_workspace()->resolve_related_symbols(p_location, list);
 		for (List<const lsp::DocumentSymbol *>::Element *E = list.front(); E; E = E->next()) {
 			if (const lsp::DocumentSymbol *s = E->get()) {
 				if (!s->uri.empty()) {
