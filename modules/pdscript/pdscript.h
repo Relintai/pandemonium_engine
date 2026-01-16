@@ -38,7 +38,7 @@
 #include "pdscript_function.h"
 
 class PDScriptNativeClass : public Reference {
-	PDCLASS(PDScriptNativeClass, Reference);
+	GDCLASS(PDScriptNativeClass, Reference);
 
 	StringName name;
 
@@ -54,7 +54,7 @@ public:
 };
 
 class PDScript : public Script {
-	PDCLASS(PDScript, Script);
+	GDCLASS(PDScript, Script);
 	bool tool;
 	bool valid;
 

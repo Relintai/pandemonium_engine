@@ -37,7 +37,7 @@
 #include "lsp.hpp"
 
 class PDScriptTextDocument : public Reference {
-	PDCLASS(PDScriptTextDocument, Reference)
+	GDCLASS(PDScriptTextDocument, Reference)
 protected:
 	static void _bind_methods();
 

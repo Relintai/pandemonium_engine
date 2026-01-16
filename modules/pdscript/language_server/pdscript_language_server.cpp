@@ -133,7 +133,7 @@ void PDScriptLanguageServer::stop() {
 	EditorNode::get_log()->add_message("--- PDScript language server stopped ---", EditorLog::MSG_TYPE_EDITOR);
 }
 
-void register_lsp_types() {
+void register_pd_lsp_types() {
 	ClassDB::register_class<PDScriptLanguageProtocol>();
 	ClassDB::register_class<PDScriptTextDocument>();
 	ClassDB::register_class<PDScriptWorkspace>();

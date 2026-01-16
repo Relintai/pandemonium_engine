@@ -61,7 +61,7 @@ Ref<ResourceFormatSaverPDScript> resource_saver_pd;
 #endif // !PDSCRIPT_NO_LSP
 
 class EditorExportPDScript : public EditorExportPlugin {
-	PDCLASS(EditorExportPDScript, EditorExportPlugin);
+	GDCLASS(EditorExportPDScript, EditorExportPlugin);
 
 public:
 	virtual void _export_file(const String &p_path, const String &p_type, const RBSet<String> &p_features) {
@@ -152,7 +152,7 @@ static void _editor_init() {
 #endif
 
 #ifndef PDSCRIPT_NO_LSP
-	register_lsp_types();
+	register_pd_lsp_types();
 	PDScriptLanguageServer *lsp_plugin = memnew(PDScriptLanguageServer);
 	EditorNode::get_singleton()->add_editor_plugin(lsp_plugin);
 	Engine::get_singleton()->add_singleton(Engine::Singleton("PDScriptLanguageProtocol", PDScriptLanguageProtocol::get_singleton()));

@@ -39,7 +39,7 @@
 #include "lsp.hpp"
 
 class PDScriptWorkspace : public Reference {
-	PDCLASS(PDScriptWorkspace, Reference);
+	GDCLASS(PDScriptWorkspace, Reference);
 
 private:
 	void _get_owners(EditorFileSystemDirectory *efsd, String p_path, List<String> &owners);

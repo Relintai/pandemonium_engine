@@ -356,7 +356,7 @@ public:
 };
 
 class PDScriptFunctionState : public Reference {
-	PDCLASS(PDScriptFunctionState, Reference);
+	GDCLASS(PDScriptFunctionState, Reference);
 	friend class PDScriptFunction;
 	PDScriptFunction *function;
 	PDScriptFunction::CallState state;

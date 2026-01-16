@@ -37,7 +37,7 @@
 #include "pdscript_language_protocol.h"
 
 class PDScriptLanguageServer : public EditorPlugin {
-	PDCLASS(PDScriptLanguageServer, EditorPlugin);
+	GDCLASS(PDScriptLanguageServer, EditorPlugin);
 
 	PDScriptLanguageProtocol protocol;
 
@@ -62,6 +62,6 @@ public:
 	void stop();
 };
 
-void register_lsp_types();
+void register_pd_lsp_types();
 
 #endif // PDSCRIPT_LANGUAGE_SERVER_H

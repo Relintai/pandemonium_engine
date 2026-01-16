@@ -44,7 +44,7 @@
 #define LSP_MAX_CLIENTS 8
 
 class PDScriptLanguageProtocol : public JSONRPC {
-	PDCLASS(PDScriptLanguageProtocol, JSONRPC)
+	GDCLASS(PDScriptLanguageProtocol, JSONRPC)
 
 private:
 	struct LSPeer : Reference {
