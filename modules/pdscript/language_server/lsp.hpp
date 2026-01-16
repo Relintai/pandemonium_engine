@@ -1615,7 +1615,7 @@ struct FileOperationPattern {
 	/**
 	 * The glob pattern to match.
 	 */
-	String glob = "**/*.gd";
+	String glob = "**/*.pd";
 
 	/**
 	 * Whether to match `file`s or `folder`s with this pattern.

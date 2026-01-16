@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="@GDScript">
+<class name="@PDScript">
 	<brief_description>
-		Built-in GDScript functions.
+		Built-in PDScript functions.
 	</brief_description>
 	<description>
-		List of core built-in GDScript functions. Math functions and other utilities. Everything else is provided by objects. (Keywords: builtin, built in, global functions.)
+		List of core built-in PDScript functions. Math functions and other utilities. Everything else is provided by objects. (Keywords: builtin, built in, global functions.)
 	</description>
 	<tutorials>
 	</tutorials>
@@ -360,7 +360,7 @@
 			<argument index="0" name="instance" type="Object" />
 			<argument index="1" name="funcname" type="String" />
 			<description>
-				Returns a reference to the specified function [code]funcname[/code] in the [code]instance[/code] node. As functions aren't first-class objects in GDscript, use [code]funcref[/code] to store a [FuncRef] in a variable and call it later.
+				Returns a reference to the specified function [code]funcname[/code] in the [code]instance[/code] node. As functions aren't first-class objects in PDscript, use [code]funcref[/code] to store a [FuncRef] in a variable and call it later.
 				[codeblock]
 				func foo():
 				    return("bar")
@@ -386,7 +386,7 @@
 				[/codeblock]
 				would print
 				[codeblock]
-				[{function:bar, line:12, source:res://script.gd}, {function:foo, line:9, source:res://script.gd}, {function:_ready, line:6, source:res://script.gd}]
+				[{function:bar, line:12, source:res://script.pd}, {function:foo, line:9, source:res://script.pd}, {function:_ready, line:6, source:res://script.pd}]
 				[/codeblock]
 				[b]Note:[/b] [method get_stack] only works if the running instance is connected to a debugging server (i.e. an editor instance). [method get_stack] will not work in projects exported in release mode, or in projects exported in debug mode if not connected to a debugging server.
 			</description>
@@ -416,7 +416,7 @@
 				Prints out:
 				[codeblock]
 				[@subpath, @path, foo]
-				[, res://test.gd, bar]
+				[, res://test.pd, bar]
 				[/codeblock]
 			</description>
 		</method>
@@ -526,7 +526,7 @@
 			<argument index="2" name="weight" type="float" />
 			<description>
 				Linearly interpolates between two angles (in radians) by a normalized value.
-				Similar to [method lerp], but interpolates correctly when the angles wrap around [constant @GDScript.TAU]. To perform eased interpolation with [method lerp_angle], combine it with [method ease] or [method smoothstep].
+				Similar to [method lerp], but interpolates correctly when the angles wrap around [constant @PDScript.TAU]. To perform eased interpolation with [method lerp_angle], combine it with [method ease] or [method smoothstep].
 				[codeblock]
 				extends Sprite
 				var elapsed = 0.0
@@ -735,7 +735,7 @@
 				Output in the console would look something like this:
 				[codeblock]
 				Test print
-				   At: res://test.gd:15:_process()
+				   At: res://test.pd:15:_process()
 				[/codeblock]
 			</description>
 		</method>
@@ -745,7 +745,7 @@
 				Prints a stack trace at the current code location. See also [method get_stack].
 				Output in the console would look something like this:
 				[codeblock]
-				Frame 0 - res://test.gd:16 in function '_process'
+				Frame 0 - res://test.pd:16 in function '_process'
 				[/codeblock]
 				[b]Note:[/b] [method print_stack] only works if the running instance is connected to a debugging server (i.e. an editor instance). [method print_stack] will not work in projects exported in release mode, or in projects exported in debug mode if not connected to a debugging server.
 			</description>
@@ -1208,12 +1208,12 @@
 			</description>
 		</method>
 		<method name="yield">
-			<return type="GDScriptFunctionState" />
+			<return type="PDScriptFunctionState" />
 			<argument index="0" name="object" type="Object" default="null" />
 			<argument index="1" name="signal" type="String" default="&quot;&quot;" />
 			<description>
 				Stops the function execution and returns the current suspended state to the calling function.
-				From the caller, call [method GDScriptFunctionState.resume] on the state to resume execution. This invalidates the state. Within the resumed function, [code]yield()[/code] returns whatever was passed to the [code]resume()[/code] function call.
+				From the caller, call [method PDScriptFunctionState.resume] on the state to resume execution. This invalidates the state. Within the resumed function, [code]yield()[/code] returns whatever was passed to the [code]resume()[/code] function call.
 				If passed an object and a signal, the execution is resumed when the object emits the given signal. In this case, [code]yield()[/code] returns the argument passed to [code]emit_signal()[/code] if the signal takes only one argument, or an array containing all the arguments passed to [code]emit_signal()[/code] if the signal takes multiple arguments.
 				You can also use [code]yield[/code] to wait for a function to finish:
 				[codeblock]
@@ -1222,7 +1222,7 @@
 				    print('Ready')
 
 				func countdown():
-				    yield(get_tree(), "idle_frame") # returns a GDScriptFunctionState object to _ready()
+				    yield(get_tree(), "idle_frame") # returns a PDScriptFunctionState object to _ready()
 				    print(3)
 				    yield(get_tree().create_timer(1.0), "timeout")
 				    print(2)
@@ -1237,7 +1237,7 @@
 				# Ready
 				[/codeblock]
 				When yielding on a function, the [code]completed[/code] signal will be emitted automatically when the function returns. It can, therefore, be used as the [code]signal[/code] parameter of the [code]yield[/code] method to resume.
-				In order to yield on a function, the resulting function should also return a [code]GDScriptFunctionState[/code]. Notice [code]yield(get_tree(), "idle_frame")[/code] from the above example.
+				In order to yield on a function, the resulting function should also return a [code]PDScriptFunctionState[/code]. Notice [code]yield(get_tree(), "idle_frame")[/code] from the above example.
 			</description>
 		</method>
 	</methods>

@@ -1,8 +1,8 @@
-#ifndef GDSCRIPT_COMPILER_H
-#define GDSCRIPT_COMPILER_H
+#ifndef PDSCRIPT_COMPILER_H
+#define PDSCRIPT_COMPILER_H
 
 /*************************************************************************/
-/*  gdscript_compiler.h                                                  */
+/*  pdscript_compiler.h                                                  */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -33,24 +33,24 @@
 /*************************************************************************/
 
 #include "core/containers/rb_set.h"
-#include "gdscript.h"
-#include "gdscript_parser.h"
+#include "pdscript.h"
+#include "pdscript_parser.h"
 
-class GDScriptCompiler {
-	const GDScriptParser *parser;
-	RBSet<GDScript *> parsed_classes;
-	RBSet<GDScript *> parsing_classes;
-	GDScript *main_script;
+class PDScriptCompiler {
+	const PDScriptParser *parser;
+	RBSet<PDScript *> parsed_classes;
+	RBSet<PDScript *> parsing_classes;
+	PDScript *main_script;
 	struct CodeGen {
-		GDScript *script;
-		const GDScriptParser::ClassNode *class_node;
-		const GDScriptParser::FunctionNode *function_node;
+		PDScript *script;
+		const PDScriptParser::ClassNode *class_node;
+		const PDScriptParser::FunctionNode *function_node;
 		bool debug_stack;
 
 		List<RBMap<StringName, int>> stack_id_stack;
 		RBMap<StringName, int> stack_identifiers;
 
-		List<GDScriptFunction::StackDebug> stack_debug;
+		List<PDScriptFunction::StackDebug> stack_debug;
 		List<RBMap<StringName, int>> block_identifier_stack;
 		RBMap<StringName, int> block_identifiers;
 
@@ -58,7 +58,7 @@ class GDScriptCompiler {
 			stack_identifiers[p_id] = p_stackpos;
 			if (debug_stack) {
 				block_identifiers[p_id] = p_stackpos;
-				GDScriptFunction::StackDebug sd;
+				PDScriptFunction::StackDebug sd;
 				sd.added = true;
 				sd.line = current_line;
 				sd.identifier = p_id;
@@ -81,7 +81,7 @@ class GDScriptCompiler {
 
 			if (debug_stack) {
 				for (RBMap<StringName, int>::Element *E = block_identifiers.front(); E; E = E->next()) {
-					GDScriptFunction::StackDebug sd;
+					PDScriptFunction::StackDebug sd;
 					sd.added = false;
 					sd.identifier = E->key();
 					sd.line = current_line;
@@ -137,35 +137,35 @@ class GDScriptCompiler {
 	};
 
 	bool _is_class_member_property(CodeGen &codegen, const StringName &p_name);
-	bool _is_class_member_property(GDScript *owner, const StringName &p_name);
+	bool _is_class_member_property(PDScript *owner, const StringName &p_name);
 
-	void _set_error(const String &p_error, const GDScriptParser::Node *p_node);
+	void _set_error(const String &p_error, const PDScriptParser::Node *p_node);
 
-	bool _create_unary_operator(CodeGen &codegen, const GDScriptParser::OperatorNode *on, Variant::Operator op, int p_stack_level);
-	bool _create_binary_operator(CodeGen &codegen, const GDScriptParser::OperatorNode *on, Variant::Operator op, int p_stack_level, bool p_initializer = false, int p_index_addr = 0);
+	bool _create_unary_operator(CodeGen &codegen, const PDScriptParser::OperatorNode *on, Variant::Operator op, int p_stack_level);
+	bool _create_binary_operator(CodeGen &codegen, const PDScriptParser::OperatorNode *on, Variant::Operator op, int p_stack_level, bool p_initializer = false, int p_index_addr = 0);
 
-	GDScriptDataType _gdtype_from_datatype(const GDScriptParser::DataType &p_datatype, GDScript *p_owner = nullptr) const;
+	PDScriptDataType _pdtype_from_datatype(const PDScriptParser::DataType &p_datatype, PDScript *p_owner = nullptr) const;
 
-	int _parse_assign_right_expression(CodeGen &codegen, const GDScriptParser::OperatorNode *p_expression, int p_stack_level, int p_index_addr = 0);
-	int _parse_expression(CodeGen &codegen, const GDScriptParser::Node *p_expression, int p_stack_level, bool p_root = false, bool p_initializer = false, int p_index_addr = 0);
-	Error _parse_block(CodeGen &codegen, const GDScriptParser::BlockNode *p_block, int p_stack_level = 0, int p_break_addr = -1, int p_continue_addr = -1);
-	Error _parse_function(GDScript *p_script, const GDScriptParser::ClassNode *p_class, const GDScriptParser::FunctionNode *p_func, bool p_for_ready = false);
-	Error _parse_class_level(GDScript *p_script, const GDScriptParser::ClassNode *p_class, bool p_keep_state);
-	Error _parse_class_blocks(GDScript *p_script, const GDScriptParser::ClassNode *p_class, bool p_keep_state);
-	void _make_scripts(GDScript *p_script, const GDScriptParser::ClassNode *p_class, bool p_keep_state);
+	int _parse_assign_right_expression(CodeGen &codegen, const PDScriptParser::OperatorNode *p_expression, int p_stack_level, int p_index_addr = 0);
+	int _parse_expression(CodeGen &codegen, const PDScriptParser::Node *p_expression, int p_stack_level, bool p_root = false, bool p_initializer = false, int p_index_addr = 0);
+	Error _parse_block(CodeGen &codegen, const PDScriptParser::BlockNode *p_block, int p_stack_level = 0, int p_break_addr = -1, int p_continue_addr = -1);
+	Error _parse_function(PDScript *p_script, const PDScriptParser::ClassNode *p_class, const PDScriptParser::FunctionNode *p_func, bool p_for_ready = false);
+	Error _parse_class_level(PDScript *p_script, const PDScriptParser::ClassNode *p_class, bool p_keep_state);
+	Error _parse_class_blocks(PDScript *p_script, const PDScriptParser::ClassNode *p_class, bool p_keep_state);
+	void _make_scripts(PDScript *p_script, const PDScriptParser::ClassNode *p_class, bool p_keep_state);
 	int err_line;
 	int err_column;
 	StringName source;
 	String error;
 
 public:
-	Error compile(const GDScriptParser *p_parser, GDScript *p_script, bool p_keep_state = false);
+	Error compile(const PDScriptParser *p_parser, PDScript *p_script, bool p_keep_state = false);
 
 	String get_error() const;
 	int get_error_line() const;
 	int get_error_column() const;
 
-	GDScriptCompiler();
+	PDScriptCompiler();
 };
 
-#endif // GDSCRIPT_COMPILER_H
+#endif // PDSCRIPT_COMPILER_H

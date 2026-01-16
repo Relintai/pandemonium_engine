@@ -1,8 +1,8 @@
-#ifndef GDSCRIPT_H
-#define GDSCRIPT_H
+#ifndef PDSCRIPT_H
+#define PDSCRIPT_H
 
 /*************************************************************************/
-/*  gdscript.h                                                           */
+/*  pdscript.h                                                           */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -35,10 +35,10 @@
 #include "core/io/resource_loader.h"
 #include "core/io/resource_saver.h"
 #include "core/object/script_language.h"
-#include "gdscript_function.h"
+#include "pdscript_function.h"
 
-class GDScriptNativeClass : public Reference {
-	GDCLASS(GDScriptNativeClass, Reference);
+class PDScriptNativeClass : public Reference {
+	PDCLASS(PDScriptNativeClass, Reference);
 
 	StringName name;
 
@@ -50,11 +50,11 @@ public:
 	_FORCE_INLINE_ const StringName &get_name() const { return name; }
 	Variant _new();
 	Object *instance();
-	GDScriptNativeClass(const StringName &p_name);
+	PDScriptNativeClass(const StringName &p_name);
 };
 
-class GDScript : public Script {
-	GDCLASS(GDScript, Script);
+class PDScript : public Script {
+	PDCLASS(PDScript, Script);
 	bool tool;
 	bool valid;
 
@@ -62,25 +62,25 @@ class GDScript : public Script {
 		int index;
 		StringName setter;
 		StringName getter;
-		GDScriptDataType data_type;
+		PDScriptDataType data_type;
 	};
 
-	friend class GDScriptInstance;
-	friend class GDScriptFunction;
-	friend class GDScriptCompiler;
-	friend class GDScriptFunctions;
-	friend class GDScriptLanguage;
+	friend class PDScriptInstance;
+	friend class PDScriptFunction;
+	friend class PDScriptCompiler;
+	friend class PDScriptFunctions;
+	friend class PDScriptLanguage;
 
-	Ref<GDScriptNativeClass> native;
-	Ref<GDScript> base;
-	GDScript *_base; //fast pointer access
-	GDScript *_owner; //for subclasses
+	Ref<PDScriptNativeClass> native;
+	Ref<PDScript> base;
+	PDScript *_base; //fast pointer access
+	PDScript *_owner; //for subclasses
 
 	RBSet<StringName> members; //members are just indices to the instanced script.
 	RBMap<StringName, Variant> constants;
-	RBMap<StringName, GDScriptFunction *> member_functions;
+	RBMap<StringName, PDScriptFunction *> member_functions;
 	RBMap<StringName, MemberInfo> member_indices; //members are just indices to the instanced script.
-	RBMap<StringName, Ref<GDScript>> subclasses;
+	RBMap<StringName, Ref<PDScript>> subclasses;
 	RBMap<StringName, Vector<StringName>> _signals;
 
 #ifdef TOOLS_ENABLED
@@ -91,7 +91,7 @@ class GDScript : public Script {
 
 	List<PropertyInfo> members_cache;
 	RBMap<StringName, Variant> member_default_values_cache;
-	Ref<GDScript> base_cache;
+	Ref<PDScript> base_cache;
 	RBSet<ObjectID> inheriters_cache;
 	bool source_changed_cache;
 	bool placeholder_fallback_enabled;
@@ -100,7 +100,7 @@ class GDScript : public Script {
 #endif
 	RBMap<StringName, PropertyInfo> member_info;
 
-	GDScriptFunction *initializer; //direct pointer to _init , faster to locate
+	PDScriptFunction *initializer; //direct pointer to _init , faster to locate
 
 	int subclass_count;
 	RBSet<Object *> instances;
@@ -109,14 +109,14 @@ class GDScript : public Script {
 	String path;
 	String name;
 	String fully_qualified_name;
-	SelfList<GDScript> script_list;
+	SelfList<PDScript> script_list;
 
-	SelfList<GDScriptFunctionState>::List pending_func_states;
+	SelfList<PDScriptFunctionState>::List pending_func_states;
 	void _clear_pending_func_states();
 
-	GDScriptInstance *_create_instance(const Variant **p_args, int p_argcount, Object *p_owner, bool p_isref, Variant::CallError &r_error);
+	PDScriptInstance *_create_instance(const Variant **p_args, int p_argcount, Object *p_owner, bool p_isref, Variant::CallError &r_error);
 
-	void _set_subclass_path(Ref<GDScript> &p_sc, const String &p_path);
+	void _set_subclass_path(Ref<PDScript> &p_sc, const String &p_path);
 	String _get_debug_path() const;
 
 #ifdef TOOLS_ENABLED
@@ -150,25 +150,25 @@ public:
 
 	bool inherits_script(const Ref<Script> &p_script) const;
 
-	const RBMap<StringName, Ref<GDScript>> &get_subclasses() const { return subclasses; }
+	const RBMap<StringName, Ref<PDScript>> &get_subclasses() const { return subclasses; }
 	const RBMap<StringName, Variant> &get_constants() const { return constants; }
 	const RBSet<StringName> &get_members() const { return members; }
-	const GDScriptDataType &get_member_type(const StringName &p_member) const {
+	const PDScriptDataType &get_member_type(const StringName &p_member) const {
 		CRASH_COND(!member_indices.has(p_member));
 		return member_indices[p_member].data_type;
 	}
-	const RBMap<StringName, GDScriptFunction *> &get_member_functions() const { return member_functions; }
-	const Ref<GDScriptNativeClass> &get_native() const { return native; }
+	const RBMap<StringName, PDScriptFunction *> &get_member_functions() const { return member_functions; }
+	const Ref<PDScriptNativeClass> &get_native() const { return native; }
 	const String &get_script_class_name() const { return name; }
 
 	virtual bool has_script_signal(const StringName &p_signal) const;
 	virtual void get_script_signal_list(List<MethodInfo> *r_signals) const;
 
 	bool is_tool() const { return tool; }
-	Ref<GDScript> get_base() const;
+	Ref<PDScript> get_base() const;
 
 	const RBMap<StringName, MemberInfo> &debug_get_member_indices() const { return member_indices; }
-	const RBMap<StringName, GDScriptFunction *> &debug_get_member_functions() const; //this is debug only
+	const RBMap<StringName, PDScriptFunction *> &debug_get_member_functions() const; //this is debug only
 	StringName debug_get_member_by_index(int p_idx) const;
 
 	Variant _new(const Variant **p_args, int p_argcount, Variant::CallError &r_error);
@@ -222,27 +222,27 @@ public:
 
 	virtual String get_global_class_name() const { return name; }
 
-	GDScript();
-	~GDScript();
+	PDScript();
+	~PDScript();
 };
 
-class GDScriptInstance : public ScriptInstance {
-	friend class GDScript;
-	friend class GDScriptFunction;
-	friend class GDScriptFunctions;
-	friend class GDScriptCompiler;
+class PDScriptInstance : public ScriptInstance {
+	friend class PDScript;
+	friend class PDScriptFunction;
+	friend class PDScriptFunctions;
+	friend class PDScriptCompiler;
 
 	Object *owner;
-	Ref<GDScript> script;
+	Ref<PDScript> script;
 #ifdef DEBUG_ENABLED
 	RBMap<StringName, int> member_indices_cache; //used only for hot script reloading
 #endif
 	Vector<Variant> members;
 	bool base_ref;
 
-	SelfList<GDScriptFunctionState>::List pending_func_states;
+	SelfList<PDScriptFunctionState>::List pending_func_states;
 
-	void _ml_call_reversed(GDScript *sptr, const StringName &p_method, const Variant **p_args, int p_argcount);
+	void _ml_call_reversed(PDScript *sptr, const StringName &p_method, const Variant **p_args, int p_argcount);
 
 public:
 	virtual Object *get_owner() { return owner; }
@@ -269,12 +269,12 @@ public:
 
 	void reload_members();
 
-	GDScriptInstance();
-	~GDScriptInstance();
+	PDScriptInstance();
+	~PDScriptInstance();
 };
 
 #ifdef DEBUG_ENABLED
-struct GDScriptWarning {
+struct PDScriptWarning {
 	enum Code {
 		UNASSIGNED_VARIABLE, // Variable used but never assigned
 		UNASSIGNED_VARIABLE_OP_ASSIGN, // Variable never assigned but used in an assignment operation (+=, *=, etc)
@@ -314,16 +314,16 @@ struct GDScriptWarning {
 	static String get_name_from_code(Code p_code);
 	static Code get_code_from_name(const String &p_name);
 
-	GDScriptWarning() :
+	PDScriptWarning() :
 			code(WARNING_MAX),
 			line(-1) {}
 };
 #endif // DEBUG_ENABLED
 
-class GDScriptLanguage : public ScriptLanguage {
-	friend class GDScriptFunctionState;
+class PDScriptLanguage : public ScriptLanguage {
+	friend class PDScriptFunctionState;
 
-	static GDScriptLanguage *singleton;
+	static PDScriptLanguage *singleton;
 
 	Variant *_global_array;
 	Vector<Variant> global_array;
@@ -332,8 +332,8 @@ class GDScriptLanguage : public ScriptLanguage {
 
 	struct CallLevel {
 		Variant *stack;
-		GDScriptFunction *function;
-		GDScriptInstance *instance;
+		PDScriptFunction *function;
+		PDScriptInstance *instance;
 		int *ip;
 		int *line;
 	};
@@ -373,16 +373,16 @@ class GDScriptLanguage : public ScriptLanguage {
 
 	void _add_global(const StringName &p_name, const Variant &p_value);
 
-	friend class GDScriptInstance;
+	friend class PDScriptInstance;
 
 	Mutex lock;
 
-	friend class GDScript;
+	friend class PDScript;
 
-	SelfList<GDScript>::List script_list;
-	friend class GDScriptFunction;
+	SelfList<PDScript>::List script_list;
+	friend class PDScriptFunction;
 
-	SelfList<GDScriptFunction>::List function_list;
+	SelfList<PDScriptFunction>::List function_list;
 	bool profiling;
 	uint64_t script_frame_time;
 
@@ -394,7 +394,7 @@ public:
 	bool debug_break(const String &p_error, bool p_allow_continue = true);
 	bool debug_break_parse(const String &p_file, int p_line, const String &p_error);
 
-	_FORCE_INLINE_ void enter_function(GDScriptInstance *p_instance, GDScriptFunction *p_function, Variant *p_stack, int *p_ip, int *p_line) {
+	_FORCE_INLINE_ void enter_function(PDScriptInstance *p_instance, PDScriptFunction *p_function, Variant *p_stack, int *p_ip, int *p_line) {
 		if (unlikely(_call_stack.levels == nullptr)) {
 			_call_stack.levels = memnew_arr(CallLevel, _debug_max_call_stack + 1);
 		}
@@ -460,7 +460,7 @@ public:
 	_FORCE_INLINE_ const RBMap<StringName, int> &get_global_map() const { return globals; }
 	_FORCE_INLINE_ const RBMap<StringName, Variant> &get_named_globals_map() const { return named_globals; }
 
-	_FORCE_INLINE_ static GDScriptLanguage *get_singleton() { return singleton; }
+	_FORCE_INLINE_ static PDScriptLanguage *get_singleton() { return singleton; }
 
 	virtual String get_name() const;
 
@@ -534,13 +534,13 @@ public:
 	virtual String get_global_class_name(const String &p_path, String *r_base_type = nullptr, String *r_icon_path = nullptr) const;
 
 	void add_orphan_subclass(const String &p_qualified_name, const ObjectID &p_subclass);
-	Ref<GDScript> get_orphan_subclass(const String &p_qualified_name);
+	Ref<PDScript> get_orphan_subclass(const String &p_qualified_name);
 
-	GDScriptLanguage();
-	~GDScriptLanguage();
+	PDScriptLanguage();
+	~PDScriptLanguage();
 };
 
-class ResourceFormatLoaderGDScript : public ResourceFormatLoader {
+class ResourceFormatLoaderPDScript : public ResourceFormatLoader {
 public:
 	virtual RES load(const String &p_path, const String &p_original_path = "", Error *r_error = NULL, bool p_no_subresource_cache = false);
 	virtual void get_recognized_extensions(List<String> *p_extensions) const;
@@ -549,11 +549,11 @@ public:
 	virtual void get_dependencies(const String &p_path, List<String> *p_dependencies, bool p_add_types = false);
 };
 
-class ResourceFormatSaverGDScript : public ResourceFormatSaver {
+class ResourceFormatSaverPDScript : public ResourceFormatSaver {
 public:
 	virtual Error save(const String &p_path, const RES &p_resource, uint32_t p_flags = 0);
 	virtual void get_recognized_extensions(const RES &p_resource, List<String> *p_extensions) const;
 	virtual bool recognize(const RES &p_resource) const;
 };
 
-#endif // GDSCRIPT_H
+#endif // PDSCRIPT_H
