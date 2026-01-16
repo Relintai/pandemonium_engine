@@ -95,52 +95,34 @@ void PScriptParser::_set_end_statement_error(String p_name) {
 	_set_error(error_msg);
 }
 
-bool PScriptParser::_enter_indent_block(BlockNode *p_block) {
-	if (tokenizer->get_token() != PScriptTokenizer::TK_COLON) {
-		// report location at the previous token (on the previous line)
-		int error_line = tokenizer->get_token_line(-1);
-		int error_column = tokenizer->get_token_column(-1);
-		_set_error("':' expected at end of line.", error_line, error_column);
-		return false;
+bool PScriptParser::_enter_block(BlockNode *p_block) {
+	while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
+		tokenizer->advance();
+
+		if (p_block) {
+			NewLineNode *nl = alloc_node<NewLineNode>();
+			nl->line = tokenizer->get_token_line();
+			p_block->statements.push_back(nl);
+		}
 	}
-	tokenizer->advance();
 
 	if (tokenizer->get_token() == PScriptTokenizer::TK_EOF) {
 		return false;
 	}
 
-	if (tokenizer->get_token() != PScriptTokenizer::TK_NEWLINE) {
-		// be more python-like
-		IndentLevel current_level = indent_level.back()->get();
-		indent_level.push_back(current_level);
-		return true;
-		//_set_error("newline expected after ':'.");
-		//return false;
+	if (tokenizer->get_token() != PScriptTokenizer::TK_CURLY_BRACKET_OPEN) {
+		_set_error("'{' expected.");
+		return false;
 	}
 
+	// consume {
+	tokenizer->advance();
+
 	while (true) {
-		if (tokenizer->get_token() != PScriptTokenizer::TK_NEWLINE) {
-			return false; //wtf
-		} else if (tokenizer->get_token(1) == PScriptTokenizer::TK_EOF) {
+		if (tokenizer->get_token() == PScriptTokenizer::TK_EOF) {
 			return false;
-		} else if (tokenizer->get_token(1) != PScriptTokenizer::TK_NEWLINE) {
-			int indent = tokenizer->get_token_line_indent();
-			int tabs = tokenizer->get_token_line_tab_indent();
-			IndentLevel current_level = indent_level.back()->get();
-			IndentLevel new_indent(indent, tabs);
-			if (new_indent.is_mixed(current_level)) {
-				_set_error("Mixed tabs and spaces in indentation.");
-				return false;
-			}
-
-			if (indent <= current_level.indent) {
-				return false;
-			}
-
-			indent_level.push_back(new_indent);
-			tokenizer->advance();
+		} else if (tokenizer->get_token() != PScriptTokenizer::TK_NEWLINE) {
 			return true;
-
 		} else if (p_block) {
 			NewLineNode *nl = alloc_node<NewLineNode>();
 			nl->line = tokenizer->get_token_line();
@@ -2324,8 +2306,6 @@ PScriptParser::PatternNode *PScriptParser::_parse_pattern(bool p_static) {
 }
 
 void PScriptParser::_parse_pattern_block(BlockNode *p_block, Vector<PatternBranchNode *> &p_branches, bool p_static) {
-	IndentLevel current_level = indent_level.back()->get();
-
 	p_block->has_return = true;
 
 	bool catch_all_appeared = false;
@@ -2340,7 +2320,9 @@ void PScriptParser::_parse_pattern_block(BlockNode *p_block, Vector<PatternBranc
 			return;
 		}
 
-		if (current_level.indent > indent_level.back()->get().indent) {
+		if (tokenizer->get_token() == PScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
+			// COnsume }
+			tokenizer->advance();
 			break; // go back a level
 		}
 
@@ -2387,7 +2369,7 @@ void PScriptParser::_parse_pattern_block(BlockNode *p_block, Vector<PatternBranc
 
 		catch_all_appeared = catch_all_appeared || catch_all;
 
-		if (!_enter_indent_block()) {
+		if (!_enter_block()) {
 			_set_error("Expected block in pattern branch");
 			return;
 		}
@@ -2789,8 +2771,6 @@ void PScriptParser::_transform_match_statment(MatchNode *p_match_statement) {
 }
 
 void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
-	IndentLevel current_level = indent_level.back()->get();
-
 #ifdef DEBUG_ENABLED
 
 	pending_newline = -1; // reset for the new block
@@ -2801,29 +2781,18 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 	p_block->statements.push_back(nl);
 #endif
 
-	bool is_first_line = true;
-
 	while (true) {
-		if (!is_first_line && indent_level.back()->prev() && indent_level.back()->prev()->get().indent == current_level.indent) {
-			if (indent_level.back()->prev()->get().is_mixed(current_level)) {
-				_set_error("Mixed tabs and spaces in indentation.");
-				return;
-			}
-			// pythonic single-line expression, don't parse future lines
-			indent_level.pop_back();
-			p_block->end_line = tokenizer->get_token_line();
-			return;
-		}
-		is_first_line = false;
-
 		PScriptTokenizer::Token token = tokenizer->get_token();
+
 		if (error_set) {
 			return;
 		}
 
-		if (current_level.indent > indent_level.back()->get().indent) {
+		if (token == PScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
 			p_block->end_line = tokenizer->get_token_line();
-			return; //go back a level
+			// Consume }
+			tokenizer->advance();
+			return;
 		}
 
 		if (pending_newline != -1) {
@@ -2849,9 +2818,11 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 			} break;
 		}
 #endif // DEBUG_ENABLED
+
 		switch (token) {
 			case PScriptTokenizer::TK_EOF:
-				p_block->end_line = tokenizer->get_token_line();
+				_set_error("Expected \"}\".");
+				return;
 			case PScriptTokenizer::TK_ERROR: {
 				return; //go back
 
@@ -2876,16 +2847,9 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 
 			} break;
 			case PScriptTokenizer::TK_CF_PASS: {
-				if (tokenizer->get_token(1) != PScriptTokenizer::TK_SEMICOLON && tokenizer->get_token(1) != PScriptTokenizer::TK_NEWLINE && tokenizer->get_token(1) != PScriptTokenizer::TK_EOF) {
-					_set_error("Expected \";\" or a line break.");
-					return;
-				}
-				_mark_line_as_safe(tokenizer->get_token_line());
-				tokenizer->advance();
-				if (tokenizer->get_token() == PScriptTokenizer::TK_SEMICOLON) {
-					// Ignore semicolon after 'pass'.
-					tokenizer->advance();
-				}
+				// TODO Remove
+				_set_error("Pass statement not supported.");
+				return;
 			} break;
 			case PScriptTokenizer::TK_PR_VAR: {
 				// Variable declaration and (eventual) initialization.
@@ -2990,8 +2954,8 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 
 				p_block->sub_blocks.push_back(cf_if->body);
 
-				if (!_enter_indent_block(cf_if->body)) {
-					_set_error("Expected an indented block after \"if\".");
+				if (!_enter_block(cf_if->body)) {
+					_set_error("Expected a block after \"if\".");
 					p_block->end_line = tokenizer->get_token_line();
 					return;
 				}
@@ -3013,17 +2977,14 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 						;
 					}
 
-					if (indent_level.back()->get().indent < current_level.indent) { //not at current indent level
+					if (tokenizer->get_token() == PScriptTokenizer::TK_CURLY_BRACKET_CLOSE) { //not at current indent level
 						p_block->end_line = tokenizer->get_token_line();
 						return;
 					}
 
-					if (tokenizer->get_token() == PScriptTokenizer::TK_CF_ELIF) {
-						if (indent_level.back()->get().indent > current_level.indent) {
-							_set_error("Invalid indentation.");
-							return;
-						}
+					// TODO will likely need to coinsume newlines here aswell
 
+					if (tokenizer->get_token() == PScriptTokenizer::TK_CF_ELIF) {
 						tokenizer->advance();
 
 						cf_if->body_else = alloc_node<BlockNode>();
@@ -3050,8 +3011,8 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 						cf_if->body->parent_block = p_block;
 						p_block->sub_blocks.push_back(cf_if->body);
 
-						if (!_enter_indent_block(cf_if->body)) {
-							_set_error("Expected an indented block after \"elif\".");
+						if (!_enter_block(cf_if->body)) {
+							_set_error("Expected a block after \"elif\".");
 							p_block->end_line = tokenizer->get_token_line();
 							return;
 						}
@@ -3066,18 +3027,13 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 						all_have_return = all_have_return && cf_else->body->has_return;
 
 					} else if (tokenizer->get_token() == PScriptTokenizer::TK_CF_ELSE) {
-						if (indent_level.back()->get().indent > current_level.indent) {
-							_set_error("Invalid indentation.");
-							return;
-						}
-
 						tokenizer->advance();
 						cf_if->body_else = alloc_node<BlockNode>();
 						cf_if->body_else->parent_block = p_block;
 						p_block->sub_blocks.push_back(cf_if->body_else);
 
-						if (!_enter_indent_block(cf_if->body_else)) {
-							_set_error("Expected an indented block after \"else\".");
+						if (!_enter_block(cf_if->body_else)) {
+							_set_error("Expected a block after \"else\".");
 							p_block->end_line = tokenizer->get_token_line();
 							return;
 						}
@@ -3124,8 +3080,8 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				cf_while->body->can_continue = true;
 				p_block->sub_blocks.push_back(cf_while->body);
 
-				if (!_enter_indent_block(cf_while->body)) {
-					_set_error("Expected an indented block after \"while\".");
+				if (!_enter_block(cf_while->body)) {
+					_set_error("Expected '{' after \"while\".");
 					p_block->end_line = tokenizer->get_token_line();
 					return;
 				}
@@ -3133,6 +3089,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				current_block = cf_while->body;
 				_parse_block(cf_while->body, p_static);
 				current_block = p_block;
+
 				if (error_set) {
 					return;
 				}
@@ -3268,8 +3225,8 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				cf_for->body->can_continue = true;
 				p_block->sub_blocks.push_back(cf_for->body);
 
-				if (!_enter_indent_block(cf_for->body)) {
-					_set_error("Expected indented block after \"for\".");
+				if (!_enter_block(cf_for->body)) {
+					_set_error("Expected a block after \"for\".");
 					p_block->end_line = tokenizer->get_token_line();
 					return;
 				}
@@ -3393,8 +3350,8 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 
 				match_node->val_to_match = val_to_match;
 
-				if (!_enter_indent_block()) {
-					_set_error("Expected indented pattern matching block after \"match\".");
+				if (!_enter_block()) {
+					_set_error("Expected pattern matching block after \"match\" ('{').");
 					return;
 				}
 
@@ -3493,50 +3450,6 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 }
 
 bool PScriptParser::_parse_newline() {
-	if (tokenizer->get_token(1) != PScriptTokenizer::TK_EOF && tokenizer->get_token(1) != PScriptTokenizer::TK_NEWLINE) {
-		IndentLevel current_level = indent_level.back()->get();
-		int indent = tokenizer->get_token_line_indent();
-		int tabs = tokenizer->get_token_line_tab_indent();
-		IndentLevel new_level(indent, tabs);
-
-		if (new_level.is_mixed(current_level)) {
-			_set_error("Mixed tabs and spaces in indentation.");
-			return false;
-		}
-
-		if (indent > current_level.indent) {
-			_set_error("Unexpected indentation.");
-			return false;
-		}
-
-		if (indent < current_level.indent) {
-			while (indent < current_level.indent) {
-				//exit block
-				if (indent_level.size() == 1) {
-					_set_error("Invalid indentation. Bug?");
-					return false;
-				}
-
-				indent_level.pop_back();
-
-				if (indent_level.back()->get().indent < indent) {
-					_set_error("Unindent does not match any outer indentation level.");
-					return false;
-				}
-
-				if (indent_level.back()->get().is_mixed(current_level)) {
-					_set_error("Mixed tabs and spaces in indentation.");
-					return false;
-				}
-
-				current_level = indent_level.back()->get();
-			}
-
-			tokenizer->advance();
-			return false;
-		}
-	}
-
 	tokenizer->advance();
 	return true;
 }
@@ -3626,15 +3539,13 @@ void PScriptParser::_parse_extends(ClassNode *p_class) {
 }
 
 void PScriptParser::_parse_class(ClassNode *p_class) {
-	IndentLevel current_level = indent_level.back()->get();
-
 	while (true) {
 		PScriptTokenizer::Token token = tokenizer->get_token();
 		if (error_set) {
 			return;
 		}
 
-		if (current_level.indent > indent_level.back()->get().indent) {
+		if (token == PScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
 			p_class->end_line = tokenizer->get_token_line();
 			return; //go back a level
 		}
@@ -3814,8 +3725,8 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 					}
 				}
 
-				if (!_enter_indent_block()) {
-					_set_error("Indented block expected.");
+				if (!_enter_block()) {
+					_set_error("'{' expected.");
 					return;
 				}
 				current_class = newclass;
@@ -4073,8 +3984,8 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 					}
 				}
 
-				if (!_enter_indent_block(block)) {
-					_set_error(vformat("Indented block expected after declaration of \"%s\" function.", function->name));
+				if (!_enter_block(block)) {
+					_set_error(vformat("Block expected after declaration of \"%s\" function.", function->name));
 					return;
 				}
 
@@ -8761,8 +8672,6 @@ void PScriptParser::clear() {
 	validating = false;
 	for_completion = false;
 	error_set = false;
-	indent_level.clear();
-	indent_level.push_back(IndentLevel(0, 0));
 	error_line = 0;
 	error_column = 0;
 	pending_newline = -1;

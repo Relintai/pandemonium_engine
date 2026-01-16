@@ -532,28 +532,6 @@ private:
 
 	int pending_newline;
 
-	struct IndentLevel {
-		int indent;
-		int tabs;
-
-		bool is_mixed(IndentLevel other) {
-			return (
-					(indent == other.indent && tabs != other.tabs) ||
-					(indent > other.indent && tabs < other.tabs) ||
-					(indent < other.indent && tabs > other.tabs));
-		}
-
-		IndentLevel() :
-				indent(0),
-				tabs(0) {}
-
-		IndentLevel(int p_indent, int p_tabs) :
-				indent(p_indent),
-				tabs(p_tabs) {}
-	};
-
-	List<IndentLevel> indent_level;
-
 	String base_path;
 	String self_path;
 
@@ -586,7 +564,7 @@ private:
 	bool _recover_from_completion();
 
 	bool _parse_arguments(Node *p_parent, Vector<Node *> &p_args, bool p_static, bool p_can_codecomplete = false, bool p_parsing_constant = false);
-	bool _enter_indent_block(BlockNode *p_block = nullptr);
+	bool _enter_block(BlockNode *p_block = nullptr);
 	bool _parse_newline();
 	Node *_parse_expression(Node *p_parent, bool p_static, bool p_allow_assign = false, bool p_parsing_constant = false);
 	Node *_reduce_expression(Node *p_node, bool p_to_const = false);
