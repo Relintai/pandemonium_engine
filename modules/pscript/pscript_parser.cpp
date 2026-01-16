@@ -2999,11 +2999,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				Node *assigned = nullptr;
 
 				if (tokenizer->get_token() == PScriptTokenizer::TK_COLON) {
-					if (tokenizer->get_token(1) == PScriptTokenizer::TK_OP_ASSIGN) {
-						lv->datatype = DataType();
-						lv->datatype.infer_type = true;
-						tokenizer->advance();
-					} else if (!_parse_type(lv->datatype)) {
+					if (!_parse_type(lv->datatype)) {
 						_set_error("Expected a type for the variable.");
 						return;
 					}
@@ -3562,12 +3558,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				}
 				p_block->statements.push_back(expression);
 				if (!_end_statement()) {
-					// Attempt to guess a better error message if the user "retypes" a variable
-					if (tokenizer->get_token() == PScriptTokenizer::TK_COLON && tokenizer->get_token(1) == PScriptTokenizer::TK_OP_ASSIGN) {
-						_set_error("Unexpected ':=', use '=' instead. Expected end of statement after expression.");
-					} else {
-						_set_error(vformat("Expected ';' after expression, got %s instead.", tokenizer->get_token_name(tokenizer->get_token())));
-					}
+					_set_error(vformat("Expected ';' after expression, got %s instead.", tokenizer->get_token_name(tokenizer->get_token())));
 					return;
 				}
 
@@ -4018,10 +4009,7 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 
 						DataType argtype;
 						if (tokenizer->get_token() == PScriptTokenizer::TK_COLON) {
-							if (tokenizer->get_token(1) == PScriptTokenizer::TK_OP_ASSIGN) {
-								argtype.infer_type = true;
-								tokenizer->advance();
-							} else if (!_parse_type(argtype)) {
+							if (!_parse_type(argtype)) {
 								_set_error("Expected a type for an argument.");
 								return;
 							}
@@ -4909,11 +4897,7 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 				tokenizer->advance();
 
 				if (tokenizer->get_token() == PScriptTokenizer::TK_COLON) {
-					if (tokenizer->get_token(1) == PScriptTokenizer::TK_OP_ASSIGN) {
-						member.data_type = DataType();
-						member.data_type.infer_type = true;
-						tokenizer->advance();
-					} else if (!_parse_type(member.data_type)) {
+					if (!_parse_type(member.data_type)) {
 						_set_error("Expected a type for the class variable.");
 						return;
 					}
@@ -5189,11 +5173,7 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 				tokenizer->advance();
 
 				if (tokenizer->get_token() == PScriptTokenizer::TK_COLON) {
-					if (tokenizer->get_token(1) == PScriptTokenizer::TK_OP_ASSIGN) {
-						constant.type = DataType();
-						constant.type.infer_type = true;
-						tokenizer->advance();
-					} else if (!_parse_type(constant.type)) {
+					if (!_parse_type(constant.type)) {
 						_set_error("Expected a type for the class constant.");
 						return;
 					}
@@ -7947,19 +7927,6 @@ void PScriptParser::_check_class_level_types(ClassNode *p_class) {
 					v.initial_assignment->arguments.write[1] = convert_call;
 				}
 			}
-
-			if (v.data_type.infer_type) {
-				if (!expr_type.has_type) {
-					_set_error("The assigned value doesn't have a set type; the variable type can't be inferred.", v.line);
-					return;
-				}
-				if (expr_type.kind == DataType::BUILTIN && expr_type.builtin_type == Variant::NIL) {
-					_set_error("The variable type cannot be inferred because its value is \"null\".", v.line);
-					return;
-				}
-				v.data_type = expr_type;
-				v.data_type.is_constant = false;
-			}
 		}
 
 		// Check export hint
@@ -8139,18 +8106,13 @@ void PScriptParser::_check_function_types(FunctionNode *p_function) {
 
 			DataType def_type = _reduce_node_type(op->arguments[1]);
 
-			if (p_function->argument_types[i].infer_type) {
-				def_type.is_constant = false;
-				p_function->argument_types.write[i] = def_type;
-			} else {
-				p_function->argument_types.write[i] = _resolve_type(p_function->argument_types[i], p_function->line);
+			p_function->argument_types.write[i] = _resolve_type(p_function->argument_types[i], p_function->line);
 
-				if (!_is_type_compatible(p_function->argument_types[i], def_type, true)) {
-					String arg_name = p_function->arguments[i];
-					_set_error("Value type (" + def_type.to_string() + ") doesn't match the type of argument '" +
-									arg_name + "' (" + p_function->argument_types[i].to_string() + ").",
-							p_function->line);
-				}
+			if (!_is_type_compatible(p_function->argument_types[i], def_type, true)) {
+				String arg_name = p_function->arguments[i];
+				_set_error("Value type (" + def_type.to_string() + ") doesn't match the type of argument '" +
+								arg_name + "' (" + p_function->argument_types[i].to_string() + ").",
+						p_function->line);
 			}
 		}
 #ifdef DEBUG_ENABLED
@@ -8390,18 +8352,7 @@ void PScriptParser::_check_block_types(BlockNode *p_block) {
 #endif // DEBUG_ENABLED
 						}
 					}
-					if (lv->datatype.infer_type) {
-						if (!assign_type.has_type) {
-							_set_error("The assigned value doesn't have a set type; the variable type can't be inferred.", lv->line);
-							return;
-						}
-						if (assign_type.kind == DataType::BUILTIN && assign_type.builtin_type == Variant::NIL) {
-							_set_error("The variable type cannot be inferred because its value is \"null\".", lv->line);
-							return;
-						}
-						lv->datatype = assign_type;
-						lv->datatype.is_constant = false;
-					}
+
 					if (lv->datatype.has_type && !assign_type.has_type) {
 						_mark_line_as_unsafe(lv->line);
 					}
