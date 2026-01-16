@@ -2127,6 +2127,9 @@ PScriptLanguage::~PScriptLanguage() {
 		script->unreference();
 	}
 
+	script_list.clear();
+	function_list.clear();
+
 	singleton = nullptr;
 }
 
