@@ -203,6 +203,7 @@ bool PScriptParser::_get_completable_identifier(CompletionType p_type, StringNam
 		identifier = tokenizer->get_token_literal();
 		tokenizer->advance();
 	}
+
 	if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
 		completion_cursor = identifier;
 		completion_type = p_type;
@@ -222,6 +223,7 @@ bool PScriptParser::_get_completable_identifier(CompletionType p_type, StringNam
 		if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_OPEN) {
 			completion_ident_is_call = true;
 		}
+
 		return true;
 	}
 
@@ -3723,6 +3725,7 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 				current_class = p_class;
 
 			} break;
+				/*
 			case PScriptTokenizer::TK_PR_STATIC: {
 				tokenizer->advance();
 				if (tokenizer->get_token() != PScriptTokenizer::TK_PR_FUNCTION) {
@@ -3731,7 +3734,7 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 				}
 
 				FALLTHROUGH;
-			}
+			}*/
 			case PScriptTokenizer::TK_PR_FUNCTION: {
 				bool _static = false;
 				pending_newline = -1;
@@ -5204,7 +5207,311 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 				}
 			} break;
 
+			case PScriptTokenizer::TK_PR_STATIC:
+			case PScriptTokenizer::TK_PR_VOID:
+			case PScriptTokenizer::TK_PR_VARIANT:
+			case PScriptTokenizer::TK_BUILT_IN_TYPE:
+			case PScriptTokenizer::TK_IDENTIFIER: {
+				// We are in a class
+				// Either a function or a variable declaration
+
+				bool _static = false;
+				DeclarationType declaration_type = DECLARATION_TYPE_UNDECIDED;
+
+				// Note that currently only functions can be static
+				if (token == PScriptTokenizer::TK_PR_STATIC) {
+					_static = true;
+					tokenizer->advance();
+				}
+
+				// Grab the type
+				DataType declaration_data_type;
+				// _parse_type_identifier handles autocomplete
+				if (!_parse_type_identifier(declaration_data_type, true, false)) {
+					_set_error(String() + "Unexpected token: " + tokenizer->get_token_name(tokenizer->get_token()) + ":" + tokenizer->get_token_identifier());
+					return;
+				}
+
+				//_parse_type_identifier does it
+				//tokenizer->advance();
+
+				// Get name
+				StringName name;
+
+				if (tokenizer->get_token() != PScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token() != PScriptTokenizer::TK_CURSOR) {
+					_set_error("Expected an identifier after type name.");
+					return;
+				}
+
+				if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER) {
+					name = tokenizer->get_token_literal();
+					tokenizer->advance();
+				}
+
+				if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
+					completion_cursor = name;
+					completion_type = COMPLETION_VIRTUAL_FUNC;
+					completion_class = current_class;
+					completion_function = current_function;
+					completion_line = tokenizer->get_token_line();
+					completion_block = current_block;
+					completion_found = true;
+					completion_ident_is_call = false;
+					tokenizer->advance();
+
+					if (tokenizer->is_token_literal()) {
+						name = name.operator String() + tokenizer->get_token_literal().operator String();
+						tokenizer->advance();
+					}
+
+					if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_OPEN) {
+						completion_ident_is_call = true;
+					}
+				}
+
+				if (name == StringName()) {
+					_set_error("Expected an identifier after type name.");
+					//_set_error("Expected an identifier after \"func\" (syntax: \"func <identifier>([arguments]):\").");
+					return;
+				}
+
+				if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_OPEN) {
+					declaration_type = DECLARATION_TYPE_METHOD;
+				} else {
+					declaration_type = DECLARATION_TYPE_VARIABLE;
+				}
+
+				// Function
+
+				if (declaration_type == DECLARATION_TYPE_METHOD) {
+					pending_newline = -1;
+
+					for (int i = 0; i < p_class->functions.size(); i++) {
+						if (p_class->functions[i]->name == name) {
+							_set_error("The function \"" + String(name) + "\" already exists in this class (at line " + itos(p_class->functions[i]->line) + ").");
+						}
+					}
+					for (int i = 0; i < p_class->static_functions.size(); i++) {
+						if (p_class->static_functions[i]->name == name) {
+							_set_error("The function \"" + String(name) + "\" already exists in this class (at line " + itos(p_class->static_functions[i]->line) + ").");
+						}
+					}
+
+#ifdef DEBUG_ENABLED
+					if (p_class->constant_expressions.has(name)) {
+						_add_warning(PScriptWarning::FUNCTION_CONFLICTS_CONSTANT, -1, name);
+					}
+					for (int i = 0; i < p_class->variables.size(); i++) {
+						if (p_class->variables[i].identifier == name) {
+							_add_warning(PScriptWarning::FUNCTION_CONFLICTS_VARIABLE, -1, name);
+						}
+					}
+					for (int i = 0; i < p_class->subclasses.size(); i++) {
+						if (p_class->subclasses[i]->name == name) {
+							_add_warning(PScriptWarning::FUNCTION_CONFLICTS_CONSTANT, -1, name);
+						}
+					}
+#endif // DEBUG_ENABLED
+
+					if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_OPEN) {
+						_set_error("Expected \"(\" after the identifier (syntax: \"[return type] <identifier>([arguments]) { ... }\" ).");
+						return;
+					}
+
+					tokenizer->advance();
+
+					Vector<StringName> arguments;
+					Vector<DataType> argument_types;
+					Vector<Node *> default_values;
+#ifdef DEBUG_ENABLED
+					Vector<int> arguments_usage;
+#endif // DEBUG_ENABLED
+
+					int fnline = tokenizer->get_token_line();
+
+					if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+						//has arguments
+						bool defaulting = false;
+						while (true) {
+							if (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
+								tokenizer->advance();
+								continue;
+							}
+
+							DataType argtype;
+							if (!_parse_type(argtype, false, false)) {
+								_set_error("Expected a type for an argument.");
+								return;
+							}
+							argument_types.push_back(argtype);
+
+							//tokenizer->advance();
+
+							if (!tokenizer->is_token_literal(0, true)) {
+								_set_error("Expected an identifier for an argument.");
+								return;
+							}
+
+							StringName argname = tokenizer->get_token_identifier();
+							for (int i = 0; i < arguments.size(); i++) {
+								if (arguments[i] == argname) {
+									_set_error("The argument name \"" + String(argname) + "\" is defined multiple times.");
+									return;
+								}
+							}
+
+							arguments.push_back(argname);
+#ifdef DEBUG_ENABLED
+							arguments_usage.push_back(0);
+#endif // DEBUG_ENABLED
+
+							tokenizer->advance();
+
+							if (defaulting && tokenizer->get_token() != PScriptTokenizer::TK_OP_ASSIGN) {
+								_set_error("Default parameter expected.");
+								return;
+							}
+
+							if (tokenizer->get_token() == PScriptTokenizer::TK_OP_ASSIGN) {
+								defaulting = true;
+								tokenizer->advance(1);
+								Node *defval = _parse_and_reduce_expression(p_class, _static);
+								if (!defval || error_set) {
+									return;
+								}
+
+								OperatorNode *on = alloc_node<OperatorNode>();
+								on->op = OperatorNode::OP_ASSIGN;
+								on->line = fnline;
+
+								IdentifierNode *in = alloc_node<IdentifierNode>();
+								in->name = argname;
+								in->line = fnline;
+
+								on->arguments.push_back(in);
+								on->arguments.push_back(defval);
+								/* no ..
+								if (defval->type!=Node::TYPE_CONSTANT) {
+
+									_set_error("default argument must be constant");
+								}
+								*/
+								default_values.push_back(on);
+							}
+
+							while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
+								tokenizer->advance();
+							}
+
+							if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
+								tokenizer->advance();
+								continue;
+							} else if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+								_set_error("Expected \",\" or \")\".");
+								return;
+							}
+
+							break;
+						}
+					}
+
+					tokenizer->advance();
+
+					BlockNode *block = alloc_node<BlockNode>();
+					block->parent_class = p_class;
+
+					FunctionNode *function = alloc_node<FunctionNode>();
+					function->name = name;
+					function->arguments = arguments;
+					function->argument_types = argument_types;
+					function->default_values = default_values;
+					function->_static = _static;
+					function->line = fnline;
+#ifdef DEBUG_ENABLED
+					function->arguments_usage = arguments_usage;
+#endif // DEBUG_ENABLED
+
+					if (name == "_init") {
+						if (_static) {
+							_set_error("The constructor cannot be static.");
+							return;
+						}
+
+						if (p_class->extends_used) {
+							OperatorNode *cparent = alloc_node<OperatorNode>();
+							cparent->op = OperatorNode::OP_PARENT_CALL;
+							block->statements.push_back(cparent);
+
+							IdentifierNode *id = alloc_node<IdentifierNode>();
+							id->name = "_init";
+							cparent->arguments.push_back(id);
+
+							if (tokenizer->get_token() == PScriptTokenizer::TK_PERIOD) {
+								tokenizer->advance();
+								if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_OPEN) {
+									_set_error("Expected \"(\" for parent constructor arguments.");
+									return;
+								}
+								tokenizer->advance();
+
+								if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+									//has arguments
+									parenthesis++;
+									while (true) {
+										current_function = function;
+										Node *arg = _parse_and_reduce_expression(p_class, _static);
+										if (!arg) {
+											return;
+										}
+										current_function = nullptr;
+										cparent->arguments.push_back(arg);
+
+										if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
+											tokenizer->advance();
+											continue;
+										} else if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+											_set_error("Expected \",\" or \")\".");
+											return;
+										}
+
+										break;
+									}
+									parenthesis--;
+								}
+
+								tokenizer->advance();
+							}
+						} else {
+							if (tokenizer->get_token() == PScriptTokenizer::TK_PERIOD) {
+								_set_error("Parent constructor call found for a class without inheritance.");
+								return;
+							}
+						}
+					}
+
+					if (!_enter_block(block)) {
+						_set_error(vformat("Block expected after declaration of \"%s\" function.", function->name));
+						return;
+					}
+
+					function->return_type = declaration_data_type;
+
+					if (_static) {
+						p_class->static_functions.push_back(function);
+					} else {
+						p_class->functions.push_back(function);
+					}
+
+					current_function = function;
+					function->body = block;
+					current_block = block;
+					_parse_block(block, _static);
+					current_block = nullptr;
+				}
+			} break;
+
 			default: {
+				// TODO, code above should handle this case
 				if (token == PScriptTokenizer::TK_IDENTIFIER) {
 					completion_type = COMPLETION_IDENTIFIER;
 					completion_class = current_class;
@@ -5484,8 +5791,11 @@ String PScriptParser::DataType::to_string() const {
 	return "Unresolved";
 }
 
-bool PScriptParser::_parse_type(DataType &r_type, bool p_can_be_void) {
-	tokenizer->advance();
+bool PScriptParser::_parse_type(DataType &r_type, bool p_can_be_void, bool p_advance_tokenizer_at_begin) {
+	if (p_advance_tokenizer_at_begin) {
+		tokenizer->advance();
+	}
+
 	r_type.has_type = true;
 
 	bool finished = false;
@@ -5598,6 +5908,81 @@ bool PScriptParser::_parse_type(DataType &r_type, bool p_can_be_void) {
 		}
 
 		r_type.native_type = full_name;
+	}
+
+	return true;
+}
+
+bool PScriptParser::_parse_type_identifier(DataType &r_type, bool p_can_be_void, bool p_advance_tokenizer_at_begin) {
+	if (p_advance_tokenizer_at_begin) {
+		tokenizer->advance();
+	}
+
+	r_type.has_type = true;
+
+	String full_name;
+
+	if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
+		completion_cursor = StringName();
+		completion_type = COMPLETION_TYPE_HINT;
+		completion_class = current_class;
+		completion_function = current_function;
+		completion_line = tokenizer->get_token_line();
+		completion_argument = 0;
+		completion_block = current_block;
+		completion_found = true;
+		completion_ident_is_call = p_can_be_void;
+		tokenizer->advance();
+	}
+
+	switch (tokenizer->get_token()) {
+		case PScriptTokenizer::TK_PR_VOID: {
+			if (!p_can_be_void) {
+				return false;
+			}
+			r_type.kind = DataType::BUILTIN;
+			r_type.builtin_type = Variant::NIL;
+		} break;
+		case PScriptTokenizer::TK_PR_VARIANT: {
+			r_type.kind = DataType::BUILTIN;
+			r_type.has_type = false;
+		} break;
+		case PScriptTokenizer::TK_BUILT_IN_TYPE: {
+			r_type.builtin_type = tokenizer->get_token_type();
+			if (tokenizer->get_token_type() == Variant::OBJECT) {
+				r_type.kind = DataType::NATIVE;
+				r_type.native_type = "Object";
+			} else {
+				r_type.kind = DataType::BUILTIN;
+			}
+		} break;
+		case PScriptTokenizer::TK_IDENTIFIER: {
+			r_type.native_type = tokenizer->get_token_identifier();
+			if (ClassDB::class_exists(r_type.native_type) || ClassDB::class_exists("_" + r_type.native_type.operator String())) {
+				r_type.kind = DataType::NATIVE;
+			} else {
+				r_type.kind = DataType::UNRESOLVED;
+				full_name = r_type.native_type;
+			}
+		} break;
+		default: {
+			return false;
+		}
+	}
+
+	tokenizer->advance();
+
+	if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
+		completion_cursor = r_type.native_type;
+		completion_type = COMPLETION_TYPE_HINT;
+		completion_class = current_class;
+		completion_function = current_function;
+		completion_line = tokenizer->get_token_line();
+		completion_argument = 0;
+		completion_block = current_block;
+		completion_found = true;
+		completion_ident_is_call = p_can_be_void;
+		tokenizer->advance();
 	}
 
 	return true;
