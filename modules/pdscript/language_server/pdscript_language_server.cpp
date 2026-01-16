@@ -45,7 +45,7 @@ PDScriptLanguageServer::PDScriptLanguageServer() {
 	started = false;
 	use_thread = false;
 	host = "127.0.0.1";
-	port = 6008;
+	port = 6006;
 	poll_limit_usec = 100000;
 
 	_EDITOR_DEF("network/language_server/enabled", enabled, true);
