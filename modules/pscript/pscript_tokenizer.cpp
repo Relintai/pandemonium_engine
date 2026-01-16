@@ -86,7 +86,6 @@ const char *PScriptTokenizer::token_names[TK_MAX] = {
 	"while",
 	"break",
 	"continue",
-	"pass",
 	"return",
 	"match",
 	"func",
@@ -225,7 +224,6 @@ static const _kws _keyword_list[] = {
 	{ PScriptTokenizer::TK_CF_CONTINUE, "continue" },
 	{ PScriptTokenizer::TK_CF_RETURN, "return" },
 	{ PScriptTokenizer::TK_CF_MATCH, "match" },
-	{ PScriptTokenizer::TK_CF_PASS, "pass" },
 	{ PScriptTokenizer::TK_SELF, "self" },
 	{ PScriptTokenizer::TK_CONST_PI, "PI" },
 	{ PScriptTokenizer::TK_CONST_TAU, "TAU" },
@@ -370,7 +368,6 @@ bool PScriptTokenizer::is_token_literal(int p_offset, bool variable_safe) const 
 		case TK_CF_CONTINUE:
 		case TK_CF_RETURN:
 		case TK_CF_MATCH:
-		case TK_CF_PASS:
 		case TK_SELF:
 		case TK_CONST_PI:
 		case TK_CONST_TAU:

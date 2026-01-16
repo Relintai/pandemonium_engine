@@ -2806,8 +2806,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 		switch (token) {
 			case PScriptTokenizer::TK_EOF:
 			case PScriptTokenizer::TK_ERROR:
-			case PScriptTokenizer::TK_NEWLINE:
-			case PScriptTokenizer::TK_CF_PASS: {
+			case PScriptTokenizer::TK_NEWLINE: {
 				// will check later
 			} break;
 			default: {
@@ -2845,11 +2844,6 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				nl2->line = line;
 				p_block->statements.push_back(nl2);
 
-			} break;
-			case PScriptTokenizer::TK_CF_PASS: {
-				// TODO Remove
-				_set_error("Pass statement not supported.");
-				return;
 			} break;
 			case PScriptTokenizer::TK_PR_VAR: {
 				// Variable declaration and (eventual) initialization.
@@ -3729,12 +3723,6 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 				current_class = p_class;
 
 			} break;
-			/* this is for functions....
-			case PScriptTokenizer::TK_CF_PASS: {
-
-				tokenizer->advance(1);
-			} break;
-			*/
 			case PScriptTokenizer::TK_PR_STATIC: {
 				tokenizer->advance();
 				if (tokenizer->get_token() != PScriptTokenizer::TK_PR_FUNCTION) {
@@ -5214,10 +5202,6 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 					_set_error(String() + "Unexpected constant of type: " + Variant::get_type_name(tokenizer->get_token_constant().get_type()));
 					return;
 				}
-			} break;
-
-			case PScriptTokenizer::TK_CF_PASS: {
-				tokenizer->advance();
 			} break;
 
 			default: {
