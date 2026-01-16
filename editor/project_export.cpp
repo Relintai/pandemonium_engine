@@ -1117,7 +1117,7 @@ ProjectExportDialog::ProjectExportDialog() {
 	VBoxContainer *script_vb = memnew(VBoxContainer);
 	script_vb->set_name(TTR("Script"));
 	script_mode = memnew(OptionButton);
-	script_vb->add_margin_child(TTR("GDScript Export Mode:"), script_mode);
+	script_vb->add_margin_child(TTR("Script Export Mode:"), script_mode);
 	script_mode->add_item(TTR("Text"), (int)EditorExportPreset::MODE_SCRIPT_TEXT);
 	script_mode->add_item(TTR("Compiled Bytecode (Faster Loading)"), (int)EditorExportPreset::MODE_SCRIPT_COMPILED);
 	script_mode->add_item(TTR("Encrypted (Provide Key Below)"), (int)EditorExportPreset::MODE_SCRIPT_ENCRYPTED);
@@ -1127,7 +1127,7 @@ ProjectExportDialog::ProjectExportDialog() {
 	script_key_error = memnew(Label);
 	script_key_error->set_text(String::utf8("• ") + TTR("Invalid Encryption Key (must be 64 hexadecimal characters long)"));
 	script_key_error->add_theme_color_override("font_color", EditorNode::get_singleton()->get_gui_base()->get_theme_color("error_color", "Editor"));
-	script_vb->add_margin_child(TTR("GDScript Encryption Key (256-bits as hexadecimal):"), script_key);
+	script_vb->add_margin_child(TTR("Script Encryption Key (256-bits as hexadecimal):"), script_key);
 	script_vb->add_child(script_key_error);
 	sections->add_child(script_vb);
 
