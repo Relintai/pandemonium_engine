@@ -2973,73 +2973,79 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 						;
 					}
 
-					// TODO will likely need to coinsume newlines here aswell
-
-					if (tokenizer->get_token() == PScriptTokenizer::TK_CF_ELIF) {
+					if (tokenizer->get_token() == PScriptTokenizer::TK_CF_ELSE) {
 						tokenizer->advance();
 
-						cf_if->body_else = alloc_node<BlockNode>();
-						cf_if->body_else->parent_block = p_block;
-						p_block->sub_blocks.push_back(cf_if->body_else);
+						while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE && _parse_newline()) {
+							;
+						}
 
-						ControlFlowNode *cf_else = alloc_node<ControlFlowNode>();
-						cf_else->cf_type = ControlFlowNode::CF_IF;
+						// ELse if
+						if (tokenizer->get_token() == PScriptTokenizer::TK_CF_IF) {
+							tokenizer->advance();
 
-						//condition
-						Node *condition2 = _parse_and_reduce_expression(p_block, p_static);
-						if (!condition2) {
-							if (_recover_from_completion()) {
-								break;
+							cf_if->body_else = alloc_node<BlockNode>();
+							cf_if->body_else->parent_block = p_block;
+							p_block->sub_blocks.push_back(cf_if->body_else);
+
+							ControlFlowNode *cf_else = alloc_node<ControlFlowNode>();
+							cf_else->cf_type = ControlFlowNode::CF_IF;
+
+							//condition
+							Node *condition2 = _parse_and_reduce_expression(p_block, p_static);
+							if (!condition2) {
+								if (_recover_from_completion()) {
+									break;
+								}
+								return;
 							}
-							return;
+							cf_else->arguments.push_back(condition2);
+							cf_else->cf_type = ControlFlowNode::CF_IF;
+
+							cf_if->body_else->statements.push_back(cf_else);
+							cf_if = cf_else;
+							cf_if->body = alloc_node<BlockNode>();
+							cf_if->body->parent_block = p_block;
+							p_block->sub_blocks.push_back(cf_if->body);
+
+							if (!_enter_block(cf_if->body)) {
+								_set_error("Expected a block after \"else if\".");
+								p_block->end_line = tokenizer->get_token_line();
+								return;
+							}
+
+							current_block = cf_else->body;
+							_parse_block(cf_else->body, p_static);
+							current_block = p_block;
+							if (error_set) {
+								return;
+							}
+
+							all_have_return = all_have_return && cf_else->body->has_return;
+
+						} else {
+							// Else
+							cf_if->body_else = alloc_node<BlockNode>();
+							cf_if->body_else->parent_block = p_block;
+							p_block->sub_blocks.push_back(cf_if->body_else);
+
+							if (!_enter_block(cf_if->body_else)) {
+								_set_error("Expected a block after \"else\".");
+								p_block->end_line = tokenizer->get_token_line();
+								return;
+							}
+							current_block = cf_if->body_else;
+							_parse_block(cf_if->body_else, p_static);
+							current_block = p_block;
+							if (error_set) {
+								return;
+							}
+
+							all_have_return = all_have_return && cf_if->body_else->has_return;
+							have_else = true;
+
+							break; //after else, exit
 						}
-						cf_else->arguments.push_back(condition2);
-						cf_else->cf_type = ControlFlowNode::CF_IF;
-
-						cf_if->body_else->statements.push_back(cf_else);
-						cf_if = cf_else;
-						cf_if->body = alloc_node<BlockNode>();
-						cf_if->body->parent_block = p_block;
-						p_block->sub_blocks.push_back(cf_if->body);
-
-						if (!_enter_block(cf_if->body)) {
-							_set_error("Expected a block after \"elif\".");
-							p_block->end_line = tokenizer->get_token_line();
-							return;
-						}
-
-						current_block = cf_else->body;
-						_parse_block(cf_else->body, p_static);
-						current_block = p_block;
-						if (error_set) {
-							return;
-						}
-
-						all_have_return = all_have_return && cf_else->body->has_return;
-
-					} else if (tokenizer->get_token() == PScriptTokenizer::TK_CF_ELSE) {
-						tokenizer->advance();
-						cf_if->body_else = alloc_node<BlockNode>();
-						cf_if->body_else->parent_block = p_block;
-						p_block->sub_blocks.push_back(cf_if->body_else);
-
-						if (!_enter_block(cf_if->body_else)) {
-							_set_error("Expected a block after \"else\".");
-							p_block->end_line = tokenizer->get_token_line();
-							return;
-						}
-						current_block = cf_if->body_else;
-						_parse_block(cf_if->body_else, p_static);
-						current_block = p_block;
-						if (error_set) {
-							return;
-						}
-
-						all_have_return = all_have_return && cf_if->body_else->has_return;
-						have_else = true;
-
-						break; //after else, exit
-
 					} else {
 						break;
 					}
@@ -3048,7 +3054,6 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				cf_if->body->has_return = all_have_return;
 				// If there's no else block, path out of the if might not have a return
 				p_block->has_return = all_have_return && have_else;
-
 			} break;
 			case PScriptTokenizer::TK_CF_WHILE: {
 				tokenizer->advance();
