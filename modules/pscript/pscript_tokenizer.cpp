@@ -577,6 +577,19 @@ void PScriptTokenizerText::_advance() {
 			case ' ':
 				INCPOS(1);
 				continue;
+			case '/':
+				if (GETCHAR(1) == '=') {
+					// diveq
+					_make_token(TK_OP_ASSIGN_DIV);
+					INCPOS(1);
+					break;
+				} else if (GETCHAR(1) == '/') {
+					INCPOS(1);
+					// FALLTHROUGH
+				} else {
+					_make_token(TK_OP_DIV);
+					break;
+				}
 			case '#': { // line comment skip
 #ifdef DEBUG_ENABLED
 				String comment;
@@ -593,7 +606,7 @@ void PScriptTokenizerText::_advance() {
 					}
 				}
 #ifdef DEBUG_ENABLED
-				String comment_content = comment.trim_prefix("#").trim_prefix(" ");
+				String comment_content = comment.trim_prefix("#").trim_prefix("/").trim_prefix(" ");
 				if (comment_content.begins_with("warning-ignore:")) {
 					String code = comment_content.get_slice(":", 1);
 					warning_skips.push_back(Pair<int, String>(line, code.strip_edges().to_lower()));
@@ -632,18 +645,6 @@ void PScriptTokenizerText::_advance() {
 				_make_newline(i, tabs);
 				return;
 			}
-			case '/': {
-				switch (GETCHAR(1)) {
-					case '=': { // diveq
-
-						_make_token(TK_OP_ASSIGN_DIV);
-						INCPOS(1);
-
-					} break;
-					default:
-						_make_token(TK_OP_DIV);
-				}
-			} break;
 			case '=': {
 				if (GETCHAR(1) == '=') {
 					_make_token(TK_OP_EQUAL);
