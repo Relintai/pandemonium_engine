@@ -4641,6 +4641,8 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 
 			case PScriptTokenizer::TK_CONSTANT: {
 				if (tokenizer->get_token_constant().get_type() == Variant::STRING) {
+					// TODO think if this is needed.
+					// Technically this makes strings a multiline comment aswell.
 					tokenizer->advance();
 					// Ignore
 				} else {
