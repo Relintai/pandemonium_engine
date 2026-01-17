@@ -591,7 +591,6 @@ private:
 
 	void _determine_inheritance(ClassNode *p_class, bool p_recursive = true);
 	bool _parse_type(DataType &r_type, bool p_can_be_void = false, bool p_advance_tokenizer_at_begin = true);
-	bool _parse_type_identifier(DataType &r_type, bool p_can_be_void = false, bool p_advance_tokenizer_at_begin = true);
 	DataType _resolve_type(const DataType &p_source, int p_line);
 	DataType _type_from_variant(const Variant &p_value) const;
 	DataType _type_from_property(const PropertyInfo &p_property, bool p_nil_is_variant = true) const;

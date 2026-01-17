@@ -2853,12 +2853,12 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				// Variable declaration: void, Variant, or built in types.
 
 				DataType local_var_datatype;
-				if (!_parse_type_identifier(local_var_datatype, true, false)) {
+				if (!_parse_type(local_var_datatype, true, false)) {
 					_set_error("Expected a type for the variable.");
 					return;
 				}
 
-				// _parse_type_identifier does this
+				// _parse_type does this
 				//tokenizer->advance();
 
 				int var_line = tokenizer->get_token_line();
@@ -4502,7 +4502,7 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 
 				ClassNode::Constant constant;
 
-				if (!_parse_type_identifier(constant.type, false)) {
+				if (!_parse_type(constant.type, false)) {
 					_set_error("Expected a type for the class constant.");
 					return;
 				}
@@ -4774,13 +4774,13 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 
 				// Grab the type
 				DataType declaration_data_type;
-				// _parse_type_identifier handles autocomplete
-				if (!_parse_type_identifier(declaration_data_type, true, false)) {
+				// _parse_type handles autocomplete
+				if (!_parse_type(declaration_data_type, true, false)) {
 					_set_error(String() + "Unexpected token: " + tokenizer->get_token_name(tokenizer->get_token()) + ":" + tokenizer->get_token_identifier());
 					return;
 				}
 
-				//_parse_type_identifier does it
+				//_parse_type does it
 				//tokenizer->advance();
 
 				// Get name
@@ -5742,81 +5742,6 @@ bool PScriptParser::_parse_type(DataType &r_type, bool p_can_be_void, bool p_adv
 		}
 
 		r_type.native_type = full_name;
-	}
-
-	return true;
-}
-
-bool PScriptParser::_parse_type_identifier(DataType &r_type, bool p_can_be_void, bool p_advance_tokenizer_at_begin) {
-	if (p_advance_tokenizer_at_begin) {
-		tokenizer->advance();
-	}
-
-	r_type.has_type = true;
-
-	String full_name;
-
-	if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
-		completion_cursor = StringName();
-		completion_type = COMPLETION_TYPE_HINT;
-		completion_class = current_class;
-		completion_function = current_function;
-		completion_line = tokenizer->get_token_line();
-		completion_argument = 0;
-		completion_block = current_block;
-		completion_found = true;
-		completion_ident_is_call = p_can_be_void;
-		tokenizer->advance();
-	}
-
-	switch (tokenizer->get_token()) {
-		case PScriptTokenizer::TK_PR_VOID: {
-			if (!p_can_be_void) {
-				return false;
-			}
-			r_type.kind = DataType::BUILTIN;
-			r_type.builtin_type = Variant::NIL;
-		} break;
-		case PScriptTokenizer::TK_PR_VARIANT: {
-			r_type.kind = DataType::BUILTIN;
-			r_type.has_type = false;
-		} break;
-		case PScriptTokenizer::TK_BUILT_IN_TYPE: {
-			r_type.builtin_type = tokenizer->get_token_type();
-			if (tokenizer->get_token_type() == Variant::OBJECT) {
-				r_type.kind = DataType::NATIVE;
-				r_type.native_type = "Object";
-			} else {
-				r_type.kind = DataType::BUILTIN;
-			}
-		} break;
-		case PScriptTokenizer::TK_IDENTIFIER: {
-			r_type.native_type = tokenizer->get_token_identifier();
-			if (ClassDB::class_exists(r_type.native_type) || ClassDB::class_exists("_" + r_type.native_type.operator String())) {
-				r_type.kind = DataType::NATIVE;
-			} else {
-				r_type.kind = DataType::UNRESOLVED;
-				full_name = r_type.native_type;
-			}
-		} break;
-		default: {
-			return false;
-		}
-	}
-
-	tokenizer->advance();
-
-	if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
-		completion_cursor = r_type.native_type;
-		completion_type = COMPLETION_TYPE_HINT;
-		completion_class = current_class;
-		completion_function = current_function;
-		completion_line = tokenizer->get_token_line();
-		completion_argument = 0;
-		completion_block = current_block;
-		completion_found = true;
-		completion_ident_is_call = p_can_be_void;
-		tokenizer->advance();
 	}
 
 	return true;
