@@ -1081,8 +1081,8 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 		while (true) {
 			//expressions can be indexed any number of times
 
-			if (tokenizer->get_token() == PScriptTokenizer::TK_PERIOD) {
-				//indexing using "."
+			if (tokenizer->get_token() == PScriptTokenizer::TK_PERIOD || tokenizer->get_token() == PScriptTokenizer::TK_DOUBLE_COLON) {
+				//indexing using ".", or "::"
 
 				if (tokenizer->get_token(1) != PScriptTokenizer::TK_CURSOR && !tokenizer->is_token_literal(1)) {
 					// We check with is_token_literal, as this allows us to use match/sync/etc. as a name
