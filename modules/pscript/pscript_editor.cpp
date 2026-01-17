@@ -58,21 +58,21 @@ String PScriptLanguage::_get_processed_template(const String &p_template, const 
 
 #ifdef TOOLS_ENABLED
 	if (EDITOR_DEF("text_editor/completion/add_type_hints", true)) {
-		processed_template = processed_template.replace("%INT_TYPE%", ": int");
-		processed_template = processed_template.replace("%STRING_TYPE%", ": String");
-		processed_template = processed_template.replace("%FLOAT_TYPE%", ": float");
-		processed_template = processed_template.replace("%VOID_RETURN%", " -> void");
+		processed_template = processed_template.replace("%INT_TYPE%", "int");
+		processed_template = processed_template.replace("%STRING_TYPE%", "String");
+		processed_template = processed_template.replace("%FLOAT_TYPE%", "float");
+		processed_template = processed_template.replace("%VOID_RETURN%", "void");
 	} else {
-		processed_template = processed_template.replace("%INT_TYPE%", "");
-		processed_template = processed_template.replace("%STRING_TYPE%", "");
-		processed_template = processed_template.replace("%FLOAT_TYPE%", "");
-		processed_template = processed_template.replace("%VOID_RETURN%", "");
+		processed_template = processed_template.replace("%INT_TYPE%", "Variant");
+		processed_template = processed_template.replace("%STRING_TYPE%", "Variant");
+		processed_template = processed_template.replace("%FLOAT_TYPE%", "Variant");
+		processed_template = processed_template.replace("%VOID_RETURN%", "void");
 	}
 #else
-	processed_template = processed_template.replace("%INT_TYPE%", "");
-	processed_template = processed_template.replace("%STRING_TYPE%", "");
-	processed_template = processed_template.replace("%FLOAT_TYPE%", "");
-	processed_template = processed_template.replace("%VOID_RETURN%", "");
+	processed_template = processed_template.replace("%INT_TYPE%", "Variant");
+	processed_template = processed_template.replace("%STRING_TYPE%", "Variant");
+	processed_template = processed_template.replace("%FLOAT_TYPE%", "Variant");
+	processed_template = processed_template.replace("%VOID_RETURN%", "Variant");
 #endif
 
 	processed_template = processed_template.replace("%BASE%", p_base_class_name);
@@ -82,22 +82,21 @@ String PScriptLanguage::_get_processed_template(const String &p_template, const 
 }
 
 Ref<Script> PScriptLanguage::get_template(const String &p_class_name, const String &p_base_class_name) const {
-	String _template = "extends %BASE%\n"
+	String _template = "extends %BASE%;\n"
 					   "\n"
+					   "// Declare member variables here. Examples:\n"
+					   "// %INT_TYPE% a = 2;\n"
+					   "// %STRING_TYPE% b = \"text\";\n"
 					   "\n"
-					   "# Declare member variables here. Examples:\n"
-					   "# var a%INT_TYPE% = 2\n"
-					   "# var b%STRING_TYPE% = \"text\"\n"
+					   "// Called when the node enters the scene tree for the first time.\n"
+					   "%VOID_RETURN% _ready() {\n"
+					   "%TS%// Replace with function body.\n"
+					   "}\n"
 					   "\n"
-					   "\n"
-					   "# Called when the node enters the scene tree for the first time.\n"
-					   "func _ready()%VOID_RETURN%:\n"
-					   "%TS%pass # Replace with function body.\n"
-					   "\n"
-					   "\n"
-					   "# Called every frame. 'delta' is the elapsed time since the previous frame.\n"
-					   "#func _process(delta%FLOAT_TYPE%)%VOID_RETURN%:\n"
-					   "#%TS%pass\n";
+					   "// Called every frame. 'delta' is the elapsed time since the previous frame.\n"
+					   "%VOID_RETURN% _process(%FLOAT_TYPE% delta) {\n"
+					   "%TS%// Replace with function body.\n"
+					   "}\n\n";
 
 	_template = _get_processed_template(_template, p_base_class_name);
 
@@ -196,6 +195,7 @@ int PScriptLanguage::find_function(const String &p_function, const String &p_cod
 					tokenizer.get_token() != PScriptTokenizer::TK_PR_VARIANT &&
 					tokenizer.get_token() != PScriptTokenizer::TK_BUILT_IN_TYPE &&
 					tokenizer.get_token() != PScriptTokenizer::TK_IDENTIFIER) {
+				tokenizer.advance();
 				continue;
 			}
 
@@ -206,10 +206,12 @@ int PScriptLanguage::find_function(const String &p_function, const String &p_cod
 			}
 
 			if (tokenizer.get_token() != PScriptTokenizer::TK_IDENTIFIER) {
+				tokenizer.advance();
 				continue;
 			}
 
 			if (tokenizer.get_token(1) != PScriptTokenizer::TK_PARENTHESIS_OPEN) {
+				tokenizer.advance();
 				continue;
 			}
 
@@ -219,8 +221,10 @@ int PScriptLanguage::find_function(const String &p_function, const String &p_cod
 				return tokenizer.get_token_line();
 			}
 		}
+
 		tokenizer.advance();
 	}
+
 	return -1;
 }
 
@@ -472,22 +476,32 @@ String PScriptLanguage::make_function(const String &p_class, const String &p_nam
 	bool th = false;
 #endif
 
-	String s = "func " + p_name + "(";
+	String s = "void " + p_name + "(";
+
 	if (p_args.size()) {
 		for (int i = 0; i < p_args.size(); i++) {
 			if (i > 0) {
 				s += ", ";
 			}
-			s += p_args[i].get_slice(":", 0);
+
 			if (th) {
 				String type = p_args[i].get_slice(":", 1);
+
 				if (!type.empty() && type != "var") {
-					s += ": " + type;
+					s += type + " ";
+				} else {
+					s += "Variant ";
 				}
+
+			} else {
+				s += "Variant ";
 			}
+
+			s += p_args[i].get_slice(":", 0);
 		}
 	}
-	s += String(")") + (th ? " -> void" : "") + ":\n" + _get_indentation() + "pass # Replace with function body.\n";
+
+	s += ") {\n" + _get_indentation() + "// Replace with function body.\n}\n";
 
 	return s;
 }
