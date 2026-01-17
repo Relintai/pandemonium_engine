@@ -307,7 +307,7 @@ Dictionary PScriptSyntaxHighlighter::_get_line_syntax_highlighting(int p_line) {
 			}
 			//else if (previous_text == PScriptTokenizer::get_token_name(PScriptTokenizer::TK_PR_VAR)) {
 			//	in_variable_declaration = true;
-		//	}
+			//	}
 		}
 
 		if (!in_function_name && !in_member_variable && !in_keyword && !is_number && in_word) {
@@ -374,11 +374,11 @@ Dictionary PScriptSyntaxHighlighter::_get_line_syntax_highlighting(int p_line) {
 		} else if (in_function_name) {
 			next_type = FUNCTION;
 
-			if (previous_text == PScriptTokenizer::get_token_name(PScriptTokenizer::TK_PR_FUNCTION)) {
-				color = function_definition_color;
-			} else {
-				color = function_color;
-			}
+			//	if (previous_text == PScriptTokenizer::get_token_name(PScriptTokenizer::TK_PR_FUNCTION)) {
+			//		color = function_definition_color;
+			//	} else {
+			color = function_color;
+			//	}
 		} else if (is_a_symbol) {
 			next_type = SYMBOL;
 			color = symbol_color;

@@ -87,7 +87,6 @@ const char *PScriptTokenizer::token_names[TK_MAX] = {
 	"continue",
 	"return",
 	"match",
-	"func",
 	"class",
 	"class_name",
 	"extends",
@@ -195,7 +194,6 @@ static const _kws _keyword_list[] = {
 	{ PScriptTokenizer::TK_OP_OR, "or" },
 	{ PScriptTokenizer::TK_OP_AND, "and" },
 	//func
-	{ PScriptTokenizer::TK_PR_FUNCTION, "func" },
 	{ PScriptTokenizer::TK_PR_CLASS, "class" },
 	{ PScriptTokenizer::TK_PR_CLASS_NAME, "class_name" },
 	{ PScriptTokenizer::TK_PR_EXTENDS, "extends" },
@@ -353,7 +351,6 @@ bool PScriptTokenizer::is_token_literal(int p_offset, bool variable_safe) const 
 		case TK_PR_CONST:
 		case TK_PR_ENUM:
 		case TK_PR_PRELOAD:
-		case TK_PR_FUNCTION:
 		case TK_PR_EXTENDS:
 		case TK_PR_ASSERT:
 

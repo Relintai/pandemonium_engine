@@ -1724,7 +1724,6 @@ void PScriptLanguage::get_reserved_words(List<String> *p_words) const {
 		"class_name",
 		"extends",
 		"is",
-		"func",
 		"preload",
 		"setget",
 		"signal",
