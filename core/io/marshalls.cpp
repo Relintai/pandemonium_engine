@@ -758,7 +758,7 @@ Error decode_variant(Variant &r_variant, const uint8_t *p_buffer, int p_len, int
 				buf += used;
 				len -= used;
 				// TODO check if this fails?
-				varr.push_back(v));
+				varr.push_back(v);
 				if (r_len) {
 					(*r_len) += used;
 				}
