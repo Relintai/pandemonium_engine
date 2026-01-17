@@ -660,6 +660,41 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 			// We check with is_token_literal, as this allows us to use match/sync/etc. as a name
 			//identifier (reference)
 
+			// if first expression
+			// Try parse as type
+			// new type parsing method, that returns all processed ops
+			// For example:
+			// SomeClass.SomeOtherClass.SomeOtherOtherClass a = ...
+			//
+			// Func:
+			// SomeSIngleton.some_variable.some_method();
+			// This would fail at some_variable if SomeSingleton is alos a type, but that would be handled later ->
+			// tokeizer swon't get advanced, and we could just fall thourgh to current logic, and take temps
+
+			// Let's say we have a class:
+			// SomeClass -> What would be valid?
+			//
+			// SomeClass.static_method()
+			// SomeClass.SomeOtherClass.static_method()
+			// SomeClass.SomeOtherClass.static_method(a, b, (...))
+			//
+			// Static vars not supported, so not an issue:
+			// SomeClass.static_vairable = 1;
+			// SomeClass.SomeOtherClass.static_variable = 1;
+			//
+			// SomeCLass a = SomeClass.new()
+			//
+			// variable named SomeClass should be an error.
+			//
+			// Left hand arg can't do anythign else.
+			//
+			// Maybe Autoload + Global Class could be a problem?
+			// Nope: Parse Error: The class "TestAutoload" conflicts with the AutoLoad singleton
+			//        of the same name, and is therefore redundant. Remove the class_name declaration to fix this error.
+
+			// So here we need to try to parse full type (object type only)
+			// if that fails, it can be a method call (that code need to be duplicated), or the original code
+
 			const ClassNode *cln = current_class;
 			bool bfn = false;
 			StringName identifier;
