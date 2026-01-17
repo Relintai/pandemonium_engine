@@ -2975,7 +2975,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				lv->assign = assigned;
 
 				if (!_end_statement()) {
-					_set_end_statement_error("var");
+					_set_end_statement_error("variable");
 					return;
 				}
 
@@ -3056,7 +3056,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				lv->assign = assigned;
 
 				if (!_end_statement()) {
-					_set_end_statement_error("var");
+					_set_end_statement_error("variable");
 					return;
 				}
 
