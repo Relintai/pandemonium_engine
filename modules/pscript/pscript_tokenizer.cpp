@@ -225,7 +225,7 @@ static const _kws _keyword_list[] = {
 	{ PScriptTokenizer::TK_SELF, "this" },
 	{ PScriptTokenizer::TK_CONST_PI, "PI" },
 	{ PScriptTokenizer::TK_CONST_TAU, "TAU" },
-	{ PScriptTokenizer::TK_WILDCARD, "default" },
+	{ PScriptTokenizer::TK_DEFAULT, "default" },
 	{ PScriptTokenizer::TK_CASE, "case" },
 	{ PScriptTokenizer::TK_CONST_INF, "INF" },
 	{ PScriptTokenizer::TK_CONST_NAN, "NAN" },
@@ -367,7 +367,7 @@ bool PScriptTokenizer::is_token_literal(int p_offset, bool variable_safe) const 
 		case TK_SELF:
 		case TK_CONST_PI:
 		case TK_CONST_TAU:
-		case TK_WILDCARD:
+		case TK_DEFAULT:
 		case TK_CONST_INF:
 		case TK_CONST_NAN:
 		case TK_ERROR:

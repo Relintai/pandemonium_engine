@@ -400,7 +400,7 @@ public:
 			PT_CONSTANT,
 			PT_BIND,
 			PT_IGNORE_REST,
-			PT_WILDCARD
+			PT_DEFAULT,
 		};
 
 		PatternType pt_type;

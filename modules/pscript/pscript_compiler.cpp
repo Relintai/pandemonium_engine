@@ -1315,7 +1315,7 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 						PScriptParser::MatchNode *match = cf->match;
 
 						PScriptParser::IdentifierNode *id = memnew(PScriptParser::IdentifierNode);
-						id->name = "#match_value";
+						id->name = "#switch_value";
 
 						// var #match_value
 						// copied because there is no _parse_statement :(

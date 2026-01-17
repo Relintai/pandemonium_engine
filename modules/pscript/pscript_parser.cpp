@@ -301,6 +301,8 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 
 		if (tokenizer->get_token() == PScriptTokenizer::TK_CASE) {
 			return NULL;
+		} else if (tokenizer->get_token() == PScriptTokenizer::TK_DEFAULT) {
+			return NULL;
 		} else if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_OPEN) {
 			//subexpression ()
 			tokenizer->advance();
@@ -2166,15 +2168,15 @@ PScriptParser::PatternNode *PScriptParser::_parse_pattern(bool p_static) {
 	}
 
 	switch (token) {
-		case PScriptTokenizer::TK_WILDCARD: {
+		case PScriptTokenizer::TK_DEFAULT: {
 			tokenizer->advance();
-			pattern->pt_type = PatternNode::PT_WILDCARD;
+			pattern->pt_type = PatternNode::PT_DEFAULT;
 		} break;
 		// all the constants like strings and numbers
 		default: {
 			Node *value = _parse_and_reduce_expression(pattern, p_static);
 			if (!value) {
-				_set_error("Expect constant expression or variables in a pattern");
+				_set_error("Expect constant expression or variables in a switch label");
 				return nullptr;
 			}
 
@@ -2186,19 +2188,19 @@ PScriptParser::PatternNode *PScriptParser::_parse_pattern(bool p_static) {
 					OperatorNode *op_node = static_cast<OperatorNode *>(current_value);
 
 					if (op_node->op != OperatorNode::OP_INDEX_NAMED) {
-						_set_error("Invalid operator in pattern. Only index (`A.B`) is allowed");
+						_set_error("Invalid operator in switch label. Only index (`A.B`) is allowed");
 						return nullptr;
 					}
 					current_value = op_node->arguments[0];
 				}
 
 				if (current_value->type != Node::TYPE_IDENTIFIER) {
-					_set_error("Only constant expression or variables allowed in a pattern");
+					_set_error("Only constant expression or variables allowed in a switch label");
 					return nullptr;
 				}
 
 			} else if (value->type != Node::TYPE_IDENTIFIER && value->type != Node::TYPE_CONSTANT) {
-				_set_error("Only constant expressions or variables allowed in a pattern");
+				_set_error("Only constant expressions or variables allowed in a switch label");
 				return nullptr;
 			}
 
@@ -2232,13 +2234,15 @@ void PScriptParser::_parse_pattern_block(BlockNode *p_block, Vector<PatternBranc
 			break; // go back a level
 		}
 
-		if (tokenizer->get_token() != PScriptTokenizer::TK_CASE) {
-			_set_error("Expected case in pattern branch");
+		if (tokenizer->get_token() != PScriptTokenizer::TK_CASE && tokenizer->get_token() != PScriptTokenizer::TK_DEFAULT) {
+			_set_error("Expected case or default in switch statement");
 			return;
 		}
 
-		// Consume case
-		tokenizer->advance();
+		if (tokenizer->get_token() == PScriptTokenizer::TK_CASE) {
+			// Consume case
+			tokenizer->advance();
+		}
 
 		pending_newline = -1;
 
@@ -2254,7 +2258,7 @@ void PScriptParser::_parse_pattern_block(BlockNode *p_block, Vector<PatternBranc
 		}
 
 		bool has_binding = branch->pattern->pt_type == PatternNode::PT_BIND;
-		bool catch_all = has_binding || branch->pattern->pt_type == PatternNode::PT_WILDCARD;
+		bool catch_all = has_binding || branch->pattern->pt_type == PatternNode::PT_DEFAULT;
 
 #ifdef DEBUG_ENABLED
 		// Branches after a wildcard or binding are unreachable
@@ -2355,7 +2359,7 @@ void PScriptParser::_generate_pattern(PatternNode *p_pattern, Node *p_node_to_ma
 			p_resulting_node = true_value;
 		} break;
 		case PatternNode::PT_IGNORE_REST:
-		case PatternNode::PT_WILDCARD: {
+		case PatternNode::PT_DEFAULT: {
 			// simply generate a `true`
 			ConstantNode *true_value = alloc_node<ConstantNode>();
 			true_value->value = Variant(true);
@@ -2368,7 +2372,7 @@ void PScriptParser::_generate_pattern(PatternNode *p_pattern, Node *p_node_to_ma
 
 void PScriptParser::_transform_match_statment(MatchNode *p_match_statement) {
 	IdentifierNode *id = alloc_node<IdentifierNode>();
-	id->name = "#match_value";
+	id->name = "#switch_value";
 	id->line = p_match_statement->line;
 	id->datatype = _reduce_node_type(p_match_statement->val_to_match);
 	if (id->datatype.has_type) {
@@ -3123,7 +3127,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				match_node->val_to_match = val_to_match;
 
 				if (!_enter_block()) {
-					_set_error("Expected pattern matching block after \"match\".");
+					_set_error("Expected pattern matching block after \"switch\".");
 					return;
 				}
 
