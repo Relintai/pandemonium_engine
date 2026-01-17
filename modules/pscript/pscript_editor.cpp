@@ -2797,35 +2797,10 @@ Error PScriptLanguage::complete_code(const String &p_code, const String &p_path,
 			ClassDB::get_virtual_methods(class_name, &virtual_methods);
 			for (List<MethodInfo>::Element *E = virtual_methods.front(); E; E = E->next()) {
 				MethodInfo &mi = E->get();
-				String method_hint = mi.name;
-				if (method_hint.find(":") != -1) {
-					method_hint = method_hint.get_slice(":", 0);
-				}
-				method_hint += "(";
 
-				if (mi.arguments.size()) {
-					for (int i = 0; i < mi.arguments.size(); i++) {
-						if (i > 0) {
-							method_hint += ", ";
-						}
-						String arg = mi.arguments[i].name;
-						if (arg.find(":") != -1) {
-							arg = arg.substr(0, arg.find(":"));
-						}
-						method_hint += arg;
-						if (use_type_hint && mi.arguments[i].type != Variant::NIL) {
-							method_hint += ": ";
-							if (mi.arguments[i].type == Variant::OBJECT && mi.arguments[i].class_name != StringName()) {
-								method_hint += mi.arguments[i].class_name.operator String();
-							} else {
-								method_hint += Variant::get_type_name(mi.arguments[i].type);
-							}
-						}
-					}
-				}
-				method_hint += ")";
+				String method_hint;
+
 				if (use_type_hint && (mi.return_val.type != Variant::NIL || !(mi.return_val.usage & PROPERTY_USAGE_NIL_IS_VARIANT))) {
-					method_hint += " -> ";
 					if (mi.return_val.type == Variant::NIL) {
 						method_hint += "void";
 					} else if (mi.return_val.type == Variant::OBJECT && mi.return_val.class_name != StringName()) {
@@ -2833,8 +2808,43 @@ Error PScriptLanguage::complete_code(const String &p_code, const String &p_path,
 					} else {
 						method_hint += Variant::get_type_name(mi.return_val.type);
 					}
+				} else {
+					method_hint += "Variant";
 				}
-				method_hint += ":";
+
+				String mname = mi.name;
+				if (mname.find(":") != -1) {
+					mname = mname.get_slice(":", 0);
+				}
+
+				method_hint += " " + mname + "(";
+
+				if (mi.arguments.size()) {
+					for (int i = 0; i < mi.arguments.size(); i++) {
+						if (i > 0) {
+							method_hint += ", ";
+						}
+
+						if (use_type_hint && mi.arguments[i].type != Variant::NIL) {
+							if (mi.arguments[i].type == Variant::OBJECT && mi.arguments[i].class_name != StringName()) {
+								method_hint += mi.arguments[i].class_name.operator String();
+							} else {
+								method_hint += Variant::get_type_name(mi.arguments[i].type);
+							}
+						} else {
+							method_hint += "Variant";
+						}
+
+						method_hint += " ";
+
+						String arg = mi.arguments[i].name;
+						if (arg.find(":") != -1) {
+							arg = arg.substr(0, arg.find(":"));
+						}
+						method_hint += arg;
+					}
+				}
+				method_hint += ") {";
 
 				ScriptCodeCompletionOption option(method_hint, ScriptCodeCompletionOption::KIND_FUNCTION);
 				options.insert(option.display, option);
