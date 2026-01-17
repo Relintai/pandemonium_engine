@@ -304,9 +304,10 @@ Dictionary PScriptSyntaxHighlighter::_get_line_syntax_highlighting(int p_line) {
 
 			if (str[k] == '(') {
 				in_function_name = true;
-			} else if (previous_text == PScriptTokenizer::get_token_name(PScriptTokenizer::TK_PR_VAR)) {
-				in_variable_declaration = true;
 			}
+			//else if (previous_text == PScriptTokenizer::get_token_name(PScriptTokenizer::TK_PR_VAR)) {
+			//	in_variable_declaration = true;
+		//	}
 		}
 
 		if (!in_function_name && !in_member_variable && !in_keyword && !is_number && in_word) {

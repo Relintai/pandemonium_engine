@@ -2174,30 +2174,6 @@ PScriptParser::PatternNode *PScriptParser::_parse_pattern(bool p_static) {
 				}
 			}
 		} break;
-		// bind
-		case PScriptTokenizer::TK_PR_VAR: {
-			tokenizer->advance();
-			if (!tokenizer->is_token_literal()) {
-				_set_error("Expected identifier for binding variable name.");
-				return nullptr;
-			}
-			pattern->pt_type = PScriptParser::PatternNode::PT_BIND;
-			pattern->bind = tokenizer->get_token_literal();
-			// Check if variable name is already used
-			BlockNode *bl = current_block;
-			while (bl) {
-				if (bl->variables.has(pattern->bind)) {
-					_set_error("Binding name of '" + pattern->bind.operator String() + "' is already declared in this scope.");
-					return nullptr;
-				}
-				bl = bl->parent_block;
-			}
-			// Create local variable for proper identifier detection later
-			LocalVarNode *lv = alloc_node<LocalVarNode>();
-			lv->name = pattern->bind;
-			current_block->variables.insert(lv->name, lv);
-			tokenizer->advance();
-		} break;
 		// dictionary
 		case PScriptTokenizer::TK_CURLY_BRACKET_OPEN: {
 			tokenizer->advance();
@@ -2941,87 +2917,6 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				p_block->statements.push_back(lv);
 
 				Node *assigned = nullptr;
-
-				if (tokenizer->get_token() == PScriptTokenizer::TK_OP_ASSIGN) {
-					tokenizer->advance();
-					Node *subexpr = _parse_and_reduce_expression(p_block, p_static);
-					if (!subexpr) {
-						if (_recover_from_completion()) {
-							break;
-						}
-						return;
-					}
-
-					lv->assignments++;
-					assigned = subexpr;
-				} else {
-					assigned = _get_default_value_for_type(lv->datatype, var_line);
-				}
-				//must be added later, to avoid self-referencing.
-				p_block->variables.insert(n, lv);
-
-				IdentifierNode *id = alloc_node<IdentifierNode>();
-				id->name = n;
-				id->declared_block = p_block;
-				id->line = var_line;
-
-				OperatorNode *op = alloc_node<OperatorNode>();
-				op->op = OperatorNode::OP_ASSIGN;
-				op->arguments.push_back(id);
-				op->arguments.push_back(assigned);
-				op->line = var_line;
-				p_block->statements.push_back(op);
-				lv->assign_op = op;
-				lv->assign = assigned;
-
-				if (!_end_statement()) {
-					_set_end_statement_error("variable");
-					return;
-				}
-
-			} break;
-			case PScriptTokenizer::TK_PR_VAR: {
-				// Variable declaration and (eventual) initialization.
-
-				tokenizer->advance();
-				int var_line = tokenizer->get_token_line();
-				if (!tokenizer->is_token_literal(0, true)) {
-					_set_error("Expected an identifier for the local variable name.");
-					return;
-				}
-				StringName n = tokenizer->get_token_literal();
-				if (current_function) {
-					for (int i = 0; i < current_function->arguments.size(); i++) {
-						if (n == current_function->arguments[i]) {
-							_set_error("Variable \"" + String(n) + "\" already defined in the scope (at line " + itos(current_function->line) + ").");
-							return;
-						}
-					}
-				}
-				BlockNode *check_block = p_block;
-				while (check_block) {
-					if (check_block->variables.has(n)) {
-						_set_error("Variable \"" + String(n) + "\" already defined in the scope (at line " + itos(check_block->variables[n]->line) + ").");
-						return;
-					}
-					check_block = check_block->parent_block;
-				}
-				tokenizer->advance();
-
-				//must know when the local variable is declared
-				LocalVarNode *lv = alloc_node<LocalVarNode>();
-				lv->name = n;
-				lv->line = var_line;
-				p_block->statements.push_back(lv);
-
-				Node *assigned = nullptr;
-
-				if (tokenizer->get_token() == PScriptTokenizer::TK_COLON) {
-					if (!_parse_type(lv->datatype)) {
-						_set_error("Expected a type for the variable.");
-						return;
-					}
-				}
 
 				if (tokenizer->get_token() == PScriptTokenizer::TK_OP_ASSIGN) {
 					tokenizer->advance();

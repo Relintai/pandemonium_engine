@@ -98,7 +98,6 @@ const char *PScriptTokenizer::token_names[TK_MAX] = {
 	"export",
 	"setget",
 	"const",
-	"var",
 	"as",
 	"void",
 	"Variant",
@@ -206,7 +205,6 @@ static const _kws _keyword_list[] = {
 	{ PScriptTokenizer::TK_PR_STATIC, "static" },
 	{ PScriptTokenizer::TK_PR_EXPORT, "export" },
 	{ PScriptTokenizer::TK_PR_SETGET, "setget" },
-	{ PScriptTokenizer::TK_PR_VAR, "var" },
 	{ PScriptTokenizer::TK_PR_AS, "as" },
 	{ PScriptTokenizer::TK_PR_VOID, "void" },
 	{ PScriptTokenizer::TK_PR_VARIANT, "Variant" },
@@ -358,7 +356,6 @@ bool PScriptTokenizer::is_token_literal(int p_offset, bool variable_safe) const 
 		case TK_PR_FUNCTION:
 		case TK_PR_EXTENDS:
 		case TK_PR_ASSERT:
-		case TK_PR_VAR:
 
 		case TK_CF_IF:
 		case TK_CF_ELSE:

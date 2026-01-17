@@ -1735,7 +1735,6 @@ void PScriptLanguage::get_reserved_words(List<String> *p_words) const {
 		"export",
 		"onready",
 		"static",
-		"var",
 		// control flow
 		"break",
 		"continue",
