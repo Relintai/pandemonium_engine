@@ -2803,7 +2803,7 @@ void PackedTypedArray::set_object_class_name(const StringName &p_object_type_nam
 	_p->is_global_class = ScriptServer::is_global_class(p_object_type_name);
 
 	// Just warn the user.
-	ERR_FAIL_COND(!validate_object_type_name(_p->object_class_name));
+	//ERR_FAIL_COND(!validate_object_type_name(_p->object_class_name));
 }
 
 void PackedTypedArray::set_type_from_name(const StringName &p_type_name) {
@@ -2834,7 +2834,7 @@ void PackedTypedArray::set_type_from_name(const StringName &p_type_name) {
 		_p->is_global_class = ScriptServer::is_global_class(p_type_name);
 
 		// Just warn the user.
-		ERR_FAIL_COND(!validate_object_type_name(_p->object_class_name));
+		//ERR_FAIL_COND(!validate_object_type_name(_p->object_class_name));
 	} else {
 		_p->object_class_name = StringName();
 	}
@@ -3032,9 +3032,9 @@ void PackedTypedArray::set_type_from(const PackedTypedArray &p_array) {
 	_p->is_global_class = p_array._p->is_global_class;
 
 	// Just warn the user.
-	if (_p->type == Variant::OBJECT) {
-		ERR_FAIL_COND(!validate_object_type_name(_p->object_class_name));
-	}
+	//if (_p->type == Variant::OBJECT) {
+	//	ERR_FAIL_COND(!validate_object_type_name(_p->object_class_name));
+	//}
 }
 
 bool PackedTypedArray::validate_type_name(const StringName &p_type_name) const {

@@ -925,7 +925,7 @@ void TypedArray::set_object_class_name(const StringName &p_object_type_name) {
 	_p->is_global_class = ScriptServer::is_global_class(p_object_type_name);
 
 	// Just warn the user.
-	ERR_FAIL_COND(!validate_object_type_name(_p->object_class_name));
+	//ERR_FAIL_COND(!validate_object_type_name(_p->object_class_name));
 }
 
 void TypedArray::set_type_from_name(const StringName &p_type_name) {
@@ -951,7 +951,7 @@ void TypedArray::set_type_from_name(const StringName &p_type_name) {
 		_p->is_global_class = ScriptServer::is_global_class(p_type_name);
 
 		// Just warn the user.
-		ERR_FAIL_COND(!validate_object_type_name(_p->object_class_name));
+		//ERR_FAIL_COND(!validate_object_type_name(_p->object_class_name));
 	} else {
 		_p->object_class_name = StringName();
 	}
@@ -965,9 +965,9 @@ void TypedArray::set_type_from(const TypedArray &p_array) {
 	_p->is_global_class = p_array._p->is_global_class;
 
 	// Just warn the user.
-	if (_p->type == Variant::OBJECT) {
-		ERR_FAIL_COND(!validate_object_type_name(_p->object_class_name));
-	}
+	//if (_p->type == Variant::OBJECT) {
+	//	ERR_FAIL_COND(!validate_object_type_name(_p->object_class_name));
+	//}
 }
 
 void TypedArray::set_type_from_variant(const Variant &p_variant) {
