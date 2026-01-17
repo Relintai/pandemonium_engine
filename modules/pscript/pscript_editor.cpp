@@ -3089,7 +3089,7 @@ void PScriptLanguage::auto_indent_code(String &p_code, int p_from_line, int p_to
 		}
 
 		String st = l.substr(tc, l.length()).strip_edges();
-		if (st == "" || st.begins_with("#")) {
+		if (st == "" || st.begins_with("#") || st.begins_with("//")) {
 			continue; //ignore!
 		}
 
