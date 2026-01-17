@@ -2854,6 +2854,15 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 							}
 						}
 
+						if (current_class) {
+							for (int i = 0; i < current_class->subclasses.size(); i++) {
+								if (current_class->subclasses[i]->name == name) {
+									valid_type = true;
+									break;
+								}
+							}
+						}
+
 						// Not valid type, handle it as a normal expression.
 						if (!valid_type) {
 							Node *expression = _parse_and_reduce_expression(p_block, p_static, false, true);
