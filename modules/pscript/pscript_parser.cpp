@@ -133,6 +133,43 @@ bool PScriptParser::_enter_block(BlockNode *p_block) {
 	}
 }
 
+bool PScriptParser::_enter_match_block(BlockNode *p_block) {
+	while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
+		tokenizer->advance();
+
+		if (p_block) {
+			NewLineNode *nl = alloc_node<NewLineNode>();
+			nl->line = tokenizer->get_token_line();
+			p_block->statements.push_back(nl);
+		}
+	}
+
+	if (tokenizer->get_token() == PScriptTokenizer::TK_EOF) {
+		return false;
+	}
+
+	if (tokenizer->get_token() != PScriptTokenizer::TK_COLON) {
+		_set_error("':' expected.");
+		return false;
+	}
+	// consume :
+	tokenizer->advance();
+
+	while (true) {
+		if (tokenizer->get_token() == PScriptTokenizer::TK_EOF) {
+			return false;
+		} else if (tokenizer->get_token() != PScriptTokenizer::TK_NEWLINE) {
+			return true;
+		} else if (p_block) {
+			NewLineNode *nl = alloc_node<NewLineNode>();
+			nl->line = tokenizer->get_token_line();
+			p_block->statements.push_back(nl);
+		}
+
+		tokenizer->advance(); // go to next newline
+	}
+}
+
 bool PScriptParser::_parse_arguments(Node *p_parent, Vector<Node *> &p_args, bool p_static, bool p_can_codecomplete, bool p_parsing_constant) {
 	if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 		tokenizer->advance();
@@ -262,7 +299,9 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 			}
 		}
 
-		if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_OPEN) {
+		if (tokenizer->get_token() == PScriptTokenizer::TK_CASE) {
+			return NULL;
+		} else if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_OPEN) {
 			//subexpression ()
 			tokenizer->advance();
 			parenthesis++;
@@ -2127,118 +2166,6 @@ PScriptParser::PatternNode *PScriptParser::_parse_pattern(bool p_static) {
 	}
 
 	switch (token) {
-		// array
-		case PScriptTokenizer::TK_BRACKET_OPEN: {
-			tokenizer->advance();
-			pattern->pt_type = PScriptParser::PatternNode::PT_ARRAY;
-			while (true) {
-				if (tokenizer->get_token() == PScriptTokenizer::TK_BRACKET_CLOSE) {
-					tokenizer->advance();
-					break;
-				}
-
-				if (tokenizer->get_token() == PScriptTokenizer::TK_PERIOD && tokenizer->get_token(1) == PScriptTokenizer::TK_PERIOD) {
-					// match everything
-					tokenizer->advance(2);
-					PatternNode *sub_pattern = alloc_node<PatternNode>();
-					sub_pattern->pt_type = PScriptParser::PatternNode::PT_IGNORE_REST;
-					pattern->array.push_back(sub_pattern);
-					if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA && tokenizer->get_token(1) == PScriptTokenizer::TK_BRACKET_CLOSE) {
-						tokenizer->advance(2);
-						break;
-					} else if (tokenizer->get_token() == PScriptTokenizer::TK_BRACKET_CLOSE) {
-						tokenizer->advance(1);
-						break;
-					} else {
-						_set_error("'..' pattern only allowed at the end of an array pattern");
-						return nullptr;
-					}
-				}
-
-				PatternNode *sub_pattern = _parse_pattern(p_static);
-				if (!sub_pattern) {
-					return nullptr;
-				}
-
-				pattern->array.push_back(sub_pattern);
-
-				if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
-					tokenizer->advance();
-					continue;
-				} else if (tokenizer->get_token() == PScriptTokenizer::TK_BRACKET_CLOSE) {
-					tokenizer->advance();
-					break;
-				} else {
-					_set_error("Not a valid pattern");
-					return nullptr;
-				}
-			}
-		} break;
-		// dictionary
-		case PScriptTokenizer::TK_CURLY_BRACKET_OPEN: {
-			tokenizer->advance();
-			pattern->pt_type = PScriptParser::PatternNode::PT_DICTIONARY;
-			while (true) {
-				if (tokenizer->get_token() == PScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
-					tokenizer->advance();
-					break;
-				}
-
-				if (tokenizer->get_token() == PScriptTokenizer::TK_PERIOD && tokenizer->get_token(1) == PScriptTokenizer::TK_PERIOD) {
-					// match everything
-					tokenizer->advance(2);
-					PatternNode *sub_pattern = alloc_node<PatternNode>();
-					sub_pattern->pt_type = PatternNode::PT_IGNORE_REST;
-					pattern->array.push_back(sub_pattern);
-					if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA && tokenizer->get_token(1) == PScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
-						tokenizer->advance(2);
-						break;
-					} else if (tokenizer->get_token() == PScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
-						tokenizer->advance(1);
-						break;
-					} else {
-						_set_error("'..' pattern only allowed at the end of a dictionary pattern");
-						return nullptr;
-					}
-				}
-
-				Node *key = _parse_and_reduce_expression(pattern, p_static);
-				if (!key) {
-					_set_error("Not a valid key in pattern");
-					return nullptr;
-				}
-
-				if (key->type != PScriptParser::Node::TYPE_CONSTANT) {
-					_set_error("Not a constant expression as key");
-					return nullptr;
-				}
-
-				if (tokenizer->get_token() == PScriptTokenizer::TK_COLON) {
-					tokenizer->advance();
-
-					PatternNode *value = _parse_pattern(p_static);
-					if (!value) {
-						_set_error("Expected pattern in dictionary value");
-						return nullptr;
-					}
-
-					pattern->dictionary.insert(static_cast<ConstantNode *>(key), value);
-				} else {
-					pattern->dictionary.insert(static_cast<ConstantNode *>(key), NULL);
-				}
-
-				if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
-					tokenizer->advance();
-					continue;
-				} else if (tokenizer->get_token() == PScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
-					tokenizer->advance();
-					break;
-				} else {
-					_set_error("Not a valid pattern");
-					return nullptr;
-				}
-			}
-		} break;
 		case PScriptTokenizer::TK_WILDCARD: {
 			tokenizer->advance();
 			pattern->pt_type = PatternNode::PT_WILDCARD;
@@ -2299,10 +2226,19 @@ void PScriptParser::_parse_pattern_block(BlockNode *p_block, Vector<PatternBranc
 		}
 
 		if (tokenizer->get_token() == PScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
-			// COnsume }
-			tokenizer->advance();
+			// Don't Consume }
+			// Caller will need it to be there
+			//tokenizer->advance();
 			break; // go back a level
 		}
+
+		if (tokenizer->get_token() != PScriptTokenizer::TK_CASE) {
+			_set_error("Expected case in pattern branch");
+			return;
+		}
+
+		// Consume case
+		tokenizer->advance();
 
 		pending_newline = -1;
 
@@ -2312,13 +2248,13 @@ void PScriptParser::_parse_pattern_block(BlockNode *p_block, Vector<PatternBranc
 		p_block->sub_blocks.push_back(branch->body);
 		current_block = branch->body;
 
-		branch->patterns.push_back(_parse_pattern(p_static));
-		if (!branch->patterns[0]) {
+		branch->pattern = _parse_pattern(p_static);
+		if (!branch->pattern) {
 			break;
 		}
 
-		bool has_binding = branch->patterns[0]->pt_type == PatternNode::PT_BIND;
-		bool catch_all = has_binding || branch->patterns[0]->pt_type == PatternNode::PT_WILDCARD;
+		bool has_binding = branch->pattern->pt_type == PatternNode::PT_BIND;
+		bool catch_all = has_binding || branch->pattern->pt_type == PatternNode::PT_WILDCARD;
 
 #ifdef DEBUG_ENABLED
 		// Branches after a wildcard or binding are unreachable
@@ -2328,26 +2264,9 @@ void PScriptParser::_parse_pattern_block(BlockNode *p_block, Vector<PatternBranc
 		}
 #endif
 
-		while (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
-			tokenizer->advance();
-			branch->patterns.push_back(_parse_pattern(p_static));
-			if (!branch->patterns[branch->patterns.size() - 1]) {
-				return;
-			}
-
-			PatternNode::PatternType pt = branch->patterns[branch->patterns.size() - 1]->pt_type;
-
-			if (pt == PatternNode::PT_BIND) {
-				_set_error("Cannot use bindings with multipattern.");
-				return;
-			}
-
-			catch_all = catch_all || pt == PatternNode::PT_WILDCARD;
-		}
-
 		catch_all_appeared = catch_all_appeared || catch_all;
 
-		if (!_enter_block()) {
+		if (!_enter_match_block()) {
 			_set_error("Expected block in pattern branch");
 			return;
 		}
@@ -2435,210 +2354,6 @@ void PScriptParser::_generate_pattern(PatternNode *p_pattern, Node *p_node_to_ma
 			true_value->value = Variant(true);
 			p_resulting_node = true_value;
 		} break;
-		case PatternNode::PT_ARRAY: {
-			bool open_ended = false;
-
-			if (p_pattern->array.size() > 0) {
-				if (p_pattern->array[p_pattern->array.size() - 1]->pt_type == PatternNode::PT_IGNORE_REST) {
-					open_ended = true;
-				}
-			}
-
-			// typeof(value_to_match) == TYPE_ARRAY && value_to_match.size() >= length
-			// typeof(value_to_match) == TYPE_ARRAY && value_to_match.size() == length
-
-			{
-				OperatorNode *type_comp = nullptr;
-				// static type check if possible
-				if (to_match_type.has_type) {
-					// must be an array
-					if (to_match_type.kind != DataType::BUILTIN || to_match_type.builtin_type != Variant::ARRAY) {
-						_set_error("Cannot match an array pattern with a non-array expression.", p_pattern->line);
-						return;
-					}
-				} else {
-					// runtime typecheck
-					BuiltInFunctionNode *typeof_node = alloc_node<BuiltInFunctionNode>();
-					typeof_node->function = PScriptFunctions::TYPE_OF;
-
-					OperatorNode *typeof_match_value = alloc_node<OperatorNode>();
-					typeof_match_value->op = OperatorNode::OP_CALL;
-					typeof_match_value->arguments.push_back(typeof_node);
-					typeof_match_value->arguments.push_back(p_node_to_match);
-
-					IdentifierNode *typeof_array = alloc_node<IdentifierNode>();
-					typeof_array->name = "TYPE_ARRAY";
-
-					type_comp = alloc_node<OperatorNode>();
-					type_comp->op = OperatorNode::OP_EQUAL;
-					type_comp->arguments.push_back(typeof_match_value);
-					type_comp->arguments.push_back(typeof_array);
-				}
-
-				// size
-				ConstantNode *length = alloc_node<ConstantNode>();
-				length->value = Variant(open_ended ? p_pattern->array.size() - 1 : p_pattern->array.size());
-
-				OperatorNode *call = alloc_node<OperatorNode>();
-				call->op = OperatorNode::OP_CALL;
-				call->arguments.push_back(p_node_to_match);
-
-				IdentifierNode *size = alloc_node<IdentifierNode>();
-				size->name = "size";
-				call->arguments.push_back(size);
-
-				OperatorNode *length_comparison = alloc_node<OperatorNode>();
-				length_comparison->op = open_ended ? OperatorNode::OP_GREATER_EQUAL : OperatorNode::OP_EQUAL;
-				length_comparison->arguments.push_back(call);
-				length_comparison->arguments.push_back(length);
-
-				if (type_comp) {
-					OperatorNode *type_and_length_comparison = alloc_node<OperatorNode>();
-					type_and_length_comparison->op = OperatorNode::OP_AND;
-					type_and_length_comparison->arguments.push_back(type_comp);
-					type_and_length_comparison->arguments.push_back(length_comparison);
-
-					p_resulting_node = type_and_length_comparison;
-				} else {
-					p_resulting_node = length_comparison;
-				}
-			}
-
-			for (int i = 0; i < p_pattern->array.size(); i++) {
-				PatternNode *pattern = p_pattern->array[i];
-
-				Node *condition = nullptr;
-
-				ConstantNode *index = alloc_node<ConstantNode>();
-				index->value = Variant(i);
-
-				OperatorNode *indexed_value = alloc_node<OperatorNode>();
-				indexed_value->op = OperatorNode::OP_INDEX;
-				indexed_value->arguments.push_back(p_node_to_match);
-				indexed_value->arguments.push_back(index);
-
-				_generate_pattern(pattern, indexed_value, condition, p_bindings);
-
-				// concatenate all the patterns with &&
-				OperatorNode *and_node = alloc_node<OperatorNode>();
-				and_node->op = OperatorNode::OP_AND;
-				and_node->arguments.push_back(p_resulting_node);
-				and_node->arguments.push_back(condition);
-
-				p_resulting_node = and_node;
-			}
-
-		} break;
-		case PatternNode::PT_DICTIONARY: {
-			bool open_ended = false;
-
-			if (p_pattern->array.size() > 0) {
-				open_ended = true;
-			}
-
-			// typeof(value_to_match) == TYPE_DICTIONARY && value_to_match.size() >= length
-			// typeof(value_to_match) == TYPE_DICTIONARY && value_to_match.size() == length
-
-			{
-				OperatorNode *type_comp = nullptr;
-				// static type check if possible
-				if (to_match_type.has_type) {
-					// must be an dictionary
-					if (to_match_type.kind != DataType::BUILTIN || to_match_type.builtin_type != Variant::DICTIONARY) {
-						_set_error("Cannot match an dictionary pattern with a non-dictionary expression.", p_pattern->line);
-						return;
-					}
-				} else {
-					// runtime typecheck
-					BuiltInFunctionNode *typeof_node = alloc_node<BuiltInFunctionNode>();
-					typeof_node->function = PScriptFunctions::TYPE_OF;
-
-					OperatorNode *typeof_match_value = alloc_node<OperatorNode>();
-					typeof_match_value->op = OperatorNode::OP_CALL;
-					typeof_match_value->arguments.push_back(typeof_node);
-					typeof_match_value->arguments.push_back(p_node_to_match);
-
-					IdentifierNode *typeof_dictionary = alloc_node<IdentifierNode>();
-					typeof_dictionary->name = "TYPE_DICTIONARY";
-
-					type_comp = alloc_node<OperatorNode>();
-					type_comp->op = OperatorNode::OP_EQUAL;
-					type_comp->arguments.push_back(typeof_match_value);
-					type_comp->arguments.push_back(typeof_dictionary);
-				}
-
-				// size
-				ConstantNode *length = alloc_node<ConstantNode>();
-				length->value = Variant(open_ended ? p_pattern->dictionary.size() - 1 : p_pattern->dictionary.size());
-
-				OperatorNode *call = alloc_node<OperatorNode>();
-				call->op = OperatorNode::OP_CALL;
-				call->arguments.push_back(p_node_to_match);
-
-				IdentifierNode *size = alloc_node<IdentifierNode>();
-				size->name = "size";
-				call->arguments.push_back(size);
-
-				OperatorNode *length_comparison = alloc_node<OperatorNode>();
-				length_comparison->op = open_ended ? OperatorNode::OP_GREATER_EQUAL : OperatorNode::OP_EQUAL;
-				length_comparison->arguments.push_back(call);
-				length_comparison->arguments.push_back(length);
-
-				if (type_comp) {
-					OperatorNode *type_and_length_comparison = alloc_node<OperatorNode>();
-					type_and_length_comparison->op = OperatorNode::OP_AND;
-					type_and_length_comparison->arguments.push_back(type_comp);
-					type_and_length_comparison->arguments.push_back(length_comparison);
-
-					p_resulting_node = type_and_length_comparison;
-				} else {
-					p_resulting_node = length_comparison;
-				}
-			}
-
-			for (RBMap<ConstantNode *, PatternNode *>::Element *e = p_pattern->dictionary.front(); e; e = e->next()) {
-				Node *condition = nullptr;
-
-				// check for has, then for pattern
-
-				IdentifierNode *has = alloc_node<IdentifierNode>();
-				has->name = "has";
-
-				OperatorNode *has_call = alloc_node<OperatorNode>();
-				has_call->op = OperatorNode::OP_CALL;
-				has_call->arguments.push_back(p_node_to_match);
-				has_call->arguments.push_back(has);
-				has_call->arguments.push_back(e->key());
-
-				if (e->value()) {
-					OperatorNode *indexed_value = alloc_node<OperatorNode>();
-					indexed_value->op = OperatorNode::OP_INDEX;
-					indexed_value->arguments.push_back(p_node_to_match);
-					indexed_value->arguments.push_back(e->key());
-
-					_generate_pattern(e->value(), indexed_value, condition, p_bindings);
-
-					OperatorNode *has_and_pattern = alloc_node<OperatorNode>();
-					has_and_pattern->op = OperatorNode::OP_AND;
-					has_and_pattern->arguments.push_back(has_call);
-					has_and_pattern->arguments.push_back(condition);
-
-					condition = has_and_pattern;
-
-				} else {
-					condition = has_call;
-				}
-
-				// concatenate all the patterns with &&
-				OperatorNode *and_node = alloc_node<OperatorNode>();
-				and_node->op = OperatorNode::OP_AND;
-				and_node->arguments.push_back(p_resulting_node);
-				and_node->arguments.push_back(condition);
-
-				p_resulting_node = and_node;
-			}
-
-		} break;
 		case PatternNode::PT_IGNORE_REST:
 		case PatternNode::PT_WILDCARD: {
 			// simply generate a `true`
@@ -2674,44 +2389,37 @@ void PScriptParser::_transform_match_statment(MatchNode *p_match_statement) {
 
 		RBMap<StringName, Node *> binding;
 
-		for (int j = 0; j < branch->patterns.size(); j++) {
-			PatternNode *pattern = branch->patterns[j];
-			_mark_line_as_safe(pattern->line);
+		PatternNode *pattern = branch->pattern;
+		_mark_line_as_safe(pattern->line);
 
-			RBMap<StringName, Node *> bindings;
-			Node *resulting_node = nullptr;
-			_generate_pattern(pattern, id, resulting_node, bindings);
+		RBMap<StringName, Node *> bindings;
+		Node *resulting_node = nullptr;
+		_generate_pattern(pattern, id, resulting_node, bindings);
 
-			if (!resulting_node) {
-				return;
-			}
+		if (!resulting_node) {
+			return;
+		}
 
-			if (!binding.empty() && !bindings.empty()) {
-				_set_error("Multipatterns can't contain bindings");
-				return;
-			} else {
-				binding = bindings;
-			}
+		binding = bindings;
 
-			// Result is always a boolean
-			DataType resulting_node_type;
-			resulting_node_type.has_type = true;
-			resulting_node_type.is_constant = true;
-			resulting_node_type.kind = DataType::BUILTIN;
-			resulting_node_type.builtin_type = Variant::BOOL;
-			resulting_node->set_datatype(resulting_node_type);
+		// Result is always a boolean
+		DataType resulting_node_type;
+		resulting_node_type.has_type = true;
+		resulting_node_type.is_constant = true;
+		resulting_node_type.kind = DataType::BUILTIN;
+		resulting_node_type.builtin_type = Variant::BOOL;
+		resulting_node->set_datatype(resulting_node_type);
 
-			if (compiled_branch.compiled_pattern) {
-				OperatorNode *or_node = alloc_node<OperatorNode>();
-				or_node->op = OperatorNode::OP_OR;
-				or_node->arguments.push_back(compiled_branch.compiled_pattern);
-				or_node->arguments.push_back(resulting_node);
+		if (compiled_branch.compiled_pattern) {
+			OperatorNode *or_node = alloc_node<OperatorNode>();
+			or_node->op = OperatorNode::OP_OR;
+			or_node->arguments.push_back(compiled_branch.compiled_pattern);
+			or_node->arguments.push_back(resulting_node);
 
-				compiled_branch.compiled_pattern = or_node;
-			} else {
-				// single pattern | first one
-				compiled_branch.compiled_pattern = resulting_node;
-			}
+			compiled_branch.compiled_pattern = or_node;
+		} else {
+			// single pattern | first one
+			compiled_branch.compiled_pattern = resulting_node;
 		}
 
 		// prepare the body ...hehe
@@ -2905,7 +2613,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 							}
 							p_block->statements.push_back(expression);
 							if (!_end_statement()) {
-								_set_error(vformat("Expected ';' after expression, got %s instead.", tokenizer->get_token_name(tokenizer->get_token())));
+								_set_error(vformat("1. Expected ';' after expression, got %s instead.", tokenizer->get_token_name(tokenizer->get_token())));
 								return;
 							}
 							break;
@@ -3415,7 +3123,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				match_node->val_to_match = val_to_match;
 
 				if (!_enter_block()) {
-					_set_error("Expected pattern matching block after \"match\" ('{').");
+					_set_error("Expected pattern matching block after \"match\".");
 					return;
 				}
 

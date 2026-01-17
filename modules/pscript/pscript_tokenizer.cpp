@@ -124,7 +124,8 @@ const char *PScriptTokenizer::token_names[TK_MAX] = {
 	"'\\n'",
 	"PI",
 	"TAU",
-	"_",
+	"default",
+	"case",
 	"INF",
 	"NAN",
 	"Error",
@@ -225,6 +226,7 @@ static const _kws _keyword_list[] = {
 	{ PScriptTokenizer::TK_CONST_PI, "PI" },
 	{ PScriptTokenizer::TK_CONST_TAU, "TAU" },
 	{ PScriptTokenizer::TK_WILDCARD, "default" },
+	{ PScriptTokenizer::TK_CASE, "case" },
 	{ PScriptTokenizer::TK_CONST_INF, "INF" },
 	{ PScriptTokenizer::TK_CONST_NAN, "NAN" },
 	{ PScriptTokenizer::TK_ERROR, nullptr }
