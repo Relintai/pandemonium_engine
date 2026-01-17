@@ -4633,6 +4633,16 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 #undef _ADVANCE_AND_CONSUME_NEWLINES
 				}
 
+				// Consume a single ; after export, if present.
+				if (tokenizer->get_token() == PScriptTokenizer::TK_SEMICOLON) {
+					tokenizer->advance();
+				}
+
+				// Consume a single newline after export, if present.
+				if (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
+					tokenizer->advance();
+				}
+
 				if (tokenizer->get_token() != PScriptTokenizer::TK_IDENTIFIER &&
 						tokenizer->get_token() != PScriptTokenizer::TK_PR_VOID &&
 						tokenizer->get_token() != PScriptTokenizer::TK_PR_VARIANT &&
