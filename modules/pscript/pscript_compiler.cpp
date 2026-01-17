@@ -1311,7 +1311,7 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 				const PScriptParser::ControlFlowNode *cf = static_cast<const PScriptParser::ControlFlowNode *>(s);
 
 				switch (cf->cf_type) {
-					case PScriptParser::ControlFlowNode::CF_MATCH: {
+					case PScriptParser::ControlFlowNode::CF_SWITCH: {
 						PScriptParser::MatchNode *match = cf->match;
 
 						PScriptParser::IdentifierNode *id = memnew(PScriptParser::IdentifierNode);

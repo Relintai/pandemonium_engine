@@ -436,7 +436,7 @@ public:
 			CF_BREAK,
 			CF_CONTINUE,
 			CF_RETURN,
-			CF_MATCH,
+			CF_SWITCH,
 			CF_BLOCK,
 		};
 

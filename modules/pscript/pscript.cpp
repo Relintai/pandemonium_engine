@@ -1741,7 +1741,8 @@ void PScriptLanguage::get_reserved_words(List<String> *p_words) const {
 		"else",
 		"foreach",
 		"return",
-		"match",
+		"switch",
+		"case",
 		"while",
 		"default",
 		nullptr
@@ -1765,8 +1766,8 @@ bool PScriptLanguage::is_control_flow_keyword(String p_keyword) const {
 			p_keyword == "else" ||
 			p_keyword == "if" ||
 			p_keyword == "foreach" ||
-			p_keyword == "match" ||
-			p_keyword == "pass" ||
+			p_keyword == "switch" ||
+			p_keyword == "case" ||
 			p_keyword == "return" ||
 			p_keyword == "while";
 }

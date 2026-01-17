@@ -3106,7 +3106,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				p_block->has_return = true;
 
 			} break;
-			case PScriptTokenizer::TK_CF_MATCH: {
+			case PScriptTokenizer::TK_CF_SWITCH: {
 				tokenizer->advance();
 
 				MatchNode *match_node = alloc_node<MatchNode>();
@@ -3141,7 +3141,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				}
 
 				ControlFlowNode *match_cf_node = alloc_node<ControlFlowNode>();
-				match_cf_node->cf_type = ControlFlowNode::CF_MATCH;
+				match_cf_node->cf_type = ControlFlowNode::CF_SWITCH;
 				match_cf_node->match = match_node;
 				match_cf_node->body = compiled_branches;
 
@@ -8196,7 +8196,7 @@ void PScriptParser::_check_block_types(BlockNode *p_block) {
 							}
 						}
 					} break;
-					case ControlFlowNode::CF_MATCH: {
+					case ControlFlowNode::CF_SWITCH: {
 						MatchNode *match_node = cf->match;
 						_transform_match_statment(match_node);
 					} break;
