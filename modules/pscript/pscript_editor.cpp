@@ -1790,7 +1790,7 @@ static String _make_arguments_hint(const MethodInfo &p_info, int p_arg_idx) {
 		if (i == p_arg_idx) {
 			arghint += String::chr(0xFFFF);
 		}
-		arghint += E->get().name + ": " + _get_visual_datatype(E->get(), true);
+		arghint += _get_visual_datatype(E->get(), true) + " " + E->get().name;
 
 		if (i - def_args >= 0) {
 			arghint += String(" = ") + p_info.default_arguments[i - def_args].get_construct_string();
@@ -1833,7 +1833,7 @@ static String _make_arguments_hint(const PScriptParser::FunctionNode *p_function
 		if (i == p_arg_idx) {
 			arghint += String::chr(0xFFFF);
 		}
-		arghint += p_function->arguments[i].operator String() + ": " + p_function->argument_types[i].to_string();
+		arghint += p_function->argument_types[i].to_string() + " " + p_function->arguments[i].operator String();
 
 		if (i - def_args >= 0) {
 			String def_val = "<unknown>";
