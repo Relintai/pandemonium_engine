@@ -4760,7 +4760,7 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 				// Grab the type
 				DataType declaration_data_type;
 				// _parse_type handles autocomplete
-				if (!_parse_type(declaration_data_type, true, false)) {
+				if (!_parse_type(declaration_data_type, true, false, true)) {
 					_set_error(String() + "Unexpected token: " + tokenizer->get_token_name(tokenizer->get_token()) + ":" + tokenizer->get_token_identifier());
 					return;
 				}
@@ -4777,13 +4777,14 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 				}
 
 				if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER) {
-					name = tokenizer->get_token_literal();
+					name = tokenizer->get_token_identifier();
 					tokenizer->advance();
 				}
 
 				if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
 					completion_cursor = name;
-					completion_type = COMPLETION_VIRTUAL_FUNC;
+					//completion_type = COMPLETION_VIRTUAL_FUNC;
+					completion_type = COMPLETION_VIRTUAL_FUNC_AND_TYPE_HINT;
 					completion_class = current_class;
 					completion_function = current_function;
 					completion_line = tokenizer->get_token_line();
@@ -5610,7 +5611,7 @@ String PScriptParser::DataType::to_string() const {
 	return "Unresolved";
 }
 
-bool PScriptParser::_parse_type(DataType &r_type, bool p_can_be_void, bool p_advance_tokenizer_at_begin) {
+bool PScriptParser::_parse_type(DataType &r_type, bool p_can_be_void, bool p_advance_tokenizer_at_begin, bool p_both_virtual_and_type_autocomplete) {
 	if (p_advance_tokenizer_at_begin) {
 		tokenizer->advance();
 	}
@@ -5623,7 +5624,11 @@ bool PScriptParser::_parse_type(DataType &r_type, bool p_can_be_void, bool p_adv
 
 	if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
 		completion_cursor = StringName();
-		completion_type = COMPLETION_TYPE_HINT;
+		if (p_both_virtual_and_type_autocomplete) {
+			completion_type = COMPLETION_VIRTUAL_FUNC_AND_TYPE_HINT;
+		} else {
+			completion_type = COMPLETION_TYPE_HINT;
+		}
 		completion_class = current_class;
 		completion_function = current_function;
 		completion_line = tokenizer->get_token_line();
@@ -5674,7 +5679,11 @@ bool PScriptParser::_parse_type(DataType &r_type, bool p_can_be_void, bool p_adv
 
 	if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
 		completion_cursor = r_type.native_type;
-		completion_type = COMPLETION_TYPE_HINT;
+		if (p_both_virtual_and_type_autocomplete) {
+			completion_type = COMPLETION_VIRTUAL_FUNC_AND_TYPE_HINT;
+		} else {
+			completion_type = COMPLETION_TYPE_HINT;
+		}
 		completion_class = current_class;
 		completion_function = current_function;
 		completion_line = tokenizer->get_token_line();

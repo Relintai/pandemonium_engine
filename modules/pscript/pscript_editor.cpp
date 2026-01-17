@@ -3033,6 +3033,179 @@ Error PScriptLanguage::complete_code(const String &p_code, const String &p_path,
 			}
 			r_forced = options.size() > 0;
 		} break;
+
+		case PScriptParser::COMPLETION_VIRTUAL_FUNC_AND_TYPE_HINT: {
+			// Virtuals
+			{
+				PScriptParser::DataType native_type = context._class->base_type;
+				while (native_type.has_type && native_type.kind != PScriptParser::DataType::NATIVE) {
+					switch (native_type.kind) {
+						case PScriptParser::DataType::CLASS: {
+							native_type = native_type.class_type->base_type;
+						} break;
+						case PScriptParser::DataType::PSCRIPT: {
+							Ref<PScript> ps = native_type.script_type;
+							if (ps.is_valid()) {
+								Ref<PScript> base = ps->get_base_script();
+								if (base.is_valid()) {
+									native_type.script_type = base;
+								} else {
+									native_type.native_type = ps->get_instance_base_type();
+									native_type.kind = PScriptParser::DataType::NATIVE;
+								}
+							} else {
+								native_type.has_type = false;
+							}
+						} break;
+						default: {
+							native_type.has_type = false;
+						} break;
+					}
+				}
+
+				if (!native_type.has_type) {
+					break;
+				}
+
+				StringName class_name = native_type.native_type;
+				if (!ClassDB::class_exists(class_name)) {
+					class_name = String("_") + class_name;
+					if (!ClassDB::class_exists(class_name)) {
+						break;
+					}
+				}
+
+				bool use_type_hint = EditorSettings::get_singleton()->get_setting("text_editor/completion/add_type_hints").operator bool();
+
+				List<MethodInfo> virtual_methods;
+				ClassDB::get_virtual_methods(class_name, &virtual_methods);
+				for (List<MethodInfo>::Element *E = virtual_methods.front(); E; E = E->next()) {
+					MethodInfo &mi = E->get();
+
+					String method_hint;
+
+					if (use_type_hint && (mi.return_val.type != Variant::NIL || !(mi.return_val.usage & PROPERTY_USAGE_NIL_IS_VARIANT))) {
+						if (mi.return_val.type == Variant::NIL) {
+							method_hint += "void";
+						} else if (mi.return_val.type == Variant::OBJECT && mi.return_val.class_name != StringName()) {
+							method_hint += mi.return_val.class_name.operator String();
+						} else {
+							method_hint += Variant::get_type_name(mi.return_val.type);
+						}
+					} else {
+						method_hint += "Variant";
+					}
+
+					String mname = mi.name;
+					if (mname.find(":") != -1) {
+						mname = mname.get_slice(":", 0);
+					}
+
+					method_hint += " " + mname + "(";
+
+					if (mi.arguments.size()) {
+						for (int i = 0; i < mi.arguments.size(); i++) {
+							if (i > 0) {
+								method_hint += ", ";
+							}
+
+							if (use_type_hint && mi.arguments[i].type != Variant::NIL) {
+								if (mi.arguments[i].type == Variant::OBJECT && mi.arguments[i].class_name != StringName()) {
+									method_hint += mi.arguments[i].class_name.operator String();
+								} else {
+									method_hint += Variant::get_type_name(mi.arguments[i].type);
+								}
+							} else {
+								method_hint += "Variant";
+							}
+
+							method_hint += " ";
+
+							String arg = mi.arguments[i].name;
+							if (arg.find(":") != -1) {
+								arg = arg.substr(0, arg.find(":"));
+							}
+							method_hint += arg;
+						}
+					}
+					method_hint += ") {";
+
+					ScriptCodeCompletionOption option(method_hint, ScriptCodeCompletionOption::KIND_FUNCTION);
+					options.insert(option.display, option);
+				}
+			}
+
+			// Type hints
+
+			{
+				const PScriptParser::ClassNode *clss = context._class;
+				while (clss) {
+					for (RBMap<StringName, PScriptParser::ClassNode::Constant>::Element *E = clss->constant_expressions.front(); E; E = E->next()) {
+						PScriptCompletionIdentifier constant;
+						PScriptCompletionContext c = context;
+						c.function = nullptr;
+						c.block = nullptr;
+						c.line = E->value().expression->line;
+						if (_guess_expression_type(c, E->value().expression, constant)) {
+							if (constant.type.has_type && constant.type.is_meta_type) {
+								ScriptCodeCompletionOption option(E->key().operator String(), ScriptCodeCompletionOption::KIND_CLASS);
+								options.insert(option.display, option);
+							}
+						}
+					}
+					for (int i = 0; i < clss->subclasses.size(); i++) {
+						if (clss->subclasses[i]->name != StringName()) {
+							ScriptCodeCompletionOption option(clss->subclasses[i]->name.operator String(), ScriptCodeCompletionOption::KIND_CLASS);
+							options.insert(option.display, option);
+						}
+					}
+					clss = clss->owner;
+					for (int i = 0; i < Variant::VARIANT_MAX; i++) {
+						ScriptCodeCompletionOption option(Variant::get_type_name((Variant::Type)i), ScriptCodeCompletionOption::KIND_CLASS);
+						options.insert(option.display, option);
+					}
+					List<PropertyInfo> props;
+					ProjectSettings::get_singleton()->get_property_list(&props);
+					for (List<PropertyInfo>::Element *E = props.front(); E; E = E->next()) {
+						String s = E->get().name;
+						if (!s.begins_with("autoload/")) {
+							continue;
+						}
+						ScriptCodeCompletionOption option(s.get_slice("/", 1), ScriptCodeCompletionOption::KIND_CLASS);
+						options.insert(option.display, option);
+					}
+				}
+
+				List<StringName> native_classes;
+				ClassDB::get_class_list(&native_classes);
+				for (List<StringName>::Element *E = native_classes.front(); E; E = E->next()) {
+					String class_name = E->get().operator String();
+					if (class_name.begins_with("_")) {
+						class_name = class_name.right(1);
+					}
+					if (Engine::get_singleton()->has_singleton(class_name)) {
+						continue;
+					}
+					ScriptCodeCompletionOption option(class_name, ScriptCodeCompletionOption::KIND_CLASS);
+					options.insert(option.display, option);
+				}
+
+				// Named scripts
+				List<StringName> named_scripts;
+				ScriptServer::get_global_class_list(&named_scripts);
+				for (List<StringName>::Element *E = named_scripts.front(); E; E = E->next()) {
+					ScriptCodeCompletionOption option(E->get().operator String(), ScriptCodeCompletionOption::KIND_CLASS);
+					options.insert(option.display, option);
+				}
+
+				if (parser.get_completion_identifier_is_function()) {
+					ScriptCodeCompletionOption option("void", ScriptCodeCompletionOption::KIND_PLAIN_TEXT);
+					options.insert(option.display, option);
+				}
+				r_forced = true;
+			}
+
+		} break;
 	}
 
 	for (RBMap<String, ScriptCodeCompletionOption>::Element *E = options.front(); E; E = E->next()) {
