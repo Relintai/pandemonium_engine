@@ -5242,7 +5242,8 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 			} break;
 
 			default: {
-				// TODO, code above should handle this case
+				// Code above should handle this case
+				/*
 				if (token == PScriptTokenizer::TK_IDENTIFIER) {
 					completion_type = COMPLETION_IDENTIFIER;
 					completion_class = current_class;
@@ -5252,6 +5253,7 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 					completion_ident_is_call = false;
 					completion_found = true;
 				}
+				*/
 
 				_set_error(String() + "Unexpected token: " + tokenizer->get_token_name(tokenizer->get_token()) + ":" + tokenizer->get_token_identifier());
 				return;
