@@ -4401,7 +4401,11 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 
 				ClassNode::Constant constant;
 
-				tokenizer->advance();
+				if (!_parse_type_identifier(constant.type, false)) {
+					_set_error("Expected a type for the class constant.");
+					return;
+				}
+
 				if (!tokenizer->is_token_literal(0, true)) {
 					_set_error("Expected an identifier for the constant.");
 					return;
@@ -4438,13 +4442,6 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 				}
 
 				tokenizer->advance();
-
-				if (tokenizer->get_token() == PScriptTokenizer::TK_COLON) {
-					if (!_parse_type(constant.type)) {
-						_set_error("Expected a type for the class constant.");
-						return;
-					}
-				}
 
 				if (tokenizer->get_token() != PScriptTokenizer::TK_OP_ASSIGN) {
 					_set_error("Constants must be assigned immediately.");
