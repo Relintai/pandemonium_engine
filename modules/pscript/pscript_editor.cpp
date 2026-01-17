@@ -186,8 +186,35 @@ int PScriptLanguage::find_function(const String &p_function, const String &p_cod
 		if (tokenizer.get_token() == PScriptTokenizer::TK_NEWLINE) {
 			indent = tokenizer.get_token_line_indent();
 		}
-		if (indent == 0 && tokenizer.get_token() == PScriptTokenizer::TK_PR_FUNCTION && tokenizer.get_token(1) == PScriptTokenizer::TK_IDENTIFIER) {
-			String identifier = tokenizer.get_token_identifier(1);
+
+		if (indent == 0) {
+			// <type> <identifier>(
+			// Type can be <Type> or <Type1>::<Type2> ...
+			// We don't really need to check if it's valid though.
+
+			if (tokenizer.get_token() != PScriptTokenizer::TK_PR_VOID &&
+					tokenizer.get_token() != PScriptTokenizer::TK_PR_VARIANT &&
+					tokenizer.get_token() != PScriptTokenizer::TK_BUILT_IN_TYPE &&
+					tokenizer.get_token() != PScriptTokenizer::TK_IDENTIFIER) {
+				continue;
+			}
+
+			tokenizer.advance();
+
+			while (tokenizer.get_token() == PScriptTokenizer::TK_DOUBLE_COLON) {
+				tokenizer.advance(2);
+			}
+
+			if (tokenizer.get_token() != PScriptTokenizer::TK_IDENTIFIER) {
+				continue;
+			}
+
+			if (tokenizer.get_token(1) != PScriptTokenizer::TK_PARENTHESIS_OPEN) {
+				continue;
+			}
+
+			String identifier = tokenizer.get_token_identifier();
+
 			if (identifier == p_function) {
 				return tokenizer.get_token_line();
 			}
