@@ -81,7 +81,7 @@ const char *PScriptTokenizer::token_names[TK_MAX] = {
 	//"Minus Minus",
 	"if",
 	"else",
-	"for",
+	"foreach",
 	"while",
 	"break",
 	"continue",
@@ -215,7 +215,7 @@ static const _kws _keyword_list[] = {
 	//controlflow
 	{ PScriptTokenizer::TK_CF_IF, "if" },
 	{ PScriptTokenizer::TK_CF_ELSE, "else" },
-	{ PScriptTokenizer::TK_CF_FOR, "for" },
+	{ PScriptTokenizer::TK_CF_FOREACH, "foreach" },
 	{ PScriptTokenizer::TK_CF_WHILE, "while" },
 	{ PScriptTokenizer::TK_CF_BREAK, "break" },
 	{ PScriptTokenizer::TK_CF_CONTINUE, "continue" },
@@ -356,7 +356,7 @@ bool PScriptTokenizer::is_token_literal(int p_offset, bool variable_safe) const 
 
 		case TK_CF_IF:
 		case TK_CF_ELSE:
-		case TK_CF_FOR:
+		case TK_CF_FOREACH:
 		case TK_CF_WHILE:
 		case TK_CF_BREAK:
 		case TK_CF_CONTINUE:

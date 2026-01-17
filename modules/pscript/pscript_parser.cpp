@@ -3159,11 +3159,11 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				}
 				p_block->statements.push_back(cf_while);
 			} break;
-			case PScriptTokenizer::TK_CF_FOR: {
+			case PScriptTokenizer::TK_CF_FOREACH: {
 				tokenizer->advance();
 
 				if (!tokenizer->is_token_literal(0, true)) {
-					_set_error("Identifier expected after \"for\".");
+					_set_error("Identifier expected after \"foreach\".");
 				}
 
 				IdentifierNode *id = alloc_node<IdentifierNode>();
@@ -3279,7 +3279,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 
 				ControlFlowNode *cf_for = alloc_node<ControlFlowNode>();
 
-				cf_for->cf_type = ControlFlowNode::CF_FOR;
+				cf_for->cf_type = ControlFlowNode::CF_FOREACH;
 				cf_for->arguments.push_back(id);
 				cf_for->arguments.push_back(container);
 
@@ -3290,7 +3290,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				p_block->sub_blocks.push_back(cf_for->body);
 
 				if (!_enter_block(cf_for->body)) {
-					_set_error("Expected a block after \"for\".");
+					_set_error("Expected a block after \"foreach\".");
 					p_block->end_line = tokenizer->get_token_line();
 					return;
 				}

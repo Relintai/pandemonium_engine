@@ -1420,7 +1420,7 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 						}
 
 					} break;
-					case PScriptParser::ControlFlowNode::CF_FOR: {
+					case PScriptParser::ControlFlowNode::CF_FOREACH: {
 						int slevel = p_stack_level;
 						int iter_stack_pos = slevel;
 						int iterator_pos = (slevel++) | (PScriptFunction::ADDR_TYPE_STACK << PScriptFunction::ADDR_BITS);

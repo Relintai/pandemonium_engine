@@ -433,7 +433,7 @@ public:
 	struct ControlFlowNode : public Node {
 		enum CFType {
 			CF_IF,
-			CF_FOR,
+			CF_FOREACH,
 			CF_WHILE,
 			CF_BREAK,
 			CF_CONTINUE,

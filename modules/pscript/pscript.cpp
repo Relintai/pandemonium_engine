@@ -1739,7 +1739,7 @@ void PScriptLanguage::get_reserved_words(List<String> *p_words) const {
 		"continue",
 		"if",
 		"else",
-		"for",
+		"foreach",
 		"return",
 		"match",
 		"while",
