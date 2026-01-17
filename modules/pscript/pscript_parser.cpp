@@ -2884,8 +2884,53 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 			} break;
 			case PScriptTokenizer::TK_PR_VOID:
 			case PScriptTokenizer::TK_PR_VARIANT:
-			case PScriptTokenizer::TK_BUILT_IN_TYPE: {
-				// Variable declaration: void, Variant, or built in types.
+			case PScriptTokenizer::TK_BUILT_IN_TYPE:
+			case PScriptTokenizer::TK_IDENTIFIER: {
+				// Variable declaration.
+
+				if (token == PScriptTokenizer::TK_IDENTIFIER) {
+					PScriptTokenizer::Token lookahead = tokenizer->get_token(1);
+
+					if (lookahead == PScriptTokenizer::TK_CURSOR) {
+						lookahead = tokenizer->get_token(2);
+					}
+
+					// if ::, we are done, has to be a Class inside class (or bad syntax) = we just fall out
+					if (lookahead != PScriptTokenizer::TK_DOUBLE_COLON) {
+						// Check if the current (non-lookahead) identifier is a type
+
+						StringName name = tokenizer->get_token_identifier();
+
+						bool valid_type = false;
+
+						if (ScriptServer::is_global_class(name)) {
+							valid_type = true;
+						}
+
+						if (!valid_type) {
+							if (ClassDB::class_exists(name) || ClassDB::class_exists("_" + name.operator String())) {
+								valid_type = true;
+							}
+						}
+
+						// Not valid type, handle it as a normal expression.
+						if (!valid_type) {
+							Node *expression = _parse_and_reduce_expression(p_block, p_static, false, true);
+							if (!expression) {
+								if (_recover_from_completion()) {
+									break;
+								}
+								return;
+							}
+							p_block->statements.push_back(expression);
+							if (!_end_statement()) {
+								_set_error(vformat("Expected ';' after expression, got %s instead.", tokenizer->get_token_name(tokenizer->get_token())));
+								return;
+							}
+							break;
+						}
+					}
+				}
 
 				DataType local_var_datatype;
 				if (!_parse_type(local_var_datatype, true, false)) {
@@ -5738,9 +5783,11 @@ bool PScriptParser::_parse_type(DataType &r_type, bool p_can_be_void, bool p_adv
 	if (can_index) {
 		while (!finished) {
 			switch (tokenizer->get_token()) {
-				case PScriptTokenizer::TK_PERIOD: {
+				//case PScriptTokenizer::TK_PERIOD:
+				case PScriptTokenizer::TK_DOUBLE_COLON: {
 					if (!can_index) {
-						_set_error("Unexpected \".\".");
+						//_set_error("Unexpected \".\".");
+						_set_error("Unexpected \"::\".");
 						return false;
 					}
 					can_index = false;
@@ -5749,8 +5796,10 @@ bool PScriptParser::_parse_type(DataType &r_type, bool p_can_be_void, bool p_adv
 				case PScriptTokenizer::TK_CURSOR:
 				case PScriptTokenizer::TK_IDENTIFIER: {
 					if (can_index) {
-						_set_error("Unexpected identifier.");
-						return false;
+						//_set_error("Unexpected identifier.");
+
+						r_type.native_type = full_name;
+						return true;
 					}
 
 					StringName id;
@@ -5759,7 +5808,7 @@ bool PScriptParser::_parse_type(DataType &r_type, bool p_can_be_void, bool p_adv
 						id = "@temp";
 					}
 
-					full_name += "." + id.operator String();
+					full_name += "::" + id.operator String();
 					can_index = true;
 					if (has_completion) {
 						completion_cursor = full_name;
@@ -5771,7 +5820,8 @@ bool PScriptParser::_parse_type(DataType &r_type, bool p_can_be_void, bool p_adv
 			}
 		}
 
-		if (tokenizer->get_token(-1) == PScriptTokenizer::TK_PERIOD) {
+		//if (tokenizer->get_token(-1) == PScriptTokenizer::TK_PERIOD) {
+		if (tokenizer->get_token(-1) == PScriptTokenizer::TK_DOUBLE_COLON) {
 			_set_error("Expected a subclass identifier.");
 			return false;
 		}
@@ -5790,7 +5840,7 @@ PScriptParser::DataType PScriptParser::_resolve_type(const DataType &p_source, i
 		return p_source;
 	}
 
-	Vector<String> full_name = p_source.native_type.operator String().split(".", false);
+	Vector<String> full_name = p_source.native_type.operator String().split("::", false);
 	int name_part = 0;
 
 	DataType result;

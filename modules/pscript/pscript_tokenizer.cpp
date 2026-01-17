@@ -121,6 +121,7 @@ const char *PScriptTokenizer::token_names[TK_MAX] = {
 	"'.'",
 	"'?'",
 	"':'",
+	"'::'",
 	"'$'",
 	"'->'",
 	"'\\n'",
@@ -735,7 +736,12 @@ void PScriptTokenizerText::_advance() {
 				_make_token(TK_QUESTION_MARK);
 				break;
 			case ':':
-				_make_token(TK_COLON); //for methods maybe but now useless.
+				if (GETCHAR(1) == ':') {
+					_make_token(TK_DOUBLE_COLON);
+					INCPOS(1);
+				} else {
+					_make_token(TK_COLON);
+				}
 				break;
 			case '$':
 				_make_token(TK_DOLLAR); //for the get_node() shortener
