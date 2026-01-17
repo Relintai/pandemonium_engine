@@ -684,10 +684,8 @@ Error decode_variant(Variant &r_variant, const uint8_t *p_buffer, int p_len, int
 				ERR_FAIL_COND_V_MSG(err != OK, err, "Error when trying to decode Variant.");
 				buf += used;
 				len -= used;
-				//varr.push_back(v);
-				if (!varr.push_back(v)) {
-					ERR_PRINT(String(v));
-				}
+				// TODO check if this fails?
+				varr.push_back(v);
 				if (r_len) {
 					(*r_len) += used;
 				}
@@ -759,9 +757,8 @@ Error decode_variant(Variant &r_variant, const uint8_t *p_buffer, int p_len, int
 				ERR_FAIL_COND_V_MSG(err != OK, err, "Error when trying to decode Variant.");
 				buf += used;
 				len -= used;
-				if (!varr.push_back(v)) {
-					ERR_PRINT("ASDASD");
-				}
+				// TODO check if this fails?
+				varr.push_back(v));
 				if (r_len) {
 					(*r_len) += used;
 				}
