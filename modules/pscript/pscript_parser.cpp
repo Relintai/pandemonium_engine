@@ -3812,7 +3812,7 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 				StringName name;
 
 				if (tokenizer->get_token(1) != PScriptTokenizer::TK_IDENTIFIER) {
-					_set_error("\"class\" syntax: \"class <Name>:\" or \"class <Name> extends <BaseClass>:\"");
+					_set_error("\"class\" syntax: \"class <Name> { ... }\" or \"class <Name> extends <BaseClass> { ... }\" or \"class <Name> : <BaseClass> { ... }\"");
 					return;
 				}
 				name = tokenizer->get_token_identifier(1);
@@ -3859,7 +3859,7 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 
 				p_class->subclasses.push_back(newclass);
 
-				if (tokenizer->get_token() == PScriptTokenizer::TK_PR_EXTENDS) {
+				if (tokenizer->get_token() == PScriptTokenizer::TK_PR_EXTENDS || tokenizer->get_token() == PScriptTokenizer::TK_COLON) {
 					_parse_extends(newclass);
 					if (error_set) {
 						return;
