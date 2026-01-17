@@ -80,7 +80,6 @@ const char *PScriptTokenizer::token_names[TK_MAX] = {
 	//"Plus Plus",
 	//"Minus Minus",
 	"if",
-	"elif",
 	"else",
 	"for",
 	"while",
@@ -219,7 +218,6 @@ static const _kws _keyword_list[] = {
 	{ PScriptTokenizer::TK_PR_ENUM, "enum" },
 	//controlflow
 	{ PScriptTokenizer::TK_CF_IF, "if" },
-	{ PScriptTokenizer::TK_CF_ELIF, "elif" },
 	{ PScriptTokenizer::TK_CF_ELSE, "else" },
 	{ PScriptTokenizer::TK_CF_FOR, "for" },
 	{ PScriptTokenizer::TK_CF_WHILE, "while" },
@@ -363,7 +361,6 @@ bool PScriptTokenizer::is_token_literal(int p_offset, bool variable_safe) const 
 		case TK_PR_VAR:
 
 		case TK_CF_IF:
-		case TK_CF_ELIF:
 		case TK_CF_ELSE:
 		case TK_CF_FOR:
 		case TK_CF_WHILE:

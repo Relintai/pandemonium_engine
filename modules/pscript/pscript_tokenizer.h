@@ -85,7 +85,6 @@ public:
 		//TK_OP_PLUS_PLUS,
 		//TK_OP_MINUS_MINUS,
 		TK_CF_IF,
-		TK_CF_ELIF,
 		TK_CF_ELSE,
 		TK_CF_FOR,
 		TK_CF_WHILE,
