@@ -1743,6 +1743,7 @@ void PScriptLanguage::get_reserved_words(List<String> *p_words) const {
 		"return",
 		"match",
 		"while",
+		"default",
 		nullptr
 	};
 
