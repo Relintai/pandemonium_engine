@@ -438,7 +438,8 @@ public:
 			CF_BREAK,
 			CF_CONTINUE,
 			CF_RETURN,
-			CF_MATCH
+			CF_MATCH,
+			CF_BLOCK,
 		};
 
 		CFType cf_type;

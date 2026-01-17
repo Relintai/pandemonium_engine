@@ -2823,6 +2823,37 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				p_block->statements.push_back(nl2);
 
 			} break;
+			case PScriptTokenizer::TK_CURLY_BRACKET_OPEN: {
+				// Just a block.
+
+				ControlFlowNode *cf_block = alloc_node<ControlFlowNode>();
+
+				cf_block->cf_type = ControlFlowNode::CF_BLOCK;
+
+				cf_block->body = alloc_node<BlockNode>();
+				cf_block->body->parent_block = p_block;
+				cf_block->body->can_break = false;
+				cf_block->body->can_continue = false;
+				p_block->sub_blocks.push_back(cf_block->body);
+
+				if (!_enter_block(cf_block->body)) {
+					// This likely can never fail.
+					_set_error("Expected '{' after \"while\".");
+					p_block->end_line = tokenizer->get_token_line();
+					return;
+				}
+
+				current_block = cf_block->body;
+				_parse_block(cf_block->body, p_static);
+				current_block = p_block;
+
+				if (error_set) {
+					return;
+				}
+
+				p_block->statements.push_back(cf_block);
+
+			} break;
 			case PScriptTokenizer::TK_PR_VOID:
 			case PScriptTokenizer::TK_PR_VARIANT:
 			case PScriptTokenizer::TK_BUILT_IN_TYPE:

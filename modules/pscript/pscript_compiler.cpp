@@ -1498,6 +1498,12 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 						codegen.opcodes.write[break_addr + 1] = codegen.opcodes.size();
 
 					} break;
+					case PScriptParser::ControlFlowNode::CF_BLOCK: {
+						Error err = _parse_block(codegen, cf->body, p_stack_level, p_break_addr, p_continue_addr);
+						if (err) {
+							return err;
+						}
+					} break;
 					case PScriptParser::ControlFlowNode::CF_BREAK: {
 						if (p_break_addr < 0) {
 							_set_error("'break'' not within loop", cf);
