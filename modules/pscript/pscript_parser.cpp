@@ -3790,6 +3790,11 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 					return;
 				}
 
+				if (!_end_statement()) {
+					_set_end_statement_error("class_name");
+					return;
+				}
+
 			} break;
 			case PScriptTokenizer::TK_PR_TOOL: {
 				if (p_class->tool) {
