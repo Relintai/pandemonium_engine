@@ -3543,6 +3543,7 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 
 		if (token == PScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
 			p_class->end_line = tokenizer->get_token_line();
+			tokenizer->advance();
 			return; //go back a level
 		}
 
