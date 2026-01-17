@@ -1086,6 +1086,7 @@ ProjectSettings::ProjectSettings() {
 	GLOBAL_DEF_RST("audio/general/text_to_speech", false);
 
 	PoolStringArray extensions = PoolStringArray();
+	extensions.push_back("p");
 	extensions.push_back("gd");
 	extensions.push_back("gdshader");
 	extensions.push_back("shader");
