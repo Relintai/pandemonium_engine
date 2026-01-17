@@ -4633,21 +4633,20 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 #undef _ADVANCE_AND_CONSUME_NEWLINES
 				}
 
-				if (tokenizer->get_token() != PScriptTokenizer::TK_PR_VAR && tokenizer->get_token() != PScriptTokenizer::TK_PR_ONREADY) {
+				if (tokenizer->get_token() != PScriptTokenizer::TK_IDENTIFIER &&
+						tokenizer->get_token() != PScriptTokenizer::TK_PR_VOID &&
+						tokenizer->get_token() != PScriptTokenizer::TK_PR_VARIANT &&
+						tokenizer->get_token() != PScriptTokenizer::TK_BUILT_IN_TYPE &&
+						tokenizer->get_token() != PScriptTokenizer::TK_PR_ONREADY) {
 					current_export = PropertyInfo();
-					_set_error("Expected \"var\", \"onready\".");
+					_set_error("Expected type name or \"onready\".");
 					return;
 				}
 
 				continue;
 			} break;
 			case PScriptTokenizer::TK_PR_ONREADY: {
-				//may be fallthrough from export, ignore if so
 				tokenizer->advance();
-				if (tokenizer->get_token() != PScriptTokenizer::TK_PR_VAR) {
-					_set_error("Expected \"var\".");
-					return;
-				}
 
 				continue;
 			} break;
@@ -5215,8 +5214,11 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 				// We are in a class
 				// Either a function or a variable declaration
 
-				bool _static = false;
 				DeclarationType declaration_type = DECLARATION_TYPE_UNDECIDED;
+
+				bool _static = false;
+				bool autoexport = tokenizer->get_token(-1) == PScriptTokenizer::TK_PR_EXPORT;
+				bool onready = tokenizer->get_token(-1) == PScriptTokenizer::TK_PR_ONREADY;
 
 				// Note that currently only functions can be static
 				if (token == PScriptTokenizer::TK_PR_STATIC) {
@@ -5507,7 +5509,291 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 					current_block = block;
 					_parse_block(block, _static);
 					current_block = nullptr;
+				} else if (declaration_type == DECLARATION_TYPE_VARIABLE) {
+					ClassNode::Member member;
+
+					if (current_export.type != Variant::NIL) {
+						member._export = current_export;
+						current_export = PropertyInfo();
+					}
+
+					member.identifier = name;
+					member.expression = nullptr;
+					member._export.name = member.identifier;
+					member.line = tokenizer->get_token_line();
+					member.usages = 0;
+					member.data_type = declaration_data_type;
+
+					// GH-57496
+					if (ClassDB::class_exists(member.identifier) || ClassDB::class_exists("_" + member.identifier.operator String())) {
+						_set_error("Variable \"" + String(member.identifier) + "\" shadows a native class.");
+						return;
+					}
+
+					if (current_class->constant_expressions.has(member.identifier)) {
+						_set_error("A constant named \"" + String(member.identifier) + "\" already exists in this class (at line: " +
+								itos(current_class->constant_expressions[member.identifier].expression->line) + ").");
+						return;
+					}
+
+					for (int i = 0; i < current_class->variables.size(); i++) {
+						if (current_class->variables[i].identifier == member.identifier) {
+							_set_error("Variable \"" + String(member.identifier) + "\" already exists in this class (at line: " +
+									itos(current_class->variables[i].line) + ").");
+							return;
+						}
+					}
+
+					for (int i = 0; i < current_class->subclasses.size(); i++) {
+						if (current_class->subclasses[i]->name == member.identifier) {
+							_set_error("A class named \"" + String(member.identifier) + "\" already exists in this class (at line " + itos(current_class->subclasses[i]->line) + ").");
+							return;
+						}
+					}
+#ifdef DEBUG_ENABLED
+					for (int i = 0; i < current_class->functions.size(); i++) {
+						if (current_class->functions[i]->name == member.identifier) {
+							_add_warning(PScriptWarning::VARIABLE_CONFLICTS_FUNCTION, member.line, member.identifier);
+							break;
+						}
+					}
+					for (int i = 0; i < current_class->static_functions.size(); i++) {
+						if (current_class->static_functions[i]->name == member.identifier) {
+							_add_warning(PScriptWarning::VARIABLE_CONFLICTS_FUNCTION, member.line, member.identifier);
+							break;
+						}
+					}
+#endif // DEBUG_ENABLED
+
+					if (autoexport && member.data_type.has_type) {
+						if (member.data_type.kind == DataType::BUILTIN) {
+							member._export.type = member.data_type.builtin_type;
+							member._export.usage |= PROPERTY_USAGE_SCRIPT_VARIABLE;
+						} else if (member.data_type.kind == DataType::NATIVE) {
+							if (ClassDB::is_parent_class(member.data_type.native_type, "Resource")) {
+								member._export.type = Variant::OBJECT;
+								member._export.hint = PROPERTY_HINT_RESOURCE_TYPE;
+								member._export.usage |= PROPERTY_USAGE_SCRIPT_VARIABLE;
+								member._export.hint_string = member.data_type.native_type;
+								member._export.class_name = member.data_type.native_type;
+							} else {
+								_set_error(vformat("Invalid native export type. \"%s\" is not a Resource type.", member.data_type.native_type), member.line);
+								return;
+							}
+						} else if (member.data_type.kind == DataType::SCRIPT || member.data_type.kind == DataType::PSCRIPT) {
+							if (member.data_type.script_type.is_null()) {
+								_set_error("Invalid script export type. Could not load member script value.", member.line);
+								return;
+							}
+							Ref<Script> s = member.data_type.script_type;
+							StringName class_name = s->get_language()->get_global_class_name(s->get_path());
+							if (class_name == StringName()) {
+								_set_error("Invalid script export type. The member is a script that has no global script class name.", member.line);
+								return;
+							}
+							if (!ClassDB::is_parent_class(ScriptServer::get_global_class_native_base(class_name), "Resource")) {
+								_set_error("Invalid script export type. The member is a script class that does not extend a Resource type.", member.line);
+								return;
+							}
+
+							member._export.type = Variant::OBJECT;
+							member._export.hint = PROPERTY_HINT_RESOURCE_TYPE;
+							member._export.usage |= PROPERTY_USAGE_SCRIPT_VARIABLE;
+							member._export.hint_string = class_name;
+							member._export.class_name = class_name;
+
+						} else if (member.data_type.kind == DataType::UNRESOLVED && ScriptServer::is_global_class(member.data_type.native_type)) {
+							StringName class_name = member.data_type.native_type;
+							if (ClassDB::is_parent_class(ScriptServer::get_global_class_native_base(class_name), "Resource")) {
+								member._export.type = Variant::OBJECT;
+								member._export.hint = PROPERTY_HINT_RESOURCE_TYPE;
+								member._export.usage |= PROPERTY_USAGE_SCRIPT_VARIABLE;
+								member._export.hint_string = class_name;
+								member._export.class_name = class_name;
+							}
+
+						} else {
+							_set_error("Invalid export type. Only built-in types and native or script class Resource types can be exported.", member.line);
+							return;
+						}
+					}
+
+#ifdef TOOLS_ENABLED
+					Variant::CallError ce;
+					member.default_value = Variant::construct(member._export.type, nullptr, 0, ce);
+#endif
+
+					if (tokenizer->get_token() == PScriptTokenizer::TK_OP_ASSIGN) {
+#ifdef DEBUG_ENABLED
+						int line = tokenizer->get_token_line();
+#endif
+						tokenizer->advance();
+
+						Node *subexpr = _parse_and_reduce_expression(p_class, false, autoexport || member._export.type != Variant::NIL);
+						if (!subexpr) {
+							if (_recover_from_completion()) {
+								break;
+							}
+							return;
+						}
+
+						//discourage common error
+						if (!onready && subexpr->type == Node::TYPE_OPERATOR) {
+							OperatorNode *op = static_cast<OperatorNode *>(subexpr);
+							if (op->op == OperatorNode::OP_CALL && op->arguments[0]->type == Node::TYPE_SELF && op->arguments[1]->type == Node::TYPE_IDENTIFIER) {
+								IdentifierNode *id = static_cast<IdentifierNode *>(op->arguments[1]);
+								if (id->name == "get_node") {
+									_set_error("Use \"onready [Type] " + String(member.identifier) + " = get_node(...)\" instead.");
+									return;
+								}
+							}
+						}
+
+						member.expression = subexpr;
+
+						if (autoexport && !member.data_type.has_type) {
+							if (subexpr->type != Node::TYPE_CONSTANT) {
+								_set_error("Type-less export needs a constant expression assigned to infer type.");
+								return;
+							}
+
+							ConstantNode *cn = static_cast<ConstantNode *>(subexpr);
+							if (cn->value.get_type() == Variant::NIL) {
+								_set_error("Can't accept a null constant expression for inferring export type.");
+								return;
+							}
+
+							if (!_reduce_export_var_type(cn->value, member.line)) {
+								return;
+							}
+
+							member._export.type = cn->value.get_type();
+							member._export.usage |= PROPERTY_USAGE_SCRIPT_VARIABLE;
+							if (cn->value.get_type() == Variant::OBJECT) {
+								Object *obj = cn->value;
+								Resource *res = Object::cast_to<Resource>(obj);
+								if (res == nullptr) {
+									_set_error("The exported constant isn't a type or resource.");
+									return;
+								}
+								member._export.hint = PROPERTY_HINT_RESOURCE_TYPE;
+								member._export.hint_string = res->get_class();
+							}
+						}
+
+#ifdef TOOLS_ENABLED
+						// Warn if the default value set is not the same as the export type, since it won't be coerced and
+						// may create wrong expectations.
+						if (subexpr->type == Node::TYPE_CONSTANT && (member._export.type != Variant::NIL || member.data_type.has_type)) {
+							ConstantNode *cn = static_cast<ConstantNode *>(subexpr);
+							if (cn->value.get_type() != Variant::NIL) {
+								if (member._export.type != Variant::NIL && cn->value.get_type() != member._export.type) {
+									if (!Variant::can_convert(cn->value.get_type(), member._export.type)) {
+										_set_error("Can't convert the provided value to the export type.");
+										return;
+									} else if (!member.data_type.has_type) {
+										_add_warning(PScriptWarning::EXPORT_HINT_TYPE_MISTMATCH, member.line, Variant::get_type_name(cn->value.get_type()), Variant::get_type_name(member._export.type));
+									}
+								}
+							}
+							member.default_value = cn->value;
+						}
+#endif
+
+						IdentifierNode *id = alloc_node<IdentifierNode>();
+						id->name = member.identifier;
+						id->datatype = member.data_type;
+
+						OperatorNode *op = alloc_node<OperatorNode>();
+						op->op = OperatorNode::OP_INIT_ASSIGN;
+						op->arguments.push_back(id);
+						op->arguments.push_back(subexpr);
+
+#ifdef DEBUG_ENABLED
+						NewLineNode *nl2 = alloc_node<NewLineNode>();
+						nl2->line = line;
+						if (onready) {
+							p_class->ready->statements.push_back(nl2);
+						} else {
+							p_class->initializer->statements.push_back(nl2);
+						}
+#endif
+						if (onready) {
+							p_class->ready->statements.push_back(op);
+						} else {
+							p_class->initializer->statements.push_back(op);
+						}
+
+						member.initial_assignment = op;
+
+					} else {
+						if (autoexport && !member.data_type.has_type) {
+							_set_error("Type-less (Variant) export needs a constant expression assigned to infer type.");
+							return;
+						}
+
+						Node *expr;
+
+						if (member.data_type.has_type) {
+							expr = _get_default_value_for_type(member.data_type);
+						} else {
+							DataType exported_type;
+							exported_type.has_type = true;
+							exported_type.kind = DataType::BUILTIN;
+							exported_type.builtin_type = member._export.type;
+							expr = _get_default_value_for_type(exported_type);
+						}
+
+						IdentifierNode *id = alloc_node<IdentifierNode>();
+						id->name = member.identifier;
+						id->datatype = member.data_type;
+
+						OperatorNode *op = alloc_node<OperatorNode>();
+						op->op = OperatorNode::OP_INIT_ASSIGN;
+						op->arguments.push_back(id);
+						op->arguments.push_back(expr);
+
+						p_class->initializer->statements.push_back(op);
+
+						member.initial_assignment = op;
+					}
+
+					if (tokenizer->get_token() == PScriptTokenizer::TK_PR_SETGET) {
+						tokenizer->advance();
+
+						if (tokenizer->get_token() != PScriptTokenizer::TK_COMMA) {
+							//just comma means using only getter
+							if (!tokenizer->is_token_literal()) {
+								_set_error("Expected an identifier for the setter function after \"setget\".");
+							}
+
+							member.setter = tokenizer->get_token_literal();
+
+							tokenizer->advance();
+						}
+
+						if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
+							//there is a getter
+							tokenizer->advance();
+
+							if (!tokenizer->is_token_literal()) {
+								_set_error("Expected an identifier for the getter function after \",\".");
+							}
+
+							member.getter = tokenizer->get_token_literal();
+
+							tokenizer->advance();
+						}
+					}
+
+					p_class->variables.push_back(member);
+
+					if (!_end_statement()) {
+						_set_end_statement_error("Class variable");
+						return;
+					}
 				}
+
 			} break;
 
 			default: {
