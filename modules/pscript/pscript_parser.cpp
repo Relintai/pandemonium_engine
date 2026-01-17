@@ -3544,6 +3544,12 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 		if (token == PScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
 			p_class->end_line = tokenizer->get_token_line();
 			tokenizer->advance();
+
+			// Allow a ; after an inner class
+			if (tokenizer->get_token() == PScriptTokenizer::TK_SEMICOLON) {
+				tokenizer->advance();
+			}
+
 			return; //go back a level
 		}
 
@@ -3726,6 +3732,7 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 					_set_error("'{' expected.");
 					return;
 				}
+
 				current_class = newclass;
 				_parse_class(newclass);
 				current_class = p_class;
