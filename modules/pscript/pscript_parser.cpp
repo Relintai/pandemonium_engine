@@ -3038,10 +3038,14 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 					}
 				} else {
 					// This is needed, as arguments in Node (cf_for->arguments) cannot have NULLs in them
+					// This has to be true.
 					ConstantNode *cn = alloc_node<ConstantNode>();
 					DataType d;
 					d.kind = DataType::BUILTIN;
+					d.builtin_type = Variant::BOOL;
+					d.is_constant = true;
 					cn->set_datatype(d);
+					cn->value = true;
 					condition_expression = cn;
 				}
 
