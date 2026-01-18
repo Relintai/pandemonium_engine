@@ -877,7 +877,7 @@ void TerrainChunkDefault::_enter_tree() {
 		RenderingServer::get_singleton()->instance_set_scenario(_debug_mesh_instance, scenario);
 	}
 
-	RID space = get_voxel_world()->get_world_3d()->get_space();
+	RID space = get_terrain_world()->get_world_3d()->get_space();
 
 	colliders_set_space(MESH_INDEX_TERRAIN, space);
 	colliders_set_space(MESH_INDEX_PROP, space);
