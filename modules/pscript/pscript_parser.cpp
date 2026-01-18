@@ -2822,8 +2822,21 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 			case PScriptTokenizer::TK_CF_FOREACH: {
 				tokenizer->advance();
 
+				// Support parenthesises around foreach
+				int opening_parenthesis_count = 0;
+				while (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_OPEN) {
+					++opening_parenthesis_count;
+					tokenizer->advance();
+				}
+
+				DataType iter_var_datatype;
+				if (!_parse_type(iter_var_datatype, true, false)) {
+					_set_error("Expected a type after \"foreach\".");
+					return;
+				}
+
 				if (!tokenizer->is_token_literal(0, true)) {
-					_set_error("Identifier expected after \"foreach\".");
+					_set_error("Identifier expected after \"foreach\"'s type.");
 				}
 
 				IdentifierNode *id = alloc_node<IdentifierNode>();
@@ -2862,6 +2875,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 					return;
 				}
 
+				/*
 				DataType iter_type;
 
 				if (container->type == Node::TYPE_OPERATOR) {
@@ -2936,6 +2950,15 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 						iter_type.builtin_type = Variant::INT;
 					}
 				}
+				*/
+
+				for (int i = 0; i < opening_parenthesis_count; ++i) {
+					if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+						_set_error("Unclosed parenthesis in foreach.");
+						return;
+					}
+					tokenizer->advance();
+				}
 
 				ControlFlowNode *cf_for = alloc_node<ControlFlowNode>();
 
@@ -2964,8 +2987,8 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				lv->line = id->line;
 				lv->assignments++;
 				id->declared_block = cf_for->body;
-				lv->set_datatype(iter_type);
-				id->set_datatype(iter_type);
+				lv->set_datatype(iter_var_datatype);
+				id->set_datatype(iter_var_datatype);
 				cf_for->body->variables.insert(id->name, lv);
 				_parse_block(cf_for->body, p_static);
 				current_block = p_block;
