@@ -2875,9 +2875,6 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 					return;
 				}
 
-				/*
-				DataType iter_type;
-
 				if (container->type == Node::TYPE_OPERATOR) {
 					OperatorNode *op = static_cast<OperatorNode *>(container);
 					if (op->op == OperatorNode::OP_CALL && op->arguments[0]->type == Node::TYPE_BUILT_IN_FUNCTION && static_cast<BuiltInFunctionNode *>(op->arguments[0])->function == PScriptFunctions::GEN_RANGE) {
@@ -2944,13 +2941,8 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 								container = on;
 							}
 						}
-
-						iter_type.has_type = true;
-						iter_type.kind = DataType::BUILTIN;
-						iter_type.builtin_type = Variant::INT;
 					}
 				}
-				*/
 
 				for (int i = 0; i < opening_parenthesis_count; ++i) {
 					if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
