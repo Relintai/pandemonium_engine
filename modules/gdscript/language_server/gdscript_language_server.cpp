@@ -48,13 +48,13 @@ GDScriptLanguageServer::GDScriptLanguageServer() {
 	port = 6005;
 	poll_limit_usec = 100000;
 
-	_EDITOR_DEF("network/language_server/enabled", enabled, true);
-	_EDITOR_DEF("network/language_server/remote_host", host);
-	_EDITOR_DEF("network/language_server/remote_port", port);
-	_EDITOR_DEF("network/language_server/enable_smart_resolve", true);
-	_EDITOR_DEF("network/language_server/show_native_symbols_in_editor", false);
-	_EDITOR_DEF("network/language_server/use_thread", use_thread);
-	_EDITOR_DEF("network/language_server/poll_limit_usec", poll_limit_usec);
+	_EDITOR_DEF("network/language_server/gdscript/enabled", enabled, true);
+	_EDITOR_DEF("network/language_server/gdscript/remote_host", host);
+	_EDITOR_DEF("network/language_server/gdscript/remote_port", port);
+	_EDITOR_DEF("network/language_server/gdscript/enable_smart_resolve", true);
+	_EDITOR_DEF("network/language_server/gdscript/show_native_symbols_in_editor", false);
+	_EDITOR_DEF("network/language_server/gdscript/use_thread", use_thread);
+	_EDITOR_DEF("network/language_server/gdscript/poll_limit_usec", poll_limit_usec);
 }
 
 void GDScriptLanguageServer::_notification(int p_what) {
@@ -75,10 +75,10 @@ void GDScriptLanguageServer::_notification(int p_what) {
 				return;
 			}
 
-			String host = String(_EDITOR_GET("network/language_server/remote_host"));
-			int port = (GDScriptLanguageServer::port_override > -1) ? GDScriptLanguageServer::port_override : (int)_EDITOR_GET("network/language_server/remote_port");
-			bool use_thread = (bool)_EDITOR_GET("network/language_server/use_thread");
-			int remote_poll_limit = (int)_EDITOR_GET("network/language_server/poll_limit_usec");
+			String host = String(_EDITOR_GET("network/language_server/gdscript/remote_host"));
+			int port = (GDScriptLanguageServer::port_override > -1) ? GDScriptLanguageServer::port_override : (int)_EDITOR_GET("network/language_server/gdscript/remote_port");
+			bool use_thread = (bool)_EDITOR_GET("network/language_server/gdscript/use_thread");
+			int remote_poll_limit = (int)_EDITOR_GET("network/language_server/gdscript/poll_limit_usec");
 			if (host != this->host || port != this->port || use_thread != this->use_thread || remote_poll_limit != poll_limit_usec) {
 				this->stop();
 				this->start();
@@ -97,11 +97,11 @@ void GDScriptLanguageServer::thread_main(void *p_userdata) {
 }
 
 void GDScriptLanguageServer::start() {
-	enabled = _EDITOR_GET("network/language_server/enabled");
-	host = String(_EDITOR_GET("network/language_server/remote_host"));
-	port = (GDScriptLanguageServer::port_override > -1) ? GDScriptLanguageServer::port_override : (int)_EDITOR_GET("network/language_server/remote_port");
-	use_thread = (bool)_EDITOR_GET("network/language_server/use_thread");
-	poll_limit_usec = (int)_EDITOR_GET("network/language_server/poll_limit_usec");
+	enabled = _EDITOR_GET("network/language_server/gdscript/enabled");
+	host = String(_EDITOR_GET("network/language_server/gdscript/remote_host"));
+	port = (GDScriptLanguageServer::port_override > -1) ? GDScriptLanguageServer::port_override : (int)_EDITOR_GET("network/language_server/gdscript/remote_port");
+	use_thread = (bool)_EDITOR_GET("network/language_server/gdscript/use_thread");
+	poll_limit_usec = (int)_EDITOR_GET("network/language_server/gdscript/poll_limit_usec");
 
 	if (!enabled) {
 		return;

@@ -316,11 +316,11 @@ void PScriptLanguageProtocol::request_client(const String &p_method, const Varia
 }
 
 bool PScriptLanguageProtocol::is_smart_resolve_enabled() const {
-	return bool(_EDITOR_GET("network/language_server/enable_smart_resolve"));
+	return bool(_EDITOR_GET("network/language_server/pandemonium_script/enable_smart_resolve"));
 }
 
 bool PScriptLanguageProtocol::is_goto_native_symbols_enabled() const {
-	return bool(_EDITOR_GET("network/language_server/show_native_symbols_in_editor"));
+	return bool(_EDITOR_GET("network/language_server/pandemonium_script/show_native_symbols_in_editor"));
 }
 
 PScriptLanguageProtocol::PScriptLanguageProtocol() {

@@ -48,13 +48,13 @@ PScriptLanguageServer::PScriptLanguageServer() {
 	port = 6006;
 	poll_limit_usec = 100000;
 
-	_EDITOR_DEF("network/language_server/enabled", enabled, true);
-	_EDITOR_DEF("network/language_server/remote_host", host);
-	_EDITOR_DEF("network/language_server/remote_port", port);
-	_EDITOR_DEF("network/language_server/enable_smart_resolve", true);
-	_EDITOR_DEF("network/language_server/show_native_symbols_in_editor", false);
-	_EDITOR_DEF("network/language_server/use_thread", use_thread);
-	_EDITOR_DEF("network/language_server/poll_limit_usec", poll_limit_usec);
+	_EDITOR_DEF("network/language_server/pandemonium_script/enabled", enabled, true);
+	_EDITOR_DEF("network/language_server/pandemonium_script/remote_host", host);
+	_EDITOR_DEF("network/language_server/pandemonium_script/remote_port", port);
+	_EDITOR_DEF("network/language_server/pandemonium_script/enable_smart_resolve", true);
+	_EDITOR_DEF("network/language_server/pandemonium_script/show_native_symbols_in_editor", false);
+	_EDITOR_DEF("network/language_server/pandemonium_script/use_thread", use_thread);
+	_EDITOR_DEF("network/language_server/pandemonium_script/poll_limit_usec", poll_limit_usec);
 }
 
 void PScriptLanguageServer::_notification(int p_what) {
@@ -75,10 +75,10 @@ void PScriptLanguageServer::_notification(int p_what) {
 				return;
 			}
 
-			String host = String(_EDITOR_GET("network/language_server/remote_host"));
-			int port = (PScriptLanguageServer::port_override > -1) ? PScriptLanguageServer::port_override : (int)_EDITOR_GET("network/language_server/remote_port");
-			bool use_thread = (bool)_EDITOR_GET("network/language_server/use_thread");
-			int remote_poll_limit = (int)_EDITOR_GET("network/language_server/poll_limit_usec");
+			String host = String(_EDITOR_GET("network/language_server/pandemonium_script/remote_host"));
+			int port = (PScriptLanguageServer::port_override > -1) ? PScriptLanguageServer::port_override : (int)_EDITOR_GET("network/language_server/pandemonium_script/remote_port");
+			bool use_thread = (bool)_EDITOR_GET("network/language_server/pandemonium_script/use_thread");
+			int remote_poll_limit = (int)_EDITOR_GET("network/language_server/pandemonium_script/poll_limit_usec");
 			if (host != this->host || port != this->port || use_thread != this->use_thread || remote_poll_limit != poll_limit_usec) {
 				this->stop();
 				this->start();
@@ -97,11 +97,11 @@ void PScriptLanguageServer::thread_main(void *p_userdata) {
 }
 
 void PScriptLanguageServer::start() {
-	enabled = _EDITOR_GET("network/language_server/enabled");
-	host = String(_EDITOR_GET("network/language_server/remote_host"));
-	port = (PScriptLanguageServer::port_override > -1) ? PScriptLanguageServer::port_override : (int)_EDITOR_GET("network/language_server/remote_port");
-	use_thread = (bool)_EDITOR_GET("network/language_server/use_thread");
-	poll_limit_usec = (int)_EDITOR_GET("network/language_server/poll_limit_usec");
+	enabled = _EDITOR_GET("network/language_server/pandemonium_script/enabled");
+	host = String(_EDITOR_GET("network/language_server/pandemonium_script/remote_host"));
+	port = (PScriptLanguageServer::port_override > -1) ? PScriptLanguageServer::port_override : (int)_EDITOR_GET("network/language_server/pandemonium_script/remote_port");
+	use_thread = (bool)_EDITOR_GET("network/language_server/pandemonium_script/use_thread");
+	poll_limit_usec = (int)_EDITOR_GET("network/language_server/pandemonium_script/poll_limit_usec");
 
 	if (!enabled) {
 		return;
