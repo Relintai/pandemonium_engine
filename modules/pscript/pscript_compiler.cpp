@@ -1317,8 +1317,6 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 						PScriptParser::IdentifierNode *id = memnew(PScriptParser::IdentifierNode);
 						id->name = "#switch_value";
 
-						// var #match_value
-						// copied because there is no _parse_statement :(
 						codegen.add_stack_identifier(id->name, p_stack_level++);
 						codegen.alloc_stack(p_stack_level);
 
@@ -1335,19 +1333,27 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 						}
 
 						// break address
+
+						// This jumps over the break jump statement
 						codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
 						codegen.opcodes.push_back(codegen.opcodes.size() + 3);
-						int break_addr = codegen.opcodes.size();
+
+						// Break jump statement + address
+						int break_address = codegen.opcodes.size();
 						codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
-						codegen.opcodes.push_back(0); // break addr
+						codegen.opcodes.push_back(0); // Temporary, will be set at the end
+
+						int jump_table_start_address = codegen.opcodes.size();
+
+						for (int j = 0; j < match->compiled_pattern_branches.size(); j++) {
+							codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP_IF);
+							codegen.opcodes.push_back(0); // ret2
+							codegen.opcodes.push_back(0); // Jump to address
+						}
 
 						for (int j = 0; j < match->compiled_pattern_branches.size(); j++) {
 							PScriptParser::MatchNode::CompiledPatternBranch branch = match->compiled_pattern_branches[j];
 
-							// jump over continue
-							// jump unconditionally
-							// continue address
-							// compile the condition
 							int ret2 = _parse_expression(codegen, branch.compiled_pattern, p_stack_level);
 							if (ret2 < 0) {
 								memdelete(id);
@@ -1355,27 +1361,18 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 								return ERR_PARSE_ERROR;
 							}
 
-							codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP_IF);
-							codegen.opcodes.push_back(ret2);
-							codegen.opcodes.push_back(codegen.opcodes.size() + 3);
-							int continue_addr = codegen.opcodes.size();
-							codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
-							codegen.opcodes.push_back(0);
+							codegen.opcodes.write[jump_table_start_address + (3 * j) + 1] = ret2;
+							codegen.opcodes.write[jump_table_start_address + (3 * j) + 2] = codegen.opcodes.size() - 1;
 
-							Error err = _parse_block(codegen, branch.body, p_stack_level, p_break_addr, continue_addr);
+							Error err = _parse_block(codegen, branch.body, p_stack_level, break_address, p_continue_addr);
 							if (err) {
 								memdelete(id);
 								memdelete(op);
 								return ERR_PARSE_ERROR;
 							}
-
-							codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
-							codegen.opcodes.push_back(break_addr);
-
-							codegen.opcodes.write[continue_addr + 1] = codegen.opcodes.size();
 						}
 
-						codegen.opcodes.write[break_addr + 1] = codegen.opcodes.size();
+						codegen.opcodes.write[break_address + 1] = codegen.opcodes.size();
 
 						memdelete(id);
 						memdelete(op);

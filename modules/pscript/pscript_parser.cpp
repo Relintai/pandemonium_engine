@@ -3134,7 +3134,8 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				BlockNode *compiled_branches = alloc_node<BlockNode>();
 				compiled_branches->parent_block = p_block;
 				compiled_branches->parent_class = p_block->parent_class;
-				compiled_branches->can_continue = true;
+				compiled_branches->can_continue = false;
+				compiled_branches->can_break = true;
 
 				p_block->sub_blocks.push_back(compiled_branches);
 
@@ -6113,7 +6114,7 @@ PScriptParser::DataType PScriptParser::_reduce_node_type(Node *p_node) {
 			if (id->declared_block) {
 				node_type = id->declared_block->variables[id->name]->get_datatype();
 				id->declared_block->variables[id->name]->usages += 1;
-			} else if (id->name == "#match_value") {
+			} else if (id->name == "#switch_value") {
 				// It's a special id just for the match statetement, ignore
 				break;
 			} else if (current_function && current_function->arguments.find(id->name) >= 0) {
