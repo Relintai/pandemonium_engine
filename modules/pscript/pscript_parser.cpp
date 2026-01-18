@@ -3740,6 +3740,11 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 				p_class->tool = true;
 				tokenizer->advance();
 
+				if (!_end_statement()) {
+					_set_end_statement_error("tool keyword");
+					return;
+				}
+
 			} break;
 			case PScriptTokenizer::TK_PR_CLASS: {
 				//class inside class :D
