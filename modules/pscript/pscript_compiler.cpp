@@ -1544,6 +1544,17 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 							}
 						}
 
+						if (cf->body_else) {
+							codegen.opcodes.push_back(PScriptFunction::OPCODE_LINE);
+							codegen.opcodes.push_back(cf->body_else->line);
+							codegen.current_line = cf->body_else->line;
+
+							Error err2 = _parse_block(codegen, cf->body_else, p_stack_level, p_break_addr, p_continue_addr);
+							if (err2) {
+								return err2;
+							}
+						}
+
 						// If there is no init statement, there is nothing to jump over.
 						if (generate_init_statement_expression) {
 							codegen.opcodes.write[variable_init_end_jump_address_index] = codegen.opcodes.size();
