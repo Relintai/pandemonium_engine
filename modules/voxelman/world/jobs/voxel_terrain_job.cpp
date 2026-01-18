@@ -221,6 +221,7 @@ void VoxelTerrainJob::phase_collider() {
 
 	if ((chunk->get_build_flags() & VoxelChunkDefault::BUILD_FLAG_CREATE_COLLIDER) == 0) {
 		next_phase();
+		next_phase();
 		return;
 	}
 
