@@ -1343,16 +1343,14 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 						codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
 						codegen.opcodes.push_back(0); // Temporary, will be set at the end
 
-						int jump_table_start_address = codegen.opcodes.size();
-
-						for (int j = 0; j < match->compiled_pattern_branches.size(); j++) {
-							codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP_IF);
-							codegen.opcodes.push_back(0); // ret2
-							codegen.opcodes.push_back(0); // Jump to address
-						}
+						LocalVector<int> jump_table_addresses;
 
 						for (int j = 0; j < match->compiled_pattern_branches.size(); j++) {
 							PScriptParser::MatchNode::CompiledPatternBranch branch = match->compiled_pattern_branches[j];
+
+							codegen.opcodes.push_back(PScriptFunction::OPCODE_LINE);
+							codegen.opcodes.push_back(match->branches[j]->pattern->line);
+							codegen.current_line = match->branches[j]->pattern->line;
 
 							int ret2 = _parse_expression(codegen, branch.compiled_pattern, p_stack_level);
 							if (ret2 < 0) {
@@ -1361,8 +1359,20 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 								return ERR_PARSE_ERROR;
 							}
 
-							codegen.opcodes.write[jump_table_start_address + (3 * j) + 1] = ret2;
-							codegen.opcodes.write[jump_table_start_address + (3 * j) + 2] = codegen.opcodes.size() - 1;
+							codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP_IF);
+							codegen.opcodes.push_back(ret2); // ret2
+							jump_table_addresses.push_back(codegen.opcodes.size());
+							codegen.opcodes.push_back(0); // Jump to address
+						}
+
+						for (int j = 0; j < match->compiled_pattern_branches.size(); j++) {
+							PScriptParser::MatchNode::CompiledPatternBranch branch = match->compiled_pattern_branches[j];
+
+							codegen.opcodes.write[jump_table_addresses[j]] = codegen.opcodes.size();
+
+							codegen.opcodes.push_back(PScriptFunction::OPCODE_LINE);
+							codegen.opcodes.push_back(match->branches[j]->body->line);
+							codegen.current_line = match->branches[j]->body->line;
 
 							Error err = _parse_block(codegen, branch.body, p_stack_level, break_address, p_continue_addr);
 							if (err) {
