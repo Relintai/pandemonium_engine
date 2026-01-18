@@ -2819,6 +2819,309 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				}
 				p_block->statements.push_back(cf_while);
 			} break;
+			case PScriptTokenizer::TK_CF_FOR: {
+				tokenizer->advance();
+
+				// Support parenthesises around for
+				int opening_parenthesis_count = 0;
+				while (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_OPEN || tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
+					if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_OPEN) {
+						++opening_parenthesis_count;
+					}
+					tokenizer->advance();
+				}
+
+				bool is_init_statement_expression = false;
+
+				LocalVector<Node *> var_init_expressions;
+
+				bool done = false;
+				while (!done) {
+					switch (tokenizer->get_token()) {
+						case PScriptTokenizer::TK_NEWLINE: {
+							tokenizer->advance();
+						} break;
+						case PScriptTokenizer::TK_SEMICOLON: {
+							tokenizer->advance();
+							done = true;
+						} break;
+						case PScriptTokenizer::TK_PR_VOID:
+						case PScriptTokenizer::TK_PR_VARIANT:
+						case PScriptTokenizer::TK_BUILT_IN_TYPE:
+						case PScriptTokenizer::TK_IDENTIFIER: {
+							// Variable declaration.
+
+							if (token == PScriptTokenizer::TK_IDENTIFIER) {
+								PScriptTokenizer::Token lookahead = tokenizer->get_token(1);
+
+								if (lookahead == PScriptTokenizer::TK_CURSOR) {
+									lookahead = tokenizer->get_token(2);
+								}
+
+								// if ::, we are done, has to be a Class inside class (or bad syntax) = we just fall out
+								if (lookahead != PScriptTokenizer::TK_DOUBLE_COLON) {
+									// Check if the current (non-lookahead) identifier is a type
+
+									StringName name = tokenizer->get_token_identifier();
+
+									bool valid_type = false;
+
+									if (ScriptServer::is_global_class(name)) {
+										valid_type = true;
+									}
+
+									if (!valid_type) {
+										if (ClassDB::class_exists(name) || ClassDB::class_exists("_" + name.operator String())) {
+											valid_type = true;
+										}
+									}
+
+									if (current_class) {
+										for (int i = 0; i < current_class->subclasses.size(); i++) {
+											if (current_class->subclasses[i]->name == name) {
+												valid_type = true;
+												break;
+											}
+										}
+									}
+
+									// Not valid type, handle it as a normal expression.
+									if (!valid_type) {
+										if (var_init_expressions.size() > 0) {
+											_set_error(String() + "Unexpected token or invalid type: " + tokenizer->get_token_name(tokenizer->get_token()) + " when parsing for loop variable initializer declarations.");
+											return;
+										}
+
+										is_init_statement_expression = true;
+										done = true;
+										break;
+									}
+								}
+							}
+
+							DataType local_var_datatype;
+							if (!_parse_type(local_var_datatype, true, false)) {
+								_set_error("Expected a type for the variable.");
+								return;
+							}
+
+							// _parse_type does this
+							//tokenizer->advance();
+
+							int var_line = tokenizer->get_token_line();
+							if (!tokenizer->is_token_literal(0, true)) {
+								_set_error("Expected an identifier for the local variable name.");
+								return;
+							}
+
+							StringName n = tokenizer->get_token_identifier();
+
+							if (current_function) {
+								for (int i = 0; i < current_function->arguments.size(); i++) {
+									if (n == current_function->arguments[i]) {
+										_set_error("Variable \"" + String(n) + "\" already defined in the scope (at line " + itos(current_function->line) + ").");
+										return;
+									}
+								}
+							}
+							BlockNode *check_block = p_block;
+							while (check_block) {
+								if (check_block->variables.has(n)) {
+									_set_error("Variable \"" + String(n) + "\" already defined in the scope (at line " + itos(check_block->variables[n]->line) + ").");
+									return;
+								}
+								check_block = check_block->parent_block;
+							}
+
+							tokenizer->advance();
+
+							//must know when the local variable is declared
+							LocalVarNode *lv = alloc_node<LocalVarNode>();
+							lv->name = n;
+							lv->line = var_line;
+							lv->datatype = local_var_datatype;
+							p_block->statements.push_back(lv);
+
+							Node *assigned = nullptr;
+
+							if (tokenizer->get_token() == PScriptTokenizer::TK_OP_ASSIGN) {
+								tokenizer->advance();
+								Node *subexpr = _parse_and_reduce_expression(p_block, p_static);
+								if (!subexpr) {
+									if (_recover_from_completion()) {
+										break;
+									}
+									return;
+								}
+
+								lv->assignments++;
+								assigned = subexpr;
+							} else {
+								assigned = _get_default_value_for_type(lv->datatype, var_line);
+							}
+							//must be added later, to avoid self-referencing.
+							p_block->variables.insert(n, lv);
+
+							IdentifierNode *id = alloc_node<IdentifierNode>();
+							id->name = n;
+							id->declared_block = p_block;
+							id->line = var_line;
+
+							OperatorNode *op = alloc_node<OperatorNode>();
+							op->op = OperatorNode::OP_ASSIGN;
+							op->arguments.push_back(id);
+							op->arguments.push_back(assigned);
+							op->line = var_line;
+							p_block->statements.push_back(op);
+							lv->assign_op = op;
+							lv->assign = assigned;
+
+							if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
+								tokenizer->advance();
+								continue;
+							}
+
+							if (!_end_statement()) {
+								_set_end_statement_error("for loop variable declaration");
+								return;
+							} else {
+								done = true;
+								break;
+							}
+						} break;
+						default: {
+							if (var_init_expressions.size() > 0) {
+								_set_error(String() + "Unexpected token or invalid type: " + tokenizer->get_token_name(tokenizer->get_token()) + " when parsing for loop variable initializer declarations.");
+								return;
+							}
+
+							is_init_statement_expression = true;
+							done = true;
+							break;
+						}
+					}
+				}
+
+				if (is_init_statement_expression) {
+					Node *var_init_expression = _parse_and_reduce_expression(p_block, p_static);
+					if (!var_init_expression) {
+						if (_recover_from_completion()) {
+							break;
+						}
+						return;
+					}
+					var_init_expressions.push_back(var_init_expression);
+
+					while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
+						tokenizer->advance();
+					}
+
+					if (!_end_statement()) {
+						_set_end_statement_error("Missing ; in for");
+						return;
+					}
+				}
+
+				while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
+					tokenizer->advance();
+				}
+
+				Node *condition_expression = NULL;
+
+				if (tokenizer->get_token() != PScriptTokenizer::TK_SEMICOLON) {
+					condition_expression = _parse_and_reduce_expression(p_block, p_static);
+					if (!condition_expression) {
+						if (_recover_from_completion()) {
+							break;
+						}
+						return;
+					}
+				} else {
+					ConstantNode *cn = alloc_node<ConstantNode>();
+					DataType d;
+					d.kind = DataType::BUILTIN;
+					cn->set_datatype(d);
+					condition_expression = cn;
+				}
+
+				while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
+					tokenizer->advance();
+				}
+
+				if (!_end_statement()) {
+					_set_end_statement_error("Missing ; in for");
+					return;
+				}
+
+				while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
+					tokenizer->advance();
+				}
+
+				Node *post_iter_expression = NULL;
+
+				if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+					post_iter_expression = _parse_and_reduce_expression(p_block, p_static);
+					if (!post_iter_expression) {
+						if (_recover_from_completion()) {
+							break;
+						}
+						return;
+					}
+				} else {
+					ConstantNode *cn = alloc_node<ConstantNode>();
+					DataType d;
+					d.kind = DataType::BUILTIN;
+					cn->set_datatype(d);
+					post_iter_expression = cn;
+				}
+
+				while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
+					tokenizer->advance();
+				}
+
+				for (int i = 0; i < opening_parenthesis_count; ++i) {
+					while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
+						tokenizer->advance();
+					}
+
+					if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+						_set_error("Unclosed parenthesis in for.");
+						return;
+					}
+					tokenizer->advance();
+				}
+
+				ControlFlowNode *cf_for = alloc_node<ControlFlowNode>();
+
+				cf_for->cf_type = ControlFlowNode::CF_FOR;
+				cf_for->arguments.push_back(condition_expression);
+				cf_for->arguments.push_back(post_iter_expression);
+
+				for (uint32_t j = 0; j < var_init_expressions.size(); ++j) {
+					cf_for->arguments.push_back(var_init_expressions[j]);
+				}
+
+				cf_for->body = alloc_node<BlockNode>();
+				cf_for->body->parent_block = p_block;
+				cf_for->body->can_break = true;
+				cf_for->body->can_continue = true;
+				p_block->sub_blocks.push_back(cf_for->body);
+
+				if (!_enter_block(cf_for->body)) {
+					_set_error("Expected '{' after \"for\".");
+					p_block->end_line = tokenizer->get_token_line();
+					return;
+				}
+
+				current_block = cf_for->body;
+				_parse_block(cf_for->body, p_static);
+				current_block = p_block;
+
+				if (error_set) {
+					return;
+				}
+				p_block->statements.push_back(cf_for);
+			} break;
 			case PScriptTokenizer::TK_CF_FOREACH: {
 				tokenizer->advance();
 

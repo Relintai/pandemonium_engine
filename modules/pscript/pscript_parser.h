@@ -431,6 +431,7 @@ public:
 		enum CFType {
 			CF_IF,
 			CF_FOREACH,
+			CF_FOR,
 			CF_WHILE,
 			CF_BREAK,
 			CF_CONTINUE,

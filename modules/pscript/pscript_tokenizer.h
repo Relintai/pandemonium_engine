@@ -87,6 +87,7 @@ public:
 		TK_CF_IF,
 		TK_CF_ELSE,
 		TK_CF_FOREACH,
+		TK_CF_FOR,
 		TK_CF_WHILE,
 		TK_CF_BREAK,
 		TK_CF_CONTINUE,

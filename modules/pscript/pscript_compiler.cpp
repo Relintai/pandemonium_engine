@@ -1480,6 +1480,97 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 						codegen.pop_stack_identifiers();
 
 					} break;
+					case PScriptParser::ControlFlowNode::CF_FOR: {
+						// The bytecode flows this way:
+						//
+						// Init bytecode (can be skipped. For example for(;;))
+						// Jump over post iter statements, straight to loop (if init exists)
+						// <continue addr>
+						// post iter statement bytecode
+						// iter condition check bytecode
+						// block body bytecode
+						// <break addr>
+
+						// Variable init
+
+						bool is_init_statement_expression = false;
+						bool generate_init_statement_expression = cf->arguments.size() > 2;
+
+						if (generate_init_statement_expression) {
+							// Expression parser can't create local variables.
+							is_init_statement_expression = cf->arguments[2]->type != PScriptParser::Node::TYPE_LOCAL_VAR;
+
+							if (!is_init_statement_expression) {
+								// Init statement is variable declaration(s)
+
+								for (int j = 2; j < cf->arguments.size(); ++j) {
+									const PScriptParser::LocalVarNode *lv = static_cast<const PScriptParser::LocalVarNode *>(cf->arguments[j]);
+
+									codegen.add_stack_identifier(lv->name, p_stack_level++);
+									codegen.alloc_stack(p_stack_level);
+								}
+							} else {
+								// Init statement is an expression
+
+								int ret2 = _parse_expression(codegen, cf->arguments[2], p_stack_level, false);
+								if (ret2 < 0) {
+									return ERR_PARSE_ERROR;
+								}
+							}
+						}
+
+						int variable_init_end_jump_address_index = 0;
+
+						// If there is no init statement, there is no need to jump over.
+						if (generate_init_statement_expression) {
+							// After Variable init, jump over the post iter expression
+							codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
+							variable_init_end_jump_address_index = codegen.opcodes.size();
+							codegen.opcodes.push_back(0); // Initialized lated
+						}
+
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
+						codegen.opcodes.push_back(codegen.opcodes.size() + 3);
+						int break_addr = codegen.opcodes.size();
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
+						codegen.opcodes.push_back(0);
+						int continue_addr = codegen.opcodes.size();
+
+						// Post iter expression
+						if (cf->arguments[1]) {
+							int ret2 = _parse_expression(codegen, cf->arguments[1], p_stack_level, false);
+							if (ret2 < 0) {
+								return ERR_PARSE_ERROR;
+							}
+						}
+
+						// If there is no init statement, there is nothing to jump over.
+						if (generate_init_statement_expression) {
+							codegen.opcodes.write[variable_init_end_jump_address_index] = codegen.opcodes.size();
+						}
+
+						// Iter condition
+						if (cf->arguments[0]) {
+							int ret2 = _parse_expression(codegen, cf->arguments[0], p_stack_level, false);
+							if (ret2 < 0) {
+								return ERR_PARSE_ERROR;
+							}
+
+							codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP_IF_NOT);
+							codegen.opcodes.push_back(ret2);
+							codegen.opcodes.push_back(break_addr);
+						}
+
+						Error err = _parse_block(codegen, cf->body, p_stack_level, break_addr, continue_addr);
+						if (err) {
+							return err;
+						}
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
+						codegen.opcodes.push_back(continue_addr);
+
+						codegen.opcodes.write[break_addr + 1] = codegen.opcodes.size();
+
+					} break;
 					case PScriptParser::ControlFlowNode::CF_WHILE: {
 						codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
 						codegen.opcodes.push_back(codegen.opcodes.size() + 3);
