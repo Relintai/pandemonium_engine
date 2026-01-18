@@ -466,7 +466,56 @@ bool PScript::_update_exports(bool *r_err, bool p_recursive_call, PlaceHolderScr
 			_signals.clear();
 
 			for (int i = 0; i < c->_signals.size(); i++) {
-				_signals[c->_signals[i].name] = c->_signals[i].arguments;
+				Vector<PropertyInfo> signal_arguments;
+
+				for (int j = 0; j < c->_signals[i].arguments.size(); ++j) {
+					PropertyInfo pi;
+					pi.name = c->_signals[i].arguments[j];
+
+					PScriptParser::DataType d = c->_signals[i].argument_types[j];
+
+					switch (d.kind) {
+						case PScriptParser::DataType::BUILTIN: {
+							if (d.builtin_type == Variant::NIL) {
+								pi.usage |= PROPERTY_USAGE_NIL_IS_VARIANT;
+							}
+
+							pi.type = d.builtin_type;
+						} break;
+						case PScriptParser::DataType::NATIVE: {
+							pi.type = Variant::OBJECT;
+
+							if (d.native_type != StringName("Object")) {
+								pi.hint = PROPERTY_HINT_RESOURCE_TYPE;
+								pi.hint_string = d.native_type;
+							}
+						} break;
+						case PScriptParser::DataType::SCRIPT:
+						case PScriptParser::DataType::PSCRIPT: {
+							pi.type = Variant::OBJECT;
+
+							if (d.script_type.is_valid() && !d.script_type->get_global_class_name().empty()) {
+								pi.hint = PROPERTY_HINT_RESOURCE_TYPE;
+								pi.hint_string = d.script_type->get_global_class_name();
+							}
+						} break;
+						case PScriptParser::DataType::CLASS: {
+							pi.type = Variant::OBJECT;
+
+							if (d.class_type && d.class_type->name != StringName()) {
+								pi.hint = PROPERTY_HINT_RESOURCE_TYPE;
+								pi.hint_string = d.class_type->name;
+							}
+						} break;
+						case PScriptParser::DataType::UNRESOLVED: {
+							// Do nothing
+						} break;
+					}
+
+					signal_arguments.push_back(pi);
+				}
+
+				_signals[c->_signals[i].name] = signal_arguments;
 			}
 		} else {
 			placeholder_fallback_enabled = true;
@@ -877,12 +926,12 @@ bool PScript::has_script_signal(const StringName &p_signal) const {
 	return false;
 }
 void PScript::get_script_signal_list(List<MethodInfo> *r_signals) const {
-	for (const RBMap<StringName, Vector<StringName>>::Element *E = _signals.front(); E; E = E->next()) {
+	for (const RBMap<StringName, Vector<PropertyInfo>>::Element *E = _signals.front(); E; E = E->next()) {
 		MethodInfo mi;
 		mi.name = E->key();
 		for (int i = 0; i < E->get().size(); i++) {
-			PropertyInfo arg;
-			arg.name = E->get()[i];
+			PropertyInfo arg = E->get()[i];
+
 			mi.arguments.push_back(arg);
 		}
 		r_signals->push_back(mi);

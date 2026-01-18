@@ -179,6 +179,7 @@ public:
 		struct Signal {
 			StringName name;
 			Vector<StringName> arguments;
+			Vector<DataType> argument_types;
 			int emissions;
 			int line;
 		};
@@ -410,7 +411,7 @@ public:
 	};
 
 	struct PatternBranchNode : public Node {
-		PatternNode * pattern;
+		PatternNode *pattern;
 		BlockNode *body;
 	};
 

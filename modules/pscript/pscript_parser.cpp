@@ -3488,8 +3488,6 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 
 			} break;
 			case PScriptTokenizer::TK_PR_SIGNAL: {
-				// TODO type support
-
 				_mark_line_as_safe(tokenizer->get_token_line());
 				tokenizer->advance();
 
@@ -3524,6 +3522,15 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 							tokenizer->advance();
 							break;
 						}
+
+						DataType argtype;
+						if (!_parse_type(argtype, false, false)) {
+							_set_error("Expected a type for an argument.");
+							return;
+						}
+						sig.argument_types.push_back(argtype);
+
+						//tokenizer->advance();
 
 						if (!tokenizer->is_token_literal(0, true)) {
 							_set_error("Expected an identifier in a \"signal\" argument.");

@@ -2011,7 +2011,56 @@ Error PScriptCompiler::_parse_class_level(PScript *p_script, const PScriptParser
 			}
 		}
 
-		p_script->_signals[name] = p_class->_signals[i].arguments;
+		Vector<PropertyInfo> signal_arguments;
+
+		for (int j = 0; j < p_class->_signals[i].arguments.size(); ++j) {
+			PropertyInfo pi;
+			pi.name = p_class->_signals[i].arguments[j];
+
+			PScriptParser::DataType d = p_class->_signals[i].argument_types[j];
+
+			switch (d.kind) {
+				case PScriptParser::DataType::BUILTIN: {
+					if (d.builtin_type == Variant::NIL) {
+						pi.usage |= PROPERTY_USAGE_NIL_IS_VARIANT;
+					}
+
+					pi.type = d.builtin_type;
+				} break;
+				case PScriptParser::DataType::NATIVE: {
+					pi.type = Variant::OBJECT;
+
+					if (d.native_type != StringName("Object")) {
+						pi.hint = PROPERTY_HINT_RESOURCE_TYPE;
+						pi.hint_string = d.native_type;
+					}
+				} break;
+				case PScriptParser::DataType::SCRIPT:
+				case PScriptParser::DataType::PSCRIPT: {
+					pi.type = Variant::OBJECT;
+
+					if (d.script_type.is_valid() && !d.script_type->get_global_class_name().empty()) {
+						pi.hint = PROPERTY_HINT_RESOURCE_TYPE;
+						pi.hint_string = d.script_type->get_global_class_name();
+					}
+				} break;
+				case PScriptParser::DataType::CLASS: {
+					pi.type = Variant::OBJECT;
+
+					if (d.class_type && d.class_type->name != StringName()) {
+						pi.hint = PROPERTY_HINT_RESOURCE_TYPE;
+						pi.hint_string = d.class_type->name;
+					}
+				} break;
+				case PScriptParser::DataType::UNRESOLVED: {
+					// Do nothing
+				} break;
+			}
+
+			signal_arguments.push_back(pi);
+		}
+
+		p_script->_signals[name] = signal_arguments;
 	}
 
 	parsed_classes.insert(p_script);

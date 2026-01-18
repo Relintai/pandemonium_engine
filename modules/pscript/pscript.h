@@ -81,7 +81,8 @@ class PScript : public Script {
 	RBMap<StringName, PScriptFunction *> member_functions;
 	RBMap<StringName, MemberInfo> member_indices; //members are just indices to the instanced script.
 	RBMap<StringName, Ref<PScript>> subclasses;
-	RBMap<StringName, Vector<StringName>> _signals;
+
+	RBMap<StringName, Vector<PropertyInfo>> _signals;
 
 #ifdef TOOLS_ENABLED
 
