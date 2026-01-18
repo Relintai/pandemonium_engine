@@ -441,6 +441,8 @@ void ScriptLanguage::get_core_type_words(List<String> *p_words) const {
 		"StringName",
 		"Dictionary",
 		"Array",
+		"TypedArray",
+		"PackedTypedArray",
 		"PoolByteArray",
 		"PoolIntArray",
 		"PoolRealArray",
