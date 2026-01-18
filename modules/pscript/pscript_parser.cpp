@@ -3068,7 +3068,26 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				ControlFlowNode *cf_for = alloc_node<ControlFlowNode>();
 				cf_for->cf_type = ControlFlowNode::CF_FOR;
 
-				if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+				cf_for->body_else = alloc_node<BlockNode>();
+				cf_for->body_else->parent_block = p_block;
+				p_block->sub_blocks.push_back(cf_for->body_else);
+
+				while (true) {
+					while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
+						tokenizer->advance();
+					}
+
+					if (tokenizer->get_token() == PScriptTokenizer::TK_CURLY_BRACKET_OPEN) {
+						break;
+					} else if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+						break;
+					}
+
+					// Separate expressions via ','s, only allow one.
+					if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
+						tokenizer->advance();
+					}
+
 					Node *post_iter_expression = _parse_and_reduce_expression(p_block, p_static, false, true);
 					if (!post_iter_expression) {
 						if (_recover_from_completion()) {
@@ -3077,9 +3096,6 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 						return;
 					}
 
-					cf_for->body_else = alloc_node<BlockNode>();
-					cf_for->body_else->parent_block = p_block;
-					p_block->sub_blocks.push_back(cf_for->body_else);
 					cf_for->body_else->statements.push_back(post_iter_expression);
 				}
 
@@ -3096,6 +3112,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 						_set_error("Unclosed parenthesis in for.");
 						return;
 					}
+
 					tokenizer->advance();
 				}
 
