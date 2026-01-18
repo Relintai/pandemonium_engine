@@ -2257,8 +2257,7 @@ void PScriptParser::_parse_pattern_block(BlockNode *p_block, Vector<PatternBranc
 			break;
 		}
 
-		bool has_binding = branch->pattern->pt_type == PatternNode::PT_BIND;
-		bool catch_all = has_binding || branch->pattern->pt_type == PatternNode::PT_DEFAULT;
+		bool catch_all = branch->pattern->pt_type == PatternNode::PT_DEFAULT;
 
 #ifdef DEBUG_ENABLED
 		// Branches after a wildcard or binding are unreachable
@@ -2292,7 +2291,7 @@ void PScriptParser::_parse_pattern_block(BlockNode *p_block, Vector<PatternBranc
 	}
 }
 
-void PScriptParser::_generate_pattern(PatternNode *p_pattern, Node *p_node_to_match, Node *&p_resulting_node, RBMap<StringName, Node *> &p_bindings) {
+void PScriptParser::_generate_pattern(PatternNode *p_pattern, Node *p_node_to_match, Node *&p_resulting_node) {
 	const DataType &to_match_type = p_node_to_match->get_datatype();
 
 	switch (p_pattern->pt_type) {
@@ -2350,14 +2349,6 @@ void PScriptParser::_generate_pattern(PatternNode *p_pattern, Node *p_node_to_ma
 			}
 
 		} break;
-		case PatternNode::PT_BIND: {
-			p_bindings[p_pattern->bind] = p_node_to_match;
-
-			// a bind always matches
-			ConstantNode *true_value = alloc_node<ConstantNode>();
-			true_value->value = Variant(true);
-			p_resulting_node = true_value;
-		} break;
 		case PatternNode::PT_DEFAULT: {
 			// simply generate a `true`
 			ConstantNode *true_value = alloc_node<ConstantNode>();
@@ -2393,9 +2384,8 @@ void PScriptParser::_transform_match_statment(MatchNode *p_match_statement) {
 		PatternNode *pattern = branch->pattern;
 		_mark_line_as_safe(pattern->line);
 
-		RBMap<StringName, Node *> binding;
 		Node *resulting_node = nullptr;
-		_generate_pattern(pattern, id, resulting_node, binding);
+		_generate_pattern(pattern, id, resulting_node);
 
 		if (!resulting_node) {
 			return;
@@ -2409,45 +2399,8 @@ void PScriptParser::_transform_match_statment(MatchNode *p_match_statement) {
 		resulting_node_type.builtin_type = Variant::BOOL;
 		resulting_node->set_datatype(resulting_node_type);
 
-		if (compiled_branch.compiled_pattern) {
-			OperatorNode *or_node = alloc_node<OperatorNode>();
-			or_node->op = OperatorNode::OP_OR;
-			or_node->arguments.push_back(compiled_branch.compiled_pattern);
-			or_node->arguments.push_back(resulting_node);
-
-			compiled_branch.compiled_pattern = or_node;
-		} else {
-			// single pattern | first one
-			compiled_branch.compiled_pattern = resulting_node;
-		}
-
-		// prepare the body ...hehe
-		for (RBMap<StringName, Node *>::Element *e = binding.front(); e; e = e->next()) {
-			if (!branch->body->variables.has(e->key())) {
-				_set_error("Parser bug: missing pattern bind variable.", branch->line);
-				ERR_FAIL();
-			}
-
-			LocalVarNode *local_var = branch->body->variables[e->key()];
-			local_var->assign = e->value();
-			local_var->set_datatype(local_var->assign->get_datatype());
-			local_var->assignments++;
-
-			IdentifierNode *id2 = alloc_node<IdentifierNode>();
-			id2->name = local_var->name;
-			id2->datatype = local_var->datatype;
-			id2->declared_block = branch->body;
-			id2->set_datatype(local_var->assign->get_datatype());
-
-			OperatorNode *op = alloc_node<OperatorNode>();
-			op->op = OperatorNode::OP_ASSIGN;
-			op->arguments.push_back(id2);
-			op->arguments.push_back(local_var->assign);
-			local_var->assign_op = op;
-
-			branch->body->statements.insert(0, op);
-			branch->body->statements.insert(0, local_var);
-		}
+		// single pattern | first one
+		compiled_branch.compiled_pattern = resulting_node;
 
 		compiled_branch.body = branch->body;
 
