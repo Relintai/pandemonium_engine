@@ -56,6 +56,22 @@ void TerrainWorldBlocky::_setup_chunk(Ref<TerrainChunk> p_chunk) {
 		Ref<TerrainLightJob> lj;
 		lj.instance();
 
+		Ref<TerrainMesherBlocky> mesher;
+		mesher.instance();
+		mesher->set_terrain_scale(get_terrain_scale());
+		mesher->set_build_flags(get_build_flags());
+		mesher->set_channel_index_type(TerrainChunkDefault::DEFAULT_CHANNEL_TYPE);
+		mesher->set_channel_index_isolevel(TerrainChunkDefault::DEFAULT_CHANNEL_ISOLEVEL);
+		tj->set_mesher(mesher);
+
+		Ref<TerrainMesherBlocky> liquid_mesher;
+		liquid_mesher.instance();
+		liquid_mesher->set_terrain_scale(get_terrain_scale());
+		liquid_mesher->set_build_flags(get_build_flags());
+		liquid_mesher->set_channel_index_type(TerrainChunkDefault::DEFAULT_CHANNEL_LIQUID_TYPE);
+		liquid_mesher->set_channel_index_isolevel(TerrainChunkDefault::DEFAULT_CHANNEL_LIQUID_ISOLEVEL);
+		tj->set_liquid_mesher(liquid_mesher);
+
 		Ref<TerrainMesherJobStep> s;
 		s.instance();
 		s->set_job_type(TerrainMesherJobStep::TYPE_NORMAL);
@@ -79,17 +95,15 @@ void TerrainWorldBlocky::_setup_chunk(Ref<TerrainChunk> p_chunk) {
 		s->set_job_type(TerrainMesherJobStep::TYPE_BAKE_TEXTURE);
 		tj->add_job_step(s);
 
-		tj->set_mesher(Ref<TerrainMesher>(memnew(TerrainMesherBlocky())));
-
-		Ref<TerrainMesherBlocky> liquid_mesher;
-		liquid_mesher.instance();
-		liquid_mesher->set_channel_index_type(TerrainChunkDefault::DEFAULT_CHANNEL_LIQUID_TYPE);
-		liquid_mesher->set_channel_index_isolevel(TerrainChunkDefault::DEFAULT_CHANNEL_LIQUID_ISOLEVEL);
-		tj->set_liquid_mesher(liquid_mesher);
-
 		Ref<TerrainPropJob> pj;
 		pj.instance();
-		pj->set_prop_mesher(Ref<TerrainMesher>(memnew(TerrainMesherBlocky)));
+
+		Ref<TerrainMesherBlocky> prop_mesher;
+		prop_mesher.instance();
+		prop_mesher->set_terrain_scale(get_terrain_scale());
+		prop_mesher->set_build_flags(get_build_flags());
+
+		pj->set_prop_mesher(prop_mesher);
 
 		s.instance();
 		s->set_job_type(TerrainMesherJobStep::TYPE_NORMAL);
