@@ -2358,7 +2358,6 @@ void PScriptParser::_generate_pattern(PatternNode *p_pattern, Node *p_node_to_ma
 			true_value->value = Variant(true);
 			p_resulting_node = true_value;
 		} break;
-		case PatternNode::PT_IGNORE_REST:
 		case PatternNode::PT_DEFAULT: {
 			// simply generate a `true`
 			ConstantNode *true_value = alloc_node<ConstantNode>();
@@ -2391,20 +2390,16 @@ void PScriptParser::_transform_match_statment(MatchNode *p_match_statement) {
 		MatchNode::CompiledPatternBranch compiled_branch;
 		compiled_branch.compiled_pattern = nullptr;
 
-		RBMap<StringName, Node *> binding;
-
 		PatternNode *pattern = branch->pattern;
 		_mark_line_as_safe(pattern->line);
 
-		RBMap<StringName, Node *> bindings;
+		RBMap<StringName, Node *> binding;
 		Node *resulting_node = nullptr;
-		_generate_pattern(pattern, id, resulting_node, bindings);
+		_generate_pattern(pattern, id, resulting_node, binding);
 
 		if (!resulting_node) {
 			return;
 		}
-
-		binding = bindings;
 
 		// Result is always a boolean
 		DataType resulting_node_type;
@@ -2617,7 +2612,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 							}
 							p_block->statements.push_back(expression);
 							if (!_end_statement()) {
-								_set_error(vformat("1. Expected ';' after expression, got %s instead.", tokenizer->get_token_name(tokenizer->get_token())));
+								_set_error(vformat("Expected ';' after expression, got %s instead.", tokenizer->get_token_name(tokenizer->get_token())));
 								return;
 							}
 							break;

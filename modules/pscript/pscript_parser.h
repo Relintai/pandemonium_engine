@@ -399,7 +399,6 @@ public:
 		enum PatternType {
 			PT_CONSTANT,
 			PT_BIND,
-			PT_IGNORE_REST,
 			PT_DEFAULT,
 		};
 
