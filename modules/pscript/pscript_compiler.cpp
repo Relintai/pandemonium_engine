@@ -1494,16 +1494,16 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 						// Variable init
 
 						bool is_init_statement_expression = false;
-						bool generate_init_statement_expression = cf->arguments.size() > 2;
+						bool generate_init_statement_expression = cf->arguments.size() > 1;
 
 						if (generate_init_statement_expression) {
 							// Expression parser can't create local variables.
-							is_init_statement_expression = cf->arguments[2]->type != PScriptParser::Node::TYPE_LOCAL_VAR;
+							is_init_statement_expression = cf->arguments[1]->type != PScriptParser::Node::TYPE_LOCAL_VAR;
 
 							if (!is_init_statement_expression) {
 								// Init statement is variable declaration(s)
 
-								for (int j = 2; j < cf->arguments.size(); ++j) {
+								for (int j = 1; j < cf->arguments.size(); ++j) {
 									const PScriptParser::LocalVarNode *lv = static_cast<const PScriptParser::LocalVarNode *>(cf->arguments[j]);
 
 									codegen.add_stack_identifier(lv->name, p_stack_level++);
@@ -1512,7 +1512,7 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 							} else {
 								// Init statement is an expression
 
-								int ret2 = _parse_expression(codegen, cf->arguments[2], p_stack_level, false);
+								int ret2 = _parse_expression(codegen, cf->arguments[1], p_stack_level, false);
 								if (ret2 < 0) {
 									return ERR_PARSE_ERROR;
 								}
@@ -1537,13 +1537,6 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 						int continue_addr = codegen.opcodes.size();
 
 						// Post iter expression
-						if (cf->arguments[1]) {
-							int ret2 = _parse_expression(codegen, cf->arguments[1], p_stack_level, false);
-							if (ret2 < 0) {
-								return ERR_PARSE_ERROR;
-							}
-						}
-
 						if (cf->body_else) {
 							codegen.opcodes.push_back(PScriptFunction::OPCODE_LINE);
 							codegen.opcodes.push_back(cf->body_else->line);
@@ -1561,16 +1554,14 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 						}
 
 						// Iter condition
-						if (cf->arguments[0]) {
-							int ret2 = _parse_expression(codegen, cf->arguments[0], p_stack_level, false);
-							if (ret2 < 0) {
-								return ERR_PARSE_ERROR;
-							}
-
-							codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP_IF_NOT);
-							codegen.opcodes.push_back(ret2);
-							codegen.opcodes.push_back(break_addr);
+						int ret2 = _parse_expression(codegen, cf->arguments[0], p_stack_level, false);
+						if (ret2 < 0) {
+							return ERR_PARSE_ERROR;
 						}
+
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP_IF_NOT);
+						codegen.opcodes.push_back(ret2);
+						codegen.opcodes.push_back(break_addr);
 
 						Error err = _parse_block(codegen, cf->body, p_stack_level, break_addr, continue_addr);
 						if (err) {

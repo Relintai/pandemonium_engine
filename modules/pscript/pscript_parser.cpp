@@ -3037,6 +3037,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 						return;
 					}
 				} else {
+					// This is needed, as arguments in Node (cf_for->arguments) cannot have NULLs in them
 					ConstantNode *cn = alloc_node<ConstantNode>();
 					DataType d;
 					d.kind = DataType::BUILTIN;
@@ -3057,39 +3058,14 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 					tokenizer->advance();
 				}
 
-				// Parse the post iter "expression". It has to be a block though unfortunately
-
-				/*
-				if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
-					ControlFlowNode *cf_block = alloc_node<ControlFlowNode>();
-
-					cf_block->cf_type = ControlFlowNode::CF_BLOCK;
-
-					cf_block->body = alloc_node<BlockNode>();
-					cf_block->body->parent_block = p_block;
-					cf_block->body->can_break = false;
-					cf_block->body->can_continue = false;
-					p_block->sub_blocks.push_back(cf_block->body);
-
-					current_block = cf_block->body;
-					_parse_block(cf_block->body, p_static);
-					current_block = p_block;
-
-					if (error_set) {
-						return;
-					}
-
-					p_block->statements.push_back(cf_block);
-				}
-				*/
+				// Parse the post iter expression. It has to be in a block though unfortunately
+				// as assignments only work with exporessions in blocks
 
 				ControlFlowNode *cf_for = alloc_node<ControlFlowNode>();
 				cf_for->cf_type = ControlFlowNode::CF_FOR;
 
-				Node *post_iter_expression = NULL;
-
 				if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
-					post_iter_expression = _parse_and_reduce_expression(p_block, p_static, false, true);
+					Node *post_iter_expression = _parse_and_reduce_expression(p_block, p_static, false, true);
 					if (!post_iter_expression) {
 						if (_recover_from_completion()) {
 							break;
@@ -3101,14 +3077,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 					cf_for->body_else->parent_block = p_block;
 					p_block->sub_blocks.push_back(cf_for->body_else);
 					cf_for->body_else->statements.push_back(post_iter_expression);
-
-				} //else {
-				ConstantNode *cn = alloc_node<ConstantNode>();
-				DataType d;
-				d.kind = DataType::BUILTIN;
-				cn->set_datatype(d);
-				post_iter_expression = cn;
-				//}
+				}
 
 				while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
 					tokenizer->advance();
@@ -3127,7 +3096,6 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				}
 
 				cf_for->arguments.push_back(condition_expression);
-				cf_for->arguments.push_back(post_iter_expression);
 
 				for (uint32_t j = 0; j < var_init_expressions.size(); ++j) {
 					cf_for->arguments.push_back(var_init_expressions[j]);
