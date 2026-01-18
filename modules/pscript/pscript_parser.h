@@ -414,7 +414,7 @@ public:
 		BlockNode *body;
 	};
 
-	struct MatchNode : public Node {
+	struct SwitchNode : public Node {
 		Node *val_to_match;
 		Vector<PatternBranchNode *> branches;
 
@@ -443,7 +443,7 @@ public:
 		BlockNode *body;
 		BlockNode *body_else;
 
-		MatchNode *match;
+		SwitchNode *switch_node;
 
 		ControlFlowNode *_else; //used for if
 		ControlFlowNode() {
@@ -569,7 +569,7 @@ private:
 
 	bool _parse_arguments(Node *p_parent, Vector<Node *> &p_args, bool p_static, bool p_can_codecomplete = false, bool p_parsing_constant = false);
 	bool _enter_block(BlockNode *p_block = nullptr);
-	bool _enter_match_block(BlockNode *p_block = nullptr);
+	bool _enter_switch_block(BlockNode *p_block = nullptr);
 	bool _parse_newline();
 	Node *_parse_expression(Node *p_parent, bool p_static, bool p_allow_assign = false, bool p_parsing_constant = false);
 	Node *_reduce_expression(Node *p_node, bool p_to_const = false);
@@ -579,7 +579,7 @@ private:
 
 	PatternNode *_parse_pattern(bool p_static);
 	void _parse_pattern_block(BlockNode *p_block, Vector<PatternBranchNode *> &p_branches, bool p_static);
-	void _transform_match_statment(MatchNode *p_match_statement);
+	void _transform_switch_statment(SwitchNode *p_switch_statement);
 	void _generate_pattern(PatternNode *p_pattern, Node *p_node_to_match, Node *&p_resulting_node);
 
 	void _parse_block(BlockNode *p_block, bool p_static);

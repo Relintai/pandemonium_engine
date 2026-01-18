@@ -1312,7 +1312,7 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 
 				switch (cf->cf_type) {
 					case PScriptParser::ControlFlowNode::CF_SWITCH: {
-						PScriptParser::MatchNode *match = cf->match;
+						PScriptParser::SwitchNode *switch_node = cf->switch_node;
 
 						PScriptParser::IdentifierNode *id = memnew(PScriptParser::IdentifierNode);
 						id->name = "#switch_value";
@@ -1323,7 +1323,7 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 						PScriptParser::OperatorNode *op = memnew(PScriptParser::OperatorNode);
 						op->op = PScriptParser::OperatorNode::OP_ASSIGN;
 						op->arguments.push_back(id);
-						op->arguments.push_back(match->val_to_match);
+						op->arguments.push_back(switch_node->val_to_match);
 
 						int ret = _parse_expression(codegen, op, p_stack_level);
 						if (ret < 0) {
@@ -1345,12 +1345,12 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 
 						LocalVector<int> jump_table_addresses;
 
-						for (int j = 0; j < match->compiled_pattern_branches.size(); j++) {
-							PScriptParser::MatchNode::CompiledPatternBranch branch = match->compiled_pattern_branches[j];
+						for (int j = 0; j < switch_node->compiled_pattern_branches.size(); j++) {
+							PScriptParser::SwitchNode::CompiledPatternBranch branch = switch_node->compiled_pattern_branches[j];
 
 							codegen.opcodes.push_back(PScriptFunction::OPCODE_LINE);
-							codegen.opcodes.push_back(match->branches[j]->pattern->line);
-							codegen.current_line = match->branches[j]->pattern->line;
+							codegen.opcodes.push_back(switch_node->branches[j]->pattern->line);
+							codegen.current_line = switch_node->branches[j]->pattern->line;
 
 							int ret2 = _parse_expression(codegen, branch.compiled_pattern, p_stack_level);
 							if (ret2 < 0) {
@@ -1365,14 +1365,14 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 							codegen.opcodes.push_back(0); // Jump to address
 						}
 
-						for (int j = 0; j < match->compiled_pattern_branches.size(); j++) {
-							PScriptParser::MatchNode::CompiledPatternBranch branch = match->compiled_pattern_branches[j];
+						for (int j = 0; j < switch_node->compiled_pattern_branches.size(); j++) {
+							PScriptParser::SwitchNode::CompiledPatternBranch branch = switch_node->compiled_pattern_branches[j];
 
 							codegen.opcodes.write[jump_table_addresses[j]] = codegen.opcodes.size();
 
 							codegen.opcodes.push_back(PScriptFunction::OPCODE_LINE);
-							codegen.opcodes.push_back(match->branches[j]->body->line);
-							codegen.current_line = match->branches[j]->body->line;
+							codegen.opcodes.push_back(switch_node->branches[j]->body->line);
+							codegen.current_line = switch_node->branches[j]->body->line;
 
 							Error err = _parse_block(codegen, branch.body, p_stack_level, break_address, p_continue_addr);
 							if (err) {

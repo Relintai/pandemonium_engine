@@ -133,7 +133,7 @@ bool PScriptParser::_enter_block(BlockNode *p_block) {
 	}
 }
 
-bool PScriptParser::_enter_match_block(BlockNode *p_block) {
+bool PScriptParser::_enter_switch_block(BlockNode *p_block) {
 	while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
 		tokenizer->advance();
 
@@ -2269,7 +2269,7 @@ void PScriptParser::_parse_pattern_block(BlockNode *p_block, Vector<PatternBranc
 
 		catch_all_appeared = catch_all_appeared || catch_all;
 
-		if (!_enter_match_block()) {
+		if (!_enter_switch_block()) {
 			_set_error("Expected block in pattern branch");
 			return;
 		}
@@ -2292,7 +2292,7 @@ void PScriptParser::_parse_pattern_block(BlockNode *p_block, Vector<PatternBranc
 }
 
 void PScriptParser::_generate_pattern(PatternNode *p_pattern, Node *p_node_to_match, Node *&p_resulting_node) {
-	const DataType &to_match_type = p_node_to_match->get_datatype();
+	const DataType &to_switch_type = p_node_to_match->get_datatype();
 
 	switch (p_pattern->pt_type) {
 		case PatternNode::PT_CONSTANT: {
@@ -2304,9 +2304,9 @@ void PScriptParser::_generate_pattern(PatternNode *p_pattern, Node *p_node_to_ma
 			OperatorNode *type_comp = nullptr;
 
 			// static type check if possible
-			if (pattern_type.has_type && to_match_type.has_type) {
-				if (!_is_type_compatible(to_match_type, pattern_type) && !_is_type_compatible(pattern_type, to_match_type)) {
-					_set_error("The pattern type (" + pattern_type.to_string() + ") isn't compatible with the type of the value to match (" + to_match_type.to_string() + ").",
+			if (pattern_type.has_type && to_switch_type.has_type) {
+				if (!_is_type_compatible(to_switch_type, pattern_type) && !_is_type_compatible(pattern_type, to_switch_type)) {
+					_set_error("The pattern type (" + pattern_type.to_string() + ") isn't compatible with the type of the value to match (" + to_switch_type.to_string() + ").",
 							p_pattern->line);
 					return;
 				}
@@ -2315,10 +2315,10 @@ void PScriptParser::_generate_pattern(PatternNode *p_pattern, Node *p_node_to_ma
 				BuiltInFunctionNode *typeof_node = alloc_node<BuiltInFunctionNode>();
 				typeof_node->function = PScriptFunctions::TYPE_OF;
 
-				OperatorNode *typeof_match_value = alloc_node<OperatorNode>();
-				typeof_match_value->op = OperatorNode::OP_CALL;
-				typeof_match_value->arguments.push_back(typeof_node);
-				typeof_match_value->arguments.push_back(p_node_to_match);
+				OperatorNode *typeof_switch_value = alloc_node<OperatorNode>();
+				typeof_switch_value->op = OperatorNode::OP_CALL;
+				typeof_switch_value->arguments.push_back(typeof_node);
+				typeof_switch_value->arguments.push_back(p_node_to_match);
 
 				OperatorNode *typeof_pattern_value = alloc_node<OperatorNode>();
 				typeof_pattern_value->op = OperatorNode::OP_CALL;
@@ -2327,7 +2327,7 @@ void PScriptParser::_generate_pattern(PatternNode *p_pattern, Node *p_node_to_ma
 
 				type_comp = alloc_node<OperatorNode>();
 				type_comp->op = OperatorNode::OP_EQUAL;
-				type_comp->arguments.push_back(typeof_match_value);
+				type_comp->arguments.push_back(typeof_switch_value);
 				type_comp->arguments.push_back(typeof_pattern_value);
 			}
 
@@ -2360,11 +2360,11 @@ void PScriptParser::_generate_pattern(PatternNode *p_pattern, Node *p_node_to_ma
 	}
 }
 
-void PScriptParser::_transform_match_statment(MatchNode *p_match_statement) {
+void PScriptParser::_transform_switch_statment(SwitchNode *p_switch_statement) {
 	IdentifierNode *id = alloc_node<IdentifierNode>();
 	id->name = "#switch_value";
-	id->line = p_match_statement->line;
-	id->datatype = _reduce_node_type(p_match_statement->val_to_match);
+	id->line = p_switch_statement->line;
+	id->datatype = _reduce_node_type(p_switch_statement->val_to_match);
 	if (id->datatype.has_type) {
 		_mark_line_as_safe(id->line);
 	} else {
@@ -2375,10 +2375,10 @@ void PScriptParser::_transform_match_statment(MatchNode *p_match_statement) {
 		return;
 	}
 
-	for (int i = 0; i < p_match_statement->branches.size(); i++) {
-		PatternBranchNode *branch = p_match_statement->branches[i];
+	for (int i = 0; i < p_switch_statement->branches.size(); i++) {
+		PatternBranchNode *branch = p_switch_statement->branches[i];
 
-		MatchNode::CompiledPatternBranch compiled_branch;
+		SwitchNode::CompiledPatternBranch compiled_branch;
 		compiled_branch.compiled_pattern = nullptr;
 
 		PatternNode *pattern = branch->pattern;
@@ -2404,7 +2404,7 @@ void PScriptParser::_transform_match_statment(MatchNode *p_match_statement) {
 
 		compiled_branch.body = branch->body;
 
-		p_match_statement->compiled_pattern_branches.push_back(compiled_branch);
+		p_switch_statement->compiled_pattern_branches.push_back(compiled_branch);
 	}
 }
 
@@ -3061,7 +3061,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 			case PScriptTokenizer::TK_CF_SWITCH: {
 				tokenizer->advance();
 
-				MatchNode *match_node = alloc_node<MatchNode>();
+				SwitchNode *switch_node = alloc_node<SwitchNode>();
 
 				Node *val_to_match = _parse_and_reduce_expression(p_block, p_static);
 
@@ -3072,7 +3072,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 					return;
 				}
 
-				match_node->val_to_match = val_to_match;
+				switch_node->val_to_match = val_to_match;
 
 				if (!_enter_block()) {
 					_set_error("Expected pattern matching block after \"switch\".");
@@ -3087,19 +3087,19 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 
 				p_block->sub_blocks.push_back(compiled_branches);
 
-				_parse_pattern_block(compiled_branches, match_node->branches, p_static);
+				_parse_pattern_block(compiled_branches, switch_node->branches, p_static);
 
 				if (error_set) {
 					return;
 				}
 
-				ControlFlowNode *match_cf_node = alloc_node<ControlFlowNode>();
-				match_cf_node->cf_type = ControlFlowNode::CF_SWITCH;
-				match_cf_node->match = match_node;
-				match_cf_node->body = compiled_branches;
+				ControlFlowNode *switch_cf_node = alloc_node<ControlFlowNode>();
+				switch_cf_node->cf_type = ControlFlowNode::CF_SWITCH;
+				switch_cf_node->switch_node = switch_node;
+				switch_cf_node->body = compiled_branches;
 
 				p_block->has_return = p_block->has_return || compiled_branches->has_return;
-				p_block->statements.push_back(match_cf_node);
+				p_block->statements.push_back(switch_cf_node);
 
 				_end_statement();
 			} break;
@@ -8150,8 +8150,8 @@ void PScriptParser::_check_block_types(BlockNode *p_block) {
 						}
 					} break;
 					case ControlFlowNode::CF_SWITCH: {
-						MatchNode *match_node = cf->match;
-						_transform_match_statment(match_node);
+						SwitchNode *switch_node = cf->switch_node;
+						_transform_switch_statment(switch_node);
 					} break;
 					default: {
 						if (cf->body_else) {
