@@ -77,8 +77,8 @@ const char *PScriptTokenizer::token_names[TK_MAX] = {
 	"'|'",
 	"'^'",
 	"'~'",
-	//"Plus Plus",
-	//"Minus Minus",
+	"++",
+	"--",
 	"if",
 	"else",
 	"foreach",
@@ -791,11 +791,9 @@ void PScriptTokenizerText::_advance() {
 				if (GETCHAR(1) == '=') {
 					_make_token(TK_OP_ASSIGN_ADD);
 					INCPOS(1);
-					/*
-				}  else if (GETCHAR(1)=='+') {
+				} else if (GETCHAR(1) == '+') {
 					_make_token(TK_OP_PLUS_PLUS);
 					INCPOS(1);
-				*/
 				} else {
 					_make_token(TK_OP_ADD);
 				}
@@ -807,6 +805,9 @@ void PScriptTokenizerText::_advance() {
 					INCPOS(1);
 				} else if (GETCHAR(1) == '>') {
 					_make_token(TK_FORWARD_ARROW);
+					INCPOS(1);
+				} else if (GETCHAR(1) == '-') {
+					_make_token(TK_OP_MINUS_MINUS);
 					INCPOS(1);
 				} else {
 					_make_token(TK_OP_SUB);

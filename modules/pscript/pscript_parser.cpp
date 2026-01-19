@@ -277,10 +277,21 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 
 	int op_line = tokenizer->get_token_line(); // when operators are created at the bottom, the line might have been changed (\n found)
 
+	int prefix_inc_or_dec_queued = 0;
+
 	while (true) {
 		/*****************/
 		/* Parse Operand */
 		/*****************/
+
+		if (prefix_inc_or_dec_queued > 0) {
+			if (prefix_inc_or_dec_queued == 1) {
+				_set_error("Unexpected '++' in expression");
+			} else {
+				_set_error("Unexpected '--' in expression");
+			}
+			return nullptr;
+		}
 
 		if (parenthesis > 0) {
 			//remove empty space (only allowed if inside parenthesis
@@ -297,6 +308,17 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 			if (tokenizer->get_token(next_valid_offset) == PScriptTokenizer::TK_IDENTIFIER) {
 				next_valid_offset++;
 			}
+		}
+
+		if (tokenizer->get_token() == PScriptTokenizer::TK_OP_PLUS_PLUS || tokenizer->get_token() == PScriptTokenizer::TK_OP_MINUS_MINUS) {
+			// preincrement
+			// Ignore it for now, later it will be handled
+			if (tokenizer->get_token() == PScriptTokenizer::TK_OP_PLUS_PLUS) {
+				prefix_inc_or_dec_queued = 1;
+			} else {
+				prefix_inc_or_dec_queued = 2;
+			}
+			tokenizer->advance();
 		}
 
 		if (tokenizer->get_token() == PScriptTokenizer::TK_CASE) {
@@ -1122,6 +1144,31 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 		while (true) {
 			//expressions can be indexed any number of times
 
+			if (prefix_inc_or_dec_queued > 0) {
+				// Preincrement
+
+				// Could also check for:
+				//tokenizer->get_token(-1) == PScriptTokenizer::TK_OP_PLUS_PLUS || tokenizer->get_token(-1) == PScriptTokenizer::TK_OP_MINUS_MINUS) {
+
+				OperatorNode *op = alloc_node<OperatorNode>();
+				op->op = OperatorNode::OP_INDEX_NAMED;
+
+				IdentifierNode *id = alloc_node<IdentifierNode>();
+
+				if (prefix_inc_or_dec_queued == 1) {
+					id->name = CoreStringNames::singleton->_pre_inc;
+				} else {
+					id->name = CoreStringNames::singleton->_pre_dec;
+				}
+
+				op->arguments.push_back(expr);
+				op->arguments.push_back(id);
+
+				expr = op;
+
+				prefix_inc_or_dec_queued = 0;
+			}
+
 			if (tokenizer->get_token() == PScriptTokenizer::TK_PERIOD || tokenizer->get_token() == PScriptTokenizer::TK_DOUBLE_COLON) {
 				//indexing using ".", or "::"
 
@@ -1183,6 +1230,27 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 
 					expr = op;
 				}
+
+			} else if (tokenizer->get_token() == PScriptTokenizer::TK_OP_PLUS_PLUS || tokenizer->get_token() == PScriptTokenizer::TK_OP_MINUS_MINUS) {
+				// Post increment
+
+				OperatorNode *op = alloc_node<OperatorNode>();
+				op->op = OperatorNode::OP_INDEX_NAMED;
+
+				IdentifierNode *id = alloc_node<IdentifierNode>();
+
+				if (tokenizer->get_token() == PScriptTokenizer::TK_OP_PLUS_PLUS) {
+					id->name = CoreStringNames::singleton->_post_inc;
+				} else {
+					id->name = CoreStringNames::singleton->_post_dec;
+				}
+
+				op->arguments.push_back(expr);
+				op->arguments.push_back(id);
+
+				expr = op;
+
+				tokenizer->advance();
 
 			} else if (tokenizer->get_token() == PScriptTokenizer::TK_BRACKET_OPEN) {
 				//indexing using "[]"

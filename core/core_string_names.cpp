@@ -44,6 +44,10 @@ CoreStringNames::CoreStringNames() :
 		_iter_init(StaticCString::create("_iter_init")),
 		_iter_next(StaticCString::create("_iter_next")),
 		_iter_get(StaticCString::create("_iter_get")),
+		_pre_inc(StaticCString::create("_pre_inc")),
+		_post_inc(StaticCString::create("_post_inc")),
+		_pre_dec(StaticCString::create("_pre_dec")),
+		_post_dec(StaticCString::create("_post_dec")),
 		get_rid(StaticCString::create("get_rid")),
 		_to_string(StaticCString::create("_to_string")),
 #ifdef TOOLS_ENABLED

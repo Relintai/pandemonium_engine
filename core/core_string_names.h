@@ -61,6 +61,10 @@ public:
 	StringName _iter_init;
 	StringName _iter_next;
 	StringName _iter_get;
+	StringName _pre_inc;
+	StringName _post_inc;
+	StringName _pre_dec;
+	StringName _post_dec;
 	StringName get_rid;
 	StringName _to_string;
 #ifdef TOOLS_ENABLED

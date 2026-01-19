@@ -3693,6 +3693,42 @@ Variant Variant::get(const Variant &p_index, bool *r_valid) const {
 			return Variant();
 		} break;
 		case INT: {
+			if (p_index.get_type() == Variant::STRING_NAME || p_index.get_type() == Variant::STRING) {
+				StringName ind = p_index;
+
+				if (ind == CoreStringNames::singleton->_pre_inc) {
+					Variant *self = const_cast<Variant *>(this);
+
+					self->_data._int += 1;
+
+					valid = true;
+					return _data._int;
+				} else if (ind == CoreStringNames::singleton->_post_inc) {
+					Variant *self = const_cast<Variant *>(this);
+
+					int val = _data._int;
+					self->_data._int += 1;
+
+					valid = true;
+					return val;
+				} else if (ind == CoreStringNames::singleton->_pre_dec) {
+					Variant *self = const_cast<Variant *>(this);
+
+					self->_data._int -= 1;
+
+					valid = true;
+					return _data._int;
+				} else if (ind == CoreStringNames::singleton->_post_dec) {
+					Variant *self = const_cast<Variant *>(this);
+
+					int val = _data._int;
+					self->_data._int -= 1;
+
+					valid = true;
+					return val;
+				}
+			}
+
 			return Variant();
 		} break;
 		case REAL: {
