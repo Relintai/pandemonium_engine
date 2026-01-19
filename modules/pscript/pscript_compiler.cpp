@@ -1483,7 +1483,8 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 					case PScriptParser::ControlFlowNode::CF_FOR: {
 						// The bytecode flows this way:
 						//
-						// Init bytecode (can be skipped. For example for(;;))
+						// The for block is wrapped in an another block, and variables are initialized in that if there were any.
+						// We can still have an initializer expression that is not a variable declaration.
 						// Jump over post iter statements, straight to loop (if init exists)
 						// <continue addr>
 						// post iter statement bytecode
@@ -1504,13 +1505,14 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 							if (!is_init_statement_expression) {
 								// Init statement is variable declaration(s)
 
+								/*
 								for (int j = 1; j < cf->arguments.size(); ++j) {
 									const PScriptParser::LocalVarNode *lv = static_cast<const PScriptParser::LocalVarNode *>(cf->arguments[j]);
 
 									codegen.add_stack_identifier(lv->name, p_stack_level++);
 									codegen.alloc_stack(p_stack_level);
 								}
-
+								*/
 							} else {
 								// Init statement is an expression
 

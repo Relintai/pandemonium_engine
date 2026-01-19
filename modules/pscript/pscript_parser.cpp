@@ -2899,21 +2899,32 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 					tokenizer->advance();
 				}
 
+				// Outer block holding variables
+				ControlFlowNode *cf_block = alloc_node<ControlFlowNode>();
+
+				cf_block->cf_type = ControlFlowNode::CF_BLOCK;
+
+				cf_block->body = alloc_node<BlockNode>();
+				cf_block->body->parent_block = p_block;
+				cf_block->body->can_break = false;
+				cf_block->body->can_continue = false;
+				p_block->sub_blocks.push_back(cf_block->body);
+
 				ControlFlowNode *cf_for = alloc_node<ControlFlowNode>();
 				cf_for->cf_type = ControlFlowNode::CF_FOR;
 
 				cf_for->body = alloc_node<BlockNode>();
-				cf_for->body->parent_block = p_block;
+				cf_for->body->parent_block = cf_block->body;
 				cf_for->body->can_break = true;
 				cf_for->body->can_continue = true;
-				p_block->sub_blocks.push_back(cf_for->body);
+				cf_block->body->sub_blocks.push_back(cf_for->body);
 
 				// Post iteration statements
 				cf_for->body_else = alloc_node<BlockNode>();
 				cf_for->body_else->parent_block = cf_for->body;
 				cf_for->body->sub_blocks.push_back(cf_for->body_else);
 
-				current_block = cf_for->body;
+				current_block = cf_block->body;
 
 				bool is_init_statement_expression = false;
 
@@ -3008,7 +3019,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 									}
 								}
 							}
-							BlockNode *check_block = cf_for->body;
+							BlockNode *check_block = cf_block->body;
 							while (check_block) {
 								if (check_block->variables.has(n)) {
 									_set_error("Variable \"" + String(n) + "\" already defined in the scope (at line " + itos(check_block->variables[n]->line) + ").");
@@ -3024,14 +3035,14 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 							lv->name = n;
 							lv->line = var_line;
 							lv->datatype = local_var_datatype;
-							cf_for->body->statements.push_back(lv);
+							cf_block->body->statements.push_back(lv);
 							var_init_expressions.push_back(lv);
 
 							Node *assigned = nullptr;
 
 							if (tokenizer->get_token() == PScriptTokenizer::TK_OP_ASSIGN) {
 								tokenizer->advance();
-								Node *subexpr = _parse_and_reduce_expression(cf_for->body, p_static);
+								Node *subexpr = _parse_and_reduce_expression(cf_block->body, p_static);
 								if (!subexpr) {
 									if (_recover_from_completion()) {
 										break;
@@ -3045,11 +3056,11 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 								assigned = _get_default_value_for_type(lv->datatype, var_line);
 							}
 							//must be added later, to avoid self-referencing.
-							cf_for->body->variables.insert(n, lv);
+							cf_block->body->variables.insert(n, lv);
 
 							IdentifierNode *id = alloc_node<IdentifierNode>();
 							id->name = n;
-							id->declared_block = cf_for->body;
+							id->declared_block = cf_block->body;
 							id->line = var_line;
 
 							OperatorNode *op = alloc_node<OperatorNode>();
@@ -3057,7 +3068,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 							op->arguments.push_back(id);
 							op->arguments.push_back(assigned);
 							op->line = var_line;
-							cf_for->body->statements.push_back(op);
+							cf_block->body->statements.push_back(op);
 							lv->assign_op = op;
 							lv->assign = assigned;
 
@@ -3086,6 +3097,8 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 						}
 					}
 				}
+
+				current_block = cf_for->body;
 
 				if (is_init_statement_expression) {
 					Node *var_init_expression = _parse_and_reduce_expression(cf_for->body, p_static);
@@ -3213,7 +3226,11 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 				if (error_set) {
 					return;
 				}
-				p_block->statements.push_back(cf_for);
+
+				//p_block->statements.push_back(cf_for);
+				cf_block->body->statements.push_back(cf_for);
+				p_block->statements.push_back(cf_block);
+
 			} break;
 			case PScriptTokenizer::TK_CF_FOREACH: {
 				tokenizer->advance();
