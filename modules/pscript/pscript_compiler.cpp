@@ -1495,6 +1495,7 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 
 						bool is_init_statement_expression = false;
 						bool generate_init_statement_expression = cf->arguments.size() > 1;
+						int variable_init_end_jump_address_index = 0;
 
 						if (generate_init_statement_expression) {
 							// Expression parser can't create local variables.
@@ -1509,6 +1510,7 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 									codegen.add_stack_identifier(lv->name, p_stack_level++);
 									codegen.alloc_stack(p_stack_level);
 								}
+
 							} else {
 								// Init statement is an expression
 
@@ -1517,12 +1519,7 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 									return ERR_PARSE_ERROR;
 								}
 							}
-						}
 
-						int variable_init_end_jump_address_index = 0;
-
-						// If there is no init statement, there is no need to jump over.
-						if (generate_init_statement_expression) {
 							// After Variable init, jump over the post iter expression
 							codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
 							variable_init_end_jump_address_index = codegen.opcodes.size();
@@ -1537,6 +1534,7 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 						int continue_addr = codegen.opcodes.size();
 
 						// Post iter expression
+
 						if (cf->body_else) {
 							codegen.opcodes.push_back(PScriptFunction::OPCODE_LINE);
 							codegen.opcodes.push_back(cf->body_else->line);

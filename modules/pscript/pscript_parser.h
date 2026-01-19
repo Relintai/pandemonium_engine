@@ -443,6 +443,7 @@ public:
 		CFType cf_type;
 		Vector<Node *> arguments;
 		BlockNode *body;
+		// FOR uses it to store the post iteration expressions.
 		BlockNode *body_else;
 
 		SwitchNode *switch_node;
@@ -451,8 +452,8 @@ public:
 		ControlFlowNode() {
 			type = TYPE_CONTROL_FLOW;
 			cf_type = CF_IF;
-			body = nullptr;
-			body_else = nullptr;
+			body = NULL;
+			body_else = NULL;
 		}
 	};
 
