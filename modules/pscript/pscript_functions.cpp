@@ -66,6 +66,9 @@ const char *PScriptFunctions::get_func_name(Function p_func) {
 		"sign",
 		"pow",
 		"log",
+		"log1p",
+		"log10",
+		"log2",
 		"exp",
 		"is_nan",
 		"is_inf",
@@ -307,6 +310,21 @@ void PScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_c
 			VALIDATE_ARG_COUNT(1);
 			VALIDATE_ARG_NUM(0);
 			r_ret = Math::log((double)*p_args[0]);
+		} break;
+		case MATH_LOG1P: {
+			VALIDATE_ARG_COUNT(1);
+			VALIDATE_ARG_NUM(0);
+			r_ret = Math::log1p((double)*p_args[0]);
+		} break;
+		case MATH_LOG10: {
+			VALIDATE_ARG_COUNT(1);
+			VALIDATE_ARG_NUM(0);
+			r_ret = Math::log10((double)*p_args[0]);
+		} break;
+		case MATH_LOG2: {
+			VALIDATE_ARG_COUNT(1);
+			VALIDATE_ARG_NUM(0);
+			r_ret = Math::log2((double)*p_args[0]);
 		} break;
 		case MATH_EXP: {
 			VALIDATE_ARG_COUNT(1);
@@ -1445,6 +1463,9 @@ bool PScriptFunctions::is_deterministic(Function p_func) {
 		case MATH_SIGN:
 		case MATH_POW:
 		case MATH_LOG:
+		case MATH_LOG1P:
+		case MATH_LOG10:
+		case MATH_LOG2:
 		case MATH_EXP:
 		case MATH_ISNAN:
 		case MATH_ISINF:
@@ -1595,6 +1616,21 @@ MethodInfo PScriptFunctions::get_info(Function p_func) {
 		} break;
 		case MATH_LOG: {
 			MethodInfo mi("log", PropertyInfo(Variant::REAL, "s"));
+			mi.return_val.type = Variant::REAL;
+			return mi;
+		} break;
+		case MATH_LOG1P: {
+			MethodInfo mi("log1p", PropertyInfo(Variant::REAL, "s"));
+			mi.return_val.type = Variant::REAL;
+			return mi;
+		} break;
+		case MATH_LOG10: {
+			MethodInfo mi("log10", PropertyInfo(Variant::REAL, "s"));
+			mi.return_val.type = Variant::REAL;
+			return mi;
+		} break;
+		case MATH_LOG2: {
+			MethodInfo mi("log2", PropertyInfo(Variant::REAL, "s"));
 			mi.return_val.type = Variant::REAL;
 			return mi;
 		} break;
