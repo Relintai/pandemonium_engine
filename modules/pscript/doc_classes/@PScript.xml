@@ -1116,7 +1116,7 @@
 				Converts a [Variant] [code]var[/code] to JSON text and return the result. Useful for serializing data to store or send over the network.
 				[codeblock]
 				// Both numbers below are integers.
-				Dictionary a = { "a": 1, "b": 2 };
+				Dictionary a = |{ "a": 1, "b": 2 }|;
 				String b = to_json(a);
 				print(b); // {"a":1, "b":2}
 				// Both numbers above are floats, even if they display without any decimal places.
@@ -1181,7 +1181,7 @@
 			<description>
 				Converts a Variant [code]var[/code] to a formatted string that can later be parsed using [method str2var].
 				[codeblock]
-				Dictionary a = { "a": 1, "b": 2 };
+				Dictionary a = |{ "a": 1, "b": 2 }|;
 				print(var2str(a));
 				[/codeblock]
 				prints
