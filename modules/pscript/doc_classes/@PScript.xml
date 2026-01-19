@@ -578,6 +578,30 @@
 				[b]Note:[/b] The logarithm of [code]0[/code] returns [code]-inf[/code], while negative values return [code]-nan[/code].
 			</description>
 		</method>
+		<method name="log10">
+			<return type="float" />
+			<argument index="0" name="s" type="float" />
+			<description>
+				Returns the base 10 logarithm of s.
+			</description>
+		</method>
+		<method name="log1p">
+			<return type="float" />
+			<argument index="0" name="s" type="float" />
+			<description>
+				Returns the natural logarithm of one plus s.
+				[codeblock]
+				log1p(10); # Returns log(1 + s) -&gt; log(1 + 10);
+				[/codeblock]
+			</description>
+		</method>
+		<method name="log2">
+			<return type="float" />
+			<argument index="0" name="s" type="float" />
+			<description>
+				Returns the base 2 logarithm of s.
+			</description>
+		</method>
 		<method name="max">
 			<return type="float" />
 			<argument index="0" name="a" type="float" />
@@ -1205,39 +1229,6 @@
 				[/codeblock]
 				[b]Note:[/b] If [code]min[/code] is [code]0[/code], this is equivalent to [method posmod], so prefer using that instead.
 				[code]wrapi[/code] is more flexible than using the [method posmod] approach by giving the user control over the minimum value.
-			</description>
-		</method>
-		<method name="yield">
-			<return type="PScriptFunctionState" />
-			<argument index="0" name="object" type="Object" default="null" />
-			<argument index="1" name="signal" type="String" default="&quot;&quot;" />
-			<description>
-				Stops the function execution and returns the current suspended state to the calling function.
-				From the caller, call [method PScriptFunctionState.resume] on the state to resume execution. This invalidates the state. Within the resumed function, [code]yield()[/code] returns whatever was passed to the [code]resume()[/code] function call.
-				If passed an object and a signal, the execution is resumed when the object emits the given signal. In this case, [code]yield()[/code] returns the argument passed to [code]emit_signal()[/code] if the signal takes only one argument, or an array containing all the arguments passed to [code]emit_signal()[/code] if the signal takes multiple arguments.
-				You can also use [code]yield[/code] to wait for a function to finish:
-				[codeblock]
-				func _ready():
-				    yield(countdown(), "completed") # waiting for the countdown() function to complete
-				    print('Ready')
-
-				func countdown():
-				    yield(get_tree(), "idle_frame") # returns a PScriptFunctionState object to _ready()
-				    print(3)
-				    yield(get_tree().create_timer(1.0), "timeout")
-				    print(2)
-				    yield(get_tree().create_timer(1.0), "timeout")
-				    print(1)
-				    yield(get_tree().create_timer(1.0), "timeout")
-
-				# prints:
-				# 3
-				# 2
-				# 1
-				# Ready
-				[/codeblock]
-				When yielding on a function, the [code]completed[/code] signal will be emitted automatically when the function returns. It can, therefore, be used as the [code]signal[/code] parameter of the [code]yield[/code] method to resume.
-				In order to yield on a function, the resulting function should also return a [code]PScriptFunctionState[/code]. Notice [code]yield(get_tree(), "idle_frame")[/code] from the above example.
 			</description>
 		</method>
 	</methods>
