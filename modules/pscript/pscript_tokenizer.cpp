@@ -122,6 +122,7 @@ const char *PScriptTokenizer::token_names[TK_MAX] = {
 	"'::'",
 	"'$'",
 	"'->'",
+	"'<>'",
 	"'\\n'",
 	"PI",
 	"TAU",
@@ -657,6 +658,9 @@ void PScriptTokenizerText::_advance() {
 			case '<': {
 				if (GETCHAR(1) == '=') {
 					_make_token(TK_OP_LESS_EQUAL);
+					INCPOS(1);
+				} else if (GETCHAR(1) == '>') {
+					_make_token(TK_BACK_FORWARD_ARROW);
 					INCPOS(1);
 				} else if (GETCHAR(1) == '<') {
 					if (GETCHAR(2) == '=') {

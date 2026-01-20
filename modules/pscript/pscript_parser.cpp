@@ -1439,10 +1439,10 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 			case PScriptTokenizer::TK_PR_IS:
 				op = OperatorNode::OP_IS;
 				break;
-			case PScriptTokenizer::TK_CF_IF:
+			case PScriptTokenizer::TK_QUESTION_MARK:
 				op = OperatorNode::OP_TERNARY_IF;
 				break;
-			case PScriptTokenizer::TK_CF_ELSE:
+			case PScriptTokenizer::TK_BACK_FORWARD_ARROW:
 				op = OperatorNode::OP_TERNARY_ELSE;
 				break;
 			default:
@@ -1568,7 +1568,7 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 				case OperatorNode::OP_TERNARY_IF:
 					priority = 14;
 					ternary = true;
-					right_to_left = true;
+					//right_to_left = true;
 					break;
 				case OperatorNode::OP_TERNARY_ELSE:
 					priority = 14;
@@ -1665,11 +1665,11 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 			}
 
 			if (next_op >= (expression.size() - 2) || expression[next_op + 2].op != OperatorNode::OP_TERNARY_ELSE) {
-				_set_error("Expected else after ternary if.");
+				_set_error("Expected else (':') after ternary if.");
 				return nullptr;
 			}
 			if (next_op >= (expression.size() - 3)) {
-				_set_error("Expected value after ternary else.");
+				_set_error("Expected value after : (ternary else).");
 				return nullptr;
 			}
 
@@ -1702,8 +1702,8 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 				return nullptr;
 			}
 
-			op->arguments.push_back(expression[next_op + 1].node); //next expression goes as first
-			op->arguments.push_back(expression[next_op - 1].node); //left expression goes as when-true
+			op->arguments.push_back(expression[next_op - 1].node); //next expression goes as first
+			op->arguments.push_back(expression[next_op + 1].node); //left expression goes as when-true
 			op->arguments.push_back(expression[next_op + 3].node); //expression after next goes as when-false
 
 			//replace all 3 nodes by this operator and make it an expression
