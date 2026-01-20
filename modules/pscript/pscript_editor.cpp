@@ -43,8 +43,8 @@
 #endif
 
 void PScriptLanguage::get_comment_delimiters(List<String> *p_delimiters) const {
-	p_delimiters->push_back("#");
 	p_delimiters->push_back("//");
+	p_delimiters->push_back("#");
 }
 
 void PScriptLanguage::get_string_delimiters(List<String> *p_delimiters) const {
