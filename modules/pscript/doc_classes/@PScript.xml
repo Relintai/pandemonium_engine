@@ -83,7 +83,7 @@
 				float speed = -10;
 				assert(speed &lt; 20); // True, the program will continue
 				assert(speed &gt;= 0); // False, the program will stop
-				assert(speed &gt;= 0 && speed &lt; 20); // You can also combine the two conditional statements in one check
+				assert(speed &gt;= 0 &amp;&amp; speed &lt; 20); // You can also combine the two conditional statements in one check
 				assert(speed &lt; 20, "speed = %f, but the speed limit is 20" % speed); // Show a message with clarifying details
 				[/codeblock]
 			</description>
