@@ -1702,8 +1702,8 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 				return nullptr;
 			}
 
-			op->arguments.push_back(expression[next_op - 1].node); //next expression goes as first
-			op->arguments.push_back(expression[next_op + 1].node); //left expression goes as when-true
+			op->arguments.push_back(expression[next_op - 1].node); //left expression goes as first
+			op->arguments.push_back(expression[next_op + 1].node); //next expression goes as when-true
 			op->arguments.push_back(expression[next_op + 3].node); //expression after next goes as when-false
 
 			//replace all 3 nodes by this operator and make it an expression
