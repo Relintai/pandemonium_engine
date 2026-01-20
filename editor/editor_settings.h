@@ -59,9 +59,13 @@ class InputEvent;
 class EditorSettingsQuick {
 	struct Data {
 		bool text_editor_completion_use_single_quotes;
+		bool text_editor_completion_string_add_string_name_symbol;
+		bool text_editor_completion_string_add_node_path_symbol;
 
 		Data() {
 			text_editor_completion_use_single_quotes = false;
+			text_editor_completion_string_add_string_name_symbol = true;
+			text_editor_completion_string_add_node_path_symbol = true;
 		}
 	};
 
@@ -69,6 +73,8 @@ class EditorSettingsQuick {
 
 public:
 	static bool get_text_editor_completion_use_single_quotes() { return data.text_editor_completion_use_single_quotes; }
+	static bool get_text_editor_completion_string_add_string_name_symbol() { return data.text_editor_completion_string_add_string_name_symbol; }
+	static bool get_text_editor_completion_string_add_node_path_symbol() { return data.text_editor_completion_string_add_node_path_symbol; }
 
 	static void refresh();
 };

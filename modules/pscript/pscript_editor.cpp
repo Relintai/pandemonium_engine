@@ -1079,7 +1079,7 @@ static bool _guess_expression_type(PScriptCompletionContext &p_context, const PS
 					}
 
 					// Look for valid indexing in other types
-					if (!found && (index.value.get_type() == Variant::STRING || index.value.get_type() == Variant::NODE_PATH)) {
+					if (!found && (index.value.get_type() == Variant::STRING || index.value.get_type() == Variant::STRING_NAME || index.value.get_type() == Variant::NODE_PATH)) {
 						StringName id = index.value;
 						found = _guess_identifier_type_from_base(c, base, id, r_type);
 					} else if (!found && index.type.kind == PScriptParser::DataType::BUILTIN) {
@@ -2290,6 +2290,8 @@ static void _find_call_arguments(const PScriptCompletionContext &p_context, cons
 	PScriptParser::DataType base_type = p_base.type;
 
 	const String quote_style = EditorSettingsQuick::get_text_editor_completion_use_single_quotes() ? "'" : "\"";
+	const bool add_string_name_symbol = EditorSettingsQuick::get_text_editor_completion_string_add_string_name_symbol();
+	const bool add_node_path_symbol = EditorSettingsQuick::get_text_editor_completion_string_add_node_path_symbol();
 
 #define IS_METHOD_SIGNAL(m_method) (m_method == "connect" || m_method == "disconnect" || m_method == "is_connected" || m_method == "emit_signal")
 
@@ -2312,7 +2314,10 @@ static void _find_call_arguments(const PScriptCompletionContext &p_context, cons
 				if (IS_METHOD_SIGNAL(p_method) && p_argidx == 0) {
 					for (int i = 0; i < base_type.class_type->_signals.size(); i++) {
 						ScriptCodeCompletionOption option(base_type.class_type->_signals[i].name.operator String(), ScriptCodeCompletionOption::KIND_SIGNAL);
-						option.insert_text = quote_style + option.display + quote_style;
+						if (add_string_name_symbol) {
+							option.insert_text = "@";
+						}
+						option.insert_text += quote_style + option.display + quote_style;
 						r_result.insert(option.display, option);
 					}
 				}
@@ -2327,7 +2332,10 @@ static void _find_call_arguments(const PScriptCompletionContext &p_context, cons
 						ps->get_script_signal_list(&signals);
 						for (List<MethodInfo>::Element *E = signals.front(); E; E = E->next()) {
 							ScriptCodeCompletionOption option(E->get().name, ScriptCodeCompletionOption::KIND_SIGNAL);
-							option.insert_text = quote_style + option.display + quote_style;
+							if (add_string_name_symbol) {
+								option.insert_text = "@";
+							}
+							option.insert_text += quote_style + option.display + quote_style;
 							r_result.insert(option.display, option);
 						}
 					}
@@ -2389,7 +2397,10 @@ static void _find_call_arguments(const PScriptCompletionContext &p_context, cons
 					ClassDB::get_signal_list(class_name, &signals);
 					for (List<MethodInfo>::Element *E = signals.front(); E; E = E->next()) {
 						ScriptCodeCompletionOption option(E->get().name, ScriptCodeCompletionOption::KIND_SIGNAL);
-						option.insert_text = quote_style + option.display + quote_style;
+						if (add_string_name_symbol) {
+							option.insert_text = "@";
+						}
+						option.insert_text += quote_style + option.display + quote_style;
 						r_result.insert(option.display, option);
 					}
 				}
@@ -2407,7 +2418,10 @@ static void _find_call_arguments(const PScriptCompletionContext &p_context, cons
 						}
 						String name = s.get_slice("/", 1);
 						ScriptCodeCompletionOption option("/root/" + name, ScriptCodeCompletionOption::KIND_NODE_PATH);
-						option.insert_text = quote_style + option.display + quote_style;
+						if (add_node_path_symbol) {
+							option.insert_text = "^";
+						}
+						option.insert_text += quote_style + option.display + quote_style;
 						r_result.insert(option.display, option);
 					}
 				}
@@ -2423,7 +2437,10 @@ static void _find_call_arguments(const PScriptCompletionContext &p_context, cons
 						}
 						String name = s.get_slice("/", 1);
 						ScriptCodeCompletionOption option(name, ScriptCodeCompletionOption::KIND_CONSTANT);
-						option.insert_text = quote_style + option.display + quote_style;
+						if (add_string_name_symbol) {
+							option.insert_text = "@";
+						}
+						option.insert_text += quote_style + option.display + quote_style;
 						r_result.insert(option.display, option);
 					}
 				}
@@ -2459,6 +2476,8 @@ static void _find_call_arguments(const PScriptCompletionContext &p_context, cons
 
 static void _find_call_arguments(PScriptCompletionContext &p_context, const PScriptParser::Node *p_node, int p_argidx, RBMap<String, ScriptCodeCompletionOption> &r_result, bool &r_forced, String &r_arghint) {
 	const String quote_style = EditorSettingsQuick::get_text_editor_completion_use_single_quotes() ? "'" : "\"";
+	const bool add_string_name_symbol = EditorSettingsQuick::get_text_editor_completion_string_add_string_name_symbol();
+	//const bool add_node_path_symbol = EditorSettingsQuick::get_text_editor_completion_string_add_node_path_symbol();
 
 	if (!p_node || p_node->type != PScriptParser::Node::TYPE_OPERATOR) {
 		return;
@@ -2577,7 +2596,10 @@ static void _find_call_arguments(PScriptCompletionContext &p_context, const PScr
 		_find_identifiers_in_base(p_context, connect_base, true, methods);
 		for (RBMap<String, ScriptCodeCompletionOption>::Element *E = methods.front(); E; E = E->next()) {
 			ScriptCodeCompletionOption &option = E->value();
-			option.insert_text = quote_style + option.display + quote_style;
+			if (add_string_name_symbol) {
+				option.insert_text = "@";
+			}
+			option.insert_text += quote_style + option.display + quote_style;
 			r_result.insert(option.display, option);
 		}
 	}
@@ -2587,6 +2609,8 @@ static void _find_call_arguments(PScriptCompletionContext &p_context, const PScr
 
 Error PScriptLanguage::complete_code(const String &p_code, const String &p_path, Object *p_owner, List<ScriptCodeCompletionOption> *r_options, bool &r_forced, String &r_call_hint) {
 	const String quote_style = EditorSettingsQuick::get_text_editor_completion_use_single_quotes() ? "'" : "\"";
+	//const bool add_string_name_symbol = EditorSettingsQuick::get_text_editor_completion_string_add_string_name_symbol();
+	//const bool add_node_path_symbol = EditorSettingsQuick::get_text_editor_completion_string_add_node_path_symbol();
 
 	PScriptParser parser;
 

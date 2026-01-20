@@ -68,6 +68,12 @@ EditorSettingsQuick::Data EditorSettingsQuick::data = EditorSettingsQuick::Data(
 void EditorSettingsQuick::refresh() {
 	EDITOR_GET_CACHED(text_editor_completion_use_single_quotes, bool, "text_editor/completion/use_single_quotes");
 	data.text_editor_completion_use_single_quotes = text_editor_completion_use_single_quotes;
+
+	EDITOR_GET_CACHED(text_editor_completion_string_add_string_name_symbol, bool, "text_editor/completion/string_add_string_name_symbol");
+	data.text_editor_completion_string_add_string_name_symbol = text_editor_completion_string_add_string_name_symbol;
+
+	EDITOR_GET_CACHED(text_editor_completion_string_add_node_path_symbol, bool, "text_editor/completion/string_add_node_path_symbol");
+	data.text_editor_completion_string_add_node_path_symbol = text_editor_completion_string_add_node_path_symbol;
 }
 
 // PRIVATE METHODS
@@ -531,6 +537,8 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	_initial_set("text_editor/completion/complete_file_paths", true);
 	_initial_set("text_editor/completion/add_type_hints", true);
 	_initial_set("text_editor/completion/use_single_quotes", false);
+	_initial_set("text_editor/completion/string_add_string_name_symbol", true);
+	_initial_set("text_editor/completion/string_add_node_path_symbol", true);
 
 	// Help
 	_initial_set("text_editor/help/show_help_index", true);
