@@ -1665,11 +1665,11 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 			}
 
 			if (next_op >= (expression.size() - 2) || expression[next_op + 2].op != OperatorNode::OP_TERNARY_ELSE) {
-				_set_error("Expected else (':') after ternary if.");
+				_set_error("Expected else ('<>') after ternary if.");
 				return nullptr;
 			}
 			if (next_op >= (expression.size() - 3)) {
-				_set_error("Expected value after : (ternary else).");
+				_set_error("Expected value after <> (ternary else).");
 				return nullptr;
 			}
 
