@@ -295,6 +295,16 @@ void RenderingServerBlobShadows::update_focus_blobs_or_capsules(const Focus &p_f
 	// Update existing focus casters and pending
 	FocusInfo &fi = r_focus_info;
 
+	// The multiplier determines the rate of change.
+	// Defaults to 1 (second).
+	// Capped to prevent huge numbers on rapid change.
+	real_t transition_duration_inverse = 100000;
+	if (data.transition_duration > 0.0001f) {
+		transition_duration_inverse = 1 / data.transition_duration;
+	}
+
+	real_t fraction_change = Engine::get_singleton()->get_idle_frame_step() * transition_duration_inverse;
+
 	for (uint32_t n = 0; n < fi.blobs.size(); n++) {
 		FocusCaster &fc = fi.blobs[n];
 		if (fc.last_update_frame != data.update_frame) {
@@ -303,16 +313,15 @@ void RenderingServerBlobShadows::update_focus_blobs_or_capsules(const Focus &p_f
 
 		switch (fc.state) {
 			case FocusCaster::FCS_ON: {
-				fc.fraction = 1.0f;
+				fc.fraction = 1;
 			} break;
 			case FocusCaster::FCS_ENTERING: {
-				fc.in_count++;
-				fc.fraction = (real_t)fc.in_count / 60;
+				fc.fraction += fraction_change;
 
 				// Fully faded in, change to on
-				if (fc.in_count >= 60) {
+				if (fc.fraction >= 1) {
 					fc.state = FocusCaster::FCS_ON;
-					fc.in_count = 60;
+					fc.fraction = 1;
 				}
 
 			} break;
@@ -321,9 +330,10 @@ void RenderingServerBlobShadows::update_focus_blobs_or_capsules(const Focus &p_f
 				if (fc.last_update_frame == data.update_frame) {
 					fc.state = FocusCaster::FCS_ENTERING;
 				} else {
-					fc.in_count--;
-					fc.fraction = (real_t)fc.in_count / 60;
-					if (!fc.in_count) {
+					fc.fraction -= fraction_change;
+					if (fc.fraction <= 0) {
+						fc.fraction = 0;
+
 						// Decrement ref count so we can free
 						// when no more fades.
 						if (blobs_or_capsules) {
@@ -370,8 +380,7 @@ void RenderingServerBlobShadows::update_focus_blobs_or_capsules(const Focus &p_f
 		fi.blobs_pending.pop();
 
 		fc.state = FocusCaster::FCS_ENTERING;
-		fc.in_count = 1;
-		fc.fraction = (real_t)fc.in_count / 60;
+		fc.fraction = MIN(fraction_change, (real_t)1);
 	}
 }
 
@@ -922,6 +931,8 @@ RenderingServerBlobShadows::RenderingServerBlobShadows() {
 	ProjectSettings::get_singleton()->set_custom_property_info("rendering/quality/blob_shadows/gamma", PropertyInfo(Variant::REAL, "rendering/quality/blob_shadows/gamma", PROPERTY_HINT_RANGE, "0.01,10.0,0.01"));
 	data.intensity = GLOBAL_DEF("rendering/quality/blob_shadows/intensity", 0.7f);
 	ProjectSettings::get_singleton()->set_custom_property_info("rendering/quality/blob_shadows/intensity", PropertyInfo(Variant::REAL, "rendering/quality/blob_shadows/intensity", PROPERTY_HINT_RANGE, "0.0,6.0,0.01"));
+	data.transition_duration = GLOBAL_DEF("rendering/quality/blob_shadows/transition_duration", 1.0f);
+	ProjectSettings::get_singleton()->set_custom_property_info("rendering/quality/blob_shadows/transition_duration", PropertyInfo(Variant::REAL, "rendering/quality/blob_shadows/transition_duration", PROPERTY_HINT_RANGE, "0.0,5.0,0.01"));
 
 	data.frustum_planes.resize(6);
 	data.frustum_points.resize(8);
