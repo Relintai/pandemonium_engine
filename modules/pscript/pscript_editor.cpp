@@ -2368,6 +2368,7 @@ static void _find_call_arguments(const PScriptCompletionContext &p_context, cons
 				for (List<MethodInfo>::Element *E = methods.front(); E; E = E->next()) {
 					if (E->get().name == p_method) {
 						method_args = E->get().arguments.size();
+
 						if (base.get_type() == Variant::OBJECT) {
 							Object *obj = base.operator Object *();
 							if (obj) {
@@ -2375,6 +2376,22 @@ static void _find_call_arguments(const PScriptCompletionContext &p_context, cons
 								obj->get_argument_options(p_method, p_argidx, &options, quote_style);
 								for (List<String>::Element *F = options.front(); F; F = F->next()) {
 									ScriptCodeCompletionOption option(F->get(), ScriptCodeCompletionOption::KIND_FUNCTION);
+
+									if (p_argidx < method_args) {
+										PropertyInfo arg_info = E->get().arguments[p_argidx];
+										if (arg_info.type == Variant::STRING_NAME) {
+											if (add_string_name_symbol) {
+												option.insert_text = "@" + option.insert_text;
+												option.kind = ScriptCodeCompletionOption::KIND_CONSTANT;
+											}
+										} else if (arg_info.type == Variant::NODE_PATH) {
+											if (add_node_path_symbol) {
+												option.insert_text = "^" + option.insert_text;
+												option.kind = ScriptCodeCompletionOption::KIND_NODE_PATH;
+											}
+										}
+									}
+
 									r_result.insert(option.display, option);
 								}
 							}
@@ -2688,6 +2705,7 @@ Error PScriptLanguage::complete_code(const String &p_code, const String &p_path,
 			}
 		} break;
 		case PScriptParser::COMPLETION_GET_NODE: {
+			// $ operator
 			if (p_owner) {
 				List<String> opts;
 				p_owner->get_argument_options("get_node", 0, &opts, quote_style);
