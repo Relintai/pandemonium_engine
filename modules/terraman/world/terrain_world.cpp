@@ -337,6 +337,12 @@ void TerrainWorld::chunk_add(Ref<TerrainChunk> chunk, const int x, const int z) 
 	ERR_FAIL_COND(!chunk.is_valid());
 	//ERR_FAIL_COND_MSG(chunk->get_terrain_world() != NULL && chunk->get_terrain_world() != this, "Chunk is already owned by an another world!");
 
+	// Chunks cannot belong to 2 worlds, they store lots of data
+	// However in order to support instanced worlds, if a chunk already has a world, we just duplicate it.
+	if (chunk->get_terrain_world() != NULL && chunk->get_terrain_world() != this) {
+		chunk = chunk->duplicate();
+	}
+
 	IntPos pos(x, z);
 
 	//ERR_FAIL_COND(_chunks.has(pos));
@@ -2041,6 +2047,7 @@ void TerrainWorld::_notification(int p_what) {
 					chunk->build();
 				} else {
 					chunk->enter_tree();
+					chunk->world_transform_changed();
 
 					if (chunk->is_build_aborted()) {
 						if (!chunk->get_is_terrain_generated()) {
