@@ -346,7 +346,12 @@ void VoxelWorld::voxel_structures_set(const Vector<Variant> &structures) {
 
 void VoxelWorld::chunk_add(Ref<VoxelChunk> chunk, const int x, const int y, const int z) {
 	ERR_FAIL_COND(!chunk.is_valid());
-	//ERR_FAIL_COND_MSG(chunk->get_voxel_world() != NULL && chunk->get_voxel_world() != this, "Chunk is already owned by an another world!");
+
+	// Chunks cannot belong to 2 worlds, they store lots of data
+	// However in order to support instanced worlds, if a chunk already has a world, we just duplicate it.
+	if (chunk->get_voxel_world() != NULL && chunk->get_voxel_world() != this) {
+		chunk = chunk->duplicate();
+	}
 
 	IntPos pos(x, y, z);
 
@@ -1780,6 +1785,7 @@ void VoxelWorld::_notification(int p_what) {
 					chunk->build();
 				} else {
 					chunk->enter_tree();
+					chunk->world_transform_changed();
 
 					if (chunk->is_build_aborted()) {
 						if (!chunk->get_is_terrain_generated()) {
