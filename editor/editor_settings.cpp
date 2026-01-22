@@ -418,6 +418,33 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	hints["interface/scene_tabs/minimum_width"] = PropertyInfo(Variant::INT, "interface/scene_tabs/minimum_width", PROPERTY_HINT_RANGE, "50,500,1", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_RESTART_IF_CHANGED);
 	_initial_set("interface/scene_tabs/show_script_button", false);
 
+	// Quick defaults
+	String scripting_language_enum_hint = "";
+	int default_scripting_language = 0;
+
+	for (int i = 0; i < ScriptServer::get_language_count(); i++) {
+		String lang = ScriptServer::get_language(i)->get_name();
+
+		if (i > 0) {
+			scripting_language_enum_hint += ",";
+		}
+
+		scripting_language_enum_hint += lang;
+
+		if (lang == "PScript") {
+			default_scripting_language = i;
+		}
+	}
+
+	_initial_set("interface/editors/default_scripting_language", default_scripting_language);
+	hints["interface/editors/default_scripting_language"] = PropertyInfo(Variant::INT, "interface/editors/default_scripting_language", PROPERTY_HINT_ENUM, scripting_language_enum_hint);
+
+	// This has to be here, as when project settings is created scripting languages are not yet initialized
+	ProjectSettings::get_singleton()->set_custom_property_info("editor/default_language", PropertyInfo(Variant::INT, "editor/default_language", PROPERTY_HINT_ENUM, scripting_language_enum_hint));
+
+	_initial_set("interface/editors/default_name_casing", 2);
+	hints["interface/editors/default_name_casing"] = PropertyInfo(Variant::INT, "interface/editors/default_name_casing", PROPERTY_HINT_ENUM, "Auto,PascalCase,snake_case");
+
 	/* Filesystem */
 
 	// Directories

@@ -133,6 +133,10 @@ private:
 	Container *path_container;
 	Container *install_path_container;
 	Container *rasterizer_container;
+	Container *new_project_quick_settings_container;
+	OptionButton *quick_settings_language_menu;
+	OptionButton *quick_settings_scene_name_casing;
+
 	Ref<ButtonGroup> rasterizer_button_group;
 	Label *msg;
 	LineEdit *project_path;
@@ -461,6 +465,14 @@ private:
 		}
 	}
 
+	void _on_quick_settings_scene_name_casing_item_selected(int p_index) {
+		EditorSettings::get_singleton()->set("interface/editors/default_name_casing", p_index);
+	}
+
+	void _on_quick_settings_language_menu_item_selected(int p_index) {
+		EditorSettings::get_singleton()->set("interface/editors/default_scripting_language", p_index);
+	}
+
 	void ok_pressed() {
 		String dir = project_path->get_text();
 
@@ -513,6 +525,8 @@ private:
 					initial_settings["rendering/environment/default_environment"] = "res://default_env.tres";
 					initial_settings["physics/common/enable_pause_aware_picking"] = true;
 					initial_settings["gui/common/drop_mouse_on_gui_input_disabled"] = true;
+					initial_settings["editor/scene_naming"] = quick_settings_scene_name_casing->get_selected();
+					initial_settings["editor/default_language"] = quick_settings_language_menu->get_selected();
 
 					if (ProjectSettings::get_singleton()->save_custom(dir.plus_file("project.pandemonium"), initial_settings, Vector<String>(), false) != OK) {
 						set_message(TTR("Couldn't create project.pandemonium in project path."), MESSAGE_ERROR);
@@ -692,6 +706,8 @@ protected:
 		ClassDB::bind_method("_file_selected", &ProjectDialog::_file_selected);
 		ClassDB::bind_method("_install_path_selected", &ProjectDialog::_install_path_selected);
 		ClassDB::bind_method("_browse_install_path", &ProjectDialog::_browse_install_path);
+		ClassDB::bind_method("_on_quick_settings_scene_name_casing_item_selected", &ProjectDialog::_on_quick_settings_scene_name_casing_item_selected);
+		ClassDB::bind_method("_on_quick_settings_language_menu_item_selected", &ProjectDialog::_on_quick_settings_language_menu_item_selected);
 		ADD_SIGNAL(MethodInfo("project_created"));
 		ADD_SIGNAL(MethodInfo("projects_updated"));
 	}
@@ -778,6 +794,7 @@ public:
 				get_ok()->set_text(TTR("Import & Edit"));
 				name_container->hide();
 				install_path_container->hide();
+				new_project_quick_settings_container->hide();
 				rasterizer_container->hide();
 				project_path->grab_focus();
 
@@ -786,6 +803,7 @@ public:
 				get_ok()->set_text(TTR("Create & Edit"));
 				name_container->show();
 				install_path_container->hide();
+				new_project_quick_settings_container->show();
 				rasterizer_container->show();
 				project_name->call_deferred("grab_focus");
 				project_name->call_deferred("select_all");
@@ -796,6 +814,7 @@ public:
 				project_name->set_text(zip_title);
 				name_container->show();
 				install_path_container->hide();
+				new_project_quick_settings_container->hide();
 				rasterizer_container->hide();
 				project_path->grab_focus();
 			}
@@ -883,6 +902,75 @@ public:
 		msg = memnew(Label);
 		msg->set_align(Label::ALIGN_CENTER);
 		vb->add_child(msg);
+
+		// QUick settings
+
+		new_project_quick_settings_container = memnew(VBoxContainer);
+		new_project_quick_settings_container->set_h_size_flags(SIZE_EXPAND_FILL);
+		vb->add_child(new_project_quick_settings_container);
+
+		VBoxContainer *qsvb = memnew(VBoxContainer);
+		qsvb->set_h_size_flags(SIZE_EXPAND_FILL);
+		new_project_quick_settings_container->add_child(qsvb);
+
+		// Default scripting language
+		HBoxContainer *def_script_lang_hbc = memnew(HBoxContainer);
+		def_script_lang_hbc->set_h_size_flags(SIZE_EXPAND_FILL);
+		new_project_quick_settings_container->add_child(def_script_lang_hbc);
+
+		l = memnew(Label);
+		l->set_h_size_flags(SIZE_EXPAND_FILL);
+		l->set_text(TTR("Preferred scripting language:"));
+		def_script_lang_hbc->add_child(l);
+
+		quick_settings_language_menu = memnew(OptionButton);
+		def_script_lang_hbc->add_child(quick_settings_language_menu);
+
+		int default_language = EDITOR_GET("interface/editors/default_scripting_language");
+
+		for (int i = 0; i < ScriptServer::get_language_count(); i++) {
+			String lang = ScriptServer::get_language(i)->get_name();
+			quick_settings_language_menu->add_item(lang);
+
+			if (default_language == -1 && lang == "PScript") {
+				default_language = i;
+				EditorSettings::get_singleton()->set("interface/editors/default_scripting_language", i);
+			}
+		}
+		if (default_language == -1) {
+			default_language = 0;
+			EditorSettings::get_singleton()->set("interface/editors/default_scripting_language", 0);
+		}
+		quick_settings_language_menu->select(default_language);
+
+		quick_settings_language_menu->connect("item_selected", this, "_on_quick_settings_language_menu_item_selected");
+
+		// Default scene naming setting
+		HBoxContainer *def_scene_naming_hbc = memnew(HBoxContainer);
+		def_scene_naming_hbc->set_h_size_flags(SIZE_EXPAND_FILL);
+		new_project_quick_settings_container->add_child(def_scene_naming_hbc);
+
+		l = memnew(Label);
+		l->set_h_size_flags(SIZE_EXPAND_FILL);
+		l->set_text(TTR("Preferred scene naming:"));
+		def_scene_naming_hbc->add_child(l);
+
+		quick_settings_scene_name_casing = memnew(OptionButton);
+		def_scene_naming_hbc->add_child(quick_settings_scene_name_casing);
+		quick_settings_scene_name_casing->connect("item_selected", this, "_on_quick_settings_scene_name_casing_item_selected");
+
+		quick_settings_scene_name_casing->add_item("Auto (Old default)");
+		quick_settings_scene_name_casing->add_item("PascalCase");
+		quick_settings_scene_name_casing->add_item("snake_case (Recommended)");
+
+		int default_name_casing = EDITOR_GET("interface/editors/default_name_casing");
+		quick_settings_scene_name_casing->select(default_name_casing);
+
+		// Bottom label
+		l = memnew(Label);
+		l->set_text(TTR("These settings can be changed later."));
+		l->set_align(Label::ALIGN_CENTER);
+		new_project_quick_settings_container->add_child(l);
 
 		// rasterizer selection
 		rasterizer_container = memnew(VBoxContainer);

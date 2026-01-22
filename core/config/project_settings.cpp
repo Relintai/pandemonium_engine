@@ -1094,7 +1094,13 @@ ProjectSettings::ProjectSettings() {
 	GLOBAL_DEF("editor/main_run_args", "");
 
 	GLOBAL_DEF("editor/scene_naming", 0); // Sync enum values with EditorNode.
+#ifdef TOOLS_ENABLED
 	ProjectSettings::get_singleton()->set_custom_property_info("editor/scene_naming", PropertyInfo(Variant::INT, "editor/scene_naming", PROPERTY_HINT_ENUM, "Auto,PascalCase,snake_case"));
+#endif
+
+	// ScriptServer is not initialized yet, so ScriptServer::get_language_count() is 0.
+	// EditorSettings sets up custom property info for this.
+	GLOBAL_DEF("editor/default_language", -1);
 
 	GLOBAL_DEF("editor/search_in_file_extensions", extensions);
 	custom_prop_info["editor/search_in_file_extensions"] = PropertyInfo(Variant::POOL_STRING_ARRAY, "editor/search_in_file_extensions");
