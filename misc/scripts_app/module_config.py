@@ -110,7 +110,7 @@ slim_args_editor = ''
 #slim_args_editor += 'module_web_enabled=no '
 #slim_args_editor += 'module_websocket_enabled=no '
 #slim_args_editor += 'module_wfc_enabled=no '
-#slim_args_editor += 'module_jsonrpc_enabled=no ' # JSONRPC implementation. Currently only used by gdscript's lsp (when it provides autocomplete for an another ide).
+#slim_args_editor += 'module_jsonrpc_enabled=no ' # JSONRPC implementation. Used by gdscript's and pscript's lsp (when it provides autocomplete for an another ide).
 #slim_args_editor += 'module_layered_tile_map_enabled=no '
 #slim_args_editor += 'module_totp_enabled=no '
 #slim_args_editor += 'module_vertex_lights_2d_enabled=no '
@@ -118,6 +118,7 @@ slim_args_editor = ''
 #slim_args_editor += 'module_xatlas_unwrap_enabled=no ' # GLES3 lihgtmapper
 #slim_args_editor += 'module_camera_server_enabled=no '
 #slim_args_editor += 'module_camera_drivers_enabled=no ' # Depends on the camera server module.
+#slim_args_editor += 'module_pscript_enabled=no '
 
 # Editor Modules
 
