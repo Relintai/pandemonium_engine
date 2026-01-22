@@ -2524,7 +2524,7 @@ void EditorNode::_menu_option_confirm(int p_option, bool p_confirmed) {
 				String root_name = scene->get_name();
 				// Very similar to node naming logic.
 				switch (ProjectSettings::get_singleton()->get("editor/scene_naming").operator int()) {
-					case SCENE_NAME_CASING_AUTO:
+					case SCENE_NAME_CASING_KEEP:
 						// Use casing of the root node.
 						break;
 					case SCENE_NAME_CASING_PASCAL_CASE: {

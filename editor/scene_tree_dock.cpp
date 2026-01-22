@@ -1032,7 +1032,7 @@ void SceneTreeDock::_tool_selected(int p_tool, bool p_confirm_override) {
 				String root_name(tocopy->get_name());
 				// Very similar to node naming logic.
 				switch (ProjectSettings::get_singleton()->get("editor/scene_naming").operator int()) {
-					case EditorNode::SCENE_NAME_CASING_AUTO:
+					case EditorNode::SCENE_NAME_CASING_KEEP:
 						// Use casing of the root node.
 						break;
 					case EditorNode::SCENE_NAME_CASING_PASCAL_CASE: {
@@ -3520,7 +3520,7 @@ void SceneTreeDock::attach_script_to_selected(bool p_extend) {
 
 	// Very similar to node naming logic.
 	switch (ProjectSettings::get_singleton()->get("editor/scene_naming").operator int()) {
-		case EditorNode::SCENE_NAME_CASING_AUTO:
+		case EditorNode::SCENE_NAME_CASING_KEEP:
 			// Use casing of the root node.
 			break;
 		case EditorNode::SCENE_NAME_CASING_PASCAL_CASE: {

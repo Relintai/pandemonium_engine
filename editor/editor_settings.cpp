@@ -443,7 +443,7 @@ void EditorSettings::_load_defaults(Ref<ConfigFile> p_extra_config) {
 	ProjectSettings::get_singleton()->set_custom_property_info("editor/default_language", PropertyInfo(Variant::INT, "editor/default_language", PROPERTY_HINT_ENUM, scripting_language_enum_hint));
 
 	_initial_set("interface/editors/default_name_casing", 2);
-	hints["interface/editors/default_name_casing"] = PropertyInfo(Variant::INT, "interface/editors/default_name_casing", PROPERTY_HINT_ENUM, "Auto,PascalCase,snake_case");
+	hints["interface/editors/default_name_casing"] = PropertyInfo(Variant::INT, "interface/editors/default_name_casing", PROPERTY_HINT_ENUM, "Keep,PascalCase,snake_case");
 
 	/* Filesystem */
 

@@ -1095,7 +1095,7 @@ ProjectSettings::ProjectSettings() {
 
 	GLOBAL_DEF("editor/scene_naming", 0); // Sync enum values with EditorNode.
 #ifdef TOOLS_ENABLED
-	ProjectSettings::get_singleton()->set_custom_property_info("editor/scene_naming", PropertyInfo(Variant::INT, "editor/scene_naming", PROPERTY_HINT_ENUM, "Auto,PascalCase,snake_case"));
+	ProjectSettings::get_singleton()->set_custom_property_info("editor/scene_naming", PropertyInfo(Variant::INT, "editor/scene_naming", PROPERTY_HINT_ENUM, "Keep,PascalCase,snake_case"));
 #endif
 
 	// ScriptServer is not initialized yet, so ScriptServer::get_language_count() is 0.

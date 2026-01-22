@@ -959,7 +959,7 @@ public:
 		def_scene_naming_hbc->add_child(quick_settings_scene_name_casing);
 		quick_settings_scene_name_casing->connect("item_selected", this, "_on_quick_settings_scene_name_casing_item_selected");
 
-		quick_settings_scene_name_casing->add_item("Auto (Old default)");
+		quick_settings_scene_name_casing->add_item("Keep (Old default)");
 		quick_settings_scene_name_casing->add_item("PascalCase");
 		quick_settings_scene_name_casing->add_item("snake_case (Recommended)");
 
