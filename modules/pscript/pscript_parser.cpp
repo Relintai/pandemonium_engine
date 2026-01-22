@@ -2609,15 +2609,19 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 
 						if (!valid_type) {
 							if (ClassDB::class_exists(name) || ClassDB::class_exists("_" + name.operator String())) {
-								valid_type = true;
+								if (!Engine::get_singleton()->has_singleton(name)) {
+									valid_type = true;
+								}
 							}
 						}
 
-						if (current_class) {
-							for (int i = 0; i < current_class->subclasses.size(); i++) {
-								if (current_class->subclasses[i]->name == name) {
-									valid_type = true;
-									break;
+						if (!valid_type) {
+							if (current_class) {
+								for (int i = 0; i < current_class->subclasses.size(); i++) {
+									if (current_class->subclasses[i]->name == name) {
+										valid_type = true;
+										break;
+									}
 								}
 							}
 						}
