@@ -1005,7 +1005,7 @@ public:
 		rs_button->set_pressed(true);
 		rvb->add_child(rs_button);
 		l = memnew(Label);
-		l->set_text(TTR("Lower visual quality\nSome features not available\nWorks on most hardware\nRecommended for web games"));
+		l->set_text(TTR("Lower visual quality. Some features not available.\nWorks on most hardware. Recommended for web games"));
 		rvb->add_child(l);
 
 #ifndef GLES3_DISABLED
@@ -1025,7 +1025,7 @@ public:
 			rvb->add_child(l);
 		}
 		l = memnew(Label);
-		l->set_text(TTR("Higher visual quality\nAll features available\nIncompatible with older hardware\nNot recommended for web games"));
+		l->set_text(TTR("Higher visual quality. All features available.\nIncompatible with older hardware. Not recommended for web games"));
 		rvb->add_child(l);
 
 #endif
