@@ -808,8 +808,7 @@ void PScriptTokenizerText::_advance() {
 					_make_token(TK_OP_ASSIGN_SUB);
 					INCPOS(1);
 				} else if (GETCHAR(1) == '>') {
-					//_make_token(TK_FORWARD_ARROW);
-					_make_token(TK_PERIOD);
+					_make_token(TK_FORWARD_ARROW);
 					INCPOS(1);
 				} else if (GETCHAR(1) == '-') {
 					_make_token(TK_OP_MINUS_MINUS);
