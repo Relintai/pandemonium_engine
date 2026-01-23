@@ -4823,9 +4823,8 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 					p_class->constant_expressions.insert(enum_name, enum_constant);
 				}
 
-				if (!_end_statement()) {
-					_set_end_statement_error("enum");
-					return;
+				if (tokenizer->get_token() == PScriptTokenizer::TK_SEMICOLON) {
+					tokenizer->advance();
 				}
 
 			} break;
