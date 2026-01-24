@@ -2625,6 +2625,20 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 										break;
 									}
 								}
+
+								if (!valid_type) {
+									ClassNode *outer_class = current_class->owner;
+									while (outer_class) {
+										for (int i = 0; i < outer_class->subclasses.size(); i++) {
+											if (outer_class->subclasses[i]->name == name) {
+												valid_type = true;
+												break;
+											}
+										}
+
+										outer_class = outer_class->owner;
+									}
+								}
 							}
 						}
 
