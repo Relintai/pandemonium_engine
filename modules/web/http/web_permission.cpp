@@ -71,8 +71,8 @@ WebPermission::~WebPermission() {
 }
 
 void WebPermission::_bind_methods() {
-	BIND_VMETHOD(MethodInfo("_activate", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
-	BIND_VMETHOD(MethodInfo("_get_permissions", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
+	BIND_VMETHOD(MethodInfo(Variant::BOOL, "_activate", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
+	BIND_VMETHOD(MethodInfo(Variant::INT, "_get_permissions", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
 	BIND_VMETHOD(MethodInfo("_handle_view_permission_missing", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest")));
 
 	ClassDB::bind_method(D_METHOD("activate", "request"), &WebPermission::activate);

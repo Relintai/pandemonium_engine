@@ -12,14 +12,14 @@
 	</tutorials>
 	<methods>
 		<method name="_activate" qualifiers="virtual">
-			<return type="void" />
+			<return type="bool" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
 				The default implementation for activate().
 			</description>
 		</method>
 		<method name="_get_permissions" qualifiers="virtual">
-			<return type="void" />
+			<return type="int" />
 			<argument index="0" name="request" type="WebServerRequest" />
 			<description>
 				The default implementation for get_permissions().
