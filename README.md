@@ -242,6 +242,15 @@ and custom handling for them will be extremely messy. A good solution for this i
 Currently my best idea is to have 2 sets of popups, and the user can decide whether to have multi window support
 or not by using the proper ones. Still trying to figure out a way to make this simpler.
 
+Or the ClassDB could also switch between classes similar to how compat classes work.
+This does have issues.
+
+Or a pseudo-viewport + maybe pesudo Window class could be added, and just make  all the code handle it.
+
+Could also be inherited from Viewport or viewport could inherit from it, but it's ignored if disabled, also it does not allocate anything if disabled.
+
+Or Viewports could have an enabled property or similar, but that's prbably going to cause issues.
+
 ### TypedArray, PackedTypedArray
 
 2 new Variant types that stores an aray of elements of any single type.
