@@ -40,8 +40,10 @@
 #include "core/os/file_access.h"
 #include "core/string/print_string.h"
 
-// Pandemonium's packed file magic header ("GDPC" in ASCII).
-#define PACK_HEADER_MAGIC 0x43504447
+// Pandemonium's packed file magic header ("PEPC" in ASCII).
+#define PACK_HEADER_MAGIC 0x43504550
+// Pandemonium's old packed file magic header ("GDPC" in ASCII).
+#define PACK_HEADER_MAGIC_COMPAT 0x43504447
 // The current packed file format version number.
 #define PACK_FORMAT_VERSION 1
 

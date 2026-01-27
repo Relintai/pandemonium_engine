@@ -538,9 +538,9 @@ Error ProjectSettings::_load_settings_binary(const String &p_path) {
 
 	uint8_t hdr[4];
 	f->get_buffer(hdr, 4);
-	if (hdr[0] != 'E' || hdr[1] != 'C' || hdr[2] != 'F' || hdr[3] != 'G') {
+	if ((hdr[0] != 'E' || hdr[1] != 'C' || hdr[2] != 'F' || hdr[3] != 'P') && (hdr[0] != 'E' || hdr[1] != 'C' || hdr[2] != 'F' || hdr[3] != 'G')) {
 		memdelete(f);
-		ERR_FAIL_V_MSG(ERR_FILE_CORRUPT, "Corrupted header in binary project.binary (not ECFG).");
+		ERR_FAIL_V_MSG(ERR_FILE_CORRUPT, "Corrupted header in binary project.binary (not ECFP or ECFG).");
 	}
 
 	uint32_t count = f->get_32();
@@ -686,7 +686,7 @@ Error ProjectSettings::_save_settings_binary(const String &p_file, const RBMap<S
 	FileAccess *file = FileAccess::open(p_file, FileAccess::WRITE, &err);
 	ERR_FAIL_COND_V_MSG(err != OK, err, "Couldn't save project.binary at " + p_file + ".");
 
-	uint8_t hdr[4] = { 'E', 'C', 'F', 'G' };
+	uint8_t hdr[4] = { 'E', 'C', 'F', 'P' };
 	file->store_buffer(hdr, 4);
 
 	int count = 0;

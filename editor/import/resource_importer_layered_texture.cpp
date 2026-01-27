@@ -89,8 +89,8 @@ void ResourceImporterLayeredTexture::get_import_options(List<ImportOption> *r_op
 
 void ResourceImporterLayeredTexture::_save_tex(const Vector<Ref<Image>> &p_images, const String &p_to_path, int p_compress_mode, Image::CompressMode p_vram_compression, bool p_mipmaps, int p_texture_flags) {
 	FileAccess *f = FileAccess::open(p_to_path, FileAccess::WRITE);
-	f->store_8('G');
-	f->store_8('D');
+	f->store_8('P');
+	f->store_8('E');
 	if (is_3d) {
 		f->store_8('3');
 	} else {

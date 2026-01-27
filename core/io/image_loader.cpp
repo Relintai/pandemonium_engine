@@ -135,7 +135,7 @@ RES ResourceFormatLoaderImage::load(const String &p_path, const String &p_origin
 	uint8_t header[4] = { 0, 0, 0, 0 };
 	f->get_buffer(header, 4);
 
-	bool unrecognized = header[0] != 'G' || header[1] != 'D' || header[2] != 'I' || header[3] != 'M';
+	bool unrecognized = (header[0] != 'P' || header[1] != 'E' || header[2] != 'I' || header[3] != 'M') && (header[0] != 'G' || header[1] != 'D' || header[2] != 'I' || header[3] != 'M');
 	if (unrecognized) {
 		memdelete(f);
 		if (r_error) {

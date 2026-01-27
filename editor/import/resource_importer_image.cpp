@@ -87,8 +87,8 @@ Error ResourceImporterImage::import(const String &p_source_file, const String &p
 	f = FileAccess::open(p_save_path + ".image", FileAccess::WRITE);
 	ERR_FAIL_COND_V_MSG(!f, ERR_CANT_CREATE, "Cannot create file in path '" + p_save_path + ".image'.");
 
-	//save the header GDIM
-	const uint8_t header[4] = { 'G', 'D', 'I', 'M' };
+	//save the header PEIM
+	const uint8_t header[4] = { 'P', 'E', 'I', 'M' };
 	f->store_buffer(header, 4);
 	//SAVE the extension (so it can be recognized by the loader later
 	f->store_pascal_string(p_source_file.get_extension().to_lower());

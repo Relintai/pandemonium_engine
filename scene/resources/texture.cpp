@@ -471,9 +471,9 @@ Error StreamTexture::_load_data(const String &p_path, int &tw, int &th, int &tw_
 
 	uint8_t header[4];
 	f->get_buffer(header, 4);
-	if (header[0] != 'G' || header[1] != 'D' || header[2] != 'S' || header[3] != 'T') {
+	if ((header[0] != 'P' || header[1] != 'E' || header[2] != 'S' || header[3] != 'T') && (header[0] != 'G' || header[1] != 'D' || header[2] != 'S' || header[3] != 'T')) {
 		memdelete(f);
-		ERR_FAIL_COND_V(header[0] != 'G' || header[1] != 'D' || header[2] != 'S' || header[3] != 'T', ERR_FILE_CORRUPT);
+		ERR_FAIL_V(ERR_FILE_CORRUPT);
 	}
 
 	tw = f->get_16();
@@ -2444,13 +2444,13 @@ Error TextureLayered::load(const String &p_path) {
 	uint8_t header[5] = { 0, 0, 0, 0, 0 };
 	f->get_buffer(header, 4);
 
-	if (header[0] == 'G' && header[1] == 'D' && header[2] == '3' && header[3] == 'T') {
+	if ((header[0] == 'P' && header[1] == 'E' && header[2] == '3' && header[3] == 'T') || (header[0] == 'G' && header[1] == 'D' && header[2] == '3' && header[3] == 'T')) {
 		if (!Object::cast_to<Texture3D>(this)) {
 			f->close();
 			memdelete(f);
 			ERR_FAIL_V(ERR_INVALID_DATA);
 		}
-	} else if (header[0] == 'G' && header[1] == 'D' && header[2] == 'A' && header[3] == 'T') {
+	} else if ((header[0] == 'P' && header[1] == 'E' && header[2] == 'A' && header[3] == 'T') || (header[0] == 'G' && header[1] == 'D' && header[2] == 'A' && header[3] == 'T')) {
 		if (!Object::cast_to<TextureArray>(this)) {
 			f->close();
 			memdelete(f);

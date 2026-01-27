@@ -1230,7 +1230,7 @@ void PScriptTokenizerText::advance(int p_amount) {
 Error PScriptTokenizerBuffer::set_code_buffer(const Vector<uint8_t> &p_buffer) {
 	const uint8_t *buf = p_buffer.ptr();
 	int total_len = p_buffer.size();
-	ERR_FAIL_COND_V(p_buffer.size() < 24 || p_buffer[0] != 'G' || p_buffer[1] != 'D' || p_buffer[2] != 'S' || p_buffer[3] != 'C', ERR_INVALID_DATA);
+	ERR_FAIL_COND_V(p_buffer.size() < 24 || p_buffer[0] != 'P' || p_buffer[1] != 'E' || p_buffer[2] != 'P' || p_buffer[3] != 'S', ERR_INVALID_DATA);
 
 	int version = decode_uint32(&buf[4]);
 	ERR_FAIL_COND_V_MSG(version > BYTECODE_VERSION, ERR_INVALID_DATA, "Bytecode is too recent! Please use a newer engine version.");
@@ -1391,10 +1391,10 @@ Vector<uint8_t> PScriptTokenizerBuffer::parse_code_string(const String &p_code) 
 
 	//save header
 	buf.resize(24);
-	buf.write[0] = 'G';
-	buf.write[1] = 'D';
-	buf.write[2] = 'S';
-	buf.write[3] = 'C';
+	buf.write[0] = 'P';
+	buf.write[1] = 'E';
+	buf.write[2] = 'P';
+	buf.write[3] = 'S';
 	encode_uint32(BYTECODE_VERSION, &buf.write[4]);
 	encode_uint32(identifier_map.size(), &buf.write[8]);
 	encode_uint32(constant_map.size(), &buf.write[12]);
