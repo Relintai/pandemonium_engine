@@ -225,7 +225,7 @@ void PagedArticleWebPage::_load() {
 
 		String pagination;
 
-		pagination = HTMLPaginator::get_pagination_links_old(get_full_uri(false), files, i, _max_pagination_links);
+		pagination = HTMLPaginator::get_pagination_links_old(get_full_uri(true), files, i, _max_pagination_links);
 
 		String finals;
 
