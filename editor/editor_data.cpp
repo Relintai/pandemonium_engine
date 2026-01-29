@@ -1116,8 +1116,9 @@ void EditorData::script_class_load_icon_paths() {
 				continue;
 			}
 
-			StringName name = v.operator StringName();
-			_script_class_icon_paths[name] = d[name];
+			String name = v.operator String();
+			StringName namesn = v.operator StringName();
+			_script_class_icon_paths[namesn] = d[name];
 		}
 	}
 }
