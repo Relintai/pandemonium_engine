@@ -1078,7 +1078,7 @@ void EditorData::script_class_save_icon_paths() {
 
 		String icon_path = v;
 		if (ScriptServer::is_global_class(name)) {
-			d[name] = icon_path;
+			d[name.operator String()] = icon_path;
 		}
 	}
 
