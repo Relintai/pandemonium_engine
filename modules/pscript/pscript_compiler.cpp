@@ -1345,6 +1345,7 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 
 						LocalVector<int> jump_table_addresses;
 
+						// Write case checks. (Includes the default block)
 						for (int j = 0; j < switch_node->compiled_pattern_branches.size(); j++) {
 							PScriptParser::SwitchNode::CompiledPatternBranch branch = switch_node->compiled_pattern_branches[j];
 
@@ -1365,6 +1366,11 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 							codegen.opcodes.push_back(0); // Jump to address
 						}
 
+						// We did not match any statements, break.
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_JUMP);
+						codegen.opcodes.push_back(break_address);
+
+						// Write all case branches
 						for (int j = 0; j < switch_node->compiled_pattern_branches.size(); j++) {
 							PScriptParser::SwitchNode::CompiledPatternBranch branch = switch_node->compiled_pattern_branches[j];
 
