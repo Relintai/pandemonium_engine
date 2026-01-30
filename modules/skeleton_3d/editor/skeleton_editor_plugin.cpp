@@ -883,6 +883,7 @@ void SkeletonEditor::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_draw_handles"), &SkeletonEditor::_draw_handles);
 	ClassDB::bind_method(D_METHOD("_draw_gizmo"), &SkeletonEditor::_draw_gizmo);
 	ClassDB::bind_method(D_METHOD("_update_gizmo_visible"), &SkeletonEditor::_update_gizmo_visible);
+	ClassDB::bind_method(D_METHOD("_bone_enabled_changed"), &SkeletonEditor::_bone_enabled_changed);
 
 	_bind_tool_popup_methods();
 }
