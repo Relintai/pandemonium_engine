@@ -2591,14 +2591,11 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static, bool p_consu
 			case PScriptTokenizer::TK_IDENTIFIER: {
 				// Variable declaration.
 
-				bool const_was_consumed = false;
-
 				// Consume a single const kewyord
 				if (token == PScriptTokenizer::TK_PR_CONST) {
 					tokenizer->advance();
 
 					token = tokenizer->get_token();
-					const_was_consumed = true;
 				}
 
 				if (token == PScriptTokenizer::TK_IDENTIFIER) {
@@ -2680,13 +2677,6 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static, bool p_consu
 
 				// _parse_type does this
 				//tokenizer->advance();
-
-				// Consume a single & if it's there and we started as const.
-				if (const_was_consumed && tokenizer->get_token() == PScriptTokenizer::TK_OP_BIT_AND) {
-					tokenizer->advance();
-
-					token = tokenizer->get_token();
-				}
 
 				int var_line = tokenizer->get_token_line();
 				if (!tokenizer->is_token_literal(0, true)) {
