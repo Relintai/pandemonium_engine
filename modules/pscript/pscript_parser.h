@@ -585,7 +585,7 @@ private:
 	void _transform_switch_statment(SwitchNode *p_switch_statement);
 	void _generate_pattern(PatternNode *p_pattern, Node *p_node_to_match, Node *&p_resulting_node);
 
-	void _parse_block(BlockNode *p_block, bool p_static);
+	void _parse_block(BlockNode *p_block, bool p_static, bool p_consume_end_curly_bracket = true);
 	void _parse_extends(ClassNode *p_class);
 	void _parse_class(ClassNode *p_class);
 	bool _end_statement();

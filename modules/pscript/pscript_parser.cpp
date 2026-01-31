@@ -2298,9 +2298,7 @@ void PScriptParser::_parse_pattern_block(BlockNode *p_block, Vector<PatternBranc
 		}
 
 		if (tokenizer->get_token() == PScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
-			// Don't Consume }
-			// Caller will need it to be there
-			//tokenizer->advance();
+			tokenizer->advance();
 			break; // go back a level
 		}
 
@@ -2344,7 +2342,7 @@ void PScriptParser::_parse_pattern_block(BlockNode *p_block, Vector<PatternBranc
 			return;
 		}
 
-		_parse_block(branch->body, p_static);
+		_parse_block(branch->body, p_static, false);
 
 		current_block = p_block;
 
@@ -2478,7 +2476,7 @@ void PScriptParser::_transform_switch_statment(SwitchNode *p_switch_statement) {
 	}
 }
 
-void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
+void PScriptParser::_parse_block(BlockNode *p_block, bool p_static, bool p_consume_end_curly_bracket) {
 #ifdef DEBUG_ENABLED
 
 	pending_newline = -1; // reset for the new block
@@ -2499,7 +2497,9 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 		if (token == PScriptTokenizer::TK_CURLY_BRACKET_CLOSE) {
 			p_block->end_line = tokenizer->get_token_line();
 			// Consume }
-			tokenizer->advance();
+			if (p_consume_end_curly_bracket) {
+				tokenizer->advance();
+			}
 			return;
 		}
 
