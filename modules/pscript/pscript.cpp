@@ -1795,6 +1795,7 @@ void PScriptLanguage::get_reserved_words(List<String> *p_words) const {
 		"case",
 		"while",
 		"default",
+		"Ref",
 		nullptr
 	};
 
