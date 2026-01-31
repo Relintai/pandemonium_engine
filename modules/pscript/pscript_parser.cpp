@@ -2584,11 +2584,22 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static, bool p_consu
 				p_block->statements.push_back(cf_block);
 
 			} break;
+			case PScriptTokenizer::TK_PR_CONST:
 			case PScriptTokenizer::TK_PR_VOID:
 			case PScriptTokenizer::TK_PR_VARIANT:
 			case PScriptTokenizer::TK_BUILT_IN_TYPE:
 			case PScriptTokenizer::TK_IDENTIFIER: {
 				// Variable declaration.
+
+				bool const_was_consumed = false;
+
+				// Consume a single const kewyord
+				if (token == PScriptTokenizer::TK_PR_CONST) {
+					tokenizer->advance();
+
+					token = tokenizer->get_token();
+					const_was_consumed = true;
+				}
 
 				if (token == PScriptTokenizer::TK_IDENTIFIER) {
 					PScriptTokenizer::Token lookahead = tokenizer->get_token(1);
@@ -2669,6 +2680,13 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static, bool p_consu
 
 				// _parse_type does this
 				//tokenizer->advance();
+
+				// Consume a single & if it's there and we started as const.
+				if (const_was_consumed && tokenizer->get_token() == PScriptTokenizer::TK_OP_BIT_AND) {
+					tokenizer->advance();
+
+					token = tokenizer->get_token();
+				}
 
 				int var_line = tokenizer->get_token_line();
 				if (!tokenizer->is_token_literal(0, true)) {
@@ -4992,6 +5010,17 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 								continue;
 							}
 
+							// only once
+							bool const_was_consumed = false;
+							if (tokenizer->get_token() == PScriptTokenizer::TK_PR_CONST) {
+								tokenizer->advance();
+								const_was_consumed = true;
+
+								while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
+									tokenizer->advance();
+								}
+							}
+
 							DataType argtype;
 							if (!_parse_type(argtype, false, false)) {
 								_set_error("Expected a type for an argument.");
@@ -5000,6 +5029,13 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 							argument_types.push_back(argtype);
 
 							//tokenizer->advance();
+							if (const_was_consumed && tokenizer->get_token() == PScriptTokenizer::TK_OP_BIT_AND) {
+								tokenizer->advance();
+
+								while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
+									tokenizer->advance();
+								}
+							}
 
 							if (!tokenizer->is_token_literal(0, true)) {
 								_set_error("Expected an identifier for an argument.");
@@ -5070,6 +5106,18 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 					}
 
 					tokenizer->advance();
+
+					while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
+						tokenizer->advance();
+					}
+
+					if (tokenizer->get_token() == PScriptTokenizer::TK_PR_CONST) {
+						tokenizer->advance();
+
+						while (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
+							tokenizer->advance();
+						}
+					}
 
 					BlockNode *block = alloc_node<BlockNode>();
 					block->parent_class = p_class;
