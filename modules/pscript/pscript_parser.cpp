@@ -2585,6 +2585,7 @@ void PScriptParser::_parse_block(BlockNode *p_block, bool p_static, bool p_consu
 
 			} break;
 			case PScriptTokenizer::TK_PR_CONST:
+			case PScriptTokenizer::TK_PR_REF:
 			case PScriptTokenizer::TK_PR_VOID:
 			case PScriptTokenizer::TK_PR_VARIANT:
 			case PScriptTokenizer::TK_BUILT_IN_TYPE:
@@ -5780,6 +5781,21 @@ bool PScriptParser::_parse_type(DataType &r_type, bool p_can_be_void, bool p_adv
 	bool can_index = false;
 	String full_name;
 
+	bool ref_was_consumed = false;
+
+	if (tokenizer->get_token() == PScriptTokenizer::TK_PR_REF) {
+		ref_was_consumed = true;
+
+		tokenizer->advance();
+
+		if (tokenizer->get_token() == PScriptTokenizer::TK_OP_LESS) {
+			tokenizer->advance();
+		} else {
+			_set_error("Expected '<' after Ref.");
+			return false;
+		}
+	}
+
 	if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
 		completion_cursor = StringName();
 		if (p_both_virtual_and_type_autocomplete) {
@@ -5870,6 +5886,11 @@ bool PScriptParser::_parse_type(DataType &r_type, bool p_can_be_void, bool p_adv
 					if (can_index) {
 						//_set_error("Unexpected identifier.");
 
+						if (ref_was_consumed) {
+							_set_error("Missing '>' after Ref.");
+							return false;
+						}
+
 						r_type.native_type = full_name;
 						return true;
 					}
@@ -5899,6 +5920,15 @@ bool PScriptParser::_parse_type(DataType &r_type, bool p_can_be_void, bool p_adv
 		}
 
 		r_type.native_type = full_name;
+	}
+
+	if (ref_was_consumed) {
+		if (tokenizer->get_token() == PScriptTokenizer::TK_OP_GREATER) {
+			tokenizer->advance();
+		} else {
+			_set_error("Missing '>' after Ref.");
+			return false;
+		}
 	}
 
 	return true;

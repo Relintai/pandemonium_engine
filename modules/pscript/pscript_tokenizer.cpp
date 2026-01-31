@@ -106,6 +106,7 @@ const char *PScriptTokenizer::token_names[TK_MAX] = {
 	"assert",
 	"signal",
 	"breakpoint",
+	"Ref",
 	"'['",
 	"']'",
 	"'{'",
@@ -213,6 +214,7 @@ static const _kws _keyword_list[] = {
 	{ PScriptTokenizer::TK_PR_ASSERT, "assert" },
 	{ PScriptTokenizer::TK_PR_SIGNAL, "signal" },
 	{ PScriptTokenizer::TK_PR_BREAKPOINT, "breakpoint" },
+	{ PScriptTokenizer::TK_PR_REF, "Ref" },
 	{ PScriptTokenizer::TK_PR_CONST, "const" },
 	{ PScriptTokenizer::TK_PR_ENUM, "enum" },
 	//controlflow
@@ -334,6 +336,7 @@ bool PScriptTokenizer::is_token_literal(int p_offset, bool variable_safe) const 
 	switch (get_token(p_offset)) {
 		// Can always be literal:
 		case TK_IDENTIFIER:
+		case TK_PR_REF:
 
 		case TK_PR_ONREADY:
 		case TK_PR_TOOL:
