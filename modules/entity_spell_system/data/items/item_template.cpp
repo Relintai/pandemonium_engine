@@ -486,7 +486,7 @@ void ItemTemplate::_validate_property(PropertyInfo &property) const {
 }
 
 void ItemTemplate::_bind_methods() {
-	BIND_VMETHOD(MethodInfo("_create_item_instance"));
+	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), "_create_item_instance"));
 
 	ClassDB::bind_method(D_METHOD("create_item_instance"), &ItemTemplate::create_item_instance);
 
