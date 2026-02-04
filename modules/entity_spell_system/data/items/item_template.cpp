@@ -409,14 +409,10 @@ int ItemTemplate::get_animator_weapon_type() {
 }
 
 Ref<ItemInstance> ItemTemplate::create_item_instance() {
-	if (has_method("_create_item_instance")) {
-		Ref<ItemInstance> ii = call("_create_item_instance");
+	return call("_create_item_instance");
+}
 
-		ERR_FAIL_COND_V(!ii.is_valid(), Ref<ItemInstance>());
-
-		return ii;
-	}
-
+Ref<ItemInstance> ItemTemplate::_create_item_instance() {
 	Ref<ItemInstance> item;
 	item.instance();
 
@@ -489,6 +485,7 @@ void ItemTemplate::_bind_methods() {
 	BIND_VMETHOD(MethodInfo(PropertyInfo(Variant::OBJECT, "ret", PROPERTY_HINT_RESOURCE_TYPE, "ItemInstance"), "_create_item_instance"));
 
 	ClassDB::bind_method(D_METHOD("create_item_instance"), &ItemTemplate::create_item_instance);
+	ClassDB::bind_method(D_METHOD("_create_item_instance"), &ItemTemplate::_create_item_instance);
 
 	ClassDB::bind_method(D_METHOD("get_id"), &ItemTemplate::get_id);
 	ClassDB::bind_method(D_METHOD("set_id", "count"), &ItemTemplate::set_id);

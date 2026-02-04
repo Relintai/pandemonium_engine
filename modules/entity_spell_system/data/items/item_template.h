@@ -179,6 +179,7 @@ public:
 	int get_animator_weapon_type();
 
 	Ref<ItemInstance> create_item_instance();
+	virtual Ref<ItemInstance> _create_item_instance();
 
 	String get_description();
 
