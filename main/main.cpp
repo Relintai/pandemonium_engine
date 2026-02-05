@@ -105,6 +105,7 @@
 #endif // TOOLS_ENABLED && !PSCRIPT_NO_LSP
 #endif // MODULE_PSCRIPT_ENABLED
 
+
 /* Static members */
 
 // Singletons
@@ -1020,7 +1021,7 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 				OS::get_singleton()->print("Missing <path> argument for --benchmark-file <path>.\n");
 				goto error;
 			}
-#if defined(TOOLS_ENABLED) && !defined(GDSCRIPT_NO_LSP)
+#if defined(MODULE_GDSCRIPT_ENABLED) && defined(TOOLS_ENABLED) && !defined(GDSCRIPT_NO_LSP)
 		} else if (I->get() == "--gd-lsp-port") {
 			if (I->next()) {
 				int port_override = I->next()->get().to_int();
@@ -1035,7 +1036,7 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 				goto error;
 			}
 #endif // TOOLS_ENABLED && !GDSCRIPT_NO_LSP
-#if defined(TOOLS_ENABLED) && !defined(PSCRIPT_NO_LSP)
+#if defined(MODULE_PSCRIPT_ENABLED) && defined(TOOLS_ENABLED) && !defined(PSCRIPT_NO_LSP)
 		} else if (I->get() == "--p-lsp-port") {
 			if (I->next()) {
 				int port_override = I->next()->get().to_int();
