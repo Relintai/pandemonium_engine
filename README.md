@@ -324,6 +324,34 @@ is good enough for general use. If not add helpers as needed.
 
 Maybe compression could be added. At least the algorithms that are already available in the engine.
 
+### No-Scripting build
+
+It was never too difficult to convert GDScript to engine side c++, but with PScript it's even easier to do.
+
+A special build could be done, which only enables properties on objects for serialization, and no other 
+methods.
+
+Something like a  `no_scripting=yes` option.
+
+It should set a NO_SCRIPTING define.
+
+This would reduce the executable size by quite a bit.
+
+In the editor the docs could be simplifed in this case -> no need for methods, only node descriptions.
+
+The editor would work too, so assets can be assembled the same.
+
+But everything that's scripting only in `_bind_methods()` need to be wrapped in `#ifndef NO_SCRIPTING`.
+
+What's more problematic is that in the editor build everything the editor uses for undo / redo needs to be enabled,
+so probably an another define should also be added. Something like `#ifndef NO_SCRIPTING_TOOLS`.
+
+Note that it should use be `#ifndef`, so incorrectly setup ide-s don't make most of those lines grey.
+
+### Custom export templates and custom engine build improvements
+
+There should be more scripts making building + handling custom export templates easier.
+
 ### Renderer
 
 #### Software renderer
@@ -362,3 +390,4 @@ Binary shaders could also be saved, and then loaded on demand.
 The Inverse Kinematics system has some bugs, those should be fixed.
 
 Also it will probably need som api and usage improvements.
+
