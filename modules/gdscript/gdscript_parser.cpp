@@ -1071,7 +1071,7 @@ GDScriptParser::Node *GDScriptParser::_parse_expression(Node *p_parent, bool p_s
 							// We check with is_token_literal, as this allows us to use match/sync/etc. as a name
 							//lua style identifier, easier to write
 							ConstantNode *cn = alloc_node<ConstantNode>();
-							cn->value = tokenizer->get_token_literal();
+							cn->value = String(tokenizer->get_token_literal());
 							cn->datatype = _type_from_variant(cn->value);
 							key = cn;
 							tokenizer->advance(2);
