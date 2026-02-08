@@ -172,10 +172,11 @@ UseTab:          Always
 ---
 ### C++ specific config ###
 Language:        Cpp
-Standard:        c++14
+Standard:        c++03
 ---
 ### ObjC specific config ###
 Language:        ObjC
+Standard:        c++03
 # ObjCBinPackProtocolList: Auto
 ObjCBlockIndentWidth: 4
 # ObjCBreakBeforeNestedBlockParam: true
