@@ -8629,7 +8629,26 @@ void PScriptParser::_check_block_types(BlockNode *p_block) {
 						if (op->op == OperatorNode::OP_TERNARY_IF) {
 							_add_warning(PScriptWarning::STANDALONE_TERNARY, statement->line);
 						} else {
-							_add_warning(PScriptWarning::STANDALONE_EXPRESSION, statement->line);
+							if (op->op == OperatorNode::OP_INDEX_NAMED) {
+								if (op->arguments.size() == 2) {
+									Node *tin = op->arguments[1];
+
+									if (tin && tin->type == Node::TYPE_IDENTIFIER) {
+										IdentifierNode *id = static_cast<IdentifierNode *>(tin);
+
+										if (id->name != CoreStringNames::singleton->_pre_inc && id->name != CoreStringNames::singleton->_pre_dec &&
+												id->name != CoreStringNames::singleton->_post_inc && id->name != CoreStringNames::singleton->_post_dec) {
+											_add_warning(PScriptWarning::STANDALONE_EXPRESSION, statement->line);
+										}
+									} else {
+										_add_warning(PScriptWarning::STANDALONE_EXPRESSION, statement->line);
+									}
+								} else {
+									_add_warning(PScriptWarning::STANDALONE_EXPRESSION, statement->line);
+								}
+							} else {
+								_add_warning(PScriptWarning::STANDALONE_EXPRESSION, statement->line);
+							}
 						}
 #endif // DEBUG_ENABLED
 					}
@@ -8886,7 +8905,7 @@ Error PScriptParser::_parse(const String &p_base_path) {
 #ifdef DEBUG_ENABLED
 
 	// Resolve warning ignores
-	Vector<Pair<int, String>> warning_skips = tokenizer->get_warning_skips();
+	Vector<Pair<int, String> > warning_skips = tokenizer->get_warning_skips();
 	GLOBAL_CACHED(global_treat_warnings_as_errors, bool, "debug/pscript/warnings/treat_warnings_as_errors");
 
 	bool warning_is_error = global_treat_warnings_as_errors;
