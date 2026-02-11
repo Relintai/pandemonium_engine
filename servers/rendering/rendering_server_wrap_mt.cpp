@@ -38,13 +38,10 @@ void RenderingServerWrapMT::thread_exit() {
 }
 
 void RenderingServerWrapMT::thread_draw(bool p_swap_buffers, double frame_step) {
-	if (!draw_pending.decrement()) {
-		rendering_server->draw(p_swap_buffers, frame_step);
-	}
+	rendering_server->draw(p_swap_buffers, frame_step);
 }
 
 void RenderingServerWrapMT::thread_flush() {
-	draw_pending.decrement();
 }
 
 void RenderingServerWrapMT::thread_halt() {
@@ -104,7 +101,6 @@ void RenderingServerWrapMT::pre_draw(bool p_will_draw) {
 
 void RenderingServerWrapMT::sync() {
 	if (create_thread) {
-		draw_pending.increment();
 		command_queue.push_and_sync(this, &RenderingServerWrapMT::thread_flush);
 	} else {
 		command_queue.flush_all(); //flush all pending from other threads
@@ -126,7 +122,6 @@ void RenderingServerWrapMT::thaw() {
 
 void RenderingServerWrapMT::draw(bool p_swap_buffers, double frame_step) {
 	if (create_thread) {
-		draw_pending.increment();
 		command_queue.push(this, &RenderingServerWrapMT::thread_draw, p_swap_buffers, frame_step);
 	} else {
 		rendering_server->draw(p_swap_buffers, frame_step);
