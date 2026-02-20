@@ -51,7 +51,7 @@ public:
 	_ALWAYS_INLINE_ Error try_lock() const { return OK; }
 };
 
-class MutexLock {
+class _NO_DISCARD_CLASS_ MutexLock {
 public:
 	explicit MutexLock(const MutexImpl<FakeMutex> &p_mutex) {}
 };
