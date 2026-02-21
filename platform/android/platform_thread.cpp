@@ -210,7 +210,7 @@ void *Thread::thread_callback(void *userdata) {
 	//init_func();
 	if (env) {
 		// thread never detached! just keep using...
-		return;
+		return NULL;
 	}
 
 	java_vm->AttachCurrentThread(&env, nullptr);
