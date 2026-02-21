@@ -2,7 +2,10 @@
 
 Import("env")
 
+# Note power_iphone.cpp seems to be missing.
+
 iphone_lib = [
+    "platform_thread.cpp",
     "pandemonium_iphone.mm",
     "os_iphone.mm",
     "main.m",

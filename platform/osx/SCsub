@@ -6,6 +6,7 @@ from platform_methods import run_in_subprocess
 import platform_osx_builders
 
 files = [
+    "platform_thread.cpp",
     "crash_handler_osx.mm",
     "os_osx.mm",
     "pandemonium_main_osx.mm",

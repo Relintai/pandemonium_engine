@@ -28,7 +28,7 @@ for libname in ['gles2', 'gles3']:
 frt_env = env.Clone()
 frt_env.ParseConfig(env['FRT_PKG_CONFIG'] + ' sdl2 --cflags --libs')
 
-common_sources = [ 'frt_exe.cc', 'frt.cc', 'frt_godot3.cc', 'dl/gles2.gen.cc', 'dl/gles3.gen.cc' ]
+common_sources = [ 'frt_exe.cc', 'frt.cc', 'frt_godot3.cc', 'dl/gles2.gen.cc', 'dl/gles3.gen.cc', 'platform_thread.cpp' ]
 
 std = env['frt_std']
 
@@ -36,3 +36,4 @@ if std != 'no':
 	frt_env.Append(CCFLAGS=['-std=c++14'])
 
 prog = frt_env.add_program('#bin/pandemonium', common_sources)
+

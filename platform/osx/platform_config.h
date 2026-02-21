@@ -39,3 +39,10 @@
 #endif
 
 #define PTHREAD_RENAME_SELF
+
+
+// Note: The default implementation should be the dummy one. (eventually)
+#if !defined(NO_THREADS)
+#define PLATFORM_THREAD_OVERRIDE
+#endif
+
