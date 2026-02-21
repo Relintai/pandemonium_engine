@@ -53,7 +53,7 @@ static pthread_key_t _create_thread_id_key() {
 	return key;
 }
 
-Thread::ID Thread::_main_thread_id = pthread_self();
+Thread::ID Thread::_main_thread_id = 0;
 static thread_local Thread::ID _caller_id = 0;
 static thread_local bool _caller_id_cached = false;
 
