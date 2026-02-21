@@ -192,11 +192,13 @@ void *Thread::thread_callback(void *userdata) {
 	// Note _thread_id_key_destr_callback frees this
 	pthread_setspecific(_thread_id_key, (void *)memnew(ID(t->_id)));
 
+	/*
 	if (t->_settings.priority == PRIORITY_LOW) {
 		pthread_setschedparam(t->_pthread, sched_get_priority_min(2));
 	} else if (t->_settings.priority == PRIORITY_HIGH) {
 		pthread_setschedparam(t->_pthread, sched_get_priority_max(2));
 	}
+	*/
 
 	//init_func();
 
