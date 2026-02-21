@@ -17,6 +17,7 @@ common_win = [
     "power_windows.cpp",
     "windows_terminal_logger.cpp",
     "sub_process_windows.cpp",
+    "platform_thread.cpp",
 ]
 
 res_file = "pandemonium_res.rc"

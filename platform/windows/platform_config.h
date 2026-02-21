@@ -39,3 +39,8 @@
 #ifndef GLES3_DISABLED
 #define GLES3_INCLUDE_H "thirdparty/glad/glad/glad.h"
 #endif
+
+// Note: The default implementation should be the dummy one. (eventually)
+#if !defined(NO_THREADS)
+#define PLATFORM_THREAD_OVERRIDE
+#endif
