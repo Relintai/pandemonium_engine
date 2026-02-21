@@ -363,6 +363,10 @@ Note that it should use be `#ifndef`, so incorrectly setup ide-s don't make most
 
 There should be more scripts making building + handling custom export templates easier.
 
+### Quick build using containers for all platforms
+
+Swt up a container build script that builds an editor for all platforms.
+
 ### Renderer
 
 #### Software renderer
