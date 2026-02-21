@@ -153,7 +153,18 @@ code, to the satisfaction of the project maintainers.
 These are the planned new features. On top of this there will be lots of unplanned things,
 also improvements to the engine as a whole.
 
-### Migrate the codebase back to c++03
+### Migrate the codebase back to c++03 or c++11 with no stl
+
+Likely this will end up being c++11 with a relatively strict coding guideline, that starts with banning
+the use of stl outright.
+
+I'm not too fond of the c++03's template in template syntax thing, and this gives move constructors,
+which is a nice optimization. Also it gives in class variable initialization (no need to only use constructors),
+but if a constructor is present, it should probably be the guideline that it's the only thing to init variables.
+
+I'm pretty sure some of the thirdparty dependencies need c++11, so at least that would be solved aswell.
+
+Old description:
 
 Currently the codebase is mostly c++03 with some c++11, and c++14 (std threading) sprinkled in.
 
