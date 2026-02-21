@@ -29,6 +29,11 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "platform_config.h"
+
+// If set thread provides these implementations
+#ifndef PLATFORM_THREAD_OVERRIDE
+
 #include "thread_jandroid.h"
 
 #include <android/log.h>
@@ -82,3 +87,5 @@ JNIEnv *get_jni_env() {
 
 	return env;
 }
+
+#endif
