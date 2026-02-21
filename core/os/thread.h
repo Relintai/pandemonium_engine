@@ -32,6 +32,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "platform_config.h"
+
 // Define PLATFORM_THREAD_OVERRIDE in your platform's `platform_config.h`
 // to use a custom Thread implementation defined in `platform/[your_platform]/platform_thread.h`
 // Overriding the platform implementation is required in some proprietary platforms
@@ -70,6 +72,8 @@ private:
 	friend class Main;
 
 	static ID main_thread_id;
+
+	static void setup_main_thread_id(ID p_main_thread_id) { main_thread_id = p_main_thread_id; }
 
 	static uint64_t _thread_id_hash(const std::thread::id &p_t);
 

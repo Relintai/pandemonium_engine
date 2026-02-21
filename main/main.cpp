@@ -1505,7 +1505,9 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 
 #if !defined(NO_THREADS)
 	if (p_main_tid_override) {
-		Thread::main_thread_id = p_main_tid_override;
+		Thread::setup_main_thread_id(p_main_tid_override);
+	} else {
+		Thread::setup_main_thread_id(Thread::get_caller_id());
 	}
 #endif
 

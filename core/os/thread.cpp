@@ -29,6 +29,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "platform_config.h"
+
 #ifndef PLATFORM_THREAD_OVERRIDE // See details in thread.h
 
 #include "thread.h"
