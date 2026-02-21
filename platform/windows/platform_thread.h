@@ -75,12 +75,12 @@ public:
 	Thread();
 	~Thread();
 
+	static void _thread_callback(Thread *t);
+
 private:
 	friend class Main;
 
 	static void setup_main_thread_id(ID p_main_thread_id);
-
-	// Thread callback in only in the cpp file.
 
 	static ID _main_thread_id;
 

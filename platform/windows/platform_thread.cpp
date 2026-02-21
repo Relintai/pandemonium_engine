@@ -49,6 +49,12 @@ static thread_local bool _caller_id_cached = false;
 static DWORD WINAPI thread_callback(LPVOID userdata) {
 	Thread *t = reinterpret_cast<Thread *>(userdata);
 
+	Thread::_thread_callback(t);
+
+	return 0;
+}
+
+void Thread::_thread_callback(Thread *t) {
 	t->_id = (ID)GetCurrentThreadId(); // must implement
 
 	_caller_id = t->_id;
@@ -66,8 +72,6 @@ static DWORD WINAPI thread_callback(LPVOID userdata) {
 	SetEvent(t->_handle);
 
 	ScriptServer::thread_exit();
-
-	return 0;
 }
 
 Thread::ID Thread::get_caller_id() {
