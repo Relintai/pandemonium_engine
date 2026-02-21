@@ -81,7 +81,7 @@ Thread::ID Thread::get_caller_id() {
 		_caller_id = (ID)GetCurrentThreadId();
 		_caller_id_cached = true;
 
-		return new_id;
+		return _caller_id;
 	}
 }
 
