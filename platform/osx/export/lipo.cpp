@@ -73,7 +73,7 @@ bool LipO::create_file(const String &p_output_path, const PoolStringArray &p_fil
 	}
 
 	// Write header.
-	bool is_64 = (max_size >= std::numeric_limits<uint32_t>::max());
+	bool is_64 = (max_size >= UINT32_MAX);
 	if (is_64) {
 		fa->store_32(0xbfbafeca);
 	} else {

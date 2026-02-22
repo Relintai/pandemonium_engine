@@ -179,7 +179,7 @@ class DynamicFontAtSize : public Reference {
 			int32_t y = 0;
 			int32_t waste = 0;
 			List<Shelf>::Element *best_shelf = nullptr;
-			int32_t best_waste = std::numeric_limits<std::int32_t>::max();
+			int32_t best_waste = INT32_MAX;
 
 			for (List<Shelf>::Element *E = shelves.front(); E; E = E->next()) {
 				y += E->get().h;
