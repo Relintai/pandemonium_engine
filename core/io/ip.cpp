@@ -41,7 +41,7 @@ VARIANT_ENUM_CAST(IP::ResolverStatus);
 
 struct _IP_ResolverPrivate {
 	struct QueueItem {
-		SafeNumeric<IP::ResolverStatus> status;
+		SafeNumeric<uint32_t> status;
 		List<IP_Address> response;
 		String hostname;
 		IP::Type type;
@@ -187,7 +187,7 @@ IP::ResolverID IP::resolve_hostname_queue_item(const String &p_hostname, IP::Typ
 IP::ResolverStatus IP::get_resolve_item_status(ResolverID p_id) const {
 	ERR_FAIL_INDEX_V_MSG(p_id, IP::RESOLVER_MAX_QUERIES, IP::RESOLVER_STATUS_NONE, vformat("Too many concurrent DNS resolver queries (%d, but should be %d at most). Try performing less network requests at once.", p_id, IP::RESOLVER_MAX_QUERIES));
 
-	IP::ResolverStatus res = resolver->queue[p_id].status.get();
+	IP::ResolverStatus res = (IP::ResolverStatus)resolver->queue[p_id].status.get();
 	if (res == IP::RESOLVER_STATUS_NONE) {
 		ERR_PRINT("Condition status == IP::RESOLVER_STATUS_NONE");
 		return IP::RESOLVER_STATUS_NONE;
