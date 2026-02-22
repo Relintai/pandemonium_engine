@@ -41,6 +41,7 @@
 #include <sys/ioctl.h>
 #include <sys/mman.h>
 #include <unistd.h>
+#include <cerrno>
 
 String CameraFeedLinux::get_device_name() const {
 	return device_name;
