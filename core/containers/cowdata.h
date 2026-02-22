@@ -47,10 +47,6 @@ class CharString;
 template <class T, class V>
 class VMap;
 
-#if !defined(NO_THREADS)
-SAFE_NUMERIC_TYPE_PUN_GUARANTEES(uint32_t)
-#endif
-
 template <class T>
 class CowData {
 	template <class TV>
