@@ -38,17 +38,17 @@
 
 // Lock the rwlock, block if locked by someone else
 void RWLock::read_lock() const {
-	AcquireSRWLockShared((SRWLOCK *)lock);
+	AcquireSRWLockShared((SRWLOCK *)rwlock);
 }
 
 // Unlock the rwlock, let other threads continue
 void RWLock::read_unlock() const {
-	ReleaseSRWLockShared((SRWLOCK *)lock);
+	ReleaseSRWLockShared((SRWLOCK *)rwlock);
 }
 
 // Attempt to lock the rwlock, OK on success, ERR_BUSY means it can't lock.
 Error RWLock::read_try_lock() const {
-	if (TryAcquireSRWLockShared((SRWLOCK *)lock) == 0) {
+	if (TryAcquireSRWLockShared((SRWLOCK *)rwlock) == 0) {
 		return ERR_BUSY;
 	} else {
 		return OK;
@@ -57,17 +57,17 @@ Error RWLock::read_try_lock() const {
 
 // Lock the rwlock, block if locked by someone else
 void RWLock::write_lock() {
-	AcquireSRWLockExclusive((SRWLOCK *)lock);
+	AcquireSRWLockExclusive((SRWLOCK *)rwlock);
 }
 
 // Unlock the rwlock, let other thwrites continue
 void RWLock::write_unlock() {
-	ReleaseSRWLockExclusive((SRWLOCK *)lock);
+	ReleaseSRWLockExclusive((SRWLOCK *)rwlock);
 }
 
 // Attempt to lock the rwlock, OK on success, ERR_BUSY means it can't lock.
 Error RWLock::write_try_lock() {
-	if (TryAcquireSRWLockExclusive((SRWLOCK *)lock) == 0) {
+	if (TryAcquireSRWLockExclusive((SRWLOCK *)rwlock) == 0) {
 		return ERR_BUSY;
 	} else {
 		return OK;
@@ -76,7 +76,7 @@ Error RWLock::write_try_lock() {
 
 RWLock::RWLock() {
 	rwlock = memnew(SRWLOCK);
-	InitializeSRWLock((SRWLOCK *)lock);
+	InitializeSRWLock((SRWLOCK *)rwlock);
 }
 
 RWLock::~RWLock() {
