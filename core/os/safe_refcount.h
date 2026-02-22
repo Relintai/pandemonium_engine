@@ -145,6 +145,16 @@ public:
 		flag = p_value;
 	}
 
+	_ALWAYS_INLINE_ bool test_and_set() {
+		if (flag) {
+			return false;
+		}
+
+		flag = true;
+
+		return true;
+	}
+
 	_ALWAYS_INLINE_ explicit SafeFlag(bool p_value = false) :
 			flag(p_value) {}
 };
