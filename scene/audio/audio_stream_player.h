@@ -53,7 +53,7 @@ private:
 	Vector<AudioFrame> fadeout_buffer;
 	bool use_fadeout = false;
 
-	SafeNumeric<float> setseek;
+	volatile float setseek;
 	SafeFlag active;
 	SafeFlag setstop;
 	SafeFlag stop_has_priority;

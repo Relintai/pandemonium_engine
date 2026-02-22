@@ -150,9 +150,9 @@ void AudioStreamPlayer3D::_mix_audio() {
 	}
 
 	bool started = false;
-	if (setseek.get() >= 0.0) {
-		stream_playback->start(setseek.get());
-		setseek.set(-1.0); //reset seek
+	if (setseek >= 0.0) {
+		stream_playback->start(setseek);
+		setseek = -1.0; //reset seek
 		started = true;
 	}
 
@@ -611,10 +611,10 @@ void AudioStreamPlayer3D::_notification(int p_what) {
 		}
 
 		//start playing if requested
-		if (setplay.get() >= 0.0) {
-			setseek.set(setplay.get());
+		if (setplay >= 0.0) {
+			setseek = setplay;
 			active.set();
-			setplay.set(-1);
+			setplay = -1;
 			//do not update, this makes it easier to animate (will shut off otherwise)
 			///_change_notify("playing"); //update property in editor
 		}
@@ -644,7 +644,7 @@ void AudioStreamPlayer3D::set_stream(Ref<AudioStream> p_stream) {
 		stream_playback.unref();
 		stream.unref();
 		active.clear();
-		setseek.set(-1);
+		setseek = -1;
 	}
 
 	if (p_stream.is_valid()) {
@@ -699,7 +699,7 @@ void AudioStreamPlayer3D::play(float p_from_pos) {
 	}
 
 	if (stream_playback.is_valid()) {
-		setplay.set(p_from_pos);
+		setplay = p_from_pos;
 		output_ready.clear();
 		set_physics_process_internal(true);
 	}
@@ -707,7 +707,7 @@ void AudioStreamPlayer3D::play(float p_from_pos) {
 
 void AudioStreamPlayer3D::seek(float p_seconds) {
 	if (stream_playback.is_valid()) {
-		setseek.set(p_seconds);
+		setseek = p_seconds;
 	}
 }
 
@@ -715,13 +715,13 @@ void AudioStreamPlayer3D::stop() {
 	if (stream_playback.is_valid()) {
 		active.clear();
 		set_physics_process_internal(false);
-		setplay.set(-1);
+		setplay = -1;
 	}
 }
 
 bool AudioStreamPlayer3D::is_playing() const {
 	if (stream_playback.is_valid()) {
-		return active.is_set() || setplay.get() >= 0;
+		return active.is_set() || setplay >= 0;
 	}
 
 	return false;
@@ -729,7 +729,7 @@ bool AudioStreamPlayer3D::is_playing() const {
 
 float AudioStreamPlayer3D::get_playback_position() {
 	if (stream_playback.is_valid()) {
-		float ss = setseek.get();
+		float ss = setseek;
 		if (ss >= 0.0) {
 			return ss;
 		}
@@ -1033,10 +1033,10 @@ AudioStreamPlayer3D::AudioStreamPlayer3D() {
 	max_db = 3;
 	pitch_scale = 1.0;
 	autoplay = false;
-	setseek.set(-1);
+	setseek = -1;
 	prev_output_count = 0;
 	max_distance = 0;
-	setplay.set(-1);
+	setplay = -1;
 	area_mask = 1;
 	emission_angle = 45;
 	emission_angle_enabled = false;

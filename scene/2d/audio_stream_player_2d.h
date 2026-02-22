@@ -68,9 +68,9 @@ private:
 	Ref<AudioStream> stream;
 	Vector<AudioFrame> mix_buffer;
 
-	SafeNumeric<float> setseek;
+	volatile float setseek;
+	volatile float setplay;
 	SafeFlag active;
-	SafeNumeric<float> setplay;
 
 	float volume_db;
 	float pitch_scale;

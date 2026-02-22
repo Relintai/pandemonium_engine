@@ -119,14 +119,14 @@ void AudioStreamPlayer::_mix_audio() {
 		setstop.clear();
 	}
 
-	if (setseek.get() >= 0.0 && !stop_has_priority.is_set()) {
+	if (setseek >= 0.0 && !stop_has_priority.is_set()) {
 		if (stream_playback->is_playing()) {
 			//fade out to avoid pops
 			_mix_internal(true);
 		}
 
-		stream_playback->start(setseek.get());
-		setseek.set(-1.0); //reset seek
+		stream_playback->start(setseek);
+		setseek = -1.0; //reset seek
 		mix_volume_db = volume_db; //reset ramp
 	}
 
@@ -144,7 +144,7 @@ void AudioStreamPlayer::_notification(int p_what) {
 	}
 
 	if (p_what == NOTIFICATION_INTERNAL_PROCESS) {
-		if (!active.is_set() || (setseek.get() < 0 && !stream_playback->is_playing())) {
+		if (!active.is_set() || (setseek < 0 && !stream_playback->is_playing())) {
 			active.clear();
 			set_process_internal(false);
 			emit_signal("finished");
@@ -204,7 +204,7 @@ void AudioStreamPlayer::set_stream(Ref<AudioStream> p_stream) {
 		stream_playback.unref();
 		stream.unref();
 		active.clear();
-		setseek.set(-1);
+		setseek = -1;
 		setstop.clear();
 	}
 
@@ -242,7 +242,7 @@ float AudioStreamPlayer::get_pitch_scale() const {
 void AudioStreamPlayer::play(float p_from_pos) {
 	if (stream_playback.is_valid()) {
 		//mix_volume_db = volume_db; do not reset volume ramp here, can cause clicks
-		setseek.set(p_from_pos);
+		setseek = p_from_pos;
 		stop_has_priority.clear();
 		active.set();
 		set_process_internal(true);
@@ -251,7 +251,7 @@ void AudioStreamPlayer::play(float p_from_pos) {
 
 void AudioStreamPlayer::seek(float p_seconds) {
 	if (stream_playback.is_valid()) {
-		setseek.set(p_seconds);
+		setseek = p_seconds;
 	}
 }
 
@@ -272,7 +272,7 @@ bool AudioStreamPlayer::is_playing() const {
 
 float AudioStreamPlayer::get_playback_position() {
 	if (stream_playback.is_valid()) {
-		float ss = setseek.get();
+		float ss = setseek;
 		if (ss >= 0.0) {
 			return ss;
 		}
@@ -414,7 +414,7 @@ AudioStreamPlayer::AudioStreamPlayer() {
 	pitch_scale = 1.0;
 	volume_db = 0;
 	autoplay = false;
-	setseek.set(-1);
+	setseek = -1;
 	stream_paused = false;
 	stream_paused_fade = false;
 	mix_target = MIX_TARGET_STEREO;
