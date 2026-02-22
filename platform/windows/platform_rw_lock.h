@@ -1,8 +1,8 @@
-#ifndef RWLOCK_H
-#define RWLOCK_H
+#ifndef PLATFORM_RWLOCK_H
+#define PLATFORM_RWLOCK_H
 
 /*************************************************************************/
-/*  rw_lock.h                                                            */
+/*  platform_rw_lock.h                                                   */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -33,21 +33,34 @@
 /*************************************************************************/
 
 #include "core/error/error_list.h"
-#include "core/typedefs.h"
-
-#if !defined(NO_THREADS)
-#include "platform_rw_lock.h"
-#else
+#include "core/error/error_macros.h"
 
 class RWLock {
-public:
-	_FORCE_INLINE_ void read_lock() const {}
-	_FORCE_INLINE_ void read_unlock() const {}
-	_FORCE_INLINE_ Error read_try_lock() const { return OK; }
+	// Don't want to include windows.h here
+	mutable void *rwlock;
 
-	_FORCE_INLINE_ void write_lock() {}
-	_FORCE_INLINE_ void write_unlock() {}
-	_FORCE_INLINE_ Error write_try_lock() { return OK; }
+public:
+	// Lock the rwlock, block if locked by someone else
+	void read_lock() const;
+
+	// Unlock the rwlock, let other threads continue
+	void read_unlock() const;
+
+	// Attempt to lock the rwlock, OK on success, ERR_BUSY means it can't lock.
+	Error read_try_lock() const;
+
+	// Lock the rwlock, block if locked by someone else
+	void write_lock();
+
+	// Unlock the rwlock, let other thwrites continue
+	void write_unlock();
+
+	// Attempt to lock the rwlock, OK on success, ERR_BUSY means it can't lock.
+	Error write_try_lock();
+
+	RWLock();
+
+	~RWLock();
 };
 
 class RWLockRead {
@@ -76,6 +89,4 @@ public:
 	}
 };
 
-#endif
-
-#endif // RWLOCK_H
+#endif // PLATFORM_RWLOCK_H

@@ -1,8 +1,5 @@
-#ifndef RWLOCK_H
-#define RWLOCK_H
-
 /*************************************************************************/
-/*  rw_lock.h                                                            */
+/*  paltform_rw_lock.cpp                                                 */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -32,50 +29,56 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/error/error_list.h"
-#include "core/typedefs.h"
-
-#if !defined(NO_THREADS)
 #include "platform_rw_lock.h"
-#else
 
-class RWLock {
-public:
-	_FORCE_INLINE_ void read_lock() const {}
-	_FORCE_INLINE_ void read_unlock() const {}
-	_FORCE_INLINE_ Error read_try_lock() const { return OK; }
+#include "core/os/memory.h"
 
-	_FORCE_INLINE_ void write_lock() {}
-	_FORCE_INLINE_ void write_unlock() {}
-	_FORCE_INLINE_ Error write_try_lock() { return OK; }
-};
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 
-class RWLockRead {
-	const RWLock &lock;
+// Lock the rwlock, block if locked by someone else
+void RWLock::read_lock() const {
+	AcquireSRWLockShared((SRWLOCK *)lock);
+}
 
-public:
-	RWLockRead(const RWLock &p_lock) :
-			lock(p_lock) {
-		lock.read_lock();
+// Unlock the rwlock, let other threads continue
+void RWLock::read_unlock() const {
+	ReleaseSRWLockShared((SRWLOCK *)lock);
+}
+
+// Attempt to lock the rwlock, OK on success, ERR_BUSY means it can't lock.
+Error RWLock::read_try_lock() const {
+	if (TryAcquireSRWLockShared((SRWLOCK *)lock) == 0) {
+		return ERR_BUSY;
+	} else {
+		return OK;
 	}
-	~RWLockRead() {
-		lock.read_unlock();
+}
+
+// Lock the rwlock, block if locked by someone else
+void RWLock::write_lock() {
+	AcquireSRWLockExclusive((SRWLOCK *)lock);
+}
+
+// Unlock the rwlock, let other thwrites continue
+void RWLock::write_unlock() {
+	ReleaseSRWLockExclusive((SRWLOCK *)lock);
+}
+
+// Attempt to lock the rwlock, OK on success, ERR_BUSY means it can't lock.
+Error RWLock::write_try_lock() {
+	if (TryAcquireSRWLockExclusive((SRWLOCK *)lock) == 0) {
+		return ERR_BUSY;
+	} else {
+		return OK;
 	}
-};
+}
 
-class RWLockWrite {
-	RWLock &lock;
+RWLock::RWLock() {
+	rwlock = memnew(SRWLOCK);
+	InitializeSRWLock((SRWLOCK *)lock);
+}
 
-public:
-	RWLockWrite(RWLock &p_lock) :
-			lock(p_lock) {
-		lock.write_lock();
-	}
-	~RWLockWrite() {
-		lock.write_unlock();
-	}
-};
-
-#endif
-
-#endif // RWLOCK_H
+RWLock::~RWLock() {
+	memdelete((SRWLOCK *)rwlock);
+}

@@ -1,8 +1,8 @@
-#ifndef RWLOCK_H
-#define RWLOCK_H
+#ifndef PLATFORM_RWLOCK_H
+#define PLATFORM_RWLOCK_H
 
 /*************************************************************************/
-/*  rw_lock.h                                                            */
+/*  platform_rw_lock.h                                                   */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -33,21 +33,62 @@
 /*************************************************************************/
 
 #include "core/error/error_list.h"
-#include "core/typedefs.h"
+#include "core/error/error_macros.h"
 
-#if !defined(NO_THREADS)
-#include "platform_rw_lock.h"
-#else
+#include <pthread.h>
 
 class RWLock {
-public:
-	_FORCE_INLINE_ void read_lock() const {}
-	_FORCE_INLINE_ void read_unlock() const {}
-	_FORCE_INLINE_ Error read_try_lock() const { return OK; }
+	mutable pthread_rwlock_t rwlock;
 
-	_FORCE_INLINE_ void write_lock() {}
-	_FORCE_INLINE_ void write_unlock() {}
-	_FORCE_INLINE_ Error write_try_lock() { return OK; }
+public:
+	// Lock the rwlock, block if locked by someone else
+	_FORCE_INLINE_ void read_lock() const {
+		int err = pthread_rwlock_rdlock(&rwlock);
+		ERR_FAIL_COND(err != 0);
+	}
+
+	// Unlock the rwlock, let other threads continue
+	_FORCE_INLINE_ void read_unlock() const {
+		pthread_rwlock_unlock(&rwlock);
+	}
+
+	// Attempt to lock the rwlock, OK on success, ERR_BUSY means it can't lock.
+	_FORCE_INLINE_ Error read_try_lock() const {
+		if (pthread_rwlock_tryrdlock(&rwlock) != 0) {
+			return ERR_BUSY;
+		} else {
+			return OK;
+		}
+	}
+
+	// Lock the rwlock, block if locked by someone else
+	_FORCE_INLINE_ void write_lock() {
+		int err = pthread_rwlock_wrlock(&rwlock);
+		ERR_FAIL_COND(err != 0);
+	}
+
+	// Unlock the rwlock, let other thwrites continue
+	_FORCE_INLINE_ void write_unlock() {
+		pthread_rwlock_unlock(&rwlock);
+	}
+
+	// Attempt to lock the rwlock, OK on success, ERR_BUSY means it can't lock.
+	_FORCE_INLINE_ Error write_try_lock() {
+		if (pthread_rwlock_trywrlock(&rwlock) != 0) {
+			return ERR_BUSY;
+		} else {
+			return OK;
+		}
+	}
+
+	RWLock() {
+		//rwlock=PTHREAD_RWLOCK_INITIALIZER; fails on OSX
+		pthread_rwlock_init(&rwlock, NULL);
+	}
+
+	~RWLock() {
+		pthread_rwlock_destroy(&rwlock);
+	}
 };
 
 class RWLockRead {
@@ -76,6 +117,4 @@ public:
 	}
 };
 
-#endif
-
-#endif // RWLOCK_H
+#endif // PLATFORM_RWLOCK_H
