@@ -31,6 +31,8 @@
 
 #include "platform_mutex.h"
 
+#include "core/os/memory.h"
+
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
