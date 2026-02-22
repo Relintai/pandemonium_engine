@@ -34,19 +34,20 @@
 
 #include "core/typedefs.h"
 
-#include <atomic>
+#include "safe_refcount.h"
 
 class SpinLock {
-	std::atomic_flag locked = ATOMIC_FLAG_INIT;
+	SafeFlag _flag;
 
 public:
 	_ALWAYS_INLINE_ void lock() {
-		while (locked.test_and_set(std::memory_order_acquire)) {
+		while (!_flag.test_and_set()) {
 			;
 		}
 	}
+
 	_ALWAYS_INLINE_ void unlock() {
-		locked.clear(std::memory_order_release);
+		_flag.clear();
 	}
 };
 #endif // SPIN_LOCK_H
