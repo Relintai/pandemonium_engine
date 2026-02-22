@@ -18,6 +18,7 @@ common_win = [
     "windows_terminal_logger.cpp",
     "sub_process_windows.cpp",
     "platform_thread.cpp",
+    "platform_mutex.cpp",
 ]
 
 res_file = "pandemonium_res.rc"

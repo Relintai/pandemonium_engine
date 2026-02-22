@@ -1,5 +1,8 @@
+#ifndef PLATFORM_MUTEX_H
+#define PLATFORM_MUTEX_H
+
 /*************************************************************************/
-/*  mutex.cpp                                                            */
+/*  mutex.h                                                              */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,15 +32,99 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "mutex.h"
+#include "core/error/error_list.h"
+#include "core/typedefs.h"
 
-static Mutex _global_mutex;
+#include <pthread.h>
 
-void _global_lock() {
-	_global_mutex.lock();
-}
+class Mutex {
+	friend class MutexLock;
 
-void _global_unlock() {
-	_global_mutex.unlock();
-}
+	mutable pthread_mutexattr_t attr;
+	mutable pthread_mutex_t mutex;
 
+public:
+	_ALWAYS_INLINE_ void lock() const {
+		pthread_mutex_lock(&mutex);
+	}
+
+	_ALWAYS_INLINE_ void unlock() const {
+		pthread_mutex_unlock(&mutex);
+	}
+
+	_ALWAYS_INLINE_ Error try_lock() const {
+		return (pthread_mutex_trylock(&mutex) == 0) ? OK : ERR_BUSY;
+	}
+
+	Mutex() {
+		pthread_mutexattr_init(&attr);
+		pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+		pthread_mutex_init(&mutex, &attr);
+	}
+
+	~Mutex() {
+		pthread_mutex_destroy(&mutex);
+	}
+};
+
+class BinaryMutex {
+	friend class MutexLock;
+
+	mutable pthread_mutexattr_t attr;
+	mutable pthread_mutex_t mutex;
+
+public:
+	_ALWAYS_INLINE_ void lock() const {
+		pthread_mutex_lock(&mutex);
+	}
+
+	_ALWAYS_INLINE_ void unlock() const {
+		pthread_mutex_unlock(&mutex);
+	}
+
+	_ALWAYS_INLINE_ Error try_lock() const {
+		return (pthread_mutex_trylock(&mutex) == 0) ? OK : ERR_BUSY;
+	}
+
+	BinaryMutex() {
+		pthread_mutexattr_init(&attr);
+		pthread_mutex_init(&mutex, &attr);
+	}
+
+	~BinaryMutex() {
+		pthread_mutex_destroy(&mutex);
+	}
+};
+
+// This is written this way instead of being a template to overcome a limitation of C++ pre-17
+// that would require MutexLock to be used like this: MutexLock<Mutex> lock;
+class MutexLock {
+	union {
+		Mutex *recursive_mutex;
+		BinaryMutex *mutex;
+	};
+	bool recursive;
+
+public:
+	_ALWAYS_INLINE_ explicit MutexLock(const Mutex &p_mutex) {
+		recursive_mutex = const_cast<Mutex *>(&p_mutex);
+		recursive = true;
+
+		recursive_mutex->lock();
+	}
+	_ALWAYS_INLINE_ explicit MutexLock(const BinaryMutex &p_mutex) {
+		mutex = const_cast<BinaryMutex *>(&p_mutex);
+		recursive = false;
+		mutex->lock();
+	}
+
+	_ALWAYS_INLINE_ ~MutexLock() {
+		if (recursive) {
+			recursive_mutex->unlock();
+		} else {
+			mutex->unlock();
+		}
+	}
+};
+
+#endif // PLATFORM_MUTEX_H

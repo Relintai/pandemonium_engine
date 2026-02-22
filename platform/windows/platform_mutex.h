@@ -1,5 +1,8 @@
+#ifndef PLATFORM_MUTEX_H
+#define PLATFORM_MUTEX_H
+
 /*************************************************************************/
-/*  mutex.cpp                                                            */
+/*  mutex.h                                                              */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,15 +32,69 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "mutex.h"
+#include "core/error/error_list.h"
+#include "core/typedefs.h"
 
-static Mutex _global_mutex;
+class Mutex {
+	friend class MutexLock;
 
-void _global_lock() {
-	_global_mutex.lock();
-}
+	// void* because we don't want to include windows.h in this header.
+	mutable void *mutex;
 
-void _global_unlock() {
-	_global_mutex.unlock();
-}
+public:
+	_ALWAYS_INLINE_ void lock() const;
+	_ALWAYS_INLINE_ void unlock() const;
+	_ALWAYS_INLINE_ Error try_lock() const;
 
+	Mutex();
+	~Mutex();
+};
+
+class BinaryMutex {
+	friend class MutexLock;
+
+	// void* because we don't want to include windows.h in this header.
+	mutable void *mutex;
+
+public:
+	_ALWAYS_INLINE_ void lock() const;
+
+	_ALWAYS_INLINE_ void unlock() const;
+	_ALWAYS_INLINE_ Error try_lock() const;
+
+	BinaryMutex();
+	~BinaryMutex();
+};
+
+// This is written this way instead of being a template to overcome a limitation of C++ pre-17
+// that would require MutexLock to be used like this: MutexLock<Mutex> lock;
+class MutexLock {
+	union {
+		Mutex *recursive_mutex;
+		BinaryMutex *mutex;
+	};
+	bool recursive;
+
+public:
+	_ALWAYS_INLINE_ explicit MutexLock(const Mutex &p_mutex) {
+		recursive_mutex = const_cast<Mutex *>(&p_mutex);
+		recursive = true;
+
+		recursive_mutex->lock();
+	}
+	_ALWAYS_INLINE_ explicit MutexLock(const BinaryMutex &p_mutex) {
+		mutex = const_cast<BinaryMutex *>(&p_mutex);
+		recursive = false;
+		mutex->lock();
+	}
+
+	_ALWAYS_INLINE_ ~MutexLock() {
+		if (recursive) {
+			recursive_mutex->unlock();
+		} else {
+			mutex->unlock();
+		}
+	}
+};
+
+#endif // PLATFORM_MUTEX_H
