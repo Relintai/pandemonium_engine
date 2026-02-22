@@ -20,6 +20,7 @@ common_win = [
     "platform_thread.cpp",
     "platform_mutex.cpp",
     "platform_rw_lock.cpp",
+    "platform_semaphore.cpp",
 ]
 
 res_file = "pandemonium_res.rc"

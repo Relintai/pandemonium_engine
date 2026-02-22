@@ -1,8 +1,8 @@
-#ifndef SEMAPHORE_H
-#define SEMAPHORE_H
+#ifndef PLATFORM_SEMAPHORE_H
+#define PLATFORM_SEMAPHORE_H
 
 /*************************************************************************/
-/*  semaphore.h                                                          */
+/*  paltform_semaphore.h                                                 */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -33,20 +33,23 @@
 /*************************************************************************/
 
 #include "core/error/error_list.h"
+#include "core/error/error_macros.h"
 #include "core/typedefs.h"
-
-#if !defined(NO_THREADS)
-#include "platform_semaphore.h"
-#else
 
 class Semaphore {
 public:
-	_ALWAYS_INLINE_ void post() const {}
-	_ALWAYS_INLINE_ void wait() const {}
-	_ALWAYS_INLINE_ bool try_wait() const { return true; }
-	_ALWAYS_INLINE_ int get() const { return 1; }
+	void post() const;
+	void wait() const;
+	bool try_wait() const;
+	int get() const;
+
+	Semaphore();
+	~Semaphore();
+
+private:
+	// Don't want to include windows.h here
+	// HANDLE
+	mutable void *_semaphore;
 };
 
-#endif
-
-#endif // SEMAPHORE_H
+#endif // PLATFORM_SEMAPHORE_H

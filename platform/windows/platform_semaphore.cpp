@@ -1,8 +1,5 @@
-#ifndef SEMAPHORE_H
-#define SEMAPHORE_H
-
 /*************************************************************************/
-/*  semaphore.h                                                          */
+/*  platform_semaphor.cpp                                                */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -32,21 +29,64 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "core/error/error_list.h"
-#include "core/typedefs.h"
-
-#if !defined(NO_THREADS)
 #include "platform_semaphore.h"
+
+#include "core/os/memory.h"
+
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+
+void Semaphore::post() const {
+	ReleaseSemaphore((HANDLE)_semaphore, 1, NULL);
+}
+
+void Semaphore::wait() const {
+	WaitForSingleObjectEx((HANDLE)_semaphore, INFINITE, false);
+}
+
+bool Semaphore::try_wait() const {
+	if (WaitForSingleObjectEx((HANDLE)_semaphore, 0, false) == WAIT_TIMEOUT) {
+		return false;
+	}
+
+	return true;
+}
+
+int Semaphore::get() const {
+	long previous;
+	switch (WaitForSingleObjectEx((HANDLE)_semaphore, 0, false)) {
+		case WAIT_OBJECT_0: {
+			ERR_FAIL_COND_V(!ReleaseSemaphore((HANDLE)_semaphore, 1, &previous), -1);
+			return previous + 1;
+		} break;
+		case WAIT_TIMEOUT: {
+			return 0;
+		} break;
+		default: {
+		}
+	}
+
+	ERR_FAIL_V(-1);
+}
+
+Semaphore::Semaphore() {
+#ifdef UWP_ENABLED
+	_semaphore = (void *)CreateSemaphoreEx(
+			NULL,
+			0,
+			0xFFFFFFF, //wathever
+			NULL,
+			0,
+			SEMAPHORE_ALL_ACCESS);
 #else
-
-class Semaphore {
-public:
-	_ALWAYS_INLINE_ void post() const {}
-	_ALWAYS_INLINE_ void wait() const {}
-	_ALWAYS_INLINE_ bool try_wait() const { return true; }
-	_ALWAYS_INLINE_ int get() const { return 1; }
-};
-
+	_semaphore = (void *)CreateSemaphore(
+			NULL,
+			0,
+			0xFFFFFFF, //wathever
+			NULL);
 #endif
+}
 
-#endif // SEMAPHORE_H
+Semaphore::~Semaphore() {
+	CloseHandle((HANDLE)_semaphore);
+}

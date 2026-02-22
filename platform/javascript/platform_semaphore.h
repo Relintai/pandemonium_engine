@@ -1,8 +1,8 @@
-#ifndef SEMAPHORE_H
-#define SEMAPHORE_H
+#ifndef PLATFORM_SEMAPHORE_H
+#define PLATFORM_SEMAPHORE_H
 
 /*************************************************************************/
-/*  semaphore.h                                                          */
+/*  paltform_semaphore.h                                                 */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -34,19 +34,64 @@
 
 #include "core/error/error_list.h"
 #include "core/typedefs.h"
+#include "core/error/error_macros.h"
 
-#if !defined(NO_THREADS)
-#include "platform_semaphore.h"
-#else
+#include <errno.h>
+#include <semaphore.h>
 
 class Semaphore {
 public:
-	_ALWAYS_INLINE_ void post() const {}
-	_ALWAYS_INLINE_ void wait() const {}
-	_ALWAYS_INLINE_ bool try_wait() const { return true; }
-	_ALWAYS_INLINE_ int get() const { return 1; }
+	_ALWAYS_INLINE_ void post() const {
+		sem_post(&_sem);
+	}
+
+	_ALWAYS_INLINE_ void wait() const {
+		//return 0 on success; on error, the value of the semaphore is left unchanged, -1 is returned, and errno is set to indicate the error.
+		while (sem_wait(&_sem)) {
+			if (errno == EINTR) {
+				//he call was interrupted by a signal handler;
+				errno = 0;
+				continue;
+			} else {
+				return;
+			}
+		}
+	}
+
+	_ALWAYS_INLINE_ bool try_wait() const {
+		while (sem_trywait(&_sem)) {
+			if (errno == EINTR) {
+				errno = 0;
+				continue;
+			} else if (errno == EAGAIN) {
+				return false;
+			} else {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	_ALWAYS_INLINE_ int get() const {
+		int val;
+		sem_getvalue(&_sem, &val);
+
+		return val;
+	}
+
+	Semaphore() {
+		int r = sem_init(&_sem, 0, 0);
+
+		ERR_FAIL_COND(r != 0);
+	}
+
+	~Semaphore() {
+		sem_destroy(&_sem);
+	}
+
+private:
+	mutable sem_t _sem;
 };
 
-#endif
-
-#endif // SEMAPHORE_H
+#endif // PLATFORM_SEMAPHORE_H

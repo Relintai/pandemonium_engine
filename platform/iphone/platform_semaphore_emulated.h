@@ -1,8 +1,8 @@
-#ifndef SEMAPHORE_H
-#define SEMAPHORE_H
+#ifndef PLATFORM_SEMAPHORE_H
+#define PLATFORM_SEMAPHORE_H
 
 /*************************************************************************/
-/*  semaphore.h                                                          */
+/*  paltform_semaphore.h                                                 */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -33,20 +33,67 @@
 /*************************************************************************/
 
 #include "core/error/error_list.h"
+#include "core/error/error_macros.h"
 #include "core/typedefs.h"
 
-#if !defined(NO_THREADS)
-#include "platform_semaphore.h"
-#else
+#include <errno.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+struct cgsem {
+	int pipefd[2];
+};
+
+typedef struct cgsem cgsem_t;
 
 class Semaphore {
 public:
-	_ALWAYS_INLINE_ void post() const {}
-	_ALWAYS_INLINE_ void wait() const {}
-	_ALWAYS_INLINE_ bool try_wait() const { return true; }
-	_ALWAYS_INLINE_ int get() const { return 1; }
+	_ALWAYS_INLINE_ void post() const {
+		const char buf = 1;
+
+		write(_sem->pipefd[1], &buf, 1);
+	}
+
+	_ALWAYS_INLINE_ void wait() const {
+		char buf;
+
+		read(_sem->pipefd[0], &buf, 1);
+	}
+
+	_ALWAYS_INLINE_ bool try_wait() const {
+		char buf;
+
+		read(_sem->pipefd[0], &buf, 1);
+
+		return true;
+	}
+
+	_ALWAYS_INLINE_ int get() const {
+		return 0;
+	}
+
+	Semaphore() {
+		int flags, fd, i;
+
+		pipe(_sem->pipefd);
+
+		/* Make the pipes FD_CLOEXEC to allow them to close should we call
+		 * execv on restart. */
+		for (i = 0; i < 2; i++) {
+			fd = _sem->pipefd[i];
+			flags = fcntl(fd, F_GETFD, 0);
+			flags |= FD_CLOEXEC;
+			fcntl(fd, F_SETFD, flags);
+		}
+	}
+
+	~Semaphore() {
+		close(_sem->pipefd[1]);
+		close(_sem->pipefd[0]);
+	}
+
+private:
+	mutable cgsem_t _sem;
 };
 
-#endif
-
-#endif // SEMAPHORE_H
+#endif // PLATFORM_SEMAPHORE_H
