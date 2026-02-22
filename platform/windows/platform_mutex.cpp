@@ -29,7 +29,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "platofrm_mutex.h"
+#include "platform_mutex.h"
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
