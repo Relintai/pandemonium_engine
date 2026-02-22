@@ -436,7 +436,7 @@ class SafeNumeric {
 
 public:
 	_ALWAYS_INLINE_ void set(T p_value) {
-		atomic_set(p_value);
+		atomic_set(&_value, p_value);
 	}
 
 	_ALWAYS_INLINE_ T get() const {
@@ -511,7 +511,7 @@ class SafeNumeric<T *> {
 
 public:
 	_ALWAYS_INLINE_ void set(T *p_value) {
-		atomic_set((void *)p_value);
+		atomic_set((void *)_value, (void *)p_value);
 	}
 
 	_ALWAYS_INLINE_ T *get() const {
