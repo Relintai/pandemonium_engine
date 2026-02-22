@@ -38,13 +38,8 @@
 
 #include <errno.h>
 #include <fcntl.h>
+//#include <poll.h>
 #include <unistd.h>
-
-struct cgsem {
-	int pipefd[2];
-};
-
-typedef struct cgsem cgsem_t;
 
 class Semaphore {
 public:
@@ -61,6 +56,18 @@ public:
 	}
 
 	_ALWAYS_INLINE_ bool try_wait() const {
+		/* Not going to work like this
+		char buf;
+		pollfd poll_fd;
+
+		poll_fd.fd = _sem->pipefd[0];
+		poll_fd.events = POLLIN;
+
+		int ready = poll(&poll_fd, 1, 0);
+
+		return true;
+		*/
+
 		char buf;
 
 		read(_sem->pipefd[0], &buf, 1);
@@ -93,6 +100,10 @@ public:
 	}
 
 private:
+	struct cgsem_t {
+		int pipefd[2];
+	};
+
 	mutable cgsem_t _sem;
 };
 
