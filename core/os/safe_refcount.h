@@ -36,7 +36,8 @@
 
 #ifdef NO_THREADS
 
-template <class T class SafeNumeric {
+template <class T>
+class SafeNumeric {
 protected:
 	T value;
 
