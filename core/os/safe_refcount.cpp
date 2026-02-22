@@ -174,15 +174,15 @@ int64_t atomic_val_compare_and_swap(volatile int64_t *pw, volatile int64_t oldva
 }
 
 void atomic_set_ptr(volatile void **ptarget, volatile void *pw) {
-	InterlockedExchangePointer((PVOID volatile *)ptarget, pw);
+	InterlockedExchangePointer((PVOID volatile *)ptarget, (PVOID)pw);
 }
 bool atomic_bool_compare_and_swap_ptr(volatile void **pw, volatile void *oldval, volatile void *newval) {
-	void *val = InterlockedCompareExchangePointer((PVOID volatile *)pw, oldval, newval);
+	void *val = InterlockedCompareExchangePointer((PVOID volatile *)pw, (PVOID)oldval, (PVOID)newval);
 
 	return val == oldval;
 }
 void *atomic_val_compare_and_swap_ptr(volatile void **pw, volatile void *oldval, volatile void *newval) {
-	return InterlockedCompareExchangePointer((PVOID volatile *)pw, oldval, newval);
+	return (void *)InterlockedCompareExchangePointer((PVOID volatile *)pw, (PVOID)oldval, (PVOID)newval);
 }
 
 #endif
