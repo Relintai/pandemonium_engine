@@ -42,9 +42,9 @@ class Mutex {
 	mutable void *mutex;
 
 public:
-	_ALWAYS_INLINE_ void lock() const;
-	_ALWAYS_INLINE_ void unlock() const;
-	_ALWAYS_INLINE_ Error try_lock() const;
+	void lock() const;
+	void unlock() const;
+	Error try_lock() const;
 
 	Mutex();
 	~Mutex();
@@ -57,10 +57,9 @@ class BinaryMutex {
 	mutable void *mutex;
 
 public:
-	_ALWAYS_INLINE_ void lock() const;
-
-	_ALWAYS_INLINE_ void unlock() const;
-	_ALWAYS_INLINE_ Error try_lock() const;
+	void lock() const;
+	void unlock() const;
+	Error try_lock() const;
 
 	BinaryMutex();
 	~BinaryMutex();
