@@ -31,10 +31,6 @@
 
 #if (defined(UNIX_ENABLED) || defined(PTHREAD_ENABLED)) && !defined(NO_THREADS)
 
-#include "platform_config.h"
-
-#ifndef PLATFORM_THREAD_OVERRIDE
-
 #include "thread_posix.h"
 
 #include "core/os/thread.h"
@@ -73,12 +69,9 @@ static Error set_name(const String &p_name) {
 
 #endif // PTHREAD_NO_RENAME
 }
-#endif
 
 void init_thread_posix() {
-#ifndef PLATFORM_THREAD_OVERRIDE
 	Thread::_set_platform_funcs(&set_name, nullptr);
-#endif
 }
 
 #endif

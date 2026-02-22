@@ -46,11 +46,3 @@
 			_Pragma("clang diagnostic ignored \"-Wshadow\"") \
 					__strong typeof(var) var = GDWeak_##var; \
 	_Pragma("clang diagnostic pop")
-
-
-
-// Note: The default implementation should be the dummy one. (eventually)
-#if !defined(NO_THREADS)
-#define PLATFORM_THREAD_OVERRIDE
-#endif
-
