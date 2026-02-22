@@ -396,7 +396,7 @@ public:
 // For MSVC use a separate compilation unit to prevent windows.h from polluting
 // the global namespace.
 
-void atomic_set(volatile uint32_t *ptarget, volatile uint32_t *pw);
+void atomic_set(volatile uint32_t *ptarget, volatile uint32_t pw);
 uint32_t atomic_add(volatile uint32_t *pw, volatile uint32_t val);
 uint32_t atomic_post_add(volatile uint32_t *pw, volatile uint32_t val);
 uint32_t atomic_sub(volatile uint32_t *pw, volatile uint32_t val);
@@ -406,7 +406,7 @@ uint32_t atomic_conditional_increment(volatile uint32_t *pw);
 bool atomic_bool_compare_and_swap(volatile uint32_t *pw, volatile uint32_t oldval, volatile uint32_t newval);
 uint32_t atomic_val_compare_and_swap(volatile uint32_t *pw, volatile uint32_t oldval, volatile uint32_t newval);
 
-void atomic_set(volatile int32_t *ptarget, volatile int32_t *pw);
+void atomic_set(volatile int32_t *ptarget, volatile int32_t pw);
 int32_t atomic_add(volatile int32_t *pw, volatile int32_t val);
 int32_t atomic_post_add(volatile int32_t *pw, volatile int32_t val);
 int32_t atomic_sub(volatile int32_t *pw, volatile int32_t val);
@@ -416,7 +416,7 @@ int32_t atomic_conditional_increment(volatile int32_t *pw);
 bool atomic_bool_compare_and_swap(volatile int32_t *pw, volatile int32_t oldval, volatile int32_t newval);
 int32_t atomic_val_compare_and_swap(volatile int32_t *pw, volatile int32_t oldval, volatile int32_t newval);
 
-void atomic_set(volatile uint64_t *ptarget, volatile uint64_t *pw);
+void atomic_set(volatile uint64_t *ptarget, volatile uint64_t pw);
 uint64_t atomic_add(volatile uint64_t *pw, volatile uint64_t val);
 uint64_t atomic_post_add(volatile uint64_t *pw, volatile uint64_t val);
 uint64_t atomic_sub(volatile uint64_t *pw, volatile uint64_t val);
@@ -426,7 +426,7 @@ uint64_t atomic_conditional_increment(volatile uint64_t *pw);
 bool atomic_bool_compare_and_swap(volatile uint64_t *pw, volatile uint64_t oldval, volatile uint64_t newval);
 uint64_t atomic_val_compare_and_swap(volatile uint64_t *pw, volatile uint64_t oldval, volatile uint64_t newval);
 
-void atomic_set(volatile int64_t *ptarget, volatile int64_t *pw);
+void atomic_set(volatile int64_t *ptarget, volatile int64_t pw);
 int64_t atomic_add(volatile int64_t *pw, volatile int64_t val);
 int64_t atomic_post_add(volatile int64_t *pw, volatile int64_t val);
 int64_t atomic_sub(volatile int64_t *pw, volatile int64_t val);
@@ -436,7 +436,7 @@ int64_t atomic_conditional_increment(volatile int64_t *pw);
 bool atomic_bool_compare_and_swap(volatile int64_t *pw, volatile int64_t oldval, volatile int64_t newval);
 int64_t atomic_val_compare_and_swap(volatile int64_t *pw, volatile int64_t oldval, volatile int64_t newval);
 
-void atomic_set_ptr(volatile void *ptarget, volatile void *pw);
+void atomic_set_ptr(volatile void **ptarget, volatile void *pw);
 bool atomic_bool_compare_and_swap_ptr(volatile void **pw, volatile void *oldval, volatile void *newval);
 void *atomic_val_compare_and_swap_ptr(volatile void **pw, volatile void *oldval, volatile void *newval);
 
