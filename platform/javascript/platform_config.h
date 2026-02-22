@@ -35,3 +35,8 @@
 #ifndef GLES3_DISABLED
 #define GLES3_INCLUDE_H "platform/javascript/pandemonium_webgl2.h"
 #endif
+
+// Note: The default implementation should be the dummy one.
+#if !defined(NO_THREADS)
+#define PLATFORM_THREAD_OVERRIDE
+#endif

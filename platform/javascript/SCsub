@@ -26,6 +26,9 @@ javascript_files = [
     "api/javascript_tools_editor_plugin.cpp",
 ]
 
+if env["threads_enabled"]:
+    javascript_files.append("platform_thread.cpp")
+
 if not env["disable_gles3"]:
     javascript_files.append("pandemonium_webgl2.cpp")
 
