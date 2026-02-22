@@ -286,25 +286,6 @@ public:
 	}
 };
 
-// TODO reimplement this using __syncs
-template <>
-class SafeNumeric<float> {
-	float _value;
-
-public:
-	_ALWAYS_INLINE_ void set(float p_value) {
-		__atomic_store(&_value, &p_value, __ATOMIC_SEQ_CST);
-	}
-
-	_ALWAYS_INLINE_ float get() const {
-		return _value;
-	}
-
-	_ALWAYS_INLINE_ explicit SafeNumeric(float p_value = static_cast<float>(0)) {
-		_value = p_value;
-	}
-};
-
 class SafeFlag {
 	bool _flag;
 
