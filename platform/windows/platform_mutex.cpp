@@ -142,6 +142,6 @@ BinaryMutex::~BinaryMutex() {
 
 	DeleteCriticalSection((CRITICAL_SECTION *)mutex);
 
-	memdelete(mutex);
+	memdelete((CRITICAL_SECTION *)mutex);
 #endif
 }
