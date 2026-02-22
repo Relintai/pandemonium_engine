@@ -38,7 +38,6 @@
 #include "drivers/unix/file_access_unix.h"
 #include "drivers/unix/net_socket_posix.h"
 #include "drivers/unix/sub_process_unix.h"
-#include "drivers/unix/thread_posix.h"
 #include "servers/rendering_server.h"
 
 #ifdef __APPLE__
@@ -111,10 +110,6 @@ int OS_Unix::unix_initialize_audio(int p_audio_driver) {
 }
 
 void OS_Unix::initialize_core() {
-#if !defined(NO_THREADS)
-	init_thread_posix();
-#endif
-
 	FileAccess::make_default<FileAccessUnix>(FileAccess::ACCESS_RESOURCES);
 	FileAccess::make_default<FileAccessUnix>(FileAccess::ACCESS_USERDATA);
 	FileAccess::make_default<FileAccessUnix>(FileAccess::ACCESS_FILESYSTEM);
