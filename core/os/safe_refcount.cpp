@@ -29,10 +29,47 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#if !defined(NO_THREADS)
+#if !defined(NO_THREADS) && defined(_MSC_VER)
 
 #include "safe_refcount.h"
-
 #include "core/error/error_macros.h"
+
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+
+void set(T p_value);
+T get() const;
+
+T increment();
+// Returns the original value instead of the new one
+T postincrement();
+
+T decrement();
+// Returns the original value instead of the new one
+T postdecrement();
+
+T add(T p_value);
+// Returns the original value instead of the new one
+T postadd(T p_value);
+
+T sub(T p_value);
+// Returns the original value instead of the new one
+T postsub(T p_value);
+
+T exchange_if_greater(T p_value);
+
+T conditional_increment();
+
+bool compare_exchange_weak(T &p_expected, T p_desired);
+bool compare_exchange_strong(T &p_expected, T p_desired);
+
+bool is_set() const;
+void set();
+
+void clear();
+
+void set_to(bool p_value);
+
+bool test_and_set();
 
 #endif

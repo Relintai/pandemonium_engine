@@ -404,8 +404,88 @@ public:
 // For MSVC use a separate compilation unit to prevent windows.h from polluting
 // the global namespace.
 
-// TODO
-//
+template <class T>
+class SafeNumeric {
+	T _value;
+
+public:
+	void set(T p_value);
+	T get() const;
+
+	T increment();
+	// Returns the original value instead of the new one
+	T postincrement();
+
+	T decrement();
+	// Returns the original value instead of the new one
+	T postdecrement();
+
+	T add(T p_value);
+	// Returns the original value instead of the new one
+	T postadd(T p_value);
+
+	T sub(T p_value);
+	// Returns the original value instead of the new one
+	T postsub(T p_value);
+
+	T exchange_if_greater(T p_value);
+
+	T conditional_increment();
+
+	bool compare_exchange_weak(T &p_expected, T p_desired);
+	bool compare_exchange_strong(T &p_expected, T p_desired);
+
+	explicit SafeNumeric(T p_value = static_cast<T>(0)) {
+		_value = p_value;
+	}
+};
+
+class SafeFlag {
+	bool _flag;
+
+public:
+	bool is_set() const;
+	void set();
+
+	void clear();
+
+	void set_to(bool p_value);
+
+	bool test_and_set();
+
+	_ALWAYS_INLINE_ explicit SafeFlag(bool p_value = false) {
+		_flag = p_value;
+	}
+};
+
+class SafeRefCount {
+	SafeNumeric<uint32_t> count;
+
+public:
+	_ALWAYS_INLINE_ bool ref() { // true on success
+		return count.conditional_increment() != 0;
+	}
+
+	_ALWAYS_INLINE_ uint32_t refval() { // none-zero on success
+		return count.conditional_increment();
+	}
+
+	_ALWAYS_INLINE_ bool unref() { // true if must be disposed of
+		return count.decrement() == 0;
+	}
+
+	_ALWAYS_INLINE_ uint32_t unrefval() { // 0 if must be disposed of
+		return count.decrement();
+	}
+
+	_ALWAYS_INLINE_ uint32_t get() const {
+		return count.get();
+	}
+
+	_ALWAYS_INLINE_ void init(uint32_t p_value = 1) {
+		count.set(p_value);
+	}
+};
 
 #else
 
