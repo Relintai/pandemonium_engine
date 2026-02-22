@@ -551,7 +551,7 @@ public:
 				return;
 			}
 
-			if (atomic_bool_compare_and_swap(&_flag, tmp, true)) {
+			if (atomic_bool_compare_and_swap(&_flag, tmp, 1)) {
 				return;
 			}
 		}
@@ -565,7 +565,7 @@ public:
 				return;
 			}
 
-			if (atomic_bool_compare_and_swap(&_flag, tmp, false)) {
+			if (atomic_bool_compare_and_swap(&_flag, tmp, 0)) {
 				return;
 			}
 		}
@@ -575,11 +575,11 @@ public:
 		while (true) {
 			uint32_t tmp = static_cast<uint32_t const volatile &>(_flag);
 
-			if (tmp == p_value) {
+			if (tmp == (p_value ? 1 : 0)) {
 				return;
 			}
 
-			if (atomic_bool_compare_and_swap(&_flag, tmp, p_value)) {
+			if (atomic_bool_compare_and_swap(&_flag, tmp, p_value ? 1 : 0)) {
 				return;
 			}
 		}
@@ -592,11 +592,11 @@ public:
 			return false;
 		}
 
-		return atomic_bool_compare_and_swap(&_flag, tmp, true);
+		return atomic_bool_compare_and_swap(&_flag, tmp, 1);
 	}
 
 	_ALWAYS_INLINE_ explicit SafeFlag(bool p_value = false) {
-		_flag = p_value;
+		_flag = p_value ? 1 : 0;
 	}
 };
 
