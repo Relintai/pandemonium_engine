@@ -436,9 +436,9 @@ int64_t atomic_conditional_increment(volatile int64_t *pw);
 bool atomic_bool_compare_and_swap(volatile int64_t *pw, volatile int64_t oldval, volatile int64_t newval);
 int64_t atomic_val_compare_and_swap(volatile int64_t *pw, volatile int64_t oldval, volatile int64_t newval);
 
-void atomic_set(volatile void *ptarget, volatile void *pw);
-bool atomic_bool_compare_and_swap(volatile void **pw, volatile void *oldval, volatile void *newval);
-void *atomic_val_compare_and_swap(volatile void **pw, volatile void *oldval, volatile void *newval);
+void atomic_set_ptr(volatile void *ptarget, volatile void *pw);
+bool atomic_bool_compare_and_swap_ptr(volatile void **pw, volatile void *oldval, volatile void *newval);
+void *atomic_val_compare_and_swap_ptr(volatile void **pw, volatile void *oldval, volatile void *newval);
 
 template <class T>
 class SafeNumeric {
@@ -521,7 +521,7 @@ class SafeNumeric<T *> {
 
 public:
 	_ALWAYS_INLINE_ void set(T *p_value) {
-		atomic_set((void *)_value, (void *)p_value);
+		atomic_set_ptr((void *)_value, (void *)p_value);
 	}
 
 	_ALWAYS_INLINE_ T *get() const {
@@ -529,13 +529,13 @@ public:
 	}
 
 	_ALWAYS_INLINE_ bool compare_exchange_weak(T *&p_expected, T *p_desired) {
-		p_expected = (T *)atomic_val_compare_and_swap((void *)&_value, (void *)p_expected, (void *)p_desired);
+		p_expected = (T *)atomic_val_compare_and_swap_ptr((void *)&_value, (void *)p_expected, (void *)p_desired);
 
 		return p_expected == p_desired;
 	}
 
 	_ALWAYS_INLINE_ bool compare_exchange_strong(T *&p_expected, T *p_desired) {
-		p_expected = (T *)atomic_val_compare_and_swap((void *)&_value, (void *)p_expected, (void *)p_desired);
+		p_expected = (T *)atomic_val_compare_and_swap_ptr((void *)&_value, (void *)p_expected, (void *)p_desired);
 
 		return p_expected == p_desired;
 	}
