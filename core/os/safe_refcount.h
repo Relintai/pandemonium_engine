@@ -450,7 +450,7 @@ class SafeNumeric {
 
 public:
 	_ALWAYS_INLINE_ void set(T p_value) {
-		atomic_set(&_value, p_value);
+		atomic_set((volatile T *)&_value, p_value);
 	}
 
 	_ALWAYS_INLINE_ T get() const {
@@ -458,57 +458,57 @@ public:
 	}
 
 	_ALWAYS_INLINE_ T increment() {
-		return atomic_add(&_value, 1);
+		return atomic_add((volatile T *)&_value, 1);
 	}
 
 	// Returns the original value instead of the new one
 	_ALWAYS_INLINE_ T postincrement() {
-		return atomic_post_add(&_value, 1);
+		return atomic_post_add((volatile T *)&_value, 1);
 	}
 
 	_ALWAYS_INLINE_ T decrement() {
-		return atomic_sub(&_value, 1);
+		return atomic_sub((volatile T *)&_value, 1);
 	}
 
 	// Returns the original value instead of the new one
 	_ALWAYS_INLINE_ T postdecrement() {
-		return atomic_post_sub(&_value, 1);
+		return atomic_post_sub((volatile T *)&_value, 1);
 	}
 
 	_ALWAYS_INLINE_ T add(T p_value) {
-		return atomic_add(&_value, p_value);
+		return atomic_add((volatile T *)&_value, p_value);
 	}
 
 	// Returns the original value instead of the new one
 	_ALWAYS_INLINE_ T postadd(T p_value) {
-		return atomic_post_add(&_value, p_value);
+		return atomic_post_add((volatile T *)&_value, p_value);
 	}
 
 	_ALWAYS_INLINE_ T sub(T p_value) {
-		return atomic_sub(&_value, p_value);
+		return atomic_sub((volatile T *)&_value, p_value);
 	}
 
 	// Returns the original value instead of the new one
 	_ALWAYS_INLINE_ T postsub(T p_value) {
-		return atomic_post_sub(&_value, p_value);
+		return atomic_post_sub((volatile T *)&_value, p_value);
 	}
 
 	_ALWAYS_INLINE_ T exchange_if_greater(T p_value) {
-		return atomic_exchange_if_greater(&_value, p_value);
+		return atomic_exchange_if_greater((volatile T *)&_value, p_value);
 	}
 
 	_ALWAYS_INLINE_ T conditional_increment() {
-		return atomic_conditional_increment(&_value);
+		return atomic_conditional_increment((volatile T *)&_value);
 	}
 
 	_ALWAYS_INLINE_ bool compare_exchange_weak(T &p_expected, T p_desired) {
-		p_expected = atomic_val_compare_and_swap(&_value, p_expected, p_desired);
+		p_expected = atomic_val_compare_and_swap((volatile T *)&_value, p_expected, p_desired);
 
 		return p_expected == p_desired;
 	}
 
 	_ALWAYS_INLINE_ bool compare_exchange_strong(T &p_expected, T p_desired) {
-		p_expected = atomic_val_compare_and_swap(&_value, p_expected, p_desired);
+		p_expected = atomic_val_compare_and_swap((volatile T *)&_value, p_expected, p_desired);
 
 		return p_expected == p_desired;
 	}
@@ -565,7 +565,7 @@ public:
 				return;
 			}
 
-			if (atomic_bool_compare_and_swap(&_flag, tmp, 1)) {
+			if (atomic_bool_compare_and_swap((volatile uint32_t *)&_flag, tmp, 1)) {
 				return;
 			}
 		}
@@ -579,7 +579,7 @@ public:
 				return;
 			}
 
-			if (atomic_bool_compare_and_swap(&_flag, tmp, 0)) {
+			if (atomic_bool_compare_and_swap((volatile uint32_t *)&_flag, tmp, 0)) {
 				return;
 			}
 		}
@@ -593,7 +593,7 @@ public:
 				return;
 			}
 
-			if (atomic_bool_compare_and_swap(&_flag, tmp, p_value ? 1 : 0)) {
+			if (atomic_bool_compare_and_swap((volatile uint32_t *)&_flag, tmp, p_value ? 1 : 0)) {
 				return;
 			}
 		}
@@ -606,7 +606,7 @@ public:
 			return false;
 		}
 
-		return atomic_bool_compare_and_swap(&_flag, tmp, 1);
+		return atomic_bool_compare_and_swap((volatile uint32_t *)&_flag, tmp, 1);
 	}
 
 	_ALWAYS_INLINE_ explicit SafeFlag(bool p_value = false) {
