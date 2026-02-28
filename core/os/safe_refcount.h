@@ -298,7 +298,7 @@ public:
 
 	_ALWAYS_INLINE_ T exchange_if_greater(T p_value) {
 		while (true) {
-			T tmp = static_cast<T const volatile &>(_value);
+			T tmp = get();
 
 			if (tmp >= _value) {
 				return tmp; // already greater, or equal
@@ -312,7 +312,7 @@ public:
 
 	_ALWAYS_INLINE_ T conditional_increment() {
 		while (true) {
-			T tmp = static_cast<T const volatile &>(_value);
+			T tmp = get();
 
 			if (tmp == 0) {
 				return 0;
@@ -399,13 +399,13 @@ public:
 
 	_ALWAYS_INLINE_ void set() {
 		while (true) {
-			uint8_t tmp = static_cast<uint8_t const volatile &>(_flag);
+			bool tmp = is_set() ? 1 : 0;
 
 			if (tmp) {
 				return;
 			}
 
-			if (__sync_bool_compare_and_swap(&_flag, tmp, 1)) {
+			if (__sync_bool_compare_and_swap(&_flag, 0, 1)) {
 				return;
 			}
 		}
@@ -413,43 +413,47 @@ public:
 
 	_ALWAYS_INLINE_ void clear() {
 		while (true) {
-			uint8_t tmp = static_cast<uint8_t const volatile &>(_flag);
+			uint8_t tmp = is_set() ? 1 : 0;
 
 			if (!tmp) {
 				return;
 			}
 
-			if (__sync_bool_compare_and_swap(&_flag, tmp, 0)) {
+			if (__sync_bool_compare_and_swap(&_flag, 1, 0)) {
 				return;
 			}
 		}
 	}
 
 	_ALWAYS_INLINE_ void set_to(bool p_value) {
-		while (true) {
-			uint8_t tmp = static_cast<uint8_t const volatile &>(_flag);
+		uint8_t vi = p_value ? 1 : 0;
 
-			if (tmp == p_value) {
+		while (true) {
+			uint8_t tmp = is_set() ? 1 : 0;
+
+			if (tmp == vi) {
 				return;
 			}
 
-			if (__sync_bool_compare_and_swap(&_flag, tmp, p_value ? 1 : 0)) {
+			if (__sync_bool_compare_and_swap(&_flag, tmp, vi)) {
 				return;
 			}
 		}
 	}
 
 	_ALWAYS_INLINE_ bool test_and_set() {
-		uint8_t tmp = static_cast<uint8_t const volatile &>(_flag);
+		bool tmp = is_set();
 
 		if (tmp) {
 			return false;
 		}
 
-		return __sync_bool_compare_and_swap(&_flag, tmp, 1);
+		return __sync_bool_compare_and_swap(&_flag, 0, 1);
 	}
 
 	_ALWAYS_INLINE_ explicit SafeFlag(bool p_value = false) {
+		_flag = 0;
+
 		set_to(p_value);
 	}
 };
@@ -660,7 +664,7 @@ public:
 
 	_ALWAYS_INLINE_ void set() {
 		while (true) {
-			uint32_t tmp = static_cast<uint32_t const volatile &>(_flag);
+			uint32_t tmp = get();
 
 			if (tmp) {
 				return;
@@ -674,7 +678,7 @@ public:
 
 	_ALWAYS_INLINE_ void clear() {
 		while (true) {
-			uint32_t tmp = static_cast<uint32_t const volatile &>(_flag);
+			uint32_t tmp = get();
 
 			if (!tmp) {
 				return;
@@ -688,7 +692,7 @@ public:
 
 	_ALWAYS_INLINE_ void set_to(bool p_value) {
 		while (true) {
-			uint32_t tmp = static_cast<uint32_t const volatile &>(_flag);
+			uint32_t tmp = get();
 
 			if (tmp == (p_value ? 1 : 0)) {
 				return;
@@ -701,7 +705,7 @@ public:
 	}
 
 	_ALWAYS_INLINE_ bool test_and_set() {
-		uint32_t tmp = static_cast<uint32_t const volatile &>(_flag);
+		uint32_t tmp = get();
 
 		if (tmp) {
 			return false;
@@ -711,6 +715,8 @@ public:
 	}
 
 	_ALWAYS_INLINE_ explicit SafeFlag(bool p_value = false) {
+		_flag = 0;
+
 		set_to(p_value);
 	}
 };
