@@ -61,10 +61,10 @@ void atomic_set(volatile uint32_t *ptarget, volatile uint32_t pw) {
 	InterlockedExchange((LONG volatile *)ptarget, pw);
 }
 uint32_t atomic_add(volatile uint32_t *pw, volatile uint32_t val) {
-	return InterlockedAdd((LONG volatile *)pw, val) + val;
+	return InterlockedExchangeAdd((LONG volatile *)pw, val) + val;
 }
 uint32_t atomic_post_add(volatile uint32_t *pw, volatile uint32_t val) {
-	return InterlockedAdd((LONG volatile *)pw, val);
+	return InterlockedExchangeAdd((LONG volatile *)pw, val);
 }
 uint32_t atomic_sub(volatile uint32_t *pw, volatile uint32_t val) {
 	return InterlockedExchangeAdd((LONG volatile *)pw, -(int32_t)val) - val;
@@ -90,10 +90,10 @@ void atomic_set(volatile int32_t *ptarget, volatile int32_t pw) {
 	InterlockedExchange((LONG volatile *)ptarget, pw);
 }
 int32_t atomic_add(volatile int32_t *pw, volatile int32_t val) {
-	return InterlockedAdd((LONG volatile *)pw, val) + val;
+	return InterlockedExchangeAdd((LONG volatile *)pw, val) + val;
 }
 int32_t atomic_post_add(volatile int32_t *pw, volatile int32_t val) {
-	return InterlockedAdd((LONG volatile *)pw, val);
+	return InterlockedExchangeAdd((LONG volatile *)pw, val);
 }
 int32_t atomic_sub(volatile int32_t *pw, volatile int32_t val) {
 	return InterlockedExchangeAdd((LONG volatile *)pw, -(int32_t)val) - val;
@@ -119,10 +119,10 @@ void atomic_set(volatile uint64_t *ptarget, volatile uint64_t pw) {
 	InterlockedExchange64((LONGLONG volatile *)ptarget, pw);
 }
 uint64_t atomic_add(volatile uint64_t *pw, volatile uint64_t val) {
-	return InterlockedAdd64((LONGLONG volatile *)pw, val) + val;
+	return InterlockedExchangeAdd64((LONGLONG volatile *)pw, val) + val;
 }
 uint64_t atomic_post_add(volatile uint64_t *pw, volatile uint64_t val) {
-	return InterlockedAdd64((LONGLONG volatile *)pw, val);
+	return InterlockedExchangeAdd64((LONGLONG volatile *)pw, val);
 }
 uint64_t atomic_sub(volatile uint64_t *pw, volatile uint64_t val) {
 	return InterlockedExchangeAdd64((LONGLONG volatile *)pw, -(int64_t)val) - val;
@@ -148,10 +148,10 @@ void atomic_set(volatile int64_t *ptarget, volatile int64_t pw) {
 	InterlockedExchange64((LONGLONG volatile *)ptarget, pw);
 }
 int64_t atomic_add(volatile int64_t *pw, volatile int64_t val) {
-	return InterlockedAdd64((LONGLONG volatile *)pw, val) + val;
+	return InterlockedExchangeAdd64((LONGLONG volatile *)pw, val) + val;
 }
 int64_t atomic_post_add(volatile int64_t *pw, volatile int64_t val) {
-	return InterlockedAdd64((LONGLONG volatile *)pw, val);
+	return InterlockedExchangeAdd64((LONGLONG volatile *)pw, val);
 }
 int64_t atomic_sub(volatile int64_t *pw, volatile int64_t val) {
 	return InterlockedExchangeAdd64((LONGLONG volatile *)pw, -val) - val;
