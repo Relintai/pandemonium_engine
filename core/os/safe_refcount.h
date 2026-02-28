@@ -389,7 +389,7 @@ public:
 };
 
 class SafeFlag {
-	bool _flag;
+	uint8_t _flag;
 
 public:
 	_ALWAYS_INLINE_ bool is_set() const {
@@ -399,13 +399,13 @@ public:
 
 	_ALWAYS_INLINE_ void set() {
 		while (true) {
-			bool tmp = static_cast<bool const volatile &>(_flag);
+			uint8_t tmp = static_cast<uint8_t const volatile &>(_flag);
 
 			if (tmp) {
 				return;
 			}
 
-			if (__sync_bool_compare_and_swap(&_flag, tmp, true)) {
+			if (__sync_bool_compare_and_swap(&_flag, tmp, 1)) {
 				return;
 			}
 		}
@@ -413,13 +413,13 @@ public:
 
 	_ALWAYS_INLINE_ void clear() {
 		while (true) {
-			bool tmp = static_cast<bool const volatile &>(_flag);
+			uint8_t tmp = static_cast<uint8_t const volatile &>(_flag);
 
 			if (!tmp) {
 				return;
 			}
 
-			if (__sync_bool_compare_and_swap(&_flag, tmp, false)) {
+			if (__sync_bool_compare_and_swap(&_flag, tmp, 0)) {
 				return;
 			}
 		}
@@ -427,26 +427,26 @@ public:
 
 	_ALWAYS_INLINE_ void set_to(bool p_value) {
 		while (true) {
-			bool tmp = static_cast<bool const volatile &>(_flag);
+			uint8_t tmp = static_cast<uint8_t const volatile &>(_flag);
 
 			if (tmp == p_value) {
 				return;
 			}
 
-			if (__sync_bool_compare_and_swap(&_flag, tmp, p_value)) {
+			if (__sync_bool_compare_and_swap(&_flag, tmp, p_value ? 1 : 0)) {
 				return;
 			}
 		}
 	}
 
 	_ALWAYS_INLINE_ bool test_and_set() {
-		bool tmp = static_cast<bool const volatile &>(_flag);
+		uint8_t tmp = static_cast<uint8_t const volatile &>(_flag);
 
 		if (tmp) {
 			return false;
 		}
 
-		return __sync_bool_compare_and_swap(&_flag, tmp, true);
+		return __sync_bool_compare_and_swap(&_flag, tmp, 1);
 	}
 
 	_ALWAYS_INLINE_ explicit SafeFlag(bool p_value = false) {
