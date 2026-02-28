@@ -124,6 +124,43 @@ public:
 	}
 };
 
+// Template for atomic pointer types
+template <class T>
+class SafePointer {
+	T _value;
+
+public:
+	_ALWAYS_INLINE_ void set(T p_value) {
+		_value = p_value;
+	}
+
+	_ALWAYS_INLINE_ T get() const {
+		return _value;
+	}
+
+	_ALWAYS_INLINE_ bool compare_exchange_weak(T &p_expected, T p_desired) {
+		if (value == p_expected) {
+			value = p_desired;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	_ALWAYS_INLINE_ bool compare_exchange_strong(T &p_expected, T p_desired) {
+		if (value == p_expected) {
+			value = p_desired;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	_ALWAYS_INLINE_ explicit SafeNumeric(T p_value = nullptr) {
+		_value = p_value;
+	}
+};
+
 class SafeFlag {
 protected:
 	bool flag;
@@ -293,6 +330,38 @@ public:
 	}
 
 	_ALWAYS_INLINE_ explicit SafeNumeric(T p_value = static_cast<T>(0)) {
+		_value = p_value;
+	}
+};
+
+// Template for atomic pointer types
+template <class T>
+class SafePointer {
+	T _value;
+
+public:
+	_ALWAYS_INLINE_ void set(T p_value) {
+		while (!__sync_bool_compare_and_swap(&_value, _value, p_value)) {
+		}
+	}
+
+	_ALWAYS_INLINE_ T get() const {
+		return _value;
+	}
+
+	_ALWAYS_INLINE_ bool compare_exchange_weak(T &p_expected, T p_desired) {
+		p_expected = __sync_val_compare_and_swap(&_value, p_expected, p_desired);
+
+		return p_expected == p_desired;
+	}
+
+	_ALWAYS_INLINE_ bool compare_exchange_strong(T &p_expected, T p_desired) {
+		p_expected = __sync_val_compare_and_swap(&_value, p_expected, p_desired);
+
+		return p_expected == p_desired;
+	}
+
+	_ALWAYS_INLINE_ explicit SafePointer(T p_value = nullptr) {
 		_value = p_value;
 	}
 };
@@ -514,33 +583,33 @@ public:
 	}
 };
 
-// Template partial specialization for pointer types
+// Template for atomic pointer types
 template <class T>
-class SafeNumeric<T *> {
-	T *_value;
+class SafePointer {
+	T _value;
 
 public:
-	_ALWAYS_INLINE_ void set(T *p_value) {
+	_ALWAYS_INLINE_ void set(T p_value) {
 		atomic_set_ptr((void *)_value, (void *)p_value);
 	}
 
-	_ALWAYS_INLINE_ T *get() const {
+	_ALWAYS_INLINE_ T get() const {
 		return _value;
 	}
 
-	_ALWAYS_INLINE_ bool compare_exchange_weak(T *&p_expected, T *p_desired) {
-		p_expected = (T *)atomic_val_compare_and_swap_ptr((void *)&_value, (void *)p_expected, (void *)p_desired);
+	_ALWAYS_INLINE_ bool compare_exchange_weak(T &p_expected, T p_desired) {
+		p_expected = (T)atomic_val_compare_and_swap_ptr((void *)&_value, (void *)p_expected, (void *)p_desired);
 
 		return p_expected == p_desired;
 	}
 
-	_ALWAYS_INLINE_ bool compare_exchange_strong(T *&p_expected, T *p_desired) {
-		p_expected = (T *)atomic_val_compare_and_swap_ptr((void *)&_value, (void *)p_expected, (void *)p_desired);
+	_ALWAYS_INLINE_ bool compare_exchange_strong(T &p_expected, T p_desired) {
+		p_expected = (T)atomic_val_compare_and_swap_ptr((void *)&_value, (void *)p_expected, (void *)p_desired);
 
 		return p_expected == p_desired;
 	}
 
-	_ALWAYS_INLINE_ explicit SafeNumeric(T *p_value = nullptr) {
+	_ALWAYS_INLINE_ explicit SafeNumeric(T p_value = nullptr) {
 		_value = p_value;
 	}
 };
