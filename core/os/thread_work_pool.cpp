@@ -37,7 +37,7 @@ void ThreadWorkPool::_thread_function(void *p_user) {
 	ThreadData *thread = static_cast<ThreadData *>(p_user);
 	while (true) {
 		thread->start.wait();
-		if (thread->exit.load()) {
+		if (thread->exit.is_set()) {
 			break;
 		}
 		thread->work->work();
@@ -55,7 +55,7 @@ void ThreadWorkPool::init(int p_thread_count) {
 	threads = memnew_arr(ThreadData, thread_count);
 
 	for (uint32_t i = 0; i < thread_count; i++) {
-		threads[i].exit.store(false);
+		threads[i].exit.clear();
 		threads[i].thread.start(&ThreadWorkPool::_thread_function, &threads[i]);
 	}
 }
@@ -66,7 +66,7 @@ void ThreadWorkPool::finish() {
 	}
 
 	for (uint32_t i = 0; i < thread_count; i++) {
-		threads[i].exit.store(true);
+		threads[i].exit.set();
 		threads[i].start.post();
 	}
 	for (uint32_t i = 0; i < thread_count; i++) {

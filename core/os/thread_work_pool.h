@@ -33,16 +33,15 @@
 /*************************************************************************/
 
 #include "core/os/memory.h"
+#include "core/os/safe_refcount.h"
 #include "core/os/semaphore.h"
 #include "core/os/thread.h"
 
-#include <atomic>
-
 class ThreadWorkPool {
-	std::atomic<uint32_t> index;
+	SafeNumeric<uint32_t> index;
 
 	struct BaseWork {
-		std::atomic<uint32_t> *index = nullptr;
+		SafeNumeric<uint32_t> *index = nullptr;
 		uint32_t max_elements = 0;
 		virtual void work() = 0;
 		virtual ~BaseWork() = default;
@@ -55,10 +54,12 @@ class ThreadWorkPool {
 		U userdata;
 		virtual void work() {
 			while (true) {
-				uint32_t work_index = index->fetch_add(1, std::memory_order_relaxed);
+				uint32_t work_index = index->postincrement();
+
 				if (work_index >= max_elements) {
 					break;
 				}
+
 				(instance->*method)(work_index, userdata);
 			}
 		}
@@ -68,7 +69,7 @@ class ThreadWorkPool {
 		Thread thread;
 		Semaphore start;
 		Semaphore completed;
-		std::atomic<bool> exit;
+		SafeFlag exit;
 		BaseWork *work = nullptr;
 	};
 
@@ -85,7 +86,7 @@ public:
 		ERR_FAIL_COND(!threads); //never initialized
 		ERR_FAIL_COND(current_work != nullptr);
 
-		index.store(0, std::memory_order_release);
+		index.set(0);
 
 		Work<C, M, U> *w = memnew((Work<C, M, U>));
 		w->instance = p_instance;
@@ -110,12 +111,12 @@ public:
 
 	bool is_done_dispatching() const {
 		ERR_FAIL_COND_V(current_work == nullptr, true);
-		return index.load(std::memory_order_acquire) >= current_work->max_elements;
+		return index.get() >= current_work->max_elements;
 	}
 
 	uint32_t get_work_index() const {
 		ERR_FAIL_COND_V(current_work == nullptr, 0);
-		uint32_t idx = index.load(std::memory_order_acquire);
+		uint32_t idx = index.get();
 		return MIN(idx, current_work->max_elements);
 	}
 
