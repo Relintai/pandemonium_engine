@@ -139,8 +139,8 @@ public:
 	}
 
 	_ALWAYS_INLINE_ bool compare_exchange_weak(T &p_expected, T p_desired) {
-		if (value == p_expected) {
-			value = p_desired;
+		if (_value == p_expected) {
+			_value = p_desired;
 			return true;
 		} else {
 			return false;
@@ -148,8 +148,8 @@ public:
 	}
 
 	_ALWAYS_INLINE_ bool compare_exchange_strong(T &p_expected, T p_desired) {
-		if (value == p_expected) {
-			value = p_desired;
+		if (_value == p_expected) {
+			_value = p_desired;
 			return true;
 		} else {
 			return false;
@@ -257,7 +257,7 @@ public:
 
 	_ALWAYS_INLINE_ T get() const {
 		// Hack for gcc having no plain load with the old syncs.
-		return __sync_fetch_and_add((volatile T*)&_value, 0);
+		return __sync_fetch_and_add((volatile T *)&_value, 0);
 	}
 
 	_ALWAYS_INLINE_ T increment() {
@@ -304,7 +304,7 @@ public:
 				return tmp; // already greater, or equal
 			}
 
-			if (__sync_val_compare_and_swap(&_value, tmp, _value) == tmp) {
+			if (__sync_bool_compare_and_swap(&_value, tmp, _value)) {
 				return _value;
 			}
 		}
@@ -318,22 +318,26 @@ public:
 				return 0;
 			}
 
-			if (__sync_val_compare_and_swap(&_value, tmp, tmp + 1) == tmp) {
+			if (__sync_bool_compare_and_swap(&_value, tmp, tmp + 1)) {
 				return tmp + 1;
 			}
 		}
 	}
 
 	_ALWAYS_INLINE_ bool compare_exchange_weak(T &p_expected, T p_desired) {
+		T old_value = p_expected;
+
 		p_expected = __sync_val_compare_and_swap(&_value, p_expected, p_desired);
 
-		return p_expected == p_desired;
+		return p_expected == old_value;
 	}
 
 	_ALWAYS_INLINE_ bool compare_exchange_strong(T &p_expected, T p_desired) {
+		T old_value = p_expected;
+
 		p_expected = __sync_val_compare_and_swap(&_value, p_expected, p_desired);
 
-		return p_expected == p_desired;
+		return p_expected == old_value;
 	}
 
 	_ALWAYS_INLINE_ explicit SafeNumeric(T p_value = static_cast<T>(0)) {
@@ -364,15 +368,19 @@ public:
 	}
 
 	_ALWAYS_INLINE_ bool compare_exchange_weak(T &p_expected, T p_desired) {
+		T old_value = p_expected;
+
 		p_expected = __sync_val_compare_and_swap(&_value, p_expected, p_desired);
 
-		return p_expected == p_desired;
+		return p_expected == old_value;
 	}
 
 	_ALWAYS_INLINE_ bool compare_exchange_strong(T &p_expected, T p_desired) {
+		T old_value = p_expected;
+
 		p_expected = __sync_val_compare_and_swap(&_value, p_expected, p_desired);
 
-		return p_expected == p_desired;
+		return p_expected == old_value;
 	}
 
 	_ALWAYS_INLINE_ explicit SafePointer(T p_value = nullptr) {
@@ -587,15 +595,19 @@ public:
 	}
 
 	_ALWAYS_INLINE_ bool compare_exchange_weak(T &p_expected, T p_desired) {
+		T old_value = p_expected;
+
 		p_expected = atomic_val_compare_and_swap((volatile T *)&_value, p_expected, p_desired);
 
-		return p_expected == p_desired;
+		return p_expected == old_value;
 	}
 
 	_ALWAYS_INLINE_ bool compare_exchange_strong(T &p_expected, T p_desired) {
+		T old_value = p_expected;
+
 		p_expected = atomic_val_compare_and_swap((volatile T *)&_value, p_expected, p_desired);
 
-		return p_expected == p_desired;
+		return p_expected == old_value;
 	}
 
 	_ALWAYS_INLINE_ explicit SafeNumeric(T p_value = static_cast<T>(0)) {
@@ -618,15 +630,19 @@ public:
 	}
 
 	_ALWAYS_INLINE_ bool compare_exchange_weak(T &p_expected, T p_desired) {
+		T old_value = p_expected;
+
 		p_expected = (T)atomic_val_compare_and_swap_ptr((void *)&_value, (void *)p_expected, (void *)p_desired);
 
-		return p_expected == p_desired;
+		return p_expected == old_value;
 	}
 
 	_ALWAYS_INLINE_ bool compare_exchange_strong(T &p_expected, T p_desired) {
+		T old_value = p_expected;
+
 		p_expected = (T)atomic_val_compare_and_swap_ptr((void *)&_value, (void *)p_expected, (void *)p_desired);
 
-		return p_expected == p_desired;
+		return p_expected == old_value;
 	}
 
 	_ALWAYS_INLINE_ explicit SafeNumeric(T p_value = nullptr) {
