@@ -33,11 +33,8 @@
 /*************************************************************************/
 
 #include "core/os/memory.h"
+#include "core/os/safe_refcount.h"
 #include "core/typedefs.h"
-
-#include <atomic>
-#include <functional>
-#include <type_traits>
 
 // Design goals for these classes:
 // - Accessing this list with an iterator will never result in a use-after free,
@@ -52,11 +49,11 @@
 template <class T, class A = DefaultAllocator>
 class SafeList {
 	struct SafeListNode {
-		std::atomic<SafeListNode *> next = nullptr;
+		SafePointer<SafeListNode *> next;
 
 		// If the node is logically deleted, this pointer will typically point
 		// to the previous list item in time that was also logically deleted.
-		std::atomic<SafeListNode *> graveyard_next = nullptr;
+		SafePointer<SafeListNode *> graveyard_next;
 
 		void (*deletion_fn)(T t);
 
@@ -65,16 +62,14 @@ class SafeList {
 		static void default_deletion_fn(T) {}
 
 		SafeListNode() {
-			next = NULL;
-			graveyard_next = NULL;
 			deletion_fn = default_deletion_fn;
 		}
 	};
 
-	std::atomic<SafeListNode *> head;
-	std::atomic<SafeListNode *> graveyard_head;
+	SafePointer<SafeListNode *> head;
+	SafePointer<SafeListNode *> graveyard_head;
 
-	std::atomic<uint32_t> active_iterator_count;
+	SafeNumeric<uint32_t> active_iterator_count;
 
 public:
 	class Iterator {
@@ -86,18 +81,18 @@ public:
 		Iterator(SafeListNode *p_cursor, SafeList *p_list) {
 			cursor = p_cursor;
 			list = p_list;
-			list->active_iterator_count++;
+			list->active_iterator_count.increment();
 		}
 
 	public:
 		Iterator(const Iterator &p_other) {
 			cursor = p_other.cursor;
 			list = p_other.list;
-			list->active_iterator_count++;
+			list->active_iterator_count.increment();
 		}
 
 		~Iterator() {
-			list->active_iterator_count--;
+			list->active_iterator_count.decrement();
 		}
 
 	public:
@@ -136,8 +131,8 @@ public:
 		new_node->val = p_value;
 		SafeListNode *expected_head = nullptr;
 		do {
-			expected_head = head.load();
-			new_node->next.store(expected_head);
+			expected_head = head.get();
+			new_node->next.set(expected_head);
 		} while (!head.compare_exchange_strong(/* expected= */ expected_head, /* new= */ new_node));
 	}
 
@@ -150,7 +145,7 @@ public:
 		return end();
 	}
 
-	void erase(T p_value, std::function<void(T)> p_deletion_fn) {
+	void erase(T p_value, void (*p_deletion_fn)(T)) {
 		Iterator tmp = find(p_value);
 		erase(tmp, p_deletion_fn);
 	}
@@ -160,7 +155,7 @@ public:
 		erase(tmp, [](T t) { return; });
 	}
 
-	void erase(Iterator &p_iterator, std::function<void(T)> p_deletion_fn) {
+	void erase(Iterator &p_iterator, void (*p_deletion_fn)(T)) {
 		p_iterator.cursor->deletion_fn = p_deletion_fn;
 		erase(p_iterator);
 	}
