@@ -359,7 +359,7 @@ public:
 		// Many targets have only minimal support for such locks, and do not support a full exchange operation. In this case, a target may
 		// support reduced functionality here by which the only valid value to store is the immediate constant 1.
 		// The exact value actually stored in *ptr is implementation defined.
-		__sync_lock_test_and_set(&_value, p_value);
+		(void)__sync_lock_test_and_set(&_value, p_value);
 	}
 
 	_ALWAYS_INLINE_ T get() const {
