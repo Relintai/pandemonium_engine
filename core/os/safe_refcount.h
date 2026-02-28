@@ -156,7 +156,7 @@ public:
 		}
 	}
 
-	_ALWAYS_INLINE_ explicit SafeNumeric(T p_value = nullptr) {
+	_ALWAYS_INLINE_ explicit SafePointer(T p_value = nullptr) {
 		_value = p_value;
 	}
 };
