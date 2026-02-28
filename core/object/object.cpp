@@ -976,10 +976,11 @@ ObjectRC *Object::_use_rc() {
 
 	ObjectRC *rc = nullptr;
 	ObjectRC *const creating = reinterpret_cast<ObjectRC *>(1);
-	if (unlikely(_rc.compare_exchange_strong(rc, creating, std::memory_order_acq_rel))) {
+
+	if (unlikely(_rc.compare_exchange_strong(rc, creating))) {
 		// Not created yet
 		rc = memnew(ObjectRC(this));
-		_rc.store(rc, std::memory_order_release);
+		_rc.set(rc);
 		return rc;
 	}
 
@@ -989,7 +990,7 @@ ObjectRC *Object::_use_rc() {
 			rc->increment();
 			return rc;
 		}
-		rc = _rc.load(std::memory_order_acquire);
+		rc = _rc.get();
 	}
 }
 
@@ -1960,7 +1961,7 @@ Object::Object() {
 	_emitting = false;
 	memset(_script_instance_bindings, 0, sizeof(void *) * MAX_SCRIPT_INSTANCE_BINDINGS);
 	script_instance = nullptr;
-	_rc.store(nullptr, std::memory_order_release);
+	_rc.set(nullptr);
 #ifdef TOOLS_ENABLED
 
 	_edited = false;
@@ -1973,7 +1974,7 @@ Object::Object() {
 }
 
 Object::~Object() {
-	ObjectRC *rc = _rc.load(std::memory_order_acquire);
+	ObjectRC *rc = _rc.get();
 	if (rc) {
 		if (rc->invalidate()) {
 			memdelete(rc);

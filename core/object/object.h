@@ -42,8 +42,6 @@
 #include "core/os/safe_refcount.h"
 #include "core/variant/variant.h"
 
-#include <atomic>
-
 #define VARIANT_ARG_LIST const Variant &p_arg1 = Variant(), const Variant &p_arg2 = Variant(), const Variant &p_arg3 = Variant(), const Variant &p_arg4 = Variant(), const Variant &p_arg5 = Variant(), const Variant &p_arg6 = Variant(), const Variant &p_arg7 = Variant(), const Variant &p_arg8 = Variant()
 #define VARIANT_ARG_PASS p_arg1, p_arg2, p_arg3, p_arg4, p_arg5, p_arg6, p_arg7, p_arg8
 #define VARIANT_ARG_DECLARE const Variant &p_arg1, const Variant &p_arg2, const Variant &p_arg3, const Variant &p_arg4, const Variant &p_arg5, const Variant &p_arg6, const Variant &p_arg7, const Variant &p_arg8
@@ -511,7 +509,7 @@ private:
 	int _predelete_ok;
 	RBSet<Object *> change_receptors;
 	ObjectID _instance_id;
-	std::atomic<ObjectRC *> _rc;
+	SafePointer<ObjectRC *> _rc;
 	bool _predelete();
 	void _postinitialize();
 	bool _can_translate;
