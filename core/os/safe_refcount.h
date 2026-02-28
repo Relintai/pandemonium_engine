@@ -341,7 +341,7 @@ public:
 	}
 
 	_ALWAYS_INLINE_ explicit SafeNumeric(T p_value = static_cast<T>(0)) {
-		_value = p_value;
+		set(p_value);
 	}
 };
 
@@ -384,7 +384,7 @@ public:
 	}
 
 	_ALWAYS_INLINE_ explicit SafePointer(T p_value = nullptr) {
-		_value = p_value;
+		set(p_value);
 	}
 };
 
@@ -450,7 +450,7 @@ public:
 	}
 
 	_ALWAYS_INLINE_ explicit SafeFlag(bool p_value = false) {
-		_flag = p_value;
+		set_to(p_value);
 	}
 };
 
@@ -611,7 +611,7 @@ public:
 	}
 
 	_ALWAYS_INLINE_ explicit SafeNumeric(T p_value = static_cast<T>(0)) {
-		_value = p_value;
+		set(p_value);
 	}
 };
 
@@ -646,7 +646,7 @@ public:
 	}
 
 	_ALWAYS_INLINE_ explicit SafeNumeric(T p_value = nullptr) {
-		_value = p_value;
+		set(p_value);
 	}
 };
 
@@ -711,7 +711,7 @@ public:
 	}
 
 	_ALWAYS_INLINE_ explicit SafeFlag(bool p_value = false) {
-		_flag = p_value ? 1 : 0;
+		set_to(p_value);
 	}
 };
 
