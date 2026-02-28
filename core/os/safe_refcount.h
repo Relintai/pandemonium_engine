@@ -664,7 +664,7 @@ public:
 
 	_ALWAYS_INLINE_ void set() {
 		while (true) {
-			uint32_t tmp = get();
+			uint32_t tmp = is_set() ? 1 : 0;
 
 			if (tmp) {
 				return;
@@ -678,7 +678,7 @@ public:
 
 	_ALWAYS_INLINE_ void clear() {
 		while (true) {
-			uint32_t tmp = get();
+			uint32_t tmp = is_set() ? 1 : 0;
 
 			if (!tmp) {
 				return;
@@ -692,7 +692,7 @@ public:
 
 	_ALWAYS_INLINE_ void set_to(bool p_value) {
 		while (true) {
-			uint32_t tmp = get();
+			uint32_t tmp = is_set() ? 1 : 0;
 
 			if (tmp == (p_value ? 1 : 0)) {
 				return;
@@ -705,7 +705,7 @@ public:
 	}
 
 	_ALWAYS_INLINE_ bool test_and_set() {
-		uint32_t tmp = get();
+		uint32_t tmp = is_set() ? 1 : 0;
 
 		if (tmp) {
 			return false;
