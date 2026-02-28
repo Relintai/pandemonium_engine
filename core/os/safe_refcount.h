@@ -626,7 +626,7 @@ class SafePointer {
 
 public:
 	_ALWAYS_INLINE_ void set(T p_value) {
-		atomic_set_ptr((void **)&_value, (void *)p_value);
+		atomic_set_ptr((volatile void **)&_value, (void *)p_value);
 	}
 
 	_ALWAYS_INLINE_ T get() const {
@@ -636,7 +636,7 @@ public:
 	_ALWAYS_INLINE_ bool compare_exchange_weak(T &p_expected, T p_desired) {
 		T old_value = p_expected;
 
-		p_expected = (T)atomic_val_compare_and_swap_ptr((void **)&_value, (void *)p_expected, (void *)p_desired);
+		p_expected = (T)atomic_val_compare_and_swap_ptr((volatile void **)&_value, (void *)p_expected, (void *)p_desired);
 
 		return p_expected == old_value;
 	}
@@ -644,7 +644,7 @@ public:
 	_ALWAYS_INLINE_ bool compare_exchange_strong(T &p_expected, T p_desired) {
 		T old_value = p_expected;
 
-		p_expected = (T)atomic_val_compare_and_swap_ptr((void **)&_value, (void *)p_expected, (void *)p_desired);
+		p_expected = (T)atomic_val_compare_and_swap_ptr((volatile void **)&_value, (void *)p_expected, (void *)p_desired);
 
 		return p_expected == old_value;
 	}
