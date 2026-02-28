@@ -34,6 +34,10 @@
 #include "safe_refcount.h"
 #include "core/error/error_macros.h"
 
+// TODO these methods should use compiler intrinsics.
+// If possible they should be moved to the header if windows.h doesn't need to be included.
+// Also the gcc versions should have an option to use the newer __atomics.
+
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
