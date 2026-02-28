@@ -626,7 +626,7 @@ class SafePointer {
 
 public:
 	_ALWAYS_INLINE_ void set(T p_value) {
-		atomic_set_ptr((void *)&_value, (void *)p_value);
+		atomic_set_ptr((void **)&_value, (void *)p_value);
 	}
 
 	_ALWAYS_INLINE_ T get() const {
