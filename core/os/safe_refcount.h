@@ -630,13 +630,13 @@ public:
 	}
 
 	_ALWAYS_INLINE_ T get() const {
-		return (T)atomic_load_ptr((volatile T *)&_value);
+		return (T)atomic_load_ptr((volatile void **)&_value);
 	}
 
 	_ALWAYS_INLINE_ bool compare_exchange_weak(T &p_expected, T p_desired) {
 		T old_value = p_expected;
 
-		p_expected = (T)atomic_val_compare_and_swap_ptr((void *)&_value, (void *)p_expected, (void *)p_desired);
+		p_expected = (T)atomic_val_compare_and_swap_ptr((void **)&_value, (void *)p_expected, (void *)p_desired);
 
 		return p_expected == old_value;
 	}
@@ -644,7 +644,7 @@ public:
 	_ALWAYS_INLINE_ bool compare_exchange_strong(T &p_expected, T p_desired) {
 		T old_value = p_expected;
 
-		p_expected = (T)atomic_val_compare_and_swap_ptr((void *)&_value, (void *)p_expected, (void *)p_desired);
+		p_expected = (T)atomic_val_compare_and_swap_ptr((void **)&_value, (void *)p_expected, (void *)p_desired);
 
 		return p_expected == old_value;
 	}
