@@ -57,6 +57,9 @@
 			return m_val;                                                                   \
 	}
 
+uint32_t atomic_load(volatile uint32_t *ptarget) {
+	return InterlockedExchangeAdd((LONG volatile *)ptarget, 0);
+}
 void atomic_set(volatile uint32_t *ptarget, volatile uint32_t pw) {
 	InterlockedExchange((LONG volatile *)ptarget, pw);
 }
@@ -86,6 +89,9 @@ uint32_t atomic_val_compare_and_swap(volatile uint32_t *pw, volatile uint32_t ol
 	return InterlockedCompareExchange((LONG volatile *)pw, newval, oldval);
 }
 
+int32_t atomic_load(volatile int32_t *ptarget) {
+	return InterlockedExchangeAdd((LONG volatile *)pw, 0);
+}
 void atomic_set(volatile int32_t *ptarget, volatile int32_t pw) {
 	InterlockedExchange((LONG volatile *)ptarget, pw);
 }
@@ -115,6 +121,9 @@ int32_t atomic_val_compare_and_swap(volatile int32_t *pw, volatile int32_t oldva
 	return InterlockedCompareExchange((LONG volatile *)pw, newval, oldval);
 }
 
+uint64_t atomic_load(volatile uint64_t *ptarget) {
+	return InterlockedExchangeAdd64((LONGLONG volatile *)pw, 0);
+}
 void atomic_set(volatile uint64_t *ptarget, volatile uint64_t pw) {
 	InterlockedExchange64((LONGLONG volatile *)ptarget, pw);
 }
@@ -144,6 +153,9 @@ uint64_t atomic_val_compare_and_swap(volatile uint64_t *pw, volatile uint64_t ol
 	return InterlockedCompareExchange64((LONGLONG volatile *)pw, newval, oldval);
 }
 
+int64_t atomic_load(volatile int64_t *ptarget) {
+	return InterlockedExchangeAdd64((LONGLONG volatile *)pw, 0);
+}
 void atomic_set(volatile int64_t *ptarget, volatile int64_t pw) {
 	InterlockedExchange64((LONGLONG volatile *)ptarget, pw);
 }
@@ -173,6 +185,9 @@ int64_t atomic_val_compare_and_swap(volatile int64_t *pw, volatile int64_t oldva
 	return InterlockedCompareExchange64((LONGLONG volatile *)pw, newval, oldval);
 }
 
+void *atomic_load_ptr(volatile void **ptarget) {
+	return InterlockedCompareExchangePointer((PVOID volatile *)value, 0, 0);
+}
 void atomic_set_ptr(volatile void **ptarget, volatile void *pw) {
 	InterlockedExchangePointer((PVOID volatile *)ptarget, (PVOID)pw);
 }
