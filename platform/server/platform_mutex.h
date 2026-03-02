@@ -98,7 +98,7 @@ public:
 
 // This is written this way instead of being a template to overcome a limitation of C++ pre-17
 // that would require MutexLock to be used like this: MutexLock<Mutex> lock;
-class MutexLock {
+class _NO_DISCARD_CLASS_ MutexLock {
 	union {
 		Mutex *recursive_mutex;
 		BinaryMutex *mutex;

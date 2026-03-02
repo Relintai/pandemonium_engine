@@ -60,7 +60,7 @@ public:
 
 // This is written this way instead of being a template to overcome a limitation of C++ pre-17
 // that would require MutexLock to be used like this: MutexLock<Mutex> lock;
-class MutexLock {
+class _NO_DISCARD_CLASS_ MutexLock {
 	union {
 		std::recursive_mutex *recursive_mutex;
 		std::mutex *mutex;
@@ -108,7 +108,7 @@ public:
 	_ALWAYS_INLINE_ Error try_lock() const { return OK; }
 };
 
-class MutexLock {
+class _NO_DISCARD_CLASS_ MutexLock {
 public:
 	explicit MutexLock(const MutexImpl<FakeMutex> &p_mutex) {}
 };

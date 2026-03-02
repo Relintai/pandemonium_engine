@@ -56,7 +56,7 @@ public:
 	virtual ~Mutex();
 };
 
-class MutexLock {
+class _NO_DISCARD_CLASS_ MutexLock {
 
 	Mutex *mutex;
 
