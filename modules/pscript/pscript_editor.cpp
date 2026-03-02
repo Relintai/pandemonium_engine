@@ -2338,7 +2338,17 @@ static void _find_call_arguments(const PScriptCompletionContext &p_context, cons
 							option.insert_text += quote_style + option.display + quote_style;
 							r_result.insert(option.display, option);
 						}
+					} else {
+						List<MethodInfo> methods;
+						ps->get_script_method_list(&methods);
+						for (List<MethodInfo>::Element *E = methods.front(); E; E = E->next()) {
+							if (E->get().name == p_method) {
+								r_arghint = _make_arguments_hint(E->get(), p_argidx);
+								return;
+							}
+						}
 					}
+
 					Ref<PScript> base_script = ps->get_base_script();
 					if (base_script.is_valid()) {
 						base_type.script_type = base_script;
