@@ -1396,6 +1396,10 @@ Error PScriptCompiler::_parse_block(CodeGen &codegen, const PScriptParser::Block
 					} break;
 
 					case PScriptParser::ControlFlowNode::CF_IF: {
+						codegen.opcodes.push_back(PScriptFunction::OPCODE_LINE);
+						codegen.opcodes.push_back(cf->line);
+						codegen.current_line = cf->line;
+
 						int ret2 = _parse_expression(codegen, cf->arguments[0], p_stack_level, false);
 						if (ret2 < 0) {
 							return ERR_PARSE_ERROR;
