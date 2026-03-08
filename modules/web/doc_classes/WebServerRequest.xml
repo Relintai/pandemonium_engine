@@ -140,7 +140,7 @@
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
-				Same as get_file_file_name at the moment.
+				Returns the name of the form's input field.
 			</description>
 		</method>
 		<method name="get_file_length" qualifiers="const">

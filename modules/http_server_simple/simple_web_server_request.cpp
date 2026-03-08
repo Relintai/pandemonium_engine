@@ -71,7 +71,7 @@ String SimpleWebServerRequest::get_file_file_name(const int index) const {
 String SimpleWebServerRequest::get_file_key(const int index) const {
 	ERR_FAIL_INDEX_V(index, _files.size(), "");
 
-	return _files[index].file_name;
+	return _files[index].key;
 }
 uint64_t SimpleWebServerRequest::get_file_length(const int index) const {
 	ERR_FAIL_INDEX_V(index, _files.size(), 0);
