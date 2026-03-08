@@ -206,11 +206,6 @@ void HTTPParser::_process_multipart_header_value(const String &val) {
 					_multipart_form_filename.remove(_multipart_form_filename.length() - 1);
 				}
 
-				if (_multipart_form_name.length() >= 2 && _multipart_form_name.begins_with("\"") && _multipart_form_name.ends_with("\"")) {
-					_multipart_form_name.remove(0);
-					_multipart_form_name.remove(_multipart_form_name.length() - 1);
-				}
-
 				if (upload_file_store_type == WebServerSimple::FILE_UPLOAD_STORE_TYPE_TEMP_FILES) {
 					if (_upload_file_access) {
 						ERR_PRINT("BUG! if (_upload_file_access) is true!");
@@ -640,7 +635,7 @@ int HTTPParser::on_multipart_header_field_cb(const char *at, size_t length) {
 }
 int HTTPParser::on_multipart_header_value_cb(const char *at, size_t length) {
 	String s = String::utf8(at, length);
-	
+
 	_process_multipart_header_value(s);
 
 #if MULTIPART_MESSAGE_DEBUG
