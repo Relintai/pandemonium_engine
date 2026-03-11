@@ -595,6 +595,8 @@ All notable changes to this project will be documented in this file.
 - Update module list in module_config.py.
 - Added long term plans to the readme.
 - Set the clang format standard to c++11.
+- Set the website to the domain as it has proper https certificates.
+- Rename docs variable to docs_branch in version.py and also added a docs_url variable.
 
 ### Backports
 
