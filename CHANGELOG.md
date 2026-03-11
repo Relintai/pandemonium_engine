@@ -4,8 +4,610 @@ All notable changes to this project will be documented in this file.
 
 ## [Master]
 
-Backported everything up to and including https://github.com/godotengine/godot/commit/2f9f0f2d0ec1d66877eda8db156d3918e9c54cec
-merge commit: https://github.com/godotengine/godot/commit/a262cc3750a97c0b61e625e351e38f0b5cb9e4cb
+### Highlights
+
+- Added new Variant types: TypedArray and PackedTypedArray.
+- Backported all improvements from Terraman to Voxelman.
+- Improvements to both Voxelman and Terraman.
+- Finished docs for Voxelman.
+- Added a new scripting language: PScript, with a c-like syntax.
+- Threading related classes now use the platform apis directly.
+
+### Breaking Changes
+
+- SafeNumeric has been split to SafeNumeric and SafePointer. This might result in a break on the c++ side for engine modules.
+- Renamed DEFAULT_CHANNEL_ALT_TYPE to DEFAULT_CHANNEL_LIQUID_TYPE and DEFAULT_CHANNEL_ALT_ISOLEVEL to DEFAULT_CHANNEL_LIQUID_ISOLEVEL in voxelman.
+- Backport bd476c1d667fb21fc4e0e491a0e850b312e8c8ef to voxelman.
+  Split _create_chunk() to _create_chunk() and _setup_chunk() in
+  TerrainWorld.
+  - Unfortunately this is a breaking change. (Very slight though.)
+    Now _create_chunk() should be used to initialize serialized properties
+    in chunks. The new _setup_chunk() virtual should be used to initialize
+    other non/serialized properties (like meshers).
+    Fortunately the only thing that needs to be done is to split old
+    _create_chunk() into two.
+  - Note that when using procedural generation, the old way should just work
+    without any updates necessary. This change is only needed when loading
+    of chunks is desired.
+
+### Core
+
+- Added new Variant types: TypedArray and PackedTypedArray.
+- Added missing constructor for Rect2I.
+- Bound 2 constuctors for Projection.
+- Add approximate deep equals support for TypedArray and PackedTypedArray.
+- Added missing types to Variant::deep_equal().
+- Remove duplicate label.
+- Split deep_equal() into deep_equal() and deep_equal_approx().
+- Add deep_equal_approx to gdscript.
+- Docs for deep_equal_approx.
+- Rename some of the binary magic headers.
+  The old ones are still loaded for backwards compatibility.
+- Don't use IP::ResolverStatus as a SafeNumeric parameter.
+- Now ObjectRC and Object use SafePointers and SafeNumerics instead of std::atomic.
+- Now ThreadWorkPool uses SafeFlag and SafeNumeric instead of std::atomic.
+- Get rid of stl in SafeList. Note that SafeList is not used anywhere, so it might still have issues.
+
+#### Threads
+
+- Collect old threading primitive implementations to a temp folder.
+- Copy the current thread implementations under drivers.
+- Now the X11 platform uses pthreads directly.
+  - Everything is snappier now... This is ridiculous.
+  - For reference the character on the Broken Seals menu appears instantly
+  now, instead of in about a second.
+- Also set pthread priority.
+- Added the pthread implementation as platform thread overrides to all flatforms that can use it unmodified.
+  - A better system will be needed for this eventually.
+- Override thread implementation for android aswell.
+- Setup native threads for windows aswell.
+- Fix missing return value.
+- pthread_setschedprio doesn't exists on osx.
+- Fix Windows thread's global static callback method trying to access Thread's private members.
+- Fix trying to return undeclared identifier.
+- iOS doesn't have pthread_setschedprio either.
+- Disable temporarily the pthread_setschedparam calls.
+- Init _main_thread_id to 0 everywhere.
+- Add platform thread override to the javascript platform aswell.
+- Make the default thread implementation in core the dummy one.
+- Move thread_posix.h and cpp.
+- Now platform_threads.h are used whwnewer NO_THREADS is defined. Removed PLATFORM_THREAD_OVERRIDE.
+- Use native mutex apis directly.
+- Fix missing memnew declaration.
+- Move includes in mutex.h.
+- Cast before deleting for good measure.
+- Remove unnecessary always inlines.
+- Add missing include.
+- Use c style numeric limits.
+- Use native rw lock apis directly.
+- Fix variable name.
+- Cast before deletion.
+- Use native semaphores.
+- Tweaks.
+- Use dispatch_semaphore for osx.
+- Also use dispatch semaphore on ios.
+- Reimplement atomics using old gcc builtins.
+- Now SpinLock uses SafeFlag.
+- MSVC atomics initial setup.
+- No need for the float SafeNumeric template specialization now.
+- Atomics for MSVC.
+- Add new method to dummy SafeFlag.
+- Added a SafePointer type to SafeRefcount. Renamed the Windows template specialization to it.
+- Use InterlockedExchangeAdd everywhere instead of InterlockedAdd on Windows.
+- Added proper atomic loads and stores.
+- Fix compare exchange logic and also small tweaks.
+- Rework the gcc version of SafeFlag to use uint8_t.
+- Use set() in atomic variable constructors again.
+- Use getters instead of casting to volatile in Safe Refcount. Also initialize flag to 0 in SafeFlag.
+- Mark all MutexLocks as _NO_DISCARD_CLASS_.
+
+### Editor
+
+- Change GDScript text to just Script in ProjectExportDialog.
+- Added a default language and default name casing dropdown to the create project dialog. If changed, they remember state.
+- Tweak the renderer texts in the create project dialog.
+- Rename SCENE_NAME_CASING_AUTO to SCENE_NAME_CASING_KEEP so it's name better matches what it does.
+- Store global script class icon keys as Strings, instead of StringNames in the ProjectSettings.
+  This fixes their order changing constantly in the project.pandemonium file.
+
+### Servers
+
+- Fix multi threaded rendering.
+
+### Scene
+
+- Remove SafeNumeric&lt;float&gt;-s from AudioStreamPlayers.
+  - The way they are used it's unnecessary. If they have race conditions
+  they will need mutexes.
+  - Restored them to be volatile as they were before the atomic rework
+  just in case.
+
+
+### Modules
+
+#### GDNative
+
+- Added bindings for the new Variant types: TypedArray and PackedTypedArray.
+- Updated the gdnative helper scripts.
+- Added deep_equal_approx to gdnative.
+
+#### Voxelman
+
+- Backport improved priority generation logic to Voxelman.
+- Backport 9cd4da72c833eeb8c18fe84ff35816a07af9b8e5 for Voxelman.
+  Added new helper methods to TerrainWorld.
+- Backport 4a2d4af6925ef1f55f85207ccae6a0afa6bb2e40 for voxelman.
+  Clear meshes as needed in TerrainPropJob.
+- Backport 6be11c2bffd734bf3025885389a0a1bbc11aa9b4 for voxelman.
+  Implemented an immediate build mode for TerrainChunk.
+- Backport c13a4d08a5b2f7bd39c9694a18034488024cc3e6 for voxelman.
+  Use the new immediate build mode in TerrainWorld's
+  set_voxel_at_world_data_position().
+- Backport e11e75e5ea75df330869d9a7264c2d71d643f548 for voxelman.
+  Unlock the mutex after the rects are refreshed in the material cache in
+  TerrainLibraryMergerPCM.
+- Backport 2688162cf9bf52e6654356e8368707c5c3c95bbb for voxelman.
+  Optimized editing in TerrainWorldEditor.
+- Backport 2024a33ee9dc0b90cc2bc5d223ae1161872f987f for voxelman.
+  Implemented chunk material invalidation support for
+  TerrainLibraryMergerPCM.
+- Backport "Get the dimensions from the texture instead of the image in texture_get_uv_rect of the material cache." from pre-pandfemonium terraman.
+  https://github.com/Relintai/terraman/commit/29c68e5fb045b2c520c1ad1d4f88527fb43e4f4a
+- Added liquid material caches to VoxelLibraryMergerPCM.
+- Renamed DEFAULT_CHANNEL_ALT_TYPE to DEFAULT_CHANNEL_LIQUID_TYPE and DEFAULT_CHANNEL_ALT_ISOLEVEL to DEFAULT_CHANNEL_LIQUID_ISOLEVEL in voxelman.
+- Backport "Added a helper method to get the editor's camera." from pre-pandemonium terraman.
+  https://github.com/Relintai/terraman/commit/a78d41bf3762df022d8feb7e2bc79a611b89db3c
+- Backport "Fix a deadlock in TerrainLibraryMergerPCM that could occur when spawning and despawning cunks extremely fast." from pre-pandemonium terraman.
+- Fix include.
+- Backport "Fix more issues when allocating and deleting chunks really fast. (Flying around in the editor at max speed.)" from pre-pandemonium terraman.
+  https://github.com/Relintai/terraman/commit/0845d92e655f0a38db34daa4e4ecc294f0d33487
+- Backport fix for some race condition and deadlocks in voxelman.
+- Fix potential deadlock.
+- Support using Material Caches in VoxelMeshers.
+- Set and generate liquid materials.
+- Backport 39cb3e398f0c8048e84a9647626f3cf7e4b96f07 to voxelman.
+  Reset the mesher's lod index in _reset() in TerrainTerrainJob. This
+  fixes subsequent mesh generations.
+- Backport 17e048a044660916a8b0bae82c15ac5aa0b85734 to voxelman.
+  Added a new helper method to TerrainWorld.
+- Backport 12214cb8c77d0a1555d6fb3cd09c1a9215357881 to voxelman.
+  Fix potential hang on exit due to deadlocks.
+- Missing changes.
+- Fix double call.
+- Backport d0fa4ba19492b2d8843e5b6ccb30cc2db3586351 to voxelman.
+  Clear the material cache data in TerrainChunk::_exit_tree().
+- Backport 4ac60955091d8f37f769b7b9842e3d5e6469aa8c to voxelman.
+  Added a new helper method to TerrainWorld.
+- Backport a980238482c886e4bb0de64be4b2d75fafebd203 to voxelman.
+  Add the new chunk to the generation queue instead of directly calling
+  it's build method in TerrainWorld::chunk_add().
+- Backport "When the world adds a MeshDataResource to the chunk it should not be scaled again." from original terraman,
+  https://github.com/Relintai/terraman/commit/01721b948887e1316c9e2df4610e71a7d2df4c79
+- Backport "Chunk's mesh_data_resource_add expects a local transform." from original terraman.
+  https://github.com/Relintai/terraman/commit/f76a7f9df489dff36f549cd6ab0fc18f7f34955b
+- Backport "Now the world can be deactivated when needed." from original terraman.
+  https://github.com/Relintai/terraman/commit/632586f4b37f854ace4cc897a41a5d233b84116f
+- Backport "Added chunk_added and chunk_removed signals to TerraWorld." from original terraman.
+  https://github.com/Relintai/terraman/commit/86de26c2c7a15185658680ae79c39a0c8bb159ce
+- Backport 23614770f13445597c7c2a18681cebf9c82c986b to voxelman.
+  Simplify chunks_set() in TerrainWorld.
+- Backport b0177a2c3a62d4d30ffa478a5a2d773fa9233e4a to voxelman.
+  Only generate chunks once.
+- Backport eb3ed4fa20301775575cfb2140fc79c98a134cd4 to voxelman.
+  Now props and mesh data resources are saved with the TerrainChunks.
+- Backported 583298dbfe1d8560765f72a0fd874e0fabd8471e to voxelman.
+  Now TerrainLights are stored inside chunks (they are also automatically
+  saved with them). Also changed TerrainLight's api to makes use of
+  Vector3i.
+- Backport 954ca26471dd0f78b0cb73cd6316cd1ec3fa16f5 to voxelman.
+  Make sure the remaining chunks are notified of the changed world lights
+  when adding / removing chunks.
+- Backport 1643197af39d22039adfc8d50105969c01929e6f to voxelman.
+  Now TerrainChunks will remember whether they own a prop or not. Also
+  added and bound missing methods to Chunk's prop api.
+- Backport 0a87629b01d31a6e22d1ab61382c57ff65eaf2ca to voxelman.
+  Set prop ownership when adding them in TerrainWorld.
+- Backport 2054f60c6d1c258fcc2e808e2e443f3e0aa79e62 to voxelman.
+  Renamed the new original parameter in TerrainChunk and TerrainWorld's
+  prop api from owner to original.
+- Backport 7006c947cd8d0a6ea8a0d6b3306e6f229f3e900a to voxelman.
+  Store whether a mesh_data_resource in a TerrainChunk is original or not.
+- Backport 1c14d1cb4c87a8f3098e8bd22a61e730c5655eaf to voxelman.
+  Store ownership information in TerrainLights.
+- Backport 601185c2bdf5bbee1c0c6291f965a371bb085be2 to voxelman.
+  Set prop ownership to lights in TerrainWorld::prop_add().
+- Backport 6786193010b6cf466d4075c6b215d3b1598b4653 to voxelman.
+  Added to_dict() and from_dict() methods to TerrainLight.
+- BAckport 6e9e3fd58036737a6fa5248a16412ed355ac96a0 to voxelman.
+  Now TerrainLights inherit from Resource.
+- Backport 418bac420984875e2496f47c12c8c214b6e5bbda to voxelman.
+  Added owned_lights property to TerrainChunk. Also changed the lights
+  property it is now scripting only, it won't get saved.
+- Backport 39eeba0efdcc7a0924103c2e37df3ea6fe5508e4 to voxelmnan.
+  Added scene storage api to TerrainChunks.
+- Fix bind.
+- Backport 9d6ec2bb65652df46312010af54b4411804187e0 to voxelman.
+  Tweaks and improvements to TerrainChunk's new scene api.
+- Backport 10c5076819addc3fe6702152f8ecab85e2805d9f to voxelman.
+  Added the new scene_add() method to TerrainWorld. Also store scenes from
+  props inside chunks.
+- Backport 9841d6fdc893d5d9e389d10a5fce1f4ca9e8a337 to voxelman.
+  Small variable name tweak.
+- Backport b248a28ccfaddbf2006fbf375556becb21ac60a8 to voxelman.
+  More tweaks to TerrainChunk's new scene api.
+- Backport f56182466f51f5f552b4e1cd14b4a4b8c23a4d5f to voxelman.
+  Fix compile on windows, osx, and javascript. (Hopefully.)
+- Backport 5ad5d65705ad0509aa163033f607e1c52ac6f41a to voxelman.
+  Call emit_changed() in TerrainChunk setters. Also a setter fix.
+- Backpoer fb08c49ab6583b4c493db0406b937f8baee6d7e1 to voxelman.
+  Make sure the prop meshes are cleared from previous runs before
+  returning early in TerrainPropJob.
+- Backport 5d3aa83ffae0fdf8662df74414691086e212c564 to voxelman.
+  Rebuild chunks in TerrainWorld::prop_add().
+- Backport 7e52eb6b43bc2b0fa3ceb017a2004fa1fd78257b to voxelman.
+  Now props added to TerrainWorld can also have a name. The prop bake
+  editor tool uses it to save and restore node names.
+- MaterialCache support for VoxelMesherMarchingCubes.
+- Backport 0847706fa25a2ea6319ff6de402a9311114fd842 to voxelman.
+  Implement setting a name to scenes in TerrainChunk.
+- Backport dc4de19aaf7afb7be9692769c142b4d59904dfa1 to voxelman.
+  Return and set the name with the props property in TerrainChunk.
+- Backported f770c598ed69bf2b8b947bcdc33a73529d5ffbbc to voxelman.
+  Now TerrainChunks can also store a name and material for
+  MeshDataResources.
+- Backport 74ddba1eb1b91819a9654739a75d8d891d660ba9 to voxelman.
+  Added mesh_data_resource_add() helper method to TerrainWorld.
+- Backport d37176539ebb81a74dd018e6443dd194ae08a7b1 to voxelman.
+  Removed OWNER_TYPE_VERTEX_LIGHT_3D from TerrainLight.
+- Backport 4f0050f019f0fc4bf4bd79493be890214d055431 to voxelman.
+  Added light_mode property to TerrainLight.
+- Backport 7a50eedd5a477792d8b7293f96509b07f92cb800 to voxelman.
+  Added item_cull_mask property to TerrainLight.
+- Backport ffa4cf938f38f9073af1ff50034cf9a55a5024df to voxelman.
+  Added more helper methods to TerrainWorld.
+- Backport 20f5439a82b225696baac6530e20b3f90b218fd7 to voxelman.
+  Fix TerrainChunk::light_remove_index() not actually remoing lights.
+- Backport a4ff7e9e66909baa35a9a6b458057d88381d28ac to voxelman.
+  Added use_vertex_lights_3d property to TerrainWorld.
+- Backport 1ac803de1c0d9d44972a80872aeb13b6b8e9aac6 to voxelman.
+  Make use of the VertexLights3DServer in
+  TerrainChunkDefault::_bake_lights() if enabled.
+- Backport c094e070c7053c3a5d0c579caef5e54b3fef6c07 to voxelman.
+  Now TerrainChunks will register their lights into the
+  VertexLights3DServer if use_vertex_lights_3d is enabled in world.
+- Left out changes from the previous commit.
+- Backport the ChunkDataManagers from terraman to voxelman.
+- Backport 5dbfdac48efbfd1fa7dc74aea348601060fe5d2f to voxelman.
+  Now TerrainWorld uses TerrainWorldChunkDataManagers if they are
+  available.
+- Backport 117f6cffd17d71440db35ecb9906590d13dce785 to voxelman.
+  Now TerrainWorld won't save it's chunks into scenes in the editor
+  anymore if a TerrainWorldChunkDataManager is set.
+- Backport 9fefe64c3b1e1126f283a7aa5d904c80643b10c4 to voxelman.
+  Added force_save_all_chunks() method to TerrainWorld.
+- Backport b7bfd13ec4abcd1145e2445921c969e801b1cba1 to voxelman.
+  Added a force save all chunks button to TerrainWorld's inspector if a
+  TerrainWorldChunkDataManager is set.
+- Add missing bind.
+- Backport bd476c1d667fb21fc4e0e491a0e850b312e8c8ef to voxelman.
+  Split _create_chunk() to _create_chunk() and _setup_chunk() in
+  TerrainWorld.
+  - Unfortunately this is a breaking change. (Very slight though.)
+    Now _create_chunk() should be used to initialize serialized properties
+    in chunks. The new _setup_chunk() virtual should be used to initialize
+    other non/serialized properties (like meshers).
+    Fortunately the only thing that needs to be done is to split old
+    _create_chunk() into two.
+  - Note that when using procedural generation, the old way should just work
+    without any updates necessary. This change is only needed when loading
+    of chunks is desired.
+- Backport 4d23866ac53befb07f44a3d122f4a563ccdbb87c to voxelman.
+  Call TerrainWorldDefault's _create_chunk() and _setup_chunk() in
+  TerrainWorldBlocky.
+- Backport d99577365c6bd1fa36614a6d8db24adbd3a95d2c to voxelman.
+  Call chunk's enter_tree and set voxel world on entering the tree in
+  TerrainWorld.
+- Backport 97380e3f536801e7f9fa6748ef820126bfe9c10a to voxelman.
+  Only build the chunk in TerrainWorld::chunk_add() if the world is in the
+  tree.
+- Backport 82218be9914fce5c6093b2929eec333014bb7ffb to voxelman.
+  Fix visibility toggling in TerrainChunkDefault even if lods are
+  disabled.
+- Backport 92893512849707971afb258d0815ec1a7703bbb0 to voxelman.
+  Also check whether chunks are building when doing a priority generation.
+- Backport comment.
+- Backport 64696b534b7118fdf91ccccecb4cb6016d2f98d5 to voxelman.
+  Don't destroy and re-generate meshes in TerrainChunk's _enter and
+  _exit_tree, just hide / show them. This makes scene tab swithing with
+  TerrainWorlds in the editor a lot simpler.
+- Backport 61a43daa45c848ef30e51c6c3c1f906a1c808b40 to voxelman.
+  Removed unnecessary check.
+- Backport 556de2db50cb8ffb9bfad036a46d21dd290a15a4 to veoxelman.
+  TerrainChunkDefault lod change code cleanups and improvements. Also set
+  scenario on entering and exiting the tree.
+- Don't complain if chunk is already used by an another world for now.
+  This can happen when realoding scenes that have chunks saved in them.
+  Maybe eventually a different solution might be needed, but for now this
+  seems fine.
+- Set space for the colliders when entering and exiting tree in VoxelChunkDefault.
+- Implement visible collision shapes support for Voxelman.
+- Set scenario for debug meshes aswell in VoxelChunkDefault, also free them in free_chunk().
+- Free the body first.
+- Hide and show debug mesh in VoxelChunkDefault::_visibility_changed().
+- Revert "Hide and show debug mesh in VoxelChunkDefault::_visibility_changed()."
+  This reverts commit cebd0914910429daadd822e0ea103fbc7e72018f.
+- Make VoxelWorld handle visibility change notifications.
+- Emit changed in VoxelChunk::set_is_terrain_generated().
+- Use post enter tree in VoxelWorld::_notification.
+- Cancel build first in VoxelChunk::_exit_tree().
+- Don't check for the presence of _enter_tree and _exit_tree, as they are always available.
+- Clean up abort build logic.
+- Set collider space properly in VoxelChunkDefault.
+- Also reset _is_generating flag if the build was aborted.
+- Also reset _queued_generation if abort build was set.
+- Properly restart builds in enter tree.
+- Reset cancelled state in VoxelJob::_reset().
+- Reset  _current_job if the build was aborted.
+- Clean metas in VoxelTerrainJob::_reset().
+- Reset cancelled state in VoxelChunk::job_next() instead of VoxelJob::reset().
+- Reset the build_phase_type in VoxelTerrainJob::_reset().
+- Re-extracted class docs.
+- Detup channel index info for VoxelWorldBlocky.
+- Use undoredo when setting voxels with the voxel world editor.
+- Rename set_voxel_with_tool to transform_position_for_tool.
+- Use transform_position_for_tool to calculate position in the voxel world editor.
+- Add missing docs for VoxelChunk.
+- Added missing method docs for VoxelChunkDefault.
+- Fix typo.
+- Added missing method docs for VoxelLight.
+- Docs for VoxelMesherJobStep.
+- Description for VoxelMesherMarchingCubes.
+- Dosc for VoxelPropJob.
+- Docs for VoxelStructure.
+- Docs for VoxelSurface.
+- Docs for VoxelSurfaceMerger.
+- Docs for VoxelSurfaceSimple.
+- Docs for VoxelTerrainJob.
+- Added liquid type and isolevel type info enums for VoxelWorld.
+- Docs for VoxelWorld.
+- Docs for VoxelWorldArea.
+- Docs for VoxelWorldBlocky.
+- Fix typo.
+- Docs for VoxelWorldChunkDataManager.
+- Docs for VoxelWorldChunkDataManagerStaticFolderResources.
+- Docs for VoxelWorldCubic.
+- Docs for VoxelWorldMarchingCubes.
+- Docs for VoxelWorldDefault.
+- Update chunk setup in VoxelWorldMarchingCubes.
+- Backport chunk_lod_first_falloff to voxelman.
+
+#### Terraman
+
+- Backport 9e6a7208b8136601d833537577ad19d6c4064e7a to terraman.
+  Don't complain if chunk is already used by an another world for now.
+  This can happen when realoding scenes that have chunks saved in them.
+  Maybe eventually a different solution might be needed, but for now this
+  seems fine.
+- Backport cf354576b264c6ff66827b4c140fe32131fb5de4 to terraman.
+  Set space for the colliders when entering and exiting tree in
+  VoxelChunkDefault.
+- Backport 6a49e5b4fba61013901c61e82c5fee9f9570581d to terraman.
+  Implement visible collision shapes support for Voxelman.
+- Backport 061b404a57c7b5379264e918d17ec4a5431db733 to terraman.
+  Set scenario for debug meshes aswell in VoxelChunkDefault, also free
+  them in free_chunk().
+- Backport 3635ba7b797d993e2943967e53f3f80cd7316fa2 to terraman.
+  Free the body first.
+- Backport 7d1e77c294a1214a2cc5877d58ba082dfdd76d19 to terraman.
+  Make VoxelWorld handle visibility change notifications.
+- Backport 2f546a7f223318a03450f542f465492517fa5bca to terraman.
+  Emit changed in VoxelChunk::set_is_terrain_generated().
+- Backport 9d085efd0e2c7c669b43610815213c95838a8a01 to terraman.
+  Use post enter tree in VoxelWorld::_notification.
+- Backport b842d85fe0ea65755ecee180d6e75862e784f991 to terraman.
+  Cancel build first in VoxelChunk::_exit_tree().
+- Backport 7aa97baa53989136ba3a4f5b99b4826928796db6 to terraman.
+  Don't check for the presence of _enter_tree and _exit_tree, as they are
+  always available.
+- Backport 70e41b08ddfd788f321aa4a6c1bdd14207aa9004 to terraman.
+  Clean up abort build logic.
+- Backport 00cf2baac6d165048d06976a6299ab8b5a94003c to terraman.
+  Set collider space properly in VoxelChunkDefault.
+- Backport d1410b793213870ac4e772511c09b365e5781876 to terraman.
+  Also reset _is_generating flag if the build was aborted.
+- Backport 28b24b735c9a8c4f5b39563d3428b62c4fac0c36 to terraman.
+  Also reset _queued_generation if abort build was set.
+- Backport 5cce377c8efcbe5e0196f5f86d2a9ab8127f2cc8 to terraman.
+  Properly restart builds in enter tree.
+- Backport 9eda52763ca2d1b76f82a34ea9c3ad182fe24fb3 to terraman.
+  Reset cancelled state in VoxelChunk::job_next() instead of
+  VoxelJob::reset().
+- Backport e9b97b4560998e564ab78eac0d5c602cac7ef8ce to terraman.
+  Reset _current_job if the build was aborted.
+- Backport a42371cbc23ff9270fa7ab83fa5a41b6ef7f22b8 to terraman.
+  Reset the build_phase_type in VoxelTerrainJob::_reset().
+- Now TerrainWorlds will duplicate chunks if they are already part of an another world.
+  This fixes in-scene serialized chunks + instancing.
+- Backport the previous change to voxelman.
+
+#### CScript
+
+- Remove the csript module. (it was disabled by default)
+  I'm going to start over in a different way.
+
+#### PScript
+
+- Added pdscript module. It's a copy of gdscript, and it's disabled by default for now.
+- Rename all files.
+- Rename the --lsp-port option to --gd-lsp-port. Also add pdscript variant.
+- Mass rename classes.
+- Set the default gdscript lsp port to 6005, pdscript lsp port 6006, as remote debug uses 6007, and when tat fails it increments ports one by one.
+- Rename register_lsp_types(); to register_gd_lsp_types();.
+- Enable pdscript by default.
+- Rename the pdscript module to pscript instead.
+- Update pscript in main. Also fix setting port.
+- Only allow ; as the end statement.
+- Remove type inference (:= operator) from pscript.
+- Removed yield from pscript.
+- Added a new dictinary literal to pscript, as the plain curly brace is going to be used for scopes.
+  - |{ key: value, ... }|
+- Fix crash.
+- Fix dev assert being triggered.
+- PScript now uses {} instead of indents.
+- Fix parsing if.
+- Removed the pass keyword from pscript.
+- Rename the self keyword to this in PScript.
+- Udpated the keyword list in PScriptLanguage::get_reserved_words().
+- Added Variant as a usable type to PScript.
+- Implement c-like function definition syntax for PScript.
+- Implement c-like syntax for class variables in PScript..
+- Allow a single ; and newline after the export keyword in PScript.
+- Removed old function definition style from PScript.
+- Removed old class variable definition type from PScript.
+- Implement c-like class constant declaration for PScript.
+- Use else if instead of elif in PScript.
+- Fix parsing inner classes in PScript.
+- Allow a ; after an inner class declaration in PScript.
+- Implement c-like variable declaration syntax for built in variables in PScript.
+- Removed _parse_type_identifier as it did not handle subclasses directly.
+- Added :: as a token, classes inside classes now use this as their type. (Similar to how c++ does it.)
+- Remove note, as the :: syntax seems better.
+- Allow indexing in expressions using :: aswell.
+  This makes :: behave in expressions exactly like ".", or indexing with
+  [], (even method calls will work with it), except it won't work if it's
+  in the first literal in the line. Eventually this will likely get
+  refined.
+- Tweak errors.
+- Remove the now unused elif token from PScript.
+- Require ; after class_name aswell in PScript.
+- Allow : to be used as extend aswell in PScript.
+- Implement // style comments for PScript.
+- Remove var keyword from PScript.
+- Fix Instanting inner classes inside their outer classes.
+- Fix PScriptLanguage::find_function().
+- Remove now unused func keyword from PScript.
+- Implement raw (no beginning statement, like if while, etc.) control flow blocks to PScript.
+- Add PScripts to the default rearch extension list.
+- Rename the current for to foreach in PScript.
+- Fix up templates for PScript.
+- Keyword list udpates.
+- Update method auto complete hints for PScript.
+- Also ignore // in PScriptLanguage::auto_indent_code().
+- Update 2 more autocomplete argument hints for PScript.
+- Don't print error in TypedArray and PackedTypedArray when setting types.
+- Fix marshalling TypedArray and PackedTypedArray.
+- Added a new type + virtuals completion type for in-class completion.
+- Rename the wildcard token to "default".
+  This was already planned, but it makes the auto complete work as I
+  expect in classes, so did it early.
+- Simplified and fixed up match in PScript.
+- Renamed match to switch.
+- Fix default label and tweak error messages.
+- Rework the switch statement, now it's make it more c-like.
+- Fix the switch statement's codegen. Also set line numbers, so it also looks nice in the in-engine debugger.
+- Rename nodes and variables from match to switch.
+- Foreach now requires an explicit type, also now it supports having parentheses around the iteration variables.
+- Re-enable the range optimization for foreach.
+- Add type support for signals in PScript.
+- For loop for PScript pt1.
+- For loop for PScript pt2.
+- Fix some for loops exiting early.
+- Allow multiple statements, separated by ',' in the for loop post iteration condition.
+- Update the core type list in ScriptLanguage.
+- Split LSP settings for pscript and gdscript.
+- Require a ; after the tool keyword.
+- Don't use deprecated method.
+- Better mesher setup in TerrainWorldBlocky::_setup_chunk().
+- Fix BUILD_FLAG_CREATE_COLLIDER in terraman.
+- Also fix BUILD_FLAG_CREATE_COLLIDER in voxelman.
+- Implement int post increment and pre increment support to PScript.
+- Added log1p, log10, and log2 to PScript.
+- Update PScript docs.
+- Update the dictionatry literal.
+- Fixing issues with for pt1.
+- Fix all remaining issues with for variable scopes.
+- Added an editor text completion option for inserting the StringName and nodePath symbols in front of Strings when applicable.
+  - Enabled it by default, but it will only work with PScript.
+  - It's a small optimization, as if done this way, we save a conversion.
+  - It currently works with signals.
+- Fix inserting StringName and NodePath symbols in all cases I was able to find.
+- Rework the ternary operator in PScript to be more c-like.
+- Unfortunately the : is alredy taken dictionary literal, and I had to
+  use a new token. It ended up being: &lt;&gt;.
+- Fortunately though the &lt;&gt; token actually really makes sense for a
+  choice.
+- So the final expression looks like: &lt;expr&gt; ? &lt;value is true&gt; &lt;&gt; &lt;value
+  is false&gt;.
+- Fix error messages.
+- Update comment to save potential pain in the future.
+- Swap the comment delimiters around in PScriptLanguage::get_comment_delimiters() so the editor toggle comment shortcut uses //.
+- Fix accessing engine singletons from PScript.
+- Parse -&gt; as dot in PScript.
+- Make ; after enums optional in PScript.
+- Tokenize -&gt; as forward arrow instead, and also handle it as indexing, to make potential error messages less confusing.
+- Also search outer classes of their subclasses for types when declaring a variable in PScript.
+- Fix switch statement falling into statements when not having a default case, and the given value did not match any cases in PScript.
+- Fix parsing expressions after switch statements in PScript. This also fixed switch statements inside switch statements.
+- Allow const and const reference parameters, variables, and const methods similar to how they are often used on the engine side.
+- Don't allow const reference as a variable, it's unecessary.
+- Implement Ref&lt;&gt; for PScript. It's just syntactic sugar.
+- Add Ref to the identifier and reserved keywords list.
+- Fix build when GDScript and / or PScript is disabled.
+- Fix standalone expression warnings with pre and post increment and decrement.
+- Backport to PScript:
+  - GDScript: Fix missing function signature hint
+- Fix if statements not setting line numbers properly in PScript.
+
+#### Web
+
+- Fix virtual method bind return types in WebPermission.
+- Fix pagination links of PagedArticleWebPage.
+
+#### HTTP Server Simple
+
+- SimpleWebServerRequest::get_file_key() now returns the file's input's name attribute as intended.
+- Remove unnecessary duplicate logic.
+
+#### Skeleton3D
+
+- Bind missing method in SkeletonEditor.
+
+#### Entity Spell System
+
+- Fix _create_item_instance virtual method bind's return value in ItemTemplate.
+- Add default _create_item_instance method in ItemTemplate to spare the has_method check.
+
+#### GDScript
+
+- Fix build when GDScript and / or PScript is disabled.
+- Fix lua style dictionaries in GDScript.
+
+### Platforms
+
+- Platforms now have their own threading related class implementations.
+
+#### Windows
+
+- Add the new variant types to the natvis file.
+
+### Other 
+
+- Update module list in module_config.py.
+- Added long term plans to the readme.
+- Set the clang format standard to c++11.
+
+### Backports
+
+Backported everything up to and including https://github.com/godotengine/godot/commit/e94c0069cba32e681f969bdea3d8e334b36d5031
+merge commit: https://github.com/godotengine/godot/commit/03016107fcf80676a6fda50d0b61db7ba6bcc036
+
+#### Godot 3.x
+
+- Make physics interpolation compatible with separate-thread rendering
+- Use approximate test when comparing properties, thoroughly
+- Mark MutexLock as NO_DISCARD to prevent misuse.
+- GDScript: Fix missing function signature hint
+- Update Natvis for Variant:::OBJECT
 
 ## [4.9.0]
 
