@@ -186,12 +186,12 @@ static const _bit _type_list[] = {
 	{ Variant::VARIANT_MAX, nullptr },
 };
 
-struct _kws {
+struct _pscript_kws {
 	PScriptTokenizer::Token token;
 	const char *text;
 };
 
-static const _kws _keyword_list[] = {
+static const _pscript_kws _keyword_list[] = {
 	//ops
 	{ PScriptTokenizer::TK_OP_IN, "in" },
 	{ PScriptTokenizer::TK_OP_NOT, "not" },

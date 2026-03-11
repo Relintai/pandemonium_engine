@@ -183,12 +183,12 @@ static const _bit _type_list[] = {
 	{ Variant::VARIANT_MAX, nullptr },
 };
 
-struct _kws {
+struct _gdscript_kws {
 	GDScriptTokenizer::Token token;
 	const char *text;
 };
 
-static const _kws _keyword_list[] = {
+static const _gdscript_kws _keyword_list[] = {
 	//ops
 	{ GDScriptTokenizer::TK_OP_IN, "in" },
 	{ GDScriptTokenizer::TK_OP_NOT, "not" },
