@@ -6,5 +6,5 @@ patch = 0
 status = "stable"
 module_config = ""
 year = 2026
-website = "https://github.com/Relintai/pandemonium_engine"
+website = "https://pandemoniumengine.org"
 docs = "5.0"
