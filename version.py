@@ -7,4 +7,5 @@ status = "stable"
 module_config = ""
 year = 2026
 website = "https://pandemoniumengine.org"
-docs = "5.0"
+docs_url = "https://github.com/Relintai/pandemonium_engine_docs/blob/"
+docs_branch = "5.0"

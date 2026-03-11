@@ -171,7 +171,8 @@ def get_version_info(module_version_string="", silent=False):
         "module_config": str(version.module_config) + module_version_string,
         "year": int(version.year),
         "website": str(version.website),
-        "docs_branch": str(version.docs),
+        "docs_url": str(version.docs_url),
+        "docs_branch": str(version.docs_branch),
     }
 
     # For dev snapshots (alpha, beta, RC, etc.) we do not commit status change to Git,
@@ -245,7 +246,7 @@ def generate_version_header(module_version_string=""):
 #define VERSION_YEAR {year}
 #define VERSION_WEBSITE "{website}"
 #define VERSION_DOCS_BRANCH "{docs_branch}"
-#define VERSION_DOCS_URL "https://github.com/Relintai/pandemonium_engine_docs/blob/" VERSION_DOCS_BRANCH
+#define VERSION_DOCS_URL "{docs_url}" VERSION_DOCS_BRANCH
 #endif // VERSION_GENERATED_GEN_H
 """.format(
             **version_info
