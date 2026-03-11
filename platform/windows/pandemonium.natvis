@@ -70,6 +70,8 @@
 		<DisplayString Condition="type == Variant::STRING_NAME">{*(StringName *)_data._mem}</DisplayString>
 		<DisplayString Condition="type == Variant::DICTIONARY">{*(Dictionary *)_data._mem}</DisplayString>
 		<DisplayString Condition="type == Variant::ARRAY">{*(Array *)_data._mem}</DisplayString>
+		<DisplayString Condition="type == Variant::TYPED_ARRAY">{*(TypedArray *)_data._mem}</DisplayString>
+		<DisplayString Condition="type == Variant::PACKED_TYPED_ARRAY">{*(PackedTypedArray *)_data._mem}</DisplayString>
 		<DisplayString Condition="type == Variant::POOL_BYTE_ARRAY">{*(PoolByteArray *)_data._mem}</DisplayString>
 		<DisplayString Condition="type == Variant::POOL_INT_ARRAY">{*(PoolIntArray *)_data._mem}</DisplayString>
 		<DisplayString Condition="type == Variant::POOL_REAL_ARRAY">{*(PoolRealArray *)_data._mem}</DisplayString>
@@ -112,6 +114,8 @@
 			<Item Name="[value]" Condition="type == Variant::STRING_NAME">*(StringName *)_data._mem</Item>
 			<Item Name="[value]" Condition="type == Variant::DICTIONARY">*(Dictionary *)_data._mem</Item>
 			<Item Name="[value]" Condition="type == Variant::ARRAY">*(Array *)_data._mem</Item>
+			<Item Name="[value]" Condition="type == Variant::TYPED_ARRAY">*(TypedArray *)_data._mem</Item>
+			<Item Name="[value]" Condition="type == Variant::PACKED_TYPED_ARRAY">*(PackedTypedArray *)_data._mem</Item>
 			<Item Name="[value]" Condition="type == Variant::POOL_BYTE_ARRAY">*(PoolByteArray *)_data._mem</Item>
 			<Item Name="[value]" Condition="type == Variant::POOL_INT_ARRAY">*(PoolIntArray *)_data._mem</Item>
 			<Item Name="[value]" Condition="type == Variant::POOL_REAL_ARRAY">*(PoolRealArray *)_data._mem</Item>
