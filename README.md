@@ -191,17 +191,6 @@ However some third party modules might need higher c++ standard. At first they w
 Note that this would only be an extremely minor break, and only for engine modules. Also they would only need to specify
 a different c++ version in their SCSub file (for which there are plenty of examples).
 
-### CScript
-
-Implement and enable CScript. CScript will be a scripting language similar to gdscript, but
-it will use a C-style syntax.
-
-It would be extremely cool if it could just interpret engine module c++ directly, but that
-might be a bit too much. Maybe that could be an another module. For this to work, solving .cpp and header
-file separation are the biggest problem in my opinion due to how the engine works internally. Other than this
-it's mostly just parsing (not trivial, but relatively simple in the grand scheme of things).
-(Note that having the codebase use c++03 also helps with this!)
-
 ### MarkdownLabel
 
 A RichTextLabel, but for markdown would be nice to have.
@@ -261,45 +250,6 @@ Or a pseudo-viewport + maybe pesudo Window class could be added, and just make  
 Could also be inherited from Viewport or viewport could inherit from it, but it's ignored if disabled, also it does not allocate anything if disabled.
 
 Or Viewports could have an enabled property or similar, but that's prbably going to cause issues.
-
-### TypedArray, PackedTypedArray
-
-2 new Variant types that stores an aray of elements of any single type.
-
-WIP:
-
-- The PackedTypedArray internals need to be tested properly.
-- Needs to be added to the docs repo when finished.
-
-Few syntax ideas:
-
-- export(TypedArray, Type)
-- export(TypedArray[Type])
-- export(TypedArray&lt;Type&gt;)
-
-- var a : TypedArray(Type) = TypedArray(Type)
-- var a : TypedArray[Type] = TypedArray[Type]()
-- var a : TypedArray&lt;Type&gt; = TypedArray&lt;Type&gt;()
-
-Maybe in place creation?
-
-- ... = TypedArray[Type][ 1, 2, 3, 4, ... ]
-- ... = TypedArray&lt;Type&gt;[ 1, 2, 3, 4, ... ]
-- ... = TypedArray(Type, 1, 2, 3, 4, ... )
-
-No, Typed Array holds it's allowed types. None of these are needed.
-
-Also this version does not give the false sense that the type is immutable.
-(Even if it was, a class could replace the array with an another one, then
-the property would return that.)
-
-- export(TypedArray) var a : TypedArray = TypedArray("Type")
-- export(TypedArray) var a : TypedArray = TypedArray(Type) - Gdscript could parse this too.
-- ... = TypedArray([ 1, 2, 3, 4, ... ]) - automatically gets the type from the first element
-- ... = TypedArray("Type", [ 1, 2, 3, 4, ... ]) - Sets up the type, then tries to grab everything from array
-- ... = TypedArray(Type, [ 1, 2, 3, 4, ... ]) - GDScript could parse this too
-
-It doesn't need property hints either. What the properties return is going to be used.
 
 ### WebNodes
 
