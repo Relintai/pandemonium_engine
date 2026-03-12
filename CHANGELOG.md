@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Master]
 
+- Nothing yet.
+
+## [5.0.0]
+
 ### Highlights
 
 - Added new Variant types: TypedArray and PackedTypedArray.
