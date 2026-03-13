@@ -234,22 +234,23 @@ It should also look at least acceptable.
 
 Add multi window support for the engine.
 
-Should oly add very little code and practically zero complexity.
+Being able to open more windows should only add very little code and practically zero complexity by itself.
 
 The issue is popups. Inheriting them from a Window (Viewport) class is incredibly inefficient,
 and custom handling for them will be extremely messy. A good solution for this is going to be needed.
 
-Currently my best idea is to have 2 sets of popups, and the user can decide whether to have multi window support
-or not by using the proper ones. Still trying to figure out a way to make this simpler.
+Likely the proper solution:
 
-Or the ClassDB could also switch between classes similar to how compat classes work.
-This does have issues.
+Have an another set of popups in an engine module, so they can be disabled if not used.
 
-Or a pseudo-viewport + maybe pesudo Window class could be added, and just make  all the code handle it.
+WindowedPopup etc...
 
-Could also be inherited from Viewport or viewport could inherit from it, but it's ignored if disabled, also it does not allocate anything if disabled.
+Have them inherit from Window, if windowing is enabled, and Control if it's disabled,
+So no performance penalty on platfroms with no windowing.
 
-Or Viewports could have an enabled property or similar, but that's prbably going to cause issues.
+Could force windowing support for them to be disabled at compile time even if a platform can do windowing.
+
+Their api does not need to match the built in popups exactly.
 
 ### WebNodes
 
