@@ -2118,7 +2118,7 @@ void VoxelWorld::_bind_methods() {
 
 #ifdef MODULE_MESH_DATA_RESOURCE_ENABLED
 	ClassDB::bind_method(D_METHOD("mesh_data_resource_add", "mesh", "transform", "texture", "color", "original", "name"), &VoxelWorld::mesh_data_resource_add, DEFVAL(Ref<Texture>()), DEFVAL(Color(1, 1, 1, 1)), DEFVAL(true), DEFVAL(String()));
-	ClassDB::bind_method(D_METHOD("mesh_data_resource_add_material", "mesh", "transform", "texture", "material", "original", "name"), &VoxelWorld::mesh_data_resource_add_material, DEFVAL(Ref<Texture>()), DEFVAL(Color(1, 1, 1, 1)), DEFVAL(true), DEFVAL(String()));
+	ClassDB::bind_method(D_METHOD("mesh_data_resource_add_material", "mesh", "transform", "texture", "material", "original", "name"), &VoxelWorld::mesh_data_resource_add_material, DEFVAL(Ref<Texture>()), DEFVAL(Ref<Material>()), DEFVAL(true), DEFVAL(String()));
 #endif
 
 	//Lights
