@@ -33,7 +33,10 @@
 
 #include "hpdf.h"
 #include "hpdf_doc.h"
+#include "hpdf_font.h"
 #include "hpdf_pages.h"
+
+#include "pdf_font.h"
 
 float PDFPage::get_width() {
 	if (!_page) {
@@ -364,16 +367,28 @@ HPDF_Page_Clip(HPDF_Page page);
 HPDF_EXPORT(HPDF_STATUS)
 HPDF_Page_Eoclip(HPDF_Page page);
 
-/*--- Text object operator -----------------------------------------------*/
+#endif
 
-/* BT */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_BeginText(HPDF_Page page);
+uint32_t PDFPage::begin_text() {
+	_status = HPDF_Page_BeginText((HPDF_Page)_page);
 
-/* ET */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_EndText(HPDF_Page page);
+	return _status;
+}
+uint32_t PDFPage::end_text() {
+	_status = HPDF_Page_EndText((HPDF_Page)_page);
 
+	return _status;
+}
+
+uint32_t PDFPage::set_font_and_size(const Ref<PDFFont> &p_font, float p_size) {
+	ERR_FAIL_COND_V(!p_font.is_valid(), -1);
+
+	_status = HPDF_Page_SetFontAndSize((HPDF_Page)_page, (HPDF_Font)p_font->_get_hpdf_font(), p_size);
+
+	return _status;
+}
+
+#if 0
 /*--- Text state ---------------------------------------------------------*/
 
 /* Tc */
@@ -417,7 +432,22 @@ HPDF_EXPORT(HPDF_STATUS)
 HPDF_Page_SetTextRaise(HPDF_Page page,
 		HPDF_REAL value);
 
-/*--- Text positioning ---------------------------------------------------*/
+#endif
+
+/*--- Text positioni ---------------------------------------------------*/
+
+uint32_t PDFPage::move_text_pos(const real_t p_x, const real_t p_y) {
+	_status = HPDF_Page_MoveTextPos((HPDF_Page)_page, p_x, p_y);
+
+	return _status;
+}
+uint32_t PDFPage::move_text_posv(const Vector2 &p_move) {
+	_status = HPDF_Page_MoveTextPos((HPDF_Page)_page, p_move.x, p_move.y);
+
+	return _status;
+}
+
+#if 0
 
 /* Td */
 HPDF_EXPORT(HPDF_STATUS)
@@ -445,7 +475,17 @@ HPDF_Page_SetTextMatrix(HPDF_Page page,
 HPDF_EXPORT(HPDF_STATUS)
 HPDF_Page_MoveToNextLine(HPDF_Page page);
 
+#endif
+
 /*--- Text showing -------------------------------------------------------*/
+
+uint32_t PDFPage::show_text(const String &p_text) {
+	_status = HPDF_Page_ShowText((HPDF_Page)_page, p_text.utf8().get_data());
+
+	return _status;
+}
+
+#if 0
 
 /* Tj */
 HPDF_EXPORT(HPDF_STATUS)
@@ -650,6 +690,15 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_height"), &PDFPage::get_height);
 	ClassDB::bind_method(D_METHOD("set_height", "val"), &PDFPage::set_height);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "height"), "set_height", "get_height");
+
+	ClassDB::bind_method(D_METHOD("begin_text"), &PDFPage::begin_text);
+	ClassDB::bind_method(D_METHOD("end_text"), &PDFPage::end_text);
+	ClassDB::bind_method(D_METHOD("set_font_and_size", "font", "size"), &PDFPage::set_font_and_size);
+
+	ClassDB::bind_method(D_METHOD("move_text_pos", "x", "y"), &PDFPage::move_text_pos);
+	ClassDB::bind_method(D_METHOD("move_text_posv", "move"), &PDFPage::move_text_posv);
+
+	ClassDB::bind_method(D_METHOD("show_text", "text"), &PDFPage::show_text);
 
 	ClassDB::bind_method(D_METHOD("get_status"), &PDFPage::get_status);
 }

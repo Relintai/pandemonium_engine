@@ -34,6 +34,8 @@
 
 #include "core/object/reference.h"
 
+class PDFFont;
+
 class PDFPage : public Reference {
 	GDCLASS(PDFPage, Reference);
 
@@ -343,16 +345,14 @@ public:
 	HPDF_EXPORT(HPDF_STATUS)
 	HPDF_Page_Eoclip(HPDF_Page page);
 
-	/*--- Text object operator -----------------------------------------------*/
+#endif
 
-	/* BT */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_BeginText(HPDF_Page page);
+	uint32_t begin_text();
+	uint32_t end_text();
 
-	/* ET */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_EndText(HPDF_Page page);
+	uint32_t set_font_and_size(const Ref<PDFFont> &p_font, float p_size);
 
+#if 0
 	/*--- Text state ---------------------------------------------------------*/
 
 	/* Tc */
@@ -390,9 +390,14 @@ public:
 	HPDF_EXPORT(HPDF_STATUS)
 	HPDF_Page_SetTextRise(HPDF_Page page,
 			HPDF_REAL value);
+#endif
 
 	/*--- Text positioning ---------------------------------------------------*/
 
+	uint32_t move_text_pos(const real_t p_x, const real_t p_y);
+	uint32_t move_text_posv(const Vector2 &p_move);
+
+#if 0
 	/* Td */
 	HPDF_EXPORT(HPDF_STATUS)
 	HPDF_Page_MoveTextPos(HPDF_Page page,
@@ -419,7 +424,13 @@ public:
 	HPDF_EXPORT(HPDF_STATUS)
 	HPDF_Page_MoveToNextLine(HPDF_Page page);
 
+#endif
+
 	/*--- Text showing -------------------------------------------------------*/
+
+	uint32_t show_text(const String &p_text);
+
+#if 0
 
 	/* Tj */
 	HPDF_EXPORT(HPDF_STATUS)
