@@ -18,6 +18,7 @@ thirdparty_src_dir = "libharu/src/"
 #env_pdf.disable_warnings()
 env_pdf.add_source_files(thirdparty_obj, thirdparty_src_dir + "*.c")
 env_pdf.Prepend(CPPPATH=[thirdparty_include_dir])
+env_pdf.Prepend(CPPPATH=["#thirdparty/libpng/"])
 
 env.modules_sources += thirdparty_obj
 
