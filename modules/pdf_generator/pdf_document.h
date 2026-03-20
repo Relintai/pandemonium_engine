@@ -40,6 +40,9 @@ struct _HPDF_Doc_Rec;
 typedef struct _HPDF_Doc_Rec *HPDF_Doc;
 
 class PDFPage;
+class PDFFont;
+class PDFImage;
+class Image;
 
 class PDFDocument : public Reference {
 	GDCLASS(PDFDocument, Reference);
@@ -57,6 +60,122 @@ public:
 
 	uint32_t set_pages_configuration(const uint32_t p_page_per_pages);
 	//get_page_by_index();
+
+	Ref<PDFFont> get_font(const String &p_font_name, const String &p_encoding_name = String());
+
+#if 0
+	HPDF_EXPORT(const char *)
+	HPDF_LoadType1FontFromFile(HPDF_Doc pdf,
+			const char *afm_file_name,
+			const char *data_file_name);
+
+	HPDF_EXPORT(HPDF_FontDef)
+	HPDF_GetTTFontDefFromFile(HPDF_Doc pdf,
+			const char *file_name,
+			HPDF_BOOL embedding);
+
+	HPDF_EXPORT(const char *)
+	HPDF_LoadTTFontFromFile(HPDF_Doc pdf,
+			const char *file_name,
+			HPDF_BOOL embedding);
+
+	HPDF_EXPORT(const char *)
+	HPDF_LoadTTFontFromFile2(HPDF_Doc pdf,
+			const char *file_name,
+			HPDF_UINT index,
+			HPDF_BOOL embedding);
+
+	HPDF_EXPORT(const char *)
+	HPDF_LoadTTFontFromMemory(HPDF_Doc pdf,
+			const HPDF_BYTE *buffer,
+			HPDF_UINT size,
+			HPDF_BOOL embedding);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_AddPageLabel(HPDF_Doc pdf,
+			HPDF_UINT page_num,
+			HPDF_PageNumStyle style,
+			HPDF_UINT first_page,
+			const char *prefix);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_UseJPFonts(HPDF_Doc pdf);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_UseKRFonts(HPDF_Doc pdf);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_UseCNSFonts(HPDF_Doc pdf);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_UseCNTFonts(HPDF_Doc pdf);
+#endif
+
+#if 0
+#define HPDF_ENCODING_FONT_SPECIFIC "FontSpecific"
+#define HPDF_ENCODING_STANDARD "StandardEncoding"
+#define HPDF_ENCODING_MAC_ROMAN "MacRomanEncoding"
+#define HPDF_ENCODING_WIN_ANSI "WinAnsiEncoding"
+#define HPDF_ENCODING_ISO8859_2 "ISO8859-2"
+#define HPDF_ENCODING_ISO8859_3 "ISO8859-3"
+#define HPDF_ENCODING_ISO8859_4 "ISO8859-4"
+#define HPDF_ENCODING_ISO8859_5 "ISO8859-5"
+#define HPDF_ENCODING_ISO8859_6 "ISO8859-6"
+#define HPDF_ENCODING_ISO8859_7 "ISO8859-7"
+#define HPDF_ENCODING_ISO8859_8 "ISO8859-8"
+#define HPDF_ENCODING_ISO8859_9 "ISO8859-9"
+#define HPDF_ENCODING_ISO8859_10 "ISO8859-10"
+#define HPDF_ENCODING_ISO8859_11 "ISO8859-11"
+#define HPDF_ENCODING_ISO8859_13 "ISO8859-13"
+#define HPDF_ENCODING_ISO8859_14 "ISO8859-14"
+#define HPDF_ENCODING_ISO8859_15 "ISO8859-15"
+#define HPDF_ENCODING_ISO8859_16 "ISO8859-16"
+#define HPDF_ENCODING_CP1250 "CP1250"
+#define HPDF_ENCODING_CP1251 "CP1251"
+#define HPDF_ENCODING_CP1252 "CP1252"
+#define HPDF_ENCODING_CP1253 "CP1253"
+#define HPDF_ENCODING_CP1254 "CP1254"
+#define HPDF_ENCODING_CP1255 "CP1255"
+#define HPDF_ENCODING_CP1256 "CP1256"
+#define HPDF_ENCODING_CP1257 "CP1257"
+#define HPDF_ENCODING_CP1258 "CP1258"
+#define HPDF_ENCODING_KOI8_R "KOI8-R"
+#endif
+
+	Ref<PDFImage> load_png_image_from_mem(const PoolByteArray &p_data);
+	Ref<PDFImage> load_png_image_from_file(const String &p_path);
+	Ref<PDFImage> load_jpg_image_from_mem(const PoolByteArray &p_data);
+	Ref<PDFImage> load_jpg_image_from_file(const String &p_path);
+	Ref<PDFImage> create_pdf_image_from_image(const Ref<Image> &p_image);
+
+#if 0
+
+	HPDF_EXPORT(HPDF_Image)
+	HPDF_LoadU3DFromFile(HPDF_Doc pdf,
+			const char *filename);
+
+	HPDF_EXPORT(HPDF_Image)
+	HPDF_LoadU3DFromMem(HPDF_Doc pdf,
+			const HPDF_BYTE *buffer,
+			HPDF_UINT size);
+
+	HPDF_EXPORT(HPDF_Image)
+	HPDF_Image_LoadRaw1BitImageFromMem(HPDF_Doc pdf,
+			const HPDF_BYTE *buf,
+			HPDF_UINT width,
+			HPDF_UINT height,
+			HPDF_UINT line_width,
+			HPDF_BOOL black_is1,
+			HPDF_BOOL top_is_first);
+
+	HPDF_EXPORT(HPDF_Image)
+	HPDF_LoadRawImageFromFile(HPDF_Doc pdf,
+			const char *filename,
+			HPDF_UINT width,
+			HPDF_UINT height,
+			HPDF_ColorSpace color_space);
+
+#endif
 
 	PoolByteArray get_contents();
 	uint32_t save_to_file(const String &p_file);

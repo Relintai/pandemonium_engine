@@ -31,10 +31,13 @@
 
 #include "pdf_document.h"
 
+#include "core/io/image.h"
 #include "core/log/logger.h"
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 
+#include "pdf_font.h"
+#include "pdf_image.h"
 #include "pdf_page.h"
 
 #include "hpdf.h"
@@ -97,6 +100,172 @@ Ref<PDFPage> PDFDocument::page_insert(const Ref<PDFPage> &p_page) {
 	page->_set_hpdf_page(hpdf_page);
 
 	return page;
+}
+
+Ref<PDFFont> PDFDocument::get_font(const String &p_font_name, const String &p_encoding_name) {
+	HPDF_Font hpdf_font = HPDF_GetFont(_doc, p_font_name.utf8().get_data(), p_font_name.utf8().get_data());
+
+	Ref<PDFFont> font;
+	font.instance();
+
+	font->_set_hpdf_font(hpdf_font);
+
+	return font;
+}
+
+#if 0
+
+HPDF_EXPORT(const char *)
+HPDF_LoadType1FontFromFile(HPDF_Doc pdf,
+		const char *afm_file_name,
+		const char *data_file_name);
+
+HPDF_EXPORT(HPDF_FontDef)
+HPDF_GetTTFontDefFromFile(HPDF_Doc pdf,
+		const char *file_name,
+		HPDF_BOOL embedding);
+
+HPDF_EXPORT(const char *)
+HPDF_LoadTTFontFromFile(HPDF_Doc pdf,
+		const char *file_name,
+		HPDF_BOOL embedding);
+
+HPDF_EXPORT(const char *)
+HPDF_LoadTTFontFromFile2(HPDF_Doc pdf,
+		const char *file_name,
+		HPDF_UINT index,
+		HPDF_BOOL embedding);
+
+HPDF_EXPORT(const char *)
+HPDF_LoadTTFontFromMemory(HPDF_Doc pdf,
+		const HPDF_BYTE *buffer,
+		HPDF_UINT size,
+		HPDF_BOOL embedding);
+
+HPDF_EXPORT(HPDF_STATUS)
+HPDF_AddPageLabel(HPDF_Doc pdf,
+		HPDF_UINT page_num,
+		HPDF_PageNumStyle style,
+		HPDF_UINT first_page,
+		const char *prefix);
+
+HPDF_EXPORT(HPDF_STATUS)
+HPDF_UseJPFonts(HPDF_Doc pdf);
+
+HPDF_EXPORT(HPDF_STATUS)
+HPDF_UseKRFonts(HPDF_Doc pdf);
+
+HPDF_EXPORT(HPDF_STATUS)
+HPDF_UseCNSFonts(HPDF_Doc pdf);
+
+HPDF_EXPORT(HPDF_STATUS)
+HPDF_UseCNTFonts(HPDF_Doc pdf);
+#endif
+
+Ref<PDFImage> PDFDocument::load_png_image_from_mem(const PoolByteArray &p_data) {
+	PoolByteArray::Read r = p_data.read();
+
+	HPDF_Image hpdf_image = HPDF_LoadPngImageFromMem(_doc, r.ptr(), p_data.size());
+
+	Ref<PDFImage> image;
+	image.instance();
+
+	image->_set_hpdf_image(hpdf_image);
+
+	return image;
+}
+Ref<PDFImage> PDFDocument::load_png_image_from_file(const String &p_path) {
+	HPDF_Font hpdf_image = HPDF_LoadPngImageFromFile(_doc, p_path.utf8().get_data());
+
+	Ref<PDFImage> image;
+	image.instance();
+
+	image->_set_hpdf_image(hpdf_image);
+
+	return image;
+}
+Ref<PDFImage> PDFDocument::load_jpg_image_from_mem(const PoolByteArray &p_data) {
+	PoolByteArray::Read r = p_data.read();
+
+	HPDF_Image hpdf_image = HPDF_LoadJpegImageFromMem(_doc, r.ptr(), p_data.size());
+
+	Ref<PDFImage> image;
+	image.instance();
+
+	image->_set_hpdf_image(hpdf_image);
+
+	return image;
+}
+Ref<PDFImage> PDFDocument::load_jpg_image_from_file(const String &p_path) {
+	HPDF_Font hpdf_image = HPDF_LoadJpegImageFromFile(_doc, p_path.utf8().get_data());
+
+	Ref<PDFImage> image;
+	image.instance();
+
+	image->_set_hpdf_image(hpdf_image);
+
+	return image;
+}
+Ref<PDFImage> PDFDocument::create_pdf_image_from_image(const Ref<Image> &p_image) {
+	if (!p_image.is_valid()) {
+		return Ref<PDFImage>();
+	}
+
+	Ref<Image> img = p_image;
+
+	bool duplicated = false;
+
+	if (img->has_mipmaps()) {
+		duplicated = true;
+		img = img->duplicate();
+		img->clear_mipmaps();
+	}
+
+	if (img->is_compressed()) {
+		if (!duplicated) {
+			duplicated = true;
+			img = img->duplicate();
+		}
+
+		img->decompress();
+	}
+
+	Image::Format format = p_image->get_format();
+
+	if (format != Image::FORMAT_L8 && format != Image::FORMAT_R8 && format != Image::FORMAT_RGB8) {
+		if (!duplicated) {
+			duplicated = true;
+			img = img->duplicate();
+		}
+
+		if (format == Image::FORMAT_LA8 || format == Image::FORMAT_RF || format == Image::FORMAT_RH) {
+			img->convert(Image::FORMAT_L8);
+		} else {
+			img->convert(Image::FORMAT_RGB8);
+		}
+	}
+
+	HPDF_ColorSpace color_space = HPDF_CS_DEVICE_GRAY;
+
+	if (format == Image::FORMAT_L8 || format == Image::FORMAT_R8) {
+		color_space = HPDF_CS_DEVICE_GRAY;
+	} else {
+		color_space = HPDF_CS_DEVICE_RGB;
+	}
+
+	Vector2i size = img->get_sizei();
+	PoolByteArray data = img->get_data();
+
+	PoolByteArray::Read r = data.read();
+
+	HPDF_Font hpdf_image = HPDF_LoadRawImageFromMem(_doc, r.ptr(), size.width, size.height, color_space, 8);
+
+	Ref<PDFImage> image;
+	image.instance();
+
+	image->_set_hpdf_image(hpdf_image);
+
+	return image;
 }
 
 uint32_t PDFDocument::set_pages_configuration(const uint32_t p_page_per_pages) {
@@ -186,6 +355,14 @@ void PDFDocument::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("page_insert", "page"), &PDFDocument::page_insert);
 
 	ClassDB::bind_method(D_METHOD("set_pages_configuration", "page_per_pages"), &PDFDocument::set_pages_configuration);
+
+	ClassDB::bind_method(D_METHOD("get_font", "font_name", "encoding_name"), &PDFDocument::get_font, DEFVAL(String()));
+
+	ClassDB::bind_method(D_METHOD("load_png_image_from_mem", "data"), &PDFDocument::load_png_image_from_mem);
+	ClassDB::bind_method(D_METHOD("load_png_image_from_file", "path"), &PDFDocument::load_png_image_from_file);
+	ClassDB::bind_method(D_METHOD("load_jpg_image_from_mem", "data"), &PDFDocument::load_jpg_image_from_mem);
+	ClassDB::bind_method(D_METHOD("load_jpg_image_from_file", "path"), &PDFDocument::load_jpg_image_from_file);
+	ClassDB::bind_method(D_METHOD("create_pdf_image_from_image", "image"), &PDFDocument::create_pdf_image_from_image);
 
 	ClassDB::bind_method(D_METHOD("get_contents"), &PDFDocument::get_contents);
 	ClassDB::bind_method(D_METHOD("save_to_file", "file"), &PDFDocument::save_to_file);
