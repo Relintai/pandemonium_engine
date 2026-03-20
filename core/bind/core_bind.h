@@ -644,6 +644,8 @@ public:
 
 	uint64_t get_modified_time(const String &p_file) const;
 
+	String get_filesystem_abspath_for(const String &p_path);
+
 	_File();
 	virtual ~_File();
 };
@@ -686,7 +688,7 @@ public:
 	Error rename(String p_from, String p_to);
 	Error remove(String p_name);
 
-	String get_filesystem_abspath_for(String p_path);
+	String get_filesystem_abspath_for(const String &p_path);
 
 	_Directory();
 	virtual ~_Directory();

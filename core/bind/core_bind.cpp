@@ -2420,6 +2420,10 @@ uint64_t _File::get_modified_time(const String &p_file) const {
 	return FileAccess::get_modified_time(p_file);
 }
 
+String _File::get_filesystem_abspath_for(const String &p_path) {
+	return FileAccess::get_filesystem_abspath_for(p_path);
+}
+
 void _File::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("open_encrypted", "path", "mode_flags", "key"), &_File::open_encrypted);
 	ClassDB::bind_method(D_METHOD("open_encrypted_with_pass", "path", "mode_flags", "pass"), &_File::open_encrypted_pass);
@@ -2472,6 +2476,8 @@ void _File::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("file_exists", "path"), &_File::file_exists);
 	ClassDB::bind_method(D_METHOD("get_modified_time", "file"), &_File::get_modified_time);
+
+	ClassDB::bind_method(D_METHOD("get_filesystem_abspath_for", "path"), &_File::get_filesystem_abspath_for);
 
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "endian_swap"), "set_endian_swap", "get_endian_swap");
 
@@ -2643,8 +2649,7 @@ Error _Directory::remove(String p_name) {
 	return d->remove(p_name);
 }
 
-String _Directory::get_filesystem_abspath_for(String p_path) {
-	ERR_FAIL_COND_V_MSG(!d, "", "Directory must be opened before use.");
+String _Directory::get_filesystem_abspath_for(const String &p_path) {
 	return DirAccess::get_filesystem_abspath_for(p_path);
 }
 
