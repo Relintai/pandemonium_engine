@@ -35,6 +35,13 @@
 #include "hpdf_doc.h"
 #include "hpdf_pages.h"
 
+uint32_t PDFImage::get_width() {
+	return HPDF_Image_GetWidth((HPDF_Image)_image);
+}
+uint32_t PDFImage::get_height() {
+	return HPDF_Image_GetHeight((HPDF_Image)_image);
+}
+
 uint32_t PDFImage::get_status() {
 	return _status;
 }
@@ -55,6 +62,9 @@ void PDFImage::_set_hpdf_image(void *p_image) {
 }
 
 void PDFImage::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_width"), &PDFImage::get_width);
+	ClassDB::bind_method(D_METHOD("get_height"), &PDFImage::get_height);
+
 	//ClassDB::bind_method(D_METHOD("get_width"), &PDFImage::get_width);
 	//ClassDB::bind_method(D_METHOD("set_width", "val"), &PDFImage::set_width);
 	//ADD_PROPERTY(PropertyInfo(Variant::REAL, "width"), "set_width", "get_width");

@@ -38,6 +38,9 @@ class PDFImage : public Reference {
 	GDCLASS(PDFImage, Reference);
 
 public:
+	uint32_t get_width();
+	uint32_t get_height();
+
 #if 0
 	HPDF_EXPORT(HPDF_STATUS)
 	HPDF_Image_AddSMask(HPDF_Image image,
