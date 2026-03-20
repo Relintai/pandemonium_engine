@@ -109,7 +109,17 @@ uint32_t PDFDocument::set_compression_mode(const uint32_t p_mode) {
 }
 
 Ref<PDFFont> PDFDocument::get_font(const String &p_font_name, const String &p_encoding_name) {
-	HPDF_Font hpdf_font = HPDF_GetFont(_doc, p_font_name.utf8().get_data(), p_font_name.utf8().get_data());
+	HPDF_Font hpdf_font = NULL;
+
+	if (p_encoding_name.empty()) {
+		hpdf_font = HPDF_GetFont(_doc, p_font_name.utf8().get_data(), NULL);
+	} else {
+		hpdf_font = HPDF_GetFont(_doc, p_font_name.utf8().get_data(), p_encoding_name.utf8().get_data());
+	}
+
+	if (!hpdf_font) {
+		return Ref<PDFFont>();
+	}
 
 	Ref<PDFFont> font;
 	font.instance();
@@ -120,22 +130,22 @@ Ref<PDFFont> PDFDocument::get_font(const String &p_font_name, const String &p_en
 }
 
 String PDFDocument::load_type_1_font_from_file(const String &p_afm_file_name, const String &p_data_file_name) {
-	String afm_file_name = DirAccess::get_filesystem_abspath_for(p_afm_file_name.simplify_path());
-	String data_file_name = DirAccess::get_filesystem_abspath_for(p_data_file_name.simplify_path());
+	String afm_file_name = FileAccess::get_filesystem_abspath_for(p_afm_file_name);
+	String data_file_name = FileAccess::get_filesystem_abspath_for(p_data_file_name);
 
 	String font_name = String::utf8(HPDF_LoadType1FontFromFile(_doc, afm_file_name.utf8().get_data(), data_file_name.utf8().get_data()));
 
 	return font_name;
 }
 String PDFDocument::load_ttf_font_from_file(const String &p_file_name, const bool p_embed_into_document) {
-	String file_name = DirAccess::get_filesystem_abspath_for(p_file_name.simplify_path());
+	String file_name = FileAccess::get_filesystem_abspath_for(p_file_name);
 
 	String font_name = String::utf8(HPDF_LoadTTFontFromFile(_doc, file_name.utf8().get_data(), p_embed_into_document));
 
 	return font_name;
 }
 String PDFDocument::load_ttf_font_from_collection_file(const String &p_file_name, const int p_index, const bool p_embed_into_document) {
-	String file_name = DirAccess::get_filesystem_abspath_for(p_file_name.simplify_path());
+	String file_name = FileAccess::get_filesystem_abspath_for(p_file_name);
 
 	String font_name = String::utf8(HPDF_LoadTTFontFromFile2(_doc, file_name.utf8().get_data(), p_index, p_embed_into_document));
 
@@ -198,7 +208,7 @@ Ref<PDFImage> PDFDocument::load_png_image_from_mem(const PoolByteArray &p_data) 
 	return image;
 }
 Ref<PDFImage> PDFDocument::load_png_image_from_file(const String &p_path) {
-	String abs_path = DirAccess::get_filesystem_abspath_for(p_path.simplify_path());
+	String abs_path = FileAccess::get_filesystem_abspath_for(p_path);
 
 	HPDF_Font hpdf_image = HPDF_LoadPngImageFromFile(_doc, abs_path.utf8().get_data());
 
@@ -222,7 +232,7 @@ Ref<PDFImage> PDFDocument::load_jpg_image_from_mem(const PoolByteArray &p_data) 
 	return image;
 }
 Ref<PDFImage> PDFDocument::load_jpg_image_from_file(const String &p_path) {
-	String abs_path = DirAccess::get_filesystem_abspath_for(p_path.simplify_path());
+	String abs_path = FileAccess::get_filesystem_abspath_for(p_path);
 
 	HPDF_Font hpdf_image = HPDF_LoadJpegImageFromFile(_doc, abs_path.utf8().get_data());
 
@@ -319,7 +329,7 @@ PoolByteArray PDFDocument::get_contents() {
 	return data;
 }
 uint32_t PDFDocument::save_to_file(const String &p_file) {
-	String abs_path = DirAccess::get_filesystem_abspath_for(p_file.simplify_path());
+	String abs_path = FileAccess::get_filesystem_abspath_for(p_file);
 
 	_status = HPDF_SaveToFile(_doc, abs_path.utf8().get_data());
 	return _status;
