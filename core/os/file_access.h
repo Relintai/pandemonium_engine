@@ -160,6 +160,8 @@ public:
 	static uint32_t get_unix_permissions(const String &p_file);
 	static Error set_unix_permissions(const String &p_file, uint32_t p_permissions);
 
+	static String get_filesystem_abspath_for(const String &p_path);
+
 	static void set_backup_save(bool p_enable) { backup_save = p_enable; };
 	static bool is_backup_save_enabled() { return backup_save; };
 

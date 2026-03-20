@@ -499,6 +499,31 @@ Error FileAccess::set_unix_permissions(const String &p_file, uint32_t p_permissi
 	return err;
 }
 
+String FileAccess::get_filesystem_abspath_for(const String &p_path) {
+	String path = p_path.simplify_path();
+
+	if (path.begins_with("res://")) {
+		if (ProjectSettings::get_singleton()) {
+			String resource_path = ProjectSettings::get_singleton()->get_resource_path();
+			if (resource_path != "") {
+				path = path.replace_first("res:/", resource_path);
+			} else {
+				//for resources in this case actually the "res://<path>" is the proper filesystem path.
+				return path;
+			}
+		}
+	} else if (path.begins_with("user://")) {
+		String data_dir = OS::get_singleton()->get_user_data_dir();
+		if (data_dir != "") {
+			path = path.replace_first("user:/", data_dir);
+		} else {
+			path = path.replace_first("user://", "");
+		}
+	}
+
+	return path;
+}
+
 void FileAccess::store_string(const String &p_string) {
 	if (p_string.length() == 0) {
 		return;
