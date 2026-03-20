@@ -82,7 +82,5 @@
 
 #define G3CODES
 
-#define LIBHPDF_HAVE_LIBPNG
-
 #endif /* _HPDF_CONF_H */
 
