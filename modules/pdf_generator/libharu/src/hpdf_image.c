@@ -199,7 +199,7 @@ HPDF_Image_LoadJpegImage  (HPDF_MMgr        mmgr,
     for (;;) {
         HPDF_BYTE buf[HPDF_STREAM_BUF_SIZ];
         HPDF_UINT len = HPDF_STREAM_BUF_SIZ;
-        HPDF_STATUS ret = HPDF_Stream_Read (jpeg_data, buf,
+        ret = HPDF_Stream_Read (jpeg_data, buf,
                 &len);
 
         if (ret != HPDF_OK) {
