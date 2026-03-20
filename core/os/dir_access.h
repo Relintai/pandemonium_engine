@@ -135,7 +135,7 @@ public:
 
 	static DirAccess *open(const String &p_path, Error *r_error = nullptr);
 
-	static String get_filesystem_abspath_for(String p_path);
+	static String get_filesystem_abspath_for(const String &p_path);
 
 	DirAccess();
 	virtual ~DirAccess();
