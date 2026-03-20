@@ -63,32 +63,20 @@ public:
 
 	Ref<PDFFont> get_font(const String &p_font_name, const String &p_encoding_name = String());
 
-#if 0
-	HPDF_EXPORT(const char *)
-	HPDF_LoadType1FontFromFile(HPDF_Doc pdf,
-			const char *afm_file_name,
-			const char *data_file_name);
+	String load_type_1_font_from_file(const String &p_afm_file_name, const String &p_data_file_name);
+	String load_ttf_font_from_file(const String &p_file_name, const bool p_embed_into_document);
+	String load_ttf_font_from_collection_file(const String &p_file_name, const int p_index, const bool p_embed_into_document);
+	String load_ttf_font_from_mem(const PoolByteArray &p_data, const bool p_embed_into_document);
 
+	uint32_t use_jp_fonts();
+	uint32_t use_kr_fonts();
+	uint32_t use_cns_fonts();
+	uint32_t use_cnt_fonts();
+
+#if 0
 	HPDF_EXPORT(HPDF_FontDef)
 	HPDF_GetTTFontDefFromFile(HPDF_Doc pdf,
 			const char *file_name,
-			HPDF_BOOL embedding);
-
-	HPDF_EXPORT(const char *)
-	HPDF_LoadTTFontFromFile(HPDF_Doc pdf,
-			const char *file_name,
-			HPDF_BOOL embedding);
-
-	HPDF_EXPORT(const char *)
-	HPDF_LoadTTFontFromFile2(HPDF_Doc pdf,
-			const char *file_name,
-			HPDF_UINT index,
-			HPDF_BOOL embedding);
-
-	HPDF_EXPORT(const char *)
-	HPDF_LoadTTFontFromMemory(HPDF_Doc pdf,
-			const HPDF_BYTE *buffer,
-			HPDF_UINT size,
 			HPDF_BOOL embedding);
 
 	HPDF_EXPORT(HPDF_STATUS)
@@ -97,18 +85,6 @@ public:
 			HPDF_PageNumStyle style,
 			HPDF_UINT first_page,
 			const char *prefix);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_UseJPFonts(HPDF_Doc pdf);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_UseKRFonts(HPDF_Doc pdf);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_UseCNSFonts(HPDF_Doc pdf);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_UseCNTFonts(HPDF_Doc pdf);
 #endif
 
 #if 0

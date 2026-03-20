@@ -113,33 +113,61 @@ Ref<PDFFont> PDFDocument::get_font(const String &p_font_name, const String &p_en
 	return font;
 }
 
+String PDFDocument::load_type_1_font_from_file(const String &p_afm_file_name, const String &p_data_file_name) {
+	String afm_file_name = DirAccess::get_filesystem_abspath_for(p_afm_file_name.simplify_path());
+	String data_file_name = DirAccess::get_filesystem_abspath_for(p_data_file_name.simplify_path());
+
+	String font_name = String::utf8(HPDF_LoadType1FontFromFile(_doc, afm_file_name.utf8().get_data(), data_file_name.utf8().get_data()));
+
+	return font_name;
+}
+String PDFDocument::load_ttf_font_from_file(const String &p_file_name, const bool p_embed_into_document) {
+	String file_name = DirAccess::get_filesystem_abspath_for(p_file_name.simplify_path());
+
+	String font_name = String::utf8(HPDF_LoadTTFontFromFile(_doc, file_name.utf8().get_data(), p_embed_into_document));
+
+	return font_name;
+}
+String PDFDocument::load_ttf_font_from_collection_file(const String &p_file_name, const int p_index, const bool p_embed_into_document) {
+	String file_name = DirAccess::get_filesystem_abspath_for(p_file_name.simplify_path());
+
+	String font_name = String::utf8(HPDF_LoadTTFontFromFile2(_doc, file_name.utf8().get_data(), p_index, p_embed_into_document));
+
+	return font_name;
+}
+String PDFDocument::load_ttf_font_from_mem(const PoolByteArray &p_data, const bool p_embed_into_document) {
+	PoolByteArray::Read r = p_data.read();
+
+	String font_name = String::utf8(HPDF_LoadTTFontFromMemory(_doc, r.ptr(), p_data.size(), p_embed_into_document));
+
+	return font_name;
+}
+
+uint32_t PDFDocument::use_jp_fonts() {
+	_status = HPDF_UseJPFonts(_doc);
+
+	return _status;
+}
+uint32_t PDFDocument::use_kr_fonts() {
+	_status = HPDF_UseKRFonts(_doc);
+
+	return _status;
+}
+uint32_t PDFDocument::use_cns_fonts() {
+	_status = HPDF_UseCNSFonts(_doc);
+
+	return _status;
+}
+uint32_t PDFDocument::use_cnt_fonts() {
+	_status = HPDF_UseCNTFonts(_doc);
+
+	return _status;
+}
+
 #if 0
-
-HPDF_EXPORT(const char *)
-HPDF_LoadType1FontFromFile(HPDF_Doc pdf,
-		const char *afm_file_name,
-		const char *data_file_name);
-
 HPDF_EXPORT(HPDF_FontDef)
 HPDF_GetTTFontDefFromFile(HPDF_Doc pdf,
 		const char *file_name,
-		HPDF_BOOL embedding);
-
-HPDF_EXPORT(const char *)
-HPDF_LoadTTFontFromFile(HPDF_Doc pdf,
-		const char *file_name,
-		HPDF_BOOL embedding);
-
-HPDF_EXPORT(const char *)
-HPDF_LoadTTFontFromFile2(HPDF_Doc pdf,
-		const char *file_name,
-		HPDF_UINT index,
-		HPDF_BOOL embedding);
-
-HPDF_EXPORT(const char *)
-HPDF_LoadTTFontFromMemory(HPDF_Doc pdf,
-		const HPDF_BYTE *buffer,
-		HPDF_UINT size,
 		HPDF_BOOL embedding);
 
 HPDF_EXPORT(HPDF_STATUS)
@@ -149,17 +177,6 @@ HPDF_AddPageLabel(HPDF_Doc pdf,
 		HPDF_UINT first_page,
 		const char *prefix);
 
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_UseJPFonts(HPDF_Doc pdf);
-
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_UseKRFonts(HPDF_Doc pdf);
-
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_UseCNSFonts(HPDF_Doc pdf);
-
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_UseCNTFonts(HPDF_Doc pdf);
 #endif
 
 Ref<PDFImage> PDFDocument::load_png_image_from_mem(const PoolByteArray &p_data) {
@@ -175,7 +192,9 @@ Ref<PDFImage> PDFDocument::load_png_image_from_mem(const PoolByteArray &p_data) 
 	return image;
 }
 Ref<PDFImage> PDFDocument::load_png_image_from_file(const String &p_path) {
-	HPDF_Font hpdf_image = HPDF_LoadPngImageFromFile(_doc, p_path.utf8().get_data());
+	String abs_path = DirAccess::get_filesystem_abspath_for(p_path.simplify_path());
+
+	HPDF_Font hpdf_image = HPDF_LoadPngImageFromFile(_doc, abs_path.utf8().get_data());
 
 	Ref<PDFImage> image;
 	image.instance();
@@ -197,7 +216,9 @@ Ref<PDFImage> PDFDocument::load_jpg_image_from_mem(const PoolByteArray &p_data) 
 	return image;
 }
 Ref<PDFImage> PDFDocument::load_jpg_image_from_file(const String &p_path) {
-	HPDF_Font hpdf_image = HPDF_LoadJpegImageFromFile(_doc, p_path.utf8().get_data());
+	String abs_path = DirAccess::get_filesystem_abspath_for(p_path.simplify_path());
+
+	HPDF_Font hpdf_image = HPDF_LoadJpegImageFromFile(_doc, abs_path.utf8().get_data());
 
 	Ref<PDFImage> image;
 	image.instance();
@@ -357,6 +378,16 @@ void PDFDocument::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_pages_configuration", "page_per_pages"), &PDFDocument::set_pages_configuration);
 
 	ClassDB::bind_method(D_METHOD("get_font", "font_name", "encoding_name"), &PDFDocument::get_font, DEFVAL(String()));
+
+	ClassDB::bind_method(D_METHOD("load_type_1_font_from_file", "afm_file_name", "data_file_name"), &PDFDocument::load_type_1_font_from_file);
+	ClassDB::bind_method(D_METHOD("load_ttf_font_from_file", "file_name", "embed_into_document"), &PDFDocument::load_ttf_font_from_file);
+	ClassDB::bind_method(D_METHOD("load_ttf_font_from_collection_file", "index", "embed_into_document"), &PDFDocument::load_ttf_font_from_collection_file);
+	ClassDB::bind_method(D_METHOD("load_ttf_font_from_mem", "data", "embed_into_document"), &PDFDocument::load_ttf_font_from_mem);
+
+	ClassDB::bind_method(D_METHOD("use_jp_fonts"), &PDFDocument::use_jp_fonts);
+	ClassDB::bind_method(D_METHOD("use_kr_fonts"), &PDFDocument::use_kr_fonts);
+	ClassDB::bind_method(D_METHOD("use_cns_fonts"), &PDFDocument::use_cns_fonts);
+	ClassDB::bind_method(D_METHOD("use_cnt_fonts"), &PDFDocument::use_cnt_fonts);
 
 	ClassDB::bind_method(D_METHOD("load_png_image_from_mem", "data"), &PDFDocument::load_png_image_from_mem);
 	ClassDB::bind_method(D_METHOD("load_png_image_from_file", "path"), &PDFDocument::load_png_image_from_file);
