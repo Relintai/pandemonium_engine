@@ -102,6 +102,12 @@ Ref<PDFPage> PDFDocument::page_insert(const Ref<PDFPage> &p_page) {
 	return page;
 }
 
+uint32_t PDFDocument::set_compression_mode(const uint32_t p_mode) {
+	_status = HPDF_SetCompressionMode(_doc, p_mode);
+
+	return _status;
+}
+
 Ref<PDFFont> PDFDocument::get_font(const String &p_font_name, const String &p_encoding_name) {
 	HPDF_Font hpdf_font = HPDF_GetFont(_doc, p_font_name.utf8().get_data(), p_font_name.utf8().get_data());
 
@@ -377,6 +383,8 @@ void PDFDocument::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_pages_configuration", "page_per_pages"), &PDFDocument::set_pages_configuration);
 
+	ClassDB::bind_method(D_METHOD("set_compression_mode", "mode"), &PDFDocument::set_compression_mode);
+
 	ClassDB::bind_method(D_METHOD("get_font", "font_name", "encoding_name"), &PDFDocument::get_font, DEFVAL(String()));
 
 	ClassDB::bind_method(D_METHOD("load_type_1_font_from_file", "afm_file_name", "data_file_name"), &PDFDocument::load_type_1_font_from_file);
@@ -405,4 +413,11 @@ void PDFDocument::_bind_methods() {
 	//ClassDB::bind_method(D_METHOD("get_user_id"), &PDFDocument::get_user_id);
 	//ClassDB::bind_method(D_METHOD("set_user_id", "val"), &PDFDocument::set_user_id);
 	//ADD_PROPERTY(PropertyInfo(Variant::INT, "user_id"), "set_user_id", "get_user_id");
+
+	BIND_ENUM_CONSTANT(COMPRESSION_MODE_NONE);
+	BIND_ENUM_CONSTANT(COMPRESSION_MODE_TEXT);
+	BIND_ENUM_CONSTANT(COMPRESSION_MODE_IMAGE);
+	BIND_ENUM_CONSTANT(COMPRESSION_MODE_METADATA);
+	BIND_ENUM_CONSTANT(COMPRESSION_MODE_ALL);
+	BIND_ENUM_CONSTANT(COMPRESSION_MODE_MASK);
 }

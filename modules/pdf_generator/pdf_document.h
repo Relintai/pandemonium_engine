@@ -48,6 +48,17 @@ class PDFDocument : public Reference {
 	GDCLASS(PDFDocument, Reference);
 
 public:
+	enum CompressionMode {
+		COMPRESSION_MODE_NONE = 0x00,
+		COMPRESSION_MODE_TEXT = 0x01,
+		COMPRESSION_MODE_IMAGE = 0x02,
+		COMPRESSION_MODE_METADATA = 0x04,
+		COMPRESSION_MODE_ALL = 0x0F,
+		//COMPRESSION_MODE_BEST_COMPRESS = 0x10,
+		//COMPRESSION_MODE_BEST_SPEED = 0x20,
+		COMPRESSION_MODE_MASK = 0xFF,
+	};
+
 	uint32_t new_document();
 	void free_document();
 	bool has_document();
@@ -60,6 +71,8 @@ public:
 
 	uint32_t set_pages_configuration(const uint32_t p_page_per_pages);
 	//get_page_by_index();
+
+	uint32_t set_compression_mode(const uint32_t p_mode);
 
 	Ref<PDFFont> get_font(const String &p_font_name, const String &p_encoding_name = String());
 
@@ -171,5 +184,7 @@ protected:
 
 	uint32_t _status;
 };
+
+VARIANT_ENUM_CAST(PDFDocument::CompressionMode);
 
 #endif
