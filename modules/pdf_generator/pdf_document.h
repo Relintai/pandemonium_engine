@@ -1,5 +1,8 @@
+#ifndef PDF_DOCUMENT_H
+#define PDF_DOCUMENT_H
+
 /*************************************************************************/
-/*  register_types.cpp                                                   */
+/*  pdf_document.h                                                       */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,15 +32,42 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "register_types.h"
+#include "core/string/ustring.h"
 
-#include "pdf_document.h"
+#include "core/object/reference.h"
 
-void register_pdf_generator_types(ModuleRegistrationLevel p_level) {
-	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
-		ClassDB::register_class<PDFDocument>();
-	}
-}
+struct _HPDF_Doc_Rec;
+typedef struct _HPDF_Doc_Rec *HPDF_Doc;
 
-void unregister_pdf_generator_types(ModuleRegistrationLevel p_level) {
-}
+class PDFDocument : public Reference {
+	GDCLASS(PDFDocument, Reference);
+
+public:
+	uint32_t new_document();
+	void free_document();
+	bool has_document();
+	void free_document_all();
+
+	uint32_t set_pages_configuration(const uint32_t p_page_per_pages);
+	//get_page_by_index();
+
+	PoolByteArray get_contents();
+	uint32_t save_to_file(const String &p_file);
+
+	uint32_t get_status();
+	uint32_t get_error_no();
+	uint32_t get_error_detail_no();
+	void reset_error();
+
+	PDFDocument();
+	~PDFDocument();
+
+protected:
+	static void _bind_methods();
+
+	HPDF_Doc _doc;
+
+	uint32_t _status;
+};
+
+#endif

@@ -24,8 +24,12 @@ env.modules_sources += thirdparty_obj
 # Module
 module_env = env.Clone()
 
+module_env.Prepend(CPPPATH=[thirdparty_include_dir])
+
 sources = [
     "register_types.cpp",
+
+    "pdf_document.cpp",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
