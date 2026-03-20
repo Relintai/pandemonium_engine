@@ -39,6 +39,8 @@
 struct _HPDF_Doc_Rec;
 typedef struct _HPDF_Doc_Rec *HPDF_Doc;
 
+class PDFPage;
+
 class PDFDocument : public Reference {
 	GDCLASS(PDFDocument, Reference);
 
@@ -47,6 +49,11 @@ public:
 	void free_document();
 	bool has_document();
 	void free_document_all();
+
+	Ref<PDFPage> page_get_current();
+	Ref<PDFPage> page_get_index(const uint32_t p_index);
+	Ref<PDFPage> page_add();
+	Ref<PDFPage> page_insert(const Ref<PDFPage> &p_page);
 
 	uint32_t set_pages_configuration(const uint32_t p_page_per_pages);
 	//get_page_by_index();

@@ -10,6 +10,7 @@ def configure(env):
 def get_doc_classes():
     return [
         "PDFDocument",
+        "PDFPage",
     ]
 
 def get_doc_path():

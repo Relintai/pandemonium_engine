@@ -32,10 +32,12 @@
 #include "register_types.h"
 
 #include "pdf_document.h"
+#include "pdf_page.h"
 
 void register_pdf_generator_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
 		ClassDB::register_class<PDFDocument>();
+		ClassDB::register_class<PDFPage>();
 	}
 }
 

@@ -35,6 +35,8 @@
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 
+#include "pdf_page.h"
+
 #include "hpdf.h"
 #include "hpdf_doc.h"
 
@@ -50,6 +52,51 @@ bool PDFDocument::has_document() {
 }
 void PDFDocument::free_document_all() {
 	HPDF_FreeDocAll(_doc);
+}
+
+Ref<PDFPage> PDFDocument::page_get_current() {
+	HPDF_Page hpdf_page = HPDF_GetCurrentPage(_doc);
+
+	Ref<PDFPage> page;
+	page.instance();
+
+	page->_set_hpdf_page(hpdf_page);
+
+	return page;
+}
+Ref<PDFPage> PDFDocument::page_get_index(const uint32_t p_index) {
+	HPDF_Page hpdf_page = HPDF_GetPageByIndex(_doc, p_index);
+
+	Ref<PDFPage> page;
+	page.instance();
+
+	page->_set_hpdf_page(hpdf_page);
+
+	return page;
+}
+Ref<PDFPage> PDFDocument::page_add() {
+	HPDF_Page hpdf_page = HPDF_AddPage(_doc);
+
+	Ref<PDFPage> page;
+	page.instance();
+
+	page->_set_hpdf_page(hpdf_page);
+
+	return page;
+}
+Ref<PDFPage> PDFDocument::page_insert(const Ref<PDFPage> &p_page) {
+	if (!p_page.is_valid()) {
+		return Ref<PDFPage>();
+	}
+
+	HPDF_Page hpdf_page = HPDF_InsertPage(_doc, (HPDF_Page)p_page->_get_hpdf_page());
+
+	Ref<PDFPage> page;
+	page.instance();
+
+	page->_set_hpdf_page(hpdf_page);
+
+	return page;
 }
 
 uint32_t PDFDocument::set_pages_configuration(const uint32_t p_page_per_pages) {
@@ -132,6 +179,11 @@ void PDFDocument::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("free_document"), &PDFDocument::free_document);
 	ClassDB::bind_method(D_METHOD("has_document"), &PDFDocument::has_document);
 	ClassDB::bind_method(D_METHOD("free_document_all"), &PDFDocument::free_document_all);
+
+	ClassDB::bind_method(D_METHOD("page_get_current"), &PDFDocument::page_get_current);
+	ClassDB::bind_method(D_METHOD("page_get_index", "index"), &PDFDocument::page_get_index);
+	ClassDB::bind_method(D_METHOD("page_add"), &PDFDocument::page_add);
+	ClassDB::bind_method(D_METHOD("page_insert", "page"), &PDFDocument::page_insert);
 
 	ClassDB::bind_method(D_METHOD("set_pages_configuration", "page_per_pages"), &PDFDocument::set_pages_configuration);
 

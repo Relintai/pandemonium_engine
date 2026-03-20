@@ -30,6 +30,7 @@ sources = [
     "register_types.cpp",
 
     "pdf_document.cpp",
+    "pdf_page.cpp",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
