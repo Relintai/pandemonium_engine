@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  register_types.cpp                                                   */
+/*  pdf_image.cpp                                                        */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,21 +29,33 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "register_types.h"
-
-#include "pdf_document.h"
-#include "pdf_font.h"
 #include "pdf_image.h"
-#include "pdf_page.h"
 
-void register_pdf_generator_types(ModuleRegistrationLevel p_level) {
-	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
-		ClassDB::register_class<PDFDocument>();
-		ClassDB::register_class<PDFPage>();
-		ClassDB::register_class<PDFFont>();
-		ClassDB::register_class<PDFImage>();
-	}
+#include "hpdf.h"
+#include "hpdf_doc.h"
+#include "hpdf_pages.h"
+
+uint32_t PDFImage::get_status() {
+	return _status;
 }
 
-void unregister_pdf_generator_types(ModuleRegistrationLevel p_level) {
+PDFImage::PDFImage() {
+	_image = NULL;
+}
+
+PDFImage::~PDFImage() {
+}
+
+void *PDFImage::_get_hpdf_image() const {
+	return _image;
+}
+
+void PDFImage::_set_hpdf_image(void *p_image) {
+	_image = p_image;
+}
+
+void PDFImage::_bind_methods() {
+	//ClassDB::bind_method(D_METHOD("get_width"), &PDFImage::get_width);
+	//ClassDB::bind_method(D_METHOD("set_width", "val"), &PDFImage::set_width);
+	//ADD_PROPERTY(PropertyInfo(Variant::REAL, "width"), "set_width", "get_width");
 }

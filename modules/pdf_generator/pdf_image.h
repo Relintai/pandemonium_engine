@@ -1,5 +1,8 @@
+#ifndef PDF_IMAGE_H
+#define PDF_IMAGE_H
+
 /*************************************************************************/
-/*  register_types.cpp                                                   */
+/*  pdf_image.h                                                          */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,21 +32,26 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "register_types.h"
+#include "core/object/reference.h"
 
-#include "pdf_document.h"
-#include "pdf_font.h"
-#include "pdf_image.h"
-#include "pdf_page.h"
+class PDFImage : public Reference {
+	GDCLASS(PDFImage, Reference);
 
-void register_pdf_generator_types(ModuleRegistrationLevel p_level) {
-	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
-		ClassDB::register_class<PDFDocument>();
-		ClassDB::register_class<PDFPage>();
-		ClassDB::register_class<PDFFont>();
-		ClassDB::register_class<PDFImage>();
-	}
-}
+public:
+	uint32_t get_status();
 
-void unregister_pdf_generator_types(ModuleRegistrationLevel p_level) {
-}
+	PDFImage();
+	~PDFImage();
+
+	void *_get_hpdf_image() const;
+	void _set_hpdf_image(void *p_image);
+
+protected:
+	static void _bind_methods();
+
+	void *_image;
+
+	uint32_t _status;
+};
+
+#endif

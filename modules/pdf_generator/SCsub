@@ -31,6 +31,8 @@ sources = [
 
     "pdf_document.cpp",
     "pdf_page.cpp",
+    "pdf_font.cpp",
+    "pdf_image.cpp",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':

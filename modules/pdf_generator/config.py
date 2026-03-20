@@ -11,6 +11,8 @@ def get_doc_classes():
     return [
         "PDFDocument",
         "PDFPage",
+        "PDFFont",
+        "PDFImage",
     ]
 
 def get_doc_path():
