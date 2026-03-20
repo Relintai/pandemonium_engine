@@ -38,6 +38,59 @@ class PDFImage : public Reference {
 	GDCLASS(PDFImage, Reference);
 
 public:
+#if 0
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_Image_AddSMask(HPDF_Image image,
+			HPDF_Image smask);
+
+	HPDF_EXPORT(HPDF_Point)
+	HPDF_Image_GetSize(HPDF_Image image);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_Image_GetSize2(HPDF_Image image, HPDF_Point *size);
+
+	HPDF_EXPORT(HPDF_UINT)
+	HPDF_Image_GetWidth(HPDF_Image image);
+
+	HPDF_EXPORT(HPDF_UINT)
+	HPDF_Image_GetHeight(HPDF_Image image);
+
+	HPDF_EXPORT(HPDF_UINT)
+	HPDF_Image_GetBitsPerComponent(HPDF_Image image);
+
+	HPDF_EXPORT(const char *)
+	HPDF_Image_GetColorSpace(HPDF_Image image);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_Image_SetColorMask(HPDF_Image image,
+			HPDF_UINT rmin,
+			HPDF_UINT rmax,
+			HPDF_UINT gmin,
+			HPDF_UINT gmax,
+			HPDF_UINT bmin,
+			HPDF_UINT bmax);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_Image_SetMaskImage(HPDF_Image image,
+			HPDF_Image mask_image);
+
+	// hpdf_image.h
+	HPDF_BOOL
+	HPDF_Image_Validate(HPDF_Image image);
+
+	HPDF_STATUS
+	HPDF_Image_SetMask(HPDF_Image image,
+			HPDF_BOOL mask);
+
+	HPDF_STATUS
+	HPDF_Image_SetColorSpace(HPDF_Image image,
+			HPDF_Array colorspace);
+
+	HPDF_STATUS
+	HPDF_Image_SetRenderingIntent(HPDF_Image image,
+			const char *intent);
+#endif
+
 	uint32_t get_status();
 
 	PDFImage();
