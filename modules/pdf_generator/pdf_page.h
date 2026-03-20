@@ -46,6 +46,8 @@ public:
 	float get_height();
 	void set_height(const float p_height);
 
+	float text_width(const String &p_text);
+
 #if 0
 	HPDF_EXPORT(HPDF_STATUS)
 	HPDF_Page_SetBoundary(HPDF_Page page,

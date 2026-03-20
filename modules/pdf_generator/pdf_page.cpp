@@ -68,6 +68,10 @@ void PDFPage::set_height(const float p_height) {
 	HPDF_Page_SetHeight((HPDF_Page)_page, p_height);
 }
 
+float PDFPage::text_width(const String &p_text) {
+	return HPDF_Page_TextWidth((HPDF_Page)_page, p_text.utf8().get_data());
+}
+
 #if 0
 HPDF_EXPORT(HPDF_STATUS)
 HPDF_Page_SetBoundary(HPDF_Page page,
@@ -690,6 +694,8 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_height"), &PDFPage::get_height);
 	ClassDB::bind_method(D_METHOD("set_height", "val"), &PDFPage::set_height);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "height"), "set_height", "get_height");
+
+	ClassDB::bind_method(D_METHOD("text_width", "text"), &PDFPage::text_width);
 
 	ClassDB::bind_method(D_METHOD("begin_text"), &PDFPage::begin_text);
 	ClassDB::bind_method(D_METHOD("end_text"), &PDFPage::end_text);
