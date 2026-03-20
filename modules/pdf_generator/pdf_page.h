@@ -35,6 +35,7 @@
 #include "core/object/reference.h"
 
 class PDFFont;
+class PDFImage;
 
 class PDFPage : public Reference {
 	GDCLASS(PDFPage, Reference);
@@ -503,7 +504,11 @@ public:
 			HPDF_REAL k);
 
 	/*--- Compatibility ------------------------------------------------------*/
+#endif
 
+	uint32_t draw_image(const Ref<PDFImage> &p_image, const Rect2 &p_rect);
+
+#if 0
 	/* BX --not implemented yet */
 	/* EX --not implemented yet */
 

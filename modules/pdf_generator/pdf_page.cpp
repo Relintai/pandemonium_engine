@@ -37,6 +37,7 @@
 #include "hpdf_pages.h"
 
 #include "pdf_font.h"
+#include "pdf_image.h"
 
 float PDFPage::get_width() {
 	if (!_page) {
@@ -560,7 +561,21 @@ HPDF_Page_SetCMYKStroke(HPDF_Page page,
 		HPDF_REAL k);
 
 /*--- Compatibility ------------------------------------------------------*/
+#endif
 
+uint32_t PDFPage::draw_image(const Ref<PDFImage> &p_image, const Rect2 &p_rect) {
+	HPDF_Image hpdf_image = NULL;
+
+	if (p_image.is_valid()) {
+		hpdf_image = (HPDF_Image)p_image->_get_hpdf_image();
+	}
+
+	_status = HPDF_Page_DrawImage((HPDF_Page)_page, hpdf_image, p_rect.position.x, p_rect.position.y, p_rect.size.width, p_rect.size.height);
+
+	return _status;
+}
+
+#if 0
 /* BX --not implemented yet */
 /* EX --not implemented yet */
 
@@ -705,6 +720,8 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("move_text_posv", "move"), &PDFPage::move_text_posv);
 
 	ClassDB::bind_method(D_METHOD("show_text", "text"), &PDFPage::show_text);
+
+	ClassDB::bind_method(D_METHOD("draw_image", "image", "rect"), &PDFPage::draw_image);
 
 	ClassDB::bind_method(D_METHOD("get_status"), &PDFPage::get_status);
 }
