@@ -391,11 +391,6 @@ public:
 	HPDF_Page_SetTextRise(HPDF_Page page,
 			HPDF_REAL value);
 
-	/* This function is obsolete. Use HPDF_Page_SetTextRise.  */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetTextRaise(HPDF_Page page,
-			HPDF_REAL value);
-
 	/*--- Text positioning ---------------------------------------------------*/
 
 	/* Td */
