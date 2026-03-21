@@ -23,6 +23,7 @@ def get_doc_classes():
         "PDFShading",
         "PDFXObject",
         "PDFEncoder",
+        "PDFDict",
     ]
 
 def get_doc_path():

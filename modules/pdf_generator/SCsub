@@ -44,6 +44,7 @@ sources = [
     "pdf_shading.cpp",
     "pdf_x_object.cpp",
     "pdf_encoder.cpp",
+    "pdf_dict.cpp",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':

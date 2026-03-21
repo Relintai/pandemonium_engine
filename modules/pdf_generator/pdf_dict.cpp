@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  register_types.cpp                                                   */
+/*  pdf_dict.cpp                                                         */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,43 +29,33 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "register_types.h"
-
-#include "pdf_3d_measure.h"
-#include "pdf_annotation.h"
-#include "pdf_destination.h"
-#include "pdf_document.h"
-#include "pdf_embedded_file.h"
-#include "pdf_ex_data.h"
-#include "pdf_ext_g_state.h"
-#include "pdf_font.h"
-#include "pdf_image.h"
-#include "pdf_outline.h"
-#include "pdf_page.h"
-#include "pdf_shading.h"
-#include "pdf_x_object.h"
-#include "pdf_encoder.h"
 #include "pdf_dict.h"
 
-void register_pdf_generator_types(ModuleRegistrationLevel p_level) {
-	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
-		ClassDB::register_class<PDFDocument>();
-		ClassDB::register_class<PDFPage>();
-		ClassDB::register_class<PDFFont>();
-		ClassDB::register_class<PDFImage>();
-		ClassDB::register_class<PDFOutline>();
-		ClassDB::register_class<PDFAnnotation>();
-		ClassDB::register_class<PDFDestination>();
-		ClassDB::register_class<PDF3DMeasure>();
-		ClassDB::register_class<PDFEmbeddedFile>();
-		ClassDB::register_class<PDFExData>();
-		ClassDB::register_class<PDFExtGState>();
-		ClassDB::register_class<PDFShading>();
-		ClassDB::register_class<PDFXObject>();
-		ClassDB::register_class<PDFEncoder>();
-		ClassDB::register_class<PDFDict>();
-	}
+#include "hpdf.h"
+#include "hpdf_doc.h"
+#include "hpdf_pages.h"
+
+uint32_t PDFDict::get_status() {
+	return _status;
 }
 
-void unregister_pdf_generator_types(ModuleRegistrationLevel p_level) {
+PDFDict::PDFDict() {
+	_dict = NULL;
+}
+
+PDFDict::~PDFDict() {
+}
+
+void *PDFDict::_get_hpdf_dict() const {
+	return _dict;
+}
+
+void PDFDict::_set_hpdf_dict(void *p_dict) {
+	_dict = p_dict;
+}
+
+void PDFDict::_bind_methods() {
+	//ClassDB::bind_method(D_METHOD("get_width"), &PDFDict::get_width);
+	//ClassDB::bind_method(D_METHOD("set_width", "val"), &PDFDict::set_width);
+	//ADD_PROPERTY(PropertyInfo(Variant::REAL, "width"), "set_width", "get_width");
 }
