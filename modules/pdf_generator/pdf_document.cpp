@@ -36,6 +36,7 @@
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 
+#include "pdf_destination.h"
 #include "pdf_encoder.h"
 #include "pdf_font.h"
 #include "pdf_image.h"
@@ -255,6 +256,20 @@ Ref<PDFOutline> PDFDocument::outline_create(const Ref<PDFOutline> &p_parent, con
 	pdf_outline->_set_hpdf_outline(encoder);
 
 	return pdf_outline;
+}
+
+/*----- destination --------------------------------------------------------*/
+
+uint32_t PDFDocument::open_action_set(const Ref<PDFDestination> &p_destination) {
+	HPDF_Destination dest = NULL;
+
+	if (p_destination.is_valid()) {
+		dest = (HPDF_Destination)p_destination->_get_hpdf_destination();
+	}
+
+	_status = HPDF_SetOpenAction(_doc, dest);
+
+	return _status;
 }
 
 /*----- encoder ------------------------------------------------------------*/
@@ -623,6 +638,8 @@ void PDFDocument::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("fonts_use_cnt"), &PDFDocument::fonts_use_cnt);
 
 	ClassDB::bind_method(D_METHOD("outline_create", "parent", "title", "encoder"), &PDFDocument::outline_create);
+
+	ClassDB::bind_method(D_METHOD("open_action_set", "destination"), &PDFDocument::open_action_set);
 
 	ClassDB::bind_method(D_METHOD("encoder_get", "encoding_name"), &PDFDocument::encoder_get);
 

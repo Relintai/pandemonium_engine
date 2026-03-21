@@ -83,13 +83,13 @@ public:
 	PDFDestination();
 	~PDFDestination();
 
-	void *_get_hpdf_font() const;
-	void _set_hpdf_font(void *p_font);
+	void *_get_hpdf_destination() const;
+	void _set_hpdf_destination(void *p_destination);
 
 protected:
 	static void _bind_methods();
 
-	void *_font;
+	void *_destination;
 
 	uint32_t _status;
 };

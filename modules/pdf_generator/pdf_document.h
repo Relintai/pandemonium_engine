@@ -45,6 +45,7 @@ class PDFImage;
 class Image;
 class PDFOutline;
 class PDFEncoder;
+class PDFDestination;
 
 class PDFDocument : public Reference {
 	GDCLASS(PDFDocument, Reference);
@@ -144,14 +145,7 @@ public:
 
 	Ref<PDFOutline> outline_create(const Ref<PDFOutline> &p_parent, const String &p_title, const Ref<PDFEncoder> &p_encoder);
 
-#if 0
-	/*----- destination --------------------------------------------------------*/
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_SetOpenAction(HPDF_Doc pdf,
-			HPDF_Destination open_action);
-
-#endif
+	uint32_t open_action_set(const Ref<PDFDestination> &p_destination);
 
 	Ref<PDFEncoder> encoder_get(const String &p_encoding_name);
 

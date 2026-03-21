@@ -40,18 +40,18 @@ uint32_t PDFDestination::get_status() {
 }
 
 PDFDestination::PDFDestination() {
-	_font = NULL;
+	_destination = NULL;
 }
 
 PDFDestination::~PDFDestination() {
 }
 
-void *PDFDestination::_get_hpdf_font() const {
-	return _font;
+void *PDFDestination::_get_hpdf_destination() const {
+	return _destination;
 }
 
-void PDFDestination::_set_hpdf_font(void *p_font) {
-	_font = p_font;
+void PDFDestination::_set_hpdf_destination(void *p_destination) {
+	_destination = p_destination;
 }
 
 void PDFDestination::_bind_methods() {
