@@ -38,21 +38,48 @@ class PDFDate : public Reference {
 	GDCLASS(PDFDate, Reference);
 
 public:
+	int get_year() const;
+	void set_year(const int p_value);
+
+	int get_month() const;
+	void set_month(const int p_value);
+
+	int get_day() const;
+	void set_day(const int p_value);
+
+	int get_hour() const;
+	void set_hour(const int p_value);
+
+	int get_minutes() const;
+	void set_minutes(const int p_value);
+
+	int get_seconds() const;
+	void set_seconds(const int p_value);
+
+	uint8_t get_ind() const;
+	void set_ind(const uint8_t p_value);
+
+	int get_off_hour() const;
+	void set_off_hour(const int p_value);
+
+	int get_off_minutes() const;
+	void set_off_minutes(const int p_value);
+
 	PDFDate();
 	~PDFDate();
 
 protected:
 	static void _bind_methods();
 
-	int year;
-	int month;
-	int day;
-	int hour;
-	int minutes;
-	int seconds;
-	char ind;
-	int off_hour;
-	int off_minutes;
+	int _year;
+	int _month;
+	int _day;
+	int _hour;
+	int _minutes;
+	int _seconds;
+	uint8_t _ind;
+	int _off_hour;
+	int _off_minutes;
 };
 
 #endif

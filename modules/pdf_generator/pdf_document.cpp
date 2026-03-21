@@ -36,6 +36,7 @@
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 
+#include "pdf_date.h"
 #include "pdf_destination.h"
 #include "pdf_encoder.h"
 #include "pdf_font.h"
@@ -576,6 +577,42 @@ Ref<PDFImage> PDFDocument::image_create_pdf_from_image(const Ref<Image> &p_image
 	return image;
 }
 
+/*----- info dictionary ----------------------------------------------------*/
+
+String PDFDocument::info_attr_get(const InfoType p_info_type) {
+	HPDF_InfoType info_type = static_cast<HPDF_InfoType>(p_info_type);
+
+	return String::utf8(HPDF_GetInfoAttr(_doc, info_type));
+}
+uint32_t PDFDocument::info_attr_set(const InfoType p_info_type, const String &p_value) {
+	HPDF_InfoType info_type = static_cast<HPDF_InfoType>(p_info_type);
+
+	_status = HPDF_SetInfoAttr(_doc, info_type, p_value.utf8().get_data());
+
+	return _status;
+}
+uint32_t PDFDocument::info_attr_date_set(const InfoType p_info_type, const Ref<PDFDate> &p_date) {
+	HPDF_InfoType info_type = static_cast<HPDF_InfoType>(p_info_type);
+
+	HPDF_Date date;
+
+	if (p_date.is_valid()) {
+		date.year = p_date->get_year();
+		date.month = p_date->get_month();
+		date.day = p_date->get_day();
+		date.hour = p_date->get_hour();
+		date.minutes = p_date->get_minutes();
+		date.seconds = p_date->get_seconds();
+		date.ind = static_cast<char>(p_date->get_ind());
+		date.off_hour = p_date->get_off_hour();
+		date.off_minutes = p_date->get_off_minutes();
+	}
+
+	_status = HPDF_SetInfoDateAttr(_doc, info_type, date);
+
+	return _status;
+}
+
 PoolByteArray PDFDocument::save_to_mem() {
 	HPDF_ResetStream(_doc);
 
@@ -783,4 +820,16 @@ void PDFDocument::_bind_methods() {
 	BIND_ENUM_CONSTANT(COLOR_SPACE_INDEXED);
 	BIND_ENUM_CONSTANT(COLOR_SPACE_PATTERN);
 	BIND_ENUM_CONSTANT(COLOR_SPACE_EOF);
+
+	BIND_ENUM_CONSTANT(INFO_CREATION_DATE);
+	BIND_ENUM_CONSTANT(INFO_MOD_DATE);
+	BIND_ENUM_CONSTANT(INFO_AUTHOR);
+	BIND_ENUM_CONSTANT(INFO_CREATOR);
+	BIND_ENUM_CONSTANT(INFO_PRODUCER);
+	BIND_ENUM_CONSTANT(INFO_TITLE);
+	BIND_ENUM_CONSTANT(INFO_SUBJECT);
+	BIND_ENUM_CONSTANT(INFO_KEYWORDS);
+	BIND_ENUM_CONSTANT(INFO_TRAPPED);
+	BIND_ENUM_CONSTANT(INFO_GTS_PDFX);
+	BIND_ENUM_CONSTANT(INFO_EOF);
 }

@@ -47,6 +47,7 @@ class PDFOutline;
 class PDFEncoder;
 class PDFDestination;
 class PDFXObject;
+class PDFDate;
 
 class PDFDocument : public Reference {
 	GDCLASS(PDFDocument, Reference);
@@ -105,6 +106,23 @@ public:
 		COLOR_SPACE_INDEXED,
 		COLOR_SPACE_PATTERN,
 		COLOR_SPACE_EOF
+	};
+
+	enum InfoType {
+		/* date-time type parameters */
+		INFO_CREATION_DATE = 0,
+		INFO_MOD_DATE,
+
+		/* string type parameters */
+		INFO_AUTHOR,
+		INFO_CREATOR,
+		INFO_PRODUCER,
+		INFO_TITLE,
+		INFO_SUBJECT,
+		INFO_KEYWORDS,
+		INFO_TRAPPED,
+		INFO_GTS_PDFX,
+		INFO_EOF
 	};
 
 	uint32_t viewer_preference_get() const;
@@ -191,24 +209,9 @@ public:
 
 	Ref<PDFImage> image_create_pdf_from_image(const Ref<Image> &p_image);
 
-#if 0
-	/*----- info dictionary ----------------------------------------------------*/
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_SetInfoAttr(HPDF_Doc pdf,
-			HPDF_InfoType type,
-			const char *value);
-
-	HPDF_EXPORT(const char *)
-	HPDF_GetInfoAttr(HPDF_Doc pdf,
-			HPDF_InfoType type);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_SetInfoDateAttr(HPDF_Doc pdf,
-			HPDF_InfoType type,
-			HPDF_Date value);
-
-#endif
+	String info_attr_get(const InfoType p_info_type);
+	uint32_t info_attr_set(const InfoType p_info_type, const String &p_value);
+	uint32_t info_attr_date_set(const InfoType p_info_type, const Ref<PDFDate> &p_date);
 
 #if 0
 	/*----- encryption ---------------------------------------------------------*/
@@ -296,5 +299,6 @@ VARIANT_ENUM_CAST(PDFDocument::PageLayout);
 VARIANT_ENUM_CAST(PDFDocument::PageMode);
 VARIANT_ENUM_CAST(PDFDocument::PageNumStyle);
 VARIANT_ENUM_CAST(PDFDocument::ColorSpace);
+VARIANT_ENUM_CAST(PDFDocument::InfoType);
 
 #endif
