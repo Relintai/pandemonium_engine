@@ -38,6 +38,38 @@ class PDFEmbeddedFile : public Reference {
 	GDCLASS(PDFEmbeddedFile, Reference);
 
 public:
+#if 0
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_EmbeddedFile_SetName(HPDF_EmbeddedFile emfile,
+			const char *name);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_EmbeddedFile_SetDescription(HPDF_EmbeddedFile emfile,
+			const char *new_description);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_EmbeddedFile_SetSubtype(HPDF_EmbeddedFile emfile,
+			const char *subtype);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_EmbeddedFile_SetAFRelationship(HPDF_EmbeddedFile emfile,
+			HPDF_AFRelationship relationship);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_EmbeddedFile_SetSize(HPDF_EmbeddedFile emfile,
+			HPDF_UINT64 size);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_EmbeddedFile_SetCreationDate(HPDF_EmbeddedFile emfile,
+			HPDF_Date creationDate);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_EmbeddedFile_SetLastModificationDate(HPDF_EmbeddedFile emfile,
+			HPDF_Date lastModificationDate);
+
+#endif
+
 	uint32_t get_status();
 
 	PDFEmbeddedFile();

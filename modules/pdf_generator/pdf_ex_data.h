@@ -38,6 +38,11 @@ class PDFExData : public Reference {
 	GDCLASS(PDFExData, Reference);
 
 public:
+#if 0
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_3DAnnotExData_Set3DMeasurement(HPDF_ExData exdata, HPDF_3DMeasure measure);
+#endif
+
 	uint32_t get_status();
 
 	PDFExData();

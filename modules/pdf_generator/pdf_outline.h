@@ -38,6 +38,16 @@ class PDFOutline : public Reference {
 	GDCLASS(PDFOutline, Reference);
 
 public:
+#if 0
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_Outline_SetOpened(HPDF_Outline outline,
+			HPDF_BOOL opened);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_Outline_SetDestination(HPDF_Outline outline,
+			HPDF_Destination dst);
+#endif
+
 	uint32_t get_status();
 
 	PDFOutline();

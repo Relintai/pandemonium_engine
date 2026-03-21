@@ -38,6 +38,22 @@ class PDFExtGState : public Reference {
 	GDCLASS(PDFExtGState, Reference);
 
 public:
+#if 0
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_ExtGState_SetAlphaStroke(HPDF_ExtGState ext_gstate,
+			HPDF_REAL value);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_ExtGState_SetAlphaFill(HPDF_ExtGState ext_gstate,
+			HPDF_REAL value);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_ExtGState_SetBlendMode(HPDF_ExtGState ext_gstate,
+			HPDF_BlendMode mode);
+
+#endif
+
 	uint32_t get_status();
 
 	PDFExtGState();

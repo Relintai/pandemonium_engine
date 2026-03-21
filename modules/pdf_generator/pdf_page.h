@@ -649,6 +649,165 @@ public:
 
 #endif
 
+#if 0
+	/*----- annotation ---------------------------------------------------------*/
+
+	HPDF_EXPORT(HPDF_Annotation)
+	HPDF_Page_Create3DAnnot(HPDF_Page page,
+			HPDF_Rect rect,
+			HPDF_BOOL tb,
+			HPDF_BOOL np,
+			HPDF_U3D u3d,
+			HPDF_Image ap);
+
+	HPDF_EXPORT(HPDF_Annotation)
+	HPDF_Page_CreateTextAnnot(HPDF_Page page,
+			HPDF_Rect rect,
+			const char *text,
+			HPDF_Encoder encoder);
+
+	HPDF_EXPORT(HPDF_Annotation)
+	HPDF_Page_CreateFreeTextAnnot(HPDF_Page page,
+			HPDF_Rect rect,
+			const char *text,
+			HPDF_Encoder encoder);
+
+	HPDF_EXPORT(HPDF_Annotation)
+	HPDF_Page_CreateLineAnnot(HPDF_Page page,
+			const char *text,
+			HPDF_Encoder encoder);
+
+	HPDF_EXPORT(HPDF_Annotation)
+	HPDF_Page_CreateWidgetAnnot_WhiteOnlyWhilePrint(HPDF_Doc pdf,
+			HPDF_Page page,
+			HPDF_Rect rect);
+
+	HPDF_EXPORT(HPDF_Annotation)
+	HPDF_Page_CreateWidgetAnnot(HPDF_Page page,
+			HPDF_Rect rect);
+
+	HPDF_EXPORT(HPDF_Annotation)
+	HPDF_Page_CreateLinkAnnot(HPDF_Page page,
+			HPDF_Rect rect,
+			HPDF_Destination dst);
+
+	HPDF_EXPORT(HPDF_Annotation)
+	HPDF_Page_CreateURILinkAnnot(HPDF_Page page,
+			HPDF_Rect rect,
+			const char *uri);
+
+	HPDF_Annotation
+	HPDF_Page_CreateTextMarkupAnnot(HPDF_Page page,
+			HPDF_Rect rect,
+			const char *text,
+			HPDF_Encoder encoder,
+			HPDF_AnnotType subType);
+
+	HPDF_EXPORT(HPDF_Annotation)
+	HPDF_Page_CreateHighlightAnnot(HPDF_Page page,
+			HPDF_Rect rect,
+			const char *text,
+			HPDF_Encoder encoder);
+
+	HPDF_EXPORT(HPDF_Annotation)
+	HPDF_Page_CreateUnderlineAnnot(HPDF_Page page,
+			HPDF_Rect rect,
+			const char *text,
+			HPDF_Encoder encoder);
+
+	HPDF_EXPORT(HPDF_Annotation)
+	HPDF_Page_CreateSquigglyAnnot(HPDF_Page page,
+			HPDF_Rect rect,
+			const char *text,
+			HPDF_Encoder encoder);
+
+	HPDF_EXPORT(HPDF_Annotation)
+	HPDF_Page_CreateStrikeOutAnnot(HPDF_Page page,
+			HPDF_Rect rect,
+			const char *text,
+			HPDF_Encoder encoder);
+
+	HPDF_EXPORT(HPDF_Annotation)
+	HPDF_Page_CreatePopupAnnot(HPDF_Page page,
+			HPDF_Rect rect,
+			HPDF_Annotation parent);
+
+	HPDF_EXPORT(HPDF_Annotation)
+	HPDF_Page_CreateStampAnnot(HPDF_Page page,
+			HPDF_Rect rect,
+			HPDF_StampAnnotName name,
+			const char *text,
+			HPDF_Encoder encoder);
+
+	HPDF_EXPORT(HPDF_Annotation)
+	HPDF_Page_CreateProjectionAnnot(HPDF_Page page,
+			HPDF_Rect rect,
+			const char *text,
+			HPDF_Encoder encoder);
+
+	HPDF_EXPORT(HPDF_Annotation)
+	HPDF_Page_CreateSquareAnnot(HPDF_Page page,
+			HPDF_Rect rect,
+			const char *text,
+			HPDF_Encoder encoder);
+
+	HPDF_EXPORT(HPDF_Annotation)
+	HPDF_Page_CreateCircleAnnot(HPDF_Page page,
+			HPDF_Rect rect,
+			const char *text,
+			HPDF_Encoder encoder);
+
+#endif
+
+#if 0
+	/*----- 3D Measure ---------------------------------------------------------*/
+	HPDF_EXPORT(HPDF_3DMeasure)
+	HPDF_Page_Create3DC3DMeasure(HPDF_Page page,
+			HPDF_Point3D firstanchorpoint,
+			HPDF_Point3D textanchorpoint);
+
+	HPDF_EXPORT(HPDF_3DMeasure)
+	HPDF_Page_CreatePD33DMeasure(HPDF_Page page,
+			HPDF_Point3D annotationPlaneNormal,
+			HPDF_Point3D firstAnchorPoint,
+			HPDF_Point3D secondAnchorPoint,
+			HPDF_Point3D leaderLinesDirection,
+			HPDF_Point3D measurementValuePoint,
+			HPDF_Point3D textYDirection,
+			HPDF_REAL value,
+			const char *unitsString);
+
+	/*--------------------------------------------------------------------------*/
+	/*----- External Data ---------------------------------------------------------*/
+
+	HPDF_EXPORT(HPDF_ExData)
+	HPDF_Page_Create3DAnnotExData(HPDF_Page page);
+
+	/*--------------------------------------------------------------------------*/
+	/*--------------------------------------------------------------------------*/
+	/*----- 3D View ---------------------------------------------------------*/
+
+	HPDF_EXPORT(HPDF_Dict)
+	HPDF_Page_Create3DView(HPDF_Page page,
+			HPDF_U3D u3d,
+			HPDF_Annotation annot3d,
+			const char *name);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_3DView_Add3DC3DMeasure(HPDF_Dict view,
+			HPDF_3DMeasure measure);
+
+#endif
+
+#if 0
+	/*----- destination --------------------------------------------------------*/
+
+	HPDF_EXPORT(HPDF_Destination)
+	HPDF_Page_CreateDestination(HPDF_Page page);
+
+
+#endif
+
 	uint32_t get_status();
 
 	PDFPage();

@@ -38,6 +38,46 @@ class PDFDestination : public Reference {
 	GDCLASS(PDFDestination, Reference);
 
 public:
+#if 0
+	/*----- destination --------------------------------------------------------*/
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_Destination_SetXYZ(HPDF_Destination dst,
+			HPDF_REAL left,
+			HPDF_REAL top,
+			HPDF_REAL zoom);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_Destination_SetFit(HPDF_Destination dst);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_Destination_SetFitH(HPDF_Destination dst,
+			HPDF_REAL top);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_Destination_SetFitV(HPDF_Destination dst,
+			HPDF_REAL left);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_Destination_SetFitR(HPDF_Destination dst,
+			HPDF_REAL left,
+			HPDF_REAL bottom,
+			HPDF_REAL right,
+			HPDF_REAL top);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_Destination_SetFitB(HPDF_Destination dst);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_Destination_SetFitBH(HPDF_Destination dst,
+			HPDF_REAL top);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_Destination_SetFitBV(HPDF_Destination dst,
+			HPDF_REAL left);
+
+#endif
+
 	uint32_t get_status();
 
 	PDFDestination();

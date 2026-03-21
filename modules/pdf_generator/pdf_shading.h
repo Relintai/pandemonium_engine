@@ -38,6 +38,16 @@ class PDFShading : public Reference {
 	GDCLASS(PDFShading, Reference);
 
 public:
+#if 0
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_Shading_AddVertexRGB(HPDF_Shading shading,
+			HPDF_Shading_FreeFormTriangleMeshEdgeFlag edgeFlag,
+			HPDF_REAL x, HPDF_REAL y,
+			HPDF_UINT8 r, HPDF_UINT8 g, HPDF_UINT8 b);
+
+#endif
+
 	uint32_t get_status();
 
 	PDFShading();
