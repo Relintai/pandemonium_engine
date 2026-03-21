@@ -90,6 +90,21 @@ public:
 		PAGE_NUM_STYLE_EOF
 	};
 
+	enum ColorSpace {
+		COLOR_SPACE_DEVICE_GRAY = 0,
+		COLOR_SPACE_DEVICE_RGB,
+		COLOR_SPACE_DEVICE_CMYK,
+		COLOR_SPACE_CAL_GRAY,
+		COLOR_SPACE_CAL_RGB,
+		COLOR_SPACE_LAB,
+		COLOR_SPACE_ICC_BASED,
+		COLOR_SPACE_SEPARATION,
+		COLOR_SPACE_DEVICE_N,
+		COLOR_SPACE_INDEXED,
+		COLOR_SPACE_PATTERN,
+		COLOR_SPACE_EOF
+	};
+
 	uint32_t viewer_preference_get() const;
 	void viewer_preference_set(const uint32_t p_preference);
 
@@ -181,17 +196,23 @@ public:
 
 	Ref<PDFImage> image_load_png_from_mem(const PoolByteArray &p_data);
 	Ref<PDFImage> image_load_png_from_file(const String &p_path);
+
 	Ref<PDFImage> image_load_jpg_from_mem(const PoolByteArray &p_data);
 	Ref<PDFImage> image_load_jpg_from_file(const String &p_path);
+
+	Ref<PDFImage> image_load_u3d_from_mem(const PoolByteArray &p_data);
+	Ref<PDFImage> image_load_u3d_from_file(const String &p_path);
+
+	Ref<PDFImage> image_load_raw_1_bit_image_from_mem(const PoolByteArray &p_data, const Vector2i &p_size, const uint32_t p_line_width, const bool p_black_is1, const bool p_top_is_first);
+
+	Ref<PDFImage> image_load_raw_image_from_mem(const PoolByteArray &p_data, const Vector2i &p_size, const ColorSpace p_color_space, const uint32_t p_bits_per_component);
+	Ref<PDFImage> image_load_raw_image_from_file(const String &p_path, const Vector2i &p_size, const ColorSpace p_color_space);
+
 	Ref<PDFImage> image_create_pdf_from_image(const Ref<Image> &p_image);
 
 #if 0
 /*----- image data ---------------------------------------------------------*/
 
-//is this needed?
-HPDF_EXPORT(HPDF_Image)
-HPDF_LoadPngImageFromFile2 (HPDF_Doc      pdf,
-                            const char   *filename);
 
 HPDF_EXPORT(HPDF_Image)
 HPDF_LoadU3DFromFile (HPDF_Doc      pdf,
@@ -247,6 +268,9 @@ HPDF_LoadRawImageFromMem  (HPDF_Doc           pdf,
 			HPDF_InfoType type,
 			HPDF_Date value);
 
+#endif
+
+#if 0
 	/*----- encryption ---------------------------------------------------------*/
 
 	HPDF_EXPORT(HPDF_STATUS)
@@ -263,17 +287,26 @@ HPDF_LoadRawImageFromMem  (HPDF_Doc           pdf,
 			HPDF_EncryptMode mode,
 			HPDF_UINT key_len);
 
+#endif
+
+#if 0
 	/*----- attachments -------------------------------------------------------*/
 
 	HPDF_EXPORT(HPDF_EmbeddedFile)
 	HPDF_AttachFile(HPDF_Doc pdf,
 			const char *file);
 
+#endif
+
+#if 0
 	/*----- extended graphics state --------------------------------------------*/
 
 	HPDF_EXPORT(HPDF_ExtGState)
 	HPDF_CreateExtGState(HPDF_Doc pdf);
 
+#endif
+
+#if 0
 	/*--- Shading patterns ---------------------------------------------------*/
 
 	/* Notes for docs:
@@ -322,5 +355,6 @@ VARIANT_ENUM_CAST(PDFDocument::CompressionMode);
 VARIANT_ENUM_CAST(PDFDocument::PageLayout);
 VARIANT_ENUM_CAST(PDFDocument::PageMode);
 VARIANT_ENUM_CAST(PDFDocument::PageNumStyle);
+VARIANT_ENUM_CAST(PDFDocument::ColorSpace);
 
 #endif

@@ -368,6 +368,73 @@ Ref<PDFImage> PDFDocument::image_load_jpg_from_file(const String &p_path) {
 
 	return image;
 }
+
+Ref<PDFImage> PDFDocument::image_load_u3d_from_mem(const PoolByteArray &p_data) {
+	PoolByteArray::Read r = p_data.read();
+
+	HPDF_Image hpdf_image = HPDF_LoadU3DFromMem(_doc, r.ptr(), p_data.size());
+
+	Ref<PDFImage> image;
+	image.instance();
+
+	image->_set_hpdf_image(hpdf_image);
+
+	return image;
+}
+Ref<PDFImage> PDFDocument::image_load_u3d_from_file(const String &p_path) {
+	String abs_path = FileAccess::get_filesystem_abspath_for(p_path);
+
+	HPDF_Font hpdf_image = HPDF_LoadU3DFromFile(_doc, abs_path.utf8().get_data());
+
+	Ref<PDFImage> image;
+	image.instance();
+
+	image->_set_hpdf_image(hpdf_image);
+
+	return image;
+}
+
+Ref<PDFImage> PDFDocument::image_load_raw_1_bit_image_from_mem(const PoolByteArray &p_data, const Vector2i &p_size, const uint32_t p_line_width, const bool p_black_is1, const bool p_top_is_first) {
+	PoolByteArray::Read r = p_data.read();
+
+	HPDF_Image hpdf_image = HPDF_Image_LoadRaw1BitImageFromMem(_doc, r.ptr(), p_size.width, p_size.height, p_line_width, p_black_is1, p_top_is_first);
+
+	Ref<PDFImage> image;
+	image.instance();
+
+	image->_set_hpdf_image(hpdf_image);
+
+	return image;
+}
+
+Ref<PDFImage> PDFDocument::image_load_raw_image_from_mem(const PoolByteArray &p_data, const Vector2i &p_size, const ColorSpace p_color_space, const uint32_t p_bits_per_component) {
+	PoolByteArray::Read r = p_data.read();
+
+	HPDF_ColorSpace color_space = static_cast<HPDF_ColorSpace>(p_color_space);
+
+	HPDF_Image hpdf_image = HPDF_LoadRawImageFromMem(_doc, r.ptr(), p_size.width, p_size.height, color_space, p_bits_per_component);
+
+	Ref<PDFImage> image;
+	image.instance();
+
+	image->_set_hpdf_image(hpdf_image);
+
+	return image;
+}
+Ref<PDFImage> PDFDocument::image_load_raw_image_from_file(const String &p_path, const Vector2i &p_size, const ColorSpace p_color_space) {
+	String abs_path = FileAccess::get_filesystem_abspath_for(p_path);
+
+	HPDF_ColorSpace color_space = static_cast<HPDF_ColorSpace>(p_color_space);
+
+	HPDF_Font hpdf_image = HPDF_LoadRawImageFromFile(_doc, abs_path.utf8().get_data(), p_size.width, p_size.height, color_space);
+
+	Ref<PDFImage> image;
+	image.instance();
+
+	image->_set_hpdf_image(hpdf_image);
+
+	return image;
+}
 Ref<PDFImage> PDFDocument::image_create_pdf_from_image(const Ref<Image> &p_image) {
 	if (!p_image.is_valid()) {
 		return Ref<PDFImage>();
@@ -570,8 +637,18 @@ void PDFDocument::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("image_load_png_from_mem", "data"), &PDFDocument::image_load_png_from_mem);
 	ClassDB::bind_method(D_METHOD("image_load_png_from_file", "path"), &PDFDocument::image_load_png_from_file);
+
 	ClassDB::bind_method(D_METHOD("image_load_jpg_from_mem", "data"), &PDFDocument::image_load_jpg_from_mem);
 	ClassDB::bind_method(D_METHOD("image_load_jpg_from_file", "path"), &PDFDocument::image_load_jpg_from_file);
+
+	ClassDB::bind_method(D_METHOD("image_load_u3d_from_mem", "data"), &PDFDocument::image_load_u3d_from_mem);
+	ClassDB::bind_method(D_METHOD("image_load_u3d_from_file", "path"), &PDFDocument::image_load_u3d_from_file);
+
+	ClassDB::bind_method(D_METHOD("image_load_raw_1_bit_image_from_mem", "data", "size", "line_width", "black_is1", "top_is_first"), &PDFDocument::image_load_raw_1_bit_image_from_mem);
+
+	ClassDB::bind_method(D_METHOD("image_load_raw_image_from_mem", "data", "size", "color_space", "bits_per_component"), &PDFDocument::image_load_raw_image_from_mem);
+	ClassDB::bind_method(D_METHOD("image_load_raw_image_from_file", "path", "size", "color_space"), &PDFDocument::image_load_raw_image_from_file);
+
 	ClassDB::bind_method(D_METHOD("image_create_pdf_from_image", "image"), &PDFDocument::image_create_pdf_from_image);
 
 	ClassDB::bind_method(D_METHOD("save_to_mem"), &PDFDocument::save_to_mem);
@@ -609,4 +686,17 @@ void PDFDocument::_bind_methods() {
 	BIND_ENUM_CONSTANT(PAGE_NUM_STYLE_UPPER_LETTERS);
 	BIND_ENUM_CONSTANT(PAGE_NUM_STYLE_LOWER_LETTERS);
 	BIND_ENUM_CONSTANT(PAGE_NUM_STYLE_EOF);
+
+	BIND_ENUM_CONSTANT(COLOR_SPACE_DEVICE_GRAY);
+	BIND_ENUM_CONSTANT(COLOR_SPACE_DEVICE_RGB);
+	BIND_ENUM_CONSTANT(COLOR_SPACE_DEVICE_CMYK);
+	BIND_ENUM_CONSTANT(COLOR_SPACE_CAL_GRAY);
+	BIND_ENUM_CONSTANT(COLOR_SPACE_CAL_RGB);
+	BIND_ENUM_CONSTANT(COLOR_SPACE_LAB);
+	BIND_ENUM_CONSTANT(COLOR_SPACE_ICC_BASED);
+	BIND_ENUM_CONSTANT(COLOR_SPACE_SEPARATION);
+	BIND_ENUM_CONSTANT(COLOR_SPACE_DEVICE_N);
+	BIND_ENUM_CONSTANT(COLOR_SPACE_INDEXED);
+	BIND_ENUM_CONSTANT(COLOR_SPACE_PATTERN);
+	BIND_ENUM_CONSTANT(COLOR_SPACE_EOF);
 }
