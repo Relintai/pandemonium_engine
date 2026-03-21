@@ -311,7 +311,19 @@ uint32_t PDFDocument::set_pages_configuration(const uint32_t p_page_per_pages) {
 }
 
 PoolByteArray PDFDocument::get_contents() {
+	HPDF_ResetStream();
+
+	_status = HPDF_SaveToStream(_doc);
+
+	if (_status != HPDF_OK) {
+		return PoolByteArray();
+	}
+
 	uint32_t stream_size = HPDF_GetStreamSize(_doc);
+
+	if (stream_size == 0) {
+		return PoolByteArray();
+	}
 
 	PoolByteArray data;
 	data.resize((int)stream_size);
@@ -323,6 +335,10 @@ PoolByteArray PDFDocument::get_contents() {
 	_status = HPDF_GetContents(_doc, w.ptr(), &final_size);
 
 	w.release();
+
+	if (_status != HPDF_OK) {
+		return PoolByteArray();
+	}
 
 	data.resize(final_size);
 
