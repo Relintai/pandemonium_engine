@@ -332,15 +332,13 @@ PoolByteArray PDFDocument::get_contents() {
 
 	uint32_t final_size;
 
-	_status = HPDF_GetContents(_doc, w.ptr(), &final_size);
+	_status = HPDF_ReadFromStream(_doc, w.ptr(), &final_size);
 
 	w.release();
 
-	if (_status != HPDF_OK) {
+	if (_status != HPDF_OK && _status != HPDF_STREAM_EOF) {
 		return PoolByteArray();
 	}
-
-	data.resize(final_size);
 
 	return data;
 }
