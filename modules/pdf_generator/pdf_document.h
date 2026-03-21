@@ -69,6 +69,16 @@ public:
 		PAGE_LAYOUT_EOF
 	};
 
+	enum PageMode {
+		PAGE_MODE_USE_NONE = 0,
+		PAGE_MODE_USE_OUTLINE,
+		PAGE_MODE_USE_THUMBS,
+		PAGE_MODE_FULL_SCREEN,
+		//PAGE_MODE_USE_OC,
+		//PAGE_MODE_USE_ATTACHMENTS,
+		HPDF_PAGE_MODE_EOF
+	};
+
 	uint32_t document_new();
 	void document_free();
 	bool document_has();
@@ -82,18 +92,12 @@ public:
 	PageLayout page_get_layout() const;
 	void page_set_layout(const PageLayout p_layout);
 
+	PageMode page_get_mode() const;
+	void page_set_mode(const PageMode p_mode);
+
 	uint32_t pages_set_configuration(const uint32_t p_page_per_pages);
 
 #if 0
-
-
-	HPDF_EXPORT(HPDF_PageMode)
-	HPDF_GetPageMode(HPDF_Doc pdf);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_SetPageMode(HPDF_Doc pdf,
-			HPDF_PageMode mode);
-
 
 	HPDF_EXPORT(HPDF_STATUS)
 	HPDF_AddPageLabel(HPDF_Doc pdf,
@@ -815,5 +819,6 @@ protected:
 
 VARIANT_ENUM_CAST(PDFDocument::CompressionMode);
 VARIANT_ENUM_CAST(PDFDocument::PageLayout);
+VARIANT_ENUM_CAST(PDFDocument::PageMode);
 
 #endif

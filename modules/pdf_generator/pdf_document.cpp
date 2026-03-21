@@ -102,6 +102,33 @@ Ref<PDFPage> PDFDocument::page_insert(const Ref<PDFPage> &p_page) {
 	return page;
 }
 
+PDFDocument::PageLayout PDFDocument::page_get_layout() const {
+	HPDF_PageLayout layout = HPDF_GetPageLayout(_doc);
+
+	return static_cast<PageLayout>(layout);
+}
+void PDFDocument::page_set_layout(const PageLayout p_layout) {
+	HPDF_PageLayout layout = static_cast<HPDF_PageLayout>(p_layout);
+
+	_status = HPDF_SetPageLayout(_doc, layout);
+}
+
+PDFDocument::PageMode PDFDocument::page_get_mode() const {
+	HPDF_PageMode mode = HPDF_GetPageMode(_doc);
+
+	return static_cast<PageMode>(mode);
+}
+void PDFDocument::page_set_mode(const PageMode p_mode) {
+	HPDF_PageMode mode = static_cast<HPDF_PageMode>(p_mode);
+
+	_status = HPDF_SetPageMode(_doc, mode);
+}
+
+uint32_t PDFDocument::pages_set_configuration(const uint32_t p_page_per_pages) {
+	_status = HPDF_SetPagesConfiguration(_doc, (HPDF_UINT)p_page_per_pages);
+	return _status;
+}
+
 uint32_t PDFDocument::compression_mode_set(const uint32_t p_mode) {
 	_status = HPDF_SetCompressionMode(_doc, p_mode);
 
@@ -305,22 +332,6 @@ Ref<PDFImage> PDFDocument::image_create_pdf_from_image(const Ref<Image> &p_image
 	return image;
 }
 
-PDFDocument::PageLayout PDFDocument::page_get_layout() const {
-	HPDF_PageLayout layout = HPDF_GetPageLayout(_doc);
-
-	return static_cast<PageLayout>(layout);
-}
-void PDFDocument::page_set_layout(const PageLayout p_layout) {
-	HPDF_PageLayout layout = static_cast<HPDF_PageLayout>(p_layout);
-
-	_status = HPDF_SetPageLayout(_doc, layout);
-}
-
-uint32_t PDFDocument::pages_set_configuration(const uint32_t p_page_per_pages) {
-	_status = HPDF_SetPagesConfiguration(_doc, (HPDF_UINT)p_page_per_pages);
-	return _status;
-}
-
 PoolByteArray PDFDocument::save_to_mem() {
 	HPDF_ResetStream(_doc);
 
@@ -420,6 +431,10 @@ void PDFDocument::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("page_set_layout", "val"), &PDFDocument::page_set_layout);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "page_layout", PROPERTY_HINT_ENUM, "Single,One Column,Two Columns Left,Two Columns Right,Two Page Left,Two Page Right,EOF"), "page_set_layout", "page_get_layout");
 
+	ClassDB::bind_method(D_METHOD("page_get_mode"), &PDFDocument::page_get_mode);
+	ClassDB::bind_method(D_METHOD("page_set_mode", "val"), &PDFDocument::page_set_mode);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "page_mode", PROPERTY_HINT_ENUM, "None,Outline,Thumbs,Full Screen,EOF"), "page_set_mode", "page_get_mode");
+
 	ClassDB::bind_method(D_METHOD("pages_set_configuration", "page_per_pages"), &PDFDocument::pages_set_configuration);
 
 	ClassDB::bind_method(D_METHOD("compression_mode_set", "mode"), &PDFDocument::compression_mode_set);
@@ -468,4 +483,10 @@ void PDFDocument::_bind_methods() {
 	BIND_ENUM_CONSTANT(PAGE_LAYOUT_TWO_PAGE_LEFT);
 	BIND_ENUM_CONSTANT(PAGE_LAYOUT_TWO_PAGE_RIGHT);
 	BIND_ENUM_CONSTANT(PAGE_LAYOUT_EOF);
+
+	BIND_ENUM_CONSTANT(PAGE_MODE_USE_NONE);
+	BIND_ENUM_CONSTANT(PAGE_MODE_USE_OUTLINE);
+	BIND_ENUM_CONSTANT(PAGE_MODE_USE_THUMBS);
+	BIND_ENUM_CONSTANT(PAGE_MODE_FULL_SCREEN);
+	BIND_ENUM_CONSTANT(HPDF_PAGE_MODE_EOF);
 }
