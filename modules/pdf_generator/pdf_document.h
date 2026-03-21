@@ -82,7 +82,7 @@ public:
 	PageLayout page_get_layout() const;
 	void page_set_layout(const PageLayout p_layout);
 
-	uint32_t set_pages_configuration(const uint32_t p_page_per_pages);
+	uint32_t pages_set_configuration(const uint32_t p_page_per_pages);
 
 #if 0
 
@@ -116,19 +116,19 @@ public:
 
 #endif
 
-	uint32_t set_compression_mode(const uint32_t p_mode);
+	uint32_t compression_mode_set(const uint32_t p_mode);
 
-	Ref<PDFFont> get_font(const String &p_font_name, const String &p_encoding_name = String());
+	Ref<PDFFont> font_get(const String &p_font_name, const String &p_encoding_name = String());
 
-	String load_type_1_font_from_file(const String &p_afm_file_name, const String &p_data_file_name);
-	String load_ttf_font_from_file(const String &p_file_name, const bool p_embed_into_document);
-	String load_ttf_font_from_collection_file(const String &p_file_name, const int p_index, const bool p_embed_into_document);
-	String load_ttf_font_from_mem(const PoolByteArray &p_data, const bool p_embed_into_document);
+	String font_load_type_1_from_file(const String &p_afm_file_name, const String &p_data_file_name);
+	String font_load_ttf_from_file(const String &p_file_name, const bool p_embed_into_document);
+	String font_load_ttf_from_collection_file(const String &p_file_name, const int p_index, const bool p_embed_into_document);
+	String font_load_ttf_from_mem(const PoolByteArray &p_data, const bool p_embed_into_document);
 
-	uint32_t use_jp_fonts();
-	uint32_t use_kr_fonts();
-	uint32_t use_cns_fonts();
-	uint32_t use_cnt_fonts();
+	uint32_t fonts_use_jp();
+	uint32_t fonts_use_kr();
+	uint32_t fonts_use_cns();
+	uint32_t fonts_use_cnt();
 
 #if 0
 	HPDF_EXPORT(HPDF_FontDef)
@@ -576,11 +576,11 @@ public:
 #define HPDF_ENCODING_KOI8_R "KOI8-R"
 #endif
 
-	Ref<PDFImage> load_png_image_from_mem(const PoolByteArray &p_data);
-	Ref<PDFImage> load_png_image_from_file(const String &p_path);
-	Ref<PDFImage> load_jpg_image_from_mem(const PoolByteArray &p_data);
-	Ref<PDFImage> load_jpg_image_from_file(const String &p_path);
-	Ref<PDFImage> create_pdf_image_from_image(const Ref<Image> &p_image);
+	Ref<PDFImage> image_load_png_from_mem(const PoolByteArray &p_data);
+	Ref<PDFImage> image_load_png_from_file(const String &p_path);
+	Ref<PDFImage> image_load_jpg_from_mem(const PoolByteArray &p_data);
+	Ref<PDFImage> image_load_jpg_from_file(const String &p_path);
+	Ref<PDFImage> image_create_pdf_from_image(const Ref<Image> &p_image);
 
 #if 0
 /*----- image data ---------------------------------------------------------*/
@@ -794,7 +794,7 @@ HPDF_Image_SetMaskImage  (HPDF_Image   image,
 
 #endif
 
-	PoolByteArray get_contents();
+	PoolByteArray save_to_mem();
 	uint32_t save_to_file(const String &p_file);
 
 	uint32_t get_status();
