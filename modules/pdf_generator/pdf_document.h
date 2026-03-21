@@ -43,6 +43,7 @@ class PDFPage;
 class PDFFont;
 class PDFImage;
 class Image;
+class PDFOutline;
 
 class PDFDocument : public Reference {
 	GDCLASS(PDFDocument, Reference);
@@ -125,14 +126,7 @@ public:
 	uint32_t fonts_use_cns();
 	uint32_t fonts_use_cnt();
 
-#if 0
-	Likely not needed
-
-	HPDF_EXPORT(HPDF_FontDef)
-	HPDF_GetTTFontDefFromFile(HPDF_Doc pdf,
-			const char *file_name,
-			HPDF_BOOL embedding);
-#endif
+	//Ref<PDFOutline> outline_create(const Ref<PDFOutline> &p_parent, const String &p_title);
 
 #if 0
 	/*----- outline ------------------------------------------------------------*/
@@ -156,6 +150,33 @@ public:
 
 #if 0
 	/*----- encoder ------------------------------------------------------------*/
+
+	HPDF_EXPORT(HPDF_Encoder)
+	HPDF_GetEncoder(HPDF_Doc pdf,
+			const char *encoding_name);
+
+	HPDF_EXPORT(HPDF_Encoder)
+	HPDF_GetCurrentEncoder(HPDF_Doc pdf);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_SetCurrentEncoder(HPDF_Doc pdf,
+			const char *encoding_name);
+
+	HPDF_EXPORT(HPDF_EncoderType)
+	HPDF_Encoder_GetType(HPDF_Encoder encoder);
+
+	HPDF_EXPORT(HPDF_ByteType)
+	HPDF_Encoder_GetByteType(HPDF_Encoder encoder,
+			const char *text,
+			HPDF_UINT index);
+
+	HPDF_EXPORT(HPDF_UNICODE)
+	HPDF_Encoder_GetUnicode(HPDF_Encoder encoder,
+			HPDF_UINT16 code);
+
+	HPDF_EXPORT(HPDF_WritingMode)
+	HPDF_Encoder_GetWritingMode(HPDF_Encoder encoder);
+
 
 	HPDF_EXPORT(HPDF_STATUS)
 	HPDF_UseJPEncodings(HPDF_Doc pdf);
@@ -190,7 +211,6 @@ public:
 			HPDF_Rect rect);
 
 #endif
-
 
 #if 0
 	HPDF_EXPORT(HPDF_STATUS)
@@ -345,6 +365,15 @@ HPDF_LoadRawImageFromMem  (HPDF_Doc           pdf,
 			HPDF_REAL xMin, HPDF_REAL xMax,
 			HPDF_REAL yMin, HPDF_REAL yMax);
 
+#endif
+
+#if 0
+	Likely not needed
+
+	HPDF_EXPORT(HPDF_FontDef)
+	HPDF_GetTTFontDefFromFile(HPDF_Doc pdf,
+			const char *file_name,
+			HPDF_BOOL embedding);
 #endif
 
 	PoolByteArray save_to_mem();
