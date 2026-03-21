@@ -44,6 +44,7 @@ class PDFFont;
 class PDFImage;
 class Image;
 class PDFOutline;
+class PDFEncoder;
 
 class PDFDocument : public Reference {
 	GDCLASS(PDFDocument, Reference);
@@ -148,36 +149,16 @@ public:
 
 #endif
 
-#if 0
-	/*----- encoder ------------------------------------------------------------*/
+	Ref<PDFEncoder> encoder_get(const String &p_encoding_name);
 
-	HPDF_EXPORT(HPDF_Encoder)
-	HPDF_GetEncoder(HPDF_Doc pdf,
-			const char *encoding_name);
+	Ref<PDFEncoder> encoder_current_get();
+	uint32_t encoder_current_set(const String &p_encoding_name);
 
-	HPDF_EXPORT(HPDF_Encoder)
-	HPDF_GetCurrentEncoder(HPDF_Doc pdf);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_SetCurrentEncoder(HPDF_Doc pdf,
-			const char *encoding_name);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_UseJPEncodings(HPDF_Doc pdf);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_UseKREncodings(HPDF_Doc pdf);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_UseCNSEncodings(HPDF_Doc pdf);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_UseCNTEncodings(HPDF_Doc pdf);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_UseUTFEncodings(HPDF_Doc pdf);
-
-#endif
+	uint32_t encodings_use_jp();
+	uint32_t encodings_use_kr();
+	uint32_t encodings_use_cns();
+	uint32_t encodings_use_cnt();
+	uint32_t encodings_use_utf();
 
 #if 0
 	/*----- XObject ------------------------------------------------------------*/
@@ -207,37 +188,6 @@ public:
 
 	HPDF_EXPORT(HPDF_STATUS)
 	HPDF_AppendOutputIntents(HPDF_Doc pdf, const char *iccname, HPDF_Dict iccdict);
-#endif
-
-#if 0
-#define HPDF_ENCODING_FONT_SPECIFIC "FontSpecific"
-#define HPDF_ENCODING_STANDARD "StandardEncoding"
-#define HPDF_ENCODING_MAC_ROMAN "MacRomanEncoding"
-#define HPDF_ENCODING_WIN_ANSI "WinAnsiEncoding"
-#define HPDF_ENCODING_ISO8859_2 "ISO8859-2"
-#define HPDF_ENCODING_ISO8859_3 "ISO8859-3"
-#define HPDF_ENCODING_ISO8859_4 "ISO8859-4"
-#define HPDF_ENCODING_ISO8859_5 "ISO8859-5"
-#define HPDF_ENCODING_ISO8859_6 "ISO8859-6"
-#define HPDF_ENCODING_ISO8859_7 "ISO8859-7"
-#define HPDF_ENCODING_ISO8859_8 "ISO8859-8"
-#define HPDF_ENCODING_ISO8859_9 "ISO8859-9"
-#define HPDF_ENCODING_ISO8859_10 "ISO8859-10"
-#define HPDF_ENCODING_ISO8859_11 "ISO8859-11"
-#define HPDF_ENCODING_ISO8859_13 "ISO8859-13"
-#define HPDF_ENCODING_ISO8859_14 "ISO8859-14"
-#define HPDF_ENCODING_ISO8859_15 "ISO8859-15"
-#define HPDF_ENCODING_ISO8859_16 "ISO8859-16"
-#define HPDF_ENCODING_CP1250 "CP1250"
-#define HPDF_ENCODING_CP1251 "CP1251"
-#define HPDF_ENCODING_CP1252 "CP1252"
-#define HPDF_ENCODING_CP1253 "CP1253"
-#define HPDF_ENCODING_CP1254 "CP1254"
-#define HPDF_ENCODING_CP1255 "CP1255"
-#define HPDF_ENCODING_CP1256 "CP1256"
-#define HPDF_ENCODING_CP1257 "CP1257"
-#define HPDF_ENCODING_CP1258 "CP1258"
-#define HPDF_ENCODING_KOI8_R "KOI8-R"
 #endif
 
 	Ref<PDFImage> image_load_png_from_mem(const PoolByteArray &p_data);

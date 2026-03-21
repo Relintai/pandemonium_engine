@@ -36,6 +36,7 @@
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 
+#include "pdf_encoder.h"
 #include "pdf_font.h"
 #include "pdf_image.h"
 #include "pdf_page.h"
@@ -226,20 +227,68 @@ uint32_t PDFDocument::fonts_use_cnt() {
 	return _status;
 }
 
-#if 0
-HPDF_EXPORT(HPDF_FontDef)
-HPDF_GetTTFontDefFromFile(HPDF_Doc pdf,
-		const char *file_name,
-		HPDF_BOOL embedding);
+/*----- encoder ------------------------------------------------------------*/
 
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_AddPageLabel(HPDF_Doc pdf,
-		HPDF_UINT page_num,
-		HPDF_PageNumStyle style,
-		HPDF_UINT first_page,
-		const char *prefix);
+Ref<PDFEncoder> PDFDocument::encoder_get(const String &p_encoding_name) {
+	HPDF_Encoder encoder = HPDF_GetEncoder(_doc, p_encoding_name.utf8().get_data());
 
-#endif
+	if (!encoder) {
+		return Ref<PDFEncoder>();
+	}
+
+	Ref<PDFEncoder> pdf_encoder;
+	pdf_encoder.instance();
+
+	pdf_encoder->_set_hpdf_encoder(encoder);
+
+	return pdf_encoder;
+}
+
+Ref<PDFEncoder> PDFDocument::encoder_current_get() {
+	HPDF_Encoder encoder = HPDF_GetCurrentEncoder(_doc);
+
+	if (!encoder) {
+		return Ref<PDFEncoder>();
+	}
+
+	Ref<PDFEncoder> pdf_encoder;
+	pdf_encoder.instance();
+
+	pdf_encoder->_set_hpdf_encoder(encoder);
+
+	return pdf_encoder;
+}
+uint32_t PDFDocument::encoder_current_set(const String &p_encoding_name) {
+	_status = HPDF_SetCurrentEncoder(_doc, p_encoding_name.utf8().get_data());
+
+	return _status;
+}
+
+uint32_t PDFDocument::encodings_use_jp() {
+	_status = HPDF_UseJPEncodings(_doc);
+
+	return _status;
+}
+uint32_t PDFDocument::encodings_use_kr() {
+	_status = HPDF_UseKREncodings(_doc);
+
+	return _status;
+}
+uint32_t PDFDocument::encodings_use_cns() {
+	_status = HPDF_UseCNSEncodings(_doc);
+
+	return _status;
+}
+uint32_t PDFDocument::encodings_use_cnt() {
+	_status = HPDF_UseCNTEncodings(_doc);
+
+	return _status;
+}
+uint32_t PDFDocument::encodings_use_utf() {
+	_status = HPDF_UseUTFEncodings(_doc);
+
+	return _status;
+}
 
 Ref<PDFImage> PDFDocument::image_load_png_from_mem(const PoolByteArray &p_data) {
 	PoolByteArray::Read r = p_data.read();
@@ -475,6 +524,17 @@ void PDFDocument::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("fonts_use_kr"), &PDFDocument::fonts_use_kr);
 	ClassDB::bind_method(D_METHOD("fonts_use_cns"), &PDFDocument::fonts_use_cns);
 	ClassDB::bind_method(D_METHOD("fonts_use_cnt"), &PDFDocument::fonts_use_cnt);
+
+	ClassDB::bind_method(D_METHOD("encoder_get", "encoding_name"), &PDFDocument::encoder_get);
+
+	ClassDB::bind_method(D_METHOD("encoder_current_get"), &PDFDocument::encoder_current_get);
+	ClassDB::bind_method(D_METHOD("encoder_current_set", "encoding_name"), &PDFDocument::encoder_current_set);
+
+	ClassDB::bind_method(D_METHOD("encodings_use_jp"), &PDFDocument::encodings_use_jp);
+	ClassDB::bind_method(D_METHOD("encodings_use_kr"), &PDFDocument::encodings_use_kr);
+	ClassDB::bind_method(D_METHOD("encodings_use_cns"), &PDFDocument::encodings_use_cns);
+	ClassDB::bind_method(D_METHOD("encodings_use_cnt"), &PDFDocument::encodings_use_cnt);
+	ClassDB::bind_method(D_METHOD("encodings_use_utf"), &PDFDocument::encodings_use_utf);
 
 	ClassDB::bind_method(D_METHOD("image_load_png_from_mem", "data"), &PDFDocument::image_load_png_from_mem);
 	ClassDB::bind_method(D_METHOD("image_load_png_from_file", "path"), &PDFDocument::image_load_png_from_file);

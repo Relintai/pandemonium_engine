@@ -40,18 +40,18 @@ uint32_t PDFEncoder::get_status() {
 }
 
 PDFEncoder::PDFEncoder() {
-	_font = NULL;
+	_encoder = NULL;
 }
 
 PDFEncoder::~PDFEncoder() {
 }
 
-void *PDFEncoder::_get_hpdf_font() const {
-	return _font;
+void *PDFEncoder::_get_hpdf_encoder() const {
+	return _encoder;
 }
 
-void PDFEncoder::_set_hpdf_font(void *p_font) {
-	_font = p_font;
+void PDFEncoder::_set_hpdf_encoder(void *p_encoder) {
+	_encoder = p_encoder;
 }
 
 void PDFEncoder::_bind_methods() {
