@@ -41,6 +41,7 @@
 #include "pdf_dict.h"
 #include "pdf_embedded_file.h"
 #include "pdf_encoder.h"
+#include "pdf_ext_g_state.h"
 #include "pdf_font.h"
 #include "pdf_image.h"
 #include "pdf_outline.h"
@@ -195,6 +196,24 @@ Ref<PDFEmbeddedFile> PDFDocument::attach_file(const String &p_file) {
 	embedded_file->_set_hpdf_embedded_file(hpdf_embedded_file);
 
 	return embedded_file;
+}
+
+/*----- extended graphics state --------------------------------------------*/
+
+Ref<PDFExtGState> PDFDocument::ext_graphic_state_create() {
+	HPDF_EmbeddedFile hpdf_ext_g_state = HPDF_CreateExtGState(_doc);
+
+	if (!hpdf_ext_g_state) {
+		return Ref<PDFEmbeddedFile>();
+	}
+
+	Ref<PDFExtGState> ext_g_state;
+
+	ext_g_state.instance();
+
+	ext_g_state->_set_hpdf_ext_g_state(hpdf_ext_g_state);
+
+	return ext_g_state;
 }
 
 Ref<PDFFont> PDFDocument::font_get(const String &p_font_name, const String &p_encoding_name) {
@@ -905,6 +924,8 @@ void PDFDocument::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("encryption_mode_set", "encryption_mode", "key_length"), &PDFDocument::encryption_mode_set);
 
 	ClassDB::bind_method(D_METHOD("attach_file", "file"), &PDFDocument::attach_file);
+
+	ClassDB::bind_method(D_METHOD("ext_graphic_state_create"), &PDFDocument::ext_graphic_state_create);
 
 	ClassDB::bind_method(D_METHOD("save_to_mem"), &PDFDocument::save_to_mem);
 	ClassDB::bind_method(D_METHOD("save_to_file", "file"), &PDFDocument::save_to_file);

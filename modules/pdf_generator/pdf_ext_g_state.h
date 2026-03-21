@@ -59,13 +59,13 @@ public:
 	PDFExtGState();
 	~PDFExtGState();
 
-	void *_get_hpdf_font() const;
-	void _set_hpdf_font(void *p_font);
+	void *_get_hpdf_ext_g_state() const;
+	void _set_hpdf_ext_g_state(void *p_ext_g_state);
 
 protected:
 	static void _bind_methods();
 
-	void *_font;
+	void *_ext_g_state;
 
 	uint32_t _status;
 };

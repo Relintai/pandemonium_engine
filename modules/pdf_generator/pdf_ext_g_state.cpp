@@ -40,18 +40,18 @@ uint32_t PDFExtGState::get_status() {
 }
 
 PDFExtGState::PDFExtGState() {
-	_font = NULL;
+	_ext_g_state = NULL;
 }
 
 PDFExtGState::~PDFExtGState() {
 }
 
-void *PDFExtGState::_get_hpdf_font() const {
-	return _font;
+void *PDFExtGState::_get_hpdf_ext_g_state() const {
+	return _ext_g_state;
 }
 
-void PDFExtGState::_set_hpdf_font(void *p_font) {
-	_font = p_font;
+void PDFExtGState::_set_hpdf_ext_g_state(void *p_ext_g_state) {
+	_ext_g_state = p_ext_g_state;
 }
 
 void PDFExtGState::_bind_methods() {

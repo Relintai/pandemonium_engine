@@ -50,6 +50,7 @@ class PDFXObject;
 class PDFDate;
 class PDFDict;
 class PDFEmbeddedFile;
+class PDFExtGState;
 
 class PDFDocument : public Reference {
 	GDCLASS(PDFDocument, Reference);
@@ -234,13 +235,7 @@ public:
 
 	Ref<PDFEmbeddedFile> attach_file(const String &p_file);
 
-#if 0
-	/*----- extended graphics state --------------------------------------------*/
-
-	HPDF_EXPORT(HPDF_ExtGState)
-	HPDF_CreateExtGState(HPDF_Doc pdf);
-
-#endif
+	Ref<PDFExtGState> ext_graphic_state_create();
 
 #if 0
 	/*--- Shading patterns ---------------------------------------------------*/
