@@ -34,6 +34,15 @@ sources = [
     "pdf_page.cpp",
     "pdf_font.cpp",
     "pdf_image.cpp",
+    "pdf_outline.cpp",
+    "pdf_destination.cpp",
+    "pdf_annotation.cpp",
+    "pdf_3d_measure.cpp",
+    "pdf_embedded_file.cpp",
+    "pdf_ex_data.cpp",
+    "pdf_ext_g_state.cpp",
+    "pdf_shading.cpp",
+    "pdf_x_object.cpp",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':

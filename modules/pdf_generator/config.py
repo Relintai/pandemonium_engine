@@ -13,6 +13,15 @@ def get_doc_classes():
         "PDFPage",
         "PDFFont",
         "PDFImage",
+        "PDFOutline",
+        "PDFDestination",
+        "PDFAnnotation",
+        "PDF3DMeasure",
+        "PDFEmbeddedFile",
+        "PDFExData",
+        "PDFExtGState",
+        "PDFShading",
+        "PDFXObject",
     ]
 
 def get_doc_path():

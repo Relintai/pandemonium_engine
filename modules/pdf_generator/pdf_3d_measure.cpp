@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  register_types.cpp                                                   */
+/*  pdf_3d_measure.cpp                                                   */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,39 +29,33 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "register_types.h"
-
 #include "pdf_3d_measure.h"
-#include "pdf_annotation.h"
-#include "pdf_destination.h"
-#include "pdf_document.h"
-#include "pdf_embedded_file.h"
-#include "pdf_ex_data.h"
-#include "pdf_ext_g_state.h"
-#include "pdf_font.h"
-#include "pdf_image.h"
-#include "pdf_outline.h"
-#include "pdf_page.h"
-#include "pdf_shading.h"
-#include "pdf_x_object.h"
 
-void register_pdf_generator_types(ModuleRegistrationLevel p_level) {
-	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
-		ClassDB::register_class<PDFDocument>();
-		ClassDB::register_class<PDFPage>();
-		ClassDB::register_class<PDFFont>();
-		ClassDB::register_class<PDFImage>();
-		ClassDB::register_class<PDFOutline>();
-		ClassDB::register_class<PDFAnnotation>();
-		ClassDB::register_class<PDFDestination>();
-		ClassDB::register_class<PDF3DMeasure>();
-		ClassDB::register_class<PDFEmbeddedFile>();
-		ClassDB::register_class<PDFExData>();
-		ClassDB::register_class<PDFExtGState>();
-		ClassDB::register_class<PDFShading>();
-		ClassDB::register_class<PDFXObject>();
-	}
+#include "hpdf.h"
+#include "hpdf_doc.h"
+#include "hpdf_pages.h"
+
+uint32_t PDF3DMeasure::get_status() {
+	return _status;
 }
 
-void unregister_pdf_generator_types(ModuleRegistrationLevel p_level) {
+PDF3DMeasure::PDF3DMeasure() {
+	_font = NULL;
+}
+
+PDF3DMeasure::~PDF3DMeasure() {
+}
+
+void *PDF3DMeasure::_get_hpdf_font() const {
+	return _font;
+}
+
+void PDF3DMeasure::_set_hpdf_font(void *p_font) {
+	_font = p_font;
+}
+
+void PDF3DMeasure::_bind_methods() {
+	//ClassDB::bind_method(D_METHOD("get_width"), &PDF3DMeasure::get_width);
+	//ClassDB::bind_method(D_METHOD("set_width", "val"), &PDF3DMeasure::set_width);
+	//ADD_PROPERTY(PropertyInfo(Variant::REAL, "width"), "set_width", "get_width");
 }

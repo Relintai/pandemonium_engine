@@ -109,13 +109,6 @@ public:
 
 	uint32_t page_add_label(const uint32_t p_page_num, const PageNumStyle p_style, const uint32_t p_first_page, const String &p_prefix = String());
 
-#if 0
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_SetOpenAction(HPDF_Doc pdf,
-			HPDF_Destination open_action);
-
-#endif
-
 	uint32_t pages_set_configuration(const uint32_t p_page_per_pages);
 
 	uint32_t compression_mode_set(const uint32_t p_mode);
@@ -163,6 +156,10 @@ public:
 
 	HPDF_EXPORT(HPDF_Destination)
 	HPDF_Page_CreateDestination(HPDF_Page page);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_SetOpenAction(HPDF_Doc pdf,
+			HPDF_Destination open_action);
 
 	HPDF_EXPORT(HPDF_STATUS)
 	HPDF_Destination_SetXYZ(HPDF_Destination dst,
