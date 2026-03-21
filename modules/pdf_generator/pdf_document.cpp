@@ -38,6 +38,7 @@
 
 #include "pdf_date.h"
 #include "pdf_destination.h"
+#include "pdf_dict.h"
 #include "pdf_encoder.h"
 #include "pdf_font.h"
 #include "pdf_image.h"
@@ -400,6 +401,31 @@ Ref<PDFXObject> PDFDocument::x_object_create_as_white_rect(const Ref<PDFPage> &p
 	return pdf_xobject;
 }
 
+uint32_t PDFDocument::pdf_a_conformance_set(const PDFAType p_type) {
+	HPDF_PDFAType type = static_cast<HPDF_PDFAType>(p_type);
+
+	_status = HPDF_SetPDFAConformance(_doc, type);
+
+	return _status;
+}
+uint32_t PDFDocument::pdf_a_xmp_extension(const String &p_xmp_description) {
+	_status = HPDF_AddPDFAXmpExtension(_doc, p_xmp_description.utf8().get_data());
+
+	return _status;
+}
+
+uint32_t PDFDocument::output_intents_append(const String &p_icc_name, const Ref<PDFDict> &p_icc_dict) {
+	HPDF_Dict iccdict = NULL;
+
+	if (p_icc_dict.is_valid()) {
+		iccdict = (HPDF_Dict)p_icc_dict->_get_hpdf_dict();
+	}
+
+	_status = HPDF_AppendOutputIntents(_doc, p_icc_name.utf8().get_data(), iccdict);
+
+	return _status;
+}
+
 Ref<PDFImage> PDFDocument::image_load_png_from_mem(const PoolByteArray &p_data) {
 	PoolByteArray::Read r = p_data.read();
 
@@ -756,6 +782,11 @@ void PDFDocument::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("x_object_create_from_image", "page", "rect", "image", "zoom"), &PDFDocument::x_object_create_from_image);
 	ClassDB::bind_method(D_METHOD("x_object_create_as_white_rect", "page", "rect"), &PDFDocument::x_object_create_as_white_rect);
 
+	ClassDB::bind_method(D_METHOD("pdf_a_conformance_set", "type"), &PDFDocument::pdf_a_conformance_set);
+	ClassDB::bind_method(D_METHOD("pdf_a_xmp_extension", "xmp_description"), &PDFDocument::pdf_a_xmp_extension);
+
+	ClassDB::bind_method(D_METHOD("output_intents_append", "icc_name", "icc_dict"), &PDFDocument::output_intents_append);
+
 	ClassDB::bind_method(D_METHOD("image_load_png_from_mem", "data"), &PDFDocument::image_load_png_from_mem);
 	ClassDB::bind_method(D_METHOD("image_load_png_from_file", "path"), &PDFDocument::image_load_png_from_file);
 
@@ -832,4 +863,17 @@ void PDFDocument::_bind_methods() {
 	BIND_ENUM_CONSTANT(INFO_TRAPPED);
 	BIND_ENUM_CONSTANT(INFO_GTS_PDFX);
 	BIND_ENUM_CONSTANT(INFO_EOF);
+
+	BIND_ENUM_CONSTANT(NON_PDFA);
+	BIND_ENUM_CONSTANT(PDFA_1A);
+	BIND_ENUM_CONSTANT(PDFA_1B);
+	BIND_ENUM_CONSTANT(PDFA_2A);
+	BIND_ENUM_CONSTANT(PDFA_2B);
+	BIND_ENUM_CONSTANT(PDFA_2U);
+	BIND_ENUM_CONSTANT(PDFA_3A);
+	BIND_ENUM_CONSTANT(PDFA_3B);
+	BIND_ENUM_CONSTANT(PDFA_3U);
+	BIND_ENUM_CONSTANT(PDFA_4);
+	BIND_ENUM_CONSTANT(PDFA_4E);
+	BIND_ENUM_CONSTANT(PDFA_4F);
 }

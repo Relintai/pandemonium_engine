@@ -48,6 +48,7 @@ class PDFEncoder;
 class PDFDestination;
 class PDFXObject;
 class PDFDate;
+class PDFDict;
 
 class PDFDocument : public Reference {
 	GDCLASS(PDFDocument, Reference);
@@ -125,6 +126,22 @@ public:
 		INFO_EOF
 	};
 
+	enum PDFAType {
+		NON_PDFA = -1,
+
+		PDFA_1A = 0,
+		PDFA_1B,
+		PDFA_2A,
+		PDFA_2B,
+		PDFA_2U,
+		PDFA_3A,
+		PDFA_3B,
+		PDFA_3U,
+		PDFA_4,
+		PDFA_4E,
+		PDFA_4F
+	};
+
 	uint32_t viewer_preference_get() const;
 	void viewer_preference_set(const uint32_t p_preference);
 
@@ -180,18 +197,10 @@ public:
 	Ref<PDFXObject> x_object_create_from_image(const Ref<PDFPage> &p_page, const Rect2 &p_rect, const Ref<PDFImage> &p_image, const bool p_zoom);
 	Ref<PDFXObject> x_object_create_as_white_rect(const Ref<PDFPage> &p_page, const Rect2 &p_rect);
 
-#if 0
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_SetPDFAConformance(HPDF_Doc pdf,
-			HPDF_PDFAType pdfa_type);
+	uint32_t pdf_a_conformance_set(const PDFAType p_type);
+	uint32_t pdf_a_xmp_extension(const String &p_xmp_description);
 
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_AddPDFAXmpExtension(HPDF_Doc pdf,
-			const char *xmp_description);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_AppendOutputIntents(HPDF_Doc pdf, const char *iccname, HPDF_Dict iccdict);
-#endif
+	uint32_t output_intents_append(const String &p_icc_name, const Ref<PDFDict> &p_icc_dict);
 
 	Ref<PDFImage> image_load_png_from_mem(const PoolByteArray &p_data);
 	Ref<PDFImage> image_load_png_from_file(const String &p_path);
@@ -300,5 +309,6 @@ VARIANT_ENUM_CAST(PDFDocument::PageMode);
 VARIANT_ENUM_CAST(PDFDocument::PageNumStyle);
 VARIANT_ENUM_CAST(PDFDocument::ColorSpace);
 VARIANT_ENUM_CAST(PDFDocument::InfoType);
+VARIANT_ENUM_CAST(PDFDocument::PDFAType);
 
 #endif
