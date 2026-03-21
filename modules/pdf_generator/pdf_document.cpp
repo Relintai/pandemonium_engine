@@ -179,65 +179,6 @@ uint32_t PDFDocument::compression_mode_set(const uint32_t p_mode) {
 	return _status;
 }
 
-/*----- attachments -------------------------------------------------------*/
-
-Ref<PDFEmbeddedFile> PDFDocument::attach_file(const String &p_file) {
-	String file_name = FileAccess::get_filesystem_abspath_for(p_file);
-
-	HPDF_EmbeddedFile hpdf_embedded_file = HPDF_AttachFile(_doc, file_name.utf8().get_data());
-
-	if (!hpdf_embedded_file) {
-		return Ref<PDFEmbeddedFile>();
-	}
-
-	Ref<PDFEmbeddedFile> embedded_file;
-
-	embedded_file.instance();
-
-	embedded_file->_set_hpdf_embedded_file(hpdf_embedded_file);
-
-	return embedded_file;
-}
-
-/*----- extended graphics state --------------------------------------------*/
-
-Ref<PDFExtGState> PDFDocument::ext_graphic_state_create() {
-	HPDF_ExtGState hpdf_ext_g_state = HPDF_CreateExtGState(_doc);
-
-	if (!hpdf_ext_g_state) {
-		return Ref<PDFEmbeddedFile>();
-	}
-
-	Ref<PDFExtGState> ext_g_state;
-
-	ext_g_state.instance();
-
-	ext_g_state->_set_hpdf_ext_g_state(hpdf_ext_g_state);
-
-	return ext_g_state;
-}
-
-/* Notes for docs:
- * - ShadingType must be HPDF_SHADING_FREE_FORM_TRIANGLE_MESH (the only
- *   defined option...)
- * - colorSpace must be HPDF_CS_DEVICE_RGB for now.
- */
-Ref<PDFShading> PDFDocument::shading_new(const Vector2 &p_min, const Vector2 &p_max) {
-	HPDF_Shading hpdf_shading = HPDF_Shading_New(_doc, HPDF_SHADING_FREE_FORM_TRIANGLE_MESH, HPDF_CS_DEVICE_RGB, p_min.x, p_max.x, p_min.y, p_max.y);
-
-	if (!hpdf_shading) {
-		return Ref<PDFShading>();
-	}
-
-	Ref<PDFShading> shading;
-
-	shading.instance();
-
-	shading->_set_hpdf_shading(hpdf_shading);
-
-	return shading;
-}
-
 Ref<PDFFont> PDFDocument::font_get(const String &p_font_name, const String &p_encoding_name) {
 	HPDF_Font hpdf_font = NULL;
 
@@ -775,6 +716,65 @@ uint32_t PDFDocument::encryption_mode_set(const EncryptMode p_encryption_mode, c
 	_status = HPDF_SetEncryptionMode(_doc, info_type, p_key_length);
 
 	return _status;
+}
+
+/*----- attachments -------------------------------------------------------*/
+
+Ref<PDFEmbeddedFile> PDFDocument::attach_file(const String &p_file) {
+	String file_name = FileAccess::get_filesystem_abspath_for(p_file);
+
+	HPDF_EmbeddedFile hpdf_embedded_file = HPDF_AttachFile(_doc, file_name.utf8().get_data());
+
+	if (!hpdf_embedded_file) {
+		return Ref<PDFEmbeddedFile>();
+	}
+
+	Ref<PDFEmbeddedFile> embedded_file;
+
+	embedded_file.instance();
+
+	embedded_file->_set_hpdf_embedded_file(hpdf_embedded_file);
+
+	return embedded_file;
+}
+
+/*----- extended graphics state --------------------------------------------*/
+
+Ref<PDFExtGState> PDFDocument::ext_graphic_state_create() {
+	HPDF_ExtGState hpdf_ext_g_state = HPDF_CreateExtGState(_doc);
+
+	if (!hpdf_ext_g_state) {
+		return Ref<PDFEmbeddedFile>();
+	}
+
+	Ref<PDFExtGState> ext_g_state;
+
+	ext_g_state.instance();
+
+	ext_g_state->_set_hpdf_ext_g_state(hpdf_ext_g_state);
+
+	return ext_g_state;
+}
+
+/* Notes for docs:
+ * - ShadingType must be HPDF_SHADING_FREE_FORM_TRIANGLE_MESH (the only
+ *   defined option...)
+ * - colorSpace must be HPDF_CS_DEVICE_RGB for now.
+ */
+Ref<PDFShading> PDFDocument::shading_new(const Vector2 &p_min, const Vector2 &p_max) {
+	HPDF_Shading hpdf_shading = HPDF_Shading_New(_doc, HPDF_SHADING_FREE_FORM_TRIANGLE_MESH, HPDF_CS_DEVICE_RGB, p_min.x, p_max.x, p_min.y, p_max.y);
+
+	if (!hpdf_shading) {
+		return Ref<PDFShading>();
+	}
+
+	Ref<PDFShading> shading;
+
+	shading.instance();
+
+	shading->_set_hpdf_shading(hpdf_shading);
+
+	return shading;
 }
 
 PoolByteArray PDFDocument::save_to_mem() {
