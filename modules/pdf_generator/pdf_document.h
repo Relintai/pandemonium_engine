@@ -59,6 +59,16 @@ public:
 		COMPRESSION_MODE_MASK = 0xFF,
 	};
 
+	enum PageLayout {
+		PAGE_LAYOUT_SINGLE = 0,
+		PAGE_LAYOUT_ONE_COLUMN,
+		PAGE_LAYOUT_TWO_COLUMN_LEFT,
+		PAGE_LAYOUT_TWO_COLUMN_RIGHT,
+		PAGE_LAYOUT_TWO_PAGE_LEFT,
+		PAGE_LAYOUT_TWO_PAGE_RIGHT,
+		PAGE_LAYOUT_EOF
+	};
+
 	uint32_t new_document();
 	void free_document();
 	bool has_document();
@@ -69,16 +79,13 @@ public:
 	Ref<PDFPage> page_add();
 	Ref<PDFPage> page_insert(const Ref<PDFPage> &p_page);
 
+	PageLayout page_get_layout() const;
+	void page_set_layout(const PageLayout p_layout);
+
 	uint32_t set_pages_configuration(const uint32_t p_page_per_pages);
 
 #if 0
 
-	HPDF_EXPORT(HPDF_PageLayout)
-	HPDF_GetPageLayout(HPDF_Doc pdf);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_SetPageLayout(HPDF_Doc pdf,
-			HPDF_PageLayout layout);
 
 	HPDF_EXPORT(HPDF_PageMode)
 	HPDF_GetPageMode(HPDF_Doc pdf);
@@ -807,5 +814,6 @@ protected:
 };
 
 VARIANT_ENUM_CAST(PDFDocument::CompressionMode);
+VARIANT_ENUM_CAST(PDFDocument::PageLayout);
 
 #endif

@@ -305,6 +305,17 @@ Ref<PDFImage> PDFDocument::create_pdf_image_from_image(const Ref<Image> &p_image
 	return image;
 }
 
+PDFDocument::PageLayout PDFDocument::page_get_layout() const {
+	HPDF_PageLayout layout = HPDF_GetPageLayout(_doc);
+
+	return static_cast<PageLayout>(layout);
+}
+void PDFDocument::page_set_layout(const PageLayout p_layout) {
+	HPDF_PageLayout layout = static_cast<HPDF_PageLayout>(p_layout);
+
+	_status = HPDF_SetPageLayout(_doc, layout);
+}
+
 uint32_t PDFDocument::set_pages_configuration(const uint32_t p_page_per_pages) {
 	_status = HPDF_SetPagesConfiguration(_doc, (HPDF_UINT)p_page_per_pages);
 	return _status;
@@ -405,6 +416,10 @@ void PDFDocument::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("page_add"), &PDFDocument::page_add);
 	ClassDB::bind_method(D_METHOD("page_insert", "page"), &PDFDocument::page_insert);
 
+	ClassDB::bind_method(D_METHOD("page_get_layout"), &PDFDocument::page_get_layout);
+	ClassDB::bind_method(D_METHOD("page_set_layout", "val"), &PDFDocument::page_set_layout);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "page_layout", PROPERTY_HINT_ENUM, "Single,One Column,Two Columns Left,Two Columns Right,Two Page Left,Two Page Right,EOF"), "page_set_layout", "page_get_layout");
+
 	ClassDB::bind_method(D_METHOD("set_pages_configuration", "page_per_pages"), &PDFDocument::set_pages_configuration);
 
 	ClassDB::bind_method(D_METHOD("set_compression_mode", "mode"), &PDFDocument::set_compression_mode);
@@ -445,4 +460,12 @@ void PDFDocument::_bind_methods() {
 	BIND_ENUM_CONSTANT(COMPRESSION_MODE_METADATA);
 	BIND_ENUM_CONSTANT(COMPRESSION_MODE_ALL);
 	BIND_ENUM_CONSTANT(COMPRESSION_MODE_MASK);
+
+	BIND_ENUM_CONSTANT(PAGE_LAYOUT_SINGLE);
+	BIND_ENUM_CONSTANT(PAGE_LAYOUT_ONE_COLUMN);
+	BIND_ENUM_CONSTANT(PAGE_LAYOUT_TWO_COLUMN_LEFT);
+	BIND_ENUM_CONSTANT(PAGE_LAYOUT_TWO_COLUMN_RIGHT);
+	BIND_ENUM_CONSTANT(PAGE_LAYOUT_TWO_PAGE_LEFT);
+	BIND_ENUM_CONSTANT(PAGE_LAYOUT_TWO_PAGE_RIGHT);
+	BIND_ENUM_CONSTANT(PAGE_LAYOUT_EOF);
 }
