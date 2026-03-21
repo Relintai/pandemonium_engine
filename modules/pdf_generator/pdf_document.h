@@ -142,6 +142,11 @@ public:
 		PDFA_4F
 	};
 
+	enum EncryptMode {
+		ENCRYPT_MODE_R2 = 2,
+		ENCRYPT_MODE_R3 = 3
+	};
+
 	uint32_t viewer_preference_get() const;
 	void viewer_preference_set(const uint32_t p_preference);
 
@@ -222,24 +227,9 @@ public:
 	uint32_t info_attr_set(const InfoType p_info_type, const String &p_value);
 	uint32_t info_attr_date_set(const InfoType p_info_type, const Ref<PDFDate> &p_date);
 
-#if 0
-	/*----- encryption ---------------------------------------------------------*/
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_SetPassword(HPDF_Doc pdf,
-			const char *owner_passwd,
-			const char *user_passwd);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_SetPermission(HPDF_Doc pdf,
-			HPDF_UINT permission);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_SetEncryptionMode(HPDF_Doc pdf,
-			HPDF_EncryptMode mode,
-			HPDF_UINT key_len);
-
-#endif
+	uint32_t password_set(const String &p_owner_passwd, const String &p_user_passwd);
+	uint32_t permission_set(const uint32_t p_permission);
+	uint32_t encryption_mode_set(const EncryptMode p_encryption_mode, const uint32_t p_key_length);
 
 #if 0
 	/*----- attachments -------------------------------------------------------*/
@@ -310,5 +300,6 @@ VARIANT_ENUM_CAST(PDFDocument::PageNumStyle);
 VARIANT_ENUM_CAST(PDFDocument::ColorSpace);
 VARIANT_ENUM_CAST(PDFDocument::InfoType);
 VARIANT_ENUM_CAST(PDFDocument::PDFAType);
+VARIANT_ENUM_CAST(PDFDocument::EncryptMode);
 
 #endif

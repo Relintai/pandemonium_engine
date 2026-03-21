@@ -639,6 +639,26 @@ uint32_t PDFDocument::info_attr_date_set(const InfoType p_info_type, const Ref<P
 	return _status;
 }
 
+/*----- encryption ---------------------------------------------------------*/
+
+uint32_t PDFDocument::password_set(const String &p_owner_passwd, const String &p_user_passwd) {
+	_status = HPDF_SetPassword(_doc, p_owner_passwd.utf8().get_data(), p_user_passwd.utf8().get_data());
+
+	return _status;
+}
+uint32_t PDFDocument::permission_set(const uint32_t p_permission) {
+	_status = HPDF_SetPermission(_doc, p_permission);
+
+	return _status;
+}
+uint32_t PDFDocument::encryption_mode_set(const EncryptMode p_encryption_mode, const uint32_t p_key_length) {
+	HPDF_EncryptMode info_type = static_cast<HPDF_EncryptMode>(p_encryption_mode);
+
+	_status = HPDF_SetEncryptionMode(_doc, info_type, p_key_length);
+
+	return _status;
+}
+
 PoolByteArray PDFDocument::save_to_mem() {
 	HPDF_ResetStream(_doc);
 
@@ -803,6 +823,10 @@ void PDFDocument::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("image_create_pdf_from_image", "image"), &PDFDocument::image_create_pdf_from_image);
 
+	ClassDB::bind_method(D_METHOD("password_set", "owner_passwd", "user_passwd"), &PDFDocument::password_set);
+	ClassDB::bind_method(D_METHOD("permission_set", "permission"), &PDFDocument::permission_set);
+	ClassDB::bind_method(D_METHOD("encryption_mode_set", "encryption_mode", "key_length"), &PDFDocument::encryption_mode_set);
+
 	ClassDB::bind_method(D_METHOD("save_to_mem"), &PDFDocument::save_to_mem);
 	ClassDB::bind_method(D_METHOD("save_to_file", "file"), &PDFDocument::save_to_file);
 
@@ -876,4 +900,7 @@ void PDFDocument::_bind_methods() {
 	BIND_ENUM_CONSTANT(PDFA_4);
 	BIND_ENUM_CONSTANT(PDFA_4E);
 	BIND_ENUM_CONSTANT(PDFA_4F);
+
+	BIND_ENUM_CONSTANT(ENCRYPT_MODE_R2);
+	BIND_ENUM_CONSTANT(ENCRYPT_MODE_R3);
 }
