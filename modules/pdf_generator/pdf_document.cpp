@@ -202,7 +202,7 @@ Ref<PDFEmbeddedFile> PDFDocument::attach_file(const String &p_file) {
 /*----- extended graphics state --------------------------------------------*/
 
 Ref<PDFExtGState> PDFDocument::ext_graphic_state_create() {
-	HPDF_EmbeddedFile hpdf_ext_g_state = HPDF_CreateExtGState(_doc);
+	HPDF_ExtGState hpdf_ext_g_state = HPDF_CreateExtGState(_doc);
 
 	if (!hpdf_ext_g_state) {
 		return Ref<PDFEmbeddedFile>();
