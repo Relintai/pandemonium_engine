@@ -76,7 +76,16 @@ public:
 		PAGE_MODE_FULL_SCREEN,
 		//PAGE_MODE_USE_OC,
 		//PAGE_MODE_USE_ATTACHMENTS,
-		HPDF_PAGE_MODE_EOF
+		PAGE_MODE_EOF
+	};
+
+	enum PageNumStyle {
+		PAGE_NUM_STYLE_DECIMAL = 0,
+		PAGE_NUM_STYLE_UPPER_ROMAN,
+		PAGE_NUM_STYLE_LOWER_ROMAN,
+		PAGE_NUM_STYLE_UPPER_LETTERS,
+		PAGE_NUM_STYLE_LOWER_LETTERS,
+		PAGE_NUM_STYLE_EOF
 	};
 
 	uint32_t document_new();
@@ -95,16 +104,10 @@ public:
 	PageMode page_get_mode() const;
 	void page_set_mode(const PageMode p_mode);
 
-	uint32_t pages_set_configuration(const uint32_t p_page_per_pages);
+	uint32_t page_add_label(const uint32_t p_page_num, const PageNumStyle p_style, const uint32_t p_first_page, const String &p_prefix = String());
 
 #if 0
 
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_AddPageLabel(HPDF_Doc pdf,
-			HPDF_UINT page_num,
-			HPDF_PageNumStyle style,
-			HPDF_UINT first_page,
-			const char *prefix);
 
 
 	HPDF_EXPORT(HPDF_UINT)
@@ -119,6 +122,8 @@ public:
 			HPDF_Destination open_action);
 
 #endif
+
+	uint32_t pages_set_configuration(const uint32_t p_page_per_pages);
 
 	uint32_t compression_mode_set(const uint32_t p_mode);
 
@@ -820,5 +825,6 @@ protected:
 VARIANT_ENUM_CAST(PDFDocument::CompressionMode);
 VARIANT_ENUM_CAST(PDFDocument::PageLayout);
 VARIANT_ENUM_CAST(PDFDocument::PageMode);
+VARIANT_ENUM_CAST(PDFDocument::PageNumStyle);
 
 #endif

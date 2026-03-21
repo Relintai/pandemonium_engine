@@ -124,6 +124,18 @@ void PDFDocument::page_set_mode(const PageMode p_mode) {
 	_status = HPDF_SetPageMode(_doc, mode);
 }
 
+uint32_t PDFDocument::page_add_label(const uint32_t p_page_num, const PageNumStyle p_style, const uint32_t p_first_page, const String &p_prefix) {
+	HPDF_PageNumStyle style = static_cast<HPDF_PageNumStyle>(p_style);
+
+	if (p_prefix.empty()) {
+		_status = HPDF_AddPageLabel(_doc, p_page_num, style, p_first_page, NULL);
+	} else {
+		_status = HPDF_AddPageLabel(_doc, p_page_num, style, p_first_page, p_prefix.utf8().get_data());
+	}
+
+	return _status;
+}
+
 uint32_t PDFDocument::pages_set_configuration(const uint32_t p_page_per_pages) {
 	_status = HPDF_SetPagesConfiguration(_doc, (HPDF_UINT)p_page_per_pages);
 	return _status;
@@ -435,6 +447,8 @@ void PDFDocument::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("page_set_mode", "val"), &PDFDocument::page_set_mode);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "page_mode", PROPERTY_HINT_ENUM, "None,Outline,Thumbs,Full Screen,EOF"), "page_set_mode", "page_get_mode");
 
+	ClassDB::bind_method(D_METHOD("page_add_label", "page_num", "style", "first_page", "prefix"), &PDFDocument::page_add_label, DEFVAL(String()));
+
 	ClassDB::bind_method(D_METHOD("pages_set_configuration", "page_per_pages"), &PDFDocument::pages_set_configuration);
 
 	ClassDB::bind_method(D_METHOD("compression_mode_set", "mode"), &PDFDocument::compression_mode_set);
@@ -488,5 +502,12 @@ void PDFDocument::_bind_methods() {
 	BIND_ENUM_CONSTANT(PAGE_MODE_USE_OUTLINE);
 	BIND_ENUM_CONSTANT(PAGE_MODE_USE_THUMBS);
 	BIND_ENUM_CONSTANT(PAGE_MODE_FULL_SCREEN);
-	BIND_ENUM_CONSTANT(HPDF_PAGE_MODE_EOF);
+	BIND_ENUM_CONSTANT(PAGE_MODE_EOF);
+
+	BIND_ENUM_CONSTANT(PAGE_NUM_STYLE_DECIMAL);
+	BIND_ENUM_CONSTANT(PAGE_NUM_STYLE_UPPER_ROMAN);
+	BIND_ENUM_CONSTANT(PAGE_NUM_STYLE_LOWER_ROMAN);
+	BIND_ENUM_CONSTANT(PAGE_NUM_STYLE_UPPER_LETTERS);
+	BIND_ENUM_CONSTANT(PAGE_NUM_STYLE_LOWER_LETTERS);
+	BIND_ENUM_CONSTANT(PAGE_NUM_STYLE_EOF);
 }
