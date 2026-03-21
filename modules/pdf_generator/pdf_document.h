@@ -49,6 +49,7 @@ class PDFDestination;
 class PDFXObject;
 class PDFDate;
 class PDFDict;
+class PDFEmbeddedFile;
 
 class PDFDocument : public Reference {
 	GDCLASS(PDFDocument, Reference);
@@ -231,14 +232,7 @@ public:
 	uint32_t permission_set(const uint32_t p_permission);
 	uint32_t encryption_mode_set(const EncryptMode p_encryption_mode, const uint32_t p_key_length);
 
-#if 0
-	/*----- attachments -------------------------------------------------------*/
-
-	HPDF_EXPORT(HPDF_EmbeddedFile)
-	HPDF_AttachFile(HPDF_Doc pdf,
-			const char *file);
-
-#endif
+	Ref<PDFEmbeddedFile> attach_file(const String &p_file);
 
 #if 0
 	/*----- extended graphics state --------------------------------------------*/

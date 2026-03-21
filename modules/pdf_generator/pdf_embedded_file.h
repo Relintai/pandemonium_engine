@@ -75,13 +75,13 @@ public:
 	PDFEmbeddedFile();
 	~PDFEmbeddedFile();
 
-	void *_get_hpdf_font() const;
-	void _set_hpdf_font(void *p_font);
+	void *_get_hpdf_embedded_file() const;
+	void _set_hpdf_embedded_file(void *p_embedded_file);
 
 protected:
 	static void _bind_methods();
 
-	void *_font;
+	void *_embedded_file;
 
 	uint32_t _status;
 };

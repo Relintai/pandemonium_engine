@@ -39,6 +39,7 @@
 #include "pdf_date.h"
 #include "pdf_destination.h"
 #include "pdf_dict.h"
+#include "pdf_embedded_file.h"
 #include "pdf_encoder.h"
 #include "pdf_font.h"
 #include "pdf_image.h"
@@ -158,6 +159,26 @@ uint32_t PDFDocument::compression_mode_set(const uint32_t p_mode) {
 	_status = HPDF_SetCompressionMode(_doc, p_mode);
 
 	return _status;
+}
+
+/*----- attachments -------------------------------------------------------*/
+
+Ref<PDFEmbeddedFile> PDFDocument::attach_file(const String &p_file) {
+	String file_name = FileAccess::get_filesystem_abspath_for(p_file);
+
+	HPDF_EmbeddedFile hpdf_embedded_file = HPDF_AttachFile(_doc, file_name.utf8().get_data());
+
+	if (!hpdf_embedded_file) {
+		return Ref<PDFEmbeddedFile>();
+	}
+
+	Ref<PDFEmbeddedFile> embedded_file;
+
+	embedded_file.instance();
+
+	embedded_file->_set_hpdf_embedded_file(hpdf_embedded_file);
+
+	return embedded_file;
 }
 
 Ref<PDFFont> PDFDocument::font_get(const String &p_font_name, const String &p_encoding_name) {
@@ -826,6 +847,8 @@ void PDFDocument::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("password_set", "owner_passwd", "user_passwd"), &PDFDocument::password_set);
 	ClassDB::bind_method(D_METHOD("permission_set", "permission"), &PDFDocument::permission_set);
 	ClassDB::bind_method(D_METHOD("encryption_mode_set", "encryption_mode", "key_length"), &PDFDocument::encryption_mode_set);
+
+	ClassDB::bind_method(D_METHOD("attach_file", "file"), &PDFDocument::attach_file);
 
 	ClassDB::bind_method(D_METHOD("save_to_mem"), &PDFDocument::save_to_mem);
 	ClassDB::bind_method(D_METHOD("save_to_file", "file"), &PDFDocument::save_to_file);

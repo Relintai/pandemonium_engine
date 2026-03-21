@@ -40,18 +40,18 @@ uint32_t PDFEmbeddedFile::get_status() {
 }
 
 PDFEmbeddedFile::PDFEmbeddedFile() {
-	_font = NULL;
+	_embedded_file = NULL;
 }
 
 PDFEmbeddedFile::~PDFEmbeddedFile() {
 }
 
-void *PDFEmbeddedFile::_get_hpdf_font() const {
-	return _font;
+void *PDFEmbeddedFile::_get_hpdf_embedded_file() const {
+	return _embedded_file;
 }
 
-void PDFEmbeddedFile::_set_hpdf_font(void *p_font) {
-	_font = p_font;
+void PDFEmbeddedFile::_set_hpdf_embedded_file(void *p_embedded_file) {
+	_embedded_file = p_embedded_file;
 }
 
 void PDFEmbeddedFile::_bind_methods() {
