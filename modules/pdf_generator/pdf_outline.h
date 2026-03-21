@@ -53,13 +53,13 @@ public:
 	PDFOutline();
 	~PDFOutline();
 
-	void *_get_hpdf_font() const;
-	void _set_hpdf_font(void *p_font);
+	void *_get_hpdf_outline() const;
+	void _set_hpdf_outline(void *p_outline);
 
 protected:
 	static void _bind_methods();
 
-	void *_font;
+	void *_outline;
 
 	uint32_t _status;
 };

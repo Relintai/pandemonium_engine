@@ -39,6 +39,7 @@
 #include "pdf_encoder.h"
 #include "pdf_font.h"
 #include "pdf_image.h"
+#include "pdf_outline.h"
 #include "pdf_page.h"
 
 #include "hpdf.h"
@@ -225,6 +226,35 @@ uint32_t PDFDocument::fonts_use_cnt() {
 	_status = HPDF_UseCNTFonts(_doc);
 
 	return _status;
+}
+
+/*----- outline ------------------------------------------------------------*/
+
+Ref<PDFOutline> PDFDocument::outline_create(const Ref<PDFOutline> &p_parent, const String &p_title, const Ref<PDFEncoder> &p_encoder) {
+	HPDF_Outline parent = NULL;
+
+	if (p_parent.is_valid()) {
+		parent = (HPDF_Outline)p_parent->_get_hpdf_outline();
+	}
+
+	HPDF_Encoder encoder = NULL;
+
+	if (p_encoder.is_valid()) {
+		encoder = (HPDF_Encoder)p_encoder->_get_hpdf_encoder();
+	}
+
+	HPDF_Outline outline = HPDF_CreateOutline(_doc, parent, p_title.utf8().get_data(), encoder);
+
+	if (!outline) {
+		return Ref<PDFEncoder>();
+	}
+
+	Ref<PDFOutline> pdf_outline;
+	pdf_outline.instance();
+
+	pdf_outline->_set_hpdf_outline(encoder);
+
+	return pdf_outline;
 }
 
 /*----- encoder ------------------------------------------------------------*/
@@ -524,6 +554,8 @@ void PDFDocument::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("fonts_use_kr"), &PDFDocument::fonts_use_kr);
 	ClassDB::bind_method(D_METHOD("fonts_use_cns"), &PDFDocument::fonts_use_cns);
 	ClassDB::bind_method(D_METHOD("fonts_use_cnt"), &PDFDocument::fonts_use_cnt);
+
+	ClassDB::bind_method(D_METHOD("outline_create", "parent", "title", "encoder"), &PDFDocument::outline_create);
 
 	ClassDB::bind_method(D_METHOD("encoder_get", "encoding_name"), &PDFDocument::encoder_get);
 

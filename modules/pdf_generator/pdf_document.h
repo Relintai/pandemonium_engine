@@ -127,18 +127,7 @@ public:
 	uint32_t fonts_use_cns();
 	uint32_t fonts_use_cnt();
 
-	//Ref<PDFOutline> outline_create(const Ref<PDFOutline> &p_parent, const String &p_title);
-
-#if 0
-	/*----- outline ------------------------------------------------------------*/
-
-	HPDF_EXPORT(HPDF_Outline)
-	HPDF_CreateOutline(HPDF_Doc pdf,
-			HPDF_Outline parent,
-			const char *title,
-			HPDF_Encoder encoder);
-
-#endif
+	Ref<PDFOutline> outline_create(const Ref<PDFOutline> &p_parent, const String &p_title, const Ref<PDFEncoder> &p_encoder);
 
 #if 0
 	/*----- destination --------------------------------------------------------*/

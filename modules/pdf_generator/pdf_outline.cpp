@@ -40,18 +40,18 @@ uint32_t PDFOutline::get_status() {
 }
 
 PDFOutline::PDFOutline() {
-	_font = NULL;
+	_outline = NULL;
 }
 
 PDFOutline::~PDFOutline() {
 }
 
-void *PDFOutline::_get_hpdf_font() const {
-	return _font;
+void *PDFOutline::_get_hpdf_outline() const {
+	return _outline;
 }
 
-void PDFOutline::_set_hpdf_font(void *p_font) {
-	_font = p_font;
+void PDFOutline::_set_hpdf_outline(void *p_outline) {
+	_outline = p_outline;
 }
 
 void PDFOutline::_bind_methods() {
