@@ -70,6 +70,29 @@ public:
 	HPDF_EXPORT(HPDF_STATUS)
 	HPDF_Page_SetZoom(HPDF_Page page,
 			HPDF_REAL zoom);
+#endif
+
+#if 0
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_Page_SetBoundary(HPDF_Page page,
+			HPDF_PageBoundary boundary,
+			HPDF_REAL left,
+			HPDF_REAL bottom,
+			HPDF_REAL right,
+			HPDF_REAL top);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_Page_SetSize(HPDF_Page page,
+			HPDF_PageSizes size,
+			HPDF_PageDirection direction);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_Page_SetRotate(HPDF_Page page,
+			HPDF_UINT16 angle);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_Page_SetZoom(HPDF_Page page,
+			HPDF_REAL zoom);
 
 	HPDF_EXPORT(HPDF_REAL)
 	HPDF_Page_TextWidth(HPDF_Page page,
@@ -507,6 +530,16 @@ public:
 #endif
 
 	uint32_t draw_image(const Ref<PDFImage> &p_image, const Rect2 &p_rect);
+
+#if 0
+	/*--- XObjects -----------------------------------------------------------*/
+
+	/* Do */
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_Page_ExecuteXObject(HPDF_Page page,
+			HPDF_XObject obj);
+
+#endif
 
 #if 0
 	/* BX --not implemented yet */

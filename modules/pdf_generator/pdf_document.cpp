@@ -311,7 +311,7 @@ uint32_t PDFDocument::set_pages_configuration(const uint32_t p_page_per_pages) {
 }
 
 PoolByteArray PDFDocument::get_contents() {
-	HPDF_ResetStream();
+	HPDF_ResetStream(_doc);
 
 	_status = HPDF_SaveToStream(_doc);
 
@@ -373,7 +373,7 @@ uint32_t PDFDocument::get_status() {
 uint32_t PDFDocument::get_error_no() {
 	return HPDF_GetError(_doc);
 }
-uint32_t PDFDocument::get_error_detail_no() {
+uint32_t PDFDocument::get_error_detail() {
 	return HPDF_GetErrorDetail(_doc);
 }
 void PDFDocument::reset_error() {
@@ -432,7 +432,8 @@ void PDFDocument::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_status"), &PDFDocument::get_status);
 	ClassDB::bind_method(D_METHOD("get_error_no"), &PDFDocument::get_error_no);
-	ClassDB::bind_method(D_METHOD("get_error_detail_no"), &PDFDocument::get_error_detail_no);
+	ClassDB::bind_method(D_METHOD("get_error_detail"), &PDFDocument::get_error_detail);
+	ClassDB::bind_method(D_METHOD("reset_error"), &PDFDocument::reset_error);
 
 	//ClassDB::bind_method(D_METHOD("get_user_id"), &PDFDocument::get_user_id);
 	//ClassDB::bind_method(D_METHOD("set_user_id", "val"), &PDFDocument::set_user_id);
