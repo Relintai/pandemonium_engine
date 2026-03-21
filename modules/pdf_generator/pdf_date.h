@@ -1,5 +1,8 @@
+#ifndef PDF_DATE_H
+#define PDF_DATE_H
+
 /*************************************************************************/
-/*  register_types.cpp                                                   */
+/*  pdf_date.h                                                           */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,45 +32,27 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "register_types.h"
+#include "core/object/reference.h"
 
-#include "pdf_3d_measure.h"
-#include "pdf_annotation.h"
-#include "pdf_destination.h"
-#include "pdf_document.h"
-#include "pdf_embedded_file.h"
-#include "pdf_ex_data.h"
-#include "pdf_ext_g_state.h"
-#include "pdf_font.h"
-#include "pdf_image.h"
-#include "pdf_outline.h"
-#include "pdf_page.h"
-#include "pdf_shading.h"
-#include "pdf_x_object.h"
-#include "pdf_encoder.h"
-#include "pdf_dict.h"
-#include "pdf_date.h"
+class PDFDate : public Reference {
+	GDCLASS(PDFDate, Reference);
 
-void register_pdf_generator_types(ModuleRegistrationLevel p_level) {
-	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
-		ClassDB::register_class<PDFDocument>();
-		ClassDB::register_class<PDFPage>();
-		ClassDB::register_class<PDFFont>();
-		ClassDB::register_class<PDFImage>();
-		ClassDB::register_class<PDFOutline>();
-		ClassDB::register_class<PDFAnnotation>();
-		ClassDB::register_class<PDFDestination>();
-		ClassDB::register_class<PDF3DMeasure>();
-		ClassDB::register_class<PDFEmbeddedFile>();
-		ClassDB::register_class<PDFExData>();
-		ClassDB::register_class<PDFExtGState>();
-		ClassDB::register_class<PDFShading>();
-		ClassDB::register_class<PDFXObject>();
-		ClassDB::register_class<PDFEncoder>();
-		ClassDB::register_class<PDFDict>();
-		ClassDB::register_class<PDFDate>();
-	}
-}
+public:
+	PDFDate();
+	~PDFDate();
 
-void unregister_pdf_generator_types(ModuleRegistrationLevel p_level) {
-}
+protected:
+	static void _bind_methods();
+
+	int year;
+	int month;
+	int day;
+	int hour;
+	int minutes;
+	int seconds;
+	char ind;
+	int off_hour;
+	int off_minutes;
+};
+
+#endif

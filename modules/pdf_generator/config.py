@@ -24,6 +24,7 @@ def get_doc_classes():
         "PDFXObject",
         "PDFEncoder",
         "PDFDict",
+        "PDFDate",
     ]
 
 def get_doc_path():
