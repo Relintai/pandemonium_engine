@@ -22,6 +22,7 @@ def get_doc_classes():
         "PDFExtGState",
         "PDFShading",
         "PDFXObject",
+        "PDFEncoder",
     ]
 
 def get_doc_path():

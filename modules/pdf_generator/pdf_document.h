@@ -162,22 +162,6 @@ public:
 	HPDF_SetCurrentEncoder(HPDF_Doc pdf,
 			const char *encoding_name);
 
-	HPDF_EXPORT(HPDF_EncoderType)
-	HPDF_Encoder_GetType(HPDF_Encoder encoder);
-
-	HPDF_EXPORT(HPDF_ByteType)
-	HPDF_Encoder_GetByteType(HPDF_Encoder encoder,
-			const char *text,
-			HPDF_UINT index);
-
-	HPDF_EXPORT(HPDF_UNICODE)
-	HPDF_Encoder_GetUnicode(HPDF_Encoder encoder,
-			HPDF_UINT16 code);
-
-	HPDF_EXPORT(HPDF_WritingMode)
-	HPDF_Encoder_GetWritingMode(HPDF_Encoder encoder);
-
-
 	HPDF_EXPORT(HPDF_STATUS)
 	HPDF_UseJPEncodings(HPDF_Doc pdf);
 
