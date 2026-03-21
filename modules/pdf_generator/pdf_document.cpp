@@ -43,6 +43,13 @@
 #include "hpdf.h"
 #include "hpdf_doc.h"
 
+uint32_t PDFDocument::viewer_preference_get() const {
+	return HPDF_GetViewerPreference(_doc);
+}
+void PDFDocument::viewer_preference_set(const uint32_t p_preference) {
+	_status = HPDF_SetViewerPreference(_doc, p_preference);
+}
+
 uint32_t PDFDocument::document_new() {
 	_status = HPDF_NewDoc(_doc);
 	return _status;
@@ -429,6 +436,10 @@ PDFDocument::~PDFDocument() {
 }
 
 void PDFDocument::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("viewer_preference_get"), &PDFDocument::viewer_preference_get);
+	ClassDB::bind_method(D_METHOD("viewer_preference_set", "val"), &PDFDocument::viewer_preference_set);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "viewer_preference"), "viewer_preference_set", "viewer_preference_get");
+
 	ClassDB::bind_method(D_METHOD("document_new"), &PDFDocument::document_new);
 	ClassDB::bind_method(D_METHOD("document_free"), &PDFDocument::document_free);
 	ClassDB::bind_method(D_METHOD("document_has"), &PDFDocument::document_has);
@@ -478,10 +489,6 @@ void PDFDocument::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_error_no"), &PDFDocument::get_error_no);
 	ClassDB::bind_method(D_METHOD("get_error_detail"), &PDFDocument::get_error_detail);
 	ClassDB::bind_method(D_METHOD("reset_error"), &PDFDocument::reset_error);
-
-	//ClassDB::bind_method(D_METHOD("get_user_id"), &PDFDocument::get_user_id);
-	//ClassDB::bind_method(D_METHOD("set_user_id", "val"), &PDFDocument::set_user_id);
-	//ADD_PROPERTY(PropertyInfo(Variant::INT, "user_id"), "set_user_id", "get_user_id");
 
 	BIND_ENUM_CONSTANT(COMPRESSION_MODE_NONE);
 	BIND_ENUM_CONSTANT(COMPRESSION_MODE_TEXT);

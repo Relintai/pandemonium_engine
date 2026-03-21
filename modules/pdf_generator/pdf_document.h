@@ -88,6 +88,9 @@ public:
 		PAGE_NUM_STYLE_EOF
 	};
 
+	uint32_t viewer_preference_get() const;
+	void viewer_preference_set(const uint32_t p_preference);
+
 	uint32_t document_new();
 	void document_free();
 	bool document_has();
@@ -107,16 +110,6 @@ public:
 	uint32_t page_add_label(const uint32_t p_page_num, const PageNumStyle p_style, const uint32_t p_first_page, const String &p_prefix = String());
 
 #if 0
-
-
-
-	HPDF_EXPORT(HPDF_UINT)
-	HPDF_GetViewerPreference(HPDF_Doc pdf);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_SetViewerPreference(HPDF_Doc pdf,
-			HPDF_UINT value);
-
 	HPDF_EXPORT(HPDF_STATUS)
 	HPDF_SetOpenAction(HPDF_Doc pdf,
 			HPDF_Destination open_action);
