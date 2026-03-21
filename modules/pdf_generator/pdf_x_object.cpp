@@ -40,18 +40,18 @@ uint32_t PDFXObject::get_status() {
 }
 
 PDFXObject::PDFXObject() {
-	_font = NULL;
+	_x_object = NULL;
 }
 
 PDFXObject::~PDFXObject() {
 }
 
-void *PDFXObject::_get_hpdf_font() const {
-	return _font;
+void *PDFXObject::_get_hpdf_x_object() const {
+	return _x_object;
 }
 
-void PDFXObject::_set_hpdf_font(void *p_font) {
-	_font = p_font;
+void PDFXObject::_set_hpdf_x_object(void *p_x_object) {
+	_x_object = p_x_object;
 }
 
 void PDFXObject::_bind_methods() {

@@ -43,13 +43,13 @@ public:
 	PDFXObject();
 	~PDFXObject();
 
-	void *_get_hpdf_font() const;
-	void _set_hpdf_font(void *p_font);
+	void *_get_hpdf_x_object() const;
+	void _set_hpdf_x_object(void *p_x_object);
 
 protected:
 	static void _bind_methods();
 
-	void *_font;
+	void *_x_object;
 
 	uint32_t _status;
 };

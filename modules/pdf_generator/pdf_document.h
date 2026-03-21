@@ -46,6 +46,7 @@ class Image;
 class PDFOutline;
 class PDFEncoder;
 class PDFDestination;
+class PDFXObject;
 
 class PDFDocument : public Reference {
 	GDCLASS(PDFDocument, Reference);
@@ -158,22 +159,8 @@ public:
 	uint32_t encodings_use_cnt();
 	uint32_t encodings_use_utf();
 
-#if 0
-	/*----- XObject ------------------------------------------------------------*/
-
-	HPDF_EXPORT(HPDF_XObject)
-	HPDF_Page_CreateXObjectFromImage(HPDF_Doc pdf,
-			HPDF_Page page,
-			HPDF_Rect rect,
-			HPDF_Image image,
-			HPDF_BOOL zoom);
-
-	HPDF_EXPORT(HPDF_XObject)
-	HPDF_Page_CreateXObjectAsWhiteRect(HPDF_Doc pdf,
-			HPDF_Page page,
-			HPDF_Rect rect);
-
-#endif
+	Ref<PDFXObject> x_object_create_from_image(const Ref<PDFPage> &p_page, const Rect2 &p_rect, const Ref<PDFImage> &p_image, const bool p_zoom);
+	Ref<PDFXObject> x_object_create_as_white_rect(const Ref<PDFPage> &p_page, const Rect2 &p_rect);
 
 #if 0
 	HPDF_EXPORT(HPDF_STATUS)

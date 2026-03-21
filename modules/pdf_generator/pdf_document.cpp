@@ -42,6 +42,7 @@
 #include "pdf_image.h"
 #include "pdf_outline.h"
 #include "pdf_page.h"
+#include "pdf_x_object.h"
 
 #include "hpdf.h"
 #include "hpdf_doc.h"
@@ -333,6 +334,69 @@ uint32_t PDFDocument::encodings_use_utf() {
 	_status = HPDF_UseUTFEncodings(_doc);
 
 	return _status;
+}
+
+/*----- XObject ------------------------------------------------------------*/
+
+Ref<PDFXObject> PDFDocument::x_object_create_from_image(const Ref<PDFPage> &p_page, const Rect2 &p_rect, const Ref<PDFImage> &p_image, const bool p_zoom) {
+	HPDF_Page page = NULL;
+
+	if (p_page.is_valid()) {
+		page = (HPDF_Page)p_page->_get_hpdf_page();
+	}
+
+	HPDF_Rect rect;
+	Vector2 end = p_rect.get_end();
+	rect.left = p_rect.position.x;
+	rect.top = p_rect.position.y;
+	rect.right = end.x;
+	rect.bottom = end.y;
+
+	HPDF_Image image = NULL;
+
+	if (p_image.is_valid()) {
+		image = (HPDF_Image)p_image->_get_hpdf_image();
+	}
+
+	HPDF_XObject hpdf_xobject = HPDF_Page_CreateXObjectFromImage(_doc, page, rect, image, p_zoom);
+
+	if (!hpdf_xobject) {
+		return Ref<PDFXObject>();
+	}
+
+	Ref<PDFXObject> pdf_xobject;
+	pdf_xobject.instance();
+
+	pdf_xobject->_set_hpdf_x_object(hpdf_xobject);
+
+	return pdf_xobject;
+}
+Ref<PDFXObject> PDFDocument::x_object_create_as_white_rect(const Ref<PDFPage> &p_page, const Rect2 &p_rect) {
+	HPDF_Page page = NULL;
+
+	if (p_page.is_valid()) {
+		page = (HPDF_Page)p_page->_get_hpdf_page();
+	}
+
+	HPDF_Rect rect;
+	Vector2 end = p_rect.get_end();
+	rect.left = p_rect.position.x;
+	rect.top = p_rect.position.y;
+	rect.right = end.x;
+	rect.bottom = end.y;
+
+	HPDF_XObject hpdf_xobject = HPDF_Page_CreateXObjectAsWhiteRect(_doc, page, rect);
+
+	if (!hpdf_xobject) {
+		return Ref<PDFXObject>();
+	}
+
+	Ref<PDFXObject> pdf_xobject;
+	pdf_xobject.instance();
+
+	pdf_xobject->_set_hpdf_x_object(hpdf_xobject);
+
+	return pdf_xobject;
 }
 
 Ref<PDFImage> PDFDocument::image_load_png_from_mem(const PoolByteArray &p_data) {
@@ -651,6 +715,9 @@ void PDFDocument::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("encodings_use_cns"), &PDFDocument::encodings_use_cns);
 	ClassDB::bind_method(D_METHOD("encodings_use_cnt"), &PDFDocument::encodings_use_cnt);
 	ClassDB::bind_method(D_METHOD("encodings_use_utf"), &PDFDocument::encodings_use_utf);
+
+	ClassDB::bind_method(D_METHOD("x_object_create_from_image", "page", "rect", "image", "zoom"), &PDFDocument::x_object_create_from_image);
+	ClassDB::bind_method(D_METHOD("x_object_create_as_white_rect", "page", "rect"), &PDFDocument::x_object_create_as_white_rect);
 
 	ClassDB::bind_method(D_METHOD("image_load_png_from_mem", "data"), &PDFDocument::image_load_png_from_mem);
 	ClassDB::bind_method(D_METHOD("image_load_png_from_file", "path"), &PDFDocument::image_load_png_from_file);
