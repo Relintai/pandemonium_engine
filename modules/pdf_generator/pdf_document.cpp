@@ -74,6 +74,10 @@ void PDFDocument::document_free_all() {
 Ref<PDFPage> PDFDocument::page_get_current() {
 	HPDF_Page hpdf_page = HPDF_GetCurrentPage(_doc);
 
+	if (!hpdf_page) {
+		return Ref<PDFPage>();
+	}
+
 	Ref<PDFPage> page;
 	page.instance();
 
@@ -84,6 +88,10 @@ Ref<PDFPage> PDFDocument::page_get_current() {
 Ref<PDFPage> PDFDocument::page_get_index(const uint32_t p_index) {
 	HPDF_Page hpdf_page = HPDF_GetPageByIndex(_doc, p_index);
 
+	if (!hpdf_page) {
+		return Ref<PDFPage>();
+	}
+
 	Ref<PDFPage> page;
 	page.instance();
 
@@ -93,6 +101,10 @@ Ref<PDFPage> PDFDocument::page_get_index(const uint32_t p_index) {
 }
 Ref<PDFPage> PDFDocument::page_add() {
 	HPDF_Page hpdf_page = HPDF_AddPage(_doc);
+
+	if (!hpdf_page) {
+		return Ref<PDFPage>();
+	}
 
 	Ref<PDFPage> page;
 	page.instance();
@@ -107,6 +119,10 @@ Ref<PDFPage> PDFDocument::page_insert(const Ref<PDFPage> &p_page) {
 	}
 
 	HPDF_Page hpdf_page = HPDF_InsertPage(_doc, (HPDF_Page)p_page->_get_hpdf_page());
+
+	if (!hpdf_page) {
+		return Ref<PDFPage>();
+	}
 
 	Ref<PDFPage> page;
 	page.instance();
@@ -452,6 +468,10 @@ Ref<PDFImage> PDFDocument::image_load_png_from_mem(const PoolByteArray &p_data) 
 
 	HPDF_Image hpdf_image = HPDF_LoadPngImageFromMem(_doc, r.ptr(), p_data.size());
 
+	if (!hpdf_image) {
+		return Ref<PDFImage>();
+	}
+
 	Ref<PDFImage> image;
 	image.instance();
 
@@ -463,6 +483,10 @@ Ref<PDFImage> PDFDocument::image_load_png_from_file(const String &p_path) {
 	String abs_path = FileAccess::get_filesystem_abspath_for(p_path);
 
 	HPDF_Font hpdf_image = HPDF_LoadPngImageFromFile(_doc, abs_path.utf8().get_data());
+
+	if (!hpdf_image) {
+		return Ref<PDFImage>();
+	}
 
 	Ref<PDFImage> image;
 	image.instance();
@@ -476,6 +500,10 @@ Ref<PDFImage> PDFDocument::image_load_jpg_from_mem(const PoolByteArray &p_data) 
 
 	HPDF_Image hpdf_image = HPDF_LoadJpegImageFromMem(_doc, r.ptr(), p_data.size());
 
+	if (!hpdf_image) {
+		return Ref<PDFImage>();
+	}
+
 	Ref<PDFImage> image;
 	image.instance();
 
@@ -487,6 +515,10 @@ Ref<PDFImage> PDFDocument::image_load_jpg_from_file(const String &p_path) {
 	String abs_path = FileAccess::get_filesystem_abspath_for(p_path);
 
 	HPDF_Font hpdf_image = HPDF_LoadJpegImageFromFile(_doc, abs_path.utf8().get_data());
+
+	if (!hpdf_image) {
+		return Ref<PDFImage>();
+	}
 
 	Ref<PDFImage> image;
 	image.instance();
@@ -501,6 +533,10 @@ Ref<PDFImage> PDFDocument::image_load_u3d_from_mem(const PoolByteArray &p_data) 
 
 	HPDF_Image hpdf_image = HPDF_LoadU3DFromMem(_doc, r.ptr(), p_data.size());
 
+	if (!hpdf_image) {
+		return Ref<PDFImage>();
+	}
+
 	Ref<PDFImage> image;
 	image.instance();
 
@@ -512,6 +548,10 @@ Ref<PDFImage> PDFDocument::image_load_u3d_from_file(const String &p_path) {
 	String abs_path = FileAccess::get_filesystem_abspath_for(p_path);
 
 	HPDF_Font hpdf_image = HPDF_LoadU3DFromFile(_doc, abs_path.utf8().get_data());
+
+	if (!hpdf_image) {
+		return Ref<PDFImage>();
+	}
 
 	Ref<PDFImage> image;
 	image.instance();
@@ -525,6 +565,10 @@ Ref<PDFImage> PDFDocument::image_load_raw_1_bit_image_from_mem(const PoolByteArr
 	PoolByteArray::Read r = p_data.read();
 
 	HPDF_Image hpdf_image = HPDF_Image_LoadRaw1BitImageFromMem(_doc, r.ptr(), p_size.width, p_size.height, p_line_width, p_black_is1, p_top_is_first);
+
+	if (!hpdf_image) {
+		return Ref<PDFImage>();
+	}
 
 	Ref<PDFImage> image;
 	image.instance();
@@ -541,6 +585,10 @@ Ref<PDFImage> PDFDocument::image_load_raw_image_from_mem(const PoolByteArray &p_
 
 	HPDF_Image hpdf_image = HPDF_LoadRawImageFromMem(_doc, r.ptr(), p_size.width, p_size.height, color_space, p_bits_per_component);
 
+	if (!hpdf_image) {
+		return Ref<PDFImage>();
+	}
+
 	Ref<PDFImage> image;
 	image.instance();
 
@@ -554,6 +602,10 @@ Ref<PDFImage> PDFDocument::image_load_raw_image_from_file(const String &p_path, 
 	HPDF_ColorSpace color_space = static_cast<HPDF_ColorSpace>(p_color_space);
 
 	HPDF_Font hpdf_image = HPDF_LoadRawImageFromFile(_doc, abs_path.utf8().get_data(), p_size.width, p_size.height, color_space);
+
+	if (!hpdf_image) {
+		return Ref<PDFImage>();
+	}
 
 	Ref<PDFImage> image;
 	image.instance();
@@ -615,6 +667,10 @@ Ref<PDFImage> PDFDocument::image_create_pdf_from_image(const Ref<Image> &p_image
 	PoolByteArray::Read r = data.read();
 
 	HPDF_Font hpdf_image = HPDF_LoadRawImageFromMem(_doc, r.ptr(), size.width, size.height, color_space, 8);
+
+	if (!hpdf_image) {
+		return Ref<PDFImage>();
+	}
 
 	Ref<PDFImage> image;
 	image.instance();
