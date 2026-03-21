@@ -43,17 +43,17 @@
 #include "hpdf.h"
 #include "hpdf_doc.h"
 
-uint32_t PDFDocument::new_document() {
+uint32_t PDFDocument::document_new() {
 	_status = HPDF_NewDoc(_doc);
 	return _status;
 }
-void PDFDocument::free_document() {
+void PDFDocument::document_free() {
 	HPDF_FreeDoc(_doc);
 }
-bool PDFDocument::has_document() {
+bool PDFDocument::document_has() {
 	return HPDF_HasDoc(_doc);
 }
-void PDFDocument::free_document_all() {
+void PDFDocument::document_free_all() {
 	HPDF_FreeDocAll(_doc);
 }
 
@@ -406,10 +406,10 @@ PDFDocument::~PDFDocument() {
 }
 
 void PDFDocument::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("new_document"), &PDFDocument::new_document);
-	ClassDB::bind_method(D_METHOD("free_document"), &PDFDocument::free_document);
-	ClassDB::bind_method(D_METHOD("has_document"), &PDFDocument::has_document);
-	ClassDB::bind_method(D_METHOD("free_document_all"), &PDFDocument::free_document_all);
+	ClassDB::bind_method(D_METHOD("document_new"), &PDFDocument::document_new);
+	ClassDB::bind_method(D_METHOD("document_free"), &PDFDocument::document_free);
+	ClassDB::bind_method(D_METHOD("document_has"), &PDFDocument::document_has);
+	ClassDB::bind_method(D_METHOD("document_free_all"), &PDFDocument::document_free_all);
 
 	ClassDB::bind_method(D_METHOD("page_get_current"), &PDFDocument::page_get_current);
 	ClassDB::bind_method(D_METHOD("page_get_index", "index"), &PDFDocument::page_get_index);

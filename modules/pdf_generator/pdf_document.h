@@ -69,10 +69,10 @@ public:
 		PAGE_LAYOUT_EOF
 	};
 
-	uint32_t new_document();
-	void free_document();
-	bool has_document();
-	void free_document_all();
+	uint32_t document_new();
+	void document_free();
+	bool document_has();
+	void document_free_all();
 
 	Ref<PDFPage> page_get_current();
 	Ref<PDFPage> page_get_index(const uint32_t p_index);
