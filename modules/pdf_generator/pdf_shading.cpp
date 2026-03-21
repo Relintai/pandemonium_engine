@@ -40,18 +40,18 @@ uint32_t PDFShading::get_status() {
 }
 
 PDFShading::PDFShading() {
-	_font = NULL;
+	_shading = NULL;
 }
 
 PDFShading::~PDFShading() {
 }
 
-void *PDFShading::_get_hpdf_font() const {
-	return _font;
+void *PDFShading::_get_hpdf_shading() const {
+	return _shading;
 }
 
-void PDFShading::_set_hpdf_font(void *p_font) {
-	_font = p_font;
+void PDFShading::_set_hpdf_shading(void *p_shading) {
+	_shading = p_shading;
 }
 
 void PDFShading::_bind_methods() {

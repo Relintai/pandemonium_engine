@@ -46,6 +46,7 @@
 #include "pdf_image.h"
 #include "pdf_outline.h"
 #include "pdf_page.h"
+#include "pdf_shading.h"
 #include "pdf_x_object.h"
 
 #include "hpdf.h"
@@ -214,6 +215,27 @@ Ref<PDFExtGState> PDFDocument::ext_graphic_state_create() {
 	ext_g_state->_set_hpdf_ext_g_state(hpdf_ext_g_state);
 
 	return ext_g_state;
+}
+
+/* Notes for docs:
+ * - ShadingType must be HPDF_SHADING_FREE_FORM_TRIANGLE_MESH (the only
+ *   defined option...)
+ * - colorSpace must be HPDF_CS_DEVICE_RGB for now.
+ */
+Ref<PDFShading> PDFDocument::shading_new(const Vector2 &p_min, const Vector2 &p_max) {
+	HPDF_Shading hpdf_shading = HPDF_Shading_New(_doc, HPDF_SHADING_FREE_FORM_TRIANGLE_MESH, HPDF_CS_DEVICE_RGB, p_min.x, p_max.x, p_min.y, p_max.y);
+
+	if (!hpdf_shading) {
+		return Ref<PDFShading>();
+	}
+
+	Ref<PDFShading> shading;
+
+	shading.instance();
+
+	shading->_set_hpdf_shading(hpdf_shading);
+
+	return shading;
 }
 
 Ref<PDFFont> PDFDocument::font_get(const String &p_font_name, const String &p_encoding_name) {
@@ -926,6 +948,8 @@ void PDFDocument::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("attach_file", "file"), &PDFDocument::attach_file);
 
 	ClassDB::bind_method(D_METHOD("ext_graphic_state_create"), &PDFDocument::ext_graphic_state_create);
+
+	ClassDB::bind_method(D_METHOD("shading_new", "min", "max"), &PDFDocument::shading_new);
 
 	ClassDB::bind_method(D_METHOD("save_to_mem"), &PDFDocument::save_to_mem);
 	ClassDB::bind_method(D_METHOD("save_to_file", "file"), &PDFDocument::save_to_file);

@@ -53,13 +53,13 @@ public:
 	PDFShading();
 	~PDFShading();
 
-	void *_get_hpdf_font() const;
-	void _set_hpdf_font(void *p_font);
+	void *_get_hpdf_shading() const;
+	void _set_hpdf_shading(void *p_shading);
 
 protected:
 	static void _bind_methods();
 
-	void *_font;
+	void *_shading;
 
 	uint32_t _status;
 };

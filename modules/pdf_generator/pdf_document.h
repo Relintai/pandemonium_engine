@@ -51,6 +51,7 @@ class PDFDate;
 class PDFDict;
 class PDFEmbeddedFile;
 class PDFExtGState;
+class PDFShading;
 
 class PDFDocument : public Reference {
 	GDCLASS(PDFDocument, Reference);
@@ -237,22 +238,7 @@ public:
 
 	Ref<PDFExtGState> ext_graphic_state_create();
 
-#if 0
-	/*--- Shading patterns ---------------------------------------------------*/
-
-	/* Notes for docs:
-	 * - ShadingType must be HPDF_SHADING_FREE_FORM_TRIANGLE_MESH (the only
-	 *   defined option...)
-	 * - colorSpace must be HPDF_CS_DEVICE_RGB for now.
-	 */
-	HPDF_EXPORT(HPDF_Shading)
-	HPDF_Shading_New(HPDF_Doc pdf,
-			HPDF_ShadingType type,
-			HPDF_ColorSpace colorSpace,
-			HPDF_REAL xMin, HPDF_REAL xMax,
-			HPDF_REAL yMin, HPDF_REAL yMax);
-
-#endif
+	Ref<PDFShading> shading_new(const Vector2 &p_min, const Vector2 &p_max);
 
 #if 0
 	Likely not needed
