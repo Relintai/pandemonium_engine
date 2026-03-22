@@ -240,9 +240,13 @@ uint32_t PDFPage::end_text() {
 }
 
 uint32_t PDFPage::set_font_and_size(const Ref<PDFFont> &p_font, float p_size) {
-	ERR_FAIL_COND_V(!p_font.is_valid(), -1);
+	HPDF_Font hpdf_font = NULL;
 
-	_status = HPDF_Page_SetFontAndSize((HPDF_Page)_page, (HPDF_Font)p_font->_get_hpdf_font(), p_size);
+	if (p_font.is_valid()) {
+		hpdf_font = (HPDF_Font)p_font->_get_hpdf_font();
+	}
+
+	_status = HPDF_Page_SetFontAndSize((HPDF_Page)_page, hpdf_font, p_size);
 
 	return _status;
 }
