@@ -151,6 +151,20 @@ float PDFPage::line_width_get() {
 	return HPDF_Page_GetLineWidth((HPDF_Page)_page);
 }
 
+PDFPage::LineCap PDFPage::line_cap_get() {
+	HPDF_LineCap lc = HPDF_Page_GetLineCap((HPDF_Page)_page);
+
+	return static_cast<LineCap>(lc);
+}
+PDFPage::LineJoin PDFPage::line_join_get() {
+	HPDF_LineJoin lj = HPDF_Page_GetLineJoin((HPDF_Page)_page);
+
+	return static_cast<LineJoin>(lj);
+}
+float PDFPage::miter_limit_get() {
+	return HPDF_Page_GetMiterLimit((HPDF_Page)_page);
+}
+
 uint32_t PDFPage::begin_text() {
 	_status = HPDF_Page_BeginText((HPDF_Page)_page);
 
@@ -508,6 +522,11 @@ void PDFPage::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("line_width_get"), &PDFPage::line_width_get);
 
+	ClassDB::bind_method(D_METHOD("line_cap_get"), &PDFPage::line_cap_get);
+	ClassDB::bind_method(D_METHOD("line_join_get"), &PDFPage::line_join_get);
+
+	ClassDB::bind_method(D_METHOD("miter_limit_get"), &PDFPage::miter_limit_get);
+
 	ClassDB::bind_method(D_METHOD("begin_text"), &PDFPage::begin_text);
 	ClassDB::bind_method(D_METHOD("end_text"), &PDFPage::end_text);
 	ClassDB::bind_method(D_METHOD("set_font_and_size", "font", "size"), &PDFPage::set_font_and_size);
@@ -543,4 +562,14 @@ void PDFPage::_bind_methods() {
 
 	BIND_ENUM_CONSTANT(PAGE_DIRECTION_PORTRAIT);
 	BIND_ENUM_CONSTANT(PAGE_DIRECTION_LANDSCAPE);
+
+	BIND_ENUM_CONSTANT(HPDF_BUTT_END);
+	BIND_ENUM_CONSTANT(HPDF_ROUND_END);
+	BIND_ENUM_CONSTANT(HPDF_PROJECTING_SQUARE_END);
+	BIND_ENUM_CONSTANT(HPDF_LINECAP_EOF);
+
+	BIND_ENUM_CONSTANT(HPDF_MITER_JOIN);
+	BIND_ENUM_CONSTANT(HPDF_ROUND_JOIN);
+	BIND_ENUM_CONSTANT(HPDF_BEVEL_JOIN);
+	BIND_ENUM_CONSTANT(HPDF_LINEJOIN_EOF);
 }

@@ -70,6 +70,20 @@ public:
 		PAGE_DIRECTION_LANDSCAPE
 	};
 
+	enum LineCap {
+		HPDF_BUTT_END = 0,
+		HPDF_ROUND_END,
+		HPDF_PROJECTING_SQUARE_END,
+		HPDF_LINECAP_EOF
+	};
+
+	enum LineJoin {
+		HPDF_MITER_JOIN = 0,
+		HPDF_ROUND_JOIN,
+		HPDF_BEVEL_JOIN,
+		HPDF_LINEJOIN_EOF
+	};
+
 	float get_width();
 	void set_width(const float p_width);
 
@@ -97,16 +111,13 @@ public:
 
 	float line_width_get();
 
+	LineCap line_cap_get();
+	LineJoin line_join_get();
+
+	float miter_limit_get();
+
+
 #if 0
-	HPDF_EXPORT(HPDF_LineCap)
-	HPDF_Page_GetLineCap(HPDF_Page page);
-
-	HPDF_EXPORT(HPDF_LineJoin)
-	HPDF_Page_GetLineJoin(HPDF_Page page);
-
-	HPDF_EXPORT(HPDF_REAL)
-	HPDF_Page_GetMiterLimit(HPDF_Page page);
-
 	HPDF_EXPORT(HPDF_DashMode)
 	HPDF_Page_GetDash(HPDF_Page page);
 
@@ -804,5 +815,7 @@ protected:
 VARIANT_ENUM_CAST(PDFPage::PageBoundary);
 VARIANT_ENUM_CAST(PDFPage::PageSizes);
 VARIANT_ENUM_CAST(PDFPage::PageDirection);
+VARIANT_ENUM_CAST(PDFPage::LineCap);
+VARIANT_ENUM_CAST(PDFPage::LineJoin);
 
 #endif
