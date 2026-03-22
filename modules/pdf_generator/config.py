@@ -25,6 +25,7 @@ def get_doc_classes():
         "PDFEncoder",
         "PDFDict",
         "PDFDate",
+        "PDFDashMode",
     ]
 
 def get_doc_path():

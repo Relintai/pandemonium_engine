@@ -36,6 +36,7 @@
 
 class PDFFont;
 class PDFImage;
+class PDFDashMode;
 
 class PDFPage : public Reference {
 	GDCLASS(PDFPage, Reference);
@@ -116,11 +117,9 @@ public:
 
 	float miter_limit_get();
 
+	Ref<PDFDashMode> dash_get();
 
 #if 0
-	HPDF_EXPORT(HPDF_DashMode)
-	HPDF_Page_GetDash(HPDF_Page page);
-
 	HPDF_EXPORT(HPDF_REAL)
 	HPDF_Page_GetFlat(HPDF_Page page);
 

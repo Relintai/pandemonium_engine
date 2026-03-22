@@ -1,5 +1,8 @@
+#ifndef PDF_DASH_MODE_H
+#define PDF_DASH_MODE_H
+
 /*************************************************************************/
-/*  register_types.cpp                                                   */
+/*  pdf_dash_mode.h                                                      */
 /*************************************************************************/
 /*                         This file is part of:                         */
 /*                          PANDEMONIUM ENGINE                           */
@@ -29,47 +32,37 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "register_types.h"
+#include "core/object/reference.h"
 
-#include "pdf_3d_measure.h"
-#include "pdf_annotation.h"
-#include "pdf_destination.h"
-#include "pdf_document.h"
-#include "pdf_embedded_file.h"
-#include "pdf_ex_data.h"
-#include "pdf_ext_g_state.h"
-#include "pdf_font.h"
-#include "pdf_image.h"
-#include "pdf_outline.h"
-#include "pdf_page.h"
-#include "pdf_shading.h"
-#include "pdf_x_object.h"
-#include "pdf_encoder.h"
-#include "pdf_dict.h"
-#include "pdf_date.h"
-#include "pdf_dash_mode.h"
+class PDFDashMode : public Reference {
+	GDCLASS(PDFDashMode, Reference);
 
-void register_pdf_generator_types(ModuleRegistrationLevel p_level) {
-	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
-		ClassDB::register_class<PDFDocument>();
-		ClassDB::register_class<PDFPage>();
-		ClassDB::register_class<PDFFont>();
-		ClassDB::register_class<PDFImage>();
-		ClassDB::register_class<PDFOutline>();
-		ClassDB::register_class<PDFAnnotation>();
-		ClassDB::register_class<PDFDestination>();
-		ClassDB::register_class<PDF3DMeasure>();
-		ClassDB::register_class<PDFEmbeddedFile>();
-		ClassDB::register_class<PDFExData>();
-		ClassDB::register_class<PDFExtGState>();
-		ClassDB::register_class<PDFShading>();
-		ClassDB::register_class<PDFXObject>();
-		ClassDB::register_class<PDFEncoder>();
-		ClassDB::register_class<PDFDict>();
-		ClassDB::register_class<PDFDate>();
-		ClassDB::register_class<PDFDashMode>();
-	}
-}
+public:
+	enum {
+		MAX_PATTERN_ELEMENT_COUNT = 8,
+	};
 
-void unregister_pdf_generator_types(ModuleRegistrationLevel p_level) {
-}
+	uint32_t get_num_elements() const;
+	void set_num_elements(const uint32_t p_num);
+
+	float get_phase() const;
+	void set_phase(const float p_phase);
+
+	float get_pattern_element(const int p_index) const;
+	void set_pattern_element(const int p_index, const float p_value);
+
+	PDFDashMode();
+	~PDFDashMode();
+
+	float *_get_ptn();
+	void _setup(float *p_ptn, uint32_t p_num, float p_phase);
+
+protected:
+	static void _bind_methods();
+
+	float _pattern[MAX_PATTERN_ELEMENT_COUNT];
+	uint32_t _num_pattern;
+	float _phase;
+};
+
+#endif

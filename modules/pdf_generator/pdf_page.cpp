@@ -36,6 +36,7 @@
 #include "hpdf_font.h"
 #include "hpdf_pages.h"
 
+#include "pdf_dash_mode.h"
 #include "pdf_font.h"
 #include "pdf_image.h"
 
@@ -163,6 +164,15 @@ PDFPage::LineJoin PDFPage::line_join_get() {
 }
 float PDFPage::miter_limit_get() {
 	return HPDF_Page_GetMiterLimit((HPDF_Page)_page);
+}
+
+Ref<PDFDashMode> PDFPage::dash_get() {
+	HPDF_DashMode dm = HPDF_Page_GetDash((HPDF_Page)_page);
+
+	Ref<PDFDashMode> r;
+	r.instance();
+	r->_setup(dm.ptn, dm.num_ptn, dm.phase);
+	return r;
 }
 
 uint32_t PDFPage::begin_text() {
@@ -526,6 +536,8 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("line_join_get"), &PDFPage::line_join_get);
 
 	ClassDB::bind_method(D_METHOD("miter_limit_get"), &PDFPage::miter_limit_get);
+
+	ClassDB::bind_method(D_METHOD("dash_get"), &PDFPage::dash_get);
 
 	ClassDB::bind_method(D_METHOD("begin_text"), &PDFPage::begin_text);
 	ClassDB::bind_method(D_METHOD("end_text"), &PDFPage::end_text);

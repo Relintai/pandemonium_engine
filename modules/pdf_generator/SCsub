@@ -46,6 +46,7 @@ sources = [
     "pdf_encoder.cpp",
     "pdf_dict.cpp",
     "pdf_date.cpp",
+    "pdf_dash_mode.cpp",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':
