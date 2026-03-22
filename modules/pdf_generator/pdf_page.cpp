@@ -108,6 +108,49 @@ float PDFPage::measure_text(const String &p_text, float p_width, bool p_word_wra
 	return result;
 }
 
+uint16_t PDFPage::g_mode_get() {
+	return HPDF_Page_GetGMode((HPDF_Page)_page);
+}
+
+Vector2 PDFPage::current_pos_get() {
+	HPDF_Point p = HPDF_Page_GetCurrentPos((HPDF_Page)_page);
+
+	return Vector2(p.x, p.y);
+}
+Vector2 PDFPage::current_text_pos_get() {
+	HPDF_Point p = HPDF_Page_GetCurrentTextPos((HPDF_Page)_page);
+
+	return Vector2(p.x, p.y);
+}
+
+Ref<PDFFont> PDFPage::current_font_get() {
+	HPDF_Font hpdf_font = HPDF_Page_GetCurrentFont((HPDF_Page)_page);
+
+	if (!hpdf_font) {
+		return Ref<PDFFont>();
+	}
+
+	Ref<PDFFont> font;
+	font.instance();
+	font->_set_hpdf_font(hpdf_font);
+	return font;
+}
+
+float PDFPage::current_font_size_get() {
+	return HPDF_Page_GetCurrentFontSize((HPDF_Page)_page);
+}
+
+Transform2D PDFPage::trans_matrix_get() {
+	HPDF_TransMatrix m = HPDF_Page_GetTransMatrix((HPDF_Page)_page);
+
+	Transform2D t = Transform2D(m.a, m.b, m.c, m.d, m.x, m.y);
+	return t;
+}
+
+float PDFPage::line_width_get() {
+	return HPDF_Page_GetLineWidth((HPDF_Page)_page);
+}
+
 uint32_t PDFPage::begin_text() {
 	_status = HPDF_Page_BeginText((HPDF_Page)_page);
 
@@ -452,6 +495,18 @@ void PDFPage::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("text_width", "text"), &PDFPage::text_width);
 	ClassDB::bind_method(D_METHOD("measure_text", "text", "width", "word_wrap"), &PDFPage::measure_text);
+
+	ClassDB::bind_method(D_METHOD("g_mode_get"), &PDFPage::g_mode_get);
+
+	ClassDB::bind_method(D_METHOD("current_pos_get"), &PDFPage::current_pos_get);
+	ClassDB::bind_method(D_METHOD("current_text_pos_get"), &PDFPage::current_text_pos_get);
+
+	ClassDB::bind_method(D_METHOD("current_font_get"), &PDFPage::current_font_get);
+	ClassDB::bind_method(D_METHOD("current_font_size_get"), &PDFPage::current_font_size_get);
+
+	ClassDB::bind_method(D_METHOD("trans_matrix_get"), &PDFPage::trans_matrix_get);
+
+	ClassDB::bind_method(D_METHOD("line_width_get"), &PDFPage::line_width_get);
 
 	ClassDB::bind_method(D_METHOD("begin_text"), &PDFPage::begin_text);
 	ClassDB::bind_method(D_METHOD("end_text"), &PDFPage::end_text);

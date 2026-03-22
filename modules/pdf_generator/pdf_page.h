@@ -85,28 +85,19 @@ public:
 	float text_width(const String &p_text);
 	float measure_text(const String &p_text, float p_width, bool p_word_wrap);
 
+	uint16_t g_mode_get();
+
+	Vector2 current_pos_get();
+	Vector2 current_text_pos_get();
+
+	Ref<PDFFont> current_font_get();
+	float current_font_size_get();
+
+	Transform2D trans_matrix_get();
+
+	float line_width_get();
+
 #if 0
-	HPDF_EXPORT(HPDF_UINT16)
-	HPDF_Page_GetGMode(HPDF_Page page);
-
-	HPDF_EXPORT(HPDF_Point)
-	HPDF_Page_GetCurrentPos(HPDF_Page page);
-
-	HPDF_EXPORT(HPDF_Point)
-	HPDF_Page_GetCurrentTextPos(HPDF_Page page);
-
-	HPDF_EXPORT(HPDF_Font)
-	HPDF_Page_GetCurrentFont(HPDF_Page page);
-
-	HPDF_EXPORT(HPDF_REAL)
-	HPDF_Page_GetCurrentFontSize(HPDF_Page page);
-
-	HPDF_EXPORT(HPDF_TransMatrix)
-	HPDF_Page_GetTransMatrix(HPDF_Page page);
-
-	HPDF_EXPORT(HPDF_REAL)
-	HPDF_Page_GetLineWidth(HPDF_Page page);
-
 	HPDF_EXPORT(HPDF_LineCap)
 	HPDF_Page_GetLineCap(HPDF_Page page);
 
