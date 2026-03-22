@@ -368,6 +368,54 @@ uint32_t PDFPage::path_close() {
 	return _status;
 }
 
+/*--- Path painting operator ---------------------------------------------*/
+
+uint32_t PDFPage::path_stroke() {
+	_status = HPDF_Page_Stroke((HPDF_Page)_page);
+
+	return _status;
+}
+uint32_t PDFPage::path_stroke_close() {
+	_status = HPDF_Page_ClosePathStroke((HPDF_Page)_page);
+
+	return _status;
+}
+uint32_t PDFPage::path_fill() {
+	_status = HPDF_Page_Fill((HPDF_Page)_page);
+
+	return _status;
+}
+uint32_t PDFPage::path_eo_fill() {
+	_status = HPDF_Page_Eofill((HPDF_Page)_page);
+
+	return _status;
+}
+uint32_t PDFPage::path_fill_stroke() {
+	_status = HPDF_Page_FillStroke((HPDF_Page)_page);
+
+	return _status;
+}
+uint32_t PDFPage::path_eo_fill_stroke() {
+	_status = HPDF_Page_EofillStroke((HPDF_Page)_page);
+
+	return _status;
+}
+uint32_t PDFPage::path_fill_stroke_close() {
+	_status = HPDF_Page_ClosePathFillStroke((HPDF_Page)_page);
+
+	return _status;
+}
+uint32_t PDFPage::path_eo_fill_stroke_close() {
+	_status = HPDF_Page_ClosePathEofillStroke((HPDF_Page)_page);
+
+	return _status;
+}
+uint32_t PDFPage::path_end() {
+	_status = HPDF_Page_EndPath((HPDF_Page)_page);
+
+	return _status;
+}
+
 /*--- Special graphic state operator --------------------------------------*/
 
 uint32_t PDFPage::g_save() {
@@ -792,6 +840,16 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("path_curve_to_3", "end_point"), &PDFPage::path_curve_to_3);
 	ClassDB::bind_method(D_METHOD("path_rectangle", "rect"), &PDFPage::path_rectangle);
 	ClassDB::bind_method(D_METHOD("path_close"), &PDFPage::path_close);
+
+	ClassDB::bind_method(D_METHOD("path_stroke"), &PDFPage::path_stroke);
+	ClassDB::bind_method(D_METHOD("path_stroke_close"), &PDFPage::path_stroke_close);
+	ClassDB::bind_method(D_METHOD("path_fill"), &PDFPage::path_fill);
+	ClassDB::bind_method(D_METHOD("path_eo_fill"), &PDFPage::path_eo_fill);
+	ClassDB::bind_method(D_METHOD("path_fill_stroke"), &PDFPage::path_fill_stroke);
+	ClassDB::bind_method(D_METHOD("path_eo_fill_stroke"), &PDFPage::path_eo_fill_stroke);
+	ClassDB::bind_method(D_METHOD("path_fill_stroke_close"), &PDFPage::path_fill_stroke_close);
+	ClassDB::bind_method(D_METHOD("path_eo_fill_stroke_close"), &PDFPage::path_eo_fill_stroke_close);
+	ClassDB::bind_method(D_METHOD("path_end"), &PDFPage::path_end);
 
 	ClassDB::bind_method(D_METHOD("begin_text"), &PDFPage::begin_text);
 	ClassDB::bind_method(D_METHOD("end_text"), &PDFPage::end_text);

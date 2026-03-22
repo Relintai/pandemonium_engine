@@ -185,45 +185,17 @@ public:
 	uint32_t path_rectangle(const Rect2 &p_rect);
 	uint32_t path_close();
 
+	uint32_t path_stroke();
+	uint32_t path_stroke_close();
+	uint32_t path_fill();
+	uint32_t path_eo_fill();
+	uint32_t path_fill_stroke();
+	uint32_t path_eo_fill_stroke();
+	uint32_t path_fill_stroke_close();
+	uint32_t path_eo_fill_stroke_close();
+	uint32_t path_end();
+
 #if 0
-	/*--- Path painting operator ---------------------------------------------*/
-
-	/* S */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_Stroke(HPDF_Page page);
-
-	/* s */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_ClosePathStroke(HPDF_Page page);
-
-	/* f */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_Fill(HPDF_Page page);
-
-	/* f* */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_Eofill(HPDF_Page page);
-
-	/* B */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_FillStroke(HPDF_Page page);
-
-	/* B* */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_EofillStroke(HPDF_Page page);
-
-	/* b */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_ClosePathFillStroke(HPDF_Page page);
-
-	/* b* */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_ClosePathEofillStroke(HPDF_Page page);
-
-	/* n */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_EndPath(HPDF_Page page);
-
 	/*--- Clipping paths operator --------------------------------------------*/
 
 	/* W */
