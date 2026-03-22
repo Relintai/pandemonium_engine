@@ -210,6 +210,12 @@ uint32_t PDFPage::set_font_and_size(const Ref<PDFFont> &p_font, float p_size) {
 	return _status;
 }
 
+PDFPage::TextRenderingMode PDFPage::text_rendering_mode_get() {
+	HPDF_TextRenderingMode trm = HPDF_Page_GetTextRenderingMode((HPDF_Page)_page);
+
+	return static_cast<TextRenderingMode>(trm);
+}
+
 #if 0
 /*--- Text state ---------------------------------------------------------*/
 
@@ -561,6 +567,8 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("horizontal_scalling_get"), &PDFPage::horizontal_scalling_get);
 	ClassDB::bind_method(D_METHOD("text_leading_get"), &PDFPage::text_leading_get);
 
+	ClassDB::bind_method(D_METHOD("text_rendering_mode_get"), &PDFPage::text_rendering_mode_get);
+
 	ClassDB::bind_method(D_METHOD("begin_text"), &PDFPage::begin_text);
 	ClassDB::bind_method(D_METHOD("end_text"), &PDFPage::end_text);
 	ClassDB::bind_method(D_METHOD("set_font_and_size", "font", "size"), &PDFPage::set_font_and_size);
@@ -597,13 +605,23 @@ void PDFPage::_bind_methods() {
 	BIND_ENUM_CONSTANT(PAGE_DIRECTION_PORTRAIT);
 	BIND_ENUM_CONSTANT(PAGE_DIRECTION_LANDSCAPE);
 
-	BIND_ENUM_CONSTANT(HPDF_BUTT_END);
-	BIND_ENUM_CONSTANT(HPDF_ROUND_END);
-	BIND_ENUM_CONSTANT(HPDF_PROJECTING_SQUARE_END);
-	BIND_ENUM_CONSTANT(HPDF_LINECAP_EOF);
+	BIND_ENUM_CONSTANT(LINE_CAP_BUTT_END);
+	BIND_ENUM_CONSTANT(LINE_CAP_ROUND_END);
+	BIND_ENUM_CONSTANT(LINE_CAP_PROJECTING_SQUARE_END);
+	BIND_ENUM_CONSTANT(LINE_CAP_LINECAP_EOF);
 
-	BIND_ENUM_CONSTANT(HPDF_MITER_JOIN);
-	BIND_ENUM_CONSTANT(HPDF_ROUND_JOIN);
-	BIND_ENUM_CONSTANT(HPDF_BEVEL_JOIN);
-	BIND_ENUM_CONSTANT(HPDF_LINEJOIN_EOF);
+	BIND_ENUM_CONSTANT(LINE_JOIN_MITER_JOIN);
+	BIND_ENUM_CONSTANT(LINE_JOIN_ROUND_JOIN);
+	BIND_ENUM_CONSTANT(LINE_JOIN_BEVEL_JOIN);
+	BIND_ENUM_CONSTANT(LINE_JOIN_EOF);
+
+	BIND_ENUM_CONSTANT(TEXT_RENDERING_MODE_FILL);
+	BIND_ENUM_CONSTANT(TEXT_RENDERING_MODE_STROKE);
+	BIND_ENUM_CONSTANT(TEXT_RENDERING_MODE_FILL_THEN_STROKE);
+	BIND_ENUM_CONSTANT(TEXT_RENDERING_MODE_INVISIBLE);
+	BIND_ENUM_CONSTANT(TEXT_RENDERING_MODE_FILL_CLIPPING);
+	BIND_ENUM_CONSTANT(TEXT_RENDERING_MODE_STROKE_CLIPPING);
+	BIND_ENUM_CONSTANT(TEXT_RENDERING_MODE_FILL_STROKE_CLIPPING);
+	BIND_ENUM_CONSTANT(TEXT_RENDERING_MODE_CLIPPING);
+	BIND_ENUM_CONSTANT(TEXT_RENDERING_MODE_EOF);
 }
