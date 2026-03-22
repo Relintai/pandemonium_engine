@@ -125,15 +125,23 @@ public:
 	Transform2D trans_matrix_get();
 
 	float line_width_get();
+	void line_width_set(const float p_value);
 
 	LineCap line_cap_get();
+	void line_cap_set(const LineCap p_value);
+
 	LineJoin line_join_get();
+	void line_join_set(const LineJoin p_value);
 
 	float miter_limit_get();
+	void miter_limit_set(const float p_value);
 
 	Ref<PDFDashMode> dash_get();
+	void dash_set(const Ref<PDFDashMode> &p_mode);
 
 	float flat_get();
+	void flat_set(const float p_value);
+
 	float char_space_get();
 	float word_space_get();
 	float horizontal_scalling_get();
@@ -165,42 +173,7 @@ public:
 
 	/*--- General graphics state ---------------------------------------------*/
 
-	/* w */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetLineWidth(HPDF_Page page,
-			HPDF_REAL line_width);
-
-	/* J */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetLineCap(HPDF_Page page,
-			HPDF_LineCap line_cap);
-
-	/* j */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetLineJoin(HPDF_Page page,
-			HPDF_LineJoin line_join);
-
-	/* M */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetMiterLimit(HPDF_Page page,
-			HPDF_REAL miter_limit);
-
-	/* d */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetDash(HPDF_Page page,
-			const HPDF_REAL *dash_ptn,
-			HPDF_UINT num_param,
-			HPDF_REAL phase);
-
-	/* ri --not implemented yet */
-
-	/* i */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetFlat(HPDF_Page page,
-			HPDF_REAL flatness);
-
 	/* gs */
-
 	HPDF_EXPORT(HPDF_STATUS)
 	HPDF_Page_SetExtGState(HPDF_Page page,
 			HPDF_ExtGState ext_gstate);

@@ -54,7 +54,7 @@ public:
 	PDFDashMode();
 	~PDFDashMode();
 
-	float *_get_ptn();
+	const float *_get_ptn() const;
 	void _setup(float *p_ptn, uint32_t p_num, float p_phase);
 
 protected:

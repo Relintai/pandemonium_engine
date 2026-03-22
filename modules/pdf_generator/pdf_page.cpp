@@ -151,19 +151,37 @@ Transform2D PDFPage::trans_matrix_get() {
 float PDFPage::line_width_get() {
 	return HPDF_Page_GetLineWidth((HPDF_Page)_page);
 }
+void PDFPage::line_width_set(const float p_value) {
+	_status = HPDF_Page_SetLineWidth((HPDF_Page)_page, p_value);
+}
 
 PDFPage::LineCap PDFPage::line_cap_get() {
 	HPDF_LineCap lc = HPDF_Page_GetLineCap((HPDF_Page)_page);
 
 	return static_cast<LineCap>(lc);
 }
+void PDFPage::line_cap_set(const LineCap p_value) {
+	HPDF_LineCap lc = static_cast<HPDF_LineCap>(p_value);
+
+	_status = HPDF_Page_SetLineCap((HPDF_Page)_page, lc);
+}
+
 PDFPage::LineJoin PDFPage::line_join_get() {
 	HPDF_LineJoin lj = HPDF_Page_GetLineJoin((HPDF_Page)_page);
 
 	return static_cast<LineJoin>(lj);
 }
+void PDFPage::line_join_set(const LineJoin p_value) {
+	HPDF_LineJoin lj = static_cast<HPDF_LineJoin>(p_value);
+
+	_status = HPDF_Page_SetLineJoin((HPDF_Page)_page, lj);
+}
+
 float PDFPage::miter_limit_get() {
 	return HPDF_Page_GetMiterLimit((HPDF_Page)_page);
+}
+void PDFPage::miter_limit_set(const float p_value) {
+	_status = HPDF_Page_SetMiterLimit((HPDF_Page)_page, p_value);
 }
 
 Ref<PDFDashMode> PDFPage::dash_get() {
@@ -174,10 +192,27 @@ Ref<PDFDashMode> PDFPage::dash_get() {
 	r->_setup(dm.ptn, dm.num_ptn, dm.phase);
 	return r;
 }
+void PDFPage::dash_set(const Ref<PDFDashMode> &p_mode) {
+	uint32_t num_ptn = 0;
+	float phase = 0;
+	float *ptn = NULL;
+
+	if (p_mode.is_valid()) {
+		num_ptn = p_mode->get_num_elements();
+		phase = p_mode->get_phase();
+		ptn = (float *)p_mode->_get_ptn();
+	}
+
+	_status = HPDF_Page_SetDash((HPDF_Page)_page, ptn, num_ptn, phase);
+}
 
 float PDFPage::flat_get() {
 	return HPDF_Page_GetFlat((HPDF_Page)_page);
 }
+void PDFPage::flat_set(const float p_value) {
+	_status = HPDF_Page_SetFlat((HPDF_Page)_page, p_value);
+}
+
 float PDFPage::char_space_get() {
 	return HPDF_Page_GetCharSpace((HPDF_Page)_page);
 }
@@ -607,15 +642,29 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("trans_matrix_get"), &PDFPage::trans_matrix_get);
 
 	ClassDB::bind_method(D_METHOD("line_width_get"), &PDFPage::line_width_get);
+	ClassDB::bind_method(D_METHOD("line_width_set", "val"), &PDFPage::line_width_set);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "line_width"), "line_width_set", "line_width_get");
 
 	ClassDB::bind_method(D_METHOD("line_cap_get"), &PDFPage::line_cap_get);
+	ClassDB::bind_method(D_METHOD("line_cap_set", "val"), &PDFPage::line_cap_set);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "line_cap", PROPERTY_HINT_ENUM, "Butt End,Round End,Projection Square End,EOF"), "line_cap_set", "line_cap_get");
+
 	ClassDB::bind_method(D_METHOD("line_join_get"), &PDFPage::line_join_get);
+	ClassDB::bind_method(D_METHOD("line_join_set", "val"), &PDFPage::line_join_set);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "line_join", PROPERTY_HINT_ENUM, "Miter Join,Round Join,Bevel Join,EOF"), "line_join_set", "line_join_get");
 
 	ClassDB::bind_method(D_METHOD("miter_limit_get"), &PDFPage::miter_limit_get);
+	ClassDB::bind_method(D_METHOD("miter_limit_set", "val"), &PDFPage::miter_limit_set);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "miter_limit"), "miter_limit_set", "miter_limit_get");
 
+	// Probably shouldn't be a property
 	ClassDB::bind_method(D_METHOD("dash_get"), &PDFPage::dash_get);
+	ClassDB::bind_method(D_METHOD("dash_set", "val"), &PDFPage::dash_set);
 
 	ClassDB::bind_method(D_METHOD("flat_get"), &PDFPage::flat_get);
+	ClassDB::bind_method(D_METHOD("flat_set", "val"), &PDFPage::flat_set);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "flat"), "flat_set", "flat_get");
+
 	ClassDB::bind_method(D_METHOD("char_space_get"), &PDFPage::char_space_get);
 	ClassDB::bind_method(D_METHOD("word_space_get"), &PDFPage::word_space_get);
 	ClassDB::bind_method(D_METHOD("horizontal_scalling_get"), &PDFPage::horizontal_scalling_get);

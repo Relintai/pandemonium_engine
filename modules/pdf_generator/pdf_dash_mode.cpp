@@ -66,7 +66,7 @@ PDFDashMode::PDFDashMode() {
 PDFDashMode::~PDFDashMode() {
 }
 
-float *PDFDashMode::_get_ptn() {
+const float *PDFDashMode::_get_ptn() const {
 	return _pattern;
 }
 void PDFDashMode::_setup(float *p_ptn, uint32_t p_num, float p_phase) {
