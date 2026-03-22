@@ -49,6 +49,27 @@ public:
 		PAGE_BOUNDARY_ARTBOX
 	};
 
+	enum PageSizes {
+		PAGE_SIZE_LETTER = 0,
+		PAGE_SIZE_LEGAL,
+		PAGE_SIZE_A3,
+		PAGE_SIZE_A4,
+		PAGE_SIZE_A5,
+		PAGE_SIZE_B4,
+		PAGE_SIZE_B5,
+		PAGE_SIZE_EXECUTIVE,
+		PAGE_SIZE_US4x6,
+		PAGE_SIZE_US4x8,
+		PAGE_SIZE_US5x7,
+		PAGE_SIZE_COMM10,
+		PAGE_SIZE_EOF
+	};
+
+	enum PageDirection {
+		PAGE_DIRECTION_PORTRAIT = 0,
+		PAGE_DIRECTION_LANDSCAPE
+	};
+
 	float get_width();
 	void set_width(const float p_width);
 
@@ -56,12 +77,9 @@ public:
 	void set_height(const float p_height);
 
 	uint32_t boundary_set(const PageBoundary p_boundary, const float p_left, const float p_bottom, const float p_right, const float p_top);
+	uint32_t size_set(const PageSizes p_size, const PageDirection p_direction);
 
 #if 0
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetSize(HPDF_Page page,
-			HPDF_PageSizes size,
-			HPDF_PageDirection direction);
 
 	HPDF_EXPORT(HPDF_STATUS)
 	HPDF_Page_SetRotate(HPDF_Page page,
@@ -819,5 +837,7 @@ protected:
 };
 
 VARIANT_ENUM_CAST(PDFPage::PageBoundary);
+VARIANT_ENUM_CAST(PDFPage::PageSizes);
+VARIANT_ENUM_CAST(PDFPage::PageDirection);
 
 #endif

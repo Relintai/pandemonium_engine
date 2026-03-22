@@ -76,6 +76,14 @@ uint32_t PDFPage::boundary_set(const PageBoundary p_boundary, const float p_left
 
 	return _status;
 }
+uint32_t PDFPage::size_set(const PageSizes p_size, const PageDirection p_direction) {
+	HPDF_PageSizes size = static_cast<HPDF_PageSizes>(p_size);
+	HPDF_PageDirection direction = static_cast<HPDF_PageDirection>(p_direction);
+
+	_status = HPDF_Page_SetSize((HPDF_Page)_page, size, direction);
+
+	return _status;
+}
 
 float PDFPage::text_width(const String &p_text) {
 	return HPDF_Page_TextWidth((HPDF_Page)_page, p_text.utf8().get_data());
@@ -418,6 +426,7 @@ void PDFPage::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "height"), "set_height", "get_height");
 
 	ClassDB::bind_method(D_METHOD("boundary_set", "boundary", "left", "bottom", "right", "top"), &PDFPage::boundary_set);
+	ClassDB::bind_method(D_METHOD("size_set", "size", "direction"), &PDFPage::size_set);
 
 	ClassDB::bind_method(D_METHOD("text_width", "text"), &PDFPage::text_width);
 
@@ -439,4 +448,21 @@ void PDFPage::_bind_methods() {
 	BIND_ENUM_CONSTANT(PAGE_BOUNDARY_BLEEDBOX);
 	BIND_ENUM_CONSTANT(PAGE_BOUNDARY_TRIMBOX);
 	BIND_ENUM_CONSTANT(PAGE_BOUNDARY_ARTBOX);
+
+	BIND_ENUM_CONSTANT(PAGE_SIZE_LETTER);
+	BIND_ENUM_CONSTANT(PAGE_SIZE_LEGAL);
+	BIND_ENUM_CONSTANT(PAGE_SIZE_A3);
+	BIND_ENUM_CONSTANT(PAGE_SIZE_A4);
+	BIND_ENUM_CONSTANT(PAGE_SIZE_A5);
+	BIND_ENUM_CONSTANT(PAGE_SIZE_B4);
+	BIND_ENUM_CONSTANT(PAGE_SIZE_B5);
+	BIND_ENUM_CONSTANT(PAGE_SIZE_EXECUTIVE);
+	BIND_ENUM_CONSTANT(PAGE_SIZE_US4x6);
+	BIND_ENUM_CONSTANT(PAGE_SIZE_US4x8);
+	BIND_ENUM_CONSTANT(PAGE_SIZE_US5x7);
+	BIND_ENUM_CONSTANT(PAGE_SIZE_COMM10);
+	BIND_ENUM_CONSTANT(PAGE_SIZE_EOF);
+
+	BIND_ENUM_CONSTANT(PAGE_DIRECTION_PORTRAIT);
+	BIND_ENUM_CONSTANT(PAGE_DIRECTION_LANDSCAPE);
 }
