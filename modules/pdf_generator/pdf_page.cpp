@@ -85,8 +85,27 @@ uint32_t PDFPage::size_set(const PageSizes p_size, const PageDirection p_directi
 	return _status;
 }
 
+uint32_t PDFPage::rotate_set(const uint16_t p_angle) {
+	_status = HPDF_Page_SetRotate((HPDF_Page)_page, p_angle);
+
+	return _status;
+}
+uint32_t PDFPage::zoom_set(const float p_zoom) {
+	_status = HPDF_Page_SetZoom((HPDF_Page)_page, p_zoom);
+
+	return _status;
+}
+
 float PDFPage::text_width(const String &p_text) {
 	return HPDF_Page_TextWidth((HPDF_Page)_page, p_text.utf8().get_data());
+}
+
+float PDFPage::measure_text(const String &p_text, float p_width, bool p_word_wrap) {
+	float result = 0;
+
+	_status = HPDF_Page_MeasureText((HPDF_Page)_page, p_text.utf8().get_data(), p_width, p_word_wrap, &result);
+
+	return result;
 }
 
 uint32_t PDFPage::begin_text() {
@@ -428,7 +447,11 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("boundary_set", "boundary", "left", "bottom", "right", "top"), &PDFPage::boundary_set);
 	ClassDB::bind_method(D_METHOD("size_set", "size", "direction"), &PDFPage::size_set);
 
+	ClassDB::bind_method(D_METHOD("rotate_set", "angle"), &PDFPage::rotate_set);
+	ClassDB::bind_method(D_METHOD("zoom_set", "zoom"), &PDFPage::zoom_set);
+
 	ClassDB::bind_method(D_METHOD("text_width", "text"), &PDFPage::text_width);
+	ClassDB::bind_method(D_METHOD("measure_text", "text", "width", "word_wrap"), &PDFPage::measure_text);
 
 	ClassDB::bind_method(D_METHOD("begin_text"), &PDFPage::begin_text);
 	ClassDB::bind_method(D_METHOD("end_text"), &PDFPage::end_text);

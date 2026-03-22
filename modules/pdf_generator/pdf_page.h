@@ -79,43 +79,21 @@ public:
 	uint32_t boundary_set(const PageBoundary p_boundary, const float p_left, const float p_bottom, const float p_right, const float p_top);
 	uint32_t size_set(const PageSizes p_size, const PageDirection p_direction);
 
-#if 0
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetRotate(HPDF_Page page,
-			HPDF_UINT16 angle);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetZoom(HPDF_Page page,
-			HPDF_REAL zoom);
-#endif
+	uint32_t rotate_set(const uint16_t p_angle);
+	uint32_t zoom_set(const float p_zoom);
 
 	float text_width(const String &p_text);
+	float measure_text(const String &p_text, float p_width, bool p_word_wrap);
 
 #if 0
-	HPDF_EXPORT(HPDF_UINT)
-	HPDF_Page_MeasureText(HPDF_Page page,
-			const char *text,
-			HPDF_REAL width,
-			HPDF_BOOL wordwrap,
-			HPDF_REAL *real_width);
-
 	HPDF_EXPORT(HPDF_UINT16)
 	HPDF_Page_GetGMode(HPDF_Page page);
 
 	HPDF_EXPORT(HPDF_Point)
 	HPDF_Page_GetCurrentPos(HPDF_Page page);
 
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_GetCurrentPos2(HPDF_Page page,
-			HPDF_Point *pos);
-
 	HPDF_EXPORT(HPDF_Point)
 	HPDF_Page_GetCurrentTextPos(HPDF_Page page);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_GetCurrentTextPos2(HPDF_Page page,
-			HPDF_Point *pos);
 
 	HPDF_EXPORT(HPDF_Font)
 	HPDF_Page_GetCurrentFont(HPDF_Page page);
@@ -158,10 +136,6 @@ public:
 
 	HPDF_EXPORT(HPDF_TextRenderingMode)
 	HPDF_Page_GetTextRenderingMode(HPDF_Page page);
-
-	/* This function is obsolete. Use HPDF_Page_GetTextRise.  */
-	HPDF_EXPORT(HPDF_REAL)
-	HPDF_Page_GetTextRaise(HPDF_Page page);
 
 	HPDF_EXPORT(HPDF_REAL)
 	HPDF_Page_GetTextRise(HPDF_Page page);
