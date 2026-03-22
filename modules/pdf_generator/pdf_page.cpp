@@ -175,6 +175,22 @@ Ref<PDFDashMode> PDFPage::dash_get() {
 	return r;
 }
 
+float PDFPage::flat_get() {
+	return HPDF_Page_GetFlat((HPDF_Page)_page);
+}
+float PDFPage::char_space_get() {
+	return HPDF_Page_GetCharSpace((HPDF_Page)_page);
+}
+float PDFPage::word_space_get() {
+	return HPDF_Page_GetWordSpace((HPDF_Page)_page);
+}
+float PDFPage::horizontal_scalling_get() {
+	return HPDF_Page_GetHorizontalScalling((HPDF_Page)_page);
+}
+float PDFPage::text_leading_get() {
+	return HPDF_Page_GetTextLeading((HPDF_Page)_page);
+}
+
 uint32_t PDFPage::begin_text() {
 	_status = HPDF_Page_BeginText((HPDF_Page)_page);
 
@@ -538,6 +554,12 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("miter_limit_get"), &PDFPage::miter_limit_get);
 
 	ClassDB::bind_method(D_METHOD("dash_get"), &PDFPage::dash_get);
+
+	ClassDB::bind_method(D_METHOD("flat_get"), &PDFPage::flat_get);
+	ClassDB::bind_method(D_METHOD("char_space_get"), &PDFPage::char_space_get);
+	ClassDB::bind_method(D_METHOD("word_space_get"), &PDFPage::word_space_get);
+	ClassDB::bind_method(D_METHOD("horizontal_scalling_get"), &PDFPage::horizontal_scalling_get);
+	ClassDB::bind_method(D_METHOD("text_leading_get"), &PDFPage::text_leading_get);
 
 	ClassDB::bind_method(D_METHOD("begin_text"), &PDFPage::begin_text);
 	ClassDB::bind_method(D_METHOD("end_text"), &PDFPage::end_text);

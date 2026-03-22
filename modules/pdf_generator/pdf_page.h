@@ -119,22 +119,13 @@ public:
 
 	Ref<PDFDashMode> dash_get();
 
+	float flat_get();
+	float char_space_get();
+	float word_space_get();
+	float horizontal_scalling_get();
+	float text_leading_get();
+
 #if 0
-	HPDF_EXPORT(HPDF_REAL)
-	HPDF_Page_GetFlat(HPDF_Page page);
-
-	HPDF_EXPORT(HPDF_REAL)
-	HPDF_Page_GetCharSpace(HPDF_Page page);
-
-	HPDF_EXPORT(HPDF_REAL)
-	HPDF_Page_GetWordSpace(HPDF_Page page);
-
-	HPDF_EXPORT(HPDF_REAL)
-	HPDF_Page_GetHorizontalScalling(HPDF_Page page);
-
-	HPDF_EXPORT(HPDF_REAL)
-	HPDF_Page_GetTextLeading(HPDF_Page page);
-
 	HPDF_EXPORT(HPDF_TextRenderingMode)
 	HPDF_Page_GetTextRenderingMode(HPDF_Page page);
 
