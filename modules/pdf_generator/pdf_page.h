@@ -39,6 +39,8 @@
 class PDFFont;
 class PDFImage;
 class PDFDashMode;
+class PDFExtGState;
+class PDFShading;
 
 class PDFPage : public Reference {
 	GDCLASS(PDFPage, Reference);
@@ -167,23 +169,8 @@ public:
 
 	uint32_t g_state_depth_get();
 
-#if 0
-	/*--------------------------------------------------------------------------*/
-	/*----- GRAPHICS OPERATORS -------------------------------------------------*/
-
-	/*--- General graphics state ---------------------------------------------*/
-
-	/* gs */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetExtGState(HPDF_Page page,
-			HPDF_ExtGState ext_gstate);
-
-	/* sh */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetShading(HPDF_Page page,
-			HPDF_Shading shading);
-
-#endif
+	uint32_t ext_g_state_set(const Ref<PDFExtGState> &p_ext_g_state);
+	uint32_t shading_set(const Ref<PDFShading> &p_shading);
 
 #if 0
 	/*--- Special graphic state operator --------------------------------------*/

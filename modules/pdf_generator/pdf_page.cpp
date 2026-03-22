@@ -37,8 +37,10 @@
 #include "hpdf_pages.h"
 
 #include "pdf_dash_mode.h"
+#include "pdf_ext_g_state.h"
 #include "pdf_font.h"
 #include "pdf_image.h"
+#include "pdf_shading.h"
 
 float PDFPage::get_width() {
 	if (!_page) {
@@ -303,6 +305,29 @@ Transform2D PDFPage::text_matrix_get() {
 }
 uint32_t PDFPage::g_state_depth_get() {
 	return HPDF_Page_GetGStateDepth((HPDF_Page)_page);
+}
+
+uint32_t PDFPage::ext_g_state_set(const Ref<PDFExtGState> &p_ext_g_state) {
+	HPDF_ExtGState ext_gstate = NULL;
+
+	if (p_ext_g_state.is_valid()) {
+		ext_gstate = (HPDF_ExtGState)p_ext_g_state->_get_hpdf_ext_g_state();
+	}
+
+	_status = HPDF_Page_SetExtGState((HPDF_Page)_page, ext_gstate);
+
+	return _status;
+}
+uint32_t PDFPage::shading_set(const Ref<PDFShading> &p_shading) {
+	HPDF_Shading shading = NULL;
+
+	if (p_shading.is_valid()) {
+		shading = (HPDF_Shading)p_shading->_get_hpdf_shading();
+	}
+
+	_status = HPDF_Page_SetShading((HPDF_Page)_page, shading);
+
+	return _status;
 }
 
 #if 0
@@ -689,6 +714,9 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("text_matrix_get"), &PDFPage::text_matrix_get);
 
 	ClassDB::bind_method(D_METHOD("g_state_depth_get"), &PDFPage::g_state_depth_get);
+
+	ClassDB::bind_method(D_METHOD("ext_g_state_set", "ext_g_state"), &PDFPage::ext_g_state_set);
+	ClassDB::bind_method(D_METHOD("shading_set", "shading"), &PDFPage::shading_set);
 
 	ClassDB::bind_method(D_METHOD("begin_text"), &PDFPage::begin_text);
 	ClassDB::bind_method(D_METHOD("end_text"), &PDFPage::end_text);
