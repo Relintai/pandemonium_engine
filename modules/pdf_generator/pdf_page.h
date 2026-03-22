@@ -145,13 +145,22 @@ public:
 	void flat_set(const float p_value);
 
 	float char_space_get();
+	void char_space_set(const float p_value);
+
 	float word_space_get();
+	void word_space_set(const float p_value);
+
 	float horizontal_scalling_get();
+	void horizontal_scalling_set(const float p_value);
+
 	float text_leading_get();
+	void text_leading_set(const float p_value);
 
 	TextRenderingMode text_rendering_mode_get();
+	void text_rendering_mode_set(const TextRenderingMode p_value);
 
 	float text_rise_get();
+	void text_rise_set(const float p_value);
 
 	Color rgb_fill_get();
 	Color rgb_stroke_get();
@@ -202,46 +211,6 @@ public:
 	uint32_t end_text();
 
 	uint32_t set_font_and_size(const Ref<PDFFont> &p_font, float p_size);
-
-#if 0
-	/*--- Text state ---------------------------------------------------------*/
-
-	/* Tc */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetCharSpace(HPDF_Page page,
-			HPDF_REAL value);
-
-	/* Tw */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetWordSpace(HPDF_Page page,
-			HPDF_REAL value);
-
-	/* Tz */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetHorizontalScalling(HPDF_Page page,
-			HPDF_REAL value);
-
-	/* TL */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetTextLeading(HPDF_Page page,
-			HPDF_REAL value);
-
-	/* Tf */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetFontAndSize(HPDF_Page page,
-			HPDF_Font font,
-			HPDF_REAL size);
-
-	/* Tr */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetTextRenderingMode(HPDF_Page page,
-			HPDF_TextRenderingMode mode);
-
-	/* Ts */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetTextRise(HPDF_Page page,
-			HPDF_REAL value);
-#endif
 
 	/*--- Text positioning ---------------------------------------------------*/
 

@@ -218,37 +218,29 @@ void PDFPage::flat_set(const float p_value) {
 float PDFPage::char_space_get() {
 	return HPDF_Page_GetCharSpace((HPDF_Page)_page);
 }
+void PDFPage::char_space_set(const float p_value) {
+	_status = HPDF_Page_SetCharSpace((HPDF_Page)_page, p_value);
+}
+
 float PDFPage::word_space_get() {
 	return HPDF_Page_GetWordSpace((HPDF_Page)_page);
 }
+void PDFPage::word_space_set(const float p_value) {
+	_status = HPDF_Page_SetWordSpace((HPDF_Page)_page, p_value);
+}
+
 float PDFPage::horizontal_scalling_get() {
 	return HPDF_Page_GetHorizontalScalling((HPDF_Page)_page);
 }
+void PDFPage::horizontal_scalling_set(const float p_value) {
+	_status = HPDF_Page_SetHorizontalScalling((HPDF_Page)_page, p_value);
+}
+
 float PDFPage::text_leading_get() {
 	return HPDF_Page_GetTextLeading((HPDF_Page)_page);
 }
-
-uint32_t PDFPage::begin_text() {
-	_status = HPDF_Page_BeginText((HPDF_Page)_page);
-
-	return _status;
-}
-uint32_t PDFPage::end_text() {
-	_status = HPDF_Page_EndText((HPDF_Page)_page);
-
-	return _status;
-}
-
-uint32_t PDFPage::set_font_and_size(const Ref<PDFFont> &p_font, float p_size) {
-	HPDF_Font hpdf_font = NULL;
-
-	if (p_font.is_valid()) {
-		hpdf_font = (HPDF_Font)p_font->_get_hpdf_font();
-	}
-
-	_status = HPDF_Page_SetFontAndSize((HPDF_Page)_page, hpdf_font, p_size);
-
-	return _status;
+void PDFPage::text_leading_set(const float p_value) {
+	_status = HPDF_Page_SetTextLeading((HPDF_Page)_page, p_value);
 }
 
 PDFPage::TextRenderingMode PDFPage::text_rendering_mode_get() {
@@ -256,9 +248,17 @@ PDFPage::TextRenderingMode PDFPage::text_rendering_mode_get() {
 
 	return static_cast<TextRenderingMode>(trm);
 }
+void PDFPage::text_rendering_mode_set(const TextRenderingMode p_value) {
+	HPDF_TextRenderingMode trm = static_cast<HPDF_TextRenderingMode>(p_value);
+
+	_status = HPDF_Page_SetTextRenderingMode((HPDF_Page)_page, trm);
+}
 
 float PDFPage::text_rise_get() {
 	return HPDF_Page_GetTextRise((HPDF_Page)_page);
+}
+void PDFPage::text_rise_set(const float p_value) {
+	_status = HPDF_Page_SetTextRise((HPDF_Page)_page, p_value);
 }
 
 Color PDFPage::rgb_fill_get() {
@@ -429,6 +429,31 @@ uint32_t PDFPage::clip() {
 }
 uint32_t PDFPage::eo_clip() {
 	_status = HPDF_Page_Eoclip((HPDF_Page)_page);
+
+	return _status;
+}
+
+/*--- Text state ---------------------------------------------------------*/
+
+uint32_t PDFPage::begin_text() {
+	_status = HPDF_Page_BeginText((HPDF_Page)_page);
+
+	return _status;
+}
+uint32_t PDFPage::end_text() {
+	_status = HPDF_Page_EndText((HPDF_Page)_page);
+
+	return _status;
+}
+
+uint32_t PDFPage::set_font_and_size(const Ref<PDFFont> &p_font, float p_size) {
+	HPDF_Font hpdf_font = NULL;
+
+	if (p_font.is_valid()) {
+		hpdf_font = (HPDF_Font)p_font->_get_hpdf_font();
+	}
+
+	_status = HPDF_Page_SetFontAndSize((HPDF_Page)_page, hpdf_font, p_size);
 
 	return _status;
 }
@@ -819,13 +844,28 @@ void PDFPage::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "flat"), "flat_set", "flat_get");
 
 	ClassDB::bind_method(D_METHOD("char_space_get"), &PDFPage::char_space_get);
+	ClassDB::bind_method(D_METHOD("char_space_set", "val"), &PDFPage::char_space_set);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "char_space"), "char_space_set", "char_space_get");
+
 	ClassDB::bind_method(D_METHOD("word_space_get"), &PDFPage::word_space_get);
+	ClassDB::bind_method(D_METHOD("word_space_set", "val"), &PDFPage::word_space_set);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "word_space"), "word_space_set", "word_space_get");
+
 	ClassDB::bind_method(D_METHOD("horizontal_scalling_get"), &PDFPage::horizontal_scalling_get);
+	ClassDB::bind_method(D_METHOD("horizontal_scalling_set", "val"), &PDFPage::horizontal_scalling_set);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "horizontal_scalling"), "horizontal_scalling_set", "horizontal_scalling_get");
+
 	ClassDB::bind_method(D_METHOD("text_leading_get"), &PDFPage::text_leading_get);
+	ClassDB::bind_method(D_METHOD("text_leading_set", "val"), &PDFPage::text_leading_set);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "text_leading"), "text_leading_set", "text_leading_get");
 
 	ClassDB::bind_method(D_METHOD("text_rendering_mode_get"), &PDFPage::text_rendering_mode_get);
+	ClassDB::bind_method(D_METHOD("text_rendering_mode_set", "val"), &PDFPage::text_rendering_mode_set);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "text_rendering_mode", PROPERTY_HINT_ENUM, "Fill,Stroke,Fill Then Stroke,invisible,Fill Clipping,Stroke Clipping,Fill Stroke Clipping,Clipping,EOF"), "text_rendering_mode_set", "text_rendering_mode_get");
 
 	ClassDB::bind_method(D_METHOD("text_rise_get"), &PDFPage::text_rise_get);
+	ClassDB::bind_method(D_METHOD("text_rise_set", "val"), &PDFPage::text_rise_set);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "text_rise"), "text_rise_set", "text_rise_get");
 
 	ClassDB::bind_method(D_METHOD("rgb_fill_get"), &PDFPage::rgb_fill_get);
 	ClassDB::bind_method(D_METHOD("rgb_stroke_get"), &PDFPage::rgb_stroke_get);
