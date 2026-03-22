@@ -216,6 +216,60 @@ PDFPage::TextRenderingMode PDFPage::text_rendering_mode_get() {
 	return static_cast<TextRenderingMode>(trm);
 }
 
+float PDFPage::text_rise_get() {
+	return HPDF_Page_GetTextRise((HPDF_Page)_page);
+}
+
+Color PDFPage::rgb_fill_get() {
+	HPDF_RGBColor hc = HPDF_Page_GetRGBFill((HPDF_Page)_page);
+
+	return Color(hc.r, hc.g, hc.b);
+}
+Color PDFPage::rgb_stroke_get() {
+	HPDF_RGBColor hc = HPDF_Page_GetRGBStroke((HPDF_Page)_page);
+
+	return Color(hc.r, hc.g, hc.b);
+}
+
+Vector4 PDFPage::cmyk_fill_get() {
+	HPDF_CMYKColor hc = HPDF_Page_GetCMYKFill((HPDF_Page)_page);
+
+	return Vector4(hc.c, hc.m, hc.y, hc.k);
+}
+Vector4 PDFPage::cmyk_stroke_get() {
+	HPDF_CMYKColor hc = HPDF_Page_GetCMYKFill((HPDF_Page)_page);
+
+	return Vector4(hc.c, hc.m, hc.y, hc.k);
+}
+
+float PDFPage::gray_fill_get() {
+	return HPDF_Page_GetGrayFill((HPDF_Page)_page);
+}
+float PDFPage::gray_stroke_get() {
+	return HPDF_Page_GetGrayStroke((HPDF_Page)_page);
+}
+
+PDFDocument::ColorSpace PDFPage::stroking_color_space_get() {
+	HPDF_ColorSpace cs = HPDF_Page_GetStrokingColorSpace((HPDF_Page)_page);
+
+	return static_cast<PDFDocument::ColorSpace>(cs);
+}
+PDFDocument::ColorSpace PDFPage::filling_color_space_get() {
+	HPDF_ColorSpace cs = HPDF_Page_GetFillingColorSpace((HPDF_Page)_page);
+
+	return static_cast<PDFDocument::ColorSpace>(cs);
+}
+
+Transform2D PDFPage::text_matrix_get() {
+	HPDF_TransMatrix m = HPDF_Page_GetTextMatrix((HPDF_Page)_page);
+
+	Transform2D t = Transform2D(m.a, m.b, m.c, m.d, m.x, m.y);
+	return t;
+}
+uint32_t PDFPage::g_state_depth_get() {
+	return HPDF_Page_GetGStateDepth((HPDF_Page)_page);
+}
+
 #if 0
 /*--- Text state ---------------------------------------------------------*/
 
@@ -568,6 +622,24 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("text_leading_get"), &PDFPage::text_leading_get);
 
 	ClassDB::bind_method(D_METHOD("text_rendering_mode_get"), &PDFPage::text_rendering_mode_get);
+
+	ClassDB::bind_method(D_METHOD("text_rise_get"), &PDFPage::text_rise_get);
+
+	ClassDB::bind_method(D_METHOD("rgb_fill_get"), &PDFPage::rgb_fill_get);
+	ClassDB::bind_method(D_METHOD("rgb_stroke_get"), &PDFPage::rgb_stroke_get);
+
+	ClassDB::bind_method(D_METHOD("cmyk_fill_get"), &PDFPage::cmyk_fill_get);
+	ClassDB::bind_method(D_METHOD("cmyk_stroke_get"), &PDFPage::cmyk_stroke_get);
+
+	ClassDB::bind_method(D_METHOD("gray_fill_get"), &PDFPage::gray_fill_get);
+	ClassDB::bind_method(D_METHOD("gray_stroke_get"), &PDFPage::gray_stroke_get);
+
+	ClassDB::bind_method(D_METHOD("stroking_color_space_get"), &PDFPage::stroking_color_space_get);
+	ClassDB::bind_method(D_METHOD("filling_color_space_get"), &PDFPage::filling_color_space_get);
+
+	ClassDB::bind_method(D_METHOD("text_matrix_get"), &PDFPage::text_matrix_get);
+
+	ClassDB::bind_method(D_METHOD("g_state_depth_get"), &PDFPage::g_state_depth_get);
 
 	ClassDB::bind_method(D_METHOD("begin_text"), &PDFPage::begin_text);
 	ClassDB::bind_method(D_METHOD("end_text"), &PDFPage::end_text);

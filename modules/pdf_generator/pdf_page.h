@@ -34,6 +34,8 @@
 
 #include "core/object/reference.h"
 
+#include "pdf_document.h"
+
 class PDFFont;
 class PDFImage;
 class PDFDashMode;
@@ -139,41 +141,23 @@ public:
 
 	TextRenderingMode text_rendering_mode_get();
 
-#if 0
-	HPDF_EXPORT(HPDF_REAL)
-	HPDF_Page_GetTextRise(HPDF_Page page);
+	float text_rise_get();
 
-	HPDF_EXPORT(HPDF_RGBColor)
-	HPDF_Page_GetRGBFill(HPDF_Page page);
+	Color rgb_fill_get();
+	Color rgb_stroke_get();
 
-	HPDF_EXPORT(HPDF_RGBColor)
-	HPDF_Page_GetRGBStroke(HPDF_Page page);
+	Vector4 cmyk_fill_get();
+	Vector4 cmyk_stroke_get();
 
-	HPDF_EXPORT(HPDF_CMYKColor)
-	HPDF_Page_GetCMYKFill(HPDF_Page page);
+	float gray_fill_get();
+	float gray_stroke_get();
 
-	HPDF_EXPORT(HPDF_CMYKColor)
-	HPDF_Page_GetCMYKStroke(HPDF_Page page);
+	PDFDocument::ColorSpace stroking_color_space_get();
+	PDFDocument::ColorSpace filling_color_space_get();
 
-	HPDF_EXPORT(HPDF_REAL)
-	HPDF_Page_GetGrayFill(HPDF_Page page);
+	Transform2D text_matrix_get();
 
-	HPDF_EXPORT(HPDF_REAL)
-	HPDF_Page_GetGrayStroke(HPDF_Page page);
-
-	HPDF_EXPORT(HPDF_ColorSpace)
-	HPDF_Page_GetStrokingColorSpace(HPDF_Page page);
-
-	HPDF_EXPORT(HPDF_ColorSpace)
-	HPDF_Page_GetFillingColorSpace(HPDF_Page page);
-
-	HPDF_EXPORT(HPDF_TransMatrix)
-	HPDF_Page_GetTextMatrix(HPDF_Page page);
-
-	HPDF_EXPORT(HPDF_UINT)
-	HPDF_Page_GetGStateDepth(HPDF_Page page);
-
-#endif
+	uint32_t g_state_depth_get();
 
 #if 0
 	/*--------------------------------------------------------------------------*/
