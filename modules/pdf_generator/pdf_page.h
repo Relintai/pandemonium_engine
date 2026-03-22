@@ -177,83 +177,13 @@ public:
 
 	uint32_t concat(const Transform2D &p_transform);
 
-#if 0
-	/*--- Special graphic state operator --------------------------------------*/
-
-	/* q */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_GSave(HPDF_Page page);
-
-	/* Q */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_GRestore(HPDF_Page page);
-
-	/* cm */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_Concat(HPDF_Page page,
-			HPDF_REAL a,
-			HPDF_REAL b,
-			HPDF_REAL c,
-			HPDF_REAL d,
-			HPDF_REAL x,
-			HPDF_REAL y);
-
-#endif
-
-#if 0
-	/*--- Path construction operator ------------------------------------------*/
-
-	/* m */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_MoveTo(HPDF_Page page,
-			HPDF_REAL x,
-			HPDF_REAL y);
-
-	/* l */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_LineTo(HPDF_Page page,
-			HPDF_REAL x,
-			HPDF_REAL y);
-
-	/* c */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_CurveTo(HPDF_Page page,
-			HPDF_REAL x1,
-			HPDF_REAL y1,
-			HPDF_REAL x2,
-			HPDF_REAL y2,
-			HPDF_REAL x3,
-			HPDF_REAL y3);
-
-	/* v */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_CurveTo2(HPDF_Page page,
-			HPDF_REAL x2,
-			HPDF_REAL y2,
-			HPDF_REAL x3,
-			HPDF_REAL y3);
-
-	/* y */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_CurveTo3(HPDF_Page page,
-			HPDF_REAL x1,
-			HPDF_REAL y1,
-			HPDF_REAL x3,
-			HPDF_REAL y3);
-
-	/* h */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_ClosePath(HPDF_Page page);
-
-	/* re */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_Rectangle(HPDF_Page page,
-			HPDF_REAL x,
-			HPDF_REAL y,
-			HPDF_REAL width,
-			HPDF_REAL height);
-
-#endif
+	uint32_t path_move_to(const Vector2 &p_position);
+	uint32_t path_line_to(const Vector2 &p_position);
+	uint32_t path_curve_to(const Vector2 &p_cp_start, const Vector2 &p_cp_end, const Vector2 &p_end_point);
+	uint32_t path_curve_to_2(const Vector2 &p_cp_end, const Vector2 &p_end_point);
+	uint32_t path_curve_to_3(const Vector2 &p_cp_start, const Vector2 &p_end_point);
+	uint32_t path_rectangle(const Rect2 &p_rect);
+	uint32_t path_close();
 
 #if 0
 	/*--- Path painting operator ---------------------------------------------*/

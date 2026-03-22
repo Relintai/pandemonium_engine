@@ -330,6 +330,44 @@ uint32_t PDFPage::shading_set(const Ref<PDFShading> &p_shading) {
 	return _status;
 }
 
+/*--- Path construction operator ------------------------------------------*/
+
+uint32_t PDFPage::path_move_to(const Vector2 &p_position) {
+	_status = HPDF_Page_MoveTo((HPDF_Page)_page, p_position.x, p_position.y);
+
+	return _status;
+}
+uint32_t PDFPage::path_line_to(const Vector2 &p_position) {
+	_status = HPDF_Page_LineTo((HPDF_Page)_page, p_position.x, p_position.y);
+
+	return _status;
+}
+uint32_t PDFPage::path_curve_to(const Vector2 &p_cp_start, const Vector2 &p_cp_end, const Vector2 &p_end_point) {
+	_status = HPDF_Page_CurveTo((HPDF_Page)_page, p_cp_start.x, p_cp_start.y, p_cp_end.x, p_cp_end.y, p_end_point.x, p_end_point.y);
+
+	return _status;
+}
+uint32_t PDFPage::path_curve_to_2(const Vector2 &p_cp_end, const Vector2 &p_end_point) {
+	_status = HPDF_Page_CurveTo2((HPDF_Page)_page, p_cp_end.x, p_cp_end.y, p_end_point.x, p_end_point.y);
+
+	return _status;
+}
+uint32_t PDFPage::path_curve_to_3(const Vector2 &p_cp_start, const Vector2 &p_end_point) {
+	_status = HPDF_Page_CurveTo3((HPDF_Page)_page, p_cp_start.x, p_cp_start.y, p_end_point.x, p_end_point.y);
+
+	return _status;
+}
+uint32_t PDFPage::path_rectangle(const Rect2 &p_rect) {
+	_status = HPDF_Page_Rectangle((HPDF_Page)_page, p_rect.position.x, p_rect.position.y, p_rect.size.width, p_rect.size.height);
+
+	return _status;
+}
+uint32_t PDFPage::path_close() {
+	_status = HPDF_Page_ClosePath((HPDF_Page)_page);
+
+	return _status;
+}
+
 /*--- Special graphic state operator --------------------------------------*/
 
 uint32_t PDFPage::g_save() {
@@ -746,6 +784,14 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("g_save"), &PDFPage::g_save);
 	ClassDB::bind_method(D_METHOD("g_restore"), &PDFPage::g_restore);
 	ClassDB::bind_method(D_METHOD("concat", "transform"), &PDFPage::concat);
+
+	ClassDB::bind_method(D_METHOD("path_move_to", "position"), &PDFPage::path_move_to);
+	ClassDB::bind_method(D_METHOD("path_line_to", "position"), &PDFPage::path_line_to);
+	ClassDB::bind_method(D_METHOD("path_curve_to", "cp_start", "cp_end", "end_point"), &PDFPage::path_curve_to);
+	ClassDB::bind_method(D_METHOD("path_curve_to_2", "cp_end", "end_point"), &PDFPage::path_curve_to_2);
+	ClassDB::bind_method(D_METHOD("path_curve_to_3", "end_point"), &PDFPage::path_curve_to_3);
+	ClassDB::bind_method(D_METHOD("path_rectangle", "rect"), &PDFPage::path_rectangle);
+	ClassDB::bind_method(D_METHOD("path_close"), &PDFPage::path_close);
 
 	ClassDB::bind_method(D_METHOD("begin_text"), &PDFPage::begin_text);
 	ClassDB::bind_method(D_METHOD("end_text"), &PDFPage::end_text);
