@@ -41,23 +41,23 @@ class PDFPage : public Reference {
 	GDCLASS(PDFPage, Reference);
 
 public:
+	enum PageBoundary {
+		PAGE_BOUNDARY_MEDIABOX = 0,
+		PAGE_BOUNDARY_CROPBOX,
+		PAGE_BOUNDARY_BLEEDBOX,
+		PAGE_BOUNDARY_TRIMBOX,
+		PAGE_BOUNDARY_ARTBOX
+	};
+
 	float get_width();
 	void set_width(const float p_width);
 
 	float get_height();
 	void set_height(const float p_height);
 
-	float text_width(const String &p_text);
+	uint32_t boundary_set(const PageBoundary p_boundary, const float p_left, const float p_bottom, const float p_right, const float p_top);
 
 #if 0
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetBoundary(HPDF_Page page,
-			HPDF_PageBoundary boundary,
-			HPDF_REAL left,
-			HPDF_REAL bottom,
-			HPDF_REAL right,
-			HPDF_REAL top);
-
 	HPDF_EXPORT(HPDF_STATUS)
 	HPDF_Page_SetSize(HPDF_Page page,
 			HPDF_PageSizes size,
@@ -72,32 +72,9 @@ public:
 			HPDF_REAL zoom);
 #endif
 
+	float text_width(const String &p_text);
+
 #if 0
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetBoundary(HPDF_Page page,
-			HPDF_PageBoundary boundary,
-			HPDF_REAL left,
-			HPDF_REAL bottom,
-			HPDF_REAL right,
-			HPDF_REAL top);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetSize(HPDF_Page page,
-			HPDF_PageSizes size,
-			HPDF_PageDirection direction);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetRotate(HPDF_Page page,
-			HPDF_UINT16 angle);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetZoom(HPDF_Page page,
-			HPDF_REAL zoom);
-
-	HPDF_EXPORT(HPDF_REAL)
-	HPDF_Page_TextWidth(HPDF_Page page,
-			const char *text);
-
 	HPDF_EXPORT(HPDF_UINT)
 	HPDF_Page_MeasureText(HPDF_Page page,
 			const char *text,
@@ -201,6 +178,9 @@ public:
 	HPDF_EXPORT(HPDF_UINT)
 	HPDF_Page_GetGStateDepth(HPDF_Page page);
 
+#endif
+
+#if 0
 	/*--------------------------------------------------------------------------*/
 	/*----- GRAPHICS OPERATORS -------------------------------------------------*/
 
@@ -251,6 +231,9 @@ public:
 	HPDF_Page_SetShading(HPDF_Page page,
 			HPDF_Shading shading);
 
+#endif
+
+#if 0
 	/*--- Special graphic state operator --------------------------------------*/
 
 	/* q */
@@ -271,6 +254,9 @@ public:
 			HPDF_REAL x,
 			HPDF_REAL y);
 
+#endif
+
+#if 0
 	/*--- Path construction operator ------------------------------------------*/
 
 	/* m */
@@ -323,6 +309,9 @@ public:
 			HPDF_REAL width,
 			HPDF_REAL height);
 
+#endif
+
+#if 0
 	/*--- Path painting operator ---------------------------------------------*/
 
 	/* S */
@@ -477,6 +466,9 @@ public:
 			HPDF_REAL char_space,
 			const char *text);
 
+#endif
+
+#if 0
 	/*--- Color showing ------------------------------------------------------*/
 
 	/* cs --not implemented yet */
@@ -777,6 +769,9 @@ public:
 			HPDF_REAL value,
 			const char *unitsString);
 
+#endif
+
+#if 0
 	/*--------------------------------------------------------------------------*/
 	/*----- External Data ---------------------------------------------------------*/
 
@@ -805,7 +800,6 @@ public:
 	HPDF_EXPORT(HPDF_Destination)
 	HPDF_Page_CreateDestination(HPDF_Page page);
 
-
 #endif
 
 	uint32_t get_status();
@@ -823,5 +817,7 @@ protected:
 
 	uint32_t _status;
 };
+
+VARIANT_ENUM_CAST(PDFPage::PageBoundary);
 
 #endif

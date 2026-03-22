@@ -69,310 +69,17 @@ void PDFPage::set_height(const float p_height) {
 	HPDF_Page_SetHeight((HPDF_Page)_page, p_height);
 }
 
+uint32_t PDFPage::boundary_set(const PageBoundary p_boundary, const float p_left, const float p_bottom, const float p_right, const float p_top) {
+	HPDF_PageBoundary boundary = static_cast<HPDF_PageBoundary>(p_boundary);
+
+	_status = HPDF_Page_SetBoundary((HPDF_Page)_page, boundary, p_left, p_bottom, p_right, p_top);
+
+	return _status;
+}
+
 float PDFPage::text_width(const String &p_text) {
 	return HPDF_Page_TextWidth((HPDF_Page)_page, p_text.utf8().get_data());
 }
-
-#if 0
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetBoundary(HPDF_Page page,
-		HPDF_PageBoundary boundary,
-		HPDF_REAL left,
-		HPDF_REAL bottom,
-		HPDF_REAL right,
-		HPDF_REAL top);
-
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetSize(HPDF_Page page,
-		HPDF_PageSizes size,
-		HPDF_PageDirection direction);
-
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetRotate(HPDF_Page page,
-		HPDF_UINT16 angle);
-
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetZoom(HPDF_Page page,
-		HPDF_REAL zoom);
-
-HPDF_EXPORT(HPDF_REAL)
-HPDF_Page_TextWidth(HPDF_Page page,
-		const char *text);
-
-HPDF_EXPORT(HPDF_UINT)
-HPDF_Page_MeasureText(HPDF_Page page,
-		const char *text,
-		HPDF_REAL width,
-		HPDF_BOOL wordwrap,
-		HPDF_REAL *real_width);
-
-HPDF_EXPORT(HPDF_UINT16)
-HPDF_Page_GetGMode(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_Point)
-HPDF_Page_GetCurrentPos(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_GetCurrentPos2(HPDF_Page page,
-		HPDF_Point *pos);
-
-HPDF_EXPORT(HPDF_Point)
-HPDF_Page_GetCurrentTextPos(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_GetCurrentTextPos2(HPDF_Page page,
-		HPDF_Point *pos);
-
-HPDF_EXPORT(HPDF_Font)
-HPDF_Page_GetCurrentFont(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_REAL)
-HPDF_Page_GetCurrentFontSize(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_TransMatrix)
-HPDF_Page_GetTransMatrix(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_REAL)
-HPDF_Page_GetLineWidth(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_LineCap)
-HPDF_Page_GetLineCap(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_LineJoin)
-HPDF_Page_GetLineJoin(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_REAL)
-HPDF_Page_GetMiterLimit(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_DashMode)
-HPDF_Page_GetDash(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_REAL)
-HPDF_Page_GetFlat(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_REAL)
-HPDF_Page_GetCharSpace(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_REAL)
-HPDF_Page_GetWordSpace(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_REAL)
-HPDF_Page_GetHorizontalScalling(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_REAL)
-HPDF_Page_GetTextLeading(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_TextRenderingMode)
-HPDF_Page_GetTextRenderingMode(HPDF_Page page);
-
-/* This function is obsolete. Use HPDF_Page_GetTextRise.  */
-HPDF_EXPORT(HPDF_REAL)
-HPDF_Page_GetTextRaise(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_REAL)
-HPDF_Page_GetTextRise(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_RGBColor)
-HPDF_Page_GetRGBFill(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_RGBColor)
-HPDF_Page_GetRGBStroke(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_CMYKColor)
-HPDF_Page_GetCMYKFill(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_CMYKColor)
-HPDF_Page_GetCMYKStroke(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_REAL)
-HPDF_Page_GetGrayFill(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_REAL)
-HPDF_Page_GetGrayStroke(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_ColorSpace)
-HPDF_Page_GetStrokingColorSpace(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_ColorSpace)
-HPDF_Page_GetFillingColorSpace(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_TransMatrix)
-HPDF_Page_GetTextMatrix(HPDF_Page page);
-
-HPDF_EXPORT(HPDF_UINT)
-HPDF_Page_GetGStateDepth(HPDF_Page page);
-
-/*--------------------------------------------------------------------------*/
-/*----- GRAPHICS OPERATORS -------------------------------------------------*/
-
-/*--- General graphics state ---------------------------------------------*/
-
-/* w */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetLineWidth(HPDF_Page page,
-		HPDF_REAL line_width);
-
-/* J */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetLineCap(HPDF_Page page,
-		HPDF_LineCap line_cap);
-
-/* j */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetLineJoin(HPDF_Page page,
-		HPDF_LineJoin line_join);
-
-/* M */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetMiterLimit(HPDF_Page page,
-		HPDF_REAL miter_limit);
-
-/* d */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetDash(HPDF_Page page,
-		const HPDF_REAL *dash_ptn,
-		HPDF_UINT num_param,
-		HPDF_REAL phase);
-
-/* ri --not implemented yet */
-
-/* i */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetFlat(HPDF_Page page,
-		HPDF_REAL flatness);
-
-/* gs */
-
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetExtGState(HPDF_Page page,
-		HPDF_ExtGState ext_gstate);
-
-/* sh */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetShading(HPDF_Page page,
-		HPDF_Shading shading);
-
-/*--- Special graphic state operator --------------------------------------*/
-
-/* q */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_GSave(HPDF_Page page);
-
-/* Q */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_GRestore(HPDF_Page page);
-
-/* cm */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_Concat(HPDF_Page page,
-		HPDF_REAL a,
-		HPDF_REAL b,
-		HPDF_REAL c,
-		HPDF_REAL d,
-		HPDF_REAL x,
-		HPDF_REAL y);
-
-/*--- Path construction operator ------------------------------------------*/
-
-/* m */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_MoveTo(HPDF_Page page,
-		HPDF_REAL x,
-		HPDF_REAL y);
-
-/* l */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_LineTo(HPDF_Page page,
-		HPDF_REAL x,
-		HPDF_REAL y);
-
-/* c */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_CurveTo(HPDF_Page page,
-		HPDF_REAL x1,
-		HPDF_REAL y1,
-		HPDF_REAL x2,
-		HPDF_REAL y2,
-		HPDF_REAL x3,
-		HPDF_REAL y3);
-
-/* v */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_CurveTo2(HPDF_Page page,
-		HPDF_REAL x2,
-		HPDF_REAL y2,
-		HPDF_REAL x3,
-		HPDF_REAL y3);
-
-/* y */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_CurveTo3(HPDF_Page page,
-		HPDF_REAL x1,
-		HPDF_REAL y1,
-		HPDF_REAL x3,
-		HPDF_REAL y3);
-
-/* h */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_ClosePath(HPDF_Page page);
-
-/* re */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_Rectangle(HPDF_Page page,
-		HPDF_REAL x,
-		HPDF_REAL y,
-		HPDF_REAL width,
-		HPDF_REAL height);
-
-/*--- Path painting operator ---------------------------------------------*/
-
-/* S */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_Stroke(HPDF_Page page);
-
-/* s */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_ClosePathStroke(HPDF_Page page);
-
-/* f */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_Fill(HPDF_Page page);
-
-/* f* */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_Eofill(HPDF_Page page);
-
-/* B */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_FillStroke(HPDF_Page page);
-
-/* B* */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_EofillStroke(HPDF_Page page);
-
-/* b */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_ClosePathFillStroke(HPDF_Page page);
-
-/* b* */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_ClosePathEofillStroke(HPDF_Page page);
-
-/* n */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_EndPath(HPDF_Page page);
-
-/*--- Clipping paths operator --------------------------------------------*/
-
-/* W */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_Clip(HPDF_Page page);
-
-/* W* */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_Eoclip(HPDF_Page page);
-
-#endif
 
 uint32_t PDFPage::begin_text() {
 	_status = HPDF_Page_BeginText((HPDF_Page)_page);
@@ -710,6 +417,8 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_height", "val"), &PDFPage::set_height);
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "height"), "set_height", "get_height");
 
+	ClassDB::bind_method(D_METHOD("boundary_set", "boundary", "left", "bottom", "right", "top"), &PDFPage::boundary_set);
+
 	ClassDB::bind_method(D_METHOD("text_width", "text"), &PDFPage::text_width);
 
 	ClassDB::bind_method(D_METHOD("begin_text"), &PDFPage::begin_text);
@@ -724,4 +433,10 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("draw_image", "image", "rect"), &PDFPage::draw_image);
 
 	ClassDB::bind_method(D_METHOD("get_status"), &PDFPage::get_status);
+
+	BIND_ENUM_CONSTANT(PAGE_BOUNDARY_MEDIABOX);
+	BIND_ENUM_CONSTANT(PAGE_BOUNDARY_CROPBOX);
+	BIND_ENUM_CONSTANT(PAGE_BOUNDARY_BLEEDBOX);
+	BIND_ENUM_CONSTANT(PAGE_BOUNDARY_TRIMBOX);
+	BIND_ENUM_CONSTANT(PAGE_BOUNDARY_ARTBOX);
 }
