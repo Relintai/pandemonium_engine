@@ -416,6 +416,19 @@ uint32_t PDFPage::path_end() {
 	return _status;
 }
 
+/*--- Clipping paths operator --------------------------------------------*/
+
+uint32_t PDFPage::clip() {
+	_status = HPDF_Page_Clip((HPDF_Page)_page);
+
+	return _status;
+}
+uint32_t PDFPage::eo_clip() {
+	_status = HPDF_Page_Eoclip((HPDF_Page)_page);
+
+	return _status;
+}
+
 /*--- Special graphic state operator --------------------------------------*/
 
 uint32_t PDFPage::g_save() {
@@ -850,6 +863,9 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("path_fill_stroke_close"), &PDFPage::path_fill_stroke_close);
 	ClassDB::bind_method(D_METHOD("path_eo_fill_stroke_close"), &PDFPage::path_eo_fill_stroke_close);
 	ClassDB::bind_method(D_METHOD("path_end"), &PDFPage::path_end);
+
+	ClassDB::bind_method(D_METHOD("clip"), &PDFPage::clip);
+	ClassDB::bind_method(D_METHOD("eo_clip"), &PDFPage::eo_clip);
 
 	ClassDB::bind_method(D_METHOD("begin_text"), &PDFPage::begin_text);
 	ClassDB::bind_method(D_METHOD("end_text"), &PDFPage::end_text);

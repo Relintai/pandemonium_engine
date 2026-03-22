@@ -195,18 +195,8 @@ public:
 	uint32_t path_eo_fill_stroke_close();
 	uint32_t path_end();
 
-#if 0
-	/*--- Clipping paths operator --------------------------------------------*/
-
-	/* W */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_Clip(HPDF_Page page);
-
-	/* W* */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_Eoclip(HPDF_Page page);
-
-#endif
+	uint32_t clip();
+	uint32_t eo_clip();
 
 	uint32_t begin_text();
 	uint32_t end_text();
