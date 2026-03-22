@@ -330,6 +330,31 @@ uint32_t PDFPage::shading_set(const Ref<PDFShading> &p_shading) {
 	return _status;
 }
 
+/*--- Special graphic state operator --------------------------------------*/
+
+uint32_t PDFPage::g_save() {
+	_status = HPDF_Page_GSave((HPDF_Page)_page);
+
+	return _status;
+}
+uint32_t PDFPage::g_restore() {
+	_status = HPDF_Page_GRestore((HPDF_Page)_page);
+
+	return _status;
+}
+
+uint32_t PDFPage::concat(const Transform2D &p_transform) {
+	_status = HPDF_Page_Concat((HPDF_Page)_page,
+			p_transform.columns[0][0],
+			p_transform.columns[0][1],
+			p_transform.columns[1][0],
+			p_transform.columns[1][1],
+			p_transform.columns[2][0],
+			p_transform.columns[2][1]);
+
+	return _status;
+}
+
 #if 0
 /*--- Text state ---------------------------------------------------------*/
 
@@ -717,6 +742,10 @@ void PDFPage::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("ext_g_state_set", "ext_g_state"), &PDFPage::ext_g_state_set);
 	ClassDB::bind_method(D_METHOD("shading_set", "shading"), &PDFPage::shading_set);
+
+	ClassDB::bind_method(D_METHOD("g_save"), &PDFPage::g_save);
+	ClassDB::bind_method(D_METHOD("g_restore"), &PDFPage::g_restore);
+	ClassDB::bind_method(D_METHOD("concat", "transform"), &PDFPage::concat);
 
 	ClassDB::bind_method(D_METHOD("begin_text"), &PDFPage::begin_text);
 	ClassDB::bind_method(D_METHOD("end_text"), &PDFPage::end_text);

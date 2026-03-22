@@ -172,6 +172,11 @@ public:
 	uint32_t ext_g_state_set(const Ref<PDFExtGState> &p_ext_g_state);
 	uint32_t shading_set(const Ref<PDFShading> &p_shading);
 
+	uint32_t g_save();
+	uint32_t g_restore();
+
+	uint32_t concat(const Transform2D &p_transform);
+
 #if 0
 	/*--- Special graphic state operator --------------------------------------*/
 
