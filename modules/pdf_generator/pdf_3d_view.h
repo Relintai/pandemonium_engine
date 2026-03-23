@@ -59,6 +59,10 @@ public:
 	HPDF_3DView_SetCrossSectionOn(HPDF_Dict view, HPDF_Point3D center, HPDF_REAL Roll, HPDF_REAL Pitch, HPDF_REAL opacity, HPDF_BOOL showintersection);
 	HPDF_EXPORT(HPDF_STATUS)
 	HPDF_3DView_SetCrossSectionOff(HPDF_Dict view);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_3DView_Add3DC3DMeasure(HPDF_Dict view,
+			HPDF_3DMeasure measure);
 #endif
 
 	uint32_t get_status();

@@ -304,21 +304,7 @@ public:
 	Ref<PDFExData> create_3d_annot_ex_data();
 
 	Ref<PDF3DView> create_3d_view_name(const String &p_name);
-
-#if 0
-	/*----- 3D View ---------------------------------------------------------*/
-
-	HPDF_EXPORT(HPDF_Dict)
-	HPDF_Page_Create3DView(HPDF_Page page,
-			HPDF_U3D u3d,
-			HPDF_Annotation annot3d,
-			const char *name);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_3DView_Add3DC3DMeasure(HPDF_Dict view,
-			HPDF_3DMeasure measure);
-
-#endif
+	Ref<PDF3DView> create_3d_view(const Ref<PDFU3D> &p_u3d, const Ref<PDFAnnotation3D> &p_annot_3d, const String &p_name);
 
 #if 0
 	/*----- destination --------------------------------------------------------*/

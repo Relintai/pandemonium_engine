@@ -1162,6 +1162,30 @@ Ref<PDF3DView> PDFPage::create_3d_view_name(const String &p_name) {
 	view->_set_hpdf_3d_view(hpdf_view);
 	return view;
 }
+Ref<PDF3DView> PDFPage::create_3d_view(const Ref<PDFU3D> &p_u3d, const Ref<PDFAnnotation3D> &p_annot_3d, const String &p_name) {
+	HPDF_U3D hpdf_u3d = NULL;
+
+	if (p_u3d.is_valid()) {
+		hpdf_u3d = (HPDF_U3D)p_u3d->_get_hpdf_u3d();
+	}
+
+	HPDF_Annotation hpdf_annot3d = NULL;
+
+	if (p_annot_3d.is_valid()) {
+		hpdf_annot3d = (HPDF_Annotation)p_annot_3d->_get_hpdf_annotation();
+	}
+
+	HPDF_Dict hpdf_view = HPDF_Page_Create3DView((HPDF_Page)_page, hpdf_u3d, hpdf_annot3d, p_name.utf8().get_data());
+
+	if (!hpdf_view) {
+		return Ref<PDF3DView>();
+	}
+
+	Ref<PDF3DView> view;
+	view.instance();
+	view->_set_hpdf_3d_view(hpdf_view);
+	return view;
+}
 
 uint32_t PDFPage::get_status() {
 	return _status;
@@ -1381,6 +1405,7 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("create_3d_annot_ex_data"), &PDFPage::create_3d_annot_ex_data);
 
 	ClassDB::bind_method(D_METHOD("create_3d_view_name", "name"), &PDFPage::create_3d_view_name);
+	ClassDB::bind_method(D_METHOD("create_3d_view", "u3d", "annot_3d", "name"), &PDFPage::create_3d_view);
 
 	ClassDB::bind_method(D_METHOD("get_status"), &PDFPage::get_status);
 
