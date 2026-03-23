@@ -39,6 +39,13 @@ class PDF3DViewNode : public Reference {
 
 public:
 #if 0
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_3DViewNode_SetOpacity(HPDF_Dict node, HPDF_REAL opacity);
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_3DViewNode_SetVisibility(HPDF_Dict node, HPDF_BOOL visible);
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_3DViewNode_SetMatrix(HPDF_Dict node, HPDF_3DMatrix Mat3D);
+	HPDF_EXPORT(HPDF_STATUS)
 #endif
 
 	uint32_t get_status();

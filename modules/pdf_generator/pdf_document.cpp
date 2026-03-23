@@ -37,7 +37,6 @@
 #include "core/os/file_access.h"
 
 #include "pdf_3d_view.h"
-#include "pdf_3d_view_node.h"
 #include "pdf_date.h"
 #include "pdf_destination.h"
 #include "pdf_dict.h"
