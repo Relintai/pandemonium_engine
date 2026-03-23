@@ -290,50 +290,11 @@ public:
 	Ref<PDFAnnotationUnderline> annotation_underline_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
 	Ref<PDFAnnotationSquiggly> annotation_squiggly_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
 	Ref<PDFAnnotationStrikeOut> annotation_strike_out_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
-
-#if 0
-class PDFAnnotationPopup;
-class PDFAnnotationStamp;
-class PDFAnnotationProjection;
-class PDFAnnotationSquare;
-class PDFAnnotationCircle;
-#endif
-
-#if 0
-	/*----- annotation ---------------------------------------------------------*/
-
-
-	HPDF_EXPORT(HPDF_Annotation)
-	HPDF_Page_CreatePopupAnnot(HPDF_Page page,
-			HPDF_Rect rect,
-			HPDF_Annotation parent);
-
-	HPDF_EXPORT(HPDF_Annotation)
-	HPDF_Page_CreateStampAnnot(HPDF_Page page,
-			HPDF_Rect rect,
-			HPDF_StampAnnotName name,
-			const char *text,
-			HPDF_Encoder encoder);
-
-	HPDF_EXPORT(HPDF_Annotation)
-	HPDF_Page_CreateProjectionAnnot(HPDF_Page page,
-			HPDF_Rect rect,
-			const char *text,
-			HPDF_Encoder encoder);
-
-	HPDF_EXPORT(HPDF_Annotation)
-	HPDF_Page_CreateSquareAnnot(HPDF_Page page,
-			HPDF_Rect rect,
-			const char *text,
-			HPDF_Encoder encoder);
-
-	HPDF_EXPORT(HPDF_Annotation)
-	HPDF_Page_CreateCircleAnnot(HPDF_Page page,
-			HPDF_Rect rect,
-			const char *text,
-			HPDF_Encoder encoder);
-
-#endif
+	Ref<PDFAnnotationPopup> annotation_popup_create(const Rect2 &p_rect, const Ref<PDFAnnotation> &p_parent);
+	Ref<PDFAnnotationStamp> annotation_stamp_create(const Rect2 &p_rect, const PDFAnnotationStamp::StampAnnotName p_name, const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
+	Ref<PDFAnnotationProjection> annotation_projection_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
+	Ref<PDFAnnotationSquare> annotation_square_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
+	Ref<PDFAnnotationCircle> annotation_circle_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
 
 #if 0
 	/*----- 3D Measure ---------------------------------------------------------*/

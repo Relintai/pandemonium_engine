@@ -391,12 +391,31 @@ class PDFAnnotationStamp : public PDFAnnotation {
 	GDCLASS(PDFAnnotationStamp, PDFAnnotation);
 
 public:
+	enum StampAnnotName {
+		STAMP_ANNOT_APPROVED = 0,
+		STAMP_ANNOT_EXPERIMENTAL,
+		STAMP_ANNOT_NOTAPPROVED,
+		STAMP_ANNOT_ASIS,
+		STAMP_ANNOT_EXPIRED,
+		STAMP_ANNOT_NOTFORPUBLICRELEASE,
+		STAMP_ANNOT_CONFIDENTIAL,
+		STAMP_ANNOT_FINAL,
+		STAMP_ANNOT_SOLD,
+		STAMP_ANNOT_DEPARTMENTAL,
+		STAMP_ANNOT_FORCOMMENT,
+		STAMP_ANNOT_TOPSECRET,
+		STAMP_ANNOT_DRAFT,
+		STAMP_ANNOT_FORPUBLICRELEASE
+	};
+
 	PDFAnnotationStamp();
 	~PDFAnnotationStamp();
 
 protected:
 	static void _bind_methods();
 };
+
+VARIANT_ENUM_CAST(PDFAnnotationStamp::StampAnnotName);
 
 class PDFAnnotationProjection : public PDFAnnotation {
 	GDCLASS(PDFAnnotationProjection, PDFAnnotation);
