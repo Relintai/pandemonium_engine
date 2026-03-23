@@ -43,6 +43,26 @@ class PDFExtGState;
 class PDFShading;
 class PDFXObject;
 
+class PDFAnnotation;
+class PDFAnnotation3D;
+class PDFAnnotationText;
+class PDFAnnotationFreeText;
+class PDFAnnotationLine;
+class PDFAnnotationWidgetWhitePrint;
+class PDFAnnotationWidget;
+class PDFAnnotationLink;
+class PDFAnnotationURILink;
+class PDFAnnotationTextMarkup;
+class PDFAnnotationHighlight;
+class PDFAnnotationUnderline;
+class PDFAnnotationSquiggly;
+class PDFAnnotationStrikeOut;
+class PDFAnnotationPopup;
+class PDFAnnotationStamp;
+class PDFAnnotationProjection;
+class PDFAnnotationSquare;
+class PDFAnnotationCircle;
+
 class PDFPage : public Reference {
 	GDCLASS(PDFPage, Reference);
 
@@ -274,6 +294,30 @@ public:
 	uint32_t draw_text_rect(const Rect2 &p_rect, const String &p_text, const TextAlignment p_align = TEXT_ALIGN_LEFT);
 
 	uint32_t slide_show_set(const TransitionStyle p_type, const float p_disp_time, const float p_trans_time);
+
+	//Ref<PDFAnnotation3D> annotation_3d_create(const Rect2 &p_rect, const bool tb, cont bool np,  );
+
+#if 0
+class PDFAnnotation;
+class PDFAnnotationText;
+class PDFAnnotationFreeText;
+class PDFAnnotationLine;
+class PDFAnnotationWidgetWhitePrint;
+class PDFAnnotationWidget;
+class PDFAnnotationLink;
+class PDFAnnotationURILink;
+class PDFAnnotationTextMarkup;
+class PDFAnnotationHighlight;
+class PDFAnnotationUnderline;
+class PDFAnnotationSquiggly;
+class PDFAnnotationStrikeOut;
+class PDFAnnotationPopup;
+class PDFAnnotationStamp;
+class PDFAnnotationProjection;
+class PDFAnnotationSquare;
+class PDFAnnotationCircle;
+
+#endif
 
 #if 0
 	/*----- annotation ---------------------------------------------------------*/

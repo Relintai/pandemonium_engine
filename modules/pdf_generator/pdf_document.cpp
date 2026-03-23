@@ -510,39 +510,6 @@ Ref<PDFImage> PDFDocument::image_load_jpg_from_file(const String &p_path) {
 	return image;
 }
 
-Ref<PDFImage> PDFDocument::image_load_u3d_from_mem(const PoolByteArray &p_data) {
-	PoolByteArray::Read r = p_data.read();
-
-	HPDF_Image hpdf_image = HPDF_LoadU3DFromMem(_doc, r.ptr(), p_data.size());
-
-	if (!hpdf_image) {
-		return Ref<PDFImage>();
-	}
-
-	Ref<PDFImage> image;
-	image.instance();
-
-	image->_set_hpdf_image(hpdf_image);
-
-	return image;
-}
-Ref<PDFImage> PDFDocument::image_load_u3d_from_file(const String &p_path) {
-	String abs_path = FileAccess::get_filesystem_abspath_for(p_path);
-
-	HPDF_Font hpdf_image = HPDF_LoadU3DFromFile(_doc, abs_path.utf8().get_data());
-
-	if (!hpdf_image) {
-		return Ref<PDFImage>();
-	}
-
-	Ref<PDFImage> image;
-	image.instance();
-
-	image->_set_hpdf_image(hpdf_image);
-
-	return image;
-}
-
 Ref<PDFImage> PDFDocument::image_load_raw_1_bit_image_from_mem(const PoolByteArray &p_data, const Vector2i &p_size, const uint32_t p_line_width, const bool p_black_is1, const bool p_top_is_first) {
 	PoolByteArray::Read r = p_data.read();
 
@@ -777,6 +744,39 @@ Ref<PDFShading> PDFDocument::shading_new(const Vector2 &p_min, const Vector2 &p_
 	return shading;
 }
 
+Ref<PDFImage> PDFDocument::image_load_u3d_from_mem(const PoolByteArray &p_data) {
+	PoolByteArray::Read r = p_data.read();
+
+	HPDF_Image hpdf_image = HPDF_LoadU3DFromMem(_doc, r.ptr(), p_data.size());
+
+	if (!hpdf_image) {
+		return Ref<PDFImage>();
+	}
+
+	Ref<PDFImage> image;
+	image.instance();
+
+	image->_set_hpdf_image(hpdf_image);
+
+	return image;
+}
+Ref<PDFImage> PDFDocument::image_load_u3d_from_file(const String &p_path) {
+	String abs_path = FileAccess::get_filesystem_abspath_for(p_path);
+
+	HPDF_Font hpdf_image = HPDF_LoadU3DFromFile(_doc, abs_path.utf8().get_data());
+
+	if (!hpdf_image) {
+		return Ref<PDFImage>();
+	}
+
+	Ref<PDFImage> image;
+	image.instance();
+
+	image->_set_hpdf_image(hpdf_image);
+
+	return image;
+}
+
 PoolByteArray PDFDocument::save_to_mem() {
 	HPDF_ResetStream(_doc);
 
@@ -931,9 +931,6 @@ void PDFDocument::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("image_load_jpg_from_mem", "data"), &PDFDocument::image_load_jpg_from_mem);
 	ClassDB::bind_method(D_METHOD("image_load_jpg_from_file", "path"), &PDFDocument::image_load_jpg_from_file);
 
-	ClassDB::bind_method(D_METHOD("image_load_u3d_from_mem", "data"), &PDFDocument::image_load_u3d_from_mem);
-	ClassDB::bind_method(D_METHOD("image_load_u3d_from_file", "path"), &PDFDocument::image_load_u3d_from_file);
-
 	ClassDB::bind_method(D_METHOD("image_load_raw_1_bit_image_from_mem", "data", "size", "line_width", "black_is1", "top_is_first"), &PDFDocument::image_load_raw_1_bit_image_from_mem);
 
 	ClassDB::bind_method(D_METHOD("image_load_raw_image_from_mem", "data", "size", "color_space", "bits_per_component"), &PDFDocument::image_load_raw_image_from_mem);
@@ -950,6 +947,9 @@ void PDFDocument::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("ext_graphic_state_create"), &PDFDocument::ext_graphic_state_create);
 
 	ClassDB::bind_method(D_METHOD("shading_new", "min", "max"), &PDFDocument::shading_new);
+
+	ClassDB::bind_method(D_METHOD("image_load_u3d_from_mem", "data"), &PDFDocument::image_load_u3d_from_mem);
+	ClassDB::bind_method(D_METHOD("image_load_u3d_from_file", "path"), &PDFDocument::image_load_u3d_from_file);
 
 	ClassDB::bind_method(D_METHOD("save_to_mem"), &PDFDocument::save_to_mem);
 	ClassDB::bind_method(D_METHOD("save_to_file", "file"), &PDFDocument::save_to_file);
