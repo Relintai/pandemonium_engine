@@ -72,13 +72,13 @@ public:
 	PDF3DMeasure();
 	~PDF3DMeasure();
 
-	void *_get_hpdf_font() const;
-	void _set_hpdf_font(void *p_font);
+	void *_get_hpdf_3d_measure() const;
+	void _set_hpdf_3d_measure(void *p_3d_measure);
 
 protected:
 	static void _bind_methods();
 
-	void *_font;
+	void *_3d_measure;
 
 	uint32_t _status;
 };

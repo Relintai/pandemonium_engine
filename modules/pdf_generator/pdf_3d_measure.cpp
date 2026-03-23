@@ -40,18 +40,18 @@ uint32_t PDF3DMeasure::get_status() {
 }
 
 PDF3DMeasure::PDF3DMeasure() {
-	_font = NULL;
+	_3d_measure = NULL;
 }
 
 PDF3DMeasure::~PDF3DMeasure() {
 }
 
-void *PDF3DMeasure::_get_hpdf_font() const {
-	return _font;
+void *PDF3DMeasure::_get_hpdf_3d_measure() const {
+	return _3d_measure;
 }
 
-void PDF3DMeasure::_set_hpdf_font(void *p_font) {
-	_font = p_font;
+void PDF3DMeasure::_set_hpdf_3d_measure(void *p_3d_measure) {
+	_3d_measure = p_3d_measure;
 }
 
 void PDF3DMeasure::_bind_methods() {

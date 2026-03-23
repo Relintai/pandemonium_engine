@@ -32,12 +32,14 @@
 #include "pdf_page.h"
 
 #include "hpdf.h"
+#include "hpdf_3dmeasure.h"
 #include "hpdf_annotation.h"
 #include "hpdf_doc.h"
 #include "hpdf_font.h"
 #include "hpdf_pages.h"
 #include "hpdf_u3d.h"
 
+#include "pdf_3d_measure.h"
 #include "pdf_3d_view.h"
 #include "pdf_dash_mode.h"
 #include "pdf_destination.h"
@@ -1080,6 +1082,60 @@ Ref<PDFAnnotationCircle> PDFPage::annotation_circle_create(const Rect2 &p_rect, 
 	return a;
 }
 
+/*----- 3D Measure ---------------------------------------------------------*/
+
+Ref<PDF3DMeasure> PDFPage::create_c3d_3d_measure(const Vector3 &p_first_anchor_point, const Vector3 &p_text_anchor_point) {
+	HPDF_Point3D firstanchorpoint = { .x = p_first_anchor_point.x, .y = p_first_anchor_point.y, .z = p_first_anchor_point.z };
+	HPDF_Point3D textanchorpoint = { .x = p_text_anchor_point.x, .y = p_text_anchor_point.y, .z = p_text_anchor_point.z };
+
+	HPDF_3DMeasure hpdf_3d_measure = HPDF_Page_Create3DC3DMeasure((HPDF_Page)_page, firstanchorpoint, textanchorpoint);
+
+	if (!hpdf_3d_measure) {
+		return Ref<PDF3DMeasure>();
+	}
+
+	Ref<PDF3DMeasure> a;
+	a.instance();
+	a->_set_hpdf_3d_measure(hpdf_3d_measure);
+	return a;
+}
+Ref<PDF3DMeasure> PDFPage::create_pd3_3d_measure(const PoolVector3Array &p_points, const float p_value, const String &p_units_string) {
+	ERR_FAIL_COND_V(p_points.size() != 6, Ref<PDF3DMeasure>());
+
+	int index = 0;
+	Vector3 v = p_points[index++];
+	HPDF_Point3D annotationPlaneNormal = { .x = v.x, .y = v.y, .z = v.z };
+	v = p_points[index++];
+	HPDF_Point3D firstAnchorPoint = { .x = v.x, .y = v.y, .z = v.z };
+	v = p_points[index++];
+	HPDF_Point3D secondAnchorPoint = { .x = v.x, .y = v.y, .z = v.z };
+	v = p_points[index++];
+	HPDF_Point3D leaderLinesDirection = { .x = v.x, .y = v.y, .z = v.z };
+	v = p_points[index++];
+	HPDF_Point3D measurementValuePoint = { .x = v.x, .y = v.y, .z = v.z };
+	v = p_points[index++];
+	HPDF_Point3D textYDirection = { .x = v.x, .y = v.y, .z = v.z };
+
+	HPDF_3DMeasure hpdf_3d_measure = HPDF_Page_CreatePD33DMeasure((HPDF_Page)_page,
+			annotationPlaneNormal,
+			firstAnchorPoint,
+			secondAnchorPoint,
+			leaderLinesDirection,
+			measurementValuePoint,
+			textYDirection,
+			p_value,
+			p_units_string.utf8().get_data());
+
+	if (!hpdf_3d_measure) {
+		return Ref<PDF3DMeasure>();
+	}
+
+	Ref<PDF3DMeasure> a;
+	a.instance();
+	a->_set_hpdf_3d_measure(hpdf_3d_measure);
+	return a;
+}
+
 Ref<PDF3DView> PDFPage::create_3d_view_name(const String &p_name) {
 	HPDF_Dict hpdf_view = HPDF_Create3DView(HPDF_GetPageMMgr((HPDF_Page)_page), p_name.utf8().get_data());
 
@@ -1304,6 +1360,9 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("annotation_projection_create", "rect", "text", "encoder"), &PDFPage::annotation_projection_create, DEFVAL(Ref<PDFEncoder>()));
 	ClassDB::bind_method(D_METHOD("annotation_square_create", "rect", "text", "encoder"), &PDFPage::annotation_square_create, DEFVAL(Ref<PDFEncoder>()));
 	ClassDB::bind_method(D_METHOD("annotation_circle_create", "rect", "text", "encoder"), &PDFPage::annotation_circle_create, DEFVAL(Ref<PDFEncoder>()));
+
+	ClassDB::bind_method(D_METHOD("create_c3d_3d_measure", "first_anchor_point", "text_anchor_point"), &PDFPage::create_c3d_3d_measure);
+	ClassDB::bind_method(D_METHOD("create_pd3_3d_measure", "points", "value", "units_string"), &PDFPage::create_pd3_3d_measure);
 
 	ClassDB::bind_method(D_METHOD("create_3d_view_name", "name"), &PDFPage::create_3d_view_name);
 

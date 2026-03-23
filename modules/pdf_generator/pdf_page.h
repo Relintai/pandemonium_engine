@@ -44,6 +44,7 @@ class PDFExtGState;
 class PDFShading;
 class PDFXObject;
 class PDF3DView;
+class PDF3DMeasure;
 
 class PDFPage : public Reference {
 	GDCLASS(PDFPage, Reference);
@@ -296,28 +297,10 @@ public:
 	Ref<PDFAnnotationSquare> annotation_square_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
 	Ref<PDFAnnotationCircle> annotation_circle_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
 
-#if 0
-	/*----- 3D Measure ---------------------------------------------------------*/
-	HPDF_EXPORT(HPDF_3DMeasure)
-	HPDF_Page_Create3DC3DMeasure(HPDF_Page page,
-			HPDF_Point3D firstanchorpoint,
-			HPDF_Point3D textanchorpoint);
-
-	HPDF_EXPORT(HPDF_3DMeasure)
-	HPDF_Page_CreatePD33DMeasure(HPDF_Page page,
-			HPDF_Point3D annotationPlaneNormal,
-			HPDF_Point3D firstAnchorPoint,
-			HPDF_Point3D secondAnchorPoint,
-			HPDF_Point3D leaderLinesDirection,
-			HPDF_Point3D measurementValuePoint,
-			HPDF_Point3D textYDirection,
-			HPDF_REAL value,
-			const char *unitsString);
-
-#endif
+	Ref<PDF3DMeasure> create_c3d_3d_measure(const Vector3 &p_first_anchor_point, const Vector3 &p_text_anchor_point);
+	Ref<PDF3DMeasure> create_pd3_3d_measure(const PoolVector3Array &p_points, const float p_value, const String &p_units_string);
 
 #if 0
-	/*--------------------------------------------------------------------------*/
 	/*----- External Data ---------------------------------------------------------*/
 
 	HPDF_EXPORT(HPDF_ExData)
@@ -328,8 +311,6 @@ public:
 	Ref<PDF3DView> create_3d_view_name(const String &p_name);
 
 #if 0
-	/*--------------------------------------------------------------------------*/
-	/*--------------------------------------------------------------------------*/
 	/*----- 3D View ---------------------------------------------------------*/
 
 	HPDF_EXPORT(HPDF_Dict)
