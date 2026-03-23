@@ -52,6 +52,10 @@ class PDFDict;
 class PDFEmbeddedFile;
 class PDFExtGState;
 class PDFShading;
+class PDFU3D;
+class PDFJavascript;
+class PDF3DView;
+class PDF3DViewNode;
 
 class PDFDocument : public Reference {
 	GDCLASS(PDFDocument, Reference);
@@ -237,8 +241,8 @@ public:
 
 	Ref<PDFShading> shading_new(const Vector2 &p_min, const Vector2 &p_max);
 
-	Ref<PDFImage> image_load_u3d_from_mem(const PoolByteArray &p_data);
-	Ref<PDFImage> image_load_u3d_from_file(const String &p_path);
+	Ref<PDFU3D> u3d_load_from_mem(const PoolByteArray &p_data);
+	Ref<PDFU3D> u3d_load_from_file(const String &p_path);
 
 #if 0
 	// PDFJavascript
@@ -246,11 +250,6 @@ public:
 	HPDF_CreateJavaScript(HPDF_Doc pdf, const char *code);
 	HPDF_EXPORT(HPDF_JavaScript)
 	HPDF_LoadJSFromFile(HPDF_Doc pdf, const char *filename);
-
-	HPDF_EXPORT(HPDF_U3D)
-	HPDF_LoadU3DFromFile(HPDF_Doc pdf, const char *filename);
-	HPDF_EXPORT(HPDF_Image)
-	HPDF_LoadU3DFromMem(HPDF_Doc pdf, const HPDF_BYTE *buffer, HPDF_UINT size);
 
 
 	// PDFU3D

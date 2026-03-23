@@ -36,6 +36,8 @@
 #include "core/os/dir_access.h"
 #include "core/os/file_access.h"
 
+#include "pdf_3d_view.h"
+#include "pdf_3d_view_node.h"
 #include "pdf_date.h"
 #include "pdf_destination.h"
 #include "pdf_dict.h"
@@ -44,9 +46,11 @@
 #include "pdf_ext_g_state.h"
 #include "pdf_font.h"
 #include "pdf_image.h"
+#include "pdf_javascript.h"
 #include "pdf_outline.h"
 #include "pdf_page.h"
 #include "pdf_shading.h"
+#include "pdf_u3d.h"
 #include "pdf_x_object.h"
 
 #include "hpdf.h"
@@ -744,37 +748,37 @@ Ref<PDFShading> PDFDocument::shading_new(const Vector2 &p_min, const Vector2 &p_
 	return shading;
 }
 
-Ref<PDFImage> PDFDocument::image_load_u3d_from_mem(const PoolByteArray &p_data) {
+Ref<PDFU3D> PDFDocument::u3d_load_from_mem(const PoolByteArray &p_data) {
 	PoolByteArray::Read r = p_data.read();
 
-	HPDF_Image hpdf_image = HPDF_LoadU3DFromMem(_doc, r.ptr(), p_data.size());
+	HPDF_U3D hpdf_u3d = HPDF_LoadU3DFromMem(_doc, r.ptr(), p_data.size());
 
-	if (!hpdf_image) {
-		return Ref<PDFImage>();
+	if (!hpdf_u3d) {
+		return Ref<PDFU3D>();
 	}
 
-	Ref<PDFImage> image;
-	image.instance();
+	Ref<PDFU3D> u3d;
+	u3d.instance();
 
-	image->_set_hpdf_image(hpdf_image);
+	u3d->_set_hpdf_u3d(hpdf_u3d);
 
-	return image;
+	return u3d;
 }
-Ref<PDFImage> PDFDocument::image_load_u3d_from_file(const String &p_path) {
+Ref<PDFU3D> PDFDocument::u3d_load_from_file(const String &p_path) {
 	String abs_path = FileAccess::get_filesystem_abspath_for(p_path);
 
-	HPDF_Font hpdf_image = HPDF_LoadU3DFromFile(_doc, abs_path.utf8().get_data());
+	HPDF_U3D hpdf_u3d = HPDF_LoadU3DFromFile(_doc, abs_path.utf8().get_data());
 
-	if (!hpdf_image) {
-		return Ref<PDFImage>();
+	if (!hpdf_u3d) {
+		return Ref<PDFU3D>();
 	}
 
-	Ref<PDFImage> image;
-	image.instance();
+	Ref<PDFU3D> u3d;
+	u3d.instance();
 
-	image->_set_hpdf_image(hpdf_image);
+	u3d->_set_hpdf_u3d(hpdf_u3d);
 
-	return image;
+	return u3d;
 }
 
 PoolByteArray PDFDocument::save_to_mem() {
@@ -948,8 +952,8 @@ void PDFDocument::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("shading_new", "min", "max"), &PDFDocument::shading_new);
 
-	ClassDB::bind_method(D_METHOD("image_load_u3d_from_mem", "data"), &PDFDocument::image_load_u3d_from_mem);
-	ClassDB::bind_method(D_METHOD("image_load_u3d_from_file", "path"), &PDFDocument::image_load_u3d_from_file);
+	ClassDB::bind_method(D_METHOD("u3d_load_from_mem", "data"), &PDFDocument::u3d_load_from_mem);
+	ClassDB::bind_method(D_METHOD("u3d_load_from_file", "path"), &PDFDocument::u3d_load_from_file);
 
 	ClassDB::bind_method(D_METHOD("save_to_mem"), &PDFDocument::save_to_mem);
 	ClassDB::bind_method(D_METHOD("save_to_file", "file"), &PDFDocument::save_to_file);
