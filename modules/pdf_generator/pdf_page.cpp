@@ -632,7 +632,7 @@ uint32_t PDFPage::slide_show_set(const TransitionStyle p_type, const float p_dis
 	return _status;
 }
 
-Ref<PDF3DView> PDFPage::create_3d_view(const String &p_name) {
+Ref<PDF3DView> PDFPage::create_3d_view_name(const String &p_name) {
 	HPDF_Dict hpdf_view = HPDF_Create3DView(HPDF_GetPageMMgr((HPDF_Page)_page), p_name.utf8().get_data());
 
 	if (!hpdf_view) {
@@ -830,7 +830,7 @@ void PDFPage::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("slide_show_set", "type", "disp_time", "trans_time"), &PDFPage::slide_show_set);
 
-	ClassDB::bind_method(D_METHOD("create_3d_view", "name"), &PDFPage::create_3d_view);
+	ClassDB::bind_method(D_METHOD("create_3d_view_name", "name"), &PDFPage::create_3d_view_name);
 
 	ClassDB::bind_method(D_METHOD("get_status"), &PDFPage::get_status);
 

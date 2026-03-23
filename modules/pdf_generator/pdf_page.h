@@ -457,6 +457,11 @@ class PDFAnnotationCircle;
 	HPDF_EXPORT(HPDF_ExData)
 	HPDF_Page_Create3DAnnotExData(HPDF_Page page);
 
+#endif
+
+	Ref<PDF3DView> create_3d_view_name(const String &p_name);
+
+#if 0
 	/*--------------------------------------------------------------------------*/
 	/*--------------------------------------------------------------------------*/
 	/*----- 3D View ---------------------------------------------------------*/
@@ -480,8 +485,6 @@ class PDFAnnotationCircle;
 	HPDF_Page_CreateDestination(HPDF_Page page);
 
 #endif
-
-	Ref<PDF3DView> create_3d_view(const String &p_name);
 
 	uint32_t get_status();
 
