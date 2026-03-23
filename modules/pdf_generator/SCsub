@@ -47,6 +47,10 @@ sources = [
     "pdf_dict.cpp",
     "pdf_date.cpp",
     "pdf_dash_mode.cpp",
+    "pdf_3d_view.cpp",
+    "pdf_3d_view_node.cpp",
+    "pdf_javascript.cpp",
+    "pdf_u3d.cpp",
 ]
 
 if ARGUMENTS.get('custom_modules_shared', 'no') == 'yes':

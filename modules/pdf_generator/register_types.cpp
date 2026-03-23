@@ -32,6 +32,8 @@
 #include "register_types.h"
 
 #include "pdf_3d_measure.h"
+#include "pdf_3d_view.h"
+#include "pdf_3d_view_node.h"
 #include "pdf_annotation.h"
 #include "pdf_dash_mode.h"
 #include "pdf_date.h"
@@ -44,9 +46,11 @@
 #include "pdf_ext_g_state.h"
 #include "pdf_font.h"
 #include "pdf_image.h"
+#include "pdf_javascript.h"
 #include "pdf_outline.h"
 #include "pdf_page.h"
 #include "pdf_shading.h"
+#include "pdf_u3d.h"
 #include "pdf_x_object.h"
 
 void register_pdf_generator_types(ModuleRegistrationLevel p_level) {
@@ -56,7 +60,6 @@ void register_pdf_generator_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<PDFFont>();
 		ClassDB::register_class<PDFImage>();
 		ClassDB::register_class<PDFOutline>();
-		ClassDB::register_class<PDFAnnotation>();
 		ClassDB::register_class<PDFDestination>();
 		ClassDB::register_class<PDF3DMeasure>();
 		ClassDB::register_class<PDFEmbeddedFile>();
@@ -69,6 +72,12 @@ void register_pdf_generator_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<PDFDate>();
 		ClassDB::register_class<PDFDashMode>();
 
+		ClassDB::register_class<PDFU3D>();
+		ClassDB::register_class<PDFJavascript>();
+		ClassDB::register_class<PDF3DView>();
+		ClassDB::register_class<PDF3DViewNode>();
+
+		ClassDB::register_class<PDFAnnotation>();
 		ClassDB::register_class<PDFAnnotation3D>();
 		ClassDB::register_class<PDFAnnotationText>();
 		ClassDB::register_class<PDFAnnotationFreeText>();
