@@ -530,27 +530,18 @@ uint32_t PDFPage::show_text(const String &p_text) {
 
 	return _status;
 }
+uint32_t PDFPage::show_text_next_line(const String &p_text) {
+	_status = HPDF_Page_ShowTextNextLine((HPDF_Page)_page, p_text.utf8().get_data());
+
+	return _status;
+}
+uint32_t PDFPage::show_text_next_line_ex(const String &p_text, const float p_word_space, const float p_char_space) {
+	_status = HPDF_Page_ShowTextNextLineEx((HPDF_Page)_page, p_word_space, p_char_space, p_text.utf8().get_data());
+
+	return _status;
+}
 
 #if 0
-
-/* Tj */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_ShowText(HPDF_Page page,
-		const char *text);
-
-/* TJ */
-
-/* ' */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_ShowTextNextLine(HPDF_Page page,
-		const char *text);
-
-/* " */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_ShowTextNextLineEx(HPDF_Page page,
-		HPDF_REAL word_space,
-		HPDF_REAL char_space,
-		const char *text);
 
 /*--- Color showing ------------------------------------------------------*/
 
@@ -877,6 +868,8 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("move_to_next_line"), &PDFPage::move_to_next_line);
 
 	ClassDB::bind_method(D_METHOD("show_text", "text"), &PDFPage::show_text);
+	ClassDB::bind_method(D_METHOD("show_text_next_line", "text"), &PDFPage::show_text_next_line);
+	ClassDB::bind_method(D_METHOD("show_text_next_line_ex", "text", "word_space", "char_space"), &PDFPage::show_text_next_line_ex);
 
 	ClassDB::bind_method(D_METHOD("draw_image", "image", "rect"), &PDFPage::draw_image);
 

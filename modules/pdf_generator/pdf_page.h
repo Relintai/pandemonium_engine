@@ -226,29 +226,8 @@ public:
 	/*--- Text showing -------------------------------------------------------*/
 
 	uint32_t show_text(const String &p_text);
-
-#if 0
-
-	/* Tj */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_ShowText(HPDF_Page page,
-			const char *text);
-
-	/* TJ */
-
-	/* ' */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_ShowTextNextLine(HPDF_Page page,
-			const char *text);
-
-	/* " */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_ShowTextNextLineEx(HPDF_Page page,
-			HPDF_REAL word_space,
-			HPDF_REAL char_space,
-			const char *text);
-
-#endif
+	uint32_t show_text_next_line(const String &p_text);
+	uint32_t show_text_next_line_ex(const String &p_text, const float p_word_space, const float p_char_space);
 
 #if 0
 	/*--- Color showing ------------------------------------------------------*/
