@@ -40,18 +40,18 @@ uint32_t PDFExData::get_status() {
 }
 
 PDFExData::PDFExData() {
-	_font = NULL;
+	_ex_data = NULL;
 }
 
 PDFExData::~PDFExData() {
 }
 
-void *PDFExData::_get_hpdf_font() const {
-	return _font;
+void *PDFExData::_get_hpdf_ex_data() const {
+	return _ex_data;
 }
 
-void PDFExData::_set_hpdf_font(void *p_font) {
-	_font = p_font;
+void PDFExData::_set_hpdf_ex_data(void *p_ex_data) {
+	_ex_data = p_ex_data;
 }
 
 void PDFExData::_bind_methods() {

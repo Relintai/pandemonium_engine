@@ -45,6 +45,7 @@ class PDFShading;
 class PDFXObject;
 class PDF3DView;
 class PDF3DMeasure;
+class PDFExData;
 
 class PDFPage : public Reference {
 	GDCLASS(PDFPage, Reference);
@@ -300,13 +301,7 @@ public:
 	Ref<PDF3DMeasure> create_c3d_3d_measure(const Vector3 &p_first_anchor_point, const Vector3 &p_text_anchor_point);
 	Ref<PDF3DMeasure> create_pd3_3d_measure(const PoolVector3Array &p_points, const float p_value, const String &p_units_string);
 
-#if 0
-	/*----- External Data ---------------------------------------------------------*/
-
-	HPDF_EXPORT(HPDF_ExData)
-	HPDF_Page_Create3DAnnotExData(HPDF_Page page);
-
-#endif
+	Ref<PDFExData> create_3d_annot_ex_data();
 
 	Ref<PDF3DView> create_3d_view_name(const String &p_name);
 

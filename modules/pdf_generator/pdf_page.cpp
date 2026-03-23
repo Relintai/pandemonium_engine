@@ -45,6 +45,7 @@
 #include "pdf_destination.h"
 #include "pdf_document.h"
 #include "pdf_encoder.h"
+#include "pdf_ex_data.h"
 #include "pdf_ext_g_state.h"
 #include "pdf_font.h"
 #include "pdf_image.h"
@@ -1136,6 +1137,19 @@ Ref<PDF3DMeasure> PDFPage::create_pd3_3d_measure(const PoolVector3Array &p_point
 	return a;
 }
 
+Ref<PDFExData> PDFPage::create_3d_annot_ex_data() {
+	HPDF_ExData hpdf_ex_data = HPDF_Page_Create3DAnnotExData((HPDF_Page)_page);
+
+	if (!hpdf_ex_data) {
+		return Ref<PDFExData>();
+	}
+
+	Ref<PDFExData> a;
+	a.instance();
+	a->_set_hpdf_ex_data(hpdf_ex_data);
+	return a;
+}
+
 Ref<PDF3DView> PDFPage::create_3d_view_name(const String &p_name) {
 	HPDF_Dict hpdf_view = HPDF_Create3DView(HPDF_GetPageMMgr((HPDF_Page)_page), p_name.utf8().get_data());
 
@@ -1363,6 +1377,8 @@ void PDFPage::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("create_c3d_3d_measure", "first_anchor_point", "text_anchor_point"), &PDFPage::create_c3d_3d_measure);
 	ClassDB::bind_method(D_METHOD("create_pd3_3d_measure", "points", "value", "units_string"), &PDFPage::create_pd3_3d_measure);
+
+	ClassDB::bind_method(D_METHOD("create_3d_annot_ex_data"), &PDFPage::create_3d_annot_ex_data);
 
 	ClassDB::bind_method(D_METHOD("create_3d_view_name", "name"), &PDFPage::create_3d_view_name);
 
