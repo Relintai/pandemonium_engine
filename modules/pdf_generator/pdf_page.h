@@ -34,6 +34,7 @@
 
 #include "core/object/reference.h"
 
+#include "pdf_annotation.h"
 #include "pdf_document.h"
 
 class PDFFont;
@@ -43,26 +44,6 @@ class PDFExtGState;
 class PDFShading;
 class PDFXObject;
 class PDF3DView;
-
-class PDFAnnotation;
-class PDFAnnotation3D;
-class PDFAnnotationText;
-class PDFAnnotationFreeText;
-class PDFAnnotationLine;
-class PDFAnnotationWidgetWhitePrint;
-class PDFAnnotationWidget;
-class PDFAnnotationLink;
-class PDFAnnotationURILink;
-class PDFAnnotationTextMarkup;
-class PDFAnnotationHighlight;
-class PDFAnnotationUnderline;
-class PDFAnnotationSquiggly;
-class PDFAnnotationStrikeOut;
-class PDFAnnotationPopup;
-class PDFAnnotationStamp;
-class PDFAnnotationProjection;
-class PDFAnnotationSquare;
-class PDFAnnotationCircle;
 
 class PDFPage : public Reference {
 	GDCLASS(PDFPage, Reference);
@@ -304,13 +285,13 @@ public:
 	Ref<PDFAnnotationWidget> annotation_widget_create(const Rect2 &p_rect);
 	Ref<PDFAnnotationLink> annotation_link_create(const Rect2 &p_rect, const Ref<PDFDestination> &p_destination);
 	Ref<PDFAnnotationURILink> annotation_uri_link_create(const Rect2 &p_rect, const String &p_uri);
+	Ref<PDFAnnotationTextMarkup> annotation_text_markup_create(const Rect2 &p_rect, const String &p_text, const PDFAnnotation::AnnotType p_sub_type, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
+	Ref<PDFAnnotationHighlight> annotation_highlight_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
+	Ref<PDFAnnotationUnderline> annotation_underline_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
+	Ref<PDFAnnotationSquiggly> annotation_squiggly_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
+	Ref<PDFAnnotationStrikeOut> annotation_strike_out_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
 
 #if 0
-class PDFAnnotationTextMarkup;
-class PDFAnnotationHighlight;
-class PDFAnnotationUnderline;
-class PDFAnnotationSquiggly;
-class PDFAnnotationStrikeOut;
 class PDFAnnotationPopup;
 class PDFAnnotationStamp;
 class PDFAnnotationProjection;
@@ -321,36 +302,6 @@ class PDFAnnotationCircle;
 #if 0
 	/*----- annotation ---------------------------------------------------------*/
 
-	HPDF_Annotation
-	HPDF_Page_CreateTextMarkupAnnot(HPDF_Page page,
-			HPDF_Rect rect,
-			const char *text,
-			HPDF_Encoder encoder,
-			HPDF_AnnotType subType);
-
-	HPDF_EXPORT(HPDF_Annotation)
-	HPDF_Page_CreateHighlightAnnot(HPDF_Page page,
-			HPDF_Rect rect,
-			const char *text,
-			HPDF_Encoder encoder);
-
-	HPDF_EXPORT(HPDF_Annotation)
-	HPDF_Page_CreateUnderlineAnnot(HPDF_Page page,
-			HPDF_Rect rect,
-			const char *text,
-			HPDF_Encoder encoder);
-
-	HPDF_EXPORT(HPDF_Annotation)
-	HPDF_Page_CreateSquigglyAnnot(HPDF_Page page,
-			HPDF_Rect rect,
-			const char *text,
-			HPDF_Encoder encoder);
-
-	HPDF_EXPORT(HPDF_Annotation)
-	HPDF_Page_CreateStrikeOutAnnot(HPDF_Page page,
-			HPDF_Rect rect,
-			const char *text,
-			HPDF_Encoder encoder);
 
 	HPDF_EXPORT(HPDF_Annotation)
 	HPDF_Page_CreatePopupAnnot(HPDF_Page page,
