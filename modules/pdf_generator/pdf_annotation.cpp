@@ -40,22 +40,202 @@ uint32_t PDFAnnotation::get_status() {
 }
 
 PDFAnnotation::PDFAnnotation() {
-	_font = NULL;
+	_annotation = NULL;
 }
 
 PDFAnnotation::~PDFAnnotation() {
 }
 
-void *PDFAnnotation::_get_hpdf_font() const {
-	return _font;
+void *PDFAnnotation::_get_hpdf_annotation() const {
+	return _annotation;
 }
 
-void PDFAnnotation::_set_hpdf_font(void *p_font) {
-	_font = p_font;
+void PDFAnnotation::_set_hpdf_annotation(void *p_annotation) {
+	_annotation = p_annotation;
 }
 
 void PDFAnnotation::_bind_methods() {
 	//ClassDB::bind_method(D_METHOD("get_width"), &PDFAnnotation::get_width);
 	//ClassDB::bind_method(D_METHOD("set_width", "val"), &PDFAnnotation::set_width);
 	//ADD_PROPERTY(PropertyInfo(Variant::REAL, "width"), "set_width", "get_width");
+}
+
+// PDFAnnotation3D
+
+PDFAnnotation3D::PDFAnnotation3D() {
+}
+PDFAnnotation3D::~PDFAnnotation3D() {
+}
+
+void PDFAnnotation3D::_bind_methods() {
+}
+
+//  PDFAnnotationText
+
+PDFAnnotationText::PDFAnnotationText() {
+}
+PDFAnnotationText::~PDFAnnotationText() {
+}
+
+void PDFAnnotationText::_bind_methods() {
+}
+
+// PDFAnnotationFreeText
+
+PDFAnnotationFreeText::PDFAnnotationFreeText() {
+}
+PDFAnnotationFreeText::~PDFAnnotationFreeText() {
+}
+
+void PDFAnnotationFreeText::_bind_methods() {
+}
+
+// PDFAnnotationFreeText
+
+PDFAnnotationLine::PDFAnnotationLine() {
+}
+PDFAnnotationLine::~PDFAnnotationLine() {
+}
+
+void PDFAnnotationLine::_bind_methods() {
+}
+
+// PDFAnnotationWidgetWhitePrint
+
+PDFAnnotationWidgetWhitePrint::PDFAnnotationWidgetWhitePrint() {
+}
+PDFAnnotationWidgetWhitePrint::~PDFAnnotationWidgetWhitePrint() {
+}
+
+void PDFAnnotationWidgetWhitePrint::_bind_methods() {
+}
+
+// PDFAnnotationWidget
+
+PDFAnnotationWidget::PDFAnnotationWidget() {
+}
+PDFAnnotationWidget::~PDFAnnotationWidget() {
+}
+
+void PDFAnnotationWidget::_bind_methods() {
+}
+
+// PDFAnnotationLink
+
+PDFAnnotationLink::PDFAnnotationLink() {
+}
+PDFAnnotationLink::~PDFAnnotationLink() {
+}
+
+void PDFAnnotationLink::_bind_methods() {
+}
+
+// PDFAnnotationURILink
+
+PDFAnnotationURILink::PDFAnnotationURILink() {
+}
+PDFAnnotationURILink::~PDFAnnotationURILink() {
+}
+
+void PDFAnnotationURILink::_bind_methods() {
+}
+
+// 5DFAnnotationTextMarkup
+
+PDFAnnotationTextMarkup::PDFAnnotationTextMarkup() {
+}
+PDFAnnotationTextMarkup::~PDFAnnotationTextMarkup() {
+}
+
+void PDFAnnotationTextMarkup::_bind_methods() {
+}
+
+// PDFAnnotationHighlight
+
+PDFAnnotationHighlight::PDFAnnotationHighlight() {
+}
+PDFAnnotationHighlight::~PDFAnnotationHighlight() {
+}
+
+void PDFAnnotationHighlight::_bind_methods() {
+}
+
+// PDFAnnotationUnderline
+
+PDFAnnotationUnderline::PDFAnnotationUnderline() {
+}
+PDFAnnotationUnderline::~PDFAnnotationUnderline() {
+}
+
+void PDFAnnotationUnderline::_bind_methods() {
+}
+
+// PDFAnnotationSquiggly
+
+PDFAnnotationSquiggly::PDFAnnotationSquiggly() {
+}
+PDFAnnotationSquiggly::~PDFAnnotationSquiggly() {
+}
+
+void PDFAnnotationSquiggly::_bind_methods() {
+}
+
+// PDFAnnotationStrikeOut
+
+PDFAnnotationStrikeOut::PDFAnnotationStrikeOut() {
+}
+PDFAnnotationStrikeOut::~PDFAnnotationStrikeOut() {
+}
+
+void PDFAnnotationStrikeOut::_bind_methods() {
+}
+
+// PDFAnnotationPopup
+
+PDFAnnotationPopup::PDFAnnotationPopup() {
+}
+PDFAnnotationPopup::~PDFAnnotationPopup() {
+}
+
+void PDFAnnotationPopup::_bind_methods() {
+}
+
+// PDFAnnotationStamp
+
+PDFAnnotationStamp::PDFAnnotationStamp() {
+}
+PDFAnnotationStamp::~PDFAnnotationStamp() {
+}
+
+void PDFAnnotationStamp::_bind_methods() {
+}
+
+// PDFAnnotationProjection
+
+PDFAnnotationProjection::PDFAnnotationProjection() {
+}
+PDFAnnotationProjection::~PDFAnnotationProjection() {
+}
+
+void PDFAnnotationProjection::_bind_methods() {
+}
+
+// PDFAnnotationSquare
+
+PDFAnnotationSquare::PDFAnnotationSquare() {
+}
+PDFAnnotationSquare::~PDFAnnotationSquare() {
+}
+
+void PDFAnnotationSquare::_bind_methods() {
+}
+
+// PDFAnnotationCircle
+
+PDFAnnotationCircle::PDFAnnotationCircle() {
+}
+PDFAnnotationCircle::~PDFAnnotationCircle() {
+}
+
+void PDFAnnotationCircle::_bind_methods() {
 }

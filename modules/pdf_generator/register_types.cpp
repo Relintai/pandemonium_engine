@@ -33,9 +33,13 @@
 
 #include "pdf_3d_measure.h"
 #include "pdf_annotation.h"
+#include "pdf_dash_mode.h"
+#include "pdf_date.h"
 #include "pdf_destination.h"
+#include "pdf_dict.h"
 #include "pdf_document.h"
 #include "pdf_embedded_file.h"
+#include "pdf_encoder.h"
 #include "pdf_ex_data.h"
 #include "pdf_ext_g_state.h"
 #include "pdf_font.h"
@@ -44,10 +48,6 @@
 #include "pdf_page.h"
 #include "pdf_shading.h"
 #include "pdf_x_object.h"
-#include "pdf_encoder.h"
-#include "pdf_dict.h"
-#include "pdf_date.h"
-#include "pdf_dash_mode.h"
 
 void register_pdf_generator_types(ModuleRegistrationLevel p_level) {
 	if (p_level == MODULE_REGISTRATION_LEVEL_SCENE) {
@@ -68,6 +68,25 @@ void register_pdf_generator_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<PDFDict>();
 		ClassDB::register_class<PDFDate>();
 		ClassDB::register_class<PDFDashMode>();
+
+		ClassDB::register_class<PDFAnnotation3D>();
+		ClassDB::register_class<PDFAnnotationText>();
+		ClassDB::register_class<PDFAnnotationFreeText>();
+		ClassDB::register_class<PDFAnnotationLine>();
+		ClassDB::register_class<PDFAnnotationWidgetWhitePrint>();
+		ClassDB::register_class<PDFAnnotationWidget>();
+		ClassDB::register_class<PDFAnnotationLink>();
+		ClassDB::register_class<PDFAnnotationURILink>();
+		ClassDB::register_class<PDFAnnotationTextMarkup>();
+		ClassDB::register_class<PDFAnnotationHighlight>();
+		ClassDB::register_class<PDFAnnotationUnderline>();
+		ClassDB::register_class<PDFAnnotationSquiggly>();
+		ClassDB::register_class<PDFAnnotationStrikeOut>();
+		ClassDB::register_class<PDFAnnotationPopup>();
+		ClassDB::register_class<PDFAnnotationStamp>();
+		ClassDB::register_class<PDFAnnotationProjection>();
+		ClassDB::register_class<PDFAnnotationSquare>();
+		ClassDB::register_class<PDFAnnotationCircle>();
 	}
 }
 
