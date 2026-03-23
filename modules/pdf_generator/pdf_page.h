@@ -285,7 +285,7 @@ public:
 	Ref<PDFAnnotationWidget> annotation_widget_create(const Rect2 &p_rect);
 	Ref<PDFAnnotationLink> annotation_link_create(const Rect2 &p_rect, const Ref<PDFDestination> &p_destination);
 	Ref<PDFAnnotationURILink> annotation_uri_link_create(const Rect2 &p_rect, const String &p_uri);
-	Ref<PDFAnnotationTextMarkup> annotation_text_markup_create(const Rect2 &p_rect, const String &p_text, const PDFAnnotation::AnnotType p_sub_type, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
+	Ref<PDFAnnotationTextMarkup> annotation_text_markup_create(const Rect2 &p_rect, const String &p_text, const PDFAnnotationTextMarkup::AnnotSubType p_sub_type, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
 	Ref<PDFAnnotationHighlight> annotation_highlight_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
 	Ref<PDFAnnotationUnderline> annotation_underline_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
 	Ref<PDFAnnotationSquiggly> annotation_squiggly_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());

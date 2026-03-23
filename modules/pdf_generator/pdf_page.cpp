@@ -824,7 +824,7 @@ Ref<PDFAnnotationURILink> PDFPage::annotation_uri_link_create(const Rect2 &p_rec
 	a->_set_hpdf_annotation(hpdf_annotation);
 	return a;
 }
-Ref<PDFAnnotationTextMarkup> PDFPage::annotation_text_markup_create(const Rect2 &p_rect, const String &p_text, const PDFAnnotation::AnnotType p_sub_type, const Ref<PDFEncoder> &p_encoder) {
+Ref<PDFAnnotationTextMarkup> PDFPage::annotation_text_markup_create(const Rect2 &p_rect, const String &p_text, const PDFAnnotationTextMarkup::AnnotSubType p_sub_type, const Ref<PDFEncoder> &p_encoder) {
 	HPDF_Rect rect;
 	rect.left = p_rect.position.x;
 	rect.top = p_rect.position.y;

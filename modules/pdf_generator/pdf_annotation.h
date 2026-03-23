@@ -38,27 +38,6 @@ class PDFAnnotation : public Reference {
 	GDCLASS(PDFAnnotation, Reference);
 
 public:
-	enum AnnotType {
-		ANNOTATION_TYPE_TEXT_NOTES,
-		ANNOTATION_TYPE_LINK,
-		ANNOTATION_TYPE_SOUND,
-		ANNOTATION_TYPE_FREE_TEXT,
-		ANNOTATION_TYPE_STAMP,
-		ANNOTATION_TYPE_SQUARE,
-		ANNOTATION_TYPE_CIRCLE,
-		ANNOTATION_TYPE_STRIKE_OUT,
-		ANNOTATION_TYPE_HIGHTLIGHT,
-		ANNOTATION_TYPE_UNDERLINE,
-		ANNOTATION_TYPE_INK,
-		ANNOTATION_TYPE_FILE_ATTACHMENT,
-		ANNOTATION_TYPE_POPUP,
-		ANNOTATION_TYPE_3D,
-		ANNOTATION_TYPE_SQUIGGLY,
-		ANNOTATION_TYPE_LINE,
-		ANNOTATION_TYPE_PROJECTION,
-		ANNOTATION_TYPE_WIDGET
-	};
-
 #if 0
 	HPDF_EXPORT(HPDF_STATUS)
 	HPDF_Annot_SetRGBColor(HPDF_Annotation annot, HPDF_RGBColor color);
@@ -97,8 +76,6 @@ protected:
 
 	uint32_t _status;
 };
-
-VARIANT_ENUM_CAST(PDFAnnotation::AnnotType);
 
 class PDFAnnotation3D : public PDFAnnotation {
 	GDCLASS(PDFAnnotation3D, PDFAnnotation);
@@ -266,6 +243,27 @@ class PDFAnnotationTextMarkup : public PDFAnnotation {
 	GDCLASS(PDFAnnotationTextMarkup, PDFAnnotation);
 
 public:
+	enum AnnotSubType {
+		ANNOTATION_TYPE_TEXT_NOTES,
+		ANNOTATION_TYPE_LINK,
+		ANNOTATION_TYPE_SOUND,
+		ANNOTATION_TYPE_FREE_TEXT,
+		ANNOTATION_TYPE_STAMP,
+		ANNOTATION_TYPE_SQUARE,
+		ANNOTATION_TYPE_CIRCLE,
+		ANNOTATION_TYPE_STRIKE_OUT,
+		ANNOTATION_TYPE_HIGHTLIGHT,
+		ANNOTATION_TYPE_UNDERLINE,
+		ANNOTATION_TYPE_INK,
+		ANNOTATION_TYPE_FILE_ATTACHMENT,
+		ANNOTATION_TYPE_POPUP,
+		ANNOTATION_TYPE_3D,
+		ANNOTATION_TYPE_SQUIGGLY,
+		ANNOTATION_TYPE_LINE,
+		ANNOTATION_TYPE_PROJECTION,
+		ANNOTATION_TYPE_WIDGET
+	};
+
 #if 0
 	HPDF_EXPORT(HPDF_STATUS)
 	HPDF_MarkupAnnot_SetTitle(HPDF_Annotation annot, const char *name);
@@ -313,6 +311,8 @@ public:
 protected:
 	static void _bind_methods();
 };
+
+VARIANT_ENUM_CAST(PDFAnnotationTextMarkup::AnnotSubType);
 
 class PDFAnnotationHighlight : public PDFAnnotation {
 	GDCLASS(PDFAnnotationHighlight, PDFAnnotation);
@@ -391,9 +391,6 @@ class PDFAnnotationStamp : public PDFAnnotation {
 	GDCLASS(PDFAnnotationStamp, PDFAnnotation);
 
 public:
-#if 0
-#endif
-
 	PDFAnnotationStamp();
 	~PDFAnnotationStamp();
 
