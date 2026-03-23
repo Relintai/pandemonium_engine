@@ -404,6 +404,22 @@ uint32_t PDFPage::path_close() {
 	return _status;
 }
 
+uint32_t PDFPage::path_circle(const Vector2 &p_position, const float p_radius) {
+	_status = HPDF_Page_Circle((HPDF_Page)_page, p_position.x, p_position.y, p_radius);
+
+	return _status;
+}
+uint32_t PDFPage::path_ellipse(const Vector2 &p_position, const Vector2 &p_radius) {
+	_status = HPDF_Page_Ellipse((HPDF_Page)_page, p_position.x, p_position.y, p_radius.x, p_radius.y);
+
+	return _status;
+}
+uint32_t PDFPage::path_arc(const Vector2 &p_position, const float p_radius, const float p_angle_1, const float p_angle_2) {
+	_status = HPDF_Page_Arc((HPDF_Page)_page, p_position.x, p_position.y, p_radius, p_angle_1, p_angle_2);
+
+	return _status;
+}
+
 /*--- Path painting operator ---------------------------------------------*/
 
 uint32_t PDFPage::path_stroke() {
@@ -591,61 +607,28 @@ uint32_t PDFPage::draw_image(const Ref<PDFImage> &p_image, const Rect2 &p_rect) 
 	return _status;
 }
 
-#if 0
-/* BX --not implemented yet */
-/* EX --not implemented yet */
+uint32_t PDFPage::draw_text_out(const Vector2 &p_position, const String &p_text) {
+	_status = HPDF_Page_TextOut((HPDF_Page)_page, p_position.x, p_position.y, p_text.utf8().get_data());
 
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_DrawImage(HPDF_Page page,
-		HPDF_Image image,
-		HPDF_REAL x,
-		HPDF_REAL y,
-		HPDF_REAL width,
-		HPDF_REAL height);
+	return _status;
+}
+uint32_t PDFPage::draw_text_rect(const Rect2 &p_rect, const String &p_text, const TextAlignment p_align) {
+	Vector2 rect_end = p_rect.get_end();
+	HPDF_TextAlignment align = static_cast<HPDF_TextAlignment>(p_align);
 
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_Circle(HPDF_Page page,
-		HPDF_REAL x,
-		HPDF_REAL y,
-		HPDF_REAL ray);
+	uint32_t length = 0;
+	_status = HPDF_Page_TextRect((HPDF_Page)_page, p_rect.position.x, p_rect.position.y, rect_end.x, rect_end.y, p_text.utf8().get_data(), align, &length);
 
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_Ellipse(HPDF_Page page,
-		HPDF_REAL x,
-		HPDF_REAL y,
-		HPDF_REAL xray,
-		HPDF_REAL yray);
+	return length;
+}
 
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_Arc(HPDF_Page page,
-		HPDF_REAL x,
-		HPDF_REAL y,
-		HPDF_REAL ray,
-		HPDF_REAL ang1,
-		HPDF_REAL ang2);
+uint32_t PDFPage::slide_show_set(const TransitionStyle p_type, const float p_disp_time, const float p_trans_time) {
+	HPDF_TransitionStyle type = static_cast<HPDF_TransitionStyle>(p_type);
 
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_TextOut(HPDF_Page page,
-		HPDF_REAL xpos,
-		HPDF_REAL ypos,
-		const char *text);
+	_status = HPDF_Page_SetSlideShow((HPDF_Page)_page, type, p_disp_time, p_trans_time);
 
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_TextRect(HPDF_Page page,
-		HPDF_REAL left,
-		HPDF_REAL top,
-		HPDF_REAL right,
-		HPDF_REAL bottom,
-		const char *text,
-		HPDF_TextAlignment align,
-		HPDF_UINT *len);
-
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetSlideShow(HPDF_Page page,
-		HPDF_TransitionStyle type,
-		HPDF_REAL disp_time,
-		HPDF_REAL trans_time);
-#endif
+	return _status;
+}
 
 #if 0
 HPDF_STATUS
@@ -841,6 +824,10 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("path_rectangle", "rect"), &PDFPage::path_rectangle);
 	ClassDB::bind_method(D_METHOD("path_close"), &PDFPage::path_close);
 
+	ClassDB::bind_method(D_METHOD("path_circle", "position", "radius"), &PDFPage::path_circle);
+	ClassDB::bind_method(D_METHOD("path_ellipse", "position", "radius"), &PDFPage::path_ellipse);
+	ClassDB::bind_method(D_METHOD("path_arc", "position", "radius", "angle_1", "angle_2"), &PDFPage::path_arc);
+
 	ClassDB::bind_method(D_METHOD("path_stroke"), &PDFPage::path_stroke);
 	ClassDB::bind_method(D_METHOD("path_stroke_close"), &PDFPage::path_stroke_close);
 	ClassDB::bind_method(D_METHOD("path_fill"), &PDFPage::path_fill);
@@ -873,6 +860,11 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("execute_x_object", "x_object"), &PDFPage::execute_x_object);
 
 	ClassDB::bind_method(D_METHOD("draw_image", "image", "rect"), &PDFPage::draw_image);
+
+	ClassDB::bind_method(D_METHOD("draw_text_out", "position", "text"), &PDFPage::draw_text_out);
+	ClassDB::bind_method(D_METHOD("draw_text_rect", "rect", "text", "align"), &PDFPage::draw_text_rect, DEFVAL(TEXT_ALIGN_LEFT));
+
+	ClassDB::bind_method(D_METHOD("slide_show_set", "type", "disp_time", "trans_time"), &PDFPage::slide_show_set);
 
 	ClassDB::bind_method(D_METHOD("get_status"), &PDFPage::get_status);
 
@@ -918,4 +910,28 @@ void PDFPage::_bind_methods() {
 	BIND_ENUM_CONSTANT(TEXT_RENDERING_MODE_FILL_STROKE_CLIPPING);
 	BIND_ENUM_CONSTANT(TEXT_RENDERING_MODE_CLIPPING);
 	BIND_ENUM_CONSTANT(TEXT_RENDERING_MODE_EOF);
+
+	BIND_ENUM_CONSTANT(TEXT_ALIGN_LEFT);
+	BIND_ENUM_CONSTANT(TEXT_ALIGN_RIGHT);
+	BIND_ENUM_CONSTANT(TEXT_ALIGN_CENTER);
+	BIND_ENUM_CONSTANT(TEXT_ALIGN_JUSTIFY);
+
+	BIND_ENUM_CONSTANT(TRANSITION_STYLE_WIPE_RIGHT);
+	BIND_ENUM_CONSTANT(TRANSITION_STYLE_WIPE_UP);
+	BIND_ENUM_CONSTANT(TRANSITION_STYLE_WIPE_LEFT);
+	BIND_ENUM_CONSTANT(TRANSITION_STYLE_WIPE_DOWN);
+	BIND_ENUM_CONSTANT(TRANSITION_STYLE_BARN_DOORS_HORIZONTAL_OUT);
+	BIND_ENUM_CONSTANT(TRANSITION_STYLE_BARN_DOORS_HORIZONTAL_IN);
+	BIND_ENUM_CONSTANT(TRANSITION_STYLE_BARN_DOORS_VERTICAL_OUT);
+	BIND_ENUM_CONSTANT(TRANSITION_STYLE_BARN_DOORS_VERTICAL_IN);
+	BIND_ENUM_CONSTANT(TRANSITION_STYLE_BOX_OUT);
+	BIND_ENUM_CONSTANT(TRANSITION_STYLE_BOX_IN);
+	BIND_ENUM_CONSTANT(TRANSITION_STYLE_BLINDS_HORIZONTAL);
+	BIND_ENUM_CONSTANT(TRANSITION_STYLE_BLINDS_VERTICAL);
+	BIND_ENUM_CONSTANT(TRANSITION_STYLE_DISSOLVE);
+	BIND_ENUM_CONSTANT(TRANSITION_STYLE_GLITTER_RIGHT);
+	BIND_ENUM_CONSTANT(TRANSITION_STYLE_GLITTER_DOWN);
+	BIND_ENUM_CONSTANT(TRANSITION_STYLE_GLITTER_TOP_LEFT_TO_BOTTOM_RIGHT);
+	BIND_ENUM_CONSTANT(TRANSITION_STYLE_REPLACE);
+	BIND_ENUM_CONSTANT(TRANSITION_STYLE_EOF);
 }

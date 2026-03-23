@@ -102,6 +102,34 @@ public:
 		TEXT_RENDERING_MODE_EOF
 	};
 
+	enum TextAlignment {
+		TEXT_ALIGN_LEFT = 0,
+		TEXT_ALIGN_RIGHT,
+		TEXT_ALIGN_CENTER,
+		TEXT_ALIGN_JUSTIFY
+	};
+
+	enum TransitionStyle {
+		TRANSITION_STYLE_WIPE_RIGHT = 0,
+		TRANSITION_STYLE_WIPE_UP,
+		TRANSITION_STYLE_WIPE_LEFT,
+		TRANSITION_STYLE_WIPE_DOWN,
+		TRANSITION_STYLE_BARN_DOORS_HORIZONTAL_OUT,
+		TRANSITION_STYLE_BARN_DOORS_HORIZONTAL_IN,
+		TRANSITION_STYLE_BARN_DOORS_VERTICAL_OUT,
+		TRANSITION_STYLE_BARN_DOORS_VERTICAL_IN,
+		TRANSITION_STYLE_BOX_OUT,
+		TRANSITION_STYLE_BOX_IN,
+		TRANSITION_STYLE_BLINDS_HORIZONTAL,
+		TRANSITION_STYLE_BLINDS_VERTICAL,
+		TRANSITION_STYLE_DISSOLVE,
+		TRANSITION_STYLE_GLITTER_RIGHT,
+		TRANSITION_STYLE_GLITTER_DOWN,
+		TRANSITION_STYLE_GLITTER_TOP_LEFT_TO_BOTTOM_RIGHT,
+		TRANSITION_STYLE_REPLACE,
+		TRANSITION_STYLE_EOF
+	};
+
 	float get_width();
 	void set_width(const float p_width);
 
@@ -205,6 +233,10 @@ public:
 	uint32_t path_rectangle(const Rect2 &p_rect);
 	uint32_t path_close();
 
+	uint32_t path_circle(const Vector2 &p_position, const float p_radius);
+	uint32_t path_ellipse(const Vector2 &p_position, const Vector2 &p_radius);
+	uint32_t path_arc(const Vector2 &p_position, const float p_radius, const float p_angle_1, const float p_angle_2);
+
 	uint32_t path_stroke();
 	uint32_t path_stroke_close();
 	uint32_t path_fill();
@@ -238,51 +270,10 @@ public:
 	uint32_t execute_x_object(const Ref<PDFXObject> &p_x_object);
 
 	uint32_t draw_image(const Ref<PDFImage> &p_image, const Rect2 &p_rect);
+	uint32_t draw_text_out(const Vector2 &p_position, const String &p_text);
+	uint32_t draw_text_rect(const Rect2 &p_rect, const String &p_text, const TextAlignment p_align = TEXT_ALIGN_LEFT);
 
-#if 0
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_Circle(HPDF_Page page,
-			HPDF_REAL x,
-			HPDF_REAL y,
-			HPDF_REAL ray);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_Ellipse(HPDF_Page page,
-			HPDF_REAL x,
-			HPDF_REAL y,
-			HPDF_REAL xray,
-			HPDF_REAL yray);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_Arc(HPDF_Page page,
-			HPDF_REAL x,
-			HPDF_REAL y,
-			HPDF_REAL ray,
-			HPDF_REAL ang1,
-			HPDF_REAL ang2);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_TextOut(HPDF_Page page,
-			HPDF_REAL xpos,
-			HPDF_REAL ypos,
-			const char *text);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_TextRect(HPDF_Page page,
-			HPDF_REAL left,
-			HPDF_REAL top,
-			HPDF_REAL right,
-			HPDF_REAL bottom,
-			const char *text,
-			HPDF_TextAlignment align,
-			HPDF_UINT *len);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetSlideShow(HPDF_Page page,
-			HPDF_TransitionStyle type,
-			HPDF_REAL disp_time,
-			HPDF_REAL trans_time);
-#endif
+	uint32_t slide_show_set(const TransitionStyle p_type, const float p_disp_time, const float p_trans_time);
 
 #if 0
 	HPDF_STATUS
@@ -519,5 +510,7 @@ VARIANT_ENUM_CAST(PDFPage::PageDirection);
 VARIANT_ENUM_CAST(PDFPage::LineCap);
 VARIANT_ENUM_CAST(PDFPage::LineJoin);
 VARIANT_ENUM_CAST(PDFPage::TextRenderingMode);
+VARIANT_ENUM_CAST(PDFPage::TextAlignment);
+VARIANT_ENUM_CAST(PDFPage::TransitionStyle);
 
 #endif
