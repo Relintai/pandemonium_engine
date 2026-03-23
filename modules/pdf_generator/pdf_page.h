@@ -163,13 +163,22 @@ public:
 	void text_rise_set(const float p_value);
 
 	Color rgb_fill_get();
+	void rgb_fill_set(const Color &p_color);
+
 	Color rgb_stroke_get();
+	void rgb_stroke_set(const Color &p_color);
 
 	Vector4 cmyk_fill_get();
+	void cmyk_fill_set(const Vector4 &p_color);
+
 	Vector4 cmyk_stroke_get();
+	void cmyk_stroke_set(const Vector4 &p_color);
 
 	float gray_fill_get();
+	void gray_fill_set(const float p_color);
+
 	float gray_stroke_get();
+	void gray_stroke_set(const float p_color);
 
 	PDFDocument::ColorSpace stroking_color_space_get();
 	PDFDocument::ColorSpace filling_color_space_get();
@@ -228,59 +237,6 @@ public:
 	uint32_t show_text(const String &p_text);
 	uint32_t show_text_next_line(const String &p_text);
 	uint32_t show_text_next_line_ex(const String &p_text, const float p_word_space, const float p_char_space);
-
-#if 0
-	/*--- Color showing ------------------------------------------------------*/
-
-	/* cs --not implemented yet */
-	/* CS --not implemented yet */
-	/* sc --not implemented yet */
-	/* scn --not implemented yet */
-	/* SC --not implemented yet */
-	/* SCN --not implemented yet */
-
-	/* g */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetGrayFill(HPDF_Page page,
-			HPDF_REAL gray);
-
-	/* G */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetGrayStroke(HPDF_Page page,
-			HPDF_REAL gray);
-
-	/* rg */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetRGBFill(HPDF_Page page,
-			HPDF_REAL r,
-			HPDF_REAL g,
-			HPDF_REAL b);
-
-	/* RG */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetRGBStroke(HPDF_Page page,
-			HPDF_REAL r,
-			HPDF_REAL g,
-			HPDF_REAL b);
-
-	/* k */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetCMYKFill(HPDF_Page page,
-			HPDF_REAL c,
-			HPDF_REAL m,
-			HPDF_REAL y,
-			HPDF_REAL k);
-
-	/* K */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetCMYKStroke(HPDF_Page page,
-			HPDF_REAL c,
-			HPDF_REAL m,
-			HPDF_REAL y,
-			HPDF_REAL k);
-
-	/*--- Compatibility ------------------------------------------------------*/
-#endif
 
 	uint32_t draw_image(const Ref<PDFImage> &p_image, const Rect2 &p_rect);
 

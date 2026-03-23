@@ -266,10 +266,17 @@ Color PDFPage::rgb_fill_get() {
 
 	return Color(hc.r, hc.g, hc.b);
 }
+void PDFPage::rgb_fill_set(const Color &p_color) {
+	_status = HPDF_Page_SetRGBFill((HPDF_Page)_page, p_color.r, p_color.g, p_color.b);
+}
+
 Color PDFPage::rgb_stroke_get() {
 	HPDF_RGBColor hc = HPDF_Page_GetRGBStroke((HPDF_Page)_page);
 
 	return Color(hc.r, hc.g, hc.b);
+}
+void PDFPage::rgb_stroke_set(const Color &p_color) {
+	_status = HPDF_Page_SetRGBStroke((HPDF_Page)_page, p_color.r, p_color.g, p_color.b);
 }
 
 Vector4 PDFPage::cmyk_fill_get() {
@@ -277,17 +284,31 @@ Vector4 PDFPage::cmyk_fill_get() {
 
 	return Vector4(hc.c, hc.m, hc.y, hc.k);
 }
+void PDFPage::cmyk_fill_set(const Vector4 &p_color) {
+	_status = HPDF_Page_SetCMYKFill((HPDF_Page)_page, p_color.x, p_color.y, p_color.z, p_color.w);
+}
+
 Vector4 PDFPage::cmyk_stroke_get() {
 	HPDF_CMYKColor hc = HPDF_Page_GetCMYKFill((HPDF_Page)_page);
 
 	return Vector4(hc.c, hc.m, hc.y, hc.k);
 }
+void PDFPage::cmyk_stroke_set(const Vector4 &p_color) {
+	_status = HPDF_Page_SetCMYKStroke((HPDF_Page)_page, p_color.x, p_color.y, p_color.z, p_color.w);
+}
 
 float PDFPage::gray_fill_get() {
 	return HPDF_Page_GetGrayFill((HPDF_Page)_page);
 }
+void PDFPage::gray_fill_set(const float p_color) {
+	_status = HPDF_Page_SetGrayFill((HPDF_Page)_page, p_color);
+}
+
 float PDFPage::gray_stroke_get() {
 	return HPDF_Page_GetGrayStroke((HPDF_Page)_page);
+}
+void PDFPage::gray_stroke_set(const float p_color) {
+	_status = HPDF_Page_SetGrayStroke((HPDF_Page)_page, p_color);
 }
 
 PDFDocument::ColorSpace PDFPage::stroking_color_space_get() {
@@ -541,59 +562,7 @@ uint32_t PDFPage::show_text_next_line_ex(const String &p_text, const float p_wor
 	return _status;
 }
 
-#if 0
-
-/*--- Color showing ------------------------------------------------------*/
-
-/* cs --not implemented yet */
-/* CS --not implemented yet */
-/* sc --not implemented yet */
-/* scn --not implemented yet */
-/* SC --not implemented yet */
-/* SCN --not implemented yet */
-
-/* g */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetGrayFill(HPDF_Page page,
-		HPDF_REAL gray);
-
-/* G */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetGrayStroke(HPDF_Page page,
-		HPDF_REAL gray);
-
-/* rg */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetRGBFill(HPDF_Page page,
-		HPDF_REAL r,
-		HPDF_REAL g,
-		HPDF_REAL b);
-
-/* RG */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetRGBStroke(HPDF_Page page,
-		HPDF_REAL r,
-		HPDF_REAL g,
-		HPDF_REAL b);
-
-/* k */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetCMYKFill(HPDF_Page page,
-		HPDF_REAL c,
-		HPDF_REAL m,
-		HPDF_REAL y,
-		HPDF_REAL k);
-
-/* K */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetCMYKStroke(HPDF_Page page,
-		HPDF_REAL c,
-		HPDF_REAL m,
-		HPDF_REAL y,
-		HPDF_REAL k);
-
-/*--- Compatibility ------------------------------------------------------*/
-#endif
+/*--- Compatibility ----------------------------------------------------*/
 
 uint32_t PDFPage::draw_image(const Ref<PDFImage> &p_image, const Rect2 &p_rect) {
 	HPDF_Image hpdf_image = NULL;
@@ -810,13 +779,28 @@ void PDFPage::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::REAL, "text_rise"), "text_rise_set", "text_rise_get");
 
 	ClassDB::bind_method(D_METHOD("rgb_fill_get"), &PDFPage::rgb_fill_get);
+	ClassDB::bind_method(D_METHOD("rgb_fill_set", "val"), &PDFPage::rgb_fill_set);
+	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "rgb_fill"), "rgb_fill_set", "rgb_fill_get");
+
 	ClassDB::bind_method(D_METHOD("rgb_stroke_get"), &PDFPage::rgb_stroke_get);
+	ClassDB::bind_method(D_METHOD("rgb_stroke_set", "val"), &PDFPage::rgb_stroke_set);
+	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "rgb_stroke"), "rgb_stroke_set", "rgb_stroke_get");
 
 	ClassDB::bind_method(D_METHOD("cmyk_fill_get"), &PDFPage::cmyk_fill_get);
+	ClassDB::bind_method(D_METHOD("cmyk_fill_set", "val"), &PDFPage::cmyk_fill_set);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR4, "cmyk_fill"), "cmyk_fill_set", "cmyk_fill_get");
+
 	ClassDB::bind_method(D_METHOD("cmyk_stroke_get"), &PDFPage::cmyk_stroke_get);
+	ClassDB::bind_method(D_METHOD("cmyk_stroke_set", "val"), &PDFPage::cmyk_stroke_set);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR4, "cmyk_stroke"), "cmyk_stroke_set", "cmyk_stroke_get");
 
 	ClassDB::bind_method(D_METHOD("gray_fill_get"), &PDFPage::gray_fill_get);
+	ClassDB::bind_method(D_METHOD("gray_fill_set", "val"), &PDFPage::gray_fill_set);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "gray_fill"), "gray_fill_set", "gray_fill_get");
+
 	ClassDB::bind_method(D_METHOD("gray_stroke_get"), &PDFPage::gray_stroke_get);
+	ClassDB::bind_method(D_METHOD("gray_stroke_set", "val"), &PDFPage::gray_stroke_set);
+	ADD_PROPERTY(PropertyInfo(Variant::REAL, "gray_stroke"), "gray_stroke_set", "gray_stroke_get");
 
 	ClassDB::bind_method(D_METHOD("stroking_color_space_get"), &PDFPage::stroking_color_space_get);
 	ClassDB::bind_method(D_METHOD("filling_color_space_get"), &PDFPage::filling_color_space_get);
