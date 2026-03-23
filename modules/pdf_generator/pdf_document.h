@@ -268,6 +268,10 @@ public:
 	PDFDocument();
 	~PDFDocument();
 
+	HPDF_Doc _get_hpdf_doc() const {
+		return _doc;
+	}
+
 protected:
 	static void _bind_methods();
 

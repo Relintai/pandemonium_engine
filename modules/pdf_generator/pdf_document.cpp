@@ -88,6 +88,7 @@ Ref<PDFPage> PDFDocument::page_get_current() {
 	page.instance();
 
 	page->_set_hpdf_page(hpdf_page);
+	page->_set_document(Ref<PDFDocument>(this));
 
 	return page;
 }
@@ -102,6 +103,7 @@ Ref<PDFPage> PDFDocument::page_get_index(const uint32_t p_index) {
 	page.instance();
 
 	page->_set_hpdf_page(hpdf_page);
+	page->_set_document(Ref<PDFDocument>(this));
 
 	return page;
 }
@@ -116,6 +118,7 @@ Ref<PDFPage> PDFDocument::page_add() {
 	page.instance();
 
 	page->_set_hpdf_page(hpdf_page);
+	page->_set_document(Ref<PDFDocument>(this));
 
 	return page;
 }
@@ -134,6 +137,7 @@ Ref<PDFPage> PDFDocument::page_insert(const Ref<PDFPage> &p_page) {
 	page.instance();
 
 	page->_set_hpdf_page(hpdf_page);
+	page->_set_document(Ref<PDFDocument>(this));
 
 	return page;
 }

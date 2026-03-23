@@ -300,12 +300,12 @@ public:
 	Ref<PDFAnnotationText> annotation_text_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
 	Ref<PDFAnnotationFreeText> annotation_free_text_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
 	Ref<PDFAnnotationLine> annotation_line_create(const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
+	Ref<PDFAnnotationWidgetWhitePrint> annotation_widget_white_print_create(const Rect2 &p_rect);
+	Ref<PDFAnnotationWidget> annotation_widget_create(const Rect2 &p_rect);
+	Ref<PDFAnnotationLink> annotation_link_create(const Rect2 &p_rect, const Ref<PDFDestination> &p_destination);
+	Ref<PDFAnnotationURILink> annotation_uri_link_create(const Rect2 &p_rect, const String &p_uri);
 
 #if 0
-class PDFAnnotationWidgetWhitePrint;
-class PDFAnnotationWidget;
-class PDFAnnotationLink;
-class PDFAnnotationURILink;
 class PDFAnnotationTextMarkup;
 class PDFAnnotationHighlight;
 class PDFAnnotationUnderline;
@@ -320,25 +320,6 @@ class PDFAnnotationCircle;
 
 #if 0
 	/*----- annotation ---------------------------------------------------------*/
-
-	HPDF_EXPORT(HPDF_Annotation)
-	HPDF_Page_CreateWidgetAnnot_WhiteOnlyWhilePrint(HPDF_Doc pdf,
-			HPDF_Page page,
-			HPDF_Rect rect);
-
-	HPDF_EXPORT(HPDF_Annotation)
-	HPDF_Page_CreateWidgetAnnot(HPDF_Page page,
-			HPDF_Rect rect);
-
-	HPDF_EXPORT(HPDF_Annotation)
-	HPDF_Page_CreateLinkAnnot(HPDF_Page page,
-			HPDF_Rect rect,
-			HPDF_Destination dst);
-
-	HPDF_EXPORT(HPDF_Annotation)
-	HPDF_Page_CreateURILinkAnnot(HPDF_Page page,
-			HPDF_Rect rect,
-			const char *uri);
 
 	HPDF_Annotation
 	HPDF_Page_CreateTextMarkupAnnot(HPDF_Page page,
@@ -461,14 +442,20 @@ class PDFAnnotationCircle;
 
 	uint32_t get_status();
 
+	Ref<PDFDocument> document_get();
+
 	PDFPage();
 	~PDFPage();
 
 	void *_get_hpdf_page() const;
 	void _set_hpdf_page(void *p_page);
 
+	void _set_document(const Ref<PDFDocument> &p_document);
+
 protected:
 	static void _bind_methods();
+
+	WRef<PDFDocument> _document;
 
 	void *_page;
 
