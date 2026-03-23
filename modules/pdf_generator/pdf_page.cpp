@@ -307,6 +307,16 @@ Transform2D PDFPage::text_matrix_get() {
 	Transform2D t = Transform2D(m.a, m.b, m.c, m.d, m.x, m.y);
 	return t;
 }
+void PDFPage::text_matrix_set(const Transform2D &p_transform) {
+	_status = HPDF_Page_SetTextMatrix((HPDF_Page)_page,
+			p_transform.columns[0][0],
+			p_transform.columns[0][1],
+			p_transform.columns[1][0],
+			p_transform.columns[1][1],
+			p_transform.columns[2][0],
+			p_transform.columns[2][1]);
+}
+
 uint32_t PDFPage::g_state_depth_get() {
 	return HPDF_Page_GetGStateDepth((HPDF_Page)_page);
 }
@@ -483,52 +493,6 @@ uint32_t PDFPage::concat(const Transform2D &p_transform) {
 	return _status;
 }
 
-#if 0
-/*--- Text state ---------------------------------------------------------*/
-
-/* Tc */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetCharSpace(HPDF_Page page,
-		HPDF_REAL value);
-
-/* Tw */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetWordSpace(HPDF_Page page,
-		HPDF_REAL value);
-
-/* Tz */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetHorizontalScalling(HPDF_Page page,
-		HPDF_REAL value);
-
-/* TL */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetTextLeading(HPDF_Page page,
-		HPDF_REAL value);
-
-/* Tf */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetFontAndSize(HPDF_Page page,
-		HPDF_Font font,
-		HPDF_REAL size);
-
-/* Tr */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetTextRenderingMode(HPDF_Page page,
-		HPDF_TextRenderingMode mode);
-
-/* Ts */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetTextRise(HPDF_Page page,
-		HPDF_REAL value);
-
-/* This function is obsolete. Use HPDF_Page_SetTextRise.  */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetTextRaise(HPDF_Page page,
-		HPDF_REAL value);
-
-#endif
-
 /*--- Text positioni ---------------------------------------------------*/
 
 uint32_t PDFPage::move_text_pos(const real_t p_x, const real_t p_y) {
@@ -542,35 +506,22 @@ uint32_t PDFPage::move_text_posv(const Vector2 &p_move) {
 	return _status;
 }
 
-#if 0
+uint32_t PDFPage::move_text_pos_2(const real_t p_x, const real_t p_y) {
+	_status = HPDF_Page_MoveTextPos2((HPDF_Page)_page, p_x, p_y);
 
-/* Td */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_MoveTextPos(HPDF_Page page,
-		HPDF_REAL x,
-		HPDF_REAL y);
+	return _status;
+}
+uint32_t PDFPage::move_text_posv_2(const Vector2 &p_move) {
+	_status = HPDF_Page_MoveTextPos2((HPDF_Page)_page, p_move.x, p_move.y);
 
-/* TD */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_MoveTextPos2(HPDF_Page page,
-		HPDF_REAL x,
-		HPDF_REAL y);
+	return _status;
+}
 
-/* Tm */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_SetTextMatrix(HPDF_Page page,
-		HPDF_REAL a,
-		HPDF_REAL b,
-		HPDF_REAL c,
-		HPDF_REAL d,
-		HPDF_REAL x,
-		HPDF_REAL y);
+uint32_t PDFPage::move_to_next_line() {
+	_status = HPDF_Page_MoveToNextLine((HPDF_Page)_page);
 
-/* T* */
-HPDF_EXPORT(HPDF_STATUS)
-HPDF_Page_MoveToNextLine(HPDF_Page page);
-
-#endif
+	return _status;
+}
 
 /*--- Text showing -------------------------------------------------------*/
 
@@ -880,6 +831,8 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("filling_color_space_get"), &PDFPage::filling_color_space_get);
 
 	ClassDB::bind_method(D_METHOD("text_matrix_get"), &PDFPage::text_matrix_get);
+	ClassDB::bind_method(D_METHOD("text_matrix_set", "matrix"), &PDFPage::text_matrix_set);
+	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM2D, "text_matrix"), "text_matrix_set", "text_matrix_get");
 
 	ClassDB::bind_method(D_METHOD("g_state_depth_get"), &PDFPage::g_state_depth_get);
 
@@ -917,6 +870,11 @@ void PDFPage::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("move_text_pos", "x", "y"), &PDFPage::move_text_pos);
 	ClassDB::bind_method(D_METHOD("move_text_posv", "move"), &PDFPage::move_text_posv);
+
+	ClassDB::bind_method(D_METHOD("move_text_pos_2", "x", "y"), &PDFPage::move_text_pos_2);
+	ClassDB::bind_method(D_METHOD("move_text_posv_2", "move"), &PDFPage::move_text_posv_2);
+
+	ClassDB::bind_method(D_METHOD("move_to_next_line"), &PDFPage::move_to_next_line);
 
 	ClassDB::bind_method(D_METHOD("show_text", "text"), &PDFPage::show_text);
 

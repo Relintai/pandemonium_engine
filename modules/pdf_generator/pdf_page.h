@@ -175,6 +175,7 @@ public:
 	PDFDocument::ColorSpace filling_color_space_get();
 
 	Transform2D text_matrix_get();
+	void text_matrix_set(const Transform2D &p_matrix);
 
 	uint32_t g_state_depth_get();
 
@@ -217,34 +218,10 @@ public:
 	uint32_t move_text_pos(const real_t p_x, const real_t p_y);
 	uint32_t move_text_posv(const Vector2 &p_move);
 
-#if 0
-	/* Td */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_MoveTextPos(HPDF_Page page,
-			HPDF_REAL x,
-			HPDF_REAL y);
+	uint32_t move_text_pos_2(const real_t p_x, const real_t p_y);
+	uint32_t move_text_posv_2(const Vector2 &p_move);
 
-	/* TD */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_MoveTextPos2(HPDF_Page page,
-			HPDF_REAL x,
-			HPDF_REAL y);
-
-	/* Tm */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_SetTextMatrix(HPDF_Page page,
-			HPDF_REAL a,
-			HPDF_REAL b,
-			HPDF_REAL c,
-			HPDF_REAL d,
-			HPDF_REAL x,
-			HPDF_REAL y);
-
-	/* T* */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_MoveToNextLine(HPDF_Page page);
-
-#endif
+	uint32_t move_to_next_line();
 
 	/*--- Text showing -------------------------------------------------------*/
 
