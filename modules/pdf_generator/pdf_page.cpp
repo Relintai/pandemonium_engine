@@ -38,11 +38,14 @@
 #include "hpdf_u3d.h"
 
 #include "pdf_3d_view.h"
+#include "pdf_annotation.h"
 #include "pdf_dash_mode.h"
+#include "pdf_encoder.h"
 #include "pdf_ext_g_state.h"
 #include "pdf_font.h"
 #include "pdf_image.h"
 #include "pdf_shading.h"
+#include "pdf_u3d.h"
 #include "pdf_x_object.h"
 
 float PDFPage::get_width() {
@@ -632,6 +635,106 @@ uint32_t PDFPage::slide_show_set(const TransitionStyle p_type, const float p_dis
 	return _status;
 }
 
+Ref<PDFAnnotation3D> PDFPage::annotation_3d_create(const Rect2 &p_rect, const bool p_tb, const bool p_np, const Ref<PDFU3D> &p_u3d, const Ref<PDFImage> &p_ap) {
+	HPDF_Rect rect;
+	rect.left = p_rect.position.x;
+	rect.top = p_rect.position.y;
+	Vector2 rect_end = p_rect.get_end();
+	rect.right = rect_end.x;
+	rect.bottom = rect_end.y;
+
+	HPDF_U3D hpdf_u3d = NULL;
+
+	if (p_u3d.is_valid()) {
+		hpdf_u3d = (HPDF_U3D)p_u3d->_get_hpdf_u3d();
+	}
+
+	HPDF_Image hpdf_image = NULL;
+
+	if (p_ap.is_valid()) {
+		hpdf_image = (HPDF_Image)p_ap->_get_hpdf_image();
+	}
+
+	HPDF_Annotation hpdf_annotation = HPDF_Page_Create3DAnnot((HPDF_Page)_page, rect, p_tb, p_np, hpdf_u3d, hpdf_image);
+
+	if (!hpdf_annotation) {
+		return Ref<PDFAnnotation3D>();
+	}
+
+	Ref<PDFAnnotation3D> a;
+	a.instance();
+	a->_set_hpdf_annotation(hpdf_annotation);
+	return a;
+}
+Ref<PDFAnnotationText> PDFPage::annotation_text_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder) {
+	HPDF_Rect rect;
+	rect.left = p_rect.position.x;
+	rect.top = p_rect.position.y;
+	Vector2 rect_end = p_rect.get_end();
+	rect.right = rect_end.x;
+	rect.bottom = rect_end.y;
+
+	HPDF_Encoder hpdf_encoder = NULL;
+
+	if (p_encoder.is_valid()) {
+		hpdf_encoder = (HPDF_Encoder)p_encoder->_get_hpdf_encoder();
+	}
+
+	HPDF_Annotation hpdf_annotation = HPDF_Page_CreateTextAnnot((HPDF_Page)_page, rect, p_text.utf8().get_data(), hpdf_encoder);
+
+	if (!hpdf_annotation) {
+		return Ref<PDFAnnotationText>();
+	}
+
+	Ref<PDFAnnotationText> a;
+	a.instance();
+	a->_set_hpdf_annotation(hpdf_annotation);
+	return a;
+}
+Ref<PDFAnnotationFreeText> PDFPage::annotation_free_text_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder) {
+	HPDF_Rect rect;
+	rect.left = p_rect.position.x;
+	rect.top = p_rect.position.y;
+	Vector2 rect_end = p_rect.get_end();
+	rect.right = rect_end.x;
+	rect.bottom = rect_end.y;
+
+	HPDF_Encoder hpdf_encoder = NULL;
+
+	if (p_encoder.is_valid()) {
+		hpdf_encoder = (HPDF_Encoder)p_encoder->_get_hpdf_encoder();
+	}
+
+	HPDF_Annotation hpdf_annotation = HPDF_Page_CreateFreeTextAnnot((HPDF_Page)_page, rect, p_text.utf8().get_data(), hpdf_encoder);
+
+	if (!hpdf_annotation) {
+		return Ref<PDFAnnotationFreeText>();
+	}
+
+	Ref<PDFAnnotationFreeText> a;
+	a.instance();
+	a->_set_hpdf_annotation(hpdf_annotation);
+	return a;
+}
+Ref<PDFAnnotationLine> PDFPage::annotation_line_create(const String &p_text, const Ref<PDFEncoder> &p_encoder) {
+	HPDF_Encoder hpdf_encoder = NULL;
+
+	if (p_encoder.is_valid()) {
+		hpdf_encoder = (HPDF_Encoder)p_encoder->_get_hpdf_encoder();
+	}
+
+	HPDF_Annotation hpdf_annotation = HPDF_Page_CreateLineAnnot((HPDF_Page)_page, p_text.utf8().get_data(), hpdf_encoder);
+
+	if (!hpdf_annotation) {
+		return Ref<PDFAnnotationLine>();
+	}
+
+	Ref<PDFAnnotationLine> a;
+	a.instance();
+	a->_set_hpdf_annotation(hpdf_annotation);
+	return a;
+}
+
 Ref<PDF3DView> PDFPage::create_3d_view_name(const String &p_name) {
 	HPDF_Dict hpdf_view = HPDF_Create3DView(HPDF_GetPageMMgr((HPDF_Page)_page), p_name.utf8().get_data());
 
@@ -829,6 +932,11 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("draw_text_rect", "rect", "text", "align"), &PDFPage::draw_text_rect, DEFVAL(TEXT_ALIGN_LEFT));
 
 	ClassDB::bind_method(D_METHOD("slide_show_set", "type", "disp_time", "trans_time"), &PDFPage::slide_show_set);
+
+	ClassDB::bind_method(D_METHOD("annotation_3d_create", "rect", "tb", "np", "u3d", "ap"), &PDFPage::annotation_3d_create);
+	ClassDB::bind_method(D_METHOD("annotation_text_create", "rect", "text", "encoder"), &PDFPage::annotation_text_create, DEFVAL(Ref<PDFEncoder>()));
+	ClassDB::bind_method(D_METHOD("annotation_free_text_create", "rect", "text", "encoder"), &PDFPage::annotation_free_text_create, DEFVAL(Ref<PDFEncoder>()));
+	ClassDB::bind_method(D_METHOD("annotation_line_create", "text", "encoder"), &PDFPage::annotation_line_create, DEFVAL(Ref<PDFEncoder>()));
 
 	ClassDB::bind_method(D_METHOD("create_3d_view_name", "name"), &PDFPage::create_3d_view_name);
 

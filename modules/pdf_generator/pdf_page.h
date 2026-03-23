@@ -296,13 +296,12 @@ public:
 
 	uint32_t slide_show_set(const TransitionStyle p_type, const float p_disp_time, const float p_trans_time);
 
-	//Ref<PDFAnnotation3D> annotation_3d_create(const Rect2 &p_rect, const bool tb, cont bool np,  );
+	Ref<PDFAnnotation3D> annotation_3d_create(const Rect2 &p_rect, const bool p_tb, const bool p_np, const Ref<PDFU3D> &p_u3d, const Ref<PDFImage> &p_ap);
+	Ref<PDFAnnotationText> annotation_text_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
+	Ref<PDFAnnotationFreeText> annotation_free_text_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
+	Ref<PDFAnnotationLine> annotation_line_create(const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
 
 #if 0
-class PDFAnnotation;
-class PDFAnnotationText;
-class PDFAnnotationFreeText;
-class PDFAnnotationLine;
 class PDFAnnotationWidgetWhitePrint;
 class PDFAnnotationWidget;
 class PDFAnnotationLink;
@@ -317,36 +316,10 @@ class PDFAnnotationStamp;
 class PDFAnnotationProjection;
 class PDFAnnotationSquare;
 class PDFAnnotationCircle;
-
 #endif
 
 #if 0
 	/*----- annotation ---------------------------------------------------------*/
-
-	HPDF_EXPORT(HPDF_Annotation)
-	HPDF_Page_Create3DAnnot(HPDF_Page page,
-			HPDF_Rect rect,
-			HPDF_BOOL tb,
-			HPDF_BOOL np,
-			HPDF_U3D u3d,
-			HPDF_Image ap);
-
-	HPDF_EXPORT(HPDF_Annotation)
-	HPDF_Page_CreateTextAnnot(HPDF_Page page,
-			HPDF_Rect rect,
-			const char *text,
-			HPDF_Encoder encoder);
-
-	HPDF_EXPORT(HPDF_Annotation)
-	HPDF_Page_CreateFreeTextAnnot(HPDF_Page page,
-			HPDF_Rect rect,
-			const char *text,
-			HPDF_Encoder encoder);
-
-	HPDF_EXPORT(HPDF_Annotation)
-	HPDF_Page_CreateLineAnnot(HPDF_Page page,
-			const char *text,
-			HPDF_Encoder encoder);
 
 	HPDF_EXPORT(HPDF_Annotation)
 	HPDF_Page_CreateWidgetAnnot_WhiteOnlyWhilePrint(HPDF_Doc pdf,
