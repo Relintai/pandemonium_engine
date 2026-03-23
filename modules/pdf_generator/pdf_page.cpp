@@ -41,6 +41,7 @@
 #include "pdf_font.h"
 #include "pdf_image.h"
 #include "pdf_shading.h"
+#include "pdf_x_object.h"
 
 float PDFPage::get_width() {
 	if (!_page) {
@@ -562,6 +563,20 @@ uint32_t PDFPage::show_text_next_line_ex(const String &p_text, const float p_wor
 	return _status;
 }
 
+/*--- XObjects -----------------------------------------------------------*/
+
+uint32_t PDFPage::execute_x_object(const Ref<PDFXObject> &p_x_object) {
+	HPDF_XObject hpdf_x_object = NULL;
+
+	if (p_x_object.is_valid()) {
+		hpdf_x_object = (HPDF_XObject)p_x_object->_get_hpdf_x_object();
+	}
+
+	_status = HPDF_Page_ExecuteXObject((HPDF_Page)_page, hpdf_x_object);
+
+	return _status;
+}
+
 /*--- Compatibility ----------------------------------------------------*/
 
 uint32_t PDFPage::draw_image(const Ref<PDFImage> &p_image, const Rect2 &p_rect) {
@@ -854,6 +869,8 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("show_text", "text"), &PDFPage::show_text);
 	ClassDB::bind_method(D_METHOD("show_text_next_line", "text"), &PDFPage::show_text_next_line);
 	ClassDB::bind_method(D_METHOD("show_text_next_line_ex", "text", "word_space", "char_space"), &PDFPage::show_text_next_line_ex);
+
+	ClassDB::bind_method(D_METHOD("execute_x_object", "x_object"), &PDFPage::execute_x_object);
 
 	ClassDB::bind_method(D_METHOD("draw_image", "image", "rect"), &PDFPage::draw_image);
 

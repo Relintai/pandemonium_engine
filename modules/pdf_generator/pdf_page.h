@@ -41,6 +41,7 @@ class PDFImage;
 class PDFDashMode;
 class PDFExtGState;
 class PDFShading;
+class PDFXObject;
 
 class PDFPage : public Reference {
 	GDCLASS(PDFPage, Reference);
@@ -222,8 +223,6 @@ public:
 
 	uint32_t set_font_and_size(const Ref<PDFFont> &p_font, float p_size);
 
-	/*--- Text positioning ---------------------------------------------------*/
-
 	uint32_t move_text_pos(const real_t p_x, const real_t p_y);
 	uint32_t move_text_posv(const Vector2 &p_move);
 
@@ -232,36 +231,15 @@ public:
 
 	uint32_t move_to_next_line();
 
-	/*--- Text showing -------------------------------------------------------*/
-
 	uint32_t show_text(const String &p_text);
 	uint32_t show_text_next_line(const String &p_text);
 	uint32_t show_text_next_line_ex(const String &p_text, const float p_word_space, const float p_char_space);
 
+	uint32_t execute_x_object(const Ref<PDFXObject> &p_x_object);
+
 	uint32_t draw_image(const Ref<PDFImage> &p_image, const Rect2 &p_rect);
 
 #if 0
-	/*--- XObjects -----------------------------------------------------------*/
-
-	/* Do */
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_ExecuteXObject(HPDF_Page page,
-			HPDF_XObject obj);
-
-#endif
-
-#if 0
-	/* BX --not implemented yet */
-	/* EX --not implemented yet */
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Page_DrawImage(HPDF_Page page,
-			HPDF_Image image,
-			HPDF_REAL x,
-			HPDF_REAL y,
-			HPDF_REAL width,
-			HPDF_REAL height);
-
 	HPDF_EXPORT(HPDF_STATUS)
 	HPDF_Page_Circle(HPDF_Page page,
 			HPDF_REAL x,
