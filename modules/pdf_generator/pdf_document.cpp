@@ -55,6 +55,7 @@
 
 #include "hpdf.h"
 #include "hpdf_doc.h"
+#include "hpdf_u3d.h"
 
 uint32_t PDFDocument::viewer_preference_get() const {
 	return HPDF_GetViewerPreference(_doc);
@@ -748,6 +749,33 @@ Ref<PDFShading> PDFDocument::shading_new(const Vector2 &p_min, const Vector2 &p_
 	return shading;
 }
 
+Ref<PDFJavascript> PDFDocument::javascript_load_from_mem(const String &p_data) {
+	HPDF_JavaScript hpdf_javascript = HPDF_CreateJavaScript(_doc, p_data.utf8().get_data());
+
+	if (!hpdf_javascript) {
+		return Ref<PDFJavascript>();
+	}
+
+	Ref<PDFJavascript> javascript;
+	javascript.instance();
+	javascript->_set_hpdf_javascript(hpdf_javascript);
+	return javascript;
+}
+Ref<PDFJavascript> PDFDocument::javascript_load_from_file(const String &p_path) {
+	String abs_path = FileAccess::get_filesystem_abspath_for(p_path);
+
+	HPDF_JavaScript hpdf_javascript = HPDF_LoadJSFromFile(_doc, abs_path.utf8().get_data());
+
+	if (!hpdf_javascript) {
+		return Ref<PDFJavascript>();
+	}
+
+	Ref<PDFJavascript> javascript;
+	javascript.instance();
+	javascript->_set_hpdf_javascript(hpdf_javascript);
+	return javascript;
+}
+
 Ref<PDFU3D> PDFDocument::u3d_load_from_mem(const PoolByteArray &p_data) {
 	PoolByteArray::Read r = p_data.read();
 
@@ -951,6 +979,9 @@ void PDFDocument::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("ext_graphic_state_create"), &PDFDocument::ext_graphic_state_create);
 
 	ClassDB::bind_method(D_METHOD("shading_new", "min", "max"), &PDFDocument::shading_new);
+
+	ClassDB::bind_method(D_METHOD("javascript_load_from_mem", "data"), &PDFDocument::javascript_load_from_mem);
+	ClassDB::bind_method(D_METHOD("javascript_load_from_file", "path"), &PDFDocument::javascript_load_from_file);
 
 	ClassDB::bind_method(D_METHOD("u3d_load_from_mem", "data"), &PDFDocument::u3d_load_from_mem);
 	ClassDB::bind_method(D_METHOD("u3d_load_from_file", "path"), &PDFDocument::u3d_load_from_file);

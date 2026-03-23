@@ -241,16 +241,13 @@ public:
 
 	Ref<PDFShading> shading_new(const Vector2 &p_min, const Vector2 &p_max);
 
+	Ref<PDFJavascript> javascript_load_from_mem(const String &p_data);
+	Ref<PDFJavascript> javascript_load_from_file(const String &p_path);
+
 	Ref<PDFU3D> u3d_load_from_mem(const PoolByteArray &p_data);
 	Ref<PDFU3D> u3d_load_from_file(const String &p_path);
 
 #if 0
-	// PDFJavascript
-	HPDF_EXPORT(HPDF_JavaScript)
-	HPDF_CreateJavaScript(HPDF_Doc pdf, const char *code);
-	HPDF_EXPORT(HPDF_JavaScript)
-	HPDF_LoadJSFromFile(HPDF_Doc pdf, const char *filename);
-
 
 	// PDFU3D
 	HPDF_EXPORT(HPDF_STATUS)
