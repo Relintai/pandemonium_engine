@@ -246,11 +246,7 @@ public:
 	Ref<PDFU3D> u3d_load_from_mem(const PoolByteArray &p_data);
 	Ref<PDFU3D> u3d_load_from_file(const String &p_path);
 
-#if 0
-	// PDF3DView
-	HPDF_EXPORT(HPDF_Dict)
-	HPDF_Create3DView(HPDF_MMgr mmgr, const char *name);
-#endif
+	Ref<PDF3DView> create_3d_view(const String &p_name);
 
 #if 0
 	Likely not needed

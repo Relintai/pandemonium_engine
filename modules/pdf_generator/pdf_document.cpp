@@ -808,6 +808,19 @@ Ref<PDFU3D> PDFDocument::u3d_load_from_file(const String &p_path) {
 	return u3d;
 }
 
+Ref<PDF3DView> PDFDocument::create_3d_view(const String &p_name) {
+	HPDF_Dict hpdf_view = HPDF_Create3DView(HPDF_GetDocMMgr(_doc), p_name.utf8().get_data());
+
+	if (!hpdf_view) {
+		return Ref<PDF3DView>();
+	}
+
+	Ref<PDF3DView> view;
+	view.instance();
+	view->_set_hpdf_3d_view(hpdf_view);
+	return view;
+}
+
 PoolByteArray PDFDocument::save_to_mem() {
 	HPDF_ResetStream(_doc);
 
@@ -984,6 +997,8 @@ void PDFDocument::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("u3d_load_from_mem", "data"), &PDFDocument::u3d_load_from_mem);
 	ClassDB::bind_method(D_METHOD("u3d_load_from_file", "path"), &PDFDocument::u3d_load_from_file);
+
+	ClassDB::bind_method(D_METHOD("create_3d_view", "name"), &PDFDocument::create_3d_view);
 
 	ClassDB::bind_method(D_METHOD("save_to_mem"), &PDFDocument::save_to_mem);
 	ClassDB::bind_method(D_METHOD("save_to_file", "file"), &PDFDocument::save_to_file);
