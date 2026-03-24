@@ -91,8 +91,57 @@ protected:
 	void *_hdpf_page;
 };
 
-class PDFAnnotationText : public PDFAnnotation {
-	GDCLASS(PDFAnnotationText, PDFAnnotation);
+class PDFAnnotationMarkup : public PDFAnnotation {
+	GDCLASS(PDFAnnotationMarkup, PDFAnnotation);
+
+public:
+#if 0
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_MarkupAnnot_SetTitle(HPDF_Annotation annot, const char *name);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_MarkupAnnot_SetSubject(HPDF_Annotation annot, const char *name);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_MarkupAnnot_SetCreationDate(HPDF_Annotation annot, HPDF_Date value);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_MarkupAnnot_SetTransparency(HPDF_Annotation annot, HPDF_REAL value);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_MarkupAnnot_SetIntent(HPDF_Annotation annot, HPDF_AnnotIntent intent);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_MarkupAnnot_SetPopup(HPDF_Annotation annot, HPDF_Annotation popup);
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_MarkupAnnot_SetRectDiff(HPDF_Annotation annot, HPDF_Rect rect); /* RD entry */
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_MarkupAnnot_SetCloudEffect(HPDF_Annotation annot, HPDF_INT cloudIntensity); /* BE entry */
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_MarkupAnnot_SetInteriorRGBColor(HPDF_Annotation annot, HPDF_RGBColor color); /* IC with RGB entry */
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_MarkupAnnot_SetInteriorCMYKColor(HPDF_Annotation annot, HPDF_CMYKColor color); /* IC with CMYK entry */
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_MarkupAnnot_SetInteriorGrayColor(HPDF_Annotation annot, HPDF_REAL color); /* IC with Gray entry */
+
+	HPDF_EXPORT(HPDF_STATUS)
+	HPDF_MarkupAnnot_SetInteriorTransparent(HPDF_Annotation annot); /* IC with No Color entry */
+#endif
+
+	PDFAnnotationMarkup();
+	~PDFAnnotationMarkup();
+
+protected:
+	static void _bind_methods();
+};
+
+class PDFAnnotationText : public PDFAnnotationMarkup {
+	GDCLASS(PDFAnnotationText, PDFAnnotationMarkup);
 
 public:
 	enum AnnotIcon {
@@ -118,8 +167,8 @@ protected:
 
 VARIANT_ENUM_CAST(PDFAnnotationText::AnnotIcon);
 
-class PDFAnnotationLine : public PDFAnnotation {
-	GDCLASS(PDFAnnotationLine, PDFAnnotation);
+class PDFAnnotationLine : public PDFAnnotationMarkup {
+	GDCLASS(PDFAnnotationLine, PDFAnnotationMarkup);
 
 public:
 	enum LineAnnotEndingStyle {
@@ -154,8 +203,8 @@ protected:
 VARIANT_ENUM_CAST(PDFAnnotationLine::LineAnnotEndingStyle);
 VARIANT_ENUM_CAST(PDFAnnotationLine::LineAnnotCapPosition);
 
-class PDFAnnotationFreeText : public PDFAnnotation {
-	GDCLASS(PDFAnnotationFreeText, PDFAnnotation);
+class PDFAnnotationFreeText : public PDFAnnotationMarkup {
+	GDCLASS(PDFAnnotationFreeText, PDFAnnotationMarkup);
 
 public:
 	uint32_t set_line_ending_style(const PDFAnnotationLine::LineAnnotEndingStyle p_start_style, const PDFAnnotationLine::LineAnnotEndingStyle p_end_style);
@@ -228,12 +277,8 @@ protected:
 	static void _bind_methods();
 };
 
-// TODO
-// Need to add PDFAnnotationMarkup
-// Lots of things inherit from it
-
-class PDFAnnotationTextMarkup : public PDFAnnotation {
-	GDCLASS(PDFAnnotationTextMarkup, PDFAnnotation);
+class PDFAnnotationTextMarkup : public PDFAnnotationMarkup {
+	GDCLASS(PDFAnnotationTextMarkup, PDFAnnotationMarkup);
 
 public:
 	enum AnnotSubType {
@@ -256,44 +301,6 @@ public:
 		ANNOTATION_TYPE_PROJECTION,
 		ANNOTATION_TYPE_WIDGET
 	};
-
-#if 0
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetTitle(HPDF_Annotation annot, const char *name);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetSubject(HPDF_Annotation annot, const char *name);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetCreationDate(HPDF_Annotation annot, HPDF_Date value);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetTransparency(HPDF_Annotation annot, HPDF_REAL value);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetIntent(HPDF_Annotation annot, HPDF_AnnotIntent intent);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetPopup(HPDF_Annotation annot, HPDF_Annotation popup);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetRectDiff(HPDF_Annotation annot, HPDF_Rect rect); /* RD entry */
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetCloudEffect(HPDF_Annotation annot, HPDF_INT cloudIntensity); /* BE entry */
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetInteriorRGBColor(HPDF_Annotation annot, HPDF_RGBColor color); /* IC with RGB entry */
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetInteriorCMYKColor(HPDF_Annotation annot, HPDF_CMYKColor color); /* IC with CMYK entry */
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetInteriorGrayColor(HPDF_Annotation annot, HPDF_REAL color); /* IC with Gray entry */
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetInteriorTransparent(HPDF_Annotation annot); /* IC with No Color entry */
-#endif
 
 #if 0
 	HPDF_EXPORT(HPDF_STATUS)
@@ -416,8 +423,8 @@ protected:
 	static void _bind_methods();
 };
 
-class PDFAnnotationSquare : public PDFAnnotation {
-	GDCLASS(PDFAnnotationSquare, PDFAnnotation);
+class PDFAnnotationSquare : public PDFAnnotationMarkup {
+	GDCLASS(PDFAnnotationSquare, PDFAnnotationMarkup);
 
 public:
 	PDFAnnotationSquare();
@@ -427,8 +434,8 @@ protected:
 	static void _bind_methods();
 };
 
-class PDFAnnotationCircle : public PDFAnnotation {
-	GDCLASS(PDFAnnotationCircle, PDFAnnotation);
+class PDFAnnotationCircle : public PDFAnnotationMarkup {
+	GDCLASS(PDFAnnotationCircle, PDFAnnotationMarkup);
 
 public:
 	PDFAnnotationCircle();

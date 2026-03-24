@@ -30,6 +30,7 @@ def get_doc_classes():
         "PDF3DView",
         "PDF3DViewNode",
         "PDFAnnotation",
+        "PDFAnnotationMarkup",
         "PDFAnnotation3D",
         "PDFAnnotationText",
         "PDFAnnotationFreeText",

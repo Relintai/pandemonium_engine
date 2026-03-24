@@ -78,6 +78,7 @@ void register_pdf_generator_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<PDF3DViewNode>();
 
 		ClassDB::register_class<PDFAnnotation>();
+		ClassDB::register_class<PDFAnnotationMarkup>();
 		ClassDB::register_class<PDFAnnotation3D>();
 		ClassDB::register_class<PDFAnnotationText>();
 		ClassDB::register_class<PDFAnnotationFreeText>();

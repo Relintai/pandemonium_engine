@@ -146,6 +146,16 @@ void PDFAnnotation3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_3d_view", "annot", "view"), &PDFAnnotation3D::set_3d_view);
 }
 
+// PDFAnnotationMarkup
+
+PDFAnnotationMarkup::PDFAnnotationMarkup() {
+}
+PDFAnnotationMarkup::~PDFAnnotationMarkup() {
+}
+
+void PDFAnnotationMarkup::_bind_methods() {
+}
+
 //  PDFAnnotationText
 
 uint32_t PDFAnnotationText::set_icon(const AnnotIcon p_icon) {
@@ -362,7 +372,7 @@ PDFAnnotationURILink::~PDFAnnotationURILink() {
 void PDFAnnotationURILink::_bind_methods() {
 }
 
-// 5DFAnnotationTextMarkup
+// PDFAnnotationTextMarkup
 
 PDFAnnotationTextMarkup::PDFAnnotationTextMarkup() {
 }
