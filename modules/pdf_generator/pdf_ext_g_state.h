@@ -38,21 +38,25 @@ class PDFExtGState : public Reference {
 	GDCLASS(PDFExtGState, Reference);
 
 public:
-#if 0
+	enum BlendMode {
+		BM_NORMAL,
+		BM_MULTIPLY,
+		BM_SCREEN,
+		BM_OVERLAY,
+		BM_DARKEN,
+		BM_LIGHTEN,
+		BM_COLOR_DODGE,
+		BM_COLOR_BUM,
+		BM_HARD_LIGHT,
+		BM_SOFT_LIGHT,
+		BM_DIFFERENCE,
+		BM_EXCLUSHON,
+		BM_EOF
+	};
 
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_ExtGState_SetAlphaStroke(HPDF_ExtGState ext_gstate,
-			HPDF_REAL value);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_ExtGState_SetAlphaFill(HPDF_ExtGState ext_gstate,
-			HPDF_REAL value);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_ExtGState_SetBlendMode(HPDF_ExtGState ext_gstate,
-			HPDF_BlendMode mode);
-
-#endif
+	uint32_t set_alpha_stroke(const float p_value);
+	uint32_t set_alpha_fill(const float p_value);
+	uint32_t set_blend_mode(const BlendMode p_mode);
 
 	uint32_t get_status();
 
@@ -69,5 +73,7 @@ protected:
 
 	uint32_t _status;
 };
+
+VARIANT_ENUM_CAST(PDFExtGState::BlendMode);
 
 #endif

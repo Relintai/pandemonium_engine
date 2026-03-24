@@ -32,8 +32,24 @@
 #include "pdf_ext_g_state.h"
 
 #include "hpdf.h"
-#include "hpdf_doc.h"
-#include "hpdf_pages.h"
+
+uint32_t PDFExtGState::set_alpha_stroke(const float p_value) {
+	_status = HPDF_ExtGState_SetAlphaStroke((HPDF_ExtGState)_ext_g_state, p_value);
+
+	return _status;
+}
+uint32_t PDFExtGState::set_alpha_fill(const float p_value) {
+	_status = HPDF_ExtGState_SetAlphaFill((HPDF_ExtGState)_ext_g_state, p_value);
+
+	return _status;
+}
+uint32_t PDFExtGState::set_blend_mode(const BlendMode p_mode) {
+	HPDF_BlendMode mode = static_cast<HPDF_BlendMode>(p_mode);
+
+	_status = HPDF_ExtGState_SetBlendMode((HPDF_ExtGState)_ext_g_state, mode);
+
+	return _status;
+}
 
 uint32_t PDFExtGState::get_status() {
 	return _status;
@@ -57,7 +73,23 @@ void PDFExtGState::_set_hpdf_ext_g_state(void *p_ext_g_state) {
 }
 
 void PDFExtGState::_bind_methods() {
-	//ClassDB::bind_method(D_METHOD("get_width"), &PDFExtGState::get_width);
-	//ClassDB::bind_method(D_METHOD("set_width", "val"), &PDFExtGState::set_width);
-	//ADD_PROPERTY(PropertyInfo(Variant::REAL, "width"), "set_width", "get_width");
+	ClassDB::bind_method(D_METHOD("set_alpha_stroke", "value"), &PDFExtGState::set_alpha_stroke);
+	ClassDB::bind_method(D_METHOD("set_alpha_fill", "value"), &PDFExtGState::set_alpha_fill);
+	ClassDB::bind_method(D_METHOD("set_blend_mode", "mode"), &PDFExtGState::set_blend_mode);
+
+	ClassDB::bind_method(D_METHOD("get_status"), &PDFExtGState::get_status);
+
+	BIND_ENUM_CONSTANT(BM_NORMAL);
+	BIND_ENUM_CONSTANT(BM_MULTIPLY);
+	BIND_ENUM_CONSTANT(BM_SCREEN);
+	BIND_ENUM_CONSTANT(BM_OVERLAY);
+	BIND_ENUM_CONSTANT(BM_DARKEN);
+	BIND_ENUM_CONSTANT(BM_LIGHTEN);
+	BIND_ENUM_CONSTANT(BM_COLOR_DODGE);
+	BIND_ENUM_CONSTANT(BM_COLOR_BUM);
+	BIND_ENUM_CONSTANT(BM_HARD_LIGHT);
+	BIND_ENUM_CONSTANT(BM_SOFT_LIGHT);
+	BIND_ENUM_CONSTANT(BM_DIFFERENCE);
+	BIND_ENUM_CONSTANT(BM_EXCLUSHON);
+	BIND_ENUM_CONSTANT(BM_EOF);
 }
