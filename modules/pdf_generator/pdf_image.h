@@ -77,21 +77,6 @@ public:
 	HPDF_Image_SetMaskImage(HPDF_Image image,
 			HPDF_Image mask_image);
 
-	// hpdf_image.h
-	HPDF_BOOL
-	HPDF_Image_Validate(HPDF_Image image);
-
-	HPDF_STATUS
-	HPDF_Image_SetMask(HPDF_Image image,
-			HPDF_BOOL mask);
-
-	HPDF_STATUS
-	HPDF_Image_SetColorSpace(HPDF_Image image,
-			HPDF_Array colorspace);
-
-	HPDF_STATUS
-	HPDF_Image_SetRenderingIntent(HPDF_Image image,
-			const char *intent);
 #endif
 
 	uint32_t get_status();
