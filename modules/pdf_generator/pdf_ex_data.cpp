@@ -52,6 +52,8 @@ uint32_t PDFExData::get_status() {
 }
 
 PDFExData::PDFExData() {
+	_status = 0;
+
 	_ex_data = NULL;
 }
 

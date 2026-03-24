@@ -40,6 +40,8 @@ uint32_t PDFFont::get_status() {
 }
 
 PDFFont::PDFFont() {
+	_status = 0;
+
 	_font = NULL;
 }
 

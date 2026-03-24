@@ -40,6 +40,8 @@ uint32_t PDFOutline::get_status() {
 }
 
 PDFOutline::PDFOutline() {
+	_status = 0;
+
 	_outline = NULL;
 }
 

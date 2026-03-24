@@ -89,6 +89,8 @@ uint32_t PDF3DMeasure::get_status() {
 }
 
 PDF3DMeasure::PDF3DMeasure() {
+	_status = 0;
+
 	_3d_measure = NULL;
 }
 

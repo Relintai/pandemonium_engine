@@ -40,6 +40,8 @@ uint32_t PDFXObject::get_status() {
 }
 
 PDFXObject::PDFXObject() {
+	_status = 0;
+
 	_x_object = NULL;
 }
 

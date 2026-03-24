@@ -1212,6 +1212,8 @@ Ref<PDFDocument> PDFPage::document_get() {
 }
 
 PDFPage::PDFPage() {
+	_status = 0;
+
 	_page = NULL;
 }
 

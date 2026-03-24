@@ -36,6 +36,8 @@ uint32_t PDFU3D::get_status() {
 }
 
 PDFU3D::PDFU3D() {
+	_status = 0;
+
 	_u3d = NULL;
 }
 

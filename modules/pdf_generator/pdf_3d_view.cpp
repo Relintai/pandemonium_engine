@@ -147,6 +147,8 @@ uint32_t PDF3DView::get_status() {
 }
 
 PDF3DView::PDF3DView() {
+	_status = 0;
+
 	_3d_view = NULL;
 }
 

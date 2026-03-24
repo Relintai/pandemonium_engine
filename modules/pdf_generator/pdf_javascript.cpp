@@ -36,6 +36,8 @@ uint32_t PDFJavascript::get_status() {
 }
 
 PDFJavascript::PDFJavascript() {
+	_status = 0;
+
 	_javascript = NULL;
 }
 

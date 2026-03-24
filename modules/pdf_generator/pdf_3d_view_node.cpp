@@ -72,6 +72,8 @@ uint32_t PDF3DViewNode::get_status() {
 }
 
 PDF3DViewNode::PDF3DViewNode() {
+	_status = 0;
+
 	_3d_view_node = NULL;
 }
 

@@ -106,6 +106,8 @@ uint32_t PDFEmbeddedFile::get_status() {
 }
 
 PDFEmbeddedFile::PDFEmbeddedFile() {
+	_status = 0;
+
 	_embedded_file = NULL;
 }
 

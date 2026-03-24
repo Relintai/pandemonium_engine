@@ -40,6 +40,8 @@ uint32_t PDFShading::get_status() {
 }
 
 PDFShading::PDFShading() {
+	_status = 0;
+
 	_shading = NULL;
 }
 

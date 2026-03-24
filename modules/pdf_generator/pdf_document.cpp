@@ -896,6 +896,8 @@ void PDFDocument::reset_error() {
 }
 
 PDFDocument::PDFDocument() {
+	_status = 0;
+
 	_doc = HPDF_New(NULL, NULL);
 
 	if (!_doc) {

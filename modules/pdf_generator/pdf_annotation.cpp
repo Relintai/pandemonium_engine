@@ -83,6 +83,8 @@ uint32_t PDFAnnotation::get_status() {
 }
 
 PDFAnnotation::PDFAnnotation() {
+	_status = 0;
+
 	_annotation = NULL;
 }
 

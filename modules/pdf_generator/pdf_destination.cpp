@@ -82,6 +82,8 @@ uint32_t PDFDestination::get_status() {
 }
 
 PDFDestination::PDFDestination() {
+	_status = 0;
+
 	_destination = NULL;
 }
 

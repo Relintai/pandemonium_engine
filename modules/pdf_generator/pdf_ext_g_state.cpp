@@ -40,6 +40,8 @@ uint32_t PDFExtGState::get_status() {
 }
 
 PDFExtGState::PDFExtGState() {
+	_status = 0;
+
 	_ext_g_state = NULL;
 }
 

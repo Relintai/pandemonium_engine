@@ -47,6 +47,8 @@ uint32_t PDFImage::get_status() {
 }
 
 PDFImage::PDFImage() {
+	_status = 0;
+
 	_image = NULL;
 }
 
