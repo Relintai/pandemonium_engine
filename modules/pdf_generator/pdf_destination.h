@@ -38,45 +38,15 @@ class PDFDestination : public Reference {
 	GDCLASS(PDFDestination, Reference);
 
 public:
-#if 0
-	/*----- destination --------------------------------------------------------*/
+	uint32_t set_xyz(const float p_left, const float p_top, const float p_zoom);
 
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Destination_SetXYZ(HPDF_Destination dst,
-			HPDF_REAL left,
-			HPDF_REAL top,
-			HPDF_REAL zoom);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Destination_SetFit(HPDF_Destination dst);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Destination_SetFitH(HPDF_Destination dst,
-			HPDF_REAL top);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Destination_SetFitV(HPDF_Destination dst,
-			HPDF_REAL left);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Destination_SetFitR(HPDF_Destination dst,
-			HPDF_REAL left,
-			HPDF_REAL bottom,
-			HPDF_REAL right,
-			HPDF_REAL top);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Destination_SetFitB(HPDF_Destination dst);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Destination_SetFitBH(HPDF_Destination dst,
-			HPDF_REAL top);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Destination_SetFitBV(HPDF_Destination dst,
-			HPDF_REAL left);
-
-#endif
+	uint32_t set_fit();
+	uint32_t set_fit_h(const float p_top);
+	uint32_t set_fit_v(const float p_left);
+	uint32_t set_fit_r(const float p_left, const float p_bottom, const float p_right, const float p_top);
+	uint32_t set_fit_b();
+	uint32_t set_fit_bh(const float p_top);
+	uint32_t set_fit_bv(const float p_left);
 
 	uint32_t get_status();
 
