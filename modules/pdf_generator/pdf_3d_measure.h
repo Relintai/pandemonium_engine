@@ -34,6 +34,8 @@
 
 #include "core/object/reference.h"
 
+#include "pdf_encoder.h"
+
 class PDFAnnotationProjection;
 class PDFEncoder;
 
