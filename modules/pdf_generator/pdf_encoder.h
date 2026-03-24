@@ -69,59 +69,32 @@ public:
 		ENCODING_KOI8_R,
 	};
 
+	enum EncoderType {
+		ENCODER_TYPE_SINGLE_BYTE,
+		ENCODER_TYPE_DOUBLE_BYTE,
+		ENCODER_TYPE_UNINITIALIZED,
+		ENCODER_UNKNOWN
+	};
+
+	enum ByteType {
+		BYTE_TYPE_SINGLE = 0,
+		BYTE_TYPE_LEAD,
+		BYTE_TYPE_TRAIL,
+		BYTE_TYPE_UNKNOWN
+	};
+
+	enum WritingMode {
+		WRITING_MODE_HORIZONTAL = 0,
+		WRITING_MODE_VERTICAL,
+		WRITING_MODE_EOF
+	};
+
 	String get_encoding_string(const Encoding p_encoding);
 
-#if 0
-	Keeping it here for the docs for now
-ENCODING_FONT_SPECIFIC "FontSpecific"
-ENCODING_STANDARD "StandardEncoding"
-ENCODING_MAC_ROMAN "MacRomanEncoding"
-ENCODING_WIN_ANSI "WinAnsiEncoding"
-ENCODING_ISO8859_2 "ISO8859-2"
-ENCODING_ISO8859_3 "ISO8859-3"
-ENCODING_ISO8859_4 "ISO8859-4"
-ENCODING_ISO8859_5 "ISO8859-5"
-ENCODING_ISO8859_6 "ISO8859-6"
-ENCODING_ISO8859_7 "ISO8859-7"
-ENCODING_ISO8859_8 "ISO8859-8"
-ENCODING_ISO8859_9 "ISO8859-9"
-ENCODING_ISO8859_10 "ISO8859-10"
-ENCODING_ISO8859_11 "ISO8859-11"
-ENCODING_ISO8859_13 "ISO8859-13"
-ENCODING_ISO8859_14 "ISO8859-14"
-ENCODING_ISO8859_15 "ISO8859-15"
-ENCODING_ISO8859_16 "ISO8859-16"
-ENCODING_CP1250 "CP1250"
-ENCODING_CP1251 "CP1251"
-ENCODING_CP1252 "CP1252"
-ENCODING_CP1253 "CP1253"
-ENCODING_CP1254 "CP1254"
-ENCODING_CP1255 "CP1255"
-ENCODING_CP1256 "CP1256"
-ENCODING_CP1257 "CP1257"
-ENCODING_CP1258 "CP1258"
-ENCODING_KOI8_R "KOI8-R"
-#endif
-
-#if 0
-	HPDF_EXPORT(HPDF_EncoderType)
-	HPDF_Encoder_GetType(HPDF_Encoder encoder);
-
-	HPDF_EXPORT(HPDF_ByteType)
-	HPDF_Encoder_GetByteType(HPDF_Encoder encoder,
-			const char *text,
-			HPDF_UINT index);
-
-	HPDF_EXPORT(HPDF_UNICODE)
-	HPDF_Encoder_GetUnicode(HPDF_Encoder encoder,
-			HPDF_UINT16 code);
-
-	HPDF_EXPORT(HPDF_WritingMode)
-	HPDF_Encoder_GetWritingMode(HPDF_Encoder encoder);
-
-#endif
-
-	uint32_t get_status();
+	EncoderType get_type();
+	ByteType get_byte_type(const String &p_text, const uint32_t p_index);
+	uint16_t get_unicode(const uint16_t p_code);
+	WritingMode get_writing_mode();
 
 	PDFEncoder();
 	~PDFEncoder();
@@ -133,10 +106,11 @@ protected:
 	static void _bind_methods();
 
 	void *_encoder;
-
-	uint32_t _status;
 };
 
 VARIANT_ENUM_CAST(PDFEncoder::Encoding);
+VARIANT_ENUM_CAST(PDFEncoder::EncoderType);
+VARIANT_ENUM_CAST(PDFEncoder::ByteType);
+VARIANT_ENUM_CAST(PDFEncoder::WritingMode);
 
 #endif

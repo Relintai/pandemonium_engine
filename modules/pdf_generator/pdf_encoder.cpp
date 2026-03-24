@@ -98,8 +98,17 @@ String PDFEncoder::get_encoding_string(const Encoding p_encoding) {
 	}
 }
 
-uint32_t PDFEncoder::get_status() {
-	return _status;
+PDFEncoder::EncoderType PDFEncoder::get_type() {
+	return static_cast<EncoderType>(HPDF_Encoder_GetType((HPDF_Encoder)_encoder));
+}
+PDFEncoder::ByteType PDFEncoder::get_byte_type(const String &p_text, const uint32_t p_index) {
+	return static_cast<ByteType>(HPDF_Encoder_GetByteType((HPDF_Encoder)_encoder, p_text.utf8().get_data(), p_index));
+}
+uint16_t PDFEncoder::get_unicode(const uint16_t p_code) {
+	return HPDF_Encoder_GetUnicode((HPDF_Encoder)_encoder, p_code);
+}
+PDFEncoder::WritingMode PDFEncoder::get_writing_mode() {
+	return static_cast<WritingMode>(HPDF_Encoder_GetWritingMode((HPDF_Encoder)_encoder));
 }
 
 PDFEncoder::PDFEncoder() {
@@ -120,9 +129,10 @@ void PDFEncoder::_set_hpdf_encoder(void *p_encoder) {
 void PDFEncoder::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_encoding_string", "encoding"), &PDFEncoder::get_encoding_string);
 
-	//ClassDB::bind_method(D_METHOD("get_width"), &PDFEncoder::get_width);
-	//ClassDB::bind_method(D_METHOD("set_width", "val"), &PDFEncoder::set_width);
-	//ADD_PROPERTY(PropertyInfo(Variant::REAL, "width"), "set_width", "get_width");
+	ClassDB::bind_method(D_METHOD("get_type"), &PDFEncoder::get_type);
+	ClassDB::bind_method(D_METHOD("get_byte_type", "text", "index"), &PDFEncoder::get_byte_type);
+	ClassDB::bind_method(D_METHOD("get_unicode", "code"), &PDFEncoder::get_unicode);
+	ClassDB::bind_method(D_METHOD("get_writing_mode"), &PDFEncoder::get_writing_mode);
 
 	BIND_ENUM_CONSTANT(ENCODING_FONT_SPECIFIC);
 	BIND_ENUM_CONSTANT(ENCODING_STANDARD);
@@ -152,4 +162,18 @@ void PDFEncoder::_bind_methods() {
 	BIND_ENUM_CONSTANT(ENCODING_CP1257);
 	BIND_ENUM_CONSTANT(ENCODING_CP1258);
 	BIND_ENUM_CONSTANT(ENCODING_KOI8_R);
+
+	BIND_ENUM_CONSTANT(ENCODER_TYPE_SINGLE_BYTE);
+	BIND_ENUM_CONSTANT(ENCODER_TYPE_DOUBLE_BYTE);
+	BIND_ENUM_CONSTANT(ENCODER_TYPE_UNINITIALIZED);
+	BIND_ENUM_CONSTANT(ENCODER_UNKNOWN);
+
+	BIND_ENUM_CONSTANT(BYTE_TYPE_SINGLE);
+	BIND_ENUM_CONSTANT(BYTE_TYPE_LEAD);
+	BIND_ENUM_CONSTANT(BYTE_TYPE_TRAIL);
+	BIND_ENUM_CONSTANT(BYTE_TYPE_UNKNOWN);
+
+	BIND_ENUM_CONSTANT(WRITING_MODE_HORIZONTAL);
+	BIND_ENUM_CONSTANT(WRITING_MODE_VERTICAL);
+	BIND_ENUM_CONSTANT(WRITING_MODE_EOF);
 }
