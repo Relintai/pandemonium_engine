@@ -669,6 +669,7 @@ Ref<PDFAnnotation3D> PDFPage::annotation_3d_create(const Rect2 &p_rect, const bo
 	Ref<PDFAnnotation3D> a;
 	a.instance();
 	a->_set_hpdf_annotation(hpdf_annotation);
+	a->_set_page(this);
 	return a;
 }
 Ref<PDFAnnotationText> PDFPage::annotation_text_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder) {
