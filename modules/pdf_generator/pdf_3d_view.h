@@ -34,36 +34,30 @@
 
 #include "core/object/reference.h"
 
+class PDF3DViewNode;
+class PDF3DMeasure;
+
 class PDF3DView : public Reference {
 	GDCLASS(PDF3DView, Reference);
 
 public:
-#if 0
-	HPDF_EXPORT(HPDF_Dict)
-	HPDF_3DView_CreateNode(HPDF_Dict view, const char *name);
+	Ref<PDF3DViewNode> create_node(const String &p_name);
 
-	HPDF_3DView_AddNode(HPDF_Dict view, HPDF_Dict node);
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_3DView_SetLighting(HPDF_Dict view, const char *scheme);
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_3DView_SetBackgroundColor(HPDF_Dict view, HPDF_REAL r, HPDF_REAL g, HPDF_REAL b);
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_3DView_SetPerspectiveProjection(HPDF_Dict view, HPDF_REAL fov);
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_3DView_SetOrthogonalProjection(HPDF_Dict view, HPDF_REAL mag);
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_3DView_SetCamera(HPDF_Dict view, HPDF_REAL coox, HPDF_REAL cooy, HPDF_REAL cooz, HPDF_REAL c2cx, HPDF_REAL c2cy, HPDF_REAL c2cz, HPDF_REAL roo, HPDF_REAL roll);
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_3DView_SetCameraByMatrix(HPDF_Dict view, HPDF_3DMatrix Mat3D, HPDF_REAL co);
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_3DView_SetCrossSectionOn(HPDF_Dict view, HPDF_Point3D center, HPDF_REAL Roll, HPDF_REAL Pitch, HPDF_REAL opacity, HPDF_BOOL showintersection);
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_3DView_SetCrossSectionOff(HPDF_Dict view);
+	uint32_t add_node(const Ref<PDF3DViewNode> &p_node);
 
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_3DView_Add3DC3DMeasure(HPDF_Dict view,
-			HPDF_3DMeasure measure);
-#endif
+	uint32_t set_lighting(const String &p_scheme);
+	uint32_t set_background_color(const Color &p_color);
+
+	uint32_t set_perspective_projection(const float p_fov);
+	uint32_t set_orthogonal_projection(const float p_mag);
+
+	uint32_t set_camera(const Vector3 &p_coo, const Vector3 &p_c2c, const float p_roo, const float p_roll);
+	uint32_t set_camera_by_matrix(const Transform &p_matrix, const float p_co);
+
+	uint32_t set_cross_section_on(const Vector3 &p_center, const float p_roll, const float p_pitch, const float p_opacity, bool p_showintersection);
+	uint32_t set_cross_section_off();
+
+	uint32_t add_3d_c3d_measure(const Ref<PDF3DMeasure> &p_measure);
 
 	uint32_t get_status();
 
