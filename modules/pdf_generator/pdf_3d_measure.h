@@ -34,38 +34,19 @@
 
 #include "core/object/reference.h"
 
+class PDFAnnotationProjection;
+class PDFEncoder;
+
 class PDF3DMeasure : public Reference {
 	GDCLASS(PDF3DMeasure, Reference);
 
 public:
-#if 0
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_3DMeasure_SetName(HPDF_3DMeasure measure,
-			const char *name);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_3DMeasure_SetColor(HPDF_3DMeasure measure,
-			HPDF_RGBColor color);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_3DMeasure_SetTextSize(HPDF_3DMeasure measure,
-			HPDF_REAL textsize);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_3DC3DMeasure_SetTextBoxSize(HPDF_3DMeasure measure,
-			HPDF_INT32 x,
-			HPDF_INT32 y);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_3DC3DMeasure_SetText(HPDF_3DMeasure measure,
-			const char *text,
-			HPDF_Encoder encoder);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_3DC3DMeasure_SetProjectionAnotation(HPDF_3DMeasure measure,
-			HPDF_Annotation projectionanotation);
-
-#endif
+	uint32_t set_name(const String &p_name);
+	uint32_t set_color(const Color &p_color);
+	uint32_t set_text_size(const float p_size);
+	uint32_t set_text_box_size(const Vector2i &p_size);
+	uint32_t set_text(const String &p_text, const Ref<PDFEncoder> &p_encoder = Ref<PDFEncoder>());
+	uint32_t set_projection_annotation(const Ref<PDFAnnotationProjection> &p_value);
 
 	uint32_t get_status();
 
