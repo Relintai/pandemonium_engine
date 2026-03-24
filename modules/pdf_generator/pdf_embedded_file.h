@@ -34,41 +34,30 @@
 
 #include "core/object/reference.h"
 
+class PDFDate;
+
 class PDFEmbeddedFile : public Reference {
 	GDCLASS(PDFEmbeddedFile, Reference);
 
 public:
-#if 0
+	enum AFRelationship {
+		AFRELATIONSHIP_SOURCE = 0,
+		AFRELATIONSHIP_DATA,
+		AFRELATIONSHIP_ALTERNATIVE,
+		AFRELATIONSHIP_SUPPLEMENT,
+		AFRELATIONSHIP_ENCRYPTEDPAYLOAD,
+		AFRELATIONSHIP_FORMDATA,
+		AFRELATIONSHIP_SCHEMA,
+		AFRELATIONSHIP_UNSPECIFIED
+	};
 
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_EmbeddedFile_SetName(HPDF_EmbeddedFile emfile,
-			const char *name);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_EmbeddedFile_SetDescription(HPDF_EmbeddedFile emfile,
-			const char *new_description);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_EmbeddedFile_SetSubtype(HPDF_EmbeddedFile emfile,
-			const char *subtype);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_EmbeddedFile_SetAFRelationship(HPDF_EmbeddedFile emfile,
-			HPDF_AFRelationship relationship);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_EmbeddedFile_SetSize(HPDF_EmbeddedFile emfile,
-			HPDF_UINT64 size);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_EmbeddedFile_SetCreationDate(HPDF_EmbeddedFile emfile,
-			HPDF_Date creationDate);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_EmbeddedFile_SetLastModificationDate(HPDF_EmbeddedFile emfile,
-			HPDF_Date lastModificationDate);
-
-#endif
+	uint32_t set_name(const String &p_name);
+	uint32_t set_description(const String &p_description);
+	uint32_t set_sub_type(const String &p_sub_type);
+	uint32_t set_af_relationship(const AFRelationship p_relationship);
+	uint32_t set_size(const uint64_t p_size);
+	uint32_t set_creation_date(const Ref<PDFDate> &p_date);
+	uint32_t set_last_modification_date(const Ref<PDFDate> &p_date);
 
 	uint32_t get_status();
 
@@ -85,5 +74,7 @@ protected:
 
 	uint32_t _status;
 };
+
+VARIANT_ENUM_CAST(PDFEmbeddedFile::AFRelationship);
 
 #endif
