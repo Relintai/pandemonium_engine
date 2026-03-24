@@ -31,6 +31,42 @@
 
 #include "pdf_3d_view_node.h"
 
+#include "hpdf.h"
+#include "hpdf_u3d.h"
+
+uint32_t PDF3DViewNode::set_opacity(const float p_opacity) {
+	_status = HPDF_3DViewNode_SetOpacity((HPDF_Dict)_3d_view_node, p_opacity);
+
+	return _status;
+}
+uint32_t PDF3DViewNode::set_visibility(const bool p_visible) {
+	_status = HPDF_3DViewNode_SetVisibility((HPDF_Dict)_3d_view_node, p_visible);
+
+	return _status;
+}
+uint32_t PDF3DViewNode::set_matrix(const Transform &p_matrix) {
+	const Basis &b = p_matrix.basis;
+
+	HPDF_3DMatrix m;
+
+	m.a = b.rows[0][0];
+	m.b = b.rows[0][1];
+	m.c = b.rows[0][2];
+	m.d = b.rows[1][0];
+	m.e = b.rows[1][1];
+	m.f = b.rows[1][2];
+	m.g = b.rows[2][0];
+	m.h = b.rows[2][1];
+	m.i = b.rows[2][2];
+	m.tx = p_matrix.origin.x;
+	m.ty = p_matrix.origin.y;
+	m.tz = p_matrix.origin.z;
+
+	_status = HPDF_3DViewNode_SetMatrix((HPDF_Dict)_3d_view_node, m);
+
+	return _status;
+}
+
 uint32_t PDF3DViewNode::get_status() {
 	return _status;
 }
@@ -51,7 +87,9 @@ void PDF3DViewNode::_set_hpdf_3d_view_node(void *p_3d_view_node) {
 }
 
 void PDF3DViewNode::_bind_methods() {
-	//ClassDB::bind_method(D_METHOD("get_width"), &PDF3DViewNode::get_width);
-	//ClassDB::bind_method(D_METHOD("set_width", "val"), &PDF3DViewNode::set_width);
-	//ADD_PROPERTY(PropertyInfo(Variant::REAL, "width"), "set_width", "get_width");
+	ClassDB::bind_method(D_METHOD("set_opacity", "opacity"), &PDF3DViewNode::set_opacity);
+	ClassDB::bind_method(D_METHOD("set_visibility", "visible"), &PDF3DViewNode::set_visibility);
+	ClassDB::bind_method(D_METHOD("set_matrix", "matrix"), &PDF3DViewNode::set_matrix);
+
+	ClassDB::bind_method(D_METHOD("get_status"), &PDF3DViewNode::get_status);
 }
