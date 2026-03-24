@@ -35,10 +35,6 @@
 #include "hpdf_doc.h"
 #include "hpdf_pages.h"
 
-uint32_t PDFDict::get_status() {
-	return _status;
-}
-
 PDFDict::PDFDict() {
 	_dict = NULL;
 }
@@ -55,7 +51,4 @@ void PDFDict::_set_hpdf_dict(void *p_dict) {
 }
 
 void PDFDict::_bind_methods() {
-	//ClassDB::bind_method(D_METHOD("get_width"), &PDFDict::get_width);
-	//ClassDB::bind_method(D_METHOD("set_width", "val"), &PDFDict::set_width);
-	//ADD_PROPERTY(PropertyInfo(Variant::REAL, "width"), "set_width", "get_width");
 }

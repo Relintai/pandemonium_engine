@@ -38,8 +38,6 @@ class PDFDict : public Reference {
 	GDCLASS(PDFDict, Reference);
 
 public:
-	uint32_t get_status();
-
 	PDFDict();
 	~PDFDict();
 
@@ -50,8 +48,6 @@ protected:
 	static void _bind_methods();
 
 	void *_dict;
-
-	uint32_t _status;
 };
 
 #endif
