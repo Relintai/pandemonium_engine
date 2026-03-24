@@ -36,6 +36,8 @@
 
 class PDF3DView;
 class PDFJavascript;
+class PDFDate;
+class PDFExData;
 
 class PDFAnnotation : public Reference {
 	GDCLASS(PDFAnnotation, Reference);
@@ -91,47 +93,46 @@ protected:
 	void *_hdpf_page;
 };
 
+class PDFAnnotationPopup : public PDFAnnotation {
+	GDCLASS(PDFAnnotationPopup, PDFAnnotation);
+
+public:
+	uint32_t set_opened(const bool p_opened);
+
+	PDFAnnotationPopup();
+	~PDFAnnotationPopup();
+
+protected:
+	static void _bind_methods();
+};
+
 class PDFAnnotationMarkup : public PDFAnnotation {
 	GDCLASS(PDFAnnotationMarkup, PDFAnnotation);
 
 public:
-#if 0
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetTitle(HPDF_Annotation annot, const char *name);
+	enum AnnotIntent {
+		ANNOT_INTENT_FREETEXTCALLOUT = 0,
+		ANNOT_INTENT_FREETEXTTYPEWRITER,
+		ANNOT_INTENT_LINEARROW,
+		ANNOT_INTENT_LINEDIMENSION,
+		ANNOT_INTENT_POLYGONCLOUD,
+		ANNOT_INTENT_POLYLINEDIMENSION,
+		ANNOT_INTENT_POLYGONDIMENSION
+	};
 
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetSubject(HPDF_Annotation annot, const char *name);
+	uint32_t set_title(const String &p_title);
+	uint32_t set_subject(const String &p_subject);
+	uint32_t set_creation_date(const Ref<PDFDate> &p_date);
+	uint32_t set_transparency(const float p_value);
+	uint32_t set_intent(const AnnotIntent p_intent);
+	uint32_t set_popup(const Ref<PDFAnnotationPopup> &p_popup);
+	uint32_t set_rect_diff(const Rect2 &p_rect);
+	uint32_t set_cloud_effect(const int p_value);
 
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetCreationDate(HPDF_Annotation annot, HPDF_Date value);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetTransparency(HPDF_Annotation annot, HPDF_REAL value);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetIntent(HPDF_Annotation annot, HPDF_AnnotIntent intent);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetPopup(HPDF_Annotation annot, HPDF_Annotation popup);
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetRectDiff(HPDF_Annotation annot, HPDF_Rect rect); /* RD entry */
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetCloudEffect(HPDF_Annotation annot, HPDF_INT cloudIntensity); /* BE entry */
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetInteriorRGBColor(HPDF_Annotation annot, HPDF_RGBColor color); /* IC with RGB entry */
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetInteriorCMYKColor(HPDF_Annotation annot, HPDF_CMYKColor color); /* IC with CMYK entry */
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetInteriorGrayColor(HPDF_Annotation annot, HPDF_REAL color); /* IC with Gray entry */
-
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_MarkupAnnot_SetInteriorTransparent(HPDF_Annotation annot); /* IC with No Color entry */
-#endif
+	uint32_t set_interior_rgb_color(const Color &p_color);
+	uint32_t set_interior_cmyk_color(const Vector4 &p_color);
+	uint32_t set_interior_gray_color(const float p_color);
+	uint32_t set_interior_transparent();
 
 	PDFAnnotationMarkup();
 	~PDFAnnotationMarkup();
@@ -139,6 +140,8 @@ public:
 protected:
 	static void _bind_methods();
 };
+
+VARIANT_ENUM_CAST(PDFAnnotationMarkup::AnnotIntent);
 
 class PDFAnnotationText : public PDFAnnotationMarkup {
 	GDCLASS(PDFAnnotationText, PDFAnnotationMarkup);
@@ -302,10 +305,7 @@ public:
 		ANNOTATION_TYPE_WIDGET
 	};
 
-#if 0
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_TextMarkupAnnot_SetQuadPoints(HPDF_Annotation annot, HPDF_Point lb, HPDF_Point rb, HPDF_Point rt, HPDF_Point lt); /* l-left, r-right, b-bottom, t-top positions */
-#endif
+	uint32_t set_quad_points(const Vector2 &p_lb, const Vector2 &p_rb, const Vector2 &p_rt, const Vector2 &p_lt);
 
 	PDFAnnotationTextMarkup();
 	~PDFAnnotationTextMarkup();
@@ -360,23 +360,6 @@ protected:
 	static void _bind_methods();
 };
 
-class PDFAnnotationPopup : public PDFAnnotation {
-	GDCLASS(PDFAnnotationPopup, PDFAnnotation);
-
-public:
-#if 0
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_PopupAnnot_SetOpened(HPDF_Annotation annot,
-			HPDF_BOOL opened);
-#endif
-
-	PDFAnnotationPopup();
-	~PDFAnnotationPopup();
-
-protected:
-	static void _bind_methods();
-};
-
 class PDFAnnotationStamp : public PDFAnnotation {
 	GDCLASS(PDFAnnotationStamp, PDFAnnotation);
 
@@ -411,10 +394,7 @@ class PDFAnnotationProjection : public PDFAnnotation {
 	GDCLASS(PDFAnnotationProjection, PDFAnnotation);
 
 public:
-#if 0
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_ProjectionAnnot_SetExData(HPDF_Annotation annot, HPDF_ExData exdata);
-#endif
+	uint32_t set_ex_data(const Ref<PDFExData> &p_ex_data);
 
 	PDFAnnotationProjection();
 	~PDFAnnotationProjection();

@@ -32,6 +32,8 @@
 #include "pdf_annotation.h"
 
 #include "pdf_3d_view.h"
+#include "pdf_date.h"
+#include "pdf_ex_data.h"
 #include "pdf_javascript.h"
 
 #include "hpdf.h"
@@ -146,7 +148,132 @@ void PDFAnnotation3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_3d_view", "annot", "view"), &PDFAnnotation3D::set_3d_view);
 }
 
+// PDFAnnotationPopup
+
+uint32_t PDFAnnotationPopup::set_opened(const bool p_opened) {
+	_status = HPDF_PopupAnnot_SetOpened((HPDF_Annotation)_annotation, p_opened);
+
+	return _status;
+}
+
+PDFAnnotationPopup::PDFAnnotationPopup() {
+}
+PDFAnnotationPopup::~PDFAnnotationPopup() {
+}
+
+void PDFAnnotationPopup::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("set_opened", "opened"), &PDFAnnotationPopup::set_opened);
+}
+
 // PDFAnnotationMarkup
+
+uint32_t PDFAnnotationMarkup::set_title(const String &p_title) {
+	_status = HPDF_MarkupAnnot_SetTitle((HPDF_Annotation)_annotation, p_title.utf8().get_data());
+
+	return _status;
+}
+uint32_t PDFAnnotationMarkup::set_subject(const String &p_subject) {
+	_status = HPDF_MarkupAnnot_SetSubject((HPDF_Annotation)_annotation, p_subject.utf8().get_data());
+
+	return _status;
+}
+
+uint32_t PDFAnnotationMarkup::set_creation_date(const Ref<PDFDate> &p_date) {
+	HPDF_Date date;
+
+	if (p_date.is_valid()) {
+		date.year = p_date->get_year();
+		date.month = p_date->get_month();
+		date.day = p_date->get_day();
+		date.hour = p_date->get_hour();
+		date.minutes = p_date->get_minutes();
+		date.seconds = p_date->get_seconds();
+		date.ind = static_cast<char>(p_date->get_ind());
+		date.off_hour = p_date->get_off_hour();
+		date.off_minutes = p_date->get_off_minutes();
+	}
+
+	_status = HPDF_MarkupAnnot_SetCreationDate((HPDF_Annotation)_annotation, date);
+
+	return _status;
+}
+
+uint32_t PDFAnnotationMarkup::set_transparency(const float p_value) {
+	_status = HPDF_MarkupAnnot_SetTransparency((HPDF_Annotation)_annotation, p_value);
+
+	return _status;
+}
+
+uint32_t PDFAnnotationMarkup::set_intent(const AnnotIntent p_intent) {
+	HPDF_AnnotIntent intent = static_cast<HPDF_AnnotIntent>(p_intent);
+
+	_status = HPDF_MarkupAnnot_SetIntent((HPDF_Annotation)_annotation, intent);
+
+	return _status;
+}
+
+uint32_t PDFAnnotationMarkup::set_popup(const Ref<PDFAnnotationPopup> &p_popup) {
+	HPDF_Annotation popup = NULL;
+
+	if (p_popup.is_valid()) {
+		popup = (HPDF_Annotation)p_popup->_get_hpdf_annotation();
+	}
+
+	_status = HPDF_MarkupAnnot_SetPopup((HPDF_Annotation)_annotation, popup);
+
+	return _status;
+}
+
+uint32_t PDFAnnotationMarkup::set_rect_diff(const Rect2 &p_rect) {
+	HPDF_Rect rect;
+	rect.left = p_rect.position.x;
+	rect.top = p_rect.position.y;
+	Vector2 end = p_rect.get_end();
+	rect.right = end.x;
+	rect.bottom = end.y;
+
+	_status = HPDF_MarkupAnnot_SetRectDiff((HPDF_Annotation)_annotation, rect);
+
+	return _status;
+}
+
+uint32_t PDFAnnotationMarkup::set_cloud_effect(const int p_value) {
+	_status = HPDF_MarkupAnnot_SetCloudEffect((HPDF_Annotation)_annotation, p_value);
+
+	return _status;
+}
+
+uint32_t PDFAnnotationMarkup::set_interior_rgb_color(const Color &p_color) {
+	HPDF_RGBColor color;
+	color.r = p_color.r;
+	color.g = p_color.g;
+	color.b = p_color.b;
+
+	_status = HPDF_MarkupAnnot_SetInteriorRGBColor((HPDF_Annotation)_annotation, color);
+
+	return _status;
+}
+uint32_t PDFAnnotationMarkup::set_interior_cmyk_color(const Vector4 &p_color) {
+	HPDF_CMYKColor color;
+	color.c = p_color.x;
+	color.m = p_color.y;
+	color.y = p_color.z;
+	color.k = p_color.w;
+
+	_status = HPDF_MarkupAnnot_SetInteriorCMYKColor((HPDF_Annotation)_annotation, color);
+
+	return _status;
+}
+uint32_t PDFAnnotationMarkup::set_interior_gray_color(const float p_color) {
+	_status = HPDF_MarkupAnnot_SetInteriorGrayColor((HPDF_Annotation)_annotation, p_color);
+
+	return _status;
+}
+uint32_t PDFAnnotationMarkup::set_interior_transparent() {
+	_status = HPDF_MarkupAnnot_SetInteriorTransparent((HPDF_Annotation)_annotation);
+
+	return _status;
+}
 
 PDFAnnotationMarkup::PDFAnnotationMarkup() {
 }
@@ -154,6 +281,27 @@ PDFAnnotationMarkup::~PDFAnnotationMarkup() {
 }
 
 void PDFAnnotationMarkup::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("set_title", "title"), &PDFAnnotationMarkup::set_title);
+	ClassDB::bind_method(D_METHOD("set_subject", "subject"), &PDFAnnotationMarkup::set_subject);
+	ClassDB::bind_method(D_METHOD("set_creation_date", "date"), &PDFAnnotationMarkup::set_creation_date);
+	ClassDB::bind_method(D_METHOD("set_transparency", "value"), &PDFAnnotationMarkup::set_transparency);
+	ClassDB::bind_method(D_METHOD("set_intent", "intent"), &PDFAnnotationMarkup::set_intent);
+	ClassDB::bind_method(D_METHOD("set_popup", "popup"), &PDFAnnotationMarkup::set_popup);
+	ClassDB::bind_method(D_METHOD("set_rect_diff", "rect"), &PDFAnnotationMarkup::set_rect_diff);
+	ClassDB::bind_method(D_METHOD("set_cloud_effect", "value"), &PDFAnnotationMarkup::set_cloud_effect);
+
+	ClassDB::bind_method(D_METHOD("set_interior_rgb_color", "color"), &PDFAnnotationMarkup::set_interior_rgb_color);
+	ClassDB::bind_method(D_METHOD("set_interior_cmyk_color", "color"), &PDFAnnotationMarkup::set_interior_cmyk_color);
+	ClassDB::bind_method(D_METHOD("set_interior_gray_color", "color"), &PDFAnnotationMarkup::set_interior_gray_color);
+	ClassDB::bind_method(D_METHOD("set_interior_transparent"), &PDFAnnotationMarkup::set_interior_transparent);
+
+	BIND_ENUM_CONSTANT(ANNOT_INTENT_FREETEXTCALLOUT);
+	BIND_ENUM_CONSTANT(ANNOT_INTENT_FREETEXTTYPEWRITER);
+	BIND_ENUM_CONSTANT(ANNOT_INTENT_LINEARROW);
+	BIND_ENUM_CONSTANT(ANNOT_INTENT_LINEDIMENSION);
+	BIND_ENUM_CONSTANT(ANNOT_INTENT_POLYGONCLOUD);
+	BIND_ENUM_CONSTANT(ANNOT_INTENT_POLYLINEDIMENSION);
+	BIND_ENUM_CONSTANT(ANNOT_INTENT_POLYGONDIMENSION);
 }
 
 //  PDFAnnotationText
@@ -374,6 +522,25 @@ void PDFAnnotationURILink::_bind_methods() {
 
 // PDFAnnotationTextMarkup
 
+uint32_t PDFAnnotationTextMarkup::set_quad_points(const Vector2 &p_lb, const Vector2 &p_rb, const Vector2 &p_rt, const Vector2 &p_lt) {
+	HPDF_Point lb;
+	lb.x = p_lb.x;
+	lb.y = p_lb.y;
+	HPDF_Point rb;
+	rb.x = p_rb.x;
+	rb.y = p_rb.y;
+	HPDF_Point rt;
+	rt.x = p_rt.x;
+	rt.y = p_rt.y;
+	HPDF_Point lt;
+	lt.x = p_lt.x;
+	lt.y = p_lt.y;
+
+	_status = HPDF_TextMarkupAnnot_SetQuadPoints((HPDF_Annotation)_annotation, lb, rb, rt, lt);
+
+	return _status;
+}
+
 PDFAnnotationTextMarkup::PDFAnnotationTextMarkup() {
 }
 PDFAnnotationTextMarkup::~PDFAnnotationTextMarkup() {
@@ -440,16 +607,6 @@ PDFAnnotationStrikeOut::~PDFAnnotationStrikeOut() {
 void PDFAnnotationStrikeOut::_bind_methods() {
 }
 
-// PDFAnnotationPopup
-
-PDFAnnotationPopup::PDFAnnotationPopup() {
-}
-PDFAnnotationPopup::~PDFAnnotationPopup() {
-}
-
-void PDFAnnotationPopup::_bind_methods() {
-}
-
 // PDFAnnotationStamp
 
 PDFAnnotationStamp::PDFAnnotationStamp() {
@@ -476,12 +633,25 @@ void PDFAnnotationStamp::_bind_methods() {
 
 // PDFAnnotationProjection
 
+uint32_t PDFAnnotationProjection::set_ex_data(const Ref<PDFExData> &p_ex_data) {
+	HPDF_ExData exdata = NULL;
+
+	if (p_ex_data.is_valid()) {
+		exdata = (HPDF_ExData)p_ex_data->_get_hpdf_ex_data();
+	}
+
+	_status = HPDF_ProjectionAnnot_SetExData((HPDF_Annotation)_annotation, exdata);
+
+	return _status;
+}
+
 PDFAnnotationProjection::PDFAnnotationProjection() {
 }
 PDFAnnotationProjection::~PDFAnnotationProjection() {
 }
 
 void PDFAnnotationProjection::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("set_ex_data", "ex_data"), &PDFAnnotationProjection::set_ex_data);
 }
 
 // PDFAnnotationSquare
