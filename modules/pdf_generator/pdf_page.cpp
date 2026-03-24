@@ -1085,9 +1085,17 @@ Ref<PDFAnnotationCircle> PDFPage::annotation_circle_create(const Rect2 &p_rect, 
 
 /*----- 3D Measure ---------------------------------------------------------*/
 
+inline static HPDF_Point3D _vector3_to_hdpf_point_3d(const Vector3 &p_point) {
+	HPDF_Point3D p;
+	p.x = p_point.x;
+	p.y = p_point.y;
+	p.z = p_point.z;
+	return p;
+}
+
 Ref<PDF3DMeasure> PDFPage::create_c3d_3d_measure(const Vector3 &p_first_anchor_point, const Vector3 &p_text_anchor_point) {
-	HPDF_Point3D firstanchorpoint = { .x = p_first_anchor_point.x, .y = p_first_anchor_point.y, .z = p_first_anchor_point.z };
-	HPDF_Point3D textanchorpoint = { .x = p_text_anchor_point.x, .y = p_text_anchor_point.y, .z = p_text_anchor_point.z };
+	HPDF_Point3D firstanchorpoint = _vector3_to_hdpf_point_3d(p_first_anchor_point);
+	HPDF_Point3D textanchorpoint = _vector3_to_hdpf_point_3d(p_text_anchor_point);
 
 	HPDF_3DMeasure hpdf_3d_measure = HPDF_Page_Create3DC3DMeasure((HPDF_Page)_page, firstanchorpoint, textanchorpoint);
 
@@ -1104,18 +1112,12 @@ Ref<PDF3DMeasure> PDFPage::create_pd3_3d_measure(const PoolVector3Array &p_point
 	ERR_FAIL_COND_V(p_points.size() != 6, Ref<PDF3DMeasure>());
 
 	int index = 0;
-	Vector3 v = p_points[index++];
-	HPDF_Point3D annotationPlaneNormal = { .x = v.x, .y = v.y, .z = v.z };
-	v = p_points[index++];
-	HPDF_Point3D firstAnchorPoint = { .x = v.x, .y = v.y, .z = v.z };
-	v = p_points[index++];
-	HPDF_Point3D secondAnchorPoint = { .x = v.x, .y = v.y, .z = v.z };
-	v = p_points[index++];
-	HPDF_Point3D leaderLinesDirection = { .x = v.x, .y = v.y, .z = v.z };
-	v = p_points[index++];
-	HPDF_Point3D measurementValuePoint = { .x = v.x, .y = v.y, .z = v.z };
-	v = p_points[index++];
-	HPDF_Point3D textYDirection = { .x = v.x, .y = v.y, .z = v.z };
+	HPDF_Point3D annotationPlaneNormal = _vector3_to_hdpf_point_3d(p_points[index++]);
+	HPDF_Point3D firstAnchorPoint = _vector3_to_hdpf_point_3d(p_points[index++]);
+	HPDF_Point3D secondAnchorPoint = _vector3_to_hdpf_point_3d(p_points[index++]);
+	HPDF_Point3D leaderLinesDirection = _vector3_to_hdpf_point_3d(p_points[index++]);
+	HPDF_Point3D measurementValuePoint = _vector3_to_hdpf_point_3d(p_points[index++]);
+	HPDF_Point3D textYDirection = _vector3_to_hdpf_point_3d(p_points[index++]);
 
 	HPDF_3DMeasure hpdf_3d_measure = HPDF_Page_CreatePD33DMeasure((HPDF_Page)_page,
 			annotationPlaneNormal,
