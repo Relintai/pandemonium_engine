@@ -1187,6 +1187,19 @@ Ref<PDF3DView> PDFPage::create_3d_view(const Ref<PDFU3D> &p_u3d, const Ref<PDFAn
 	return view;
 }
 
+Ref<PDFDestination> PDFPage::create_destination() {
+	HPDF_Destination hpdf_dest = HPDF_Page_CreateDestination((HPDF_Page)_page);
+
+	if (!hpdf_dest) {
+		return Ref<PDFDestination>();
+	}
+
+	Ref<PDFDestination> dest;
+	dest.instance();
+	dest->_set_hpdf_destination(hpdf_dest);
+	return dest;
+}
+
 uint32_t PDFPage::get_status() {
 	return _status;
 }
@@ -1406,6 +1419,8 @@ void PDFPage::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("create_3d_view_name", "name"), &PDFPage::create_3d_view_name);
 	ClassDB::bind_method(D_METHOD("create_3d_view", "u3d", "annot_3d", "name"), &PDFPage::create_3d_view);
+
+	ClassDB::bind_method(D_METHOD("create_destination"), &PDFPage::create_destination);
 
 	ClassDB::bind_method(D_METHOD("get_status"), &PDFPage::get_status);
 

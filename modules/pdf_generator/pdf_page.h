@@ -46,6 +46,7 @@ class PDFXObject;
 class PDF3DView;
 class PDF3DMeasure;
 class PDFExData;
+class PDFDestination;
 
 class PDFPage : public Reference {
 	GDCLASS(PDFPage, Reference);
@@ -306,13 +307,7 @@ public:
 	Ref<PDF3DView> create_3d_view_name(const String &p_name);
 	Ref<PDF3DView> create_3d_view(const Ref<PDFU3D> &p_u3d, const Ref<PDFAnnotation3D> &p_annot_3d, const String &p_name);
 
-#if 0
-	/*----- destination --------------------------------------------------------*/
-
-	HPDF_EXPORT(HPDF_Destination)
-	HPDF_Page_CreateDestination(HPDF_Page page);
-
-#endif
+	Ref<PDFDestination> create_destination();
 
 	uint32_t get_status();
 
