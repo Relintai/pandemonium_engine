@@ -13,6 +13,11 @@
 			<description>
 			</description>
 		</method>
+		<method name="as_x_object">
+			<return type="PDFXObject" />
+			<description>
+			</description>
+		</method>
 		<method name="get_bits_per_component">
 			<return type="int" />
 			<description>

@@ -31,6 +31,8 @@
 
 #include "pdf_image.h"
 
+#include "pdf_x_object.h"
+
 #include "hpdf.h"
 
 uint32_t PDFImage::add_s_mask(const Ref<PDFImage> &p_smask) {
@@ -90,6 +92,13 @@ uint32_t PDFImage::set_mask_image(const Ref<PDFImage> &p_mask_image) {
 	return _status;
 }
 
+Ref<PDFXObject> PDFImage::as_x_object() {
+	Ref<PDFXObject> obj;
+	obj.instance();
+	obj->_set_hpdf_x_object(_image);
+	return obj;
+}
+
 uint32_t PDFImage::get_status() {
 	return _status;
 }
@@ -126,6 +135,8 @@ void PDFImage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_color_mask", "r_min_max", "g_min_max", "b_min_max"), &PDFImage::set_color_mask);
 
 	ClassDB::bind_method(D_METHOD("set_mask_image", "mask_image"), &PDFImage::set_mask_image);
+
+	ClassDB::bind_method(D_METHOD("as_x_object"), &PDFImage::as_x_object);
 
 	ClassDB::bind_method(D_METHOD("get_status"), &PDFImage::get_status);
 }

@@ -34,6 +34,8 @@
 
 #include "core/object/reference.h"
 
+class PDFXObject;
+
 class PDFImage : public Reference {
 	GDCLASS(PDFImage, Reference);
 
@@ -52,6 +54,8 @@ public:
 	uint32_t set_color_mask(const Vector2i &p_r, const Vector2i &p_g, const Vector2i &p_b);
 
 	uint32_t set_mask_image(const Ref<PDFImage> &p_mask_image);
+
+	Ref<PDFXObject> as_x_object();
 
 	uint32_t get_status();
 
