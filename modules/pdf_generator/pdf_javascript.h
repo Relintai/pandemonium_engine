@@ -38,12 +38,6 @@ class PDFJavascript : public Reference {
 	GDCLASS(PDFJavascript, Reference);
 
 public:
-#if 0
-
-#endif
-
-	uint32_t get_status();
-
 	PDFJavascript();
 	~PDFJavascript();
 
@@ -54,8 +48,6 @@ protected:
 	static void _bind_methods();
 
 	void *_javascript;
-
-	uint32_t _status;
 };
 
 #endif

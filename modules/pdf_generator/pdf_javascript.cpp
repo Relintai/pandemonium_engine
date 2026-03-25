@@ -31,13 +31,7 @@
 
 #include "pdf_javascript.h"
 
-uint32_t PDFJavascript::get_status() {
-	return _status;
-}
-
 PDFJavascript::PDFJavascript() {
-	_status = 0;
-
 	_javascript = NULL;
 }
 
@@ -53,7 +47,4 @@ void PDFJavascript::_set_hpdf_javascript(void *p_javascript) {
 }
 
 void PDFJavascript::_bind_methods() {
-	//ClassDB::bind_method(D_METHOD("get_width"), &PDFJavascript::get_width);
-	//ClassDB::bind_method(D_METHOD("set_width", "val"), &PDFJavascript::set_width);
-	//ADD_PROPERTY(PropertyInfo(Variant::REAL, "width"), "set_width", "get_width");
 }
