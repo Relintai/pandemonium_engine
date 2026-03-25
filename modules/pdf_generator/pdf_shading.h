@@ -38,15 +38,13 @@ class PDFShading : public Reference {
 	GDCLASS(PDFShading, Reference);
 
 public:
-#if 0
+	enum FreeFormTriangleMeshEdgeFlag {
+		FREE_FORM_TRI_MESH_EDGEFLAG_NO_CONNECTION = 0,
+		FREE_FORM_TRI_MESH_EDGEFLAG_BC,
+		FREE_FORM_TRI_MESH_EDGEFLAG_AC
+	};
 
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_Shading_AddVertexRGB(HPDF_Shading shading,
-			HPDF_Shading_FreeFormTriangleMeshEdgeFlag edgeFlag,
-			HPDF_REAL x, HPDF_REAL y,
-			HPDF_UINT8 r, HPDF_UINT8 g, HPDF_UINT8 b);
-
-#endif
+	uint32_t add_vertex_rgb(const FreeFormTriangleMeshEdgeFlag p_edge_flag, const Vector2 &p_position, const Color &p_color);
 
 	uint32_t get_status();
 
@@ -63,5 +61,7 @@ protected:
 
 	uint32_t _status;
 };
+
+VARIANT_ENUM_CAST(PDFShading::FreeFormTriangleMeshEdgeFlag);
 
 #endif

@@ -32,8 +32,18 @@
 #include "pdf_shading.h"
 
 #include "hpdf.h"
-#include "hpdf_doc.h"
-#include "hpdf_pages.h"
+
+uint32_t PDFShading::add_vertex_rgb(const FreeFormTriangleMeshEdgeFlag p_edge_flag, const Vector2 &p_position, const Color &p_color) {
+	HPDF_Shading_FreeFormTriangleMeshEdgeFlag edgeFlag = static_cast<HPDF_Shading_FreeFormTriangleMeshEdgeFlag>(p_edge_flag);
+
+	uint8_t r = (uint8_t)p_color.get_r8();
+	uint8_t g = (uint8_t)p_color.get_g8();
+	uint8_t b = (uint8_t)p_color.get_b8();
+
+	_status = HPDF_Shading_AddVertexRGB((HPDF_Shading)_shading, edgeFlag, p_position.x, p_position.y, r, g, b);
+
+	return _status;
+}
 
 uint32_t PDFShading::get_status() {
 	return _status;
@@ -57,7 +67,11 @@ void PDFShading::_set_hpdf_shading(void *p_shading) {
 }
 
 void PDFShading::_bind_methods() {
-	//ClassDB::bind_method(D_METHOD("get_width"), &PDFShading::get_width);
-	//ClassDB::bind_method(D_METHOD("set_width", "val"), &PDFShading::set_width);
-	//ADD_PROPERTY(PropertyInfo(Variant::REAL, "width"), "set_width", "get_width");
+	ClassDB::bind_method(D_METHOD("add_vertex_rgb", "edge_flag", "position", "color"), &PDFShading::add_vertex_rgb);
+
+	ClassDB::bind_method(D_METHOD("get_status"), &PDFShading::get_status);
+
+	BIND_ENUM_CONSTANT(FREE_FORM_TRI_MESH_EDGEFLAG_NO_CONNECTION);
+	BIND_ENUM_CONSTANT(FREE_FORM_TRI_MESH_EDGEFLAG_BC);
+	BIND_ENUM_CONSTANT(FREE_FORM_TRI_MESH_EDGEFLAG_AC);
 }
