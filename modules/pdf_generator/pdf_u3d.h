@@ -34,18 +34,18 @@
 
 #include "core/object/reference.h"
 
+class PDF3DView;
+class PDFJavascript;
+
 class PDFU3D : public Reference {
 	GDCLASS(PDFU3D, Reference);
 
 public:
-#if 0
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_U3D_Add3DView(HPDF_U3D u3d, HPDF_Dict view);
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_U3D_SetDefault3DView(HPDF_U3D u3d, const char *name);
-	HPDF_EXPORT(HPDF_STATUS)
-	HPDF_U3D_AddOnInstanciate(HPDF_U3D u3d, HPDF_JavaScript javaScript);
-#endif
+	uint32_t add_3d_view(const Ref<PDF3DView> &p_view);
+
+	uint32_t set_default_3d_view(const String &p_name);
+
+	uint32_t add_on_instantiate(const Ref<PDFJavascript> &p_javascript);
 
 	uint32_t get_status();
 

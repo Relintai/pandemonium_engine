@@ -31,6 +31,42 @@
 
 #include "pdf_u3d.h"
 
+#include "hpdf.h"
+#include "hpdf_u3d.h"
+
+#include "pdf_3d_view.h"
+#include "pdf_javascript.h"
+
+uint32_t PDFU3D::add_3d_view(const Ref<PDF3DView> &p_view) {
+	HPDF_Dict view = NULL;
+
+	if (p_view.is_valid()) {
+		view = (HPDF_Dict)p_view->_get_hpdf_3d_view();
+	}
+
+	_status = HPDF_U3D_Add3DView((HPDF_U3D)_u3d, view);
+
+	return _status;
+}
+
+uint32_t PDFU3D::set_default_3d_view(const String &p_name) {
+	_status = HPDF_U3D_SetDefault3DView((HPDF_U3D)_u3d, p_name.utf8().get_data());
+
+	return _status;
+}
+
+uint32_t PDFU3D::add_on_instantiate(const Ref<PDFJavascript> &p_javascript) {
+	HPDF_JavaScript javaScript = NULL;
+
+	if (p_javascript.is_valid()) {
+		javaScript = (HPDF_Dict)p_javascript->_get_hpdf_javascript();
+	}
+
+	_status = HPDF_U3D_AddOnInstanciate((HPDF_U3D)_u3d, javaScript);
+
+	return _status;
+}
+
 uint32_t PDFU3D::get_status() {
 	return _status;
 }
@@ -53,7 +89,9 @@ void PDFU3D::_set_hpdf_u3d(void *p_u3d) {
 }
 
 void PDFU3D::_bind_methods() {
-	//ClassDB::bind_method(D_METHOD("get_width"), &PDFU3D::get_width);
-	//ClassDB::bind_method(D_METHOD("set_width", "val"), &PDFU3D::set_width);
-	//ADD_PROPERTY(PropertyInfo(Variant::REAL, "width"), "set_width", "get_width");
+	ClassDB::bind_method(D_METHOD("add_3d_view", "view"), &PDFU3D::add_3d_view);
+	ClassDB::bind_method(D_METHOD("set_default_3d_view", "name"), &PDFU3D::set_default_3d_view);
+	ClassDB::bind_method(D_METHOD("add_on_instantiate", "javascript"), &PDFU3D::add_on_instantiate);
+
+	ClassDB::bind_method(D_METHOD("get_status"), &PDFU3D::get_status);
 }
