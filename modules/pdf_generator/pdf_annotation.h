@@ -258,7 +258,7 @@ public:
 
 	uint32_t set_highlight_mode(const HighlightMode p_highlight_mode);
 	uint32_t set_javascript(const Ref<PDFJavascript> &p_javascript);
-	uint32_t set_border_style(const float p_width, const uint16_t p_dash_on, const uint16_t p_dash_off);
+	uint32_t set_link_border_style(const float p_width, const uint16_t p_dash_on, const uint16_t p_dash_off);
 
 	PDFAnnotationLink();
 	~PDFAnnotationLink();

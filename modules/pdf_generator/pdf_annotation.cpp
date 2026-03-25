@@ -489,7 +489,7 @@ uint32_t PDFAnnotationLink::set_javascript(const Ref<PDFJavascript> &p_javascrip
 
 	return _status;
 }
-uint32_t PDFAnnotationLink::set_border_style(const float p_width, const uint16_t p_dash_on, const uint16_t p_dash_off) {
+uint32_t PDFAnnotationLink::set_link_border_style(const float p_width, const uint16_t p_dash_on, const uint16_t p_dash_off) {
 	_status = HPDF_LinkAnnot_SetBorderStyle((HPDF_Annotation)_annotation, p_width, p_dash_on, p_dash_off);
 
 	return _status;
@@ -503,7 +503,7 @@ PDFAnnotationLink::~PDFAnnotationLink() {
 void PDFAnnotationLink::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_highlight_mode", "highlight_mode"), &PDFAnnotationLink::set_highlight_mode);
 	ClassDB::bind_method(D_METHOD("set_javascript", "javascript"), &PDFAnnotationLink::set_javascript);
-	ClassDB::bind_method(D_METHOD("set_border_style", "width", "dash_on", "dash_off"), &PDFAnnotationLink::set_border_style);
+	ClassDB::bind_method(D_METHOD("set_link_border_style", "width", "dash_on", "dash_off"), &PDFAnnotationLink::set_link_border_style);
 
 	BIND_ENUM_CONSTANT(HIGHLIGHT_MODE_NO_HIGHTLIGHT);
 	BIND_ENUM_CONSTANT(HIGHLIGHT_MODE_INVERT_BOX);

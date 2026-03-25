@@ -19,6 +19,14 @@
 			<description>
 			</description>
 		</method>
+		<method name="set_link_border_style">
+			<return type="int" />
+			<argument index="0" name="width" type="float" />
+			<argument index="1" name="dash_on" type="int" />
+			<argument index="2" name="dash_off" type="int" />
+			<description>
+			</description>
+		</method>
 	</methods>
 	<constants>
 		<constant name="HIGHLIGHT_MODE_NO_HIGHTLIGHT" value="0" enum="HighlightMode">
