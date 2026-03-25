@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDFAnnotation" inherits="Reference">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_status">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_border_style">
+			<return type="int" />
+			<argument index="0" name="sub_type" type="int" enum="PDFAnnotation.BorderStyleSubtype" />
+			<argument index="1" name="width" type="float" />
+			<argument index="2" name="dash_on" type="int" />
+			<argument index="3" name="dash_off" type="int" />
+			<argument index="4" name="dash_phase" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_cmyk_color">
+			<return type="int" />
+			<argument index="0" name="color" type="Vector4" />
+			<description>
+			</description>
+		</method>
+		<method name="set_gray_color">
+			<return type="int" />
+			<argument index="0" name="color" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_no_color">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_rgb_color">
+			<return type="int" />
+			<argument index="0" name="color" type="Color" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+		<constant name="BORDER_STYLE_SOLID" value="0" enum="BorderStyleSubtype">
+		</constant>
+		<constant name="BORDER_STYLE_DASHED" value="1" enum="BorderStyleSubtype">
+		</constant>
+		<constant name="BORDER_STYLE_BEVELED" value="2" enum="BorderStyleSubtype">
+		</constant>
+		<constant name="BORDER_STYLE_INSET" value="3" enum="BorderStyleSubtype">
+		</constant>
+		<constant name="BORDER_STYLE_UNDERLINED" value="4" enum="BorderStyleSubtype">
+		</constant>
+	</constants>
+</class>

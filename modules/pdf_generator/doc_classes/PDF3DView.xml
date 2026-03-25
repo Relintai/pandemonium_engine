@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDF3DView" inherits="Reference">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_3d_c3d_measure">
+			<return type="int" />
+			<argument index="0" name="measure" type="PDF3DMeasure" />
+			<description>
+			</description>
+		</method>
+		<method name="add_node">
+			<return type="int" />
+			<argument index="0" name="node" type="PDF3DViewNode" />
+			<description>
+			</description>
+		</method>
+		<method name="create_node">
+			<return type="PDF3DViewNode" />
+			<argument index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_status">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_background_color">
+			<return type="int" />
+			<argument index="0" name="color" type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="set_camera">
+			<return type="int" />
+			<argument index="0" name="coo" type="Vector3" />
+			<argument index="1" name="c2c" type="Vector3" />
+			<argument index="2" name="roo" type="float" />
+			<argument index="3" name="roll" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_camera_by_matrix">
+			<return type="int" />
+			<argument index="0" name="matrix" type="Transform" />
+			<argument index="1" name="co" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_cross_section_off">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_cross_section_on">
+			<return type="int" />
+			<argument index="0" name="center" type="Vector3" />
+			<argument index="1" name="roll" type="float" />
+			<argument index="2" name="pitch" type="float" />
+			<argument index="3" name="opacity" type="float" />
+			<argument index="4" name="showintersection" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="set_lighting">
+			<return type="int" />
+			<argument index="0" name="scheme" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_orthogonal_projection">
+			<return type="int" />
+			<argument index="0" name="mag" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_perspective_projection">
+			<return type="int" />
+			<argument index="0" name="fov" type="float" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDFEmbeddedFile" inherits="Reference">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_status">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_af_relationship">
+			<return type="int" />
+			<argument index="0" name="relationship" type="int" enum="PDFEmbeddedFile.AFRelationship" />
+			<description>
+			</description>
+		</method>
+		<method name="set_creation_date">
+			<return type="int" />
+			<argument index="0" name="date" type="PDFDate" />
+			<description>
+			</description>
+		</method>
+		<method name="set_description">
+			<return type="int" />
+			<argument index="0" name="description" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_last_modification_date">
+			<return type="int" />
+			<argument index="0" name="date" type="PDFDate" />
+			<description>
+			</description>
+		</method>
+		<method name="set_name">
+			<return type="int" />
+			<argument index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_size">
+			<return type="int" />
+			<argument index="0" name="size" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_sub_type">
+			<return type="int" />
+			<argument index="0" name="sub_type" type="String" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+		<constant name="AFRELATIONSHIP_SOURCE" value="0" enum="AFRelationship">
+		</constant>
+		<constant name="AFRELATIONSHIP_DATA" value="1" enum="AFRelationship">
+		</constant>
+		<constant name="AFRELATIONSHIP_ALTERNATIVE" value="2" enum="AFRelationship">
+		</constant>
+		<constant name="AFRELATIONSHIP_SUPPLEMENT" value="3" enum="AFRelationship">
+		</constant>
+		<constant name="AFRELATIONSHIP_ENCRYPTEDPAYLOAD" value="4" enum="AFRelationship">
+		</constant>
+		<constant name="AFRELATIONSHIP_FORMDATA" value="5" enum="AFRelationship">
+		</constant>
+		<constant name="AFRELATIONSHIP_SCHEMA" value="6" enum="AFRelationship">
+		</constant>
+		<constant name="AFRELATIONSHIP_UNSPECIFIED" value="7" enum="AFRelationship">
+		</constant>
+	</constants>
+</class>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDFDestination" inherits="Reference">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_status">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_fit">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_fit_b">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_fit_bh">
+			<return type="int" />
+			<argument index="0" name="top" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_fit_bv">
+			<return type="int" />
+			<argument index="0" name="left" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_fit_h">
+			<return type="int" />
+			<argument index="0" name="top" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_fit_r">
+			<return type="int" />
+			<argument index="0" name="left" type="float" />
+			<argument index="1" name="bottom" type="float" />
+			<argument index="2" name="right" type="float" />
+			<argument index="3" name="top" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_fit_v">
+			<return type="int" />
+			<argument index="0" name="top" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_xyz">
+			<return type="int" />
+			<argument index="0" name="left" type="float" />
+			<argument index="1" name="top" type="float" />
+			<argument index="2" name="zoom" type="float" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

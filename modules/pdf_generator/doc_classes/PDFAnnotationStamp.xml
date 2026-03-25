@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDFAnnotationStamp" inherits="PDFAnnotation">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<constants>
+		<constant name="STAMP_ANNOT_APPROVED" value="0" enum="StampAnnotName">
+		</constant>
+		<constant name="STAMP_ANNOT_EXPERIMENTAL" value="1" enum="StampAnnotName">
+		</constant>
+		<constant name="STAMP_ANNOT_NOTAPPROVED" value="2" enum="StampAnnotName">
+		</constant>
+		<constant name="STAMP_ANNOT_ASIS" value="3" enum="StampAnnotName">
+		</constant>
+		<constant name="STAMP_ANNOT_EXPIRED" value="4" enum="StampAnnotName">
+		</constant>
+		<constant name="STAMP_ANNOT_NOTFORPUBLICRELEASE" value="5" enum="StampAnnotName">
+		</constant>
+		<constant name="STAMP_ANNOT_CONFIDENTIAL" value="6" enum="StampAnnotName">
+		</constant>
+		<constant name="STAMP_ANNOT_FINAL" value="7" enum="StampAnnotName">
+		</constant>
+		<constant name="STAMP_ANNOT_SOLD" value="8" enum="StampAnnotName">
+		</constant>
+		<constant name="STAMP_ANNOT_DEPARTMENTAL" value="9" enum="StampAnnotName">
+		</constant>
+		<constant name="STAMP_ANNOT_FORCOMMENT" value="10" enum="StampAnnotName">
+		</constant>
+		<constant name="STAMP_ANNOT_TOPSECRET" value="11" enum="StampAnnotName">
+		</constant>
+		<constant name="STAMP_ANNOT_DRAFT" value="12" enum="StampAnnotName">
+		</constant>
+		<constant name="STAMP_ANNOT_FORPUBLICRELEASE" value="13" enum="StampAnnotName">
+		</constant>
+	</constants>
+</class>

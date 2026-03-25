@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDF3DMeasure" inherits="Reference">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_status">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_color">
+			<return type="int" />
+			<argument index="0" name="color" type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="set_name">
+			<return type="int" />
+			<argument index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_projection_annotation">
+			<return type="int" />
+			<argument index="0" name="value" type="PDFAnnotationProjection" />
+			<description>
+			</description>
+		</method>
+		<method name="set_text">
+			<return type="int" />
+			<argument index="0" name="text" type="String" />
+			<argument index="1" name="encoder" type="PDFEncoder" default="null" />
+			<description>
+			</description>
+		</method>
+		<method name="set_text_box_size">
+			<return type="int" />
+			<argument index="0" name="siz" type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="set_text_size">
+			<return type="int" />
+			<argument index="0" name="siz" type="float" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

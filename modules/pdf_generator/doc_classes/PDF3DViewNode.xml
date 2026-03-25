@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDF3DViewNode" inherits="Reference">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_status">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_matrix">
+			<return type="int" />
+			<argument index="0" name="matrix" type="Transform" />
+			<description>
+			</description>
+		</method>
+		<method name="set_opacity">
+			<return type="int" />
+			<argument index="0" name="opacity" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_visibility">
+			<return type="int" />
+			<argument index="0" name="visible" type="bool" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

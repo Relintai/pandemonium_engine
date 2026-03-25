@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDFU3D" inherits="Reference">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_3d_view">
+			<return type="int" />
+			<argument index="0" name="view" type="PDF3DView" />
+			<description>
+			</description>
+		</method>
+		<method name="add_on_instantiate">
+			<return type="int" />
+			<argument index="0" name="javascript" type="PDFJavascript" />
+			<description>
+			</description>
+		</method>
+		<method name="get_status">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_default_3d_view">
+			<return type="int" />
+			<argument index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

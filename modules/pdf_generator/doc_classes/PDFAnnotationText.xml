@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDFAnnotationText" inherits="PDFAnnotationMarkup">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="set_icon">
+			<return type="int" />
+			<argument index="0" name="icon" type="int" enum="PDFAnnotationText.AnnotIcon" />
+			<description>
+			</description>
+		</method>
+		<method name="set_opened">
+			<return type="int" />
+			<argument index="0" name="opened" type="bool" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+		<constant name="ICON_COMMENT" value="0" enum="AnnotIcon">
+		</constant>
+		<constant name="ICON_KEY" value="1" enum="AnnotIcon">
+		</constant>
+		<constant name="ICON_NOTE" value="2" enum="AnnotIcon">
+		</constant>
+		<constant name="ICON_HELP" value="3" enum="AnnotIcon">
+		</constant>
+		<constant name="ICON_NEW_PARAGRAPH" value="4" enum="AnnotIcon">
+		</constant>
+		<constant name="ICON_PARAGRAPH" value="5" enum="AnnotIcon">
+		</constant>
+		<constant name="ICON_INSERT" value="6" enum="AnnotIcon">
+		</constant>
+		<constant name="ICON_EOF" value="7" enum="AnnotIcon">
+		</constant>
+	</constants>
+</class>

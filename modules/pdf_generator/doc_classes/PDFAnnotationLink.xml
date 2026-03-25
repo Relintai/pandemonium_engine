@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDFAnnotationLink" inherits="PDFAnnotation">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="set_highlight_mode">
+			<return type="int" />
+			<argument index="0" name="highlight_mode" type="int" enum="PDFAnnotationLink.HighlightMode" />
+			<description>
+			</description>
+		</method>
+		<method name="set_javascript">
+			<return type="int" />
+			<argument index="0" name="javascript" type="PDFJavascript" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+		<constant name="HIGHLIGHT_MODE_NO_HIGHTLIGHT" value="0" enum="HighlightMode">
+		</constant>
+		<constant name="HIGHLIGHT_MODE_INVERT_BOX" value="1" enum="HighlightMode">
+		</constant>
+		<constant name="HIGHLIGHT_MODE_INVERT_BORDER" value="2" enum="HighlightMode">
+		</constant>
+		<constant name="HIGHLIGHT_MODE_DOWN_APPEARANCE" value="3" enum="HighlightMode">
+		</constant>
+		<constant name="HIGHLIGHT_MODE_HIGHTLIGHT_MODE_EOF" value="4" enum="HighlightMode">
+		</constant>
+	</constants>
+</class>

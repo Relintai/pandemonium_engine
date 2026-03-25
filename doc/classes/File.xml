@@ -127,6 +127,12 @@
 				Returns the last error that happened when trying to perform operations. Compare with the [code]ERR_FILE_*[/code] constants from [enum Error].
 			</description>
 		</method>
+		<method name="get_filesystem_abspath_for">
+			<return type="String" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
 		<method name="get_float" qualifiers="const">
 			<return type="float" />
 			<description>

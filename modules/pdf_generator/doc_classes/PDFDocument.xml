@@ -1,0 +1,727 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDFDocument" inherits="Reference">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="attach_file">
+			<return type="PDFEmbeddedFile" />
+			<argument index="0" name="file" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="compression_mode_set">
+			<return type="int" />
+			<argument index="0" name="mode" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="create_3d_view">
+			<return type="PDF3DView" />
+			<argument index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="document_free">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="document_free_all">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="document_has">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="document_new">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="encoder_current_get">
+			<return type="PDFEncoder" />
+			<description>
+			</description>
+		</method>
+		<method name="encoder_current_set">
+			<return type="int" />
+			<argument index="0" name="encoding_name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="encoder_get">
+			<return type="PDFEncoder" />
+			<argument index="0" name="encoding_name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="encodings_use_cns">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="encodings_use_cnt">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="encodings_use_jp">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="encodings_use_kr">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="encodings_use_utf">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="encryption_mode_set">
+			<return type="int" />
+			<argument index="0" name="encryption_mode" type="int" enum="PDFDocument.EncryptMode" />
+			<argument index="1" name="key_length" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="ext_graphic_state_create">
+			<return type="PDFExtGState" />
+			<description>
+			</description>
+		</method>
+		<method name="font_get">
+			<return type="PDFFont" />
+			<argument index="0" name="font_name" type="String" />
+			<argument index="1" name="encoding_name" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="font_load_ttf_from_collection_file">
+			<return type="String" />
+			<argument index="0" name="index" type="String" />
+			<argument index="1" name="embed_into_document" type="int" />
+			<argument index="2" name="arg2" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="font_load_ttf_from_file">
+			<return type="String" />
+			<argument index="0" name="file_name" type="String" />
+			<argument index="1" name="embed_into_document" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="font_load_ttf_from_mem">
+			<return type="String" />
+			<argument index="0" name="data" type="PoolByteArray" />
+			<argument index="1" name="embed_into_document" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="font_load_type_1_from_file">
+			<return type="String" />
+			<argument index="0" name="afm_file_name" type="String" />
+			<argument index="1" name="data_file_name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="fonts_use_cns">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="fonts_use_cnt">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="fonts_use_jp">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="fonts_use_kr">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_error_detail">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_error_no">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_status">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="image_create_pdf_from_image">
+			<return type="PDFImage" />
+			<argument index="0" name="image" type="Image" />
+			<description>
+			</description>
+		</method>
+		<method name="image_load_jpg_from_file">
+			<return type="PDFImage" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="image_load_jpg_from_mem">
+			<return type="PDFImage" />
+			<argument index="0" name="data" type="PoolByteArray" />
+			<description>
+			</description>
+		</method>
+		<method name="image_load_png_from_file">
+			<return type="PDFImage" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="image_load_png_from_mem">
+			<return type="PDFImage" />
+			<argument index="0" name="data" type="PoolByteArray" />
+			<description>
+			</description>
+		</method>
+		<method name="image_load_raw_1_bit_image_from_mem">
+			<return type="PDFImage" />
+			<argument index="0" name="data" type="PoolByteArray" />
+			<argument index="1" name="size" type="Vector2i" />
+			<argument index="2" name="line_width" type="int" />
+			<argument index="3" name="black_is1" type="bool" />
+			<argument index="4" name="top_is_first" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="image_load_raw_image_from_file">
+			<return type="PDFImage" />
+			<argument index="0" name="path" type="String" />
+			<argument index="1" name="size" type="Vector2i" />
+			<argument index="2" name="color_space" type="int" enum="PDFDocument.ColorSpace" />
+			<description>
+			</description>
+		</method>
+		<method name="image_load_raw_image_from_mem">
+			<return type="PDFImage" />
+			<argument index="0" name="data" type="PoolByteArray" />
+			<argument index="1" name="size" type="Vector2i" />
+			<argument index="2" name="color_space" type="int" enum="PDFDocument.ColorSpace" />
+			<argument index="3" name="bits_per_component" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="javascript_load_from_file">
+			<return type="PDFJavascript" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="javascript_load_from_mem">
+			<return type="PDFJavascript" />
+			<argument index="0" name="data" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="open_action_set">
+			<return type="int" />
+			<argument index="0" name="destination" type="PDFDestination" />
+			<description>
+			</description>
+		</method>
+		<method name="outline_create">
+			<return type="PDFOutline" />
+			<argument index="0" name="parent" type="PDFOutline" />
+			<argument index="1" name="title" type="String" />
+			<argument index="2" name="encoder" type="PDFEncoder" />
+			<description>
+			</description>
+		</method>
+		<method name="output_intents_append">
+			<return type="int" />
+			<argument index="0" name="icc_name" type="String" />
+			<argument index="1" name="icc_dict" type="PDFDict" />
+			<description>
+			</description>
+		</method>
+		<method name="page_add">
+			<return type="PDFPage" />
+			<description>
+			</description>
+		</method>
+		<method name="page_add_label">
+			<return type="int" />
+			<argument index="0" name="page_num" type="int" />
+			<argument index="1" name="style" type="int" enum="PDFDocument.PageNumStyle" />
+			<argument index="2" name="first_page" type="int" />
+			<argument index="3" name="prefix" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
+		<method name="page_get_current">
+			<return type="PDFPage" />
+			<description>
+			</description>
+		</method>
+		<method name="page_get_index">
+			<return type="PDFPage" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="page_insert">
+			<return type="PDFPage" />
+			<argument index="0" name="page" type="PDFPage" />
+			<description>
+			</description>
+		</method>
+		<method name="pages_set_configuration">
+			<return type="int" />
+			<argument index="0" name="page_per_pages" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="password_set">
+			<return type="int" />
+			<argument index="0" name="owner_passwd" type="String" />
+			<argument index="1" name="user_passwd" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="pdf_a_conformance_set">
+			<return type="int" />
+			<argument index="0" name="type" type="int" enum="PDFDocument.PDFAType" />
+			<description>
+			</description>
+		</method>
+		<method name="pdf_a_xmp_extension">
+			<return type="int" />
+			<argument index="0" name="xmp_description" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="permission_set">
+			<return type="int" />
+			<argument index="0" name="permission" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="reset_error">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="save_to_file">
+			<return type="int" />
+			<argument index="0" name="file" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="save_to_mem">
+			<return type="PoolByteArray" />
+			<description>
+			</description>
+		</method>
+		<method name="shading_new">
+			<return type="PDFShading" />
+			<argument index="0" name="min" type="Vector2" />
+			<argument index="1" name="max" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="u3d_load_from_file">
+			<return type="PDFU3D" />
+			<argument index="0" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="u3d_load_from_mem">
+			<return type="PDFU3D" />
+			<argument index="0" name="data" type="PoolByteArray" />
+			<description>
+			</description>
+		</method>
+		<method name="x_object_create_as_white_rect">
+			<return type="PDFXObject" />
+			<argument index="0" name="page" type="PDFPage" />
+			<argument index="1" name="rect" type="Rect2" />
+			<description>
+			</description>
+		</method>
+		<method name="x_object_create_from_image">
+			<return type="PDFXObject" />
+			<argument index="0" name="page" type="PDFPage" />
+			<argument index="1" name="rect" type="Rect2" />
+			<argument index="2" name="image" type="PDFImage" />
+			<argument index="3" name="zoom" type="bool" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="page_layout" type="int" setter="page_set_layout" getter="page_get_layout" enum="PDFDocument.PageLayout" default="6">
+		</member>
+		<member name="page_mode" type="int" setter="page_set_mode" getter="page_get_mode" enum="PDFDocument.PageMode" default="0">
+		</member>
+		<member name="viewer_preference" type="int" setter="viewer_preference_set" getter="viewer_preference_get" default="0">
+		</member>
+	</members>
+	<constants>
+		<constant name="COMPRESSION_MODE_NONE" value="0" enum="CompressionMode">
+		</constant>
+		<constant name="COMPRESSION_MODE_TEXT" value="1" enum="CompressionMode">
+		</constant>
+		<constant name="COMPRESSION_MODE_IMAGE" value="2" enum="CompressionMode">
+		</constant>
+		<constant name="COMPRESSION_MODE_METADATA" value="4" enum="CompressionMode">
+		</constant>
+		<constant name="COMPRESSION_MODE_ALL" value="15" enum="CompressionMode">
+		</constant>
+		<constant name="COMPRESSION_MODE_MASK" value="255" enum="CompressionMode">
+		</constant>
+		<constant name="PAGE_LAYOUT_SINGLE" value="0" enum="PageLayout">
+		</constant>
+		<constant name="PAGE_LAYOUT_ONE_COLUMN" value="1" enum="PageLayout">
+		</constant>
+		<constant name="PAGE_LAYOUT_TWO_COLUMN_LEFT" value="2" enum="PageLayout">
+		</constant>
+		<constant name="PAGE_LAYOUT_TWO_COLUMN_RIGHT" value="3" enum="PageLayout">
+		</constant>
+		<constant name="PAGE_LAYOUT_TWO_PAGE_LEFT" value="4" enum="PageLayout">
+		</constant>
+		<constant name="PAGE_LAYOUT_TWO_PAGE_RIGHT" value="5" enum="PageLayout">
+		</constant>
+		<constant name="PAGE_LAYOUT_EOF" value="6" enum="PageLayout">
+		</constant>
+		<constant name="PAGE_MODE_USE_NONE" value="0" enum="PageMode">
+		</constant>
+		<constant name="PAGE_MODE_USE_OUTLINE" value="1" enum="PageMode">
+		</constant>
+		<constant name="PAGE_MODE_USE_THUMBS" value="2" enum="PageMode">
+		</constant>
+		<constant name="PAGE_MODE_FULL_SCREEN" value="3" enum="PageMode">
+		</constant>
+		<constant name="PAGE_MODE_EOF" value="4" enum="PageMode">
+		</constant>
+		<constant name="PAGE_NUM_STYLE_DECIMAL" value="0" enum="PageNumStyle">
+		</constant>
+		<constant name="PAGE_NUM_STYLE_UPPER_ROMAN" value="1" enum="PageNumStyle">
+		</constant>
+		<constant name="PAGE_NUM_STYLE_LOWER_ROMAN" value="2" enum="PageNumStyle">
+		</constant>
+		<constant name="PAGE_NUM_STYLE_UPPER_LETTERS" value="3" enum="PageNumStyle">
+		</constant>
+		<constant name="PAGE_NUM_STYLE_LOWER_LETTERS" value="4" enum="PageNumStyle">
+		</constant>
+		<constant name="PAGE_NUM_STYLE_EOF" value="5" enum="PageNumStyle">
+		</constant>
+		<constant name="COLOR_SPACE_DEVICE_GRAY" value="0" enum="ColorSpace">
+		</constant>
+		<constant name="COLOR_SPACE_DEVICE_RGB" value="1" enum="ColorSpace">
+		</constant>
+		<constant name="COLOR_SPACE_DEVICE_CMYK" value="2" enum="ColorSpace">
+		</constant>
+		<constant name="COLOR_SPACE_CAL_GRAY" value="3" enum="ColorSpace">
+		</constant>
+		<constant name="COLOR_SPACE_CAL_RGB" value="4" enum="ColorSpace">
+		</constant>
+		<constant name="COLOR_SPACE_LAB" value="5" enum="ColorSpace">
+		</constant>
+		<constant name="COLOR_SPACE_ICC_BASED" value="6" enum="ColorSpace">
+		</constant>
+		<constant name="COLOR_SPACE_SEPARATION" value="7" enum="ColorSpace">
+		</constant>
+		<constant name="COLOR_SPACE_DEVICE_N" value="8" enum="ColorSpace">
+		</constant>
+		<constant name="COLOR_SPACE_INDEXED" value="9" enum="ColorSpace">
+		</constant>
+		<constant name="COLOR_SPACE_PATTERN" value="10" enum="ColorSpace">
+		</constant>
+		<constant name="COLOR_SPACE_EOF" value="11" enum="ColorSpace">
+		</constant>
+		<constant name="INFO_CREATION_DATE" value="0" enum="InfoType">
+		</constant>
+		<constant name="INFO_MOD_DATE" value="1" enum="InfoType">
+		</constant>
+		<constant name="INFO_AUTHOR" value="2" enum="InfoType">
+		</constant>
+		<constant name="INFO_CREATOR" value="3" enum="InfoType">
+		</constant>
+		<constant name="INFO_PRODUCER" value="4" enum="InfoType">
+		</constant>
+		<constant name="INFO_TITLE" value="5" enum="InfoType">
+		</constant>
+		<constant name="INFO_SUBJECT" value="6" enum="InfoType">
+		</constant>
+		<constant name="INFO_KEYWORDS" value="7" enum="InfoType">
+		</constant>
+		<constant name="INFO_TRAPPED" value="8" enum="InfoType">
+		</constant>
+		<constant name="INFO_GTS_PDFX" value="9" enum="InfoType">
+		</constant>
+		<constant name="INFO_EOF" value="10" enum="InfoType">
+		</constant>
+		<constant name="NON_PDFA" value="-1" enum="PDFAType">
+		</constant>
+		<constant name="PDFA_1A" value="0" enum="PDFAType">
+		</constant>
+		<constant name="PDFA_1B" value="1" enum="PDFAType">
+		</constant>
+		<constant name="PDFA_2A" value="2" enum="PDFAType">
+		</constant>
+		<constant name="PDFA_2B" value="3" enum="PDFAType">
+		</constant>
+		<constant name="PDFA_2U" value="4" enum="PDFAType">
+		</constant>
+		<constant name="PDFA_3A" value="5" enum="PDFAType">
+		</constant>
+		<constant name="PDFA_3B" value="6" enum="PDFAType">
+		</constant>
+		<constant name="PDFA_3U" value="7" enum="PDFAType">
+		</constant>
+		<constant name="PDFA_4" value="8" enum="PDFAType">
+		</constant>
+		<constant name="PDFA_4E" value="9" enum="PDFAType">
+		</constant>
+		<constant name="PDFA_4F" value="10" enum="PDFAType">
+		</constant>
+		<constant name="ENCRYPT_MODE_R2" value="2" enum="EncryptMode">
+		</constant>
+		<constant name="ENCRYPT_MODE_R3" value="3" enum="EncryptMode">
+		</constant>
+		<constant name="EC_ARRAY_COUNT_ERR" value="4097" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_ARRAY_ITEM_NOT_FOUND" value="4098" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_ARRAY_ITEM_UNEXPECTED_TYPE" value="4099" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_BINARY_LENGTH_ERR" value="4100" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_CANNOT_GET_PALLET" value="4101" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_DICT_COUNT_ERR" value="4103" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_DICT_ITEM_NOT_FOUND" value="4104" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_DICT_ITEM_UNEXPECTED_TYPE" value="4105" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_DICT_STREAM_LENGTH_NOT_FOUND" value="4106" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_DOC_ENCRYPTDICT_NOT_FOUND" value="4107" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_DOC_INVALID_OBJECT" value="4108" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_DUPLICATE_REGISTRATION" value="4110" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_EXCEED_JWW_CODE_NUM_LIMIT" value="4111" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_ENCRYPT_INVALID_PASSWORD" value="4113" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_ERR_UNKNOWN_CLASS" value="4115" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_EXCEED_GSTATE_LIMIT" value="4116" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_FAILED_TO_ALLOC_MEM" value="4117" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_FILE_IO_ERROR" value="4118" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_FILE_OPEN_ERROR" value="4119" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_FONT_EXISTS" value="4121" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_FONT_INVALID_WIDTHS_TABLE" value="4122" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_AFM_HEADER" value="4123" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_ANNOTATION" value="4124" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_BIT_PER_COMPONENT" value="4126" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_CHAR_MATRICS_DATA" value="4127" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_COLOR_SPACE" value="4128" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_COMPRESSION_MODE" value="4129" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_DATE_TIME" value="4130" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_DESTINATION" value="4131" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_DOCUMENT" value="4133" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_DOCUMENT_STATE" value="4134" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_ENCODER" value="4135" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_ENCODER_TYPE" value="4136" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_ENCODING_NAME" value="4139" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_ENCRYPT_KEY_LEN" value="4140" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_FONTDEF_DATA" value="4141" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_FONTDEF_TYPE" value="4142" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_FONT_NAME" value="4143" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_IMAGE" value="4144" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_JPEG_DATA" value="4145" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_N_DATA" value="4146" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_OBJECT" value="4147" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_OBJ_ID" value="4148" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_OPERATION" value="4149" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_OUTLINE" value="4150" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_PAGE" value="4151" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_PAGES" value="4152" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_PARAMETER" value="4153" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_PNG_IMAGE" value="4155" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_STREAM" value="4156" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_MISSING_FILE_NAME_ENTRY" value="4157" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_TTC_FILE" value="4159" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_TTC_INDEX" value="4160" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_WX_DATA" value="4161" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_ITEM_NOT_FOUND" value="4162" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_LIBPNG_ERROR" value="4163" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_NAME_INVALID_VALUE" value="4164" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_NAME_OUT_OF_RANGE" value="4165" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_INVALID_PARAM_COUNT" value="4168" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGES_MISSING_KIDS_ENTRY" value="4169" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_CANNOT_FIND_OBJECT" value="4170" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_CANNOT_GET_ROOT_PAGES" value="4171" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_CANNOT_RESTORE_GSTATE" value="4172" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_CANNOT_SET_PARENT" value="4173" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_FONT_NOT_FOUND" value="4174" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_INVALID_FONT" value="4175" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_INVALID_FONT_SIZE" value="4176" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_INVALID_GMODE" value="4177" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_INVALID_INDEX" value="4178" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_INVALID_ROTATE_VALUE" value="4179" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_INVALID_SIZE" value="4180" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_INVALID_XOBJECT" value="4181" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_OUT_OF_RANGE" value="4182" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_REAL_OUT_OF_RANGE" value="4183" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_STREAM_EOF" value="4184" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_STREAM_READLN_CONTINUE" value="4185" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_STRING_OUT_OF_RANGE" value="4187" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_THIS_FUNC_WAS_SKIPPED" value="4188" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_TTF_CANNOT_EMBEDDING_FONT" value="4189" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_TTF_INVALID_CMAP" value="4190" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_TTF_INVALID_FOMAT" value="4191" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_TTF_MISSING_TABLE" value="4192" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_UNSUPPORTED_FONT_TYPE" value="4193" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_UNSUPPORTED_FUNC" value="4194" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_UNSUPPORTED_JPEG_FORMAT" value="4195" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_UNSUPPORTED_TYPE1_FONT" value="4196" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_XREF_COUNT_ERR" value="4197" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_ZLIB_ERROR" value="4198" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_PAGE_INDEX" value="4199" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_URI" value="4200" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_LAYOUT_OUT_OF_RANGE" value="4201" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_MODE_OUT_OF_RANGE" value="4208" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_NUM_STYLE_OUT_OF_RANGE" value="4209" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_ANNOT_INVALID_ICON" value="4210" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_ANNOT_INVALID_BORDER_STYLE" value="4211" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_INVALID_DIRECTION" value="4212" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_FONT" value="4213" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_INSUFFICIENT_SPACE" value="4214" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_INVALID_DISPLAY_TIME" value="4215" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_INVALID_TRANSITION_TIME" value="4216" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_PAGE_SLIDESHOW_TYPE" value="4217" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_EXT_GSTATE_OUT_OF_RANGE" value="4224" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_EXT_GSTATE" value="4225" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_EXT_GSTATE_READ_ONLY" value="4226" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_U3D_DATA" value="4227" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_NAME_CANNOT_GET_NAMES" value="4228" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_ICC_COMPONENT_NUM" value="4229" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_PAGE_INVALID_BOUNDARY" value="4230" enum="ErrorCodes">
+		</constant>
+		<constant name="EC_INVALID_SHADING_TYPE" value="4232" enum="ErrorCodes">
+		</constant>
+	</constants>
+</class>

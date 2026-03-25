@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDFDashMode" inherits="Reference">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_pattern_element" qualifiers="const">
+			<return type="float" />
+			<argument index="0" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_pattern_element">
+			<return type="void" />
+			<argument index="0" name="index" type="int" />
+			<argument index="1" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="num_elements" type="int" setter="set_num_elements" getter="get_num_elements" default="0">
+		</member>
+		<member name="phase" type="float" setter="set_phase" getter="get_phase" default="0.0">
+		</member>
+	</members>
+	<constants>
+		<constant name="MAX_PATTERN_ELEMENT_COUNT" value="8">
+		</constant>
+	</constants>
+</class>

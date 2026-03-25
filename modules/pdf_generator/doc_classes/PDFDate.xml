@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDFDate" inherits="Reference">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="day" type="int" setter="set_day" getter="get_day" default="0">
+		</member>
+		<member name="hour" type="int" setter="set_hour" getter="get_hour" default="0">
+		</member>
+		<member name="ind" type="int" setter="set_ind" getter="get_ind" default="0">
+		</member>
+		<member name="minutes" type="int" setter="set_minutes" getter="get_minutes" default="0">
+		</member>
+		<member name="month" type="int" setter="set_month" getter="get_month" default="0">
+		</member>
+		<member name="off_hour" type="int" setter="set_off_hour" getter="get_off_hour" default="0">
+		</member>
+		<member name="off_minutes" type="int" setter="set_off_minutes" getter="get_off_minutes" default="0">
+		</member>
+		<member name="seconds" type="int" setter="set_seconds" getter="get_seconds" default="0">
+		</member>
+		<member name="year" type="int" setter="set_year" getter="get_year" default="0">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

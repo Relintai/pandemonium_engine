@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDFFont" inherits="Reference">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_ascent">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_bbox">
+			<return type="Rect2" />
+			<description>
+			</description>
+		</method>
+		<method name="get_cap_height">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_descent">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_encoding_name">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_font_name">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_text_width">
+			<return type="Dictionary" />
+			<argument index="0" name="text" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_unicode_width">
+			<return type="int" />
+			<argument index="0" name="code" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_x_height">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="measure_text">
+			<return type="Array" />
+			<argument index="0" name="text" type="String" />
+			<argument index="1" name="width" type="float" />
+			<argument index="2" name="font_size" type="float" />
+			<argument index="3" name="char_space" type="float" />
+			<argument index="4" name="word_space" type="float" />
+			<argument index="5" name="wordwrap" type="bool" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

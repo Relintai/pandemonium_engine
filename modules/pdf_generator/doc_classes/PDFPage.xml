@@ -1,0 +1,716 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDFPage" inherits="Reference">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="annotation_3d_create">
+			<return type="PDFAnnotation3D" />
+			<argument index="0" name="rect" type="Rect2" />
+			<argument index="1" name="tb" type="bool" />
+			<argument index="2" name="np" type="bool" />
+			<argument index="3" name="u3d" type="PDFU3D" />
+			<argument index="4" name="ap" type="PDFImage" />
+			<description>
+			</description>
+		</method>
+		<method name="annotation_circle_create">
+			<return type="PDFAnnotationCircle" />
+			<argument index="0" name="rect" type="Rect2" />
+			<argument index="1" name="text" type="String" />
+			<argument index="2" name="encoder" type="PDFEncoder" default="null" />
+			<description>
+			</description>
+		</method>
+		<method name="annotation_free_text_create">
+			<return type="PDFAnnotationFreeText" />
+			<argument index="0" name="rect" type="Rect2" />
+			<argument index="1" name="text" type="String" />
+			<argument index="2" name="encoder" type="PDFEncoder" default="null" />
+			<description>
+			</description>
+		</method>
+		<method name="annotation_highlight_create">
+			<return type="PDFAnnotationHighlight" />
+			<argument index="0" name="text" type="Rect2" />
+			<argument index="1" name="encoder" type="String" />
+			<argument index="2" name="arg2" type="PDFEncoder" default="null" />
+			<description>
+			</description>
+		</method>
+		<method name="annotation_line_create">
+			<return type="PDFAnnotationLine" />
+			<argument index="0" name="text" type="String" />
+			<argument index="1" name="encoder" type="PDFEncoder" default="null" />
+			<description>
+			</description>
+		</method>
+		<method name="annotation_link_create">
+			<return type="PDFAnnotationLink" />
+			<argument index="0" name="rect" type="Rect2" />
+			<argument index="1" name="destination" type="PDFDestination" />
+			<description>
+			</description>
+		</method>
+		<method name="annotation_popup_create">
+			<return type="PDFAnnotationPopup" />
+			<argument index="0" name="rect" type="Rect2" />
+			<argument index="1" name="parent" type="PDFAnnotation" />
+			<description>
+			</description>
+		</method>
+		<method name="annotation_projection_create">
+			<return type="PDFAnnotationProjection" />
+			<argument index="0" name="rect" type="Rect2" />
+			<argument index="1" name="text" type="String" />
+			<argument index="2" name="encoder" type="PDFEncoder" default="null" />
+			<description>
+			</description>
+		</method>
+		<method name="annotation_square_create">
+			<return type="PDFAnnotationSquare" />
+			<argument index="0" name="rect" type="Rect2" />
+			<argument index="1" name="text" type="String" />
+			<argument index="2" name="encoder" type="PDFEncoder" default="null" />
+			<description>
+			</description>
+		</method>
+		<method name="annotation_squiggly_create">
+			<return type="PDFAnnotationSquiggly" />
+			<argument index="0" name="text" type="Rect2" />
+			<argument index="1" name="encoder" type="String" />
+			<argument index="2" name="arg2" type="PDFEncoder" default="null" />
+			<description>
+			</description>
+		</method>
+		<method name="annotation_stamp_create">
+			<return type="PDFAnnotationStamp" />
+			<argument index="0" name="rect" type="Rect2" />
+			<argument index="1" name="name" type="int" enum="PDFAnnotationStamp.StampAnnotName" />
+			<argument index="2" name="text" type="String" />
+			<argument index="3" name="encoder" type="PDFEncoder" default="null" />
+			<description>
+			</description>
+		</method>
+		<method name="annotation_strike_out_create">
+			<return type="PDFAnnotationStrikeOut" />
+			<argument index="0" name="text" type="Rect2" />
+			<argument index="1" name="encoder" type="String" />
+			<argument index="2" name="arg2" type="PDFEncoder" default="null" />
+			<description>
+			</description>
+		</method>
+		<method name="annotation_text_create">
+			<return type="PDFAnnotationText" />
+			<argument index="0" name="rect" type="Rect2" />
+			<argument index="1" name="text" type="String" />
+			<argument index="2" name="encoder" type="PDFEncoder" default="null" />
+			<description>
+			</description>
+		</method>
+		<method name="annotation_text_markup_create">
+			<return type="PDFAnnotationTextMarkup" />
+			<argument index="0" name="text" type="Rect2" />
+			<argument index="1" name="sub_type" type="String" />
+			<argument index="2" name="encoder" type="int" enum="PDFAnnotationTextMarkup.AnnotSubType" />
+			<argument index="3" name="arg3" type="PDFEncoder" default="null" />
+			<description>
+			</description>
+		</method>
+		<method name="annotation_underline_create">
+			<return type="PDFAnnotationUnderline" />
+			<argument index="0" name="text" type="Rect2" />
+			<argument index="1" name="encoder" type="String" />
+			<argument index="2" name="arg2" type="PDFEncoder" default="null" />
+			<description>
+			</description>
+		</method>
+		<method name="annotation_uri_link_create">
+			<return type="PDFAnnotationURILink" />
+			<argument index="0" name="rect" type="Rect2" />
+			<argument index="1" name="uri" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="annotation_widget_create">
+			<return type="PDFAnnotationWidget" />
+			<argument index="0" name="rect" type="Rect2" />
+			<description>
+			</description>
+		</method>
+		<method name="annotation_widget_white_print_create">
+			<return type="PDFAnnotationWidgetWhitePrint" />
+			<argument index="0" name="rect" type="Rect2" />
+			<description>
+			</description>
+		</method>
+		<method name="begin_text">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="boundary_set">
+			<return type="int" />
+			<argument index="0" name="boundary" type="int" enum="PDFPage.PageBoundary" />
+			<argument index="1" name="left" type="float" />
+			<argument index="2" name="bottom" type="float" />
+			<argument index="3" name="right" type="float" />
+			<argument index="4" name="top" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="clip">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="concat">
+			<return type="int" />
+			<argument index="0" name="transform" type="Transform2D" />
+			<description>
+			</description>
+		</method>
+		<method name="create_3d_annot_ex_data">
+			<return type="PDFExData" />
+			<description>
+			</description>
+		</method>
+		<method name="create_3d_view">
+			<return type="PDF3DView" />
+			<argument index="0" name="u3d" type="PDFU3D" />
+			<argument index="1" name="annot_3d" type="PDFAnnotation3D" />
+			<argument index="2" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="create_3d_view_name">
+			<return type="PDF3DView" />
+			<argument index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="create_c3d_3d_measure">
+			<return type="PDF3DMeasure" />
+			<argument index="0" name="first_anchor_point" type="Vector3" />
+			<argument index="1" name="text_anchor_point" type="Vector3" />
+			<description>
+			</description>
+		</method>
+		<method name="create_destination">
+			<return type="PDFDestination" />
+			<description>
+			</description>
+		</method>
+		<method name="create_pd3_3d_measure">
+			<return type="PDF3DMeasure" />
+			<argument index="0" name="points" type="PoolVector3Array" />
+			<argument index="1" name="value" type="float" />
+			<argument index="2" name="units_string" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="current_font_get">
+			<return type="PDFFont" />
+			<description>
+			</description>
+		</method>
+		<method name="current_font_size_get">
+			<return type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="current_pos_get">
+			<return type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="current_text_pos_get">
+			<return type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="dash_get">
+			<return type="PDFDashMode" />
+			<description>
+			</description>
+		</method>
+		<method name="dash_set">
+			<return type="void" />
+			<argument index="0" name="val" type="PDFDashMode" />
+			<description>
+			</description>
+		</method>
+		<method name="document_get">
+			<return type="PDFDocument" />
+			<description>
+			</description>
+		</method>
+		<method name="draw_image">
+			<return type="int" />
+			<argument index="0" name="image" type="PDFImage" />
+			<argument index="1" name="rect" type="Rect2" />
+			<description>
+			</description>
+		</method>
+		<method name="draw_text_out">
+			<return type="int" />
+			<argument index="0" name="position" type="Vector2" />
+			<argument index="1" name="text" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="draw_text_rect">
+			<return type="int" />
+			<argument index="0" name="rect" type="Rect2" />
+			<argument index="1" name="text" type="String" />
+			<argument index="2" name="align" type="int" enum="PDFPage.TextAlignment" default="0" />
+			<description>
+			</description>
+		</method>
+		<method name="end_text">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="eo_clip">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="execute_x_object">
+			<return type="int" />
+			<argument index="0" name="x_object" type="PDFXObject" />
+			<description>
+			</description>
+		</method>
+		<method name="ext_g_state_set">
+			<return type="int" />
+			<argument index="0" name="ext_g_state" type="PDFExtGState" />
+			<description>
+			</description>
+		</method>
+		<method name="filling_color_space_get">
+			<return type="int" enum="PDFDocument.ColorSpace" />
+			<description>
+			</description>
+		</method>
+		<method name="g_mode_get">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="g_restore">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="g_save">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="g_state_depth_get">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_status">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="measure_text">
+			<return type="float" />
+			<argument index="0" name="text" type="String" />
+			<argument index="1" name="width" type="float" />
+			<argument index="2" name="word_wrap" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="move_text_pos">
+			<return type="int" />
+			<argument index="0" name="x" type="float" />
+			<argument index="1" name="y" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="move_text_pos_2">
+			<return type="int" />
+			<argument index="0" name="x" type="float" />
+			<argument index="1" name="y" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="move_text_posv">
+			<return type="int" />
+			<argument index="0" name="move" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="move_text_posv_2">
+			<return type="int" />
+			<argument index="0" name="move" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="move_to_next_line">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="path_arc">
+			<return type="int" />
+			<argument index="0" name="position" type="Vector2" />
+			<argument index="1" name="radius" type="float" />
+			<argument index="2" name="angle_1" type="float" />
+			<argument index="3" name="angle_2" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="path_circle">
+			<return type="int" />
+			<argument index="0" name="position" type="Vector2" />
+			<argument index="1" name="radius" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="path_close">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="path_curve_to">
+			<return type="int" />
+			<argument index="0" name="cp_start" type="Vector2" />
+			<argument index="1" name="cp_end" type="Vector2" />
+			<argument index="2" name="end_point" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="path_curve_to_2">
+			<return type="int" />
+			<argument index="0" name="cp_end" type="Vector2" />
+			<argument index="1" name="end_point" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="path_curve_to_3">
+			<return type="int" />
+			<argument index="0" name="end_point" type="Vector2" />
+			<argument index="1" name="arg1" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="path_ellipse">
+			<return type="int" />
+			<argument index="0" name="position" type="Vector2" />
+			<argument index="1" name="radius" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="path_end">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="path_eo_fill">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="path_eo_fill_stroke">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="path_eo_fill_stroke_close">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="path_fill">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="path_fill_stroke">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="path_fill_stroke_close">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="path_line_to">
+			<return type="int" />
+			<argument index="0" name="position" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="path_move_to">
+			<return type="int" />
+			<argument index="0" name="position" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="path_rectangle">
+			<return type="int" />
+			<argument index="0" name="rect" type="Rect2" />
+			<description>
+			</description>
+		</method>
+		<method name="path_stroke">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="path_stroke_close">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="rotate_set">
+			<return type="int" />
+			<argument index="0" name="angle" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_font_and_size">
+			<return type="int" />
+			<argument index="0" name="font" type="PDFFont" />
+			<argument index="1" name="size" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="shading_set">
+			<return type="int" />
+			<argument index="0" name="shading" type="PDFShading" />
+			<description>
+			</description>
+		</method>
+		<method name="show_text">
+			<return type="int" />
+			<argument index="0" name="text" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="show_text_next_line">
+			<return type="int" />
+			<argument index="0" name="text" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="show_text_next_line_ex">
+			<return type="int" />
+			<argument index="0" name="text" type="String" />
+			<argument index="1" name="word_space" type="float" />
+			<argument index="2" name="char_space" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="size_set">
+			<return type="int" />
+			<argument index="0" name="size" type="int" enum="PDFPage.PageSizes" />
+			<argument index="1" name="direction" type="int" enum="PDFPage.PageDirection" />
+			<description>
+			</description>
+		</method>
+		<method name="slide_show_set">
+			<return type="int" />
+			<argument index="0" name="type" type="int" enum="PDFPage.TransitionStyle" />
+			<argument index="1" name="disp_time" type="float" />
+			<argument index="2" name="trans_time" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="stroking_color_space_get">
+			<return type="int" enum="PDFDocument.ColorSpace" />
+			<description>
+			</description>
+		</method>
+		<method name="text_width">
+			<return type="float" />
+			<argument index="0" name="text" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="trans_matrix_get">
+			<return type="Transform2D" />
+			<description>
+			</description>
+		</method>
+		<method name="zoom_set">
+			<return type="int" />
+			<argument index="0" name="zoom" type="float" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="char_space" type="float" setter="char_space_set" getter="char_space_get" default="0.0">
+		</member>
+		<member name="cmyk_fill" type="Vector4" setter="cmyk_fill_set" getter="cmyk_fill_get" default="Vector4( 0, 0, 0, 0 )">
+		</member>
+		<member name="cmyk_stroke" type="Vector4" setter="cmyk_stroke_set" getter="cmyk_stroke_get" default="Vector4( 0, 0, 0, 0 )">
+		</member>
+		<member name="flat" type="float" setter="flat_set" getter="flat_get" default="1.0">
+		</member>
+		<member name="gray_fill" type="float" setter="gray_fill_set" getter="gray_fill_get" default="0.0">
+		</member>
+		<member name="gray_stroke" type="float" setter="gray_stroke_set" getter="gray_stroke_get" default="0.0">
+		</member>
+		<member name="height" type="float" setter="set_height" getter="get_height" default="0.0">
+		</member>
+		<member name="horizontal_scalling" type="float" setter="horizontal_scalling_set" getter="horizontal_scalling_get" default="100.0">
+		</member>
+		<member name="line_cap" type="int" setter="line_cap_set" getter="line_cap_get" enum="PDFPage.LineCap" default="0">
+		</member>
+		<member name="line_join" type="int" setter="line_join_set" getter="line_join_get" enum="PDFPage.LineJoin" default="0">
+		</member>
+		<member name="line_width" type="float" setter="line_width_set" getter="line_width_get" default="1.0">
+		</member>
+		<member name="miter_limit" type="float" setter="miter_limit_set" getter="miter_limit_get" default="10.0">
+		</member>
+		<member name="rgb_fill" type="Color" setter="rgb_fill_set" getter="rgb_fill_get" default="Color( 0, 0, 0, 1 )">
+		</member>
+		<member name="rgb_stroke" type="Color" setter="rgb_stroke_set" getter="rgb_stroke_get" default="Color( 0, 0, 0, 1 )">
+		</member>
+		<member name="text_leading" type="float" setter="text_leading_set" getter="text_leading_get" default="0.0">
+		</member>
+		<member name="text_matrix" type="Transform2D" setter="text_matrix_set" getter="text_matrix_get" default="Transform2D( 1, 0, 0, 1, 0, 0 )">
+		</member>
+		<member name="text_rendering_mode" type="int" setter="text_rendering_mode_set" getter="text_rendering_mode_get" enum="PDFPage.TextRenderingMode" default="0">
+		</member>
+		<member name="text_rise" type="float" setter="text_rise_set" getter="text_rise_get" default="0.0">
+		</member>
+		<member name="width" type="float" setter="set_width" getter="get_width" default="0.0">
+		</member>
+		<member name="word_space" type="float" setter="word_space_set" getter="word_space_get" default="0.0">
+		</member>
+	</members>
+	<constants>
+		<constant name="PAGE_BOUNDARY_MEDIABOX" value="0" enum="PageBoundary">
+		</constant>
+		<constant name="PAGE_BOUNDARY_CROPBOX" value="1" enum="PageBoundary">
+		</constant>
+		<constant name="PAGE_BOUNDARY_BLEEDBOX" value="2" enum="PageBoundary">
+		</constant>
+		<constant name="PAGE_BOUNDARY_TRIMBOX" value="3" enum="PageBoundary">
+		</constant>
+		<constant name="PAGE_BOUNDARY_ARTBOX" value="4" enum="PageBoundary">
+		</constant>
+		<constant name="PAGE_SIZE_LETTER" value="0" enum="PageSizes">
+		</constant>
+		<constant name="PAGE_SIZE_LEGAL" value="1" enum="PageSizes">
+		</constant>
+		<constant name="PAGE_SIZE_A3" value="2" enum="PageSizes">
+		</constant>
+		<constant name="PAGE_SIZE_A4" value="3" enum="PageSizes">
+		</constant>
+		<constant name="PAGE_SIZE_A5" value="4" enum="PageSizes">
+		</constant>
+		<constant name="PAGE_SIZE_B4" value="5" enum="PageSizes">
+		</constant>
+		<constant name="PAGE_SIZE_B5" value="6" enum="PageSizes">
+		</constant>
+		<constant name="PAGE_SIZE_EXECUTIVE" value="7" enum="PageSizes">
+		</constant>
+		<constant name="PAGE_SIZE_US4x6" value="8" enum="PageSizes">
+		</constant>
+		<constant name="PAGE_SIZE_US4x8" value="9" enum="PageSizes">
+		</constant>
+		<constant name="PAGE_SIZE_US5x7" value="10" enum="PageSizes">
+		</constant>
+		<constant name="PAGE_SIZE_COMM10" value="11" enum="PageSizes">
+		</constant>
+		<constant name="PAGE_SIZE_EOF" value="12" enum="PageSizes">
+		</constant>
+		<constant name="PAGE_DIRECTION_PORTRAIT" value="0" enum="PageDirection">
+		</constant>
+		<constant name="PAGE_DIRECTION_LANDSCAPE" value="1" enum="PageDirection">
+		</constant>
+		<constant name="LINE_CAP_BUTT_END" value="0" enum="LineCap">
+		</constant>
+		<constant name="LINE_CAP_ROUND_END" value="1" enum="LineCap">
+		</constant>
+		<constant name="LINE_CAP_PROJECTING_SQUARE_END" value="2" enum="LineCap">
+		</constant>
+		<constant name="LINE_CAP_LINECAP_EOF" value="3" enum="LineCap">
+		</constant>
+		<constant name="LINE_JOIN_MITER_JOIN" value="0" enum="LineJoin">
+		</constant>
+		<constant name="LINE_JOIN_ROUND_JOIN" value="1" enum="LineJoin">
+		</constant>
+		<constant name="LINE_JOIN_BEVEL_JOIN" value="2" enum="LineJoin">
+		</constant>
+		<constant name="LINE_JOIN_EOF" value="3" enum="LineJoin">
+		</constant>
+		<constant name="TEXT_RENDERING_MODE_FILL" value="0" enum="TextRenderingMode">
+		</constant>
+		<constant name="TEXT_RENDERING_MODE_STROKE" value="1" enum="TextRenderingMode">
+		</constant>
+		<constant name="TEXT_RENDERING_MODE_FILL_THEN_STROKE" value="2" enum="TextRenderingMode">
+		</constant>
+		<constant name="TEXT_RENDERING_MODE_INVISIBLE" value="3" enum="TextRenderingMode">
+		</constant>
+		<constant name="TEXT_RENDERING_MODE_FILL_CLIPPING" value="4" enum="TextRenderingMode">
+		</constant>
+		<constant name="TEXT_RENDERING_MODE_STROKE_CLIPPING" value="5" enum="TextRenderingMode">
+		</constant>
+		<constant name="TEXT_RENDERING_MODE_FILL_STROKE_CLIPPING" value="6" enum="TextRenderingMode">
+		</constant>
+		<constant name="TEXT_RENDERING_MODE_CLIPPING" value="7" enum="TextRenderingMode">
+		</constant>
+		<constant name="TEXT_RENDERING_MODE_EOF" value="8" enum="TextRenderingMode">
+		</constant>
+		<constant name="TEXT_ALIGN_LEFT" value="0" enum="TextAlignment">
+		</constant>
+		<constant name="TEXT_ALIGN_RIGHT" value="1" enum="TextAlignment">
+		</constant>
+		<constant name="TEXT_ALIGN_CENTER" value="2" enum="TextAlignment">
+		</constant>
+		<constant name="TEXT_ALIGN_JUSTIFY" value="3" enum="TextAlignment">
+		</constant>
+		<constant name="TRANSITION_STYLE_WIPE_RIGHT" value="0" enum="TransitionStyle">
+		</constant>
+		<constant name="TRANSITION_STYLE_WIPE_UP" value="1" enum="TransitionStyle">
+		</constant>
+		<constant name="TRANSITION_STYLE_WIPE_LEFT" value="2" enum="TransitionStyle">
+		</constant>
+		<constant name="TRANSITION_STYLE_WIPE_DOWN" value="3" enum="TransitionStyle">
+		</constant>
+		<constant name="TRANSITION_STYLE_BARN_DOORS_HORIZONTAL_OUT" value="4" enum="TransitionStyle">
+		</constant>
+		<constant name="TRANSITION_STYLE_BARN_DOORS_HORIZONTAL_IN" value="5" enum="TransitionStyle">
+		</constant>
+		<constant name="TRANSITION_STYLE_BARN_DOORS_VERTICAL_OUT" value="6" enum="TransitionStyle">
+		</constant>
+		<constant name="TRANSITION_STYLE_BARN_DOORS_VERTICAL_IN" value="7" enum="TransitionStyle">
+		</constant>
+		<constant name="TRANSITION_STYLE_BOX_OUT" value="8" enum="TransitionStyle">
+		</constant>
+		<constant name="TRANSITION_STYLE_BOX_IN" value="9" enum="TransitionStyle">
+		</constant>
+		<constant name="TRANSITION_STYLE_BLINDS_HORIZONTAL" value="10" enum="TransitionStyle">
+		</constant>
+		<constant name="TRANSITION_STYLE_BLINDS_VERTICAL" value="11" enum="TransitionStyle">
+		</constant>
+		<constant name="TRANSITION_STYLE_DISSOLVE" value="12" enum="TransitionStyle">
+		</constant>
+		<constant name="TRANSITION_STYLE_GLITTER_RIGHT" value="13" enum="TransitionStyle">
+		</constant>
+		<constant name="TRANSITION_STYLE_GLITTER_DOWN" value="14" enum="TransitionStyle">
+		</constant>
+		<constant name="TRANSITION_STYLE_GLITTER_TOP_LEFT_TO_BOTTOM_RIGHT" value="15" enum="TransitionStyle">
+		</constant>
+		<constant name="TRANSITION_STYLE_REPLACE" value="16" enum="TransitionStyle">
+		</constant>
+		<constant name="TRANSITION_STYLE_EOF" value="17" enum="TransitionStyle">
+		</constant>
+	</constants>
+</class>

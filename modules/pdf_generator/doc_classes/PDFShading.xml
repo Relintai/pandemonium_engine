@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDFShading" inherits="Reference">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_vertex_rgb">
+			<return type="int" />
+			<argument index="0" name="edge_flag" type="int" enum="PDFShading.FreeFormTriangleMeshEdgeFlag" />
+			<argument index="1" name="position" type="Vector2" />
+			<argument index="2" name="color" type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="get_status">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+		<constant name="FREE_FORM_TRI_MESH_EDGEFLAG_NO_CONNECTION" value="0" enum="FreeFormTriangleMeshEdgeFlag">
+		</constant>
+		<constant name="FREE_FORM_TRI_MESH_EDGEFLAG_BC" value="1" enum="FreeFormTriangleMeshEdgeFlag">
+		</constant>
+		<constant name="FREE_FORM_TRI_MESH_EDGEFLAG_AC" value="2" enum="FreeFormTriangleMeshEdgeFlag">
+		</constant>
+	</constants>
+</class>

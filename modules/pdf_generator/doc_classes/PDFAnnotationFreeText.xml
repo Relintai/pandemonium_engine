@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDFAnnotationFreeText" inherits="PDFAnnotationMarkup">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="set_2_point_callout_line">
+			<return type="int" />
+			<argument index="0" name="start_point" type="Vector2" />
+			<argument index="1" name="end_point" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="set_3_point_callout_line">
+			<return type="int" />
+			<argument index="0" name="start_point" type="Vector2" />
+			<argument index="1" name="knee_point" type="Vector2" />
+			<argument index="2" name="end_point" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="set_default_style">
+			<return type="int" />
+			<argument index="0" name="style" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_line_ending_style">
+			<return type="int" />
+			<argument index="0" name="start_style" type="int" enum="PDFAnnotationLine.LineAnnotEndingStyle" />
+			<argument index="1" name="end_style" type="int" enum="PDFAnnotationLine.LineAnnotEndingStyle" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

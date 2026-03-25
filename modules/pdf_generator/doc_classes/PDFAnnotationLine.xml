@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDFAnnotationLine" inherits="PDFAnnotationMarkup">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="set_caption">
+			<return type="int" />
+			<argument index="0" name="show_caption" type="bool" />
+			<argument index="1" name="position" type="int" enum="PDFAnnotationLine.LineAnnotCapPosition" />
+			<argument index="2" name="horizontal_offset" type="int" />
+			<argument index="3" name="vertical_offset" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_leader">
+			<return type="int" />
+			<argument index="0" name="leader_length" type="int" />
+			<argument index="1" name="leader_ext_length" type="int" />
+			<argument index="2" name="leader_offset_length" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_position">
+			<return type="int" />
+			<argument index="0" name="start_point" type="Vector2" />
+			<argument index="1" name="start_style" type="int" enum="PDFAnnotationLine.LineAnnotEndingStyle" />
+			<argument index="2" name="end_point" type="Vector2" />
+			<argument index="3" name="end_style" type="int" enum="PDFAnnotationLine.LineAnnotEndingStyle" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+		<constant name="LINE_ANNOT_NONE" value="0" enum="LineAnnotEndingStyle">
+		</constant>
+		<constant name="LINE_ANNOT_SQUARE" value="1" enum="LineAnnotEndingStyle">
+		</constant>
+		<constant name="LINE_ANNOT_CIRCLE" value="2" enum="LineAnnotEndingStyle">
+		</constant>
+		<constant name="LINE_ANNOT_DIAMOND" value="3" enum="LineAnnotEndingStyle">
+		</constant>
+		<constant name="LINE_ANNOT_OPENARROW" value="4" enum="LineAnnotEndingStyle">
+		</constant>
+		<constant name="LINE_ANNOT_CLOSEDARROW" value="5" enum="LineAnnotEndingStyle">
+		</constant>
+		<constant name="LINE_ANNOT_BUTT" value="6" enum="LineAnnotEndingStyle">
+		</constant>
+		<constant name="LINE_ANNOT_ROPENARROW" value="7" enum="LineAnnotEndingStyle">
+		</constant>
+		<constant name="LINE_ANNOT_RCLOSEDARROW" value="8" enum="LineAnnotEndingStyle">
+		</constant>
+		<constant name="LINE_ANNOT_SLASH" value="9" enum="LineAnnotEndingStyle">
+		</constant>
+		<constant name="LINE_ANNOT_CAP_INLINE" value="0" enum="LineAnnotCapPosition">
+		</constant>
+		<constant name="LINE_ANNOT_CAP_TOP" value="1" enum="LineAnnotCapPosition">
+		</constant>
+	</constants>
+</class>

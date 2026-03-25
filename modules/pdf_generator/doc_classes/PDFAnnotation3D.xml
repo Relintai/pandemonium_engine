@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDFAnnotation3D" inherits="PDFAnnotation">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="set_3d_view">
+			<return type="int" />
+			<argument index="0" name="annot" type="PDFAnnotation" />
+			<argument index="1" name="view" type="PDF3DView" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

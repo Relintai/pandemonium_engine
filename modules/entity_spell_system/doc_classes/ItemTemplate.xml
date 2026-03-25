@@ -10,7 +10,7 @@
 	</tutorials>
 	<methods>
 		<method name="_create_item_instance" qualifiers="virtual">
-			<return type="void" />
+			<return type="ItemInstance" />
 			<description>
 				Create an item instance.
 			</description>

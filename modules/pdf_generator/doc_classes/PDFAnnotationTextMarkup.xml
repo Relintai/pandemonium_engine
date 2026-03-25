@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDFAnnotationTextMarkup" inherits="PDFAnnotationMarkup">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<constants>
+		<constant name="ANNOTATION_TYPE_TEXT_NOTES" value="0" enum="AnnotSubType">
+		</constant>
+		<constant name="ANNOTATION_TYPE_LINK" value="1" enum="AnnotSubType">
+		</constant>
+		<constant name="ANNOTATION_TYPE_SOUND" value="2" enum="AnnotSubType">
+		</constant>
+		<constant name="ANNOTATION_TYPE_FREE_TEXT" value="3" enum="AnnotSubType">
+		</constant>
+		<constant name="ANNOTATION_TYPE_STAMP" value="4" enum="AnnotSubType">
+		</constant>
+		<constant name="ANNOTATION_TYPE_SQUARE" value="5" enum="AnnotSubType">
+		</constant>
+		<constant name="ANNOTATION_TYPE_CIRCLE" value="6" enum="AnnotSubType">
+		</constant>
+		<constant name="ANNOTATION_TYPE_STRIKE_OUT" value="7" enum="AnnotSubType">
+		</constant>
+		<constant name="ANNOTATION_TYPE_HIGHTLIGHT" value="8" enum="AnnotSubType">
+		</constant>
+		<constant name="ANNOTATION_TYPE_UNDERLINE" value="9" enum="AnnotSubType">
+		</constant>
+		<constant name="ANNOTATION_TYPE_INK" value="10" enum="AnnotSubType">
+		</constant>
+		<constant name="ANNOTATION_TYPE_FILE_ATTACHMENT" value="11" enum="AnnotSubType">
+		</constant>
+		<constant name="ANNOTATION_TYPE_POPUP" value="12" enum="AnnotSubType">
+		</constant>
+		<constant name="ANNOTATION_TYPE_3D" value="13" enum="AnnotSubType">
+		</constant>
+		<constant name="ANNOTATION_TYPE_SQUIGGLY" value="14" enum="AnnotSubType">
+		</constant>
+		<constant name="ANNOTATION_TYPE_LINE" value="15" enum="AnnotSubType">
+		</constant>
+		<constant name="ANNOTATION_TYPE_PROJECTION" value="16" enum="AnnotSubType">
+		</constant>
+		<constant name="ANNOTATION_TYPE_WIDGET" value="17" enum="AnnotSubType">
+		</constant>
+	</constants>
+</class>

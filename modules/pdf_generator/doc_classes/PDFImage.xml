@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDFImage" inherits="Reference">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="add_s_mask">
+			<return type="int" />
+			<argument index="0" name="smask" type="PDFImage" />
+			<description>
+			</description>
+		</method>
+		<method name="get_bits_per_component">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_color_space">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_height">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_size">
+			<return type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="get_size_status">
+			<return type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="get_status">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_width">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_color_mask">
+			<return type="int" />
+			<argument index="0" name="r_min_max" type="Vector2i" />
+			<argument index="1" name="g_min_max" type="Vector2i" />
+			<argument index="2" name="b_min_max" type="Vector2i" />
+			<description>
+			</description>
+		</method>
+		<method name="set_mask_image">
+			<return type="int" />
+			<argument index="0" name="mask_image" type="PDFImage" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>

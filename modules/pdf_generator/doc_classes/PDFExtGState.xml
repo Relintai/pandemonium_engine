@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDFExtGState" inherits="Reference">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_status">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_alpha_fill">
+			<return type="int" />
+			<argument index="0" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_alpha_stroke">
+			<return type="int" />
+			<argument index="0" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_blend_mode">
+			<return type="int" />
+			<argument index="0" name="mode" type="int" enum="PDFExtGState.BlendMode" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+		<constant name="BM_NORMAL" value="0" enum="BlendMode">
+		</constant>
+		<constant name="BM_MULTIPLY" value="1" enum="BlendMode">
+		</constant>
+		<constant name="BM_SCREEN" value="2" enum="BlendMode">
+		</constant>
+		<constant name="BM_OVERLAY" value="3" enum="BlendMode">
+		</constant>
+		<constant name="BM_DARKEN" value="4" enum="BlendMode">
+		</constant>
+		<constant name="BM_LIGHTEN" value="5" enum="BlendMode">
+		</constant>
+		<constant name="BM_COLOR_DODGE" value="6" enum="BlendMode">
+		</constant>
+		<constant name="BM_COLOR_BUM" value="7" enum="BlendMode">
+		</constant>
+		<constant name="BM_HARD_LIGHT" value="8" enum="BlendMode">
+		</constant>
+		<constant name="BM_SOFT_LIGHT" value="9" enum="BlendMode">
+		</constant>
+		<constant name="BM_DIFFERENCE" value="10" enum="BlendMode">
+		</constant>
+		<constant name="BM_EXCLUSHON" value="11" enum="BlendMode">
+		</constant>
+		<constant name="BM_EOF" value="12" enum="BlendMode">
+		</constant>
+	</constants>
+</class>

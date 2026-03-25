@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDFEncoder" inherits="Reference">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_byte_type">
+			<return type="int" enum="PDFEncoder.ByteType" />
+			<argument index="0" name="text" type="String" />
+			<argument index="1" name="index" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_encoding_string">
+			<return type="String" />
+			<argument index="0" name="encoding" type="int" enum="PDFEncoder.Encoding" />
+			<description>
+			</description>
+		</method>
+		<method name="get_type">
+			<return type="int" enum="PDFEncoder.EncoderType" />
+			<description>
+			</description>
+		</method>
+		<method name="get_unicode">
+			<return type="int" />
+			<argument index="0" name="code" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_writing_mode">
+			<return type="int" enum="PDFEncoder.WritingMode" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+		<constant name="ENCODING_FONT_SPECIFIC" value="0" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_STANDARD" value="1" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_MAC_ROMAN" value="2" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_WIN_ANSI" value="3" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_ISO8859_2" value="4" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_ISO8859_3" value="5" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_ISO8859_4" value="6" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_ISO8859_5" value="7" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_ISO8859_6" value="8" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_ISO8859_7" value="9" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_ISO8859_8" value="10" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_ISO8859_9" value="11" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_ISO8859_10" value="12" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_ISO8859_11" value="13" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_ISO8859_13" value="14" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_ISO8859_14" value="15" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_ISO8859_15" value="16" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_ISO8859_16" value="17" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_CP1250" value="18" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_CP1251" value="19" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_CP1252" value="20" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_CP1253" value="21" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_CP1254" value="22" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_CP1255" value="23" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_CP1256" value="24" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_CP1257" value="25" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_CP1258" value="26" enum="Encoding">
+		</constant>
+		<constant name="ENCODING_KOI8_R" value="27" enum="Encoding">
+		</constant>
+		<constant name="ENCODER_TYPE_SINGLE_BYTE" value="0" enum="EncoderType">
+		</constant>
+		<constant name="ENCODER_TYPE_DOUBLE_BYTE" value="1" enum="EncoderType">
+		</constant>
+		<constant name="ENCODER_TYPE_UNINITIALIZED" value="2" enum="EncoderType">
+		</constant>
+		<constant name="ENCODER_UNKNOWN" value="3" enum="EncoderType">
+		</constant>
+		<constant name="BYTE_TYPE_SINGLE" value="0" enum="ByteType">
+		</constant>
+		<constant name="BYTE_TYPE_LEAD" value="1" enum="ByteType">
+		</constant>
+		<constant name="BYTE_TYPE_TRAIL" value="2" enum="ByteType">
+		</constant>
+		<constant name="BYTE_TYPE_UNKNOWN" value="3" enum="ByteType">
+		</constant>
+		<constant name="WRITING_MODE_HORIZONTAL" value="0" enum="WritingMode">
+		</constant>
+		<constant name="WRITING_MODE_VERTICAL" value="1" enum="WritingMode">
+		</constant>
+		<constant name="WRITING_MODE_EOF" value="2" enum="WritingMode">
+		</constant>
+	</constants>
+</class>

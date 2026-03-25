@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PDFAnnotationMarkup" inherits="PDFAnnotation">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="set_cloud_effect">
+			<return type="int" />
+			<argument index="0" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_creation_date">
+			<return type="int" />
+			<argument index="0" name="date" type="PDFDate" />
+			<description>
+			</description>
+		</method>
+		<method name="set_intent">
+			<return type="int" />
+			<argument index="0" name="intent" type="int" enum="PDFAnnotationMarkup.AnnotIntent" />
+			<description>
+			</description>
+		</method>
+		<method name="set_interior_cmyk_color">
+			<return type="int" />
+			<argument index="0" name="color" type="Vector4" />
+			<description>
+			</description>
+		</method>
+		<method name="set_interior_gray_color">
+			<return type="int" />
+			<argument index="0" name="color" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_interior_rgb_color">
+			<return type="int" />
+			<argument index="0" name="color" type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="set_interior_transparent">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_popup">
+			<return type="int" />
+			<argument index="0" name="popup" type="PDFAnnotationPopup" />
+			<description>
+			</description>
+		</method>
+		<method name="set_rect_diff">
+			<return type="int" />
+			<argument index="0" name="rect" type="Rect2" />
+			<description>
+			</description>
+		</method>
+		<method name="set_subject">
+			<return type="int" />
+			<argument index="0" name="subject" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_title">
+			<return type="int" />
+			<argument index="0" name="title" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="set_transparency">
+			<return type="int" />
+			<argument index="0" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+		<constant name="ANNOT_INTENT_FREETEXTCALLOUT" value="0" enum="AnnotIntent">
+		</constant>
+		<constant name="ANNOT_INTENT_FREETEXTTYPEWRITER" value="1" enum="AnnotIntent">
+		</constant>
+		<constant name="ANNOT_INTENT_LINEARROW" value="2" enum="AnnotIntent">
+		</constant>
+		<constant name="ANNOT_INTENT_LINEDIMENSION" value="3" enum="AnnotIntent">
+		</constant>
+		<constant name="ANNOT_INTENT_POLYGONCLOUD" value="4" enum="AnnotIntent">
+		</constant>
+		<constant name="ANNOT_INTENT_POLYLINEDIMENSION" value="5" enum="AnnotIntent">
+		</constant>
+		<constant name="ANNOT_INTENT_POLYGONDIMENSION" value="6" enum="AnnotIntent">
+		</constant>
+	</constants>
+</class>
