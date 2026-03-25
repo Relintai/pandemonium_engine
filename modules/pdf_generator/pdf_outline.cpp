@@ -31,9 +31,26 @@
 
 #include "pdf_outline.h"
 
+#include "pdf_destination.h"
+
 #include "hpdf.h"
-#include "hpdf_doc.h"
-#include "hpdf_pages.h"
+
+uint32_t PDFOutline::set_opened(const bool p_opened) {
+	_status = HPDF_Outline_SetOpened((HPDF_Outline)_outline, p_opened);
+
+	return _status;
+}
+uint32_t PDFOutline::set_destination(const Ref<PDFDestination> &p_destination) {
+	HPDF_Destination dst = NULL;
+
+	if (p_destination.is_valid()) {
+		dst = (HPDF_Destination)p_destination->_get_hpdf_destination();
+	}
+
+	_status = HPDF_Outline_SetDestination((HPDF_Outline)_outline, dst);
+
+	return _status;
+}
 
 uint32_t PDFOutline::get_status() {
 	return _status;
@@ -57,7 +74,8 @@ void PDFOutline::_set_hpdf_outline(void *p_outline) {
 }
 
 void PDFOutline::_bind_methods() {
-	//ClassDB::bind_method(D_METHOD("get_width"), &PDFOutline::get_width);
-	//ClassDB::bind_method(D_METHOD("set_width", "val"), &PDFOutline::set_width);
-	//ADD_PROPERTY(PropertyInfo(Variant::REAL, "width"), "set_width", "get_width");
+	ClassDB::bind_method(D_METHOD("set_opened", "opened"), &PDFOutline::set_opened);
+	ClassDB::bind_method(D_METHOD("set_destination", "destination"), &PDFOutline::set_destination);
+
+	ClassDB::bind_method(D_METHOD("get_status"), &PDFOutline::get_status);
 }
