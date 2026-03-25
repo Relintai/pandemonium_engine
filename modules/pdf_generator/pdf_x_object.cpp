@@ -32,16 +32,8 @@
 #include "pdf_x_object.h"
 
 #include "hpdf.h"
-#include "hpdf_doc.h"
-#include "hpdf_pages.h"
-
-uint32_t PDFXObject::get_status() {
-	return _status;
-}
 
 PDFXObject::PDFXObject() {
-	_status = 0;
-
 	_x_object = NULL;
 }
 
@@ -57,7 +49,4 @@ void PDFXObject::_set_hpdf_x_object(void *p_x_object) {
 }
 
 void PDFXObject::_bind_methods() {
-	//ClassDB::bind_method(D_METHOD("get_width"), &PDFXObject::get_width);
-	//ClassDB::bind_method(D_METHOD("set_width", "val"), &PDFXObject::set_width);
-	//ADD_PROPERTY(PropertyInfo(Variant::REAL, "width"), "set_width", "get_width");
 }

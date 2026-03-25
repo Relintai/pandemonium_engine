@@ -38,8 +38,6 @@ class PDFXObject : public Reference {
 	GDCLASS(PDFXObject, Reference);
 
 public:
-	uint32_t get_status();
-
 	PDFXObject();
 	~PDFXObject();
 
@@ -50,8 +48,6 @@ protected:
 	static void _bind_methods();
 
 	void *_x_object;
-
-	uint32_t _status;
 };
 
 #endif
