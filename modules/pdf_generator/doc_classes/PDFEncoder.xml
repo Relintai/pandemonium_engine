@@ -37,6 +37,7 @@
 			<argument index="0" name="text" type="String" />
 			<argument index="1" name="index" type="int" />
 			<description>
+				Returns the type of byte in the text at position index.
 			</description>
 		</method>
 		<method name="get_encoding_string">
@@ -49,17 +50,20 @@
 		<method name="get_type">
 			<return type="int" enum="PDFEncoder.EncoderType" />
 			<description>
+				Gets the type of an encoding object.
 			</description>
 		</method>
 		<method name="get_unicode">
 			<return type="int" />
 			<argument index="0" name="code" type="int" />
 			<description>
+				Converts a specified character code to unicode.
 			</description>
 		</method>
 		<method name="get_writing_mode">
 			<return type="int" enum="PDFEncoder.WritingMode" />
 			<description>
+				Returns the writing mode for the encoding object.
 			</description>
 		</method>
 	</methods>
@@ -149,24 +153,34 @@
 			Russian Net Character Set. "KOI8-R".
 		</constant>
 		<constant name="ENCODER_TYPE_SINGLE_BYTE" value="0" enum="EncoderType">
+			This encoder is an encoder for single byte characters.
 		</constant>
 		<constant name="ENCODER_TYPE_DOUBLE_BYTE" value="1" enum="EncoderType">
+			This encoder is an encoder for multi byte characters.
 		</constant>
 		<constant name="ENCODER_TYPE_UNINITIALIZED" value="2" enum="EncoderType">
+			This encoder is uninitialized. (May be it is an encoder for multi byte characters.)
 		</constant>
 		<constant name="ENCODER_UNKNOWN" value="3" enum="EncoderType">
+			Invalid encoder.
 		</constant>
 		<constant name="BYTE_TYPE_SINGLE" value="0" enum="ByteType">
+			Single byte character.
 		</constant>
 		<constant name="BYTE_TYPE_LEAD" value="1" enum="ByteType">
+			Lead byte of a double-byte character.
 		</constant>
 		<constant name="BYTE_TYPE_TRAIL" value="2" enum="ByteType">
+			Trailing byte of a double-byte character.
 		</constant>
 		<constant name="BYTE_TYPE_UNKNOWN" value="3" enum="ByteType">
+			Invalid encoder or cannot judge the byte type.
 		</constant>
 		<constant name="WRITING_MODE_HORIZONTAL" value="0" enum="WritingMode">
+			Horizontal writing mode.
 		</constant>
 		<constant name="WRITING_MODE_VERTICAL" value="1" enum="WritingMode">
+			Vertical writing mode.
 		</constant>
 		<constant name="WRITING_MODE_EOF" value="2" enum="WritingMode">
 		</constant>
