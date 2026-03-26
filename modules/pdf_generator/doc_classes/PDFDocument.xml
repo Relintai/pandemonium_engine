@@ -168,9 +168,9 @@
 		</method>
 		<method name="font_load_ttf_from_collection_file">
 			<return type="String" />
-			<argument index="0" name="index" type="String" />
-			<argument index="1" name="embed_into_document" type="int" />
-			<argument index="2" name="arg2" type="bool" />
+			<argument index="0" name="file_name" type="String" />
+			<argument index="1" name="index" type="int" />
+			<argument index="2" name="embed_into_document" type="bool" />
 			<description>
 				Loads a TrueType font from an TrueType collection file and register it to a document object.
 				file_name - A path of a TrueType font collection file (.ttc).
@@ -357,11 +357,11 @@
 			<return type="PDFImage" />
 			<argument index="0" name="data" type="PoolByteArray" />
 			<description>
-				 Loads PNG image from a buffer.
-				Error codes
-				- EC_INVALID_DOCUMENT - An invalid document handle was set.
-				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
-				- EC_INVALID_PNG_IMAGE - Invalid PNG format.
+				Loads PNG image from a buffer.
+				 Error codes
+				 - EC_INVALID_DOCUMENT - An invalid document handle was set.
+				 - EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				 - EC_INVALID_PNG_IMAGE - Invalid PNG format.
 			</description>
 		</method>
 		<method name="image_load_raw_1_bit_image_from_mem">
@@ -419,6 +419,26 @@
 				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
 				- EC_INVALID_COLOR_SPACE - An invalid color_space value is specified.
 				- EC_INVALID_IMAGE - The size of an image data is invalid.
+			</description>
+		</method>
+		<method name="info_attr_date_set">
+			<return type="int" />
+			<argument index="0" name="info_type" type="int" enum="PDFDocument.InfoType" />
+			<argument index="1" name="date" type="PDFDate" />
+			<description>
+			</description>
+		</method>
+		<method name="info_attr_get">
+			<return type="String" />
+			<argument index="0" name="info_typ" type="int" enum="PDFDocument.InfoType" />
+			<description>
+			</description>
+		</method>
+		<method name="info_attr_set">
+			<return type="int" />
+			<argument index="0" name="info_type" type="int" enum="PDFDocument.InfoType" />
+			<argument index="1" name="value" type="String" />
+			<description>
 			</description>
 		</method>
 		<method name="javascript_load_from_file">
