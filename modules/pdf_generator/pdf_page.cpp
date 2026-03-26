@@ -114,12 +114,12 @@ float PDFPage::text_width(const String &p_text) {
 	return HPDF_Page_TextWidth((HPDF_Page)_page, p_text.utf8().get_data());
 }
 
-float PDFPage::measure_text(const String &p_text, float p_width, bool p_word_wrap) {
+Vector2 PDFPage::measure_text(const String &p_text, float p_width, bool p_word_wrap) {
 	float result = 0;
 
-	_status = HPDF_Page_MeasureText((HPDF_Page)_page, p_text.utf8().get_data(), p_width, p_word_wrap, &result);
+	uint32_t m = HPDF_Page_MeasureText((HPDF_Page)_page, p_text.utf8().get_data(), p_width, p_word_wrap, &result);
 
-	return result;
+	return Vector2(m, result);
 }
 
 uint16_t PDFPage::g_mode_get() {

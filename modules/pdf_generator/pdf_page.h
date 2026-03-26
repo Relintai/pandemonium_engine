@@ -148,7 +148,7 @@ public:
 	uint32_t zoom_set(const float p_zoom);
 
 	float text_width(const String &p_text);
-	float measure_text(const String &p_text, float p_width, bool p_word_wrap);
+	Vector2 measure_text(const String &p_text, float p_width, bool p_word_wrap);
 
 	uint16_t g_mode_get();
 
