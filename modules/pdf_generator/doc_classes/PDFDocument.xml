@@ -3,6 +3,7 @@
 	<brief_description>
 	</brief_description>
 	<description>
+		The default coordinate system of PDF: the lower-left corner is at coordinates (0, 0), and the upper-right corner is at coordinates (width, height). The default resolution is 72dpi. Howewer note that when a function takes a [Rect2], it will follow the engine convention, so position is at the top left corner.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -38,53 +39,100 @@
 		<method name="document_has">
 			<return type="bool" />
 			<description>
+				If the document handle is valid, it returns true, and false otherwise.
 			</description>
 		</method>
 		<method name="document_new">
 			<return type="int" />
 			<description>
+				Creates a new document. If the Document object already has a document, the current document is revoked.
+				Returns OK on success.
+				Error codes:
+				- EC_INVALID_DOCUMENT - Invalid document handle set.
+				- EC_FAILED_TO_ALLOC_MEM - Memory allocation failed.
 			</description>
 		</method>
 		<method name="encoder_current_get">
 			<return type="PDFEncoder" />
 			<description>
+				Gets the handle of the current encoder of the document object.
+				The default value of it is NULL.
+				It returns a handle of an encoder object or NULL.
 			</description>
 		</method>
 		<method name="encoder_current_set">
 			<return type="int" />
 			<argument index="0" name="encoding_name" type="String" />
 			<description>
+				Sets the handle of the current encoder of the document object.
+				encoding_name - The name of an encoding.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_INVALID_ENCODING_NAME - An invalid encoding name was set.
 			</description>
 		</method>
 		<method name="encoder_get">
 			<return type="PDFEncoder" />
 			<argument index="0" name="encoding_name" type="String" />
 			<description>
+				Gets the handle of an encoder object by specified encoding name.
+				encoding_name - A valid encoding name. (See Encodings)
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_INVALID_ENCODING_NAME - An invalid encoding name was set.
 			</description>
 		</method>
 		<method name="encodings_use_cns">
 			<return type="int" />
 			<description>
+				It makes simplified Chinese Encodings(GB-EUC-H, GB-EUC-V, GBK-EUC-H, GBK-EUC-V) to become available.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_DUPLICATE_REGISTRATION - The encoding of the same name has already been registered.
 			</description>
 		</method>
 		<method name="encodings_use_cnt">
 			<return type="int" />
 			<description>
+				It makes traditional Chinese Encodings(ETen-B5-H, ETen-B5-V) to become available.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_DUPLICATE_REGISTRATION - The encoding of the same name has already been registered.
 			</description>
 		</method>
 		<method name="encodings_use_jp">
 			<return type="int" />
 			<description>
+				It makes Japanese Encodings(90ms-RKSJ-H, 90ms-RKSJ-V, 90msp-RKSJ-H, EUC-H, EUC-V) to become available.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_DUPLICATE_REGISTRATION - The encoding of the same name has already been registered.
 			</description>
 		</method>
 		<method name="encodings_use_kr">
 			<return type="int" />
 			<description>
+				It makes Korean Encodings (KSC-EUC-H, KSC-EUC-V, KSCms-UHC-H, KSCms-UHC-HW-H, KSCms-UHC-HW-V) to become available.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_DUPLICATE_REGISTRATION - The encoding of the same name has already been registered.
 			</description>
 		</method>
 		<method name="encodings_use_utf">
 			<return type="int" />
 			<description>
+				Enables UTF-8 encodings. After this is called, an application can include UTF-8 encoded Unicode text (up to 3-byte UTF-8 sequences only).
+				An application can use the following Unicode encodings (but only with TrueType fonts): UTF-8
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_DUPLICATE_REGISTRATION - The encoding of the same name has already been registered.
 			</description>
 		</method>
 		<method name="encryption_mode_set">
@@ -104,6 +152,18 @@
 			<argument index="0" name="font_name" type="String" />
 			<argument index="1" name="encoding_name" type="String" default="&quot;&quot;" />
 			<description>
+				Gets the handle of a requested font object.
+				Built-in fonts:
+				- "Courier", "Courier-Bold", "Courier-Oblique", "Courier-BoldOblique"
+				- "Helvetica", "Helvetica-Bold", "Helvetica-Oblique", "Helvetica-BoldOblique"
+				- "Times-Roman", "Times-Bold", "Times-Italic", "Times-BoldItalic"
+				- "Symbol", "ZapfDingbats"
+				Error codes
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_INVALID_FONT_NAME - An invalid font name was set.
+				- EC_INVALID_ENCODING_NAME - An invalid encoding name was set.
+				- EC_UNSUPPORTED_FONT_TYPE - An unsupported font type was set.
 			</description>
 		</method>
 		<method name="font_load_ttf_from_collection_file">
@@ -112,6 +172,18 @@
 			<argument index="1" name="embed_into_document" type="int" />
 			<argument index="2" name="arg2" type="bool" />
 			<description>
+				Loads a TrueType font from an TrueType collection file and register it to a document object.
+				file_name - A path of a TrueType font collection file (.ttc).
+				index - The index of font to be loaded.
+				embed_into_document - If this parameter is set to true, the glyph data of the font is embedded, otherwise only the matrix data is included in PDF file.
+				Returns the name of a font, or an empty string.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_FONT_EXISTS - The font of the same name has already been registered.
+				- EC_INVALID_TTC_INDEX, HPDF_INVALID_TTC_FILE, HPDF_TTF_INVALID_CMAP, HPDF_TTF_INVALID_FOMAT, HPDF_TTF_MISSING_TABLE - Failed to load .ttf file.
+				- EC_TTF_CANNOT_EMBEDDING_FONT - The font is not allowed to embed.
+				- EC_INVALID_TTC_INDEX - The value specified at index parameter exceeds the number of fonts.
 			</description>
 		</method>
 		<method name="font_load_ttf_from_file">
@@ -119,6 +191,20 @@
 			<argument index="0" name="file_name" type="String" />
 			<argument index="1" name="embed_into_document" type="bool" />
 			<description>
+				Loads a TrueType font from an external file and register it to a document object.
+				file_name - A path of a TrueType font file (.ttf).
+				embed_into_document - If this parameter is set to true, the glyph data of the font is embedded, otherwise only the matrix data is included in PDF file.
+				Returns the name of a font, or an empty string.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_FONT_EXISTS - The font of the same name has already been registered.
+				- EC_INVALID_TTC_INDEX - Failed to load .ttf file.
+				- EC_INVALID_TTC_FILE - Failed to load .ttf file.
+				- EC_TTF_INVALID_CMAP - Failed to load .ttf file.
+				- EC_TTF_INVALID_FOMAT - Failed to load .ttf file.
+				- EC_TTF_MISSING_TABLE - Failed to load .ttf file.
+				- EC_TTF_CANNOT_EMBEDDING_FONT - The font is not allowed to embed.
 			</description>
 		</method>
 		<method name="font_load_ttf_from_mem">
@@ -133,26 +219,67 @@
 			<argument index="0" name="afm_file_name" type="String" />
 			<argument index="1" name="data_file_name" type="String" />
 			<description>
+				Loads a Type1 font from an external file and registers it in the document object.
+				afm_file_name - A path of an AFM file.
+				data_file_name - A path of a PFA/PFB file. If NULL, the glyph data of font file is not embedded to a PDF file.
+				Returns the name of a font, or an empty string.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_FONT_EXISTS - The font of the same name has already been registered.
+				- EC_INVALID_AFM_HEADER, HPDF_INVALID_CHAR_MATRICS_DATA, HPDF_INVALID_N_DATA - Cannot recognize AFM file.
+				- EC_UNSUPPORTED_TYPE1_FONT - Cannot recognize PFA/PFB file.
 			</description>
 		</method>
 		<method name="fonts_use_cns">
 			<return type="int" />
 			<description>
+				Enables simplified Chinese fonts. After this is called, an application can use the following simplified Chinese fonts:
+				- "SimSun", "SimSun,Bold", "SimSun,Italic", "SimSun,BoldItalic".
+				- "SimHei", "SimHei,Bold", "SimHei,Italic", "SimHei,BoldItalic".
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_DUPLICATE_REGISTRATION - The font of the same name has already been registered.
 			</description>
 		</method>
 		<method name="fonts_use_cnt">
 			<return type="int" />
 			<description>
+				Enables traditional Chinese fonts. After this is called, an application can use the following traditional Chinese fonts:
+				- "MingLiU", "MingLiU,Bold", "MingLiU,Italic", "MingLiU,BoldItalic".
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_DUPLICATE_REGISTRATION - The font of the same name has already been registered.
 			</description>
 		</method>
 		<method name="fonts_use_jp">
 			<return type="int" />
 			<description>
+				Enables Japanese fonts. After this is called, an application can use the following Japanese fonts:
+				- "MS-Mincyo", "MS-Mincyo,Bold", "MS-Mincyo,Italic", "MS-Mincyo,BoldItalic".
+				- "MS-Gothic", "MS-Gothic,Bold", "MS-Gothic,Italic", "MS-Gothic,BoldItalic".
+				- "MS-PMincyo", "MS-PMincyo,Bold", "MS-PMincyo,Italic", "MS-PMincyo,BoldItalic".
+				- "MS-PGothic", "MS-PGothic,Bold", "MS-PGothic,Italic", "MS-PGothic,BoldItalic".
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_DUPLICATE_REGISTRATION - The font of the same name has already been registered.
 			</description>
 		</method>
 		<method name="fonts_use_kr">
 			<return type="int" />
 			<description>
+				Enables Korean fonts. After this is called, an application can use the following Korean fonts:
+				- "DotumChe", "DotumChe,Bold", "DotumChe,Italic", "DotumChe,BoldItalic".
+				- "Dotum", "Dotum,Bold", "Dotum,Italic", "Dotum,BoldItalic".
+				- "BatangChe", "BatangChe,Bold", "BatangChe,Italic", "BatangChe,BoldItalic".
+				- "Batang", "Batang,Bold", "Batang,Italic", "Batang,BoldItalic".
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_DUPLICATE_REGISTRATION - The font of the same name has already been registered.
 			</description>
 		</method>
 		<method name="get_error_detail">
@@ -163,6 +290,7 @@
 		<method name="get_error_no">
 			<return type="int" />
 			<description>
+				HPDF_GetError returns the last error code of the document object.
 			</description>
 		</method>
 		<method name="get_status">
@@ -181,24 +309,59 @@
 			<return type="PDFImage" />
 			<argument index="0" name="path" type="String" />
 			<description>
+				Loads an external JPEG image file.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_UNSUPPORTED_JPEG_FORMAT - Invalid/unsupported JPEG image was passed.
 			</description>
 		</method>
 		<method name="image_load_jpg_from_mem">
 			<return type="PDFImage" />
 			<argument index="0" name="data" type="PoolByteArray" />
 			<description>
+				Loads JPEG image from a buffer.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_INVALID_JPEG_DATA - Invalid JPEG image was passed.
+				- EC_UNSUPPORTED_JPEG_FORMAT - Invalid/unsupported JPEG image was passed.
 			</description>
 		</method>
 		<method name="image_load_png_from_file">
 			<return type="PDFImage" />
 			<argument index="0" name="path" type="String" />
 			<description>
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_UNSUPPORTED_FUNC - The library is not configured to use PNGLIB.
+				- EC_LIBPNG_ERROR - Failed when invoking PNGLIB's function.
+				- EC_INVALID_PNG_IMAGE - Invalid PNG format.
+			</description>
+		</method>
+		<method name="image_load_png_from_file_delayed">
+			<return type="PDFImage" />
+			<argument index="0" name="path" type="String" />
+			<description>
+				oads an external PNG image file. It does not load all the data immediately (only size and color properties are loaded). The main data are loaded just before the image object is written to PDF, and the loaded data are deleted immediately.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_UNSUPPORTED_FUNC - The library is not configured to use PNGLIB.
+				- EC_LIBPNG_ERROR - Failed when invoking PNGLIB's function.
+				- EC_INVALID_PNG_IMAGE - Invalid PNG format.
 			</description>
 		</method>
 		<method name="image_load_png_from_mem">
 			<return type="PDFImage" />
 			<argument index="0" name="data" type="PoolByteArray" />
 			<description>
+				 Loads PNG image from a buffer.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_INVALID_PNG_IMAGE - Invalid PNG format.
 			</description>
 		</method>
 		<method name="image_load_raw_1_bit_image_from_mem">
@@ -217,6 +380,29 @@
 			<argument index="1" name="size" type="Vector2i" />
 			<argument index="2" name="color_space" type="int" enum="PDFDocument.ColorSpace" />
 			<description>
+				loads an image which has "raw" image format. This function loads the data without any conversion. So it is usually faster than the other functions.
+				- filename - A path to a image file.
+				- width - The width of an image file.
+				- height - The height of an image file.
+				- color_space - COLOR_SPACE_DEVICE_GRAY, COLOR_SPACE_DEVICE_RGB or COLOR_SPACE_DEVICE_CMYK.
+				- COLOR_SPACE_DEVICE_GRAY - 8 bit gray scale image
+				  The gray scale describes each pixel with one byte. For each byte, 0X00 is maximum dark, 0XFF maximum light. The size of the image data is (width * height) bytes. The sequence of bytes for an 8-pixel 8-bit image with 2 rows and 4 columns would be:
+				  - 1   2   3   4
+				  - 5   6   7   8
+				- COLOR_SPACE_DEVICE_RGB - 24 bit RGB color image
+				  The 24 bit RGB color image describes each pixel with three bytes (Red, Green, Blue). For each byte, 0X00 is maximum dark, 0XFF maximum light. The size of the image data is (width * height * 3) bytes. The sequence of bytes for an 8-pixel 24-bit image with 2 rows and 4 columns would be:
+				  - 1R 1G 1B  2R 2G 2B  3R 3G 3B  4R 4G 4B
+				  - 5R 5G 5B  6R 6G 6B  7R 7G 7B  8R 8G 8B
+				- COLOR_SPACE_DEVICE_CMYK - 32 bit CMYK color image.
+				  The 32 bit CMYK color image describes each pixel with four bytes (Cyan, Magenta, Yellow, Black). The size of the image data is (width * height * 4) bytes. For each byte, 0X00 is maximum dark, 0XFF maximum light. The sequence of bytes for an 8-pixel 32-bit image with 2 rows and 4 columns would be:
+				  - 1C 1M 1Y 1K  2C 2M 2Y 2K  3C 3M 3Y 3K  4C 4M 4Y 4K
+				  - 5C 5M 5Y 5K  6C 6M 6Y 6K  7C 7M 7Y 7K  8C 8M 8Y 8K
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_INVALID_COLOR_SPACE - An invalid color_space value is specified.
+				- EC_INVALID_IMAGE - The size of an image data is invalid.
+				- EC_FILE_IO_ERROR - Cannot read data from the file.
 			</description>
 		</method>
 		<method name="image_load_raw_image_from_mem">
@@ -226,6 +412,13 @@
 			<argument index="2" name="color_space" type="int" enum="PDFDocument.ColorSpace" />
 			<argument index="3" name="bits_per_component" type="int" />
 			<description>
+				Loads an image which has "raw" image format from buffer. This function loads the data without any conversion. So it is usually faster than the other functions.
+				bits_per_component - The bit size of each color component. The valid value is either 1, 2, 4, 8.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_INVALID_COLOR_SPACE - An invalid color_space value is specified.
+				- EC_INVALID_IMAGE - The size of an image data is invalid.
 			</description>
 		</method>
 		<method name="javascript_load_from_file">
@@ -244,6 +437,12 @@
 			<return type="int" />
 			<argument index="0" name="destination" type="PDFDestination" />
 			<description>
+				Set the first page to appear when a document is opened.
+				When succeeds, it returns OK.
+				Error codes:
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_INVALID_DESTINATION - An invalid destination object was set.
 			</description>
 		</method>
 		<method name="outline_create">
@@ -252,6 +451,14 @@
 			<argument index="1" name="title" type="String" />
 			<argument index="2" name="encoder" type="PDFEncoder" />
 			<description>
+				Creates a new outline object.
+				- parent - The handle of an outline object which comes to the parent of the created outline object. If NULL, the outline is created as a root outline.
+				- title - The caption of the outline object.
+				- encoder - The handle of an encoding object applied to the title. If NULL, PDFDocEncoding is used.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_INVALID_OUTLINE - An invalid parent outline is specified.
 			</description>
 		</method>
 		<method name="output_intents_append">
@@ -264,6 +471,10 @@
 		<method name="page_add">
 			<return type="PDFPage" />
 			<description>
+				Creates a new page and adds it after the last page of a document.
+				Error codes:
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
 			</description>
 		</method>
 		<method name="page_add_label">
@@ -273,11 +484,19 @@
 			<argument index="2" name="first_page" type="int" />
 			<argument index="3" name="prefix" type="String" default="&quot;&quot;" />
 			<description>
+				Adds a page labeling range for the document.
+				The page label is shown in the thumbnails view.
+				page_num - The first page that applies this labeling range.
+				Error codes:
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_PAGE_NUM_STYLE_OUT_OF_RANGE - An invalid page numbering style is specified.
 			</description>
 		</method>
 		<method name="page_get_current">
 			<return type="PDFPage" />
 			<description>
+				Returns the handle of current page object.
 			</description>
 		</method>
 		<method name="page_get_index">
@@ -290,12 +509,24 @@
 			<return type="PDFPage" />
 			<argument index="0" name="page" type="PDFPage" />
 			<description>
+				Creates a new page and inserts it just before the specified page.
+				Error codes:
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_INVALID_PAGE - An invalid page handle was set.
 			</description>
 		</method>
 		<method name="pages_set_configuration">
 			<return type="int" />
 			<argument index="0" name="page_per_pages" type="int" />
 			<description>
+				In the default setting, a HPDF_Doc object has one "Pages" object as root of pages. All "Page" objects are created as a kid of the "Pages" object. Since a "Pages" object can own only 8191 kids objects, the maximum number of pages are 8191 page. Additionally, the state that there are a lot of "Page" object under one "Pages" object is not good, because it causes performance degradation of a viewer application.
+				An application can change the setting of a pages tree by invoking pages_set_configuration(). If page_per_pages parameter is set to more than zero, a two-tier pages tree is created. A root "Pages" object can own 8191 "Pages" object, and each lower "Pages" object can own page_per_pages "Page" objects. As a result, the maximum number of pages becomes 8191 * page_per_pages page. An application cannot invoke pages_set_configuration() after a page is added to document.
+				When it succeeds, it returns OK.
+				Error codes:
+				- HPDF_INVALID_DOCUMENT - An invalid document handle is set.
+				- HPDF_INVALID_DOCUMENT_STATE - A page object already exists in a document.
+				- HPDF_FAILD_TO_ALLOC_MEM - Memory allocation failed.
 			</description>
 		</method>
 		<method name="password_set">
@@ -326,17 +557,29 @@
 		<method name="reset_error">
 			<return type="void" />
 			<description>
+				Once an error code is set, IO processing functions cannot be invoked. In the case of executing a function after the cause of the error is fixed, an application have to invoke this to clear error-code before executing functions.
 			</description>
 		</method>
 		<method name="save_to_file">
 			<return type="int" />
 			<argument index="0" name="file" type="String" />
 			<description>
+				Saves the current document to a file.
+				Returns OK on success.
+				Error codes:
+				- EC_INVALID_DOCUMENT - An invalid document handle is set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_FILE_IO_ERROR - An error occurred while processing file I/O.
 			</description>
 		</method>
 		<method name="save_to_mem">
 			<return type="PoolByteArray" />
 			<description>
+				Saves the current document to a PoolByteArray.
+				Sets status to OK on success.
+				Error codes:
+				- EC_INVALID_DOCUMENT - An invalid document handle is set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
 			</description>
 		</method>
 		<method name="shading_new">
@@ -377,8 +620,12 @@
 	</methods>
 	<members>
 		<member name="page_layout" type="int" setter="page_set_layout" getter="page_get_layout" enum="PDFDocument.PageLayout" default="6">
+			How the page should be displayed. If this attribute is not set, the setting of the viewer application is used.
+			Sets the status variable.
 		</member>
 		<member name="page_mode" type="int" setter="page_set_mode" getter="page_get_mode" enum="PDFDocument.PageMode" default="0">
+			Sets how the document should be displayed.
+			Sets the status variable.
 		</member>
 		<member name="viewer_preference" type="int" setter="viewer_preference_set" getter="viewer_preference_get" default="0">
 		</member>
@@ -397,40 +644,58 @@
 		<constant name="COMPRESSION_MODE_MASK" value="255" enum="CompressionMode">
 		</constant>
 		<constant name="PAGE_LAYOUT_SINGLE" value="0" enum="PageLayout">
+			Only one page is displayed.
 		</constant>
 		<constant name="PAGE_LAYOUT_ONE_COLUMN" value="1" enum="PageLayout">
+			Display the pages in one column.
 		</constant>
 		<constant name="PAGE_LAYOUT_TWO_COLUMN_LEFT" value="2" enum="PageLayout">
+			Display in two columns. Odd page number is displayed left.
 		</constant>
 		<constant name="PAGE_LAYOUT_TWO_COLUMN_RIGHT" value="3" enum="PageLayout">
+			Display in two columns. Odd page number is displayed right.
 		</constant>
 		<constant name="PAGE_LAYOUT_TWO_PAGE_LEFT" value="4" enum="PageLayout">
+			Display in two pages. Odd page number is displayed left.
 		</constant>
 		<constant name="PAGE_LAYOUT_TWO_PAGE_RIGHT" value="5" enum="PageLayout">
+			Display in two pages. Odd page number is displayed right.
 		</constant>
 		<constant name="PAGE_LAYOUT_EOF" value="6" enum="PageLayout">
+			If page layout is not set.
 		</constant>
 		<constant name="PAGE_MODE_USE_NONE" value="0" enum="PageMode">
+			Display the document with neither outline nor thumbnail.
 		</constant>
 		<constant name="PAGE_MODE_USE_OUTLINE" value="1" enum="PageMode">
+			Display the document with outline pane.
 		</constant>
 		<constant name="PAGE_MODE_USE_THUMBS" value="2" enum="PageMode">
+			Display the document with thumbnail pane.
 		</constant>
 		<constant name="PAGE_MODE_FULL_SCREEN" value="3" enum="PageMode">
+			Display the document with full screen mode.
 		</constant>
 		<constant name="PAGE_MODE_EOF" value="4" enum="PageMode">
+			If not set.
 		</constant>
 		<constant name="PAGE_NUM_STYLE_DECIMAL" value="0" enum="PageNumStyle">
+			Arabic numerals (1 2 3 4).
 		</constant>
 		<constant name="PAGE_NUM_STYLE_UPPER_ROMAN" value="1" enum="PageNumStyle">
+			Uppercase roman numerals (I II III IV).
 		</constant>
 		<constant name="PAGE_NUM_STYLE_LOWER_ROMAN" value="2" enum="PageNumStyle">
+			Lowercase roman numerals (i ii iii iv).
 		</constant>
 		<constant name="PAGE_NUM_STYLE_UPPER_LETTERS" value="3" enum="PageNumStyle">
+			Uppercase letters (A B C D).
 		</constant>
 		<constant name="PAGE_NUM_STYLE_LOWER_LETTERS" value="4" enum="PageNumStyle">
+			Lowercase letters (a b c d).
 		</constant>
 		<constant name="PAGE_NUM_STYLE_EOF" value="5" enum="PageNumStyle">
+			Off.
 		</constant>
 		<constant name="COLOR_SPACE_DEVICE_GRAY" value="0" enum="ColorSpace">
 		</constant>
