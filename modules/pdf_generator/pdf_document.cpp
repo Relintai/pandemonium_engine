@@ -1005,6 +1005,10 @@ void PDFDocument::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("image_create_pdf_from_image", "image"), &PDFDocument::image_create_pdf_from_image);
 
+	ClassDB::bind_method(D_METHOD("info_attr_get", "info_typ"), &PDFDocument::info_attr_get);
+	ClassDB::bind_method(D_METHOD("info_attr_set", "info_type", "value"), &PDFDocument::info_attr_set);
+	ClassDB::bind_method(D_METHOD("info_attr_date_set", "info_type", "date"), &PDFDocument::info_attr_date_set);
+
 	ClassDB::bind_method(D_METHOD("password_set", "owner_passwd", "user_passwd"), &PDFDocument::password_set);
 	ClassDB::bind_method(D_METHOD("permission_set", "permission"), &PDFDocument::permission_set);
 	ClassDB::bind_method(D_METHOD("encryption_mode_set", "encryption_mode", "key_length"), &PDFDocument::encryption_mode_set);
