@@ -5,17 +5,17 @@
 	<description>
 		Path Painting - A path is composed of straight and curved line segments. Paths define shapes and regions.
 		Vector graphics are drawn by the following steps:
-		    - Set graphics states (such as line-width, dash-pattern, color...) using "Graphics State Operators" or "Color Operators".
-		    - Start new path using path_move_to(), path_rectangle(), path_arc(), or path_circle().
-		    - Append to path using "Path Construction Operators".
-		    - Stroke or paint the path using "Path Painting Operators".
+		  - Set graphics states (such as line-width, dash-pattern, color...) using "Graphics State Operators" or "Color Operators".
+		  - Start new path using path_move_to(), path_rectangle(), path_arc(), or path_circle().
+		  - Append to path using "Path Construction Operators".
+			- Stroke or paint the path using "Path Painting Operators".
 		Text Showing - Text is drawn by the following steps:
-		- Start drawing text by invoking begin_text().
-		- Set text states (such as font, filling-color...) using "Text State Operators" or "Color Operators". At least set_font_and_size() must be invoked once before invoking "Text Showing Operators".
-		- Set text positioning by invoking "Text Positioning Operators".
-		- Show text by invoking "Text Showing Operators".
-		- Repeat steps 2 to 4 if necessary.
-		- Finish drawing text by invoking end_text().
+			- Start drawing text by invoking begin_text().
+			- Set text states (such as font, filling-color...) using "Text State Operators" or "Color Operators". At least set_font_and_size() must be invoked once before invoking "Text Showing Operators".
+			- Set text positioning by invoking "Text Positioning Operators".
+			- Show text by invoking "Text Showing Operators".
+			- Repeat steps 2 to 4 if necessary.
+			- Finish drawing text by invoking end_text().
 	</description>
 	<tutorials>
 	</tutorials>

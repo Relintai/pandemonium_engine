@@ -358,10 +358,10 @@
 			<argument index="0" name="data" type="PoolByteArray" />
 			<description>
 				Loads PNG image from a buffer.
-				 Error codes
-				 - EC_INVALID_DOCUMENT - An invalid document handle was set.
-				 - EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
-				 - EC_INVALID_PNG_IMAGE - Invalid PNG format.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_INVALID_PNG_IMAGE - Invalid PNG format.
 			</description>
 		</method>
 		<method name="image_load_raw_1_bit_image_from_mem">
