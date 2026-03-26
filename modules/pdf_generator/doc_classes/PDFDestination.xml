@@ -77,9 +77,9 @@
 			<argument index="0" name="top" type="float" />
 			<description>
 				Defines the appearance of a page to magnifying to fit the height of the page within the window and setting the left position of the page to the value of the "top" parameter.
-				 Error codes
-				 - EC_INVALID_DESTINATION - An invalid destination handle was set.
-				 - EC_INVALID_PARAMETER - An invalid value was set at either left, top or zoom parameter.
+				Error codes
+				- EC_INVALID_DESTINATION - An invalid destination handle was set.
+				- EC_INVALID_PARAMETER - An invalid value was set at either left, top or zoom parameter.
 			</description>
 		</method>
 		<method name="set_xyz">

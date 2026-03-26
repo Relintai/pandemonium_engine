@@ -214,7 +214,7 @@
 				[codeblock]concat(Transform2D(Vector2(72.0f / 300.0f, 0), Vector2(0, 72.0f / 300.0f), Vector2(0, 0));[/codeblock]
 				Invoke g_save() before concat(). Then the change by concat() can be restored by invoking g_restore().
 				[codeblock]// save the current graphics states
-				  			page.g_save(page);
+				page.g_save(page);
 				// concatenate the transformation matrix */
 				page.concat(Transform2D(Vector2(72.0f / 300.0f, 0), Vector2(0, 72.0f / 300.0f), Vector2(0, 0));
 				// show text on the translated coordinates
