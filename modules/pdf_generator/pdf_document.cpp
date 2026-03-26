@@ -944,7 +944,7 @@ void PDFDocument::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("font_load_type_1_from_file", "afm_file_name", "data_file_name"), &PDFDocument::font_load_type_1_from_file);
 	ClassDB::bind_method(D_METHOD("font_load_ttf_from_file", "file_name", "embed_into_document"), &PDFDocument::font_load_ttf_from_file);
-	ClassDB::bind_method(D_METHOD("font_load_ttf_from_collection_file", "index", "embed_into_document"), &PDFDocument::font_load_ttf_from_collection_file);
+	ClassDB::bind_method(D_METHOD("font_load_ttf_from_collection_file", "file_name", "index", "embed_into_document"), &PDFDocument::font_load_ttf_from_collection_file);
 	ClassDB::bind_method(D_METHOD("font_load_ttf_from_mem", "data", "embed_into_document"), &PDFDocument::font_load_ttf_from_mem);
 
 	ClassDB::bind_method(D_METHOD("fonts_use_jp"), &PDFDocument::fonts_use_jp);
