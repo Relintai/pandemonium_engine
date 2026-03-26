@@ -265,6 +265,14 @@ public:
 		EC_INVALID_SHADING_TYPE = 0x1088,
 	};
 
+	enum Permissions {
+		PERMISSION_ENABLE_READ = 0,
+		PERMISSION_ENABLE_PRINT = 4,
+		PERMISSION_ENABLE_EDIT_ALL = 8,
+		PERMISSION_ENABLE_COPY = 16,
+		PERMISSION_ENABLE_EDIT = 32,
+	};
+
 	uint32_t viewer_preference_get() const;
 	void viewer_preference_set(const uint32_t p_preference);
 
