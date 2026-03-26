@@ -168,6 +168,7 @@
 		<method name="get_status">
 			<return type="int" />
 			<description>
+				The last returned status.
 			</description>
 		</method>
 		<method name="image_create_pdf_from_image">
@@ -506,198 +507,301 @@
 		<constant name="ENCRYPT_MODE_R3" value="3" enum="EncryptMode">
 		</constant>
 		<constant name="EC_ARRAY_COUNT_ERR" value="4097" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_ARRAY_ITEM_NOT_FOUND" value="4098" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_ARRAY_ITEM_UNEXPECTED_TYPE" value="4099" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_BINARY_LENGTH_ERR" value="4100" enum="ErrorCodes">
+			Data length &gt; HPDF_LIMIT_MAX_STRING_LEN.
 		</constant>
 		<constant name="EC_CANNOT_GET_PALLET" value="4101" enum="ErrorCodes">
+			Cannot get pallet data from PNG image.
 		</constant>
 		<constant name="EC_DICT_COUNT_ERR" value="4103" enum="ErrorCodes">
+			Dictionary elements &gt; HPDF_LIMIT_MAX_DICT_ELEMENT
 		</constant>
 		<constant name="EC_DICT_ITEM_NOT_FOUND" value="4104" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_DICT_ITEM_UNEXPECTED_TYPE" value="4105" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_DICT_STREAM_LENGTH_NOT_FOUND" value="4106" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_DOC_ENCRYPTDICT_NOT_FOUND" value="4107" enum="ErrorCodes">
+			HPDF_SetEncryptMode() or HPDF_SetPermission() called before password set.
 		</constant>
 		<constant name="EC_DOC_INVALID_OBJECT" value="4108" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_DUPLICATE_REGISTRATION" value="4110" enum="ErrorCodes">
+			Tried to re-register a registered font.
 		</constant>
 		<constant name="EC_EXCEED_JWW_CODE_NUM_LIMIT" value="4111" enum="ErrorCodes">
+			Cannot register a character to the Japanese word wrap characters list.
 		</constant>
 		<constant name="EC_ENCRYPT_INVALID_PASSWORD" value="4113" enum="ErrorCodes">
+			1. Tried to set the owner password to NULL.
+			2. Owner and user password are the same.
 		</constant>
 		<constant name="EC_ERR_UNKNOWN_CLASS" value="4115" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_EXCEED_GSTATE_LIMIT" value="4116" enum="ErrorCodes">
+			Stack depth &gt; HPDF_LIMIT_MAX_GSTATE.
 		</constant>
 		<constant name="EC_FAILED_TO_ALLOC_MEM" value="4117" enum="ErrorCodes">
+			Memory allocation failed.
 		</constant>
 		<constant name="EC_FILE_IO_ERROR" value="4118" enum="ErrorCodes">
+			File processing failed. (Detailed code is set.)
 		</constant>
 		<constant name="EC_FILE_OPEN_ERROR" value="4119" enum="ErrorCodes">
+			Cannot open a file. (Detailed code is set.)
 		</constant>
 		<constant name="EC_FONT_EXISTS" value="4121" enum="ErrorCodes">
+			Tried to load a font that has been registered.
 		</constant>
 		<constant name="EC_FONT_INVALID_WIDTHS_TABLE" value="4122" enum="ErrorCodes">
+			1. Font-file format is invalid.
+			2. Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_INVALID_AFM_HEADER" value="4123" enum="ErrorCodes">
+			Cannot recognize header of afm file.
 		</constant>
 		<constant name="EC_INVALID_ANNOTATION" value="4124" enum="ErrorCodes">
+			Specified annotation handle is invalid.
 		</constant>
 		<constant name="EC_INVALID_BIT_PER_COMPONENT" value="4126" enum="ErrorCodes">
+			Bit-per-component of a image which was set as mask-image is invalid.
 		</constant>
 		<constant name="EC_INVALID_CHAR_MATRICS_DATA" value="4127" enum="ErrorCodes">
+			Cannot recognize char-matrics-data of afm file.
 		</constant>
 		<constant name="EC_INVALID_COLOR_SPACE" value="4128" enum="ErrorCodes">
+			1. Invalid color_space parameter of HPDF_LoadRawImage.
+			2. Color-space of a image which was set as mask-image is invalid.
+			3. Invoked function invalid in present color-space.
 		</constant>
 		<constant name="EC_INVALID_COMPRESSION_MODE" value="4129" enum="ErrorCodes">
+			Invalid value set when invoking HPDF_SetCommpressionMode().
 		</constant>
 		<constant name="EC_INVALID_DATE_TIME" value="4130" enum="ErrorCodes">
+			An invalid date-time value was set.
 		</constant>
 		<constant name="EC_INVALID_DESTINATION" value="4131" enum="ErrorCodes">
+			An invalid destination handle was set.
 		</constant>
 		<constant name="EC_INVALID_DOCUMENT" value="4133" enum="ErrorCodes">
+			An invalid document handle was set.
 		</constant>
 		<constant name="EC_INVALID_DOCUMENT_STATE" value="4134" enum="ErrorCodes">
+			Function invalid in the present state was invoked.
 		</constant>
 		<constant name="EC_INVALID_ENCODER" value="4135" enum="ErrorCodes">
+			An invalid encoder handle was set.
 		</constant>
 		<constant name="EC_INVALID_ENCODER_TYPE" value="4136" enum="ErrorCodes">
+			Combination between font and encoder is wrong.
 		</constant>
 		<constant name="EC_INVALID_ENCODING_NAME" value="4139" enum="ErrorCodes">
+			An Invalid encoding name is specified.
 		</constant>
 		<constant name="EC_INVALID_ENCRYPT_KEY_LEN" value="4140" enum="ErrorCodes">
+			Encryption key length is invalid.
 		</constant>
 		<constant name="EC_INVALID_FONTDEF_DATA" value="4141" enum="ErrorCodes">
+			1. An invalid font handle was set.
+			2. Unsupported font format.
 		</constant>
 		<constant name="EC_INVALID_FONTDEF_TYPE" value="4142" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_INVALID_FONT_NAME" value="4143" enum="ErrorCodes">
+			Font with the specified name is not found.
 		</constant>
 		<constant name="EC_INVALID_IMAGE" value="4144" enum="ErrorCodes">
+			Unsupported image format.
 		</constant>
 		<constant name="EC_INVALID_JPEG_DATA" value="4145" enum="ErrorCodes">
+			Unsupported image format.
 		</constant>
 		<constant name="EC_INVALID_N_DATA" value="4146" enum="ErrorCodes">
+			Cannot read a postscript-name from an afm file.
 		</constant>
 		<constant name="EC_INVALID_OBJECT" value="4147" enum="ErrorCodes">
+			1. An invalid object is set.
+			2. Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_INVALID_OBJ_ID" value="4148" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_INVALID_OPERATION" value="4149" enum="ErrorCodes">
+			Invoked HPDF_Image_SetColorMask() against the image-object which was set a mask-image.
 		</constant>
 		<constant name="EC_INVALID_OUTLINE" value="4150" enum="ErrorCodes">
+			An invalid outline-handle was specified.
 		</constant>
 		<constant name="EC_INVALID_PAGE" value="4151" enum="ErrorCodes">
+			An invalid page-handle was specified.
 		</constant>
 		<constant name="EC_INVALID_PAGES" value="4152" enum="ErrorCodes">
+			An invalid pages-handle was specified. (internal error)
 		</constant>
 		<constant name="EC_INVALID_PARAMETER" value="4153" enum="ErrorCodes">
+			An invalid value is set.
 		</constant>
 		<constant name="EC_INVALID_PNG_IMAGE" value="4155" enum="ErrorCodes">
+			Invalid PNG image format.
 		</constant>
 		<constant name="EC_INVALID_STREAM" value="4156" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_MISSING_FILE_NAME_ENTRY" value="4157" enum="ErrorCodes">
+			Internal error. "_FILE_NAME" entry for delayed loading is missing.
 		</constant>
 		<constant name="EC_INVALID_TTC_FILE" value="4159" enum="ErrorCodes">
+			Invalid .TTC file format.
 		</constant>
 		<constant name="EC_INVALID_TTC_INDEX" value="4160" enum="ErrorCodes">
+			Index parameter &lt; number of included fonts.
 		</constant>
 		<constant name="EC_INVALID_WX_DATA" value="4161" enum="ErrorCodes">
+			Cannot read a width-data from an afm file.
 		</constant>
 		<constant name="EC_ITEM_NOT_FOUND" value="4162" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_LIBPNG_ERROR" value="4163" enum="ErrorCodes">
+			Error returned from PNGLIB while loading image.
 		</constant>
 		<constant name="EC_NAME_INVALID_VALUE" value="4164" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_NAME_OUT_OF_RANGE" value="4165" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_PAGE_INVALID_PARAM_COUNT" value="4168" enum="ErrorCodes">
 		</constant>
 		<constant name="EC_PAGES_MISSING_KIDS_ENTRY" value="4169" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_PAGE_CANNOT_FIND_OBJECT" value="4170" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_PAGE_CANNOT_GET_ROOT_PAGES" value="4171" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_PAGE_CANNOT_RESTORE_GSTATE" value="4172" enum="ErrorCodes">
+			There are no graphics-states to be restored.
 		</constant>
 		<constant name="EC_PAGE_CANNOT_SET_PARENT" value="4173" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_PAGE_FONT_NOT_FOUND" value="4174" enum="ErrorCodes">
+			The current font is not set.
 		</constant>
 		<constant name="EC_PAGE_INVALID_FONT" value="4175" enum="ErrorCodes">
+			An invalid font-handle was specified.
 		</constant>
 		<constant name="EC_PAGE_INVALID_FONT_SIZE" value="4176" enum="ErrorCodes">
+			An invalid font-size was set.
 		</constant>
 		<constant name="EC_PAGE_INVALID_GMODE" value="4177" enum="ErrorCodes">
+			See Graphics mode.
 		</constant>
 		<constant name="EC_PAGE_INVALID_INDEX" value="4178" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_PAGE_INVALID_ROTATE_VALUE" value="4179" enum="ErrorCodes">
+			Specified value is not multiple of 90.
 		</constant>
 		<constant name="EC_PAGE_INVALID_SIZE" value="4180" enum="ErrorCodes">
+			An invalid page-size was set.
 		</constant>
 		<constant name="EC_PAGE_INVALID_XOBJECT" value="4181" enum="ErrorCodes">
+			An invalid image-handle was set.
 		</constant>
 		<constant name="EC_PAGE_OUT_OF_RANGE" value="4182" enum="ErrorCodes">
+			The specified value is out of range.
 		</constant>
 		<constant name="EC_REAL_OUT_OF_RANGE" value="4183" enum="ErrorCodes">
+			The specified value is out of range.
 		</constant>
 		<constant name="EC_STREAM_EOF" value="4184" enum="ErrorCodes">
+			Unexpected EOF marker was detected.
 		</constant>
 		<constant name="EC_STREAM_READLN_CONTINUE" value="4185" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_STRING_OUT_OF_RANGE" value="4187" enum="ErrorCodes">
+			The length of the text is too long.
 		</constant>
 		<constant name="EC_THIS_FUNC_WAS_SKIPPED" value="4188" enum="ErrorCodes">
+			Function not executed because of other errors.
 		</constant>
 		<constant name="EC_TTF_CANNOT_EMBEDDING_FONT" value="4189" enum="ErrorCodes">
+			Font cannot be embedded. (license restriction)
 		</constant>
 		<constant name="EC_TTF_INVALID_CMAP" value="4190" enum="ErrorCodes">
+			Unsupported ttf format. (cannot find unicode cmap)
 		</constant>
 		<constant name="EC_TTF_INVALID_FOMAT" value="4191" enum="ErrorCodes">
+			Unsupported ttf format.
 		</constant>
 		<constant name="EC_TTF_MISSING_TABLE" value="4192" enum="ErrorCodes">
+			Unsupported ttf format. (cannot find a necessary table)
 		</constant>
 		<constant name="EC_UNSUPPORTED_FONT_TYPE" value="4193" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_UNSUPPORTED_FUNC" value="4194" enum="ErrorCodes">
+			1. Library not configured to use PNGLIB.
+			2. Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_UNSUPPORTED_JPEG_FORMAT" value="4195" enum="ErrorCodes">
+			Unsupported JPEG format.
 		</constant>
 		<constant name="EC_UNSUPPORTED_TYPE1_FONT" value="4196" enum="ErrorCodes">
+			Failed to parse .PFB file.
 		</constant>
 		<constant name="EC_XREF_COUNT_ERR" value="4197" enum="ErrorCodes">
+			Internal error. Data consistency was lost.
 		</constant>
 		<constant name="EC_ZLIB_ERROR" value="4198" enum="ErrorCodes">
+			Error while executing ZLIB function.
 		</constant>
 		<constant name="EC_INVALID_PAGE_INDEX" value="4199" enum="ErrorCodes">
+			An invalid page index was passed.
 		</constant>
 		<constant name="EC_INVALID_URI" value="4200" enum="ErrorCodes">
+			An invalid URI was set.
 		</constant>
 		<constant name="EC_PAGE_LAYOUT_OUT_OF_RANGE" value="4201" enum="ErrorCodes">
+			An invalid page-layout was set.
 		</constant>
 		<constant name="EC_PAGE_MODE_OUT_OF_RANGE" value="4208" enum="ErrorCodes">
+			An invalid page-mode was set.
 		</constant>
 		<constant name="EC_PAGE_NUM_STYLE_OUT_OF_RANGE" value="4209" enum="ErrorCodes">
+			An invalid page-num-style was set.
 		</constant>
 		<constant name="EC_ANNOT_INVALID_ICON" value="4210" enum="ErrorCodes">
+			An invalid icon was set.
 		</constant>
 		<constant name="EC_ANNOT_INVALID_BORDER_STYLE" value="4211" enum="ErrorCodes">
+			An invalid border-style was set.
 		</constant>
 		<constant name="EC_PAGE_INVALID_DIRECTION" value="4212" enum="ErrorCodes">
+			An invalid page-direction was set.
 		</constant>
 		<constant name="EC_INVALID_FONT" value="4213" enum="ErrorCodes">
+			An invalid font-handle was specified.
 		</constant>
 		<constant name="EC_PAGE_INSUFFICIENT_SPACE" value="4214" enum="ErrorCodes">
 		</constant>
