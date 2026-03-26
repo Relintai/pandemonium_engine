@@ -21,21 +21,26 @@
 		<method name="get_bits_per_component">
 			<return type="int" />
 			<description>
+				Gets the number of bits used to describe each color component.
 			</description>
 		</method>
 		<method name="get_color_space">
 			<return type="String" />
 			<description>
+				Gets the name of the image's color space.
+				Possible values: "", "DeviceGray", "DeviceRGB", "DeviceCMYK", "Indexed".
 			</description>
 		</method>
 		<method name="get_height">
 			<return type="int" />
 			<description>
+				Gets the height of the image of an image object.
 			</description>
 		</method>
 		<method name="get_size">
 			<return type="Vector2" />
 			<description>
+				Gets the size of the image of an image object.
 			</description>
 		</method>
 		<method name="get_size_status">
@@ -52,6 +57,7 @@
 		<method name="get_width">
 			<return type="int" />
 			<description>
+				Gets the width of the image of an image object.
 			</description>
 		</method>
 		<method name="set_color_mask">
@@ -60,12 +66,24 @@
 			<argument index="1" name="g_min_max" type="Vector2i" />
 			<argument index="2" name="b_min_max" type="Vector2i" />
 			<description>
+				Sets the transparent color of the image by the RGB range values. The color within the range is displayed as a transparent color. The Image must be RGB color space.
+				Values need to be between 0 and 255.
+				Error codes
+				- EC_INVALID_IMAGE - An invalid image handle was set.
+				- EC_INVALID_COLOR_SPACE - An image other than RGB color was specified.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_INVALID_PARAMETER - An invalid value is specified.
 			</description>
 		</method>
 		<method name="set_mask_image">
 			<return type="int" />
 			<argument index="0" name="mask_image" type="PDFImage" />
 			<description>
+				Sets the mask image.
+				Error codes
+				- EC_INVALID_IMAGE - An invalid image handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
 			</description>
 		</method>
 	</methods>
