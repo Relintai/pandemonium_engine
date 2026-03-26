@@ -18,6 +18,7 @@
 		<method name="get_status">
 			<return type="int" />
 			<description>
+				The last returned status.
 			</description>
 		</method>
 	</methods>
