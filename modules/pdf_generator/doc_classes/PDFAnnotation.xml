@@ -21,6 +21,7 @@
 			<argument index="3" name="dash_off" type="int" />
 			<argument index="4" name="dash_phase" type="int" />
 			<description>
+				Defines the appearance of a text annotation.
 			</description>
 		</method>
 		<method name="set_cmyk_color">
@@ -49,14 +50,19 @@
 	</methods>
 	<constants>
 		<constant name="BORDER_STYLE_SOLID" value="0" enum="BorderStyleSubtype">
+			Solid rectangle.
 		</constant>
 		<constant name="BORDER_STYLE_DASHED" value="1" enum="BorderStyleSubtype">
+			Dashed rectangle.
 		</constant>
 		<constant name="BORDER_STYLE_BEVELED" value="2" enum="BorderStyleSubtype">
+			Embossed rectangle.
 		</constant>
 		<constant name="BORDER_STYLE_INSET" value="3" enum="BorderStyleSubtype">
+			Engraved rectangle.
 		</constant>
 		<constant name="BORDER_STYLE_UNDERLINED" value="4" enum="BorderStyleSubtype">
+			Single line under the bottom of the annotation.
 		</constant>
 	</constants>
 </class>

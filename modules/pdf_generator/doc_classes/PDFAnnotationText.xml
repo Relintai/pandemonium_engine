@@ -11,12 +11,14 @@
 			<return type="int" />
 			<argument index="0" name="icon" type="int" enum="PDFAnnotationText.AnnotIcon" />
 			<description>
+				Defines the style of the annotation's icon. (see example program).
 			</description>
 		</method>
 		<method name="set_opened">
 			<return type="int" />
 			<argument index="0" name="opened" type="bool" />
 			<description>
+				Defines whether the text-annotation is initially open.
 			</description>
 		</method>
 	</methods>

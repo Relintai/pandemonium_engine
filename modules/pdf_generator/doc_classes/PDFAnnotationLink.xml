@@ -11,6 +11,7 @@
 			<return type="int" />
 			<argument index="0" name="highlight_mode" type="int" enum="PDFAnnotationLink.HighlightMode" />
 			<description>
+				Defines the appearance when a mouse clicks on a link annotation. (see example program).
 			</description>
 		</method>
 		<method name="set_javascript">
@@ -25,17 +26,22 @@
 			<argument index="1" name="dash_on" type="int" />
 			<argument index="2" name="dash_off" type="int" />
 			<description>
+				Defines the style of the annotation's border.
 			</description>
 		</method>
 	</methods>
 	<constants>
 		<constant name="HIGHLIGHT_MODE_NO_HIGHTLIGHT" value="0" enum="HighlightMode">
+			No highlighting.
 		</constant>
 		<constant name="HIGHLIGHT_MODE_INVERT_BOX" value="1" enum="HighlightMode">
+			Invert the contents of the area of annotation.
 		</constant>
 		<constant name="HIGHLIGHT_MODE_INVERT_BORDER" value="2" enum="HighlightMode">
+			Invert the annotation's border.
 		</constant>
 		<constant name="HIGHLIGHT_MODE_DOWN_APPEARANCE" value="3" enum="HighlightMode">
+			Dent the annotation.
 		</constant>
 		<constant name="HIGHLIGHT_MODE_HIGHTLIGHT_MODE_EOF" value="4" enum="HighlightMode">
 		</constant>
