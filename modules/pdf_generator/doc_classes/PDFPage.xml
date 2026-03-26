@@ -66,6 +66,11 @@
 			<argument index="0" name="rect" type="Rect2" />
 			<argument index="1" name="destination" type="PDFDestination" />
 			<description>
+				Creates a new link annotation object for the page.
+				Error code
+				- EC_INVALID_PAGE - An invalid page handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_INVALID_ENCODER - An invalid encoder handle is specified..
 			</description>
 		</method>
 		<method name="annotation_popup_create">
@@ -122,6 +127,11 @@
 			<argument index="1" name="text" type="String" />
 			<argument index="2" name="encoder" type="PDFEncoder" default="null" />
 			<description>
+				Creates a new text annotation object for the page.
+				Error code
+				- EC_INVALID_PAGE - An invalid page handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_INVALID_ENCODER - An invalid encoder handle is specified..
 			</description>
 		</method>
 		<method name="annotation_text_markup_create">
@@ -146,6 +156,10 @@
 			<argument index="0" name="rect" type="Rect2" />
 			<argument index="1" name="uri" type="String" />
 			<description>
+				Creates a new web link annotation object for the page.
+				Error code
+				- EC_INVALID_PAGE - An invalid page handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
 			</description>
 		</method>
 		<method name="annotation_widget_create">
@@ -215,6 +229,10 @@
 		<method name="create_destination">
 			<return type="PDFDestination" />
 			<description>
+				Creates a new destination object for the page.
+				Error codes
+				- EC_INVALID_PAGE - An invalid page handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
 			</description>
 		</method>
 		<method name="create_pd3_3d_measure">
@@ -228,26 +246,31 @@
 		<method name="current_font_get">
 			<return type="PDFFont" />
 			<description>
+				Gets the handle of the page's current font.
 			</description>
 		</method>
 		<method name="current_font_size_get">
 			<return type="float" />
 			<description>
+				Gets the size of the page's current font.
 			</description>
 		</method>
 		<method name="current_pos_get">
 			<return type="Vector2" />
 			<description>
+				Gets the current position for path painting. An application can invoke this only when graphics mode is GRAPHICS_MODE_PATH_OBJECT.
 			</description>
 		</method>
 		<method name="current_text_pos_get">
 			<return type="Vector2" />
 			<description>
+				Gets the current position for text showing. An application can invoke this only when graphics mode is GRAPHICS_MODE_TEXT_OBJECT.
 			</description>
 		</method>
 		<method name="dash_get">
 			<return type="PDFDashMode" />
 			<description>
+				Gets the current pattern of the page.
 			</description>
 		</method>
 		<method name="dash_set">
@@ -308,11 +331,13 @@
 		<method name="filling_color_space_get">
 			<return type="int" enum="PDFDocument.ColorSpace" />
 			<description>
+				Returns the current value of the page's filling color space.
 			</description>
 		</method>
 		<method name="g_mode_get">
 			<return type="int" />
 			<description>
+				Gets the current graphics mode, or 0.
 			</description>
 		</method>
 		<method name="g_restore">
@@ -328,6 +353,7 @@
 		<method name="g_state_depth_get">
 			<return type="int" />
 			<description>
+				Returns the number of the page's graphics state stack.
 			</description>
 		</method>
 		<method name="get_status">
@@ -342,6 +368,10 @@
 			<argument index="1" name="width" type="float" />
 			<argument index="2" name="word_wrap" type="bool" />
 			<description>
+				Returns the byte length which can be included within the specified width as x, and the real widths of the text as y.
+				- text - The text to get width.
+				- width - The width of the area to put the text.
+				- wordwrap - When there are three words of "ABCDE", "FGH", and "IJKL", and the substring until "J" can be included within the width, if word_wrap parameter is HPDF_FALSE it returns 12, and if word_wrap parameter is HPDF_TRUE, it returns 10 (the end of the previous word).
 			</description>
 		</method>
 		<method name="move_text_pos">
@@ -492,6 +522,10 @@
 			<return type="int" />
 			<argument index="0" name="angle" type="int" />
 			<description>
+				Sets rotation angle of the page.
+				Error codes
+				- EC_INVALID_PAGE - An invalid page handle was set.
+				- EC_PAGE_INVALID_ROTATE_VALUE - An invalid rotation angle was set.
 			</description>
 		</method>
 		<method name="set_font_and_size">
@@ -532,6 +566,12 @@
 			<argument index="0" name="size" type="int" enum="PDFPage.PageSizes" />
 			<argument index="1" name="direction" type="int" enum="PDFPage.PageDirection" />
 			<description>
+				Changes the size and direction of a page to a predefined size.
+				Error codes
+				- EC_INVALID_PAGE - An invalid page handle was set.
+				- EC_PAGE_INVALID_SIZE - An invalid size was set.
+				- EC_PAGE_INVALID_DIRECTION - An invalid direction was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
 			</description>
 		</method>
 		<method name="slide_show_set">
@@ -540,22 +580,26 @@
 			<argument index="1" name="disp_time" type="float" />
 			<argument index="2" name="trans_time" type="float" />
 			<description>
+				Configures the setting for slide transition of the page.
 			</description>
 		</method>
 		<method name="stroking_color_space_get">
 			<return type="int" enum="PDFDocument.ColorSpace" />
 			<description>
+				Returns the current value of the page's stroking color space.
 			</description>
 		</method>
 		<method name="text_width">
 			<return type="float" />
 			<argument index="0" name="text" type="String" />
 			<description>
+				Gets the width of the text in current fontsize, character spacing and word spacing.
 			</description>
 		</method>
 		<method name="trans_matrix_get">
 			<return type="Transform2D" />
 			<description>
+				Gets the current transformation matrix of the page.
 			</description>
 		</method>
 		<method name="zoom_set">
@@ -567,44 +611,84 @@
 	</methods>
 	<members>
 		<member name="char_space" type="float" setter="char_space_set" getter="char_space_get" default="0.0">
+			Gets the current value of the page's character spacing.
 		</member>
 		<member name="cmyk_fill" type="Vector4" setter="cmyk_fill_set" getter="cmyk_fill_get" default="Vector4( 0, 0, 0, 0 )">
+			The current value of the page's filling color.
+			Valid only when the page's filling color space is COLOR_SSPACE_DEVICE_CMYK.
+			Assignment sets color space to COLOR_SSPACE_DEVICE_CMYK.
 		</member>
 		<member name="cmyk_stroke" type="Vector4" setter="cmyk_stroke_set" getter="cmyk_stroke_get" default="Vector4( 0, 0, 0, 0 )">
+			The current value of the page's stroking color.
+			Valid only when the page's filling color space is COLOR_SSPACE_DEVICE_CMYK.
+			Assignment sets color space to COLOR_SSPACE_DEVICE_CMYK.
 		</member>
 		<member name="flat" type="float" setter="flat_set" getter="flat_get" default="1.0">
+			Gets the current value of the page's flatness.
 		</member>
 		<member name="gray_fill" type="float" setter="gray_fill_set" getter="gray_fill_get" default="0.0">
+			The current value of the page's filling color.
+			Valid only when the page's filling color space is COLOR_SSPACE_DEVICE_GRAY.
+			Assignment sets color space to COLOR_SSPACE_DEVICE_GRAY.
 		</member>
 		<member name="gray_stroke" type="float" setter="gray_stroke_set" getter="gray_stroke_get" default="0.0">
+			The current value of the page's stroking color.
+			Valid only when the page's filling color space is COLOR_SSPACE_DEVICE_GRAY.
+			Assignment sets color space to COLOR_SSPACE_DEVICE_GRAY.
 		</member>
 		<member name="height" type="float" setter="set_height" getter="get_height" default="0.0">
+			The height of a page.
+			Error codes
+			- EC_INVALID_PAGE - An invalid page handle was set.
+			- EC_PAGE_INVALID_SIZE - An invalid size was set.
+			- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
 		</member>
 		<member name="horizontal_scalling" type="float" setter="horizontal_scalling_set" getter="horizontal_scalling_get" default="100.0">
+			The current value of the page's horizontal scalling for text showing.
 		</member>
 		<member name="line_cap" type="int" setter="line_cap_set" getter="line_cap_get" enum="PDFPage.LineCap" default="0">
+			The current line cap style of the page.
 		</member>
 		<member name="line_join" type="int" setter="line_join_set" getter="line_join_get" enum="PDFPage.LineJoin" default="0">
+			The current line join style of the page.
 		</member>
 		<member name="line_width" type="float" setter="line_width_set" getter="line_width_get" default="1.0">
+			The current line width of the page.
 		</member>
 		<member name="miter_limit" type="float" setter="miter_limit_set" getter="miter_limit_get" default="10.0">
+			Gets the current value of the page's miter limit.
 		</member>
 		<member name="rgb_fill" type="Color" setter="rgb_fill_set" getter="rgb_fill_get" default="Color( 0, 0, 0, 1 )">
+			The current value of the page's filling color.
+			Valid only when the page's filling color space is COLOR_SSPACE_DEVICE_RGB.
+			Assignment sets color space to COLOR_SSPACE_DEVICE_RGB.
 		</member>
 		<member name="rgb_stroke" type="Color" setter="rgb_stroke_set" getter="rgb_stroke_get" default="Color( 0, 0, 0, 1 )">
+			The current value of the page's stroking color.
+			Valid only when the page's filling color space is COLOR_SSPACE_DEVICE_RGB.
+			Assignment sets color space to COLOR_SSPACE_DEVICE_RGB.
 		</member>
 		<member name="text_leading" type="float" setter="text_leading_set" getter="text_leading_get" default="0.0">
+			The current value of the page's line spacing.
 		</member>
 		<member name="text_matrix" type="Transform2D" setter="text_matrix_set" getter="text_matrix_get" default="Transform2D( 1, 0, 0, 1, 0, 0 )">
+			The current text transformation matrix of the page.
 		</member>
 		<member name="text_rendering_mode" type="int" setter="text_rendering_mode_set" getter="text_rendering_mode_get" enum="PDFPage.TextRenderingMode" default="0">
+			The current value of the page's text rendering mode.
 		</member>
 		<member name="text_rise" type="float" setter="text_rise_set" getter="text_rise_get" default="0.0">
+			The current value of the page's text rising.
 		</member>
 		<member name="width" type="float" setter="set_width" getter="get_width" default="0.0">
+			The width of a page.
+			Error codes
+			- EC_INVALID_PAGE - An invalid page handle was set.
+			- EC_PAGE_INVALID_SIZE - An invalid size was set.
+			- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
 		</member>
 		<member name="word_space" type="float" setter="word_space_set" getter="word_space_get" default="0.0">
+			Returns the current value of the page's word spacing.
 		</member>
 	</members>
 	<constants>
@@ -619,34 +703,49 @@
 		<constant name="PAGE_BOUNDARY_ARTBOX" value="4" enum="PageBoundary">
 		</constant>
 		<constant name="PAGE_SIZE_LETTER" value="0" enum="PageSizes">
+			8.5 x 11 (inches), 612 x 792 px.
 		</constant>
 		<constant name="PAGE_SIZE_LEGAL" value="1" enum="PageSizes">
+			8.5 x 14 (inches), 612 x 1008 px.
 		</constant>
 		<constant name="PAGE_SIZE_A3" value="2" enum="PageSizes">
+			297 x 420 (mm), 841.89 x 1199.551 px.
 		</constant>
 		<constant name="PAGE_SIZE_A4" value="3" enum="PageSizes">
+			210 x 297 (mm), 595.276 x 841.89 px.
 		</constant>
 		<constant name="PAGE_SIZE_A5" value="4" enum="PageSizes">
+			148 x 210 (mm), 419.528 x 595.276 px.
 		</constant>
 		<constant name="PAGE_SIZE_B4" value="5" enum="PageSizes">
+			250 x 353 (mm), 708.661 x 1000.63 px.
 		</constant>
 		<constant name="PAGE_SIZE_B5" value="6" enum="PageSizes">
+			176 x 250 (mm), 498.898 x 708.661 px.
 		</constant>
 		<constant name="PAGE_SIZE_EXECUTIVE" value="7" enum="PageSizes">
+			7.25 x 10.5 (inches), 522 x 756 px.
 		</constant>
 		<constant name="PAGE_SIZE_US4x6" value="8" enum="PageSizes">
+			4 x 6 (inches), 288 x 432 px.
 		</constant>
 		<constant name="PAGE_SIZE_US4x8" value="9" enum="PageSizes">
+			4 x 8 (inches), 288 x 576 px.
 		</constant>
 		<constant name="PAGE_SIZE_US5x7" value="10" enum="PageSizes">
+			5 x 7 (inches), 360 x 504 px.
 		</constant>
 		<constant name="PAGE_SIZE_COMM10" value="11" enum="PageSizes">
+			4.125 x 9.5 (inches), 297 x 684 px.
 		</constant>
 		<constant name="PAGE_SIZE_EOF" value="12" enum="PageSizes">
+			Max value.
 		</constant>
 		<constant name="PAGE_DIRECTION_PORTRAIT" value="0" enum="PageDirection">
+			Set the longer value to vertical.
 		</constant>
 		<constant name="PAGE_DIRECTION_LANDSCAPE" value="1" enum="PageDirection">
+			Set the longer value to horizontal.
 		</constant>
 		<constant name="LINE_CAP_BUTT_END" value="0" enum="LineCap">
 		</constant>
