@@ -16,29 +16,47 @@
 		<method name="set_fit">
 			<return type="int" />
 			<description>
+				Sets the appearance of the page to displaying entire page within the window.
+				Error codes
+				- EC_INVALID_DESTINATION - An invalid destination handle was set.
 			</description>
 		</method>
 		<method name="set_fit_b">
 			<return type="int" />
 			<description>
+				Sets the appearance of the page to magnifying to fit the bounding box of the page within the window.
+				Error codes
+				- EC_INVALID_DESTINATION - An invalid destination handle was set.
 			</description>
 		</method>
 		<method name="set_fit_bh">
 			<return type="int" />
 			<argument index="0" name="top" type="float" />
 			<description>
+				Defines the appearance of a page to magnifying to fit the width of the bounding box of the page within the window and setting the top position of the page to the value of the "top" parameter.
+				Error codes
+				- EC_INVALID_DESTINATION - An invalid destination handle was set.
+				- EC_INVALID_PARAMETER - An invalid value was set at either left, top or zoom parameter.
 			</description>
 		</method>
 		<method name="set_fit_bv">
 			<return type="int" />
 			<argument index="0" name="left" type="float" />
 			<description>
+				Defines the appearance of a page to magnifying to fit the height of the bounding box of the page within the window and setting the top position of the page to the value of the "top" parameter.
+				Error codes
+				- EC_INVALID_DESTINATION - An invalid destination handle was set.
+				- EC_INVALID_PARAMETER - An invalid value was set at either left, top or zoom parameter.
 			</description>
 		</method>
 		<method name="set_fit_h">
 			<return type="int" />
 			<argument index="0" name="top" type="float" />
 			<description>
+				Defines the appearance of a page to magnifying to fit the width of the page within the window and setting the top position of the page to the value of the "top" parameter.
+				Error codes
+				- EC_INVALID_DESTINATION - An invalid destination handle was set.
+				- EC_INVALID_PARAMETER - An invalid value was set at either left, top or zoom parameter.
 			</description>
 		</method>
 		<method name="set_fit_r">
@@ -48,12 +66,20 @@
 			<argument index="2" name="right" type="float" />
 			<argument index="3" name="top" type="float" />
 			<description>
+				Defines the appearance of a page to magnifying the page to fit a rectangle specified by left, bottom, right and top.
+				Error codes
+				- EC_INVALID_DESTINATION - An invalid destination handle was set.
+				- EC_INVALID_PARAMETER - An invalid value was set at either left, top or zoom parameter.
 			</description>
 		</method>
 		<method name="set_fit_v">
 			<return type="int" />
 			<argument index="0" name="top" type="float" />
 			<description>
+				 Defines the appearance of a page to magnifying to fit the height of the page within the window and setting the left position of the page to the value of the "top" parameter.
+				Error codes
+				- EC_INVALID_DESTINATION - An invalid destination handle was set.
+				- EC_INVALID_PARAMETER - An invalid value was set at either left, top or zoom parameter.
 			</description>
 		</method>
 		<method name="set_xyz">
@@ -62,6 +88,10 @@
 			<argument index="1" name="top" type="float" />
 			<argument index="2" name="zoom" type="float" />
 			<description>
+				Defines the appearance of a page with three parameters which are left, top and zoom.
+				Error codes
+				- EC_INVALID_DESTINATION - An invalid destination handle was set.
+				- EC_INVALID_PARAMETER - An invalid value was set at either left, top or zoom parameter.
 			</description>
 		</method>
 	</methods>
