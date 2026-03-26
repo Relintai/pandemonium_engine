@@ -20,48 +20,59 @@
 		<method name="get_ascent">
 			<return type="int" />
 			<description>
+				Gets the vertical ascent of the font.
 			</description>
 		</method>
 		<method name="get_bbox">
 			<return type="Rect2" />
 			<description>
+				Gets the bounding box of the font.
 			</description>
 		</method>
 		<method name="get_cap_height">
 			<return type="int" />
 			<description>
+				Gets the distance from the baseline of uppercase letters.
 			</description>
 		</method>
 		<method name="get_descent">
 			<return type="int" />
 			<description>
+				Gets the vertical descent of the font.
 			</description>
 		</method>
 		<method name="get_encoding_name">
 			<return type="String" />
 			<description>
+				Gets the encoding name of the font.
 			</description>
 		</method>
 		<method name="get_font_name">
 			<return type="String" />
 			<description>
+				Gets the name of the font.
 			</description>
 		</method>
 		<method name="get_text_width">
 			<return type="Dictionary" />
 			<argument index="0" name="text" type="String" />
 			<description>
+				Gets total width of the text, number of characters, and number of words.
 			</description>
 		</method>
 		<method name="get_unicode_width">
 			<return type="int" />
 			<argument index="0" name="code" type="int" />
 			<description>
+				Gets the width of a Unicode character in a specific font. Actual width of the character on the page can be calculated as follows:
+				[codeblock]char_width = font.get_unicode_width(UNICODE);
+				float actual_width = char_width * FONT_SIZE / 1000;[/codeblock]
 			</description>
 		</method>
 		<method name="get_x_height">
 			<return type="int" />
 			<description>
+				Gets the distance from the baseline of lowercase letters.
 			</description>
 		</method>
 		<method name="measure_text">
@@ -73,6 +84,16 @@
 			<argument index="4" name="word_space" type="float" />
 			<argument index="5" name="wordwrap" type="bool" />
 			<description>
+				Calculates the byte length which can be included within the specified width.
+				Parameters
+				- text - The text to use for calculation.
+				- len - The length of the text.
+				- width - The width of the area to put the text.
+				- font_size - The size of the font.
+				- char_space - The character spacing.
+				- word_space - The word spacing.
+				- wordwrap - Suppose there are three words: "ABCDE", "FGH", and "IJKL". Also, suppose the substring until "J" can be included within the width (12 bytes). If word_wrap is HPDF_FALSE the function returns 12. If word_wrap parameter is HPDF_TRUE, it returns 10 (the end of the previous word).
+				Returns byte length which can be included within specified width as the 0th index, the real width of the text as the 1th index.
 			</description>
 		</method>
 	</methods>
