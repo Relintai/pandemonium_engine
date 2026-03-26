@@ -1163,5 +1163,20 @@
 		</constant>
 		<constant name="EC_INVALID_SHADING_TYPE" value="4232" enum="ErrorCodes">
 		</constant>
+		<constant name="PERMISSION_ENABLE_READ" value="0">
+			User can read the document.
+		</constant>
+		<constant name="PERMISSION_ENABLE_PRINT" value="4">
+			User can print the document.
+		</constant>
+		<constant name="PERMISSION_ENABLE_EDIT_ALL" value="8">
+			User can edit the contents of the document other than annotations, form fields.
+		</constant>
+		<constant name="PERMISSION_ENABLE_COPY" value="16">
+			User can copy the text and the graphics of the document.
+		</constant>
+		<constant name="PERMISSION_ENABLE_EDIT" value="32">
+			User can add or modify the annotations and form fields of the document.
+		</constant>
 	</constants>
 </class>
