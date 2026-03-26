@@ -17,12 +17,21 @@
 			<return type="int" />
 			<argument index="0" name="destination" type="PDFDestination" />
 			<description>
+				Sets a destination object which becomes to a target to jump when the outline is clicked.
+				Error codes
+				- EC_INVALID_OUTLINE - An invalid outline handle was set.
+				- EC_INVALID_DESTINATION - An invalid destination handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
 			</description>
 		</method>
 		<method name="set_opened">
 			<return type="int" />
 			<argument index="0" name="opened" type="bool" />
 			<description>
+				Sets whether this node is opened or not when the outline is displayed for the first time.
+				Error codes
+				- EC_INVALID_OUTLINE - An invalid outline handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
 			</description>
 		</method>
 	</methods>
