@@ -10,22 +10,31 @@
 	</methods>
 	<members>
 		<member name="day" type="int" setter="set_day" getter="get_day" default="0">
+			Between 1 and 28, 29, 30, or 31. (Depends on the month.)
 		</member>
 		<member name="hour" type="int" setter="set_hour" getter="get_hour" default="0">
+			0 to 23.
 		</member>
 		<member name="ind" type="int" setter="set_ind" getter="get_ind" default="0">
+			Relationship of local time to Universal Time (ord(" "), ord("+"), ord("−"), or ord("Z")).
 		</member>
 		<member name="minutes" type="int" setter="set_minutes" getter="get_minutes" default="0">
+			0 to 59.
 		</member>
 		<member name="month" type="int" setter="set_month" getter="get_month" default="0">
+			Between 1 and 12.
 		</member>
 		<member name="off_hour" type="int" setter="set_off_hour" getter="get_off_hour" default="0">
+			If "ind" is not space, 0 to 23 is valid. Otherwise, ignored.
 		</member>
 		<member name="off_minutes" type="int" setter="set_off_minutes" getter="get_off_minutes" default="0">
+			If "ind" is not space, 0 to 59 is valid. Otherwise, ignored.
 		</member>
 		<member name="seconds" type="int" setter="set_seconds" getter="get_seconds" default="0">
+			0 to 59.
 		</member>
 		<member name="year" type="int" setter="set_year" getter="get_year" default="0">
+			The year.
 		</member>
 	</members>
 	<constants>
