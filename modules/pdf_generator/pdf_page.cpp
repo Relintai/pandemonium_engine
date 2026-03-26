@@ -1352,7 +1352,7 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("path_line_to", "position"), &PDFPage::path_line_to);
 	ClassDB::bind_method(D_METHOD("path_curve_to", "cp_start", "cp_end", "end_point"), &PDFPage::path_curve_to);
 	ClassDB::bind_method(D_METHOD("path_curve_to_2", "cp_end", "end_point"), &PDFPage::path_curve_to_2);
-	ClassDB::bind_method(D_METHOD("path_curve_to_3", "end_point"), &PDFPage::path_curve_to_3);
+	ClassDB::bind_method(D_METHOD("path_curve_to_3", "cp_start", "end_point"), &PDFPage::path_curve_to_3);
 	ClassDB::bind_method(D_METHOD("path_rectangle", "rect"), &PDFPage::path_rectangle);
 	ClassDB::bind_method(D_METHOD("path_close"), &PDFPage::path_close);
 
@@ -1406,11 +1406,11 @@ void PDFPage::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("annotation_widget_create", "rect"), &PDFPage::annotation_widget_create);
 	ClassDB::bind_method(D_METHOD("annotation_link_create", "rect", "destination"), &PDFPage::annotation_link_create);
 	ClassDB::bind_method(D_METHOD("annotation_uri_link_create", "rect", "uri"), &PDFPage::annotation_uri_link_create);
-	ClassDB::bind_method(D_METHOD("annotation_text_markup_create", "text", "sub_type", "encoder"), &PDFPage::annotation_text_markup_create, DEFVAL(Ref<PDFEncoder>()));
-	ClassDB::bind_method(D_METHOD("annotation_highlight_create", "text", "encoder"), &PDFPage::annotation_highlight_create, DEFVAL(Ref<PDFEncoder>()));
-	ClassDB::bind_method(D_METHOD("annotation_underline_create", "text", "encoder"), &PDFPage::annotation_underline_create, DEFVAL(Ref<PDFEncoder>()));
-	ClassDB::bind_method(D_METHOD("annotation_squiggly_create", "text", "encoder"), &PDFPage::annotation_squiggly_create, DEFVAL(Ref<PDFEncoder>()));
-	ClassDB::bind_method(D_METHOD("annotation_strike_out_create", "text", "encoder"), &PDFPage::annotation_strike_out_create, DEFVAL(Ref<PDFEncoder>()));
+	ClassDB::bind_method(D_METHOD("annotation_text_markup_create", "rect", "text", "sub_type", "encoder"), &PDFPage::annotation_text_markup_create, DEFVAL(Ref<PDFEncoder>()));
+	ClassDB::bind_method(D_METHOD("annotation_highlight_create", "rect", "text", "encoder"), &PDFPage::annotation_highlight_create, DEFVAL(Ref<PDFEncoder>()));
+	ClassDB::bind_method(D_METHOD("annotation_underline_create", "rect", "text", "encoder"), &PDFPage::annotation_underline_create, DEFVAL(Ref<PDFEncoder>()));
+	ClassDB::bind_method(D_METHOD("annotation_squiggly_create", "rect", "text", "encoder"), &PDFPage::annotation_squiggly_create, DEFVAL(Ref<PDFEncoder>()));
+	ClassDB::bind_method(D_METHOD("annotation_strike_out_create", "rect", "text", "encoder"), &PDFPage::annotation_strike_out_create, DEFVAL(Ref<PDFEncoder>()));
 	ClassDB::bind_method(D_METHOD("annotation_popup_create", "rect", "parent"), &PDFPage::annotation_popup_create);
 	ClassDB::bind_method(D_METHOD("annotation_stamp_create", "rect", "name", "text", "encoder"), &PDFPage::annotation_stamp_create, DEFVAL(Ref<PDFEncoder>()));
 	ClassDB::bind_method(D_METHOD("annotation_projection_create", "rect", "text", "encoder"), &PDFPage::annotation_projection_create, DEFVAL(Ref<PDFEncoder>()));

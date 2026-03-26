@@ -35,9 +35,9 @@
 		</method>
 		<method name="annotation_highlight_create">
 			<return type="PDFAnnotationHighlight" />
-			<argument index="0" name="text" type="Rect2" />
-			<argument index="1" name="encoder" type="String" />
-			<argument index="2" name="arg2" type="PDFEncoder" default="null" />
+			<argument index="0" name="rect" type="Rect2" />
+			<argument index="1" name="text" type="String" />
+			<argument index="2" name="encoder" type="PDFEncoder" default="null" />
 			<description>
 			</description>
 		</method>
@@ -80,9 +80,9 @@
 		</method>
 		<method name="annotation_squiggly_create">
 			<return type="PDFAnnotationSquiggly" />
-			<argument index="0" name="text" type="Rect2" />
-			<argument index="1" name="encoder" type="String" />
-			<argument index="2" name="arg2" type="PDFEncoder" default="null" />
+			<argument index="0" name="rect" type="Rect2" />
+			<argument index="1" name="text" type="String" />
+			<argument index="2" name="encoder" type="PDFEncoder" default="null" />
 			<description>
 			</description>
 		</method>
@@ -97,9 +97,9 @@
 		</method>
 		<method name="annotation_strike_out_create">
 			<return type="PDFAnnotationStrikeOut" />
-			<argument index="0" name="text" type="Rect2" />
-			<argument index="1" name="encoder" type="String" />
-			<argument index="2" name="arg2" type="PDFEncoder" default="null" />
+			<argument index="0" name="rect" type="Rect2" />
+			<argument index="1" name="text" type="String" />
+			<argument index="2" name="encoder" type="PDFEncoder" default="null" />
 			<description>
 			</description>
 		</method>
@@ -113,18 +113,18 @@
 		</method>
 		<method name="annotation_text_markup_create">
 			<return type="PDFAnnotationTextMarkup" />
-			<argument index="0" name="text" type="Rect2" />
-			<argument index="1" name="sub_type" type="String" />
-			<argument index="2" name="encoder" type="int" enum="PDFAnnotationTextMarkup.AnnotSubType" />
-			<argument index="3" name="arg3" type="PDFEncoder" default="null" />
+			<argument index="0" name="rect" type="Rect2" />
+			<argument index="1" name="text" type="String" />
+			<argument index="2" name="sub_type" type="int" enum="PDFAnnotationTextMarkup.AnnotSubType" />
+			<argument index="3" name="encoder" type="PDFEncoder" default="null" />
 			<description>
 			</description>
 		</method>
 		<method name="annotation_underline_create">
 			<return type="PDFAnnotationUnderline" />
-			<argument index="0" name="text" type="Rect2" />
-			<argument index="1" name="encoder" type="String" />
-			<argument index="2" name="arg2" type="PDFEncoder" default="null" />
+			<argument index="0" name="rect" type="Rect2" />
+			<argument index="1" name="text" type="String" />
+			<argument index="2" name="encoder" type="PDFEncoder" default="null" />
 			<description>
 			</description>
 		</method>
@@ -323,7 +323,7 @@
 			</description>
 		</method>
 		<method name="measure_text">
-			<return type="float" />
+			<return type="Vector2" />
 			<argument index="0" name="text" type="String" />
 			<argument index="1" name="width" type="float" />
 			<argument index="2" name="word_wrap" type="bool" />
@@ -399,8 +399,8 @@
 		</method>
 		<method name="path_curve_to_3">
 			<return type="int" />
-			<argument index="0" name="end_point" type="Vector2" />
-			<argument index="1" name="arg1" type="Vector2" />
+			<argument index="0" name="cp_start" type="Vector2" />
+			<argument index="1" name="end_point" type="Vector2" />
 			<description>
 			</description>
 		</method>
