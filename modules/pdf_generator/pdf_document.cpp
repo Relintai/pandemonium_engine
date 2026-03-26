@@ -485,6 +485,22 @@ Ref<PDFImage> PDFDocument::image_load_png_from_file(const String &p_path) {
 
 	return image;
 }
+Ref<PDFImage> PDFDocument::image_load_png_from_file_delayed(const String &p_path) {
+	String abs_path = FileAccess::get_filesystem_abspath_for(p_path);
+
+	HPDF_Font hpdf_image = HPDF_LoadPngImageFromFile2(_doc, abs_path.utf8().get_data());
+
+	if (!hpdf_image) {
+		return Ref<PDFImage>();
+	}
+
+	Ref<PDFImage> image;
+	image.instance();
+
+	image->_set_hpdf_image(hpdf_image);
+
+	return image;
+}
 Ref<PDFImage> PDFDocument::image_load_jpg_from_mem(const PoolByteArray &p_data) {
 	PoolByteArray::Read r = p_data.read();
 
@@ -977,6 +993,7 @@ void PDFDocument::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("image_load_png_from_mem", "data"), &PDFDocument::image_load_png_from_mem);
 	ClassDB::bind_method(D_METHOD("image_load_png_from_file", "path"), &PDFDocument::image_load_png_from_file);
+	ClassDB::bind_method(D_METHOD("image_load_png_from_file_delayed", "path"), &PDFDocument::image_load_png_from_file_delayed);
 
 	ClassDB::bind_method(D_METHOD("image_load_jpg_from_mem", "data"), &PDFDocument::image_load_jpg_from_mem);
 	ClassDB::bind_method(D_METHOD("image_load_jpg_from_file", "path"), &PDFDocument::image_load_jpg_from_file);

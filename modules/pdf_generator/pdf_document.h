@@ -327,6 +327,7 @@ public:
 
 	Ref<PDFImage> image_load_png_from_mem(const PoolByteArray &p_data);
 	Ref<PDFImage> image_load_png_from_file(const String &p_path);
+	Ref<PDFImage> image_load_png_from_file_delayed(const String &p_path);
 
 	Ref<PDFImage> image_load_jpg_from_mem(const PoolByteArray &p_data);
 	Ref<PDFImage> image_load_jpg_from_file(const String &p_path);
