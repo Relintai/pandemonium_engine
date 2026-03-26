@@ -177,6 +177,10 @@
 		<method name="begin_text">
 			<return type="int" />
 			<description>
+				Begins a text object and sets the text position to (0, 0).
+				Graphics Mode
+				- Before - GRAPHICS_MODE_PAGE_DESCRIPTION.
+				- After - GRAPHICS_MODE_TEXT_OBJECT.
 			</description>
 		</method>
 		<method name="boundary_set">
@@ -192,12 +196,34 @@
 		<method name="clip">
 			<return type="int" />
 			<description>
+				Modifies the current clipping path by intersecting it with the current path using the nonzero winding number rule. The clipping path is only modified after the succeeding painting operator. To avoid painting the current path, use the function path_end().
+				Following painting operations will only affect the regions of the page contained by the clipping path. Initially, the clipping path includes the entire page. There is no way to enlarge the current clipping path, or to replace the clipping path with a new one. The functions HPDF_Page_GSave() and HPDF_Page_GRestore() may be used to save and restore the current graphics state, including the clipping path.
+				Graphics Mode
+				- Before and after - GRAPHICS_MODE_PATH_OBJECT.
 			</description>
 		</method>
 		<method name="concat">
 			<return type="int" />
 			<argument index="0" name="transform" type="Transform2D" />
 			<description>
+				Concatenates the page's current transformation matrix and specified matrix.
+				For example, if you want to rotate the coordinate system of the page by 45 degrees, use concat() as follows.
+				[codeblock]float rad1 = 45 / 180 * 3.141592;
+				page.concat(Transform2D(Vector2(cos(rad1), sin(rad1)), Vector2(-sin(rad1), cos(rad1)), Vector2(220, 350));[/codeblock]
+				To change the coordinate system of the page to 300 dpi, use concat() as follows.
+				[codeblock]concat(Transform2D(Vector2(72.0f / 300.0f, 0), Vector2(0, 72.0f / 300.0f), Vector2(0, 0));[/codeblock]
+				Invoke g_save() before concat(). Then the change by concat() can be restored by invoking g_restore().
+				[codeblock]// save the current graphics states
+  			page.g_save(page);
+				// concatenate the transformation matrix */
+				page.concat(Transform2D(Vector2(72.0f / 300.0f, 0), Vector2(0, 72.0f / 300.0f), Vector2(0, 0));
+				// show text on the translated coordinates
+				page.begin_text();
+				page.move_text_pos(50, 100);
+				page.show_text("Text on the translated coordinates");
+				page.end_text();
+				// restore the graphics states
+				page.g_restore();[/codeblock]
 			</description>
 		</method>
 		<method name="create_3d_annot_ex_data">
@@ -289,6 +315,8 @@
 			<argument index="0" name="image" type="PDFImage" />
 			<argument index="1" name="rect" type="Rect2" />
 			<description>
+				Shows an image in one operation.
+				Before and after - GRAPHICS_MODE_PATH_OBJECT.
 			</description>
 		</method>
 		<method name="draw_text_out">
@@ -296,6 +324,9 @@
 			<argument index="0" name="position" type="Vector2" />
 			<argument index="1" name="text" type="String" />
 			<description>
+				Prints the text on the specified position.
+				Graphic Mode
+				- Before: GRAPHICS_MODE_TEXT_OBJECT.
 			</description>
 		</method>
 		<method name="draw_text_rect">
@@ -304,28 +335,44 @@
 			<argument index="1" name="text" type="String" />
 			<argument index="2" name="align" type="int" enum="PDFPage.TextAlignment" default="0" />
 			<description>
+				Prints the text inside the specified region.
+				Graphic Mode
+				- Before: GRAPHICS_MODE_TEXT_OBJECT.
 			</description>
 		</method>
 		<method name="end_text">
 			<return type="int" />
 			<description>
+				Ends a text object.
+				Graphic Mode
+				- Before: GRAPHICS_MODE_TEXT_OBJECT.
+				- After: GRAPHICS_MODE_PAGE_DESCRIPTION.
 			</description>
 		</method>
 		<method name="eo_clip">
 			<return type="int" />
 			<description>
+				Modifies the current clipping path by intersecting it with the current path using the even-odd rule. The clipping path is only modified after the succeeding painting operator. To avoid painting the current path, use the function page.end_path().
+				Following painting operations will only affect the regions of the page contained by the clipping path. Initially, the clipping path includes the entire page. There is no way to enlarge the current clipping path, or to replace the clipping path with a new one. The functions g_save() and g_restore() may be used to save and restore the current graphics state, including the clipping path.
+				Before and after - GRAPHICS_MODE_PATH_OBJECT.
 			</description>
 		</method>
 		<method name="execute_x_object">
 			<return type="int" />
 			<argument index="0" name="x_object" type="PDFXObject" />
 			<description>
+				Draws the XObject using the current graphics context. This is used by draw_image() to draw the PDFImage by first calling g_save() and concat() and then calling g_estore() after execute_x_object(). It could be used manually to rotate an image.
+				Graphics Mode
+				- Before and after - GRAPHICS_MODE_PAGE_DESCRIPTION
 			</description>
 		</method>
 		<method name="ext_g_state_set">
 			<return type="int" />
 			<argument index="0" name="ext_g_state" type="PDFExtGState" />
 			<description>
+				Applyies the graphics state to the page.
+				Graphics Mode
+				- Before and after - GRAPHICS_MODE_PAGE_DESCRIPTION.
 			</description>
 		</method>
 		<method name="filling_color_space_get">
@@ -343,11 +390,16 @@
 		<method name="g_restore">
 			<return type="int" />
 			<description>
+				Restore the graphics state which is saved by g_save().
 			</description>
 		</method>
 		<method name="g_save">
 			<return type="int" />
 			<description>
+				Saves the page's current graphics parameter to the stack. An application can invoke g_save() up to 28 (???) and can restore the saved parameter by invoking g_restore().
+				The parameters that are saved by g_save() are: Character Spacing, Clipping Path, Dash Mode, Filling Color, Flatness, Font, Font Size, Horizontal Scalling, Line Width, Line Cap Style, Line Join Style, Miter Limit, Rendering Mode, Stroking Color, Text Leading, Text Rise, Transformation Matrix, Word Spacing
+				Graphics Mode
+				- Before and after - GRAPHICS_MODE_PAGE_DESCRIPTION.
 			</description>
 		</method>
 		<method name="g_state_depth_get">
@@ -379,6 +431,9 @@
 			<argument index="0" name="x" type="float" />
 			<argument index="1" name="y" type="float" />
 			<description>
+				Changes the current text position, using the specified offset values. If the current text position is (x1, y1), the new text position will be (x1 + x, y1 + y).
+				Graphics Mode
+				- Before and after - GRAPHICS_MODE_TEXT_OBJECT.
 			</description>
 		</method>
 		<method name="move_text_pos_2">
@@ -386,6 +441,10 @@
 			<argument index="0" name="x" type="float" />
 			<argument index="1" name="y" type="float" />
 			<description>
+				Changes the current text position, using the specified offset values. If the current text position is (x1, y1), the new text position will be (x1 + x, y1 + y).
+				Also, the text-leading is set to -y.
+				Graphics Mode
+				- Before and after - GRAPHICS_MODE_TEXT_OBJECT.
 			</description>
 		</method>
 		<method name="move_text_posv">
@@ -403,6 +462,7 @@
 		<method name="move_to_next_line">
 			<return type="int" />
 			<description>
+				Moves current position for the text showing depending on current text showing point and text leading. The new position is calculated with current text transition matrix.
 			</description>
 		</method>
 		<method name="path_arc">
@@ -412,6 +472,12 @@
 			<argument index="2" name="angle_1" type="float" />
 			<argument index="3" name="angle_2" type="float" />
 			<description>
+				Appends a circle arc to the current path. Angles are given in degrees, with 0 degrees being vertical, upward, from the (x,y) position.
+				- ang1 - The angle of the begining of the arc.
+				- ang2 - The angle of the end of the arc. It must be greater than ang1.
+				Graphics Mode
+				- Before - GRAPHICS_MODE_PAGE_DESCRIPTION or GRAPHICS_MODE_PATH_OBJECT.
+				- After - GRAPHICS_MODE_PATH_OBJECT.
 			</description>
 		</method>
 		<method name="path_circle">
@@ -419,11 +485,18 @@
 			<argument index="0" name="position" type="Vector2" />
 			<argument index="1" name="radius" type="float" />
 			<description>
+				Appends a circle to the current path.
+				Graphics Mode
+				- Before - GRAPHICS_MODE_PAGE_DESCRIPTION or GRAPHICS_MODE_PATH_OBJECT.
+				- After - GRAPHICS_MODE_PATH_OBJECT.
 			</description>
 		</method>
 		<method name="path_close">
 			<return type="int" />
 			<description>
+				Appends a straight line from the current point to the start point of sub path. The current point is moved to the start point of sub path.
+				Graphics Mode
+				- Before and after - GRAPHICS_MODE_PATH_OBJECT.
 			</description>
 		</method>
 		<method name="path_curve_to">
@@ -432,6 +505,8 @@
 			<argument index="1" name="cp_end" type="Vector2" />
 			<argument index="2" name="end_point" type="Vector2" />
 			<description>
+				Appends a Bézier curve to the current path using the control points (x1, y1) and (x2, y2) and (x3, y3), then sets the current point to (x3, y3).
+				Before and after - GRAPHICS_MODE_PATH_OBJECT.
 			</description>
 		</method>
 		<method name="path_curve_to_2">
@@ -439,6 +514,8 @@
 			<argument index="0" name="cp_end" type="Vector2" />
 			<argument index="1" name="end_point" type="Vector2" />
 			<description>
+				Appends a Bézier curve to the current path using the current point and (x2, y2) and (x3, y3) as control points. Then, the current point is set to (x3, y3).
+				Before and after - GRAPHICS_MODE_PATH_OBJECT.
 			</description>
 		</method>
 		<method name="path_curve_to_3">
@@ -446,6 +523,8 @@
 			<argument index="0" name="cp_start" type="Vector2" />
 			<argument index="1" name="end_point" type="Vector2" />
 			<description>
+				Appends a Bézier curve to the current path using two spesified points. The point (x1, y1) and the point (x3, y3) are used as the control points for a Bézier curve and current point is moved to the point (x3, y3).
+				Before and after - GRAPHICS_MODE_PATH_OBJECT.
 			</description>
 		</method>
 		<method name="path_ellipse">
@@ -458,21 +537,37 @@
 		<method name="path_end">
 			<return type="int" />
 			<description>
+				Ends the path object without filling or painting.
+				Graphics Mode
+				- Before - GRAPHICS_MODE_PATH_OBJECT.
+				- After - GRAPHICS_MODE_PAGE_DESCRIPTION.
 			</description>
 		</method>
 		<method name="path_eo_fill">
 			<return type="int" />
 			<description>
+				Fills the current path using the even-odd rule.
+				Graphics Mode
+				- Before - GRAPHICS_MODE_PATH_OBJECT.
+				- After - GRAPHICS_MODE_PAGE_DESCRIPTION.
 			</description>
 		</method>
 		<method name="path_eo_fill_stroke">
 			<return type="int" />
 			<description>
+				Fills the current path using the even-odd rule, then paints the path.
+				Graphics Mode
+				- Before - GRAPHICS_MODE_PATH_OBJECT.
+				- After - GRAPHICS_MODE_PAGE_DESCRIPTION.
 			</description>
 		</method>
 		<method name="path_eo_fill_stroke_close">
 			<return type="int" />
 			<description>
+				closes the current path, fills the current path using the even-odd rule, then paints the path.
+				Graphics Mode
+				- Before - GRAPHICS_MODE_PATH_OBJECT.
+				- After - GRAPHICS_MODE_PAGE_DESCRIPTION.
 			</description>
 		</method>
 		<method name="path_fill">
@@ -483,39 +578,66 @@
 		<method name="path_fill_stroke">
 			<return type="int" />
 			<description>
+				Fills the current path using the nonzero winding number rule, then paints the path.
+				Graphics Mode
+				- Before - GRAPHICS_MODE_PATH_OBJECT.
+				- After - GRAPHICS_MODE_PAGE_DESCRIPTION.
 			</description>
 		</method>
 		<method name="path_fill_stroke_close">
 			<return type="int" />
 			<description>
+				Closes the current path, fills the current path using the nonzero winding number rule, then paints the path.
+				Graphics Mode
+				- Before - GRAPHICS_MODE_PATH_OBJECT.
+				- After - GRAPHICS_MODE_PAGE_DESCRIPTION.
 			</description>
 		</method>
 		<method name="path_line_to">
 			<return type="int" />
 			<argument index="0" name="position" type="Vector2" />
 			<description>
+				Appends a path from the current point to the specified point.
+				Graphics Mode
+				- Before and after - GRAPHICS_MODE_PATH_OBJECT.
 			</description>
 		</method>
 		<method name="path_move_to">
 			<return type="int" />
 			<argument index="0" name="position" type="Vector2" />
 			<description>
+				Starts a new subpath and move the current point for drawing path, it sets the start point for the path to the point (x, y).
+				Graphics Mode
+				- Before - GRAPHICS_MODE_PAGE_DESCRIPTION or HPDF_GMODE_PATH_OBJECT.
+				- After - GRAPHICS_MODE_PATH_OBJECT.
 			</description>
 		</method>
 		<method name="path_rectangle">
 			<return type="int" />
 			<argument index="0" name="rect" type="Rect2" />
 			<description>
+				Appends a rectangle to the current path.
+				Graphics Mode
+				- Before - GRAPHICS_MODE_PAGE_DESCRIPTION or HPDF_GMODE_PATH_OBJECT.
+				- After - GRAPHICS_MODE_PATH_OBJECT.
 			</description>
 		</method>
 		<method name="path_stroke">
 			<return type="int" />
 			<description>
+				Paints the current path.
+				Graphics Mode
+				- Before - GRAPHICS_MODE_PATH_OBJECT.
+				- After - GRAPHICS_MODE_PAGE_DESCRIPTION.
 			</description>
 		</method>
 		<method name="path_stroke_close">
 			<return type="int" />
 			<description>
+				Closes the current path. Then, it paints the path.
+				Graphics Mode
+				- Before - GRAPHICS_MODE_PATH_OBJECT.
+				- After - GRAPHICS_MODE_PAGE_DESCRIPTION.
 			</description>
 		</method>
 		<method name="rotate_set">
@@ -533,6 +655,9 @@
 			<argument index="0" name="font" type="PDFFont" />
 			<argument index="1" name="size" type="float" />
 			<description>
+				Sets the type of font and size leading.
+				Graphics Mode
+				- Before and after - GRAPHICS_MODE_PAGE_DESCRIPTION or GRAPHICS_MODE_TEXT_OBJECT.
 			</description>
 		</method>
 		<method name="shading_set">
@@ -545,12 +670,18 @@
 			<return type="int" />
 			<argument index="0" name="text" type="String" />
 			<description>
+				Prints the text at the current position on the page.
+				Graphics Mode
+				- Before and after - GRAPHICS_MODE_TEXT_OBJECT.
 			</description>
 		</method>
 		<method name="show_text_next_line">
 			<return type="int" />
 			<argument index="0" name="text" type="String" />
 			<description>
+				Moves the current text position to the start of the next line, then prints the text at the current position on the page.
+				Graphics Mode
+				- Before and after - GRAPHICS_MODE_TEXT_OBJECT.
 			</description>
 		</method>
 		<method name="show_text_next_line_ex">
@@ -559,6 +690,9 @@
 			<argument index="1" name="word_space" type="float" />
 			<argument index="2" name="char_space" type="float" />
 			<description>
+				Moves the current text position to the start of the next line; then sets word spacing and character spacing; finally prints the text at the current position on the page.
+				Graphics Mode
+				- Before and after - GRAPHICS_MODE_TEXT_OBJECT.
 			</description>
 		</method>
 		<method name="size_set">
@@ -782,12 +916,16 @@
 		<constant name="TEXT_RENDERING_MODE_EOF" value="8" enum="TextRenderingMode">
 		</constant>
 		<constant name="TEXT_ALIGN_LEFT" value="0" enum="TextAlignment">
+			The text is aligned to left.
 		</constant>
 		<constant name="TEXT_ALIGN_RIGHT" value="1" enum="TextAlignment">
+			The text is aligned to right.
 		</constant>
 		<constant name="TEXT_ALIGN_CENTER" value="2" enum="TextAlignment">
+			The text is aligned to center.
 		</constant>
 		<constant name="TEXT_ALIGN_JUSTIFY" value="3" enum="TextAlignment">
+			Add spaces between the words to justify both left and right side.
 		</constant>
 		<constant name="TRANSITION_STYLE_WIPE_RIGHT" value="0" enum="TransitionStyle">
 		</constant>
