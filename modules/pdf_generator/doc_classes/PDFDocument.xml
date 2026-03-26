@@ -18,6 +18,11 @@
 			<return type="int" />
 			<argument index="0" name="mode" type="int" />
 			<description>
+				Set the mode of compression.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_INVALID_COMPRESSION_MODE - An invalid compression mode was specified.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
 			</description>
 		</method>
 		<method name="create_3d_view">
@@ -140,6 +145,12 @@
 			<argument index="0" name="encryption_mode" type="int" enum="PDFDocument.EncryptMode" />
 			<argument index="1" name="key_length" type="int" />
 			<description>
+				Set the encryption mode. As the side effect, ups the version of PDF to 1.4 when the mode is set to HPDF_ENCRYPT_R3.
+				key_len - Specify the byte length of encryption key. Only valid for HPDF_ENCRYPT_R3. Between 5 (40 bits) and 16 (128 bits) can be specified.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_INVALID_ENCRYPT_KEY_LEN - An invalid key length was specified.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
 			</description>
 		</method>
 		<method name="ext_graphic_state_create">
@@ -426,12 +437,23 @@
 			<argument index="0" name="info_type" type="int" enum="PDFDocument.InfoType" />
 			<argument index="1" name="date" type="PDFDate" />
 			<description>
+				Sets a datetime attribute in the info dictionary.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_INVALID_PARAMETER - An invalid type parameter was set.
+				- EC_INVALID_DATE_TIME - An invalid datetime value was set.
 			</description>
 		</method>
 		<method name="info_attr_get">
 			<return type="String" />
 			<argument index="0" name="info_typ" type="int" enum="PDFDocument.InfoType" />
 			<description>
+				Gets an attribute value from info dictionary.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_INVALID_PARAMETER - An invalid type parameter was set.
 			</description>
 		</method>
 		<method name="info_attr_set">
@@ -439,6 +461,11 @@
 			<argument index="0" name="info_type" type="int" enum="PDFDocument.InfoType" />
 			<argument index="1" name="value" type="String" />
 			<description>
+				Sets the text of an info dictionary attribute, using current encoding of the document. If encoding is not set, PDFDocEncoding is used.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_INVALID_PARAMETER - An invalid type parameter was set.
 			</description>
 		</method>
 		<method name="javascript_load_from_file">
@@ -554,6 +581,13 @@
 			<argument index="0" name="owner_passwd" type="String" />
 			<argument index="1" name="user_passwd" type="String" />
 			<description>
+				sets a password for the document. If the password is set, document contents are encrypted.
+				- owner_password - The password for the owner of the document. The owner can change the permission of the document. NULL, zero length string, and the same value as user password are not allowed.
+				- user_password - The password for the user of the document. The user_password may be set to NULL or zero length string.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
+				- EC_INVALID_PASSWORD - Owner password is NULL, zero length string, or same value as user password.
 			</description>
 		</method>
 		<method name="pdf_a_conformance_set">
@@ -572,6 +606,16 @@
 			<return type="int" />
 			<argument index="0" name="permission" type="int" />
 			<description>
+				Set the permission flags for the document.
+				permission - One or more of the following, "ored" together:
+				- PERMISSION_ENABLE_READ - user can read the document.
+				- PERMISSION_ENABLE_PRINT - user can print the document.
+				- PERMISSION_ENABLE_EDIT_ALL - user can edit the contents of the document other than annotations, form fields.
+				- PERMISSION_ENABLE_COPY - user can copy the text and the graphics of the document.
+				- PERMISSION_ENABLE_EDIT - user can add or modify the annotations and form fields of the document.
+				Error codes
+				- EC_INVALID_DOCUMENT - An invalid document handle was set.
+				- EC_FAILD_TO_ALLOC_MEM - Memory allocation failed.
 			</description>
 		</method>
 		<method name="reset_error">
@@ -652,14 +696,19 @@
 	</members>
 	<constants>
 		<constant name="COMPRESSION_MODE_NONE" value="0" enum="CompressionMode">
+			No compression.
 		</constant>
 		<constant name="COMPRESSION_MODE_TEXT" value="1" enum="CompressionMode">
+			Compress the contents stream of the page.
 		</constant>
 		<constant name="COMPRESSION_MODE_IMAGE" value="2" enum="CompressionMode">
+			Compress the streams of the image objects.
 		</constant>
 		<constant name="COMPRESSION_MODE_METADATA" value="4" enum="CompressionMode">
+			Other stream datas (fonts, cmaps and so on) are compressed.
 		</constant>
 		<constant name="COMPRESSION_MODE_ALL" value="15" enum="CompressionMode">
+			All stream datas are compressed (HPDF_COMP_TEXT | HPDF_COMP_IMAGE | HPDF_COMP_METADATA).
 		</constant>
 		<constant name="COMPRESSION_MODE_MASK" value="255" enum="CompressionMode">
 		</constant>
@@ -788,8 +837,10 @@
 		<constant name="PDFA_4F" value="10" enum="PDFAType">
 		</constant>
 		<constant name="ENCRYPT_MODE_R2" value="2" enum="EncryptMode">
+			Use "Revision 2" algorithm. "key_len" automatically set to 5 (40 bits).
 		</constant>
 		<constant name="ENCRYPT_MODE_R3" value="3" enum="EncryptMode">
+			Use "Revision 3" algorithm. "key_len" can be 5 (40 bits) to 16 (128bits).
 		</constant>
 		<constant name="EC_ARRAY_COUNT_ERR" value="4097" enum="ErrorCodes">
 			Internal error. Data consistency was lost.
