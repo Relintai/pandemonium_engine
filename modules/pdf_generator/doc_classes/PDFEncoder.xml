@@ -3,6 +3,31 @@
 	<brief_description>
 	</brief_description>
 	<description>
+		Singlebyte Encodings
+		See the [PDFEncoder.Encoding] for the list of available single byte encodings.
+		Multibyte Encodings
+		The following character sets for multi-byte character set are available:
+		1. "GB-EUC-H" EUC-CN encoding
+		2. "GB-EUC-V" - Vertical writing version of GB-EUC-H
+		3. "GBK-EUC-H" - Microsoft Code Page 936 (lfCharSet 0x86) GBK encoding
+		4. "GBK-EUC-V" - Vertical writing version of GBK-EUC-H
+		5. "ETen-B5-H" - Microsoft Code Page 950 (lfCharSet 0x88) Big Five character set with ETen extensions
+		6. "ETen-B5-V" - Vertical writing version of ETen-B5-H
+		7. "90ms-RKSJ-H" - Microsoft Code Page 932, JIS X 0208 character
+		8. "90ms-RKSJ-V" - Vertical writing version of 90ms-RKSJ-V
+		9. "90msp-RKSJ-H" - Microsoft Code Page 932, JIS X 0208 character (proportional)
+		10. "EUC-H" - JIS X 0208 character set, EUC-JP encoding
+		11. "EUC-V" - Vertical writing version of EUC-H
+		12. "KSC-EUC-H" - KS X 1001:1992 character set, EUC-KR encoding
+		13. "KSC-EUC-V" - Vertical writing version of KSC-EUC-V
+		14. "KSCms-UHC-H" - Microsoft Code Page 949 (lfCharSet 0x81), KS X 1001:1992 character set plus 8822 additional hangul, Unified Hangul Code (UHC) encoding (proportional)
+		15. "KSCms-UHC-HW-H" - Microsoft Code Page 949 (lfCharSet 0x81), KS X 1001:1992 character set plus 8822 additional hangul, Unified Hangul Code (UHC) encoding (fixed width)
+		16. "KSCms-UHC-HW-V" - Vertical writing version of KSCms-UHC-HW-H
+		Note that the application has to invoke the following functions before using multibyte encodings:
+		1. [method PDFDocument.encodings_use_cns] - It makes simplified Chinese Encodings(GB-EUC-H, GB-EUC-V, GBK-EUC-H, GBK-EUC-V) to become available.
+		2. [method PDFDocument.encodings_use_cnt] - It makes traditional Chinese Encodings(ETen-B5-H, ETen-B5-V) to become available.
+		3. [method PDFDocument.encodings_use_jp] - It makes Japanese Encodings(90ms-RKSJ-H, 90ms-RKSJ-V, 90msp-RKSJ-H, EUC-H, EUC-V) to become available.
+		4. [method PDFDocument.encodings_use_kr] - It makes Korean Encodings (KSC-EUC-H, KSC-EUC-V, KSCms-UHC-H, KSCms-UHC-HW-H, KSCms-UHC-HW-V) to become available.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -18,6 +43,7 @@
 			<return type="String" />
 			<argument index="0" name="encoding" type="int" enum="PDFEncoder.Encoding" />
 			<description>
+				Returns the encoding name for the given value. These are all single byte encodings.
 			</description>
 		</method>
 		<method name="get_type">
@@ -39,60 +65,88 @@
 	</methods>
 	<constants>
 		<constant name="ENCODING_FONT_SPECIFIC" value="0" enum="Encoding">
+			Use the built-in encoding of a font. "FontSpecific".
 		</constant>
 		<constant name="ENCODING_STANDARD" value="1" enum="Encoding">
+			It is the default encoding of PDF. "StandardEncoding".
 		</constant>
 		<constant name="ENCODING_MAC_ROMAN" value="2" enum="Encoding">
+			The standard encoding of Mac OS. "MacRomanEncoding".
 		</constant>
 		<constant name="ENCODING_WIN_ANSI" value="3" enum="Encoding">
+			The standard encoding of Windows. "WinAnsiEncoding".
 		</constant>
 		<constant name="ENCODING_ISO8859_2" value="4" enum="Encoding">
+			Latin Alphabet No.2. "ISO8859-2".
 		</constant>
 		<constant name="ENCODING_ISO8859_3" value="5" enum="Encoding">
+			Latin Alphabet No.3. "ISO8859-3".
 		</constant>
 		<constant name="ENCODING_ISO8859_4" value="6" enum="Encoding">
+			Latin Alphabet No.4. "ISO8859-4".
 		</constant>
 		<constant name="ENCODING_ISO8859_5" value="7" enum="Encoding">
+			Latin Cyrillic Alphabet. "ISO8859-5".
 		</constant>
 		<constant name="ENCODING_ISO8859_6" value="8" enum="Encoding">
+			Latin Arabic Alphabet. "ISO8859-6".
 		</constant>
 		<constant name="ENCODING_ISO8859_7" value="9" enum="Encoding">
+			Latin Greek Alphabet. "ISO8859-7".
 		</constant>
 		<constant name="ENCODING_ISO8859_8" value="10" enum="Encoding">
+			Latin Hebrew Alphabet. "ISO8859-8".
 		</constant>
 		<constant name="ENCODING_ISO8859_9" value="11" enum="Encoding">
+			Latin Alphabet No. 5. "ISO8859-9".
 		</constant>
 		<constant name="ENCODING_ISO8859_10" value="12" enum="Encoding">
+			Latin Alphabet No. 6. "ISO8859-10".
 		</constant>
 		<constant name="ENCODING_ISO8859_11" value="13" enum="Encoding">
+			Thai, TIS 620-2569 character set. "ISO8859-11".
 		</constant>
 		<constant name="ENCODING_ISO8859_13" value="14" enum="Encoding">
+			Latin Alphabet No. 7. "ISO8859-13".
 		</constant>
 		<constant name="ENCODING_ISO8859_14" value="15" enum="Encoding">
+			Latin Alphabet No. 8. "ISO8859-14".
 		</constant>
 		<constant name="ENCODING_ISO8859_15" value="16" enum="Encoding">
+			Latin Alphabet No. 9. "ISO8859-15".
 		</constant>
 		<constant name="ENCODING_ISO8859_16" value="17" enum="Encoding">
+			Latin Alphabet No. 10. "ISO8859-16".
 		</constant>
 		<constant name="ENCODING_CP1250" value="18" enum="Encoding">
+			Microsoft Windows Codepage 1250 (EE). "CP1250".
 		</constant>
 		<constant name="ENCODING_CP1251" value="19" enum="Encoding">
+			Microsoft Windows Codepage 1251 (Cyrl). "CP1251".
 		</constant>
 		<constant name="ENCODING_CP1252" value="20" enum="Encoding">
+			Microsoft Windows Codepage 1252 (ANSI). "CP1252".
 		</constant>
 		<constant name="ENCODING_CP1253" value="21" enum="Encoding">
+			Microsoft Windows Codepage 1253 (Greek). "CP1253".
 		</constant>
 		<constant name="ENCODING_CP1254" value="22" enum="Encoding">
+			Microsoft Windows Codepage 1254 (Turk). "CP1254".
 		</constant>
 		<constant name="ENCODING_CP1255" value="23" enum="Encoding">
+			Microsoft Windows Codepage 1255 (Hebr). "CP1255".
 		</constant>
 		<constant name="ENCODING_CP1256" value="24" enum="Encoding">
+			Microsoft Windows Codepage 1256 (Arab). "CP1256".
 		</constant>
 		<constant name="ENCODING_CP1257" value="25" enum="Encoding">
+			Microsoft Windows Codepage 1257 (BaltRim). "CP1257".
 		</constant>
 		<constant name="ENCODING_CP1258" value="26" enum="Encoding">
+			Microsoft Windows Codepage 1258 (Viet). "CP1258".
 		</constant>
 		<constant name="ENCODING_KOI8_R" value="27" enum="Encoding">
+			Russian Net Character Set. "KOI8-R".
 		</constant>
 		<constant name="ENCODER_TYPE_SINGLE_BYTE" value="0" enum="EncoderType">
 		</constant>
