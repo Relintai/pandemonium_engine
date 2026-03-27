@@ -87,50 +87,46 @@ protected:
 	String _error_str;
 	bool _error_set;
 
-	struct TNode {
+	// Expression Nodes
+
+	struct ExpressionNode {
 		enum Type {
-			TYPE_HTML_DATA,
 			TYPE_CONSTANT,
 			TYPE_INDEX,
 			TYPE_NAMED_INDEX,
 			TYPE_BUILTIN_FUNC,
 			TYPE_OPERATOR,
+			TYPE_CONTROL_FLOW,
+			TYPE_HTML_DATA,
 			TYPE_IF,
 			TYPE_FOREACH,
 		};
 
-		TNode *next;
+		ExpressionNode *next;
 
 		Type type;
 
-		TNode() {
+		ExpressionNode() {
 			type = Type::TYPE_CONSTANT;
 			next = nullptr;
 		}
-		virtual ~TNode() {
+		virtual ~ExpressionNode() {
 			if (next) {
 				memdelete(next);
 			}
 		}
 	};
 
-	struct HTMLDataNode : public TNode {
-		String value;
-		HTMLDataNode() {
-			type = TYPE_HTML_DATA;
-		}
-	};
-
-	struct ConstantNode : public TNode {
+	struct ConstantNode : public ExpressionNode {
 		Variant value;
 		ConstantNode() {
 			type = TYPE_CONSTANT;
 		}
 	};
 
-	struct IndexNode : public TNode {
-		TNode *base;
-		TNode *index;
+	struct IndexNode : public ExpressionNode {
+		ExpressionNode *base;
+		ExpressionNode *index;
 
 		IndexNode() {
 			type = TYPE_INDEX;
@@ -139,8 +135,8 @@ protected:
 		}
 	};
 
-	struct NamedIndexNode : public TNode {
-		TNode *base;
+	struct NamedIndexNode : public ExpressionNode {
+		ExpressionNode *base;
 		StringName name;
 
 		NamedIndexNode() {
@@ -149,19 +145,19 @@ protected:
 		}
 	};
 
-	struct BuiltinFuncNode : public TNode {
+	struct BuiltinFuncNode : public ExpressionNode {
 		BuiltinFunc func;
-		Vector<TNode *> arguments;
+		Vector<ExpressionNode *> arguments;
 		BuiltinFuncNode() {
 			type = TYPE_BUILTIN_FUNC;
 			func = BuiltinFunc::FUNC_PRINT;
 		}
 	};
 
-	struct OperatorNode : public TNode {
+	struct OperatorNode : public ExpressionNode {
 		Variant::Operator op;
 
-		TNode *nodes[2];
+		ExpressionNode *nodes[2];
 
 		OperatorNode() {
 			type = TYPE_OPERATOR;
@@ -170,10 +166,25 @@ protected:
 		}
 	};
 
-	struct IfNode : public TNode {
-		TNode *condition;
-		TNode *body;
-		TNode *body_else;
+	// ControlFlowNodes
+
+	struct ControlFlowNode : public ExpressionNode {
+		ControlFlowNode() {
+			type = Type::TYPE_CONTROL_FLOW;
+		}
+	};
+
+	struct HTMLDataNode : public ControlFlowNode {
+		String value;
+		HTMLDataNode() {
+			type = TYPE_HTML_DATA;
+		}
+	};
+
+	struct IfNode : public ControlFlowNode {
+		ExpressionNode *condition;
+		ControlFlowNode *body;
+		ControlFlowNode *body_else;
 
 		IfNode() {
 			type = TYPE_IF;
@@ -183,9 +194,9 @@ protected:
 		}
 	};
 
-	struct ForeachNode : public TNode {
-		TNode *condition;
-		TNode *body;
+	struct ForeachNode : public ControlFlowNode {
+		ExpressionNode *condition;
+		ControlFlowNode *body;
 
 		ForeachNode() {
 			type = TYPE_FOREACH;
@@ -202,14 +213,14 @@ protected:
 		return node;
 	}
 
-	TNode *_root;
-	TNode *_nodes;
+	Vector<ControlFlowNode *> _block;
+	ExpressionNode *_nodes;
 
 	String _text;
 
 	bool _execution_error;
 
-	bool _execute(Dictionary &p_data, StringBuilder &p_html, TNode *p_node, Variant &r_ret, String &r_error_str);
+	bool _execute(Dictionary &p_data, StringBuilder &p_html, ExpressionNode *p_node, Variant &r_ret, String &r_error_str);
 };
 
 #endif

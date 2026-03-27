@@ -40,6 +40,8 @@
 // range(<var1>, <var2 opt>, <var 3 opt>)
 // keys(<var1 Dict>)
 // values(<var1 Dict>)
+// tr() translate
+// trt()
 
 // No assignment operator, set should be good enough
 
@@ -65,6 +67,8 @@
 // {{for <variable declaration> in <collection> }}
 // {{endfor}}
 // Variant can do the iteration, that mechanism should just be used.
+// in _execute
+// variant iter init, while !iter end, set name to data dict, call body expr chain
 
 // other stuff:
 // Recursive indexing now should work
@@ -88,12 +92,15 @@ String HTMLTemplaterenderer::render(const Dictionary &p_data, const bool p_show_
 	_execution_error = false;
 	Variant output;
 	String error_txt;
-	bool err = _execute(data, html, _root, output, error_txt);
 
-	if (err) {
-		_execution_error = true;
-		_error_str = error_txt;
-		ERR_FAIL_COND_V_MSG(p_show_error, html.as_string(), _error_str);
+	for (int i = 0; i < _block.size(); ++i) {
+		bool err = _execute(data, html, _block.write[i], output, error_txt);
+
+		if (err) {
+			_execution_error = true;
+			_error_str = error_txt;
+			ERR_FAIL_COND_V_MSG(p_show_error, html.as_string(), _error_str);
+		}
 	}
 
 	return html.as_string();
@@ -154,6 +161,6 @@ const char *HTMLTemplaterenderer::token_name[TK_MAX] = {
 	"ERROR",
 };
 
-bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, TNode *p_node, Variant &r_ret, String &r_error_str) {
+bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, ExpressionNode *p_node, Variant &r_ret, String &r_error_str) {
 	return false;
 }
