@@ -83,6 +83,9 @@
 
 #include "html_template_renderer.h"
 
+#include "core/string/string_buffer.h"
+#include "core/string/string_builder.h"
+
 String HTMLTemplaterenderer::render(const Dictionary &p_data, const bool p_show_error) {
 	ERR_FAIL_COND_V_MSG(_error_set, String(), "There was previously a parse error: " + _error_str + ".");
 
@@ -115,6 +118,7 @@ String HTMLTemplaterenderer::get_error_str() {
 HTMLTemplaterenderer::HTMLTemplaterenderer() {
 	_error_set = false;
 	str_ofs = 0;
+	_tokenizer_in_text_mode = true;
 
 	_root = NULL;
 	_nodes = NULL;
@@ -163,8 +167,11 @@ HTMLTemplaterenderer::BuiltinFunc HTMLTemplaterenderer::find_function(const Stri
 }
 
 const char *HTMLTemplaterenderer::token_name[TK_MAX] = {
+	"HTML DATA",
 	"CURLY BRACKET OPEN",
 	"CURLY BRACKET CLOSE",
+	"DOUBLE CURLY BRACKET OPEN",
+	"DOUBLE CURLY BRACKET CLOSE",
 	"BRACKET OPEN",
 	"BRACKET CLOSE",
 	"PARENTHESIS OPEN",
@@ -214,6 +221,68 @@ static bool _is_binary_digit(char32_t c) {
 }
 
 Error HTMLTemplaterenderer::_get_token(Token &r_token) {
+	// Text mode
+
+	if (_tokenizer_in_text_mode) {
+		r_token.type = TK_HTML_DATA;
+
+		StringBuffer<256> buf;
+
+		while (true) {
+#define GET_CHAR() (str_ofs >= _template_text.length() ? 0 : _template_text[str_ofs++])
+
+			CharType cchar = GET_CHAR();
+
+			switch (cchar) {
+				case 0: {
+					if (buf.length() == 0) {
+						r_token.type = TK_EOF;
+					} else {
+						r_token.value = buf.as_string();
+					}
+
+					return OK;
+				};
+				case '{': {
+					if (_template_text[str_ofs] == '{') {
+						// {{
+
+						if (buf.length() != 0) {
+							--str_ofs; // so next token will be double curly
+							_tokenizer_in_text_mode = false;
+							r_token.value = buf.as_string();
+						} else {
+							r_token.type = TK_DOUBLE_CURLY_BRACKET_OPEN;
+						}
+
+						return OK;
+					} else if (_template_text[str_ofs] == '\\') {
+						// Escapes
+						// {\{ -> {{ in html, {\\{ -> {\{ in html, {\\\{ -> {\\{ in html
+
+						// Consuming a single \ (this one) should do the trick
+						++str_ofs;
+					} else {
+						// Just a { in html
+						buf.append(cchar);
+					}
+
+					break;
+				};
+				default: {
+					buf.append(cchar);
+					break;
+				};
+			}
+#undef GET_CHAR
+		}
+
+		// Should never get here
+		r_token.type = TK_ERROR;
+		return OK;
+	}
+
+	// in expression mode
 	while (true) {
 #define GET_CHAR() (str_ofs >= _template_text.length() ? 0 : _template_text[str_ofs++])
 
@@ -229,7 +298,13 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 				return OK;
 			};
 			case '}': {
-				r_token.type = TK_CURLY_BRACKET_CLOSE;
+				if (_template_text[str_ofs] == '}') {
+					r_token.type = TK_DOUBLE_CURLY_BRACKET_CLOSE;
+					str_ofs++;
+				} else {
+					r_token.type = TK_CURLY_BRACKET_CLOSE;
+				}
+
 				return OK;
 			};
 			case '[': {

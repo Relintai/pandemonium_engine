@@ -74,8 +74,11 @@ protected:
 	static BuiltinFunc find_function(const String &p_string);
 
 	enum TokenType {
+		TK_HTML_DATA,
 		TK_CURLY_BRACKET_OPEN,
 		TK_CURLY_BRACKET_CLOSE,
+		TK_DOUBLE_CURLY_BRACKET_OPEN,
+		TK_DOUBLE_CURLY_BRACKET_CLOSE,
 		TK_BRACKET_OPEN,
 		TK_BRACKET_CLOSE,
 		TK_PARENTHESIS_OPEN,
@@ -131,6 +134,7 @@ protected:
 		_error_set = true;
 	}
 
+	bool _tokenizer_in_text_mode;
 	int str_ofs;
 
 	Error _get_token(Token &r_token);
