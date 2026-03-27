@@ -219,6 +219,8 @@ void register_core_types() {
 	ClassDB::register_class<_Semaphore>();
 	ClassDB::register_class<_SubProcess>();
 
+	ClassDB::register_class<_StringBuilder>();
+
 	ClassDB::register_class<XMLParser>();
 
 	ClassDB::register_class<ConfigFile>();

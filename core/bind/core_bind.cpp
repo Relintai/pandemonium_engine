@@ -3730,3 +3730,34 @@ _JSON *_JSON::singleton = nullptr;
 _JSON::_JSON() {
 	singleton = this;
 }
+
+// _StringBuilder
+
+void _StringBuilder::append(const String &p_string) {
+	_sb.append(p_string);
+}
+void _StringBuilder::clear() {
+	_sb.clear();
+}
+int _StringBuilder::num_strings_appended() const {
+	return _sb.num_strings_appended();
+}
+uint32_t _StringBuilder::get_string_length() const {
+	return _sb.get_string_length();
+}
+String _StringBuilder::as_string() const {
+	return _sb.as_string();
+}
+
+_StringBuilder::_StringBuilder() {
+}
+_StringBuilder::~_StringBuilder() {
+}
+
+void _StringBuilder::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("append", "string"), &_StringBuilder::append);
+	ClassDB::bind_method(D_METHOD("clear"), &_StringBuilder::clear);
+	ClassDB::bind_method(D_METHOD("num_strings_appended"), &_StringBuilder::num_strings_appended);
+	ClassDB::bind_method(D_METHOD("get_string_length"), &_StringBuilder::get_string_length);
+	ClassDB::bind_method(D_METHOD("as_string"), &_StringBuilder::as_string);
+}

@@ -45,6 +45,7 @@
 #include "core/os/semaphore.h"
 #include "core/os/sub_process.h"
 #include "core/os/thread.h"
+#include "core/string/string_builder.h"
 
 class _ResourceLoader : public Object {
 	GDCLASS(_ResourceLoader, Object);
@@ -1019,6 +1020,25 @@ public:
 	Ref<JSONParseResult> parse(const String &p_json);
 
 	_JSON();
+};
+
+class _StringBuilder : public Reference {
+	GDCLASS(_StringBuilder, Reference);
+
+public:
+	void append(const String &p_string);
+	void clear();
+	int num_strings_appended() const;
+	uint32_t get_string_length() const;
+	String as_string() const;
+
+	_StringBuilder();
+	~_StringBuilder();
+
+protected:
+	static void _bind_methods();
+
+	StringBuilder _sb;
 };
 
 #endif // CORE_BIND_H

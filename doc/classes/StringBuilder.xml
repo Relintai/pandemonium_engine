@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="StringBuilder" inherits="Reference">
+	<brief_description>
+		Build Strings more efficiently.
+	</brief_description>
+	<description>
+		Build Strings more efficiently.
+		Most String manipulations require the constand copying of data (for example when doing concatenations in a for loop).
+		Granted it's not nearly as bas as in most garbage collected languages, here it's mostly unnoticable, but this class can make it a bit more efficient.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="append">
+			<return type="void" />
+			<argument index="0" name="string" type="String" />
+			<description>
+				Appends a String to the builder.
+			</description>
+		</method>
+		<method name="as_string" qualifiers="const">
+			<return type="String" />
+			<description>
+				Build a single String from all of the appended ones.
+			</description>
+		</method>
+		<method name="clear">
+			<return type="void" />
+			<description>
+				Clear all data.
+			</description>
+		</method>
+		<method name="get_string_length" qualifiers="const">
+			<return type="int" />
+			<description>
+				Returns the final String length.
+			</description>
+		</method>
+		<method name="num_strings_appended" qualifiers="const">
+			<return type="int" />
+			<description>
+				Returns the number of Strings that are appended.
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>
