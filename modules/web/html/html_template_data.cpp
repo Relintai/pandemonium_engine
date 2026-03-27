@@ -47,6 +47,8 @@ String HTMLTemplateData::get_template(const StringName &p_name) const {
 }
 void HTMLTemplateData::set_template(const StringName &p_name, const String &p_value) {
 	_templates[p_name] = p_value;
+
+	emit_changed();
 }
 void HTMLTemplateData::remove_template(const StringName &p_name) {
 	_templates.erase(p_name);
@@ -62,7 +64,7 @@ Dictionary HTMLTemplateData::get_templates() const {
 	return ret;
 }
 void HTMLTemplateData::set_templates(const Dictionary &p_dict) {
-	clear();
+	_templates.clear();
 
 	Array keys = p_dict.keys();
 
@@ -76,6 +78,8 @@ void HTMLTemplateData::set_templates(const Dictionary &p_dict) {
 
 		_templates[k] = String(p_dict[k]);
 	}
+
+	emit_changed();
 }
 
 HashMap<StringName, String> HTMLTemplateData::get_templates_map() const {
@@ -83,14 +87,18 @@ HashMap<StringName, String> HTMLTemplateData::get_templates_map() const {
 }
 void HTMLTemplateData::set_templates_map(const HashMap<StringName, String> &p_map) {
 	_templates = p_map;
+
+	emit_changed();
 }
 
 void HTMLTemplateData::clear() {
 	_templates.clear();
+
+	emit_changed();
 }
 
 Error HTMLTemplateData::load_from_file(const String &p_file) {
-	clear();
+	_templates.clear();
 
 	Error err;
 	FileAccess *f = FileAccess::open(p_file, FileAccess::READ, &err);
@@ -99,6 +107,8 @@ Error HTMLTemplateData::load_from_file(const String &p_file) {
 		if (f) {
 			memdelete(f);
 		}
+
+		emit_changed();
 
 		return err;
 	}
@@ -134,7 +144,7 @@ Error HTMLTemplateData::save_to_file(const String &p_file) const {
 	return OK;
 }
 void HTMLTemplateData::load_from_string(const String &p_data) {
-	clear();
+	_templates.clear();
 
 	Vector<String> lines = p_data.split("\n", false);
 
@@ -162,6 +172,8 @@ void HTMLTemplateData::load_from_string(const String &p_data) {
 	if (!current_section_name.empty()) {
 		_templates[current_section_name] = current_str;
 	}
+
+	emit_changed();
 }
 String HTMLTemplateData::save_as_string() const {
 	String data;
