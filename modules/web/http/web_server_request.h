@@ -108,13 +108,18 @@ public:
 	void response_remove_cookie_simple(const String &key);
 
 	void custom_response_header_set(const StringName &key, const String &value);
-	String custom_response_header_get(const StringName &key);
+	String custom_response_header_get(const StringName &key) const;
 	bool custom_response_header_has(const StringName &key);
+	void custom_response_header_erase(const StringName &key);
 	HashMap<StringName, String> custom_response_headers_get();
 	Dictionary custom_response_headers_get_bind();
 
 	String get_content_type();
 	void set_content_type(const String &content_type);
+
+	String content_disposition_get() const;
+	void content_disposition_set_file_name(const String &p_file_name);
+	void content_disposition_clear();
 
 	virtual HTTPServerEnums::HTTPMethod get_method() const;
 

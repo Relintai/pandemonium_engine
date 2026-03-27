@@ -240,8 +240,8 @@ void WebServerRequest::response_remove_cookie_simple(const String &key) {
 void WebServerRequest::custom_response_header_set(const StringName &key, const String &value) {
 	_custom_response_headers[key] = value;
 }
-String WebServerRequest::custom_response_header_get(const StringName &key) {
-	String *e = _custom_response_headers.getptr(key);
+String WebServerRequest::custom_response_header_get(const StringName &key) const {
+	const String *e = _custom_response_headers.getptr(key);
 
 	if (!e) {
 		return String();
@@ -251,6 +251,9 @@ String WebServerRequest::custom_response_header_get(const StringName &key) {
 }
 bool WebServerRequest::custom_response_header_has(const StringName &key) {
 	return _custom_response_headers.has(key);
+}
+void WebServerRequest::custom_response_header_erase(const StringName &key) {
+	_custom_response_headers.erase(key);
 }
 HashMap<StringName, String> WebServerRequest::custom_response_headers_get() {
 	return _custom_response_headers;
@@ -270,6 +273,20 @@ String WebServerRequest::get_content_type() {
 }
 void WebServerRequest::set_content_type(const String &content_type) {
 	custom_response_header_set("Content-Type", content_type);
+}
+
+String WebServerRequest::content_disposition_get() const {
+	return custom_response_header_get("Content-Disposition");
+}
+void WebServerRequest::content_disposition_set_file_name(const String &p_file_name) {
+	if (p_file_name.empty()) {
+		custom_response_header_set("Content-Disposition", "attachment;");
+	} else {
+		custom_response_header_set("Content-Disposition", vformat("attachment; filename=\"%s\"; filename*=UTF-8''%s", String(p_file_name.ascii()), p_file_name.percent_encode()));
+	}
+}
+void WebServerRequest::content_disposition_clear() {
+	custom_response_header_erase("Content-Disposition");
 }
 
 HTTPServerEnums::HTTPMethod WebServerRequest::get_method() const {
@@ -683,11 +700,16 @@ void WebServerRequest::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("custom_response_header_set", "key", "value"), &WebServerRequest::custom_response_header_set);
 	ClassDB::bind_method(D_METHOD("custom_response_header_get", "key"), &WebServerRequest::custom_response_header_get);
 	ClassDB::bind_method(D_METHOD("custom_response_header_has", "key"), &WebServerRequest::custom_response_header_has);
+	ClassDB::bind_method(D_METHOD("custom_response_header_erase", "key"), &WebServerRequest::custom_response_header_erase);
 	ClassDB::bind_method(D_METHOD("custom_response_headers_get"), &WebServerRequest::custom_response_headers_get_bind);
 
 	ClassDB::bind_method(D_METHOD("get_content_type"), &WebServerRequest::get_content_type);
 	ClassDB::bind_method(D_METHOD("set_content_type", "content_type"), &WebServerRequest::set_content_type);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "content_type"), "set_content_type", "get_content_type");
+
+	ClassDB::bind_method(D_METHOD("content_disposition_get"), &WebServerRequest::content_disposition_get);
+	ClassDB::bind_method(D_METHOD("content_disposition_set_file_name", "file_name"), &WebServerRequest::content_disposition_set_file_name);
+	ClassDB::bind_method(D_METHOD("content_disposition_clear"), &WebServerRequest::content_disposition_clear);
 
 	ClassDB::bind_method(D_METHOD("get_method"), &WebServerRequest::get_method);
 
