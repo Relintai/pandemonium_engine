@@ -191,6 +191,10 @@ However some third party modules might need higher c++ standard. At first they w
 Note that this would only be an extremely minor break, and only for engine modules. Also they would only need to specify
 a different c++ version in their SCSub file (for which there are plenty of examples).
 
+### TypedDictionary
+
+Now that the engine has TypedArray, it' would probably be a good idea to also have a TypedDictinary.
+
 ### MarkdownLabel
 
 A RichTextLabel, but for markdown would be nice to have.
