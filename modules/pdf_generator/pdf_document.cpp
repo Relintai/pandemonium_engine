@@ -842,8 +842,6 @@ Ref<PDF3DView> PDFDocument::create_3d_view(const String &p_name) {
 }
 
 PoolByteArray PDFDocument::save_to_mem() {
-	HPDF_ResetStream(_doc);
-
 	_status = HPDF_SaveToStream(_doc);
 
 	if (_status != HPDF_OK) {
