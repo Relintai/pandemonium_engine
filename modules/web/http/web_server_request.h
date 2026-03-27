@@ -118,8 +118,9 @@ public:
 	void set_content_type(const String &content_type);
 
 	String content_disposition_get() const;
-	void content_disposition_set_file_name(const String &p_file_name);
 	void content_disposition_clear();
+	String content_disposition_file_name_get() const;
+	void content_disposition_file_name_set(const String &p_file_name);
 
 	virtual HTTPServerEnums::HTTPMethod get_method() const;
 
@@ -207,6 +208,7 @@ protected:
 	int _path_stack_pointer;
 	Vector<Ref<WebServerCookie>> _cookies;
 
+	String _content_disposition_file_name;
 	HashMap<StringName, String> _custom_response_headers;
 
 	Ref<WebPermission> _active_permission;

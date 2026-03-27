@@ -278,15 +278,20 @@ void WebServerRequest::set_content_type(const String &content_type) {
 String WebServerRequest::content_disposition_get() const {
 	return custom_response_header_get("Content-Disposition");
 }
-void WebServerRequest::content_disposition_set_file_name(const String &p_file_name) {
+void WebServerRequest::content_disposition_clear() {
+	custom_response_header_erase("Content-Disposition");
+}
+void WebServerRequest::content_disposition_file_name_set(const String &p_file_name) {
+	_content_disposition_file_name = p_file_name;
+
 	if (p_file_name.empty()) {
 		custom_response_header_set("Content-Disposition", "attachment;");
 	} else {
 		custom_response_header_set("Content-Disposition", vformat("attachment; filename=\"%s\"; filename*=UTF-8''%s", String(p_file_name.ascii()), p_file_name.percent_encode()));
 	}
 }
-void WebServerRequest::content_disposition_clear() {
-	custom_response_header_erase("Content-Disposition");
+String WebServerRequest::content_disposition_file_name_get() const {
+	return _content_disposition_file_name;
 }
 
 HTTPServerEnums::HTTPMethod WebServerRequest::get_method() const {
@@ -708,8 +713,9 @@ void WebServerRequest::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "content_type"), "set_content_type", "get_content_type");
 
 	ClassDB::bind_method(D_METHOD("content_disposition_get"), &WebServerRequest::content_disposition_get);
-	ClassDB::bind_method(D_METHOD("content_disposition_set_file_name", "file_name"), &WebServerRequest::content_disposition_set_file_name);
 	ClassDB::bind_method(D_METHOD("content_disposition_clear"), &WebServerRequest::content_disposition_clear);
+	ClassDB::bind_method(D_METHOD("content_disposition_file_name_get"), &WebServerRequest::content_disposition_file_name_get);
+	ClassDB::bind_method(D_METHOD("content_disposition_file_name_set", "file_name"), &WebServerRequest::content_disposition_file_name_set);
 
 	ClassDB::bind_method(D_METHOD("get_method"), &WebServerRequest::get_method);
 
