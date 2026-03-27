@@ -294,7 +294,13 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 				return OK;
 			};
 			case '{': {
-				r_token.type = TK_CURLY_BRACKET_OPEN;
+				if (_template_text[str_ofs] == '{') {
+					r_token.type = TK_DOUBLE_CURLY_BRACKET_OPEN;
+					str_ofs++;
+				} else {
+					r_token.type = TK_CURLY_BRACKET_OPEN;
+				}
+
 				return OK;
 			};
 			case '}': {
