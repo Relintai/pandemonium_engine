@@ -141,7 +141,7 @@ protected:
 
 	// Expression Nodes
 
-	struct ExpressionNode {
+	struct ENode {
 		enum Type {
 			TYPE_CONSTANT,
 			TYPE_INDEX,
@@ -155,31 +155,31 @@ protected:
 			TYPE_FOREACH,
 		};
 
-		ExpressionNode *next;
+		ENode *next;
 
 		Type type;
 
-		ExpressionNode() {
+		ENode() {
 			type = Type::TYPE_CONSTANT;
 			next = nullptr;
 		}
-		virtual ~ExpressionNode() {
+		virtual ~ENode() {
 			if (next) {
 				memdelete(next);
 			}
 		}
 	};
 
-	struct ConstantNode : public ExpressionNode {
+	struct ConstantNode : public ENode {
 		Variant value;
 		ConstantNode() {
 			type = TYPE_CONSTANT;
 		}
 	};
 
-	struct IndexNode : public ExpressionNode {
-		ExpressionNode *base;
-		ExpressionNode *index;
+	struct IndexNode : public ENode {
+		ENode *base;
+		ENode *index;
 
 		IndexNode() {
 			type = TYPE_INDEX;
@@ -188,8 +188,8 @@ protected:
 		}
 	};
 
-	struct NamedIndexNode : public ExpressionNode {
-		ExpressionNode *base;
+	struct NamedIndexNode : public ENode {
+		ENode *base;
 		StringName name;
 
 		NamedIndexNode() {
@@ -198,19 +198,19 @@ protected:
 		}
 	};
 
-	struct BuiltinFuncNode : public ExpressionNode {
+	struct BuiltinFuncNode : public ENode {
 		BuiltinFunc func;
-		Vector<ExpressionNode *> arguments;
+		Vector<ENode *> arguments;
 		BuiltinFuncNode() {
 			type = TYPE_BUILTIN_FUNC;
 			func = BuiltinFunc::FUNC_PRINT;
 		}
 	};
 
-	struct OperatorNode : public ExpressionNode {
+	struct OperatorNode : public ENode {
 		Variant::Operator op;
 
-		ExpressionNode *nodes[2];
+		ENode *nodes[2];
 
 		OperatorNode() {
 			type = TYPE_OPERATOR;
@@ -219,13 +219,13 @@ protected:
 		}
 	};
 
-	struct ControlFlowNode : public ExpressionNode {
+	struct ControlFlowNode : public ENode {
 		ControlFlowNode() {
 			type = Type::TYPE_CONTROL_FLOW;
 		}
 	};
 
-	struct BlockNode : public ExpressionNode {
+	struct BlockNode : public ENode {
 		Vector<ControlFlowNode *> block;
 
 		BlockNode() {
@@ -244,7 +244,7 @@ protected:
 	};
 
 	struct IfNode : public ControlFlowNode {
-		ExpressionNode *condition;
+		ENode *condition;
 		BlockNode *body;
 		BlockNode *body_else;
 
@@ -257,7 +257,7 @@ protected:
 	};
 
 	struct ForeachNode : public ControlFlowNode {
-		ExpressionNode *condition;
+		ENode *condition;
 		BlockNode *body;
 
 		ForeachNode() {
@@ -276,14 +276,14 @@ protected:
 	}
 
 	BlockNode *_root;
-	ExpressionNode *_nodes;
+	ENode *_nodes;
 
 	String _template_text;
 
 	bool _execution_error;
 	bool _dirty;
 
-	bool _execute(Dictionary &p_data, StringBuilder &p_html, ExpressionNode *p_node, Variant &r_ret, String &r_error_str);
+	bool _execute(Dictionary &p_data, StringBuilder &p_html, ENode *p_node, Variant &r_ret, String &r_error_str);
 };
 
 #endif

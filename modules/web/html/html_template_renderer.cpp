@@ -721,6 +721,6 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 	return ERR_PARSE_ERROR;
 }
 
-bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, ExpressionNode *p_node, Variant &r_ret, String &r_error_str) {
+bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, ENode *p_node, Variant &r_ret, String &r_error_str) {
 	return false;
 }
