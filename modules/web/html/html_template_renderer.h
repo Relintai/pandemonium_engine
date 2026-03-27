@@ -96,6 +96,7 @@ protected:
 			TYPE_NAMED_INDEX,
 			TYPE_BUILTIN_FUNC,
 			TYPE_OPERATOR,
+			TYPE_BLOCK,
 			TYPE_CONTROL_FLOW,
 			TYPE_HTML_DATA,
 			TYPE_IF,
@@ -166,16 +167,25 @@ protected:
 		}
 	};
 
-	// ControlFlowNodes
-
 	struct ControlFlowNode : public ExpressionNode {
 		ControlFlowNode() {
 			type = Type::TYPE_CONTROL_FLOW;
 		}
 	};
 
+	struct BlockNode : public ExpressionNode {
+		Vector<ControlFlowNode *> block;
+
+		BlockNode() {
+			type = Type::TYPE_BLOCK;
+		}
+	};
+
+	// ControlFlowNodes
+
 	struct HTMLDataNode : public ControlFlowNode {
 		String value;
+
 		HTMLDataNode() {
 			type = TYPE_HTML_DATA;
 		}
@@ -183,8 +193,8 @@ protected:
 
 	struct IfNode : public ControlFlowNode {
 		ExpressionNode *condition;
-		ControlFlowNode *body;
-		ControlFlowNode *body_else;
+		BlockNode *body;
+		BlockNode *body_else;
 
 		IfNode() {
 			type = TYPE_IF;
@@ -196,7 +206,7 @@ protected:
 
 	struct ForeachNode : public ControlFlowNode {
 		ExpressionNode *condition;
-		ControlFlowNode *body;
+		BlockNode *body;
 
 		ForeachNode() {
 			type = TYPE_FOREACH;
@@ -213,7 +223,7 @@ protected:
 		return node;
 	}
 
-	Vector<ControlFlowNode *> _block;
+	BlockNode *_root;
 	ExpressionNode *_nodes;
 
 	String _text;

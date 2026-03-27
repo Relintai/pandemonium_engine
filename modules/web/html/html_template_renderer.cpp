@@ -93,14 +93,12 @@ String HTMLTemplaterenderer::render(const Dictionary &p_data, const bool p_show_
 	Variant output;
 	String error_txt;
 
-	for (int i = 0; i < _block.size(); ++i) {
-		bool err = _execute(data, html, _block.write[i], output, error_txt);
+	bool err = _execute(data, html, _root, output, error_txt);
 
-		if (err) {
-			_execution_error = true;
-			_error_str = error_txt;
-			ERR_FAIL_COND_V_MSG(p_show_error, html.as_string(), _error_str);
-		}
+	if (err) {
+		_execution_error = true;
+		_error_str = error_txt;
+		ERR_FAIL_COND_V_MSG(p_show_error, html.as_string(), _error_str);
 	}
 
 	return html.as_string();
