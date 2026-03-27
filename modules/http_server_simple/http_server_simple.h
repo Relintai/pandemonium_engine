@@ -64,8 +64,10 @@ public:
 	void send_redirect(Ref<WebServerRequest> request, const String &location, const HTTPServerEnums::HTTPStatusCode status_code);
 	void send(Ref<WebServerRequest> request);
 	void send_file(Ref<WebServerRequest> request, const String &p_file_path);
+	void send_raw_data(Ref<WebServerRequest> request, const PoolByteArray &p_data);
 
 	void update_send_file(Ref<SimpleWebServerRequest> request);
+	void update_send_data(Ref<SimpleWebServerRequest> request);
 
 	void close();
 	bool closed();
@@ -93,6 +95,7 @@ public:
 	uint8_t req_buf[4096];
 
 	Ref<SimpleWebServerRequest> _current_request;
+
 	uint8_t _file_send_buffer[4096];
 	uint64_t _file_buffer_start;
 	uint64_t _file_buffer_end;
@@ -102,6 +105,10 @@ public:
 	uint64_t _file_length;
 
 	int _file_buffer_send_max_consecutive_loops;
+
+	uint64_t _raw_data_buffer_start;
+	uint64_t _raw_data_buffer_end;
+	uint64_t _raw_data_buffer_length;
 
 	uint64_t _timeout_usec;
 

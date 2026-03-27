@@ -95,7 +95,11 @@ void HTTPServerConnection::update() {
 	}
 
 	if (_current_request.is_valid()) {
-		update_send_file(_current_request);
+		if (_current_request->_sending_file_fa) {
+			update_send_file(_current_request);
+		} else if (_current_request->_raw_data_buffer.size() > 0) {
+			update_send_data(_current_request);
+		}
 
 		if (closed()) {
 			//some error happened
@@ -470,6 +474,192 @@ void HTTPServerConnection::send_file(Ref<WebServerRequest> request, const String
 	update_send_file(r);
 }
 
+void HTTPServerConnection::send_raw_data(Ref<WebServerRequest> request, const PoolByteArray &p_data) {
+	if (closed()) {
+		return;
+	}
+
+	HashMap<StringName, String> custom_headers = request->custom_response_headers_get();
+
+	Ref<SimpleWebServerRequest> r = request;
+
+	r->_raw_data_buffer = p_data;
+
+	_raw_data_buffer_start = 0;
+	_raw_data_buffer_length = p_data.size();
+	_raw_data_buffer_end = _raw_data_buffer_length;
+	uint64_t content_length = _raw_data_buffer_length;
+	String result_content_range_header;
+
+	String range_header = request->get_header_parameter("range");
+
+	if (!range_header.empty()) {
+		//Range: <unit>=<range-start>-
+		//Range: <unit>=<range-start>-<range-end>
+		//Range: <unit>=<range-start>-<range-end>, <range-start>-<range-end>
+		//Range: <unit>=<range-start>-<range-end>, <range-start>-<range-end>, <range-start>-<range-end>
+		//Range: <unit>=-<suffix-length>
+
+		//Range: bytes=200-999, 2000-2499, 9500-
+		//range_header -> "bytes=200-999, 2000-2499, 9500-"
+
+		//Currently only bytes units are registered which are offsets (zero-indexed & inclusive). If the requested data has a content coding applied, each byte range represents the encoded sequence of bytes, not the bytes that would be obtained after decoding.
+
+		if (!range_header.begins_with("bytes=")) {
+			//If the ranges are invalid, the server returns the 416 Range Not Satisfiable error.
+			r->_raw_data_buffer.clear();
+			request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_416_REQUESTED_RANGE_NOT_SATISFIABLE);
+			return;
+		}
+
+		//range_noprefix -> "200-999, 2000-2499, 9500-"
+		String range_noprefix = range_header.substr_index(5, range_header.size() - 1);
+
+		Vector<String> ranges = range_header.split(",");
+
+		if (ranges.size() == 0) {
+			//If the ranges are invalid, the server returns the 416 Range Not Satisfiable error.
+			r->_raw_data_buffer.clear();
+			request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_416_REQUESTED_RANGE_NOT_SATISFIABLE);
+			return;
+		}
+
+		// only handle the first one. Handling more creates extreme amounts of unnecessary complexity.
+
+		//range -> "200-999"
+		String range = ranges[0].strip_edges();
+
+		Vector<String> range_values = range.split("-");
+
+		if (range_values.size() != 2) {
+			//If the ranges are invalid, the server returns the 416 Range Not Satisfiable error.
+			r->_raw_data_buffer.clear();
+			request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_416_REQUESTED_RANGE_NOT_SATISFIABLE);
+			return;
+		}
+
+		//9500-
+
+		bool error = false;
+		uint64_t start_value = 0;
+
+		if (!range_values[0].empty() && !range_values[0].is_valid_unsigned_integer()) {
+			start_value = range_values[0].to_int64();
+		} else {
+			error = true;
+		}
+
+		if (!error && start_value >= _raw_data_buffer_length) {
+			error = true;
+		}
+
+		if (!error) {
+			_raw_data_buffer_start = start_value;
+
+			if (!range_values[1].empty()) {
+				//200-999
+
+				uint64_t end_value = 0;
+
+				if (!range_values[1].is_valid_unsigned_integer()) {
+					end_value = range_values[1].to_int64();
+				} else {
+					error = true;
+				}
+
+				if (!error && end_value > _raw_data_buffer_length) {
+					error = true;
+				}
+
+				if (!error) {
+					_raw_data_buffer_end = end_value;
+				}
+			}
+		}
+
+		if (error) {
+			//If the ranges are invalid, the server returns the 416 Range Not Satisfiable error.
+			r->_raw_data_buffer.clear();
+			request->send_error(HTTPServerEnums::HTTP_STATUS_CODE_416_REQUESTED_RANGE_NOT_SATISFIABLE);
+			return;
+		}
+
+		if (request->get_status_code() == 200) {
+			request->set_status_code(HTTPServerEnums::HTTP_STATUS_CODE_206_PARTIAL_CONTENT);
+		}
+
+		content_length = _raw_data_buffer_end - _raw_data_buffer_start;
+
+		//Content-Range: <unit> <range-start>-<range-end>/<size> (<size> = The total length of the document (or '*' if unknown).)
+
+		result_content_range_header = "Content-Range: bytes " + itos(_raw_data_buffer_start) + "-" + itos(_raw_data_buffer_end) + "/" + itos(_raw_data_buffer_length) + +"\r\n";
+	}
+
+	String s = "HTTP/1.1 " + HTTPServerEnums::get_status_code_header_string(request->get_status_code()) + "\r\n";
+
+	if (!result_content_range_header.empty()) {
+		s += result_content_range_header;
+	}
+
+	if (!custom_headers.has("Connection")) {
+		if (has_more_messages()) {
+			s += "Connection: keep-alive\r\n";
+		} else {
+			s += "Connection: close\r\n";
+		}
+	}
+
+	if (!custom_headers.has("Content-Type")) {
+		// TODO, add helper for ContentDisposition, and try to read that
+		/*
+		String ctype;
+		StringName req_ext = p_file_path.get_extension().to_lower();
+
+		if (_http_server->mimes.has(req_ext)) {
+			ctype = _http_server->mimes[req_ext];
+		} else {
+			ctype = "application/octet-stream";
+		}
+
+		s += "Content-Type: " + ctype + "\r\n";
+		*/
+	}
+
+	s += "Content-Length: " + itos(content_length) + "\r\n";
+
+	for (int i = 0; i < request->response_get_cookie_count(); ++i) {
+		Ref<WebServerCookie> cookie = request->response_get_cookie(i);
+
+		ERR_CONTINUE(!cookie.is_valid());
+
+		String cookie_str = cookie->get_response_header_string();
+
+		if (cookie_str != "") {
+			s += cookie_str;
+		}
+	}
+
+	for (HashMap<StringName, String>::Element *E = custom_headers.front(); E; E = E->next) {
+		s += String(E->key()) + ": " + E->value() + "\r\n";
+	}
+
+	s += "\r\n";
+
+#if CONNECTION_RESPOSE_DEBUG
+	ERR_PRINT(s);
+#endif
+
+	CharString cs = s.utf8();
+
+	Error err = peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
+	if (err != OK) {
+		close();
+		return;
+	}
+
+	update_send_data(r);
+}
+
 void HTTPServerConnection::update_send_file(Ref<SimpleWebServerRequest> request) {
 	if (closed()) {
 		return;
@@ -527,6 +717,62 @@ void HTTPServerConnection::update_send_file(Ref<SimpleWebServerRequest> request)
 
 	_file_buffer_start = 0;
 	_file_buffer_end = 0;
+}
+
+void HTTPServerConnection::update_send_data(Ref<SimpleWebServerRequest> request) {
+	if (closed()) {
+		return;
+	}
+
+	int loop_count = 0;
+
+	while (true) {
+		if (_raw_data_buffer_start == _raw_data_buffer_end) {
+			//finished
+			break;
+		}
+
+		PoolByteArray::Read r = request->_raw_data_buffer.read();
+		const uint8_t *raw_data_buffer_ptr = r.ptr();
+
+		uint64_t read_length = MIN(4096, _raw_data_buffer_end - _raw_data_buffer_start);
+
+		int read = 0;
+		Error err = peer->put_partial_data(&raw_data_buffer_ptr[_raw_data_buffer_start], read_length, read);
+
+		_raw_data_buffer_start += read;
+
+		r.release();
+
+		if (read > 0) {
+			time = OS::get_singleton()->get_ticks_usec();
+		}
+
+		if (err == ERR_BUSY) {
+			// we can get ERR_BUSY is the socket is full -> we need to wait
+			return;
+		}
+
+		if (err != OK) {
+			request->_raw_data_buffer.clear();
+			close();
+			_raw_data_buffer_start = 0;
+			_raw_data_buffer_end = 0;
+			return;
+		}
+
+		loop_count += 1;
+
+		if (loop_count >= _file_buffer_send_max_consecutive_loops) {
+			// Work on other clients aswell.
+			return;
+		}
+	}
+
+	request->_raw_data_buffer.clear();
+
+	_raw_data_buffer_start = 0;
+	_raw_data_buffer_end = 0;
 }
 
 void HTTPServerConnection::close() {
@@ -597,6 +843,10 @@ HTTPServerConnection::HTTPServerConnection() {
 	_file_start = 0;
 	_file_end = 0;
 	_file_length = 0;
+
+	_raw_data_buffer_start = 0;
+	_raw_data_buffer_end = 0;
+	_raw_data_buffer_length = 0;
 }
 HTTPServerConnection::~HTTPServerConnection() {
 }

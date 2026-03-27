@@ -150,6 +150,7 @@ public:
 	virtual void compile_and_send_body();
 	virtual void send();
 	virtual void send_file(const String &p_file_path);
+	virtual void send_raw_data(const PoolByteArray &p_data);
 	virtual void send_error(int error_code);
 	virtual String parser_get_path();
 	virtual String get_host() const;

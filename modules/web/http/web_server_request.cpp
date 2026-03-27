@@ -391,6 +391,9 @@ void WebServerRequest::send_file(const String &p_file_path) {
 	// WebServerRequestPool::return_request(this);
 }
 
+void WebServerRequest::send_raw_data(const PoolByteArray &p_data) {
+}
+
 void WebServerRequest::send_error(int error_code) {
 	_server->get_web_root()->handle_error_send_request(this, error_code);
 }
@@ -721,6 +724,7 @@ void WebServerRequest::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("compile_and_send_body"), &WebServerRequest::compile_and_send_body);
 	ClassDB::bind_method(D_METHOD("send"), &WebServerRequest::send);
 	ClassDB::bind_method(D_METHOD("send_file", "file_path"), &WebServerRequest::send_file);
+	ClassDB::bind_method(D_METHOD("send_raw_data", "data"), &WebServerRequest::send_raw_data);
 	ClassDB::bind_method(D_METHOD("send_error", "error_code"), &WebServerRequest::send_error);
 
 	ClassDB::bind_method(D_METHOD("parser_get_path"), &WebServerRequest::parser_get_path);

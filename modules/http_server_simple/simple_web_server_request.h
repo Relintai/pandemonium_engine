@@ -85,6 +85,7 @@ public:
 	virtual void send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code = HTTPServerEnums::HTTP_STATUS_CODE_302_FOUND);
 	virtual void send();
 	virtual void send_file(const String &p_file_path);
+	virtual void send_raw_data(const PoolByteArray &p_data);
 	virtual String parser_get_path();
 	virtual String get_host() const;
 
@@ -112,6 +113,7 @@ public:
 	Ref<HTTPServerConnection> _connection;
 
 	FileAccess *_sending_file_fa;
+	PoolByteArray _raw_data_buffer;
 
 protected:
 	static void _bind_methods();

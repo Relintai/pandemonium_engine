@@ -128,6 +128,10 @@ void WebServerRequestScriptable::send_file(const String &p_file_path) {
 	call("_send_file", p_file_path);
 }
 
+void WebServerRequestScriptable::send_raw_data(const PoolByteArray &p_data) {
+	call("_send_raw_data", p_data);
+}
+
 void WebServerRequestScriptable::send_error(int error_code) {
 	call("_send_error", error_code);
 }
@@ -266,6 +270,9 @@ void WebServerRequestScriptable::_send_file(const String &p_file_path) {
 	// WebServerRequestScriptablePool::return_request(this);
 }
 
+void WebServerRequestScriptable::_send_raw_data(const PoolByteArray &p_data) {
+}
+
 void WebServerRequestScriptable::_send_error(int error_code) {
 }
 
@@ -332,6 +339,7 @@ void WebServerRequestScriptable::_bind_methods() {
 	BIND_VMETHOD(MethodInfo("_compile_and_send_body"));
 	BIND_VMETHOD(MethodInfo("_send"));
 	BIND_VMETHOD(MethodInfo("_send_file", PropertyInfo(Variant::STRING, "p_file_path")));
+	BIND_VMETHOD(MethodInfo("_send_raw_data", PropertyInfo(Variant::POOL_BYTE_ARRAY, "p_data")));
 	BIND_VMETHOD(MethodInfo("_send_error", PropertyInfo(Variant::INT, "error_code")));
 
 	BIND_VMETHOD(MethodInfo("_parser_get_path"));
@@ -375,6 +383,7 @@ void WebServerRequestScriptable::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_send"), &WebServerRequestScriptable::_send);
 
 	ClassDB::bind_method(D_METHOD("_send_file", "p_file_path"), &WebServerRequestScriptable::_send_file);
+	ClassDB::bind_method(D_METHOD("_send_raw_data", "p_data"), &WebServerRequestScriptable::_send_raw_data);
 	ClassDB::bind_method(D_METHOD("_send_error", "error_code"), &WebServerRequestScriptable::_send_error);
 
 	ClassDB::bind_method(D_METHOD("_parser_get_path"), &WebServerRequestScriptable::_parser_get_path);

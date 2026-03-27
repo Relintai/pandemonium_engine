@@ -308,6 +308,14 @@ void SimpleWebServerRequest::send_file(const String &p_file_path) {
 	// SimpleWebServerRequestPool::return_request(this);
 }
 
+void SimpleWebServerRequest::send_raw_data(const PoolByteArray &p_data) {
+	ERR_FAIL_COND(!_connection.is_valid());
+
+	_connection->send_raw_data(Ref<WebServerRequest>(this), p_data);
+
+	// SimpleWebServerRequestPool::return_request(this);
+}
+
 String SimpleWebServerRequest::parser_get_path() {
 	return _parser_path;
 }
@@ -415,7 +423,7 @@ void SimpleWebServerRequest::set_method(const HTTPServerEnums::HTTPMethod method
 }
 
 bool SimpleWebServerRequest::sent() {
-	return !_sending_file_fa;
+	return !_sending_file_fa && _raw_data_buffer.empty();
 }
 
 SimpleWebServerRequest::SimpleWebServerRequest() {
