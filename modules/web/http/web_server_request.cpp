@@ -278,7 +278,13 @@ void WebServerRequest::set_content_type(const String &content_type) {
 String WebServerRequest::content_disposition_get() const {
 	return custom_response_header_get("Content-Disposition");
 }
+void WebServerRequest::content_disposition_set(const String &p_value) {
+	_content_disposition_file_name = String();
+	custom_response_header_set("Content-Disposition", p_value);
+}
 void WebServerRequest::content_disposition_clear() {
+	_content_disposition_file_name = String();
+
 	custom_response_header_erase("Content-Disposition");
 }
 void WebServerRequest::content_disposition_file_name_set(const String &p_file_name) {
@@ -713,6 +719,7 @@ void WebServerRequest::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "content_type"), "set_content_type", "get_content_type");
 
 	ClassDB::bind_method(D_METHOD("content_disposition_get"), &WebServerRequest::content_disposition_get);
+	ClassDB::bind_method(D_METHOD("content_disposition_set", "value"), &WebServerRequest::content_disposition_set);
 	ClassDB::bind_method(D_METHOD("content_disposition_clear"), &WebServerRequest::content_disposition_clear);
 	ClassDB::bind_method(D_METHOD("content_disposition_file_name_get"), &WebServerRequest::content_disposition_file_name_get);
 	ClassDB::bind_method(D_METHOD("content_disposition_file_name_set", "file_name"), &WebServerRequest::content_disposition_file_name_set);

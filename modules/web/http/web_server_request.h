@@ -118,7 +118,9 @@ public:
 	void set_content_type(const String &content_type);
 
 	String content_disposition_get() const;
+	void content_disposition_set(const String &p_value);
 	void content_disposition_clear();
+
 	String content_disposition_file_name_get() const;
 	void content_disposition_file_name_set(const String &p_file_name);
 
