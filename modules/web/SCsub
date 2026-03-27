@@ -33,6 +33,7 @@ sources = [
     "html/html_template.cpp",
     "html/html_template_multilang.cpp",
     "html/html_template_data.cpp",
+    "html/html_template_renderer.cpp",
 
     "html/libs/hoedown/autolink.c",
     "html/libs/hoedown/buffer.c",

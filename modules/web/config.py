@@ -60,6 +60,7 @@ def get_doc_classes():
 	    "HTMLTemplate",
 	    "HTMLTemplateData",
         "HTMLTemplateMultilang",
+	    "HTMLTemplateRenderer",
 
     	"BBCodeParserAttribute",
 	    "BBCodeParserTag",
