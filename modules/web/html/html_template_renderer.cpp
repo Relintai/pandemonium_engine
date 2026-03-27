@@ -113,9 +113,21 @@ String HTMLTemplaterenderer::get_error_str() {
 }
 
 HTMLTemplaterenderer::HTMLTemplaterenderer() {
+	_error_set = false;
+	str_ofs = 0;
+
+	_root = NULL;
+	_nodes = NULL;
+
+	_execution_error = false;
+	_dirty = true;
 }
 
 HTMLTemplaterenderer::~HTMLTemplaterenderer() {
+	// root will also be freed automatically
+	if (_nodes) {
+		memdelete(_nodes);
+	}
 }
 
 void HTMLTemplaterenderer::_bind_methods() {
@@ -139,7 +151,6 @@ const char *HTMLTemplaterenderer::func_name[HTMLTemplaterenderer::FUNC_MAX] = {
 	"equals",
 	"approx_equals",
 };
-
 
 HTMLTemplaterenderer::BuiltinFunc HTMLTemplaterenderer::find_function(const String &p_string) {
 	for (int i = 0; i < FUNC_MAX; i++) {
