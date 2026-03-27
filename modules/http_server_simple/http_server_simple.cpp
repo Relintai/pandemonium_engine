@@ -610,19 +610,23 @@ void HTTPServerConnection::send_raw_data(Ref<WebServerRequest> request, const Po
 	}
 
 	if (!custom_headers.has("Content-Type")) {
-		// TODO, add helper for ContentDisposition, and try to read that
-		/*
-		String ctype;
-		StringName req_ext = p_file_path.get_extension().to_lower();
+		String file_name = request->content_disposition_file_name_get();
 
-		if (_http_server->mimes.has(req_ext)) {
-			ctype = _http_server->mimes[req_ext];
+		String ctype;
+
+		if (!file_name.empty()) {
+			StringName req_ext = file_name.get_extension().to_lower();
+
+			if (_http_server->mimes.has(req_ext)) {
+				ctype = _http_server->mimes[req_ext];
+			} else {
+				ctype = "application/octet-stream";
+			}
 		} else {
 			ctype = "application/octet-stream";
 		}
 
 		s += "Content-Type: " + ctype + "\r\n";
-		*/
 	}
 
 	s += "Content-Length: " + itos(content_length) + "\r\n";
