@@ -51,8 +51,8 @@ Rect2 PDFFont::get_bbox() {
 
 	Rect2 r;
 	r.position.x = box.left;
-	r.position.y = box.top;
-	r.set_end(Vector2(box.right, box.bottom));
+	r.position.y = box.bottom;
+	r.set_end(Vector2(box.right, box.top));
 
 	return r;
 }

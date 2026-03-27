@@ -377,9 +377,9 @@ Ref<PDFXObject> PDFDocument::x_object_create_from_image(const Ref<PDFPage> &p_pa
 	HPDF_Rect rect;
 	Vector2 end = p_rect.get_end();
 	rect.left = p_rect.position.x;
-	rect.top = p_rect.position.y;
+	rect.bottom = p_rect.position.y;
 	rect.right = end.x;
-	rect.bottom = end.y;
+	rect.top = end.y;
 
 	HPDF_Image image = NULL;
 
@@ -410,9 +410,9 @@ Ref<PDFXObject> PDFDocument::x_object_create_as_white_rect(const Ref<PDFPage> &p
 	HPDF_Rect rect;
 	Vector2 end = p_rect.get_end();
 	rect.left = p_rect.position.x;
-	rect.top = p_rect.position.y;
+	rect.bottom = p_rect.position.y;
 	rect.right = end.x;
-	rect.bottom = end.y;
+	rect.top = end.y;
 
 	HPDF_XObject hpdf_xobject = HPDF_Page_CreateXObjectAsWhiteRect(_doc, page, rect);
 

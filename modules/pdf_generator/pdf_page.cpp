@@ -643,10 +643,10 @@ uint32_t PDFPage::slide_show_set(const TransitionStyle p_type, const float p_dis
 Ref<PDFAnnotation3D> PDFPage::annotation_3d_create(const Rect2 &p_rect, const bool p_tb, const bool p_np, const Ref<PDFU3D> &p_u3d, const Ref<PDFImage> &p_ap) {
 	HPDF_Rect rect;
 	rect.left = p_rect.position.x;
-	rect.top = p_rect.position.y;
+	rect.bottom = p_rect.position.y;
 	Vector2 rect_end = p_rect.get_end();
 	rect.right = rect_end.x;
-	rect.bottom = rect_end.y;
+	rect.top = rect_end.y;
 
 	HPDF_U3D hpdf_u3d = NULL;
 
@@ -675,10 +675,10 @@ Ref<PDFAnnotation3D> PDFPage::annotation_3d_create(const Rect2 &p_rect, const bo
 Ref<PDFAnnotationText> PDFPage::annotation_text_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder) {
 	HPDF_Rect rect;
 	rect.left = p_rect.position.x;
-	rect.top = p_rect.position.y;
+	rect.bottom = p_rect.position.y;
 	Vector2 rect_end = p_rect.get_end();
 	rect.right = rect_end.x;
-	rect.bottom = rect_end.y;
+	rect.top = rect_end.y;
 
 	HPDF_Encoder hpdf_encoder = NULL;
 
@@ -700,10 +700,10 @@ Ref<PDFAnnotationText> PDFPage::annotation_text_create(const Rect2 &p_rect, cons
 Ref<PDFAnnotationFreeText> PDFPage::annotation_free_text_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder) {
 	HPDF_Rect rect;
 	rect.left = p_rect.position.x;
-	rect.top = p_rect.position.y;
+	rect.bottom = p_rect.position.y;
 	Vector2 rect_end = p_rect.get_end();
 	rect.right = rect_end.x;
-	rect.bottom = rect_end.y;
+	rect.top = rect_end.y;
 
 	HPDF_Encoder hpdf_encoder = NULL;
 
@@ -749,10 +749,10 @@ Ref<PDFAnnotationWidgetWhitePrint> PDFPage::annotation_widget_white_print_create
 
 	HPDF_Rect rect;
 	rect.left = p_rect.position.x;
-	rect.top = p_rect.position.y;
+	rect.bottom = p_rect.position.y;
 	Vector2 rect_end = p_rect.get_end();
 	rect.right = rect_end.x;
-	rect.bottom = rect_end.y;
+	rect.top = rect_end.y;
 
 	HPDF_Annotation hpdf_annotation = HPDF_Page_CreateWidgetAnnot_WhiteOnlyWhilePrint(doc->_get_hpdf_doc(), (HPDF_Page)_page, rect);
 
@@ -768,10 +768,10 @@ Ref<PDFAnnotationWidgetWhitePrint> PDFPage::annotation_widget_white_print_create
 Ref<PDFAnnotationWidget> PDFPage::annotation_widget_create(const Rect2 &p_rect) {
 	HPDF_Rect rect;
 	rect.left = p_rect.position.x;
-	rect.top = p_rect.position.y;
+	rect.bottom = p_rect.position.y;
 	Vector2 rect_end = p_rect.get_end();
 	rect.right = rect_end.x;
-	rect.bottom = rect_end.y;
+	rect.top = rect_end.y;
 
 	HPDF_Annotation hpdf_annotation = HPDF_Page_CreateWidgetAnnot((HPDF_Page)_page, rect);
 
@@ -787,10 +787,10 @@ Ref<PDFAnnotationWidget> PDFPage::annotation_widget_create(const Rect2 &p_rect) 
 Ref<PDFAnnotationLink> PDFPage::annotation_link_create(const Rect2 &p_rect, const Ref<PDFDestination> &p_destination) {
 	HPDF_Rect rect;
 	rect.left = p_rect.position.x;
-	rect.top = p_rect.position.y;
+	rect.bottom = p_rect.position.y;
 	Vector2 rect_end = p_rect.get_end();
 	rect.right = rect_end.x;
-	rect.bottom = rect_end.y;
+	rect.top = rect_end.y;
 
 	HPDF_Destination hpdf_dst = NULL;
 
@@ -812,10 +812,10 @@ Ref<PDFAnnotationLink> PDFPage::annotation_link_create(const Rect2 &p_rect, cons
 Ref<PDFAnnotationURILink> PDFPage::annotation_uri_link_create(const Rect2 &p_rect, const String &p_uri) {
 	HPDF_Rect rect;
 	rect.left = p_rect.position.x;
-	rect.top = p_rect.position.y;
+	rect.bottom = p_rect.position.y;
 	Vector2 rect_end = p_rect.get_end();
 	rect.right = rect_end.x;
-	rect.bottom = rect_end.y;
+	rect.top = rect_end.y;
 
 	HPDF_Annotation hpdf_annotation = HPDF_Page_CreateURILinkAnnot((HPDF_Page)_page, rect, p_uri.utf8().get_data());
 
@@ -831,10 +831,10 @@ Ref<PDFAnnotationURILink> PDFPage::annotation_uri_link_create(const Rect2 &p_rec
 Ref<PDFAnnotationTextMarkup> PDFPage::annotation_text_markup_create(const Rect2 &p_rect, const String &p_text, const PDFAnnotationTextMarkup::AnnotSubType p_sub_type, const Ref<PDFEncoder> &p_encoder) {
 	HPDF_Rect rect;
 	rect.left = p_rect.position.x;
-	rect.top = p_rect.position.y;
+	rect.bottom = p_rect.position.y;
 	Vector2 rect_end = p_rect.get_end();
 	rect.right = rect_end.x;
-	rect.bottom = rect_end.y;
+	rect.top = rect_end.y;
 
 	HPDF_Encoder hpdf_encoder = NULL;
 
@@ -858,10 +858,10 @@ Ref<PDFAnnotationTextMarkup> PDFPage::annotation_text_markup_create(const Rect2 
 Ref<PDFAnnotationHighlight> PDFPage::annotation_highlight_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder) {
 	HPDF_Rect rect;
 	rect.left = p_rect.position.x;
-	rect.top = p_rect.position.y;
+	rect.bottom = p_rect.position.y;
 	Vector2 rect_end = p_rect.get_end();
 	rect.right = rect_end.x;
-	rect.bottom = rect_end.y;
+	rect.top = rect_end.y;
 
 	HPDF_Encoder hpdf_encoder = NULL;
 
@@ -883,10 +883,10 @@ Ref<PDFAnnotationHighlight> PDFPage::annotation_highlight_create(const Rect2 &p_
 Ref<PDFAnnotationUnderline> PDFPage::annotation_underline_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder) {
 	HPDF_Rect rect;
 	rect.left = p_rect.position.x;
-	rect.top = p_rect.position.y;
+	rect.bottom = p_rect.position.y;
 	Vector2 rect_end = p_rect.get_end();
 	rect.right = rect_end.x;
-	rect.bottom = rect_end.y;
+	rect.top = rect_end.y;
 
 	HPDF_Encoder hpdf_encoder = NULL;
 
@@ -908,10 +908,10 @@ Ref<PDFAnnotationUnderline> PDFPage::annotation_underline_create(const Rect2 &p_
 Ref<PDFAnnotationSquiggly> PDFPage::annotation_squiggly_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder) {
 	HPDF_Rect rect;
 	rect.left = p_rect.position.x;
-	rect.top = p_rect.position.y;
+	rect.bottom = p_rect.position.y;
 	Vector2 rect_end = p_rect.get_end();
 	rect.right = rect_end.x;
-	rect.bottom = rect_end.y;
+	rect.top = rect_end.y;
 
 	HPDF_Encoder hpdf_encoder = NULL;
 
@@ -933,10 +933,10 @@ Ref<PDFAnnotationSquiggly> PDFPage::annotation_squiggly_create(const Rect2 &p_re
 Ref<PDFAnnotationStrikeOut> PDFPage::annotation_strike_out_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder) {
 	HPDF_Rect rect;
 	rect.left = p_rect.position.x;
-	rect.top = p_rect.position.y;
+	rect.bottom = p_rect.position.y;
 	Vector2 rect_end = p_rect.get_end();
 	rect.right = rect_end.x;
-	rect.bottom = rect_end.y;
+	rect.top = rect_end.y;
 
 	HPDF_Encoder hpdf_encoder = NULL;
 
@@ -959,10 +959,10 @@ Ref<PDFAnnotationStrikeOut> PDFPage::annotation_strike_out_create(const Rect2 &p
 Ref<PDFAnnotationPopup> PDFPage::annotation_popup_create(const Rect2 &p_rect, const Ref<PDFAnnotation> &p_parent) {
 	HPDF_Rect rect;
 	rect.left = p_rect.position.x;
-	rect.top = p_rect.position.y;
+	rect.bottom = p_rect.position.y;
 	Vector2 rect_end = p_rect.get_end();
 	rect.right = rect_end.x;
-	rect.bottom = rect_end.y;
+	rect.top = rect_end.y;
 
 	HPDF_Annotation hpdf_parent_annotation = NULL;
 
@@ -984,10 +984,10 @@ Ref<PDFAnnotationPopup> PDFPage::annotation_popup_create(const Rect2 &p_rect, co
 Ref<PDFAnnotationStamp> PDFPage::annotation_stamp_create(const Rect2 &p_rect, const PDFAnnotationStamp::StampAnnotName p_name, const String &p_text, const Ref<PDFEncoder> &p_encoder) {
 	HPDF_Rect rect;
 	rect.left = p_rect.position.x;
-	rect.top = p_rect.position.y;
+	rect.bottom = p_rect.position.y;
 	Vector2 rect_end = p_rect.get_end();
 	rect.right = rect_end.x;
-	rect.bottom = rect_end.y;
+	rect.top = rect_end.y;
 
 	HPDF_StampAnnotName name = static_cast<HPDF_StampAnnotName>(p_name);
 
@@ -1011,10 +1011,10 @@ Ref<PDFAnnotationStamp> PDFPage::annotation_stamp_create(const Rect2 &p_rect, co
 Ref<PDFAnnotationProjection> PDFPage::annotation_projection_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder) {
 	HPDF_Rect rect;
 	rect.left = p_rect.position.x;
-	rect.top = p_rect.position.y;
+	rect.bottom = p_rect.position.y;
 	Vector2 rect_end = p_rect.get_end();
 	rect.right = rect_end.x;
-	rect.bottom = rect_end.y;
+	rect.top = rect_end.y;
 
 	HPDF_Encoder hpdf_encoder = NULL;
 
@@ -1036,10 +1036,10 @@ Ref<PDFAnnotationProjection> PDFPage::annotation_projection_create(const Rect2 &
 Ref<PDFAnnotationSquare> PDFPage::annotation_square_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder) {
 	HPDF_Rect rect;
 	rect.left = p_rect.position.x;
-	rect.top = p_rect.position.y;
+	rect.bottom = p_rect.position.y;
 	Vector2 rect_end = p_rect.get_end();
 	rect.right = rect_end.x;
-	rect.bottom = rect_end.y;
+	rect.top = rect_end.y;
 
 	HPDF_Encoder hpdf_encoder = NULL;
 
@@ -1061,10 +1061,10 @@ Ref<PDFAnnotationSquare> PDFPage::annotation_square_create(const Rect2 &p_rect, 
 Ref<PDFAnnotationCircle> PDFPage::annotation_circle_create(const Rect2 &p_rect, const String &p_text, const Ref<PDFEncoder> &p_encoder) {
 	HPDF_Rect rect;
 	rect.left = p_rect.position.x;
-	rect.top = p_rect.position.y;
+	rect.bottom = p_rect.position.y;
 	Vector2 rect_end = p_rect.get_end();
 	rect.right = rect_end.x;
-	rect.bottom = rect_end.y;
+	rect.top = rect_end.y;
 
 	HPDF_Encoder hpdf_encoder = NULL;
 

@@ -3,7 +3,7 @@
 	<brief_description>
 	</brief_description>
 	<description>
-		The default coordinate system of PDF: the lower-left corner is at coordinates (0, 0), and the upper-right corner is at coordinates (width, height). The default resolution is 72dpi. Howewer note that when a function takes a [Rect2], it will follow the engine convention, so position is at the top left corner.
+		The default coordinate system of PDF: the lower-left corner is at coordinates (0, 0), and the upper-right corner is at coordinates (width, height). The default resolution is 72dpi.
 	</description>
 	<tutorials>
 	</tutorials>

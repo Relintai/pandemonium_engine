@@ -229,10 +229,10 @@ uint32_t PDFAnnotationMarkup::set_popup(const Ref<PDFAnnotationPopup> &p_popup) 
 uint32_t PDFAnnotationMarkup::set_rect_diff(const Rect2 &p_rect) {
 	HPDF_Rect rect;
 	rect.left = p_rect.position.x;
-	rect.top = p_rect.position.y;
+	rect.bottom = p_rect.position.y;
 	Vector2 end = p_rect.get_end();
 	rect.right = end.x;
-	rect.bottom = end.y;
+	rect.top = end.y;
 
 	_status = HPDF_MarkupAnnot_SetRectDiff((HPDF_Annotation)_annotation, rect);
 
