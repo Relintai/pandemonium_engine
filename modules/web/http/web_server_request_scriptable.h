@@ -124,25 +124,25 @@ public:
 	virtual PoolStringArray _get_post_parameter_keys() const;
 	virtual PoolStringArray _get_get_parameter_keys() const;
 
-	void _send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code);
-	void _compile_body();
-	void _compile_and_send_body();
-	void _send();
-	void _send_file(const String &p_file_path);
+	virtual void _send_redirect(const String &location, const HTTPServerEnums::HTTPStatusCode status_code);
+	virtual void _compile_body();
+	virtual void _compile_and_send_body();
+	virtual void _send();
+	virtual void _send_file(const String &p_file_path);
 	virtual void _send_raw_data(const PoolByteArray &p_data);
-	void _send_error(int error_code);
-	String _parser_get_path();
-	String _get_host() const;
+	virtual void _send_error(int error_code);
+	virtual String _parser_get_path();
+	virtual String _get_host() const;
 
-	String _get_path_full() const;
+	virtual String _get_path_full() const;
 
-	void _update();
+	virtual void _update();
 
 	WebServerRequestScriptable();
 	~WebServerRequestScriptable();
 
-	void _set_server_bind(Node *v);
-	void _set_web_root_bind(Node *v);
+	virtual void _set_server_bind(Node *v);
+	virtual void _set_web_root_bind(Node *v);
 
 protected:
 	static void _bind_methods();
