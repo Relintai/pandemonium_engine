@@ -71,7 +71,43 @@ protected:
 
 	static const char *func_name[FUNC_MAX];
 
+	static BuiltinFunc find_function(const String &p_string);
+
 	enum TokenType {
+		TK_CURLY_BRACKET_OPEN,
+		TK_CURLY_BRACKET_CLOSE,
+		TK_BRACKET_OPEN,
+		TK_BRACKET_CLOSE,
+		TK_PARENTHESIS_OPEN,
+		TK_PARENTHESIS_CLOSE,
+		TK_IDENTIFIER,
+		TK_BUILTIN_FUNC,
+		TK_CONSTANT,
+		TK_BASIC_TYPE,
+		TK_COLON,
+		TK_COMMA,
+		TK_PERIOD,
+		TK_OP_IN,
+		TK_OP_EQUAL,
+		TK_OP_NOT_EQUAL,
+		TK_OP_LESS,
+		TK_OP_LESS_EQUAL,
+		TK_OP_GREATER,
+		TK_OP_GREATER_EQUAL,
+		TK_OP_AND,
+		TK_OP_OR,
+		TK_OP_NOT,
+		TK_OP_ADD,
+		TK_OP_SUB,
+		TK_OP_MUL,
+		TK_OP_DIV,
+		TK_OP_MOD,
+		TK_OP_SHIFT_LEFT,
+		TK_OP_SHIFT_RIGHT,
+		TK_OP_BIT_AND,
+		TK_OP_BIT_OR,
+		TK_OP_BIT_XOR,
+		TK_OP_BIT_INVERT,
 		TK_EOF,
 		TK_ERROR,
 		TK_MAX
@@ -86,6 +122,18 @@ protected:
 
 	String _error_str;
 	bool _error_set;
+
+	void _set_error(const String &p_err) {
+		if (_error_set) {
+			return;
+		}
+		_error_str = p_err;
+		_error_set = true;
+	}
+
+	int str_ofs;
+
+	Error _get_token(Token &r_token);
 
 	// Expression Nodes
 
@@ -226,9 +274,10 @@ protected:
 	BlockNode *_root;
 	ExpressionNode *_nodes;
 
-	String _text;
+	String _template_text;
 
 	bool _execution_error;
+	bool _dirty;
 
 	bool _execute(Dictionary &p_data, StringBuilder &p_html, ExpressionNode *p_node, Variant &r_ret, String &r_error_str);
 };
