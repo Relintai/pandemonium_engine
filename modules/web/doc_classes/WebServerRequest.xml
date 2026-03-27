@@ -55,7 +55,49 @@
 				Note: You can override the default doctype declaration by setting the [code]"compiled_body_doctype_override"[/code] meta, the [code]html[/code] tag by setting the [code]"compiled_body_html_tag_override"[/code] meta, and the [code]body[/code] tag by setting the [code]"compiled_body_body_tag_override"[/code] meta using [code]set_meta()[/code].
 			</description>
 		</method>
-		<method name="custom_response_header_get">
+		<method name="content_disposition_clear">
+			<return type="void" />
+			<description>
+				Clears the "Content-Disposition" custom response header.
+			</description>
+		</method>
+		<method name="content_disposition_file_name_get" qualifiers="const">
+			<return type="String" />
+			<description>
+				Returns the file name set by [method content_disposition_file_name_set].
+			</description>
+		</method>
+		<method name="content_disposition_file_name_set">
+			<return type="void" />
+			<argument index="0" name="file_name" type="String" />
+			<description>
+				Configure the value of the "Content-Disposition" custom response header properly for the given file name.
+				If file_name is empty, then the "Content-Disposition" header will be set to just "attachment;", else: "attachment; filename="&lt;file_name as ascii&gt;"; filename*=UTF-8''&lt;file_name percent encoded&gt;.
+				The original file name can be retrieved later by using [method content_disposition_file_name_get].
+			</description>
+		</method>
+		<method name="content_disposition_get" qualifiers="const">
+			<return type="String" />
+			<description>
+				Returns the raw value of the "Content-Disposition" custom response header.
+			</description>
+		</method>
+		<method name="content_disposition_set">
+			<return type="void" />
+			<argument index="0" name="value" type="String" />
+			<description>
+				Sets the raw value of the "Content-Disposition" custom response header to the given string.
+				If you want to just set a file name use [method content_disposition_file_name_set] instead.
+			</description>
+		</method>
+		<method name="custom_response_header_erase">
+			<return type="void" />
+			<argument index="0" name="key" type="StringName" />
+			<description>
+				Erases the given custom response header.
+			</description>
+		</method>
+		<method name="custom_response_header_get" qualifiers="const">
 			<return type="String" />
 			<argument index="0" name="key" type="StringName" />
 			<description>
@@ -442,6 +484,13 @@
 			<argument index="0" name="file_path" type="String" />
 			<description>
 				Sends the file at the given path.
+			</description>
+		</method>
+		<method name="send_raw_data">
+			<return type="void" />
+			<argument index="0" name="data" type="PoolByteArray" />
+			<description>
+				Send the given raw data as the content.
 			</description>
 		</method>
 		<method name="send_redirect">

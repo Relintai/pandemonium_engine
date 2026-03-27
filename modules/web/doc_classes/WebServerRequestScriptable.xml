@@ -185,6 +185,13 @@
 				Sends the file at the given path.
 			</description>
 		</method>
+		<method name="_send_raw_data" qualifiers="virtual">
+			<return type="void" />
+			<argument index="0" name="p_data" type="PoolByteArray" />
+			<description>
+				Sends the given raw data.
+			</description>
+		</method>
 		<method name="_send_redirect" qualifiers="virtual">
 			<return type="void" />
 			<argument index="0" name="location" type="String" />
