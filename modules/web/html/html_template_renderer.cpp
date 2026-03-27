@@ -43,7 +43,7 @@
 
 // No assignment operator, set should be good enough
 
-// operators: All variant ops including in  (not that it can't do assignment)
+// operators: All variant ops including in  (note that it can't do assignment)
 // ternary expression:
 // {{? <bool expr>; <true expr>; <false expr> }}
 // Could also just parse: Equivalent to qr, qp etc (so if false expr is null, just emit "", same for true expr)
@@ -74,6 +74,8 @@
 
 // Array and dictionary construction?
 // No need, do arrays and dicts in template scripts
+// Should probably be done anyway, not much complexity, but good flexibility
+// [], and {} (or could be pscript like: |{}|, but here it's not really necessary)
 
 #include "html_template_renderer.h"
 
