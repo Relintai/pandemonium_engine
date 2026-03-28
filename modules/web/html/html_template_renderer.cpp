@@ -29,17 +29,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-// Comments?
-// {{ ... // <comment up to }}>  }}
-// {{ /* }}
-// commented out
-// {{ */ }}
-// Tokenizer could just start ignoring everything after /* in non text mode up to */, so technically it doesn't even need }}{{
-// {{ stuff <next token>/* <tokenizer just ignores it>  ....}} {{ .........  */ }} Netx token would be }}
-// Or could return it as TK_COMMENT for debugging
-
-// No assignment operator, set should be good enough
-
 #include "html_template_renderer.h"
 
 #include "core/string/translation.h"
@@ -1075,6 +1064,33 @@ Error HTMLTemplateRenderer::_get_token(Token &r_token) {
 				return OK;
 			};
 			case '/': {
+				if (_template_text[_str_ofs] == '*') {
+					// Comment start
+					_str_ofs++;
+
+					// Find end
+					bool found = false;
+					while (!found) {
+						cchar = GET_CHAR();
+
+						switch (cchar) {
+							case 0:
+								r_token.type = TK_EOF;
+								return OK;
+							case '*':
+								if (_template_text[_str_ofs] == '/') {
+									found = true;
+									_str_ofs++;
+								}
+								break;
+							default:
+								break;
+						}
+					}
+
+					continue;
+				}
+
 				r_token.type = TK_OP_DIV;
 				return OK;
 			};

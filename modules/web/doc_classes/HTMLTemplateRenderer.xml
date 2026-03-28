@@ -12,6 +12,7 @@
 		{{% <expr> }} Print raw. Prints the result of the expression as raw unescaped html. Null turns into an empty string.
 		{{if <bool expr> }} ... html ... {{elif <bool expr> }} ... html ... {{else}} ... html ... {{endif}}: if / else / elif / endif.
 		{{for <variable declaration> in <collection> }} ... html ... {{endfor}}: Foreach.
+		{{ /* .... comment ... */ }} or {{ /* }} ... {{ */ }}: Comments. Cannot be nested.
 		Assuming you pass in the following Dictionary to [method render]:
 		[code]var d : Dictionary = {
 			"var": VALUE,
