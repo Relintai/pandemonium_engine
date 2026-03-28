@@ -23,7 +23,7 @@
 
 		[/code]
 		This file will be parsed as 3 key-value template strings. A key named [code]Head[/code] with the content [code]... Head html here[/code], a key named [code]Content[/code] with the content [code]... Content html here[/code] and a key named [code]Shell[/code] with the content [code]... Shell html here[/code].
-		Note: Make sure there is no whitespace before and after the square brackets of the section keys. Also note that white space will be stripped on both sides of the keys before storing them.
+		Note: Make sure there is no whitespace before and after the square brackets of the section keys. Also note that white space will be stripped on both sides of the key strings before storing them.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -41,6 +41,13 @@
 				Gets the template string for the given name and returns it, or it returns an empty String if not found.
 			</description>
 		</method>
+		<method name="get_template_renderer" qualifiers="const">
+			<return type="HTMLTemplateRenderer" />
+			<argument index="0" name="name" type="StringName" />
+			<description>
+				Gets the template renderer for the given name and returns it, or it returns null if not found.
+			</description>
+		</method>
 		<method name="has_template" qualifiers="const">
 			<return type="bool" />
 			<argument index="0" name="name" type="StringName" />
@@ -56,7 +63,7 @@
 			</description>
 		</method>
 		<method name="load_from_string">
-			<return type="void" />
+			<return type="bool" />
 			<argument index="0" name="data" type="String" />
 			<description>
 				Loads data from a string using the [code].phtpl[/code] file format.

@@ -78,14 +78,21 @@
 			<return type="bool" />
 			<argument index="0" name="text" type="String" />
 			<argument index="1" name="start_line" type="int" default="1" />
+			<argument index="2" name="show_error" type="bool" default="false" />
 			<description>
 				Compile the given template. Returns true if an error happened.
 			</description>
 		</method>
-		<method name="get_compile_error_str">
+		<method name="get_compile_error_str" qualifiers="const">
 			<return type="String" />
 			<description>
 				Returns the compile error string (if any).
+			</description>
+		</method>
+		<method name="get_template_text" qualifiers="const">
+			<return type="String" />
+			<description>
+				Returns the template text.
 			</description>
 		</method>
 		<method name="render">
