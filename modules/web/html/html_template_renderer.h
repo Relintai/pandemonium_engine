@@ -71,7 +71,7 @@ protected:
 
 	static const char *func_name[FUNC_MAX];
 
-	static int get_func_argument_count(BuiltinFunc p_func);
+	bool validate_func_argument_count(BuiltinFunc p_func, const int p_arg_count, bool p_set_error = true);
 	static String get_func_name(BuiltinFunc p_func);
 	static void exec_func(BuiltinFunc p_func, const Variant **p_inputs, const int p_input_count, Variant *r_return, Variant::CallError &r_error, String &r_error_str);
 	static BuiltinFunc find_function(const String &p_string);

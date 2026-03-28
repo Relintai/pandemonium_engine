@@ -228,7 +228,9 @@ String HTMLTemplaterenderer::get_func_name(BuiltinFunc p_func) {
 	return func_name[p_func];
 }
 
-int HTMLTemplaterenderer::get_func_argument_count(BuiltinFunc p_func) {
+bool HTMLTemplaterenderer::validate_func_argument_count(BuiltinFunc p_func, const int p_arg_count, bool p_set_error) {
+	int expected_args = 0;
+
 	switch (p_func) {
 		case FUNC_PRINT:
 		case FUNC_PRINT_RAW:
@@ -240,16 +242,24 @@ int HTMLTemplaterenderer::get_func_argument_count(BuiltinFunc p_func) {
 		case FUNC_QPRINT_BR:
 		case FUNC_QPRINT_RAW_BR:
 		case FUNC_QVFORMAT:
-			return -1;
+			return true;
 		case FUNC_EXISTS:
-			return 1;
+			expected_args = 1;
 		case FUNC_EQUALS:
 		case FUNC_APPROX_EQUALS:
-			return 2;
+			expected_args = 2;
 		case FUNC_MAX: {
 		} break;
 	}
-	return 0;
+
+	if (p_arg_count != expected_args) {
+		if (p_set_error) {
+			_set_error("Builtin func '" + get_func_name(p_func) + "' expects " + itos(expected_args) + " arguments.");
+		}
+		return false;
+	} else {
+		return true;
+	}
 }
 
 #define VALIDATE_ARG_NUM(m_arg)                                          \
@@ -1417,10 +1427,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 					}
 				}
 
-				int expected_args = get_func_argument_count(bifunc->func);
-				if (expected_args != -1 && bifunc->arguments.size() != expected_args) {
-					_set_error("Builtin func '" + get_func_name(bifunc->func) + "' expects " + itos(expected_args) + " arguments.");
-				}
+				validate_func_argument_count(bifunc->func, bifunc->arguments.size());
 
 				expr = bifunc;
 
