@@ -42,17 +42,29 @@
 // values(<var1 Dict>)
 // tr() translate
 // trt()
+// nltobr(); and/or maybe br()? there is also pbr
 
 // {{ <var> }} Should this still remain an alternate to {{ p(<var1>) }} ?
 // maybe just an other syntax for supressed output?:
 // {{%  }}
 // {{#  }}
+// {{:  }}
+// {{;  }}
 // Or maybe:
 // {{p <var1> }}
 // {{% <var1> }}
 // {{# <var1> }}
+// {{= <var1> }}
+// {{: <var1> }}
+// p, pr, etc methods should return strings, then these should just work
 
-// Comments
+// Could be:
+// PrintNode -> bool raw,bool supressed, fill in during compile
+// So {{ <expr> }} : whatever is returned gets printed as-is, maybe except for nulls, escaped (except it the outer ENode is pr, pbr, etc)
+// So {{; <expr> }} Run expression, no output
+// So {{% <expr> }} Explicit raw
+
+// Comments?
 // {{ ... // <comment up to }}>  }}
 // {{ /* }}
 // commented out
