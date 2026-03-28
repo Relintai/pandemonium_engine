@@ -100,6 +100,7 @@ void register_web_types(ModuleRegistrationLevel p_level) {
 		ClassDB::register_class<HTMLTemplateMultilang>();
 		ClassDB::register_class<HTMLTemplateData>();
 		ClassDB::register_class<HTMLTemplaterenderer>();
+		ClassDB::register_class<HTMLTemplateRenderResult>();
 
 		ClassDB::register_class<HTMLPaginator>();
 

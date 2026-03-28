@@ -87,29 +87,103 @@
 #include "core/string/string_builder.h"
 #include "core/variant/variant.h"
 
-String HTMLTemplaterenderer::render(const Dictionary &p_data, const bool p_show_error) {
+String HTMLTemplateRenderResult::get_html() const {
+	return _html;
+}
+void HTMLTemplateRenderResult::set_html(const String &p_value) {
+	_html = p_value;
+}
+
+bool HTMLTemplateRenderResult::get_had_error() const {
+	return _had_error;
+}
+void HTMLTemplateRenderResult::set_had_error(const bool p_value) {
+	_had_error = p_value;
+}
+
+String HTMLTemplateRenderResult::get_error_text() const {
+	return _error_text;
+}
+void HTMLTemplateRenderResult::set_error_text(const String &p_value) {
+	_error_text = p_value;
+}
+
+HTMLTemplateRenderResult::HTMLTemplateRenderResult() {
+	_had_error = false;
+}
+HTMLTemplateRenderResult::~HTMLTemplateRenderResult() {
+}
+
+void HTMLTemplateRenderResult::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_html"), &HTMLTemplateRenderResult::get_html);
+	ClassDB::bind_method(D_METHOD("set_html", "value"), &HTMLTemplateRenderResult::set_html);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "html"), "set_html", "get_html");
+
+	ClassDB::bind_method(D_METHOD("get_had_error"), &HTMLTemplateRenderResult::get_had_error);
+	ClassDB::bind_method(D_METHOD("set_had_error", "value"), &HTMLTemplateRenderResult::set_had_error);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "had_error"), "set_had_error", "get_had_error");
+
+	ClassDB::bind_method(D_METHOD("get_error_text"), &HTMLTemplateRenderResult::get_error_text);
+	ClassDB::bind_method(D_METHOD("set_error_text", "value"), &HTMLTemplateRenderResult::set_error_text);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "error_text"), "set_error_text", "get_error_text");
+}
+
+String HTMLTemplaterenderer::render(const Dictionary &p_data, bool &r_execution_error, String &r_error_txt, const bool p_show_error) {
 	ERR_FAIL_COND_V_MSG(_error_set, String(), "There was previously a parse error: " + _error_str + ".");
 
 	Dictionary data = p_data;
 	StringBuilder html;
 
-	_execution_error = false;
-	Variant output;
-	String error_txt;
+	r_execution_error = false;
 
-	bool err = _execute(data, html, _root, output, error_txt);
+	Variant output;
+	bool err = _execute(data, html, _root, output, r_error_txt);
 
 	if (err) {
-		// TODO these should be return values, don't store anything here as class variables
-		_execution_error = true;
-		_error_str = error_txt;
-		ERR_FAIL_COND_V_MSG(p_show_error, html.as_string(), _error_str);
+		r_execution_error = true;
+		ERR_FAIL_COND_V_MSG(p_show_error, String(), r_error_txt);
 	}
 
 	return html.as_string();
 }
 
-bool HTMLTemplaterenderer::compile(const String &p_text) {
+Ref<HTMLTemplateRenderResult> HTMLTemplaterenderer::render_result(const Dictionary &p_data, const bool p_show_error) {
+	Ref<HTMLTemplateRenderResult> ret;
+	ret.instance();
+
+	if (_error_set) {
+		ret->set_had_error(true);
+		ret->set_error_text(_error_str);
+
+		if (p_show_error) {
+			ERR_FAIL_COND_V_MSG(_error_set, ret, ret->get_error_text());
+		} else {
+			return ret;
+		}
+	}
+
+	Dictionary data = p_data;
+	StringBuilder html;
+
+	Variant output;
+	String error_txt;
+	bool err = _execute(data, html, _root, output, error_txt);
+
+	if (err) {
+		ret->set_had_error(true);
+		ret->set_error_text(error_txt);
+
+		ERR_FAIL_COND_V_MSG(p_show_error, ret, error_txt);
+
+		return ret;
+	}
+
+	ret->set_html(html.as_string());
+
+	return ret;
+}
+
+bool HTMLTemplaterenderer::compile(const String &p_text, const int p_start_line) {
 	if (_nodes) {
 		memdelete(_nodes);
 		_nodes = nullptr;
@@ -121,7 +195,7 @@ bool HTMLTemplaterenderer::compile(const String &p_text) {
 	_error_str = String();
 	_error_set = false;
 	str_ofs = 0;
-	_current_line = 1;
+	_current_line = p_start_line;
 
 	_root = alloc_node<BlockNode>();
 
@@ -152,8 +226,6 @@ HTMLTemplaterenderer::HTMLTemplaterenderer() {
 
 	_root = NULL;
 	_nodes = NULL;
-
-	_execution_error = false;
 }
 
 HTMLTemplaterenderer::~HTMLTemplaterenderer() {
@@ -164,8 +236,9 @@ HTMLTemplaterenderer::~HTMLTemplaterenderer() {
 }
 
 void HTMLTemplaterenderer::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("render", "data", "p_show_error"), &HTMLTemplaterenderer::render, DEFVAL(true));
-	ClassDB::bind_method(D_METHOD("compile", "text"), &HTMLTemplaterenderer::compile);
+	ClassDB::bind_method(D_METHOD("render", "data", "p_show_error"), &HTMLTemplaterenderer::render_result, DEFVAL(false));
+	ClassDB::bind_method(D_METHOD("compile", "text", "start_line"), &HTMLTemplaterenderer::compile, DEFVAL(1));
+
 	ClassDB::bind_method(D_METHOD("get_error_str"), &HTMLTemplaterenderer::get_error_str);
 }
 

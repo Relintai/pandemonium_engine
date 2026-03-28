@@ -36,12 +36,38 @@
 
 #include "core/object/resource.h"
 
+class HTMLTemplateRenderResult : public Reference {
+	GDCLASS(HTMLTemplateRenderResult, Reference);
+
+public:
+	String get_html() const;
+	void set_html(const String &p_value);
+
+	bool get_had_error() const;
+	void set_had_error(const bool p_value);
+
+	String get_error_text() const;
+	void set_error_text(const String &p_value);
+
+	HTMLTemplateRenderResult();
+	~HTMLTemplateRenderResult();
+
+protected:
+	static void _bind_methods();
+
+	String _html;
+	bool _had_error;
+	String _error_text;
+};
+
 class HTMLTemplaterenderer : public Reference {
 	GDCLASS(HTMLTemplaterenderer, Reference);
 
 public:
-	String render(const Dictionary &p_data, const bool p_show_error = true);
-	bool compile(const String &p_text);
+	String render(const Dictionary &p_data, bool &r_execution_error, String &r_error_txt, const bool p_show_error = false);
+	Ref<HTMLTemplateRenderResult> render_result(const Dictionary &p_data, const bool p_show_error = false);
+
+	bool compile(const String &p_text, const int p_start_line = 1);
 
 	String get_error_str();
 
@@ -395,8 +421,6 @@ protected:
 	ENode *_nodes;
 
 	String _template_text;
-
-	bool _execution_error;
 
 	bool _execute(Dictionary &p_data, StringBuilder &p_html, ENode *p_node, Variant &r_ret, String &r_error_str);
 };
