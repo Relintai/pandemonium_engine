@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="HTMLTemplateRenderResult" inherits="Reference">
 	<brief_description>
+		Contains the results of a HTML Template render.
 	</brief_description>
 	<description>
+		Contains the results of a HTML Template render.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -10,10 +12,13 @@
 	</methods>
 	<members>
 		<member name="error_text" type="String" setter="set_error_text" getter="get_error_text" default="&quot;&quot;">
+			Error test if there wan an error.
 		</member>
 		<member name="had_error" type="bool" setter="set_had_error" getter="get_had_error" default="false">
+			Indicates whether there was an error.
 		</member>
 		<member name="html" type="String" setter="set_html" getter="get_html" default="&quot;&quot;">
+			The resulting HTML.
 		</member>
 	</members>
 	<constants>
