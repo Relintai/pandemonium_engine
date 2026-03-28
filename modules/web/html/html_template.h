@@ -76,9 +76,6 @@ public:
 	Dictionary get_template_overrides() const;
 	void set_template_overrides(const Dictionary &p_dict);
 
-	HashMap<StringName, String> get_template_overrides_map() const;
-	void set_template_overrides_map(const HashMap<StringName, String> &p_map);
-
 	// Defaults
 	bool has_template_default(const StringName &p_name) const;
 	String get_template_default(const StringName &p_name) const;
@@ -89,9 +86,6 @@ public:
 
 	Dictionary get_template_defaults() const;
 	void set_template_defaults(const Dictionary &p_dict);
-
-	HashMap<StringName, String> get_template_defaults_map() const;
-	void set_template_defaults_map(const HashMap<StringName, String> &p_map);
 
 	// Use
 

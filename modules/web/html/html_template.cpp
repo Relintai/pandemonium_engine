@@ -38,6 +38,8 @@
 #include "../http/web_server_request.h"
 #include "html_template_data.h"
 
+#include "html_template_renderer.h"
+
 // Templates
 
 int HTMLTemplate::get_template_count() const {
@@ -127,13 +129,6 @@ void HTMLTemplate::set_template_overrides(const Dictionary &p_dict) {
 	}
 }
 
-HashMap<StringName, String> HTMLTemplate::get_template_overrides_map() const {
-	return _template_overrides;
-}
-void HTMLTemplate::set_template_overrides_map(const HashMap<StringName, String> &p_map) {
-	_template_overrides = p_map;
-}
-
 // Defaults
 
 bool HTMLTemplate::has_template_default(const StringName &p_name) const {
@@ -183,13 +178,6 @@ void HTMLTemplate::set_template_defaults(const Dictionary &p_dict) {
 
 		_template_defaults[k] = String(p_dict[k]);
 	}
-}
-
-HashMap<StringName, String> HTMLTemplate::get_template_defaults_map() const {
-	return _template_defaults;
-}
-void HTMLTemplate::set_template_defaults_map(const HashMap<StringName, String> &p_map) {
-	_template_defaults = p_map;
 }
 
 // Use
