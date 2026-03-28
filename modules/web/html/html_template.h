@@ -47,14 +47,6 @@ class HTMLTemplate : public Resource {
 	GDCLASS(HTMLTemplate, Resource);
 
 public:
-	enum TemplateExpressionMethods {
-		TEMPLATE_EXPRESSION_METHOD_PRINT = 0,
-		TEMPLATE_EXPRESSION_METHOD_PRINT_RAW,
-		TEMPLATE_EXPRESSION_METHOD_PRINT_BR,
-		TEMPLATE_EXPRESSION_METHOD_PRINT_RAW_BR,
-		TEMPLATE_EXPRESSION_METHOD_VFORMAT,
-	};
-
 	// Templates
 	int get_template_count() const;
 	Ref<HTMLTemplateData> get_template(const int p_index);
@@ -97,11 +89,6 @@ public:
 	String get_template_text(const StringName &p_name);
 	Ref<HTMLTemplateRenderer> get_template_renderer(const StringName &p_name);
 
-	String call_template_method(const TemplateExpressionMethods p_method, const Array &p_data, const bool p_first_var_decides_print);
-	Variant process_template_expression_variable(const String &p_variable, const Dictionary &p_data, const bool p_allow_missing = false);
-	String process_template_expression(const String &p_expression, const Dictionary &p_data);
-	String render_template_old(const String &p_text, const Dictionary &p_data);
-
 	String render_template(const String &p_text, const Dictionary &p_data);
 	String renderer_render_template(Ref<HTMLTemplateRenderer> p_renderer, const Dictionary &p_data);
 
@@ -114,13 +101,6 @@ public:
 	~HTMLTemplate();
 
 protected:
-	enum RenderTemplateState {
-		RENDER_TEMPLATE_STATE_NORMAL_TEXT = 0,
-		RENDER_TEMPLATE_STATE_EXPRESSION_POTENTIAL_START,
-		RENDER_TEMPLATE_STATE_EXPRESSION,
-		RENDER_TEMPLATE_STATE_EXPRESSION_END_NEXT,
-	};
-
 	void _on_editor_template_button_pressed(const StringName &p_property);
 
 	bool _set(const StringName &p_name, const Variant &p_value);
@@ -140,7 +120,5 @@ protected:
 	String _editor_new_template_override_key;
 	String _editor_new_template_default_key;
 };
-
-VARIANT_ENUM_CAST(HTMLTemplate::TemplateExpressionMethods);
 
 #endif
