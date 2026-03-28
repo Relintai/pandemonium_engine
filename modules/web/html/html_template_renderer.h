@@ -173,7 +173,7 @@ protected:
 	String _error_str;
 	bool _error_set;
 
-	void _set_error(const String &p_err) {
+	void _compile_set_error(const String &p_err) {
 		if (_error_set) {
 			return;
 		}

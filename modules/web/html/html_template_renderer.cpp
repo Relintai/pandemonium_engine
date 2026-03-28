@@ -303,7 +303,7 @@ bool HTMLTemplaterenderer::validate_func_argument_count(BuiltinFunc p_func, cons
 		case FUNC_RANGE:
 			if (p_arg_count < 1 || p_arg_count > 3) {
 				if (p_set_error) {
-					_set_error("Builtin func '" + get_func_name(p_func) + "' expects 1-3 arguments.");
+					_compile_set_error("Builtin func '" + get_func_name(p_func) + "' expects 1-3 arguments.");
 				}
 				return false;
 			} else {
@@ -312,7 +312,7 @@ bool HTMLTemplaterenderer::validate_func_argument_count(BuiltinFunc p_func, cons
 		case FUNC_GETVAR:
 			if (p_arg_count < 1 || p_arg_count > 2) {
 				if (p_set_error) {
-					_set_error("Builtin func '" + get_func_name(p_func) + "' expects 1-2 arguments.");
+					_compile_set_error("Builtin func '" + get_func_name(p_func) + "' expects 1-2 arguments.");
 				}
 				return false;
 			} else {
@@ -324,7 +324,7 @@ bool HTMLTemplaterenderer::validate_func_argument_count(BuiltinFunc p_func, cons
 
 	if (p_arg_count != expected_args) {
 		if (p_set_error) {
-			_set_error("Builtin func '" + get_func_name(p_func) + "' expects " + itos(expected_args) + " arguments.");
+			_compile_set_error("Builtin func '" + get_func_name(p_func) + "' expects " + itos(expected_args) + " arguments.");
 		}
 		return false;
 	} else {
@@ -1060,7 +1060,7 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 				if (cchar == '=') {
 					r_token.type = TK_OP_EQUAL;
 				} else {
-					_set_error("Expected '='");
+					_compile_set_error("Expected '='");
 					r_token.type = TK_ERROR;
 					return ERR_PARSE_ERROR;
 				}
@@ -1158,7 +1158,7 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 					}
 
 					if (ch == 0) {
-						_set_error("Unterminated String");
+						_compile_set_error("Unterminated String");
 						r_token.type = TK_ERROR;
 						return ERR_PARSE_ERROR;
 					} else if (ch == cchar) {
@@ -1169,7 +1169,7 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 
 						CharType next = GET_CHAR();
 						if (next == 0) {
-							_set_error("Unterminated String");
+							_compile_set_error("Unterminated String");
 							r_token.type = TK_ERROR;
 							return ERR_PARSE_ERROR;
 						}
@@ -1198,12 +1198,12 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 									CharType c = GET_CHAR();
 
 									if (c == 0) {
-										_set_error("Unterminated String");
+										_compile_set_error("Unterminated String");
 										r_token.type = TK_ERROR;
 										return ERR_PARSE_ERROR;
 									}
 									if (!(_is_number(c) || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'))) {
-										_set_error("Malformed hex constant in string");
+										_compile_set_error("Malformed hex constant in string");
 										r_token.type = TK_ERROR;
 										return ERR_PARSE_ERROR;
 									}
@@ -1446,7 +1446,7 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 					return OK;
 
 				} else {
-					_set_error("Unexpected character.");
+					_compile_set_error("Unexpected character.");
 					r_token.type = TK_ERROR;
 					return ERR_PARSE_ERROR;
 				}
@@ -1478,7 +1478,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 
 		switch (tk.type) {
 			case TK_DOUBLE_CURLY_BRACKET_OPEN: {
-				_set_error("Unexpected '{{'");
+				_compile_set_error("Unexpected '{{'");
 				return nullptr;
 			} break;
 			case TK_DOUBLE_CURLY_BRACKET_CLOSE: {
@@ -1504,7 +1504,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 
 					_get_token(tk);
 					if (tk.type != TK_COLON) {
-						_set_error("Expected ':'");
+						_compile_set_error("Expected ':'");
 						return nullptr;
 					}
 
@@ -1522,7 +1522,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 					} else if (tk.type == TK_CURLY_BRACKET_CLOSE) {
 						str_ofs = cofs;
 					} else {
-						_set_error("Expected ',' or '}'");
+						_compile_set_error("Expected ',' or '}'");
 					}
 				}
 
@@ -1554,7 +1554,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 					} else if (tk.type == TK_BRACKET_CLOSE) {
 						str_ofs = cofs;
 					} else {
-						_set_error("Expected ',' or ']'");
+						_compile_set_error("Expected ',' or ']'");
 					}
 				}
 
@@ -1568,7 +1568,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 				}
 				_get_token(tk);
 				if (tk.type != TK_PARENTHESIS_CLOSE) {
-					_set_error("Expected ')'");
+					_compile_set_error("Expected ')'");
 					return nullptr;
 				}
 
@@ -1612,13 +1612,13 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 						} else if (tk.type == TK_PARENTHESIS_CLOSE) {
 							str_ofs = cofs2;
 						} else {
-							_set_error("Expected ',' or ')'");
+							_compile_set_error("Expected ',' or ')'");
 						}
 					}
 
 					expr = func_call;
 					*/
-					_set_error("Unexpected '('");
+					_compile_set_error("Unexpected '('");
 					return nullptr;
 				} else {
 					//named indexing
@@ -1640,7 +1640,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 				Variant::Type bt = Variant::Type(int(tk.value));
 				_get_token(tk);
 				if (tk.type != TK_PARENTHESIS_OPEN) {
-					_set_error("Expected '('");
+					_compile_set_error("Expected '('");
 					return nullptr;
 				}
 
@@ -1669,7 +1669,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 					} else if (tk.type == TK_PARENTHESIS_CLOSE) {
 						str_ofs = cofs;
 					} else {
-						_set_error("Expected ',' or ')'");
+						_compile_set_error("Expected ',' or ')'");
 					}
 				}
 
@@ -1681,7 +1681,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 
 				_get_token(tk);
 				if (tk.type != TK_PARENTHESIS_OPEN) {
-					_set_error("Expected '('");
+					_compile_set_error("Expected '('");
 					return nullptr;
 				}
 
@@ -1710,7 +1710,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 					} else if (tk.type == TK_PARENTHESIS_CLOSE) {
 						str_ofs = cofs;
 					} else {
-						_set_error("Expected ',' or ')'");
+						_compile_set_error("Expected ',' or ')'");
 					}
 				}
 
@@ -1735,7 +1735,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 			} break;
 
 			default: {
-				_set_error(vformat("Expected expression. Got: %s", stringify_token(tk)));
+				_compile_set_error(vformat("Expected expression. Got: %s", stringify_token(tk)));
 				return nullptr;
 			} break;
 		}
@@ -1767,7 +1767,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 
 					_get_token(tk);
 					if (tk.type != TK_BRACKET_CLOSE) {
-						_set_error("Expected ']' at end of index.");
+						_compile_set_error("Expected ']' at end of index.");
 						return nullptr;
 					}
 					expr = index;
@@ -1777,7 +1777,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 					//named indexing or function call
 					_get_token(tk);
 					if (tk.type != TK_IDENTIFIER) {
-						_set_error("Expected identifier after '.'");
+						_compile_set_error("Expected identifier after '.'");
 						return nullptr;
 					}
 
@@ -1813,7 +1813,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 							} else if (tk.type == TK_PARENTHESIS_CLOSE) {
 								str_ofs = cofs3;
 							} else {
-								_set_error("Expected ',' or ')'");
+								_compile_set_error("Expected ',' or ')'");
 							}
 						}
 
@@ -2036,7 +2036,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 					break;
 
 				default: {
-					_set_error("Parser bug, invalid operator in expression: " + itos(expression[i].op));
+					_compile_set_error("Parser bug, invalid operator in expression: " + itos(expression[i].op));
 					return nullptr;
 				}
 			}
@@ -2052,7 +2052,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 		}
 
 		if (next_op == -1) {
-			_set_error("Yet another parser bug....");
+			_compile_set_error("Yet another parser bug....");
 			ERR_FAIL_V(nullptr);
 		}
 
@@ -2063,7 +2063,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 				expr_pos++;
 				if (expr_pos == expression.size()) {
 					//can happen..
-					_set_error("Unexpected end of expression...");
+					_compile_set_error("Unexpected end of expression...");
 					return nullptr;
 				}
 			}
@@ -2081,7 +2081,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 
 		} else {
 			if (next_op < 1 || next_op >= (expression.size() - 1)) {
-				_set_error("Parser bug...");
+				_compile_set_error("Parser bug...");
 				ERR_FAIL_V(nullptr);
 			}
 
@@ -2089,7 +2089,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 			op->op = expression[next_op].op;
 
 			if (expression[next_op - 1].is_op) {
-				_set_error("Parser bug...");
+				_compile_set_error("Parser bug...");
 				ERR_FAIL_V(nullptr);
 			}
 
@@ -2099,7 +2099,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 				// can be followed by a unary op in a valid combination,
 				// due to how precedence works, unaries will always disappear first
 
-				_set_error("Unexpected two consecutive operators.");
+				_compile_set_error("Unexpected two consecutive operators.");
 				return nullptr;
 			}
 
@@ -2133,7 +2133,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 		}
 
 		if (expect_double_curly_close && tk.type != TK_DOUBLE_CURLY_BRACKET_CLOSE) {
-			_set_error(vformat("Expected '}}'. Got %s instead", stringify_token(tk)));
+			_compile_set_error(vformat("Expected '}}'. Got %s instead", stringify_token(tk)));
 			return;
 		}
 
@@ -2151,7 +2151,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 			} break;
 			case TK_DOUBLE_CURLY_BRACKET_OPEN: {
 				if (!_tokenizer_in_text_mode) {
-					_set_error("Unexpected token '{{'");
+					_compile_set_error("Unexpected token '{{'");
 					return;
 				}
 
@@ -2163,7 +2163,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 			} break;
 			case TK_DOUBLE_CURLY_BRACKET_CLOSE: {
 				if (_tokenizer_in_text_mode) {
-					_set_error("Unexpected token TK_DOUBLE_CURLY_BRACKET_CLOSE ('}}') in text parser mode. Parser bug!");
+					_compile_set_error("Unexpected token TK_DOUBLE_CURLY_BRACKET_CLOSE ('}}') in text parser mode. Parser bug!");
 					return;
 				}
 
@@ -2174,7 +2174,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				// So {{; <expr> }} Run expression, no output
 
 				if (_tokenizer_in_text_mode) {
-					_set_error(vformat("Unexpected token ';' in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
+					_compile_set_error(vformat("Unexpected token ';' in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
 					return;
 				}
 
@@ -2197,7 +2197,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				// So {{% <expr> }} Explicit raw
 
 				if (_tokenizer_in_text_mode) {
-					_set_error(vformat("Unexpected token '%' in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
+					_compile_set_error(vformat("Unexpected token '%' in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
 					return;
 				}
 
@@ -2220,7 +2220,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				// {{if <bool expr> }}
 
 				if (_tokenizer_in_text_mode) {
-					_set_error(vformat("Unexpected token '%' in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
+					_compile_set_error(vformat("Unexpected token '%' in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
 					return;
 				}
 
@@ -2235,7 +2235,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				_get_token(tk);
 
 				if (tk.type != TK_DOUBLE_CURLY_BRACKET_CLOSE) {
-					_set_error(vformat("Expected '}}' after if. Syntax: {{if <expr>}}. Got: %s", stringify_token(tk)));
+					_compile_set_error(vformat("Expected '}}' after if. Syntax: {{if <expr>}}. Got: %s", stringify_token(tk)));
 					return;
 				}
 
@@ -2259,19 +2259,19 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				// {{elif <bool expr> }}
 
 				if (_tokenizer_in_text_mode) {
-					_set_error(vformat("Unexpected token '%' in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
+					_compile_set_error(vformat("Unexpected token '%' in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
 					return;
 				}
 
 				if (p_parent_block->parent_node->type != ENode::TYPE_IF) {
-					_set_error(vformat("Unexpected '{{elif <expr>}}'"));
+					_compile_set_error(vformat("Unexpected '{{elif <expr>}}'"));
 					return;
 				}
 
 				IfNode *parent_if = static_cast<IfNode *>(p_parent_block->parent_node);
 
 				if (parent_if->next_if) {
-					_set_error(vformat("Unexpected '{{elif <expr>}}'"));
+					_compile_set_error(vformat("Unexpected '{{elif <expr>}}'"));
 					return;
 				}
 
@@ -2286,7 +2286,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				_get_token(tk);
 
 				if (tk.type != TK_DOUBLE_CURLY_BRACKET_CLOSE) {
-					_set_error(vformat("Expected '}}' after if. Syntax: {{elif <expr>}}. Got: %s", stringify_token(tk)));
+					_compile_set_error(vformat("Expected '}}' after if. Syntax: {{elif <expr>}}. Got: %s", stringify_token(tk)));
 					return;
 				}
 
@@ -2310,26 +2310,26 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				// {{else}}
 
 				if (_tokenizer_in_text_mode) {
-					_set_error(vformat("Unexpected token '%' in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
+					_compile_set_error(vformat("Unexpected token '%' in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
 					return;
 				}
 
 				if (p_parent_block->parent_node->type != ENode::TYPE_IF) {
-					_set_error(vformat("Unexpected '{{else}}'"));
+					_compile_set_error(vformat("Unexpected '{{else}}'"));
 					return;
 				}
 
 				IfNode *parent_if = static_cast<IfNode *>(p_parent_block->parent_node);
 
 				if (parent_if->next_if) {
-					_set_error(vformat("Unexpected '{{else}}'"));
+					_compile_set_error(vformat("Unexpected '{{else}}'"));
 					return;
 				}
 
 				_get_token(tk);
 
 				if (tk.type != TK_DOUBLE_CURLY_BRACKET_CLOSE) {
-					_set_error(vformat("Expected '}}' after else. Syntax: {{else}}. Got: %s", stringify_token(tk)));
+					_compile_set_error(vformat("Expected '}}' after else. Syntax: {{else}}. Got: %s", stringify_token(tk)));
 					return;
 				}
 
@@ -2357,12 +2357,12 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				_get_token(tk);
 
 				if (tk.type != TK_DOUBLE_CURLY_BRACKET_CLOSE) {
-					_set_error(vformat("Expected '}}' after endif. Syntax: {{endif}}. Got: %s", stringify_token(tk)));
+					_compile_set_error(vformat("Expected '}}' after endif. Syntax: {{endif}}. Got: %s", stringify_token(tk)));
 					return;
 				}
 
 				if (p_parent_block->parent_node->type != ENode::TYPE_IF) {
-					_set_error(vformat("Unexpected '{{endif}}'"));
+					_compile_set_error(vformat("Unexpected '{{endif}}'"));
 					return;
 				}
 
@@ -2375,7 +2375,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				// {{for <variable declaration> in <collection> }}
 
 				if (_tokenizer_in_text_mode) {
-					_set_error(vformat("Unexpected token '%' in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
+					_compile_set_error(vformat("Unexpected token '%' in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
 					return;
 				}
 
@@ -2384,7 +2384,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				_get_token(tk);
 
 				if (tk.type != TK_IDENTIFIER) {
-					_set_error(vformat("Unexpected token %s after for.  Syntax: {{for <variable> in <expr> }}. Got: %s", stringify_token(tk)));
+					_compile_set_error(vformat("Unexpected token %s after for.  Syntax: {{for <variable> in <expr> }}. Got: %s", stringify_token(tk)));
 					return;
 				}
 
@@ -2393,7 +2393,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				_get_token(tk);
 
 				if (tk.type != TK_OP_IN) {
-					_set_error(vformat("Expected 'in' after for. Syntax: {{for <variable> in <expr>}}. Got: %s", stringify_token(tk)));
+					_compile_set_error(vformat("Expected 'in' after for. Syntax: {{for <variable> in <expr>}}. Got: %s", stringify_token(tk)));
 					return;
 				}
 
@@ -2406,7 +2406,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				_get_token(tk);
 
 				if (tk.type != TK_DOUBLE_CURLY_BRACKET_CLOSE) {
-					_set_error(vformat("Expected '}}' after for. Syntax: {{for <variable> in <expr>}}. Got: %s", stringify_token(tk)));
+					_compile_set_error(vformat("Expected '}}' after for. Syntax: {{for <variable> in <expr>}}. Got: %s", stringify_token(tk)));
 					return;
 				}
 
@@ -2432,12 +2432,12 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				_get_token(tk);
 
 				if (tk.type != TK_DOUBLE_CURLY_BRACKET_CLOSE) {
-					_set_error(vformat("Expected '}}' after endfor. Syntax: {{endfor}}. Got: %s", stringify_token(tk)));
+					_compile_set_error(vformat("Expected '}}' after endfor. Syntax: {{endfor}}. Got: %s", stringify_token(tk)));
 					return;
 				}
 
 				if (p_parent_block->parent_node->type != ENode::TYPE_FOREACH) {
-					_set_error(vformat("Unexpected '{{endfor}}'"));
+					_compile_set_error(vformat("Unexpected '{{endfor}}'"));
 					return;
 				}
 
@@ -2452,7 +2452,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				// or error
 
 				if (_tokenizer_in_text_mode) {
-					_set_error(vformat("Unhandled token in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
+					_compile_set_error(vformat("Unhandled token in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
 					return;
 				}
 
