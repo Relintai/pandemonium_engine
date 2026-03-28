@@ -129,7 +129,7 @@ void HTMLTemplateRenderResult::_bind_methods() {
 }
 
 String HTMLTemplaterenderer::render(const Dictionary &p_data, bool &r_execution_error, String &r_error_txt, const bool p_show_error) {
-	ERR_FAIL_COND_V_MSG(_error_set, String(), "There was previously a parse error: " + _error_str + ".");
+	ERR_FAIL_COND_V_MSG(_compile_error_set, String(), "There was previously a parse error: " + _error_str + ".");
 
 	Dictionary data = p_data;
 	StringBuilder html;
@@ -151,12 +151,12 @@ Ref<HTMLTemplateRenderResult> HTMLTemplaterenderer::render_result(const Dictiona
 	Ref<HTMLTemplateRenderResult> ret;
 	ret.instance();
 
-	if (_error_set) {
+	if (_compile_error_set) {
 		ret->set_had_error(true);
 		ret->set_error_text(_error_str);
 
 		if (p_show_error) {
-			ERR_FAIL_COND_V_MSG(_error_set, ret, ret->get_error_text());
+			ERR_FAIL_COND_V_MSG(_compile_error_set, ret, ret->get_error_text());
 		} else {
 			return ret;
 		}
@@ -193,7 +193,7 @@ bool HTMLTemplaterenderer::compile(const String &p_text, const int p_start_line)
 	_template_text = p_text;
 	_tokenizer_in_text_mode = true;
 	_error_str = String();
-	_error_set = false;
+	_compile_error_set = false;
 	str_ofs = 0;
 	_current_line = p_start_line;
 
@@ -202,7 +202,7 @@ bool HTMLTemplaterenderer::compile(const String &p_text, const int p_start_line)
 	Token tk;
 	_parse_control_flow(_root, tk);
 
-	if (_error_set) {
+	if (_compile_error_set) {
 		_root = nullptr;
 		if (_nodes) {
 			memdelete(_nodes);
@@ -219,7 +219,7 @@ String HTMLTemplaterenderer::get_error_str() {
 }
 
 HTMLTemplaterenderer::HTMLTemplaterenderer() {
-	_error_set = false;
+	_compile_error_set = false;
 	str_ofs = 0;
 	_tokenizer_in_text_mode = true;
 	_current_line = 1;
@@ -1472,7 +1472,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 			p_skip_next_token_get = false;
 		}
 
-		if (_error_set) {
+		if (_compile_error_set) {
 			return nullptr;
 		}
 
@@ -1563,7 +1563,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 			case TK_PARENTHESIS_OPEN: {
 				//a suexpression
 				ENode *e = _parse_expression(tk);
-				if (_error_set) {
+				if (_compile_error_set) {
 					return nullptr;
 				}
 				_get_token(tk);
@@ -1745,7 +1745,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 		while (true) {
 			int cofs2 = str_ofs;
 			_get_token(tk);
-			if (_error_set) {
+			if (_compile_error_set) {
 				return nullptr;
 			}
 
@@ -1852,7 +1852,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 
 		int cofs = str_ofs;
 		_get_token(tk);
-		if (_error_set) {
+		if (_compile_error_set) {
 			return nullptr;
 		}
 
@@ -2128,7 +2128,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 			p_skip_next_token_get = false;
 		}
 
-		if (_error_set) {
+		if (_compile_error_set) {
 			return;
 		}
 
@@ -2181,7 +2181,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				PrintNode *n = alloc_node<PrintNode>();
 				n->expr = _parse_expression(tk, true);
 
-				if (_error_set) {
+				if (_compile_error_set) {
 					return;
 				}
 
@@ -2204,7 +2204,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				PrintNode *n = alloc_node<PrintNode>();
 				n->expr = _parse_expression(tk, true);
 
-				if (_error_set) {
+				if (_compile_error_set) {
 					return;
 				}
 
@@ -2228,7 +2228,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 
 				n->condition = _parse_expression(tk);
 
-				if (_error_set) {
+				if (_compile_error_set) {
 					return;
 				}
 
@@ -2246,7 +2246,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 
 				_parse_control_flow(n->body, tk);
 
-				if (_error_set) {
+				if (_compile_error_set) {
 					return;
 				}
 
@@ -2279,7 +2279,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 
 				n->condition = _parse_expression(tk);
 
-				if (_error_set) {
+				if (_compile_error_set) {
 					return;
 				}
 
@@ -2297,7 +2297,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 
 				_parse_control_flow(n->body, tk);
 
-				if (_error_set) {
+				if (_compile_error_set) {
 					return;
 				}
 
@@ -2342,7 +2342,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 
 				_parse_control_flow(n->body, tk);
 
-				if (_error_set) {
+				if (_compile_error_set) {
 					return;
 				}
 
@@ -2399,7 +2399,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 
 				n->iter_init_expr = _parse_expression(tk);
 
-				if (_error_set) {
+				if (_compile_error_set) {
 					return;
 				}
 
@@ -2417,7 +2417,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 
 				_parse_control_flow(n->body, tk);
 
-				if (_error_set) {
+				if (_compile_error_set) {
 					return;
 				}
 
@@ -2461,7 +2461,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				PrintNode *n = alloc_node<PrintNode>();
 				n->expr = _parse_expression(tk, true);
 
-				if (_error_set) {
+				if (_compile_error_set) {
 					return;
 				}
 
