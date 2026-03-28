@@ -52,7 +52,7 @@ void HTMLTemplateData::set_template(const StringName &p_name, const String &p_va
 
 	Ref<HTMLTemplateRenderer> renderer;
 	renderer.instance();
-	renderer->compile(p_value);
+	renderer->compile(p_value, 1, true);
 	_template_renderers[p_name] = renderer;
 
 	emit_changed();
@@ -101,7 +101,7 @@ void HTMLTemplateData::set_templates(const Dictionary &p_dict) {
 
 		Ref<HTMLTemplateRenderer> renderer;
 		renderer.instance();
-		renderer->compile(data);
+		renderer->compile(data, 1, true);
 		_template_renderers[k] = renderer;
 	}
 
@@ -182,7 +182,7 @@ void HTMLTemplateData::load_from_string(const String &p_data) {
 
 				Ref<HTMLTemplateRenderer> renderer;
 				renderer.instance();
-				renderer->compile(current_str, section_line_start);
+				renderer->compile(current_str, section_line_start, true);
 				_template_renderers[csnsn] = renderer;
 			}
 
