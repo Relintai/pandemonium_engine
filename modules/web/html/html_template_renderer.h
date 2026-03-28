@@ -150,7 +150,6 @@ protected:
 		enum Type {
 			TYPE_INPUT,
 			TYPE_CONSTANT,
-			TYPE_SELF,
 			TYPE_INDEX,
 			TYPE_NAMED_INDEX,
 			TYPE_BUILTIN_FUNC,
@@ -245,12 +244,6 @@ protected:
 			type = TYPE_OPERATOR;
 			nodes[0] = nullptr;
 			nodes[1] = nullptr;
-		}
-	};
-
-	struct SelfNode : public ENode {
-		SelfNode() {
-			type = TYPE_SELF;
 		}
 	};
 
@@ -375,9 +368,6 @@ protected:
 
 	ENode *_parse_expression(Token &tk, bool p_skip_next_token_get = false);
 	void _parse_control_flow(BlockNode *p_parent_block, Token &tk, bool p_skip_next_token_get = false);
-
-	// NEeds rework
-	bool _compile_expression();
 
 	BlockNode *_root;
 	ENode *_nodes;

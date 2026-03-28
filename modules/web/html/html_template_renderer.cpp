@@ -130,6 +130,7 @@ String HTMLTemplaterenderer::render(const Dictionary &p_data, const bool p_show_
 	bool err = _execute(data, html, _root, output, error_txt);
 
 	if (err) {
+		// TODO these should be return values, don't store anything here as class variables
 		_execution_error = true;
 		_error_str = error_txt;
 		ERR_FAIL_COND_V_MSG(p_show_error, html.as_string(), _error_str);
@@ -139,6 +140,36 @@ String HTMLTemplaterenderer::render(const Dictionary &p_data, const bool p_show_
 }
 
 bool HTMLTemplaterenderer::compile(const String &p_text) {
+	if (!_dirty) {
+		return _error_set;
+	}
+
+	if (_nodes) {
+		memdelete(_nodes);
+		_nodes = nullptr;
+		_root = nullptr;
+	}
+
+	_error_str = String();
+	_error_set = false;
+	str_ofs = 0;
+	_current_line = 0;
+
+	_root = alloc_node<BlockNode>();
+
+	Token tk;
+	_parse_control_flow(_root, tk);
+
+	if (_error_set) {
+		_root = nullptr;
+		if (_nodes) {
+			memdelete(_nodes);
+		}
+		_nodes = nullptr;
+		return true;
+	}
+
+	_dirty = false;
 	return false;
 }
 
@@ -1122,11 +1153,14 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 				int cofs = str_ofs;
 				_get_token(tk);
 				if (tk.type == TK_PARENTHESIS_OPEN) {
+					/*
+					// TODO this branch is likely not needed.
+
 					//function call
 					CallNode *func_call = alloc_node<CallNode>();
 					func_call->method = identifier;
-					SelfNode *self_node = alloc_node<SelfNode>();
-					func_call->base = self_node;
+					//SelfNode *self_node = alloc_node<SelfNode>();
+					func_call->base = NULL;
 
 					while (true) {
 						int cofs2 = str_ofs;
@@ -1155,6 +1189,9 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 					}
 
 					expr = func_call;
+					*/
+					_set_error("Unexpected '('");
+					return nullptr;
 				} else {
 					//named indexing
 					str_ofs = cofs;
@@ -1672,11 +1709,14 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 
 		if (expect_double_curly_close && tk.type != TK_DOUBLE_CURLY_BRACKET_CLOSE) {
 			expect_double_curly_close = false;
-			_set_error(vformat("Unhandled token! Token type : %d, value: %s", (int)tk.type, String(tk.value)));
+			_set_error(vformat("Expected '}}'. Token type : %s, value: %s", token_name[tk.type], String(tk.value)));
 			return;
 		}
 
 		switch (tk.type) {
+			case TK_EOF: {
+				return;
+			} break;
 			case TK_HTML_DATA: {
 				HTMLDataNode *n = alloc_node<HTMLDataNode>();
 				n->value = tk.value;
@@ -1708,7 +1748,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				// So {{; <expr> }} Run expression, no output
 
 				if (_tokenizer_in_text_mode) {
-					_set_error(vformat("Unhandled token in text parser mode. Parser bug! token type : %d, value: %s", (int)tk.type, String(tk.value)));
+					_set_error(vformat("Unexpected token ';' in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
 					return;
 				}
 
@@ -1730,7 +1770,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				// So {{% <expr> }} Explicit raw
 
 				if (_tokenizer_in_text_mode) {
-					_set_error(vformat("Unhandled token in text parser mode. Parser bug! token type : %d, value: %s", (int)tk.type, String(tk.value)));
+					_set_error(vformat("Unexpected token '%' in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
 					return;
 				}
 
@@ -1763,7 +1803,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				// or error
 
 				if (_tokenizer_in_text_mode) {
-					_set_error(vformat("Unhandled token in text parser mode. Parser bug! token type : %d, value: %s", (int)tk.type, String(tk.value)));
+					_set_error(vformat("Unhandled token in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
 					return;
 				}
 
@@ -1807,40 +1847,283 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 	}
 }
 
-bool HTMLTemplaterenderer::_compile_expression() {
-	if (!_dirty) {
-		return _error_set;
-	}
-
-	if (_nodes) {
-		memdelete(_nodes);
-		_nodes = nullptr;
-		_root = nullptr;
-	}
-
-	_error_str = String();
-	_error_set = false;
-	str_ofs = 0;
-	_current_line = 0;
-
-	_root = alloc_node<BlockNode>();
-
-	Token tk;
-	_parse_control_flow(_root, tk);
-
-	if (_error_set) {
-		_root = nullptr;
-		if (_nodes) {
-			memdelete(_nodes);
-		}
-		_nodes = nullptr;
-		return true;
-	}
-
-	_dirty = false;
-	return false;
-}
-
 bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, ENode *p_node, Variant &r_ret, String &r_error_str) {
+	switch (p_node->type) {
+		case HTMLTemplaterenderer::ENode::TYPE_BLOCK: {
+			const HTMLTemplaterenderer::BlockNode *b = static_cast<const HTMLTemplaterenderer::BlockNode *>(p_node);
+
+			for (int i = 0; i < b->block.size(); ++i) {
+				ENode *n = b->block[i];
+
+				if (_execute(p_data, p_html, n, r_ret, r_error_str)) {
+					return true;
+				}
+			}
+
+			return false;
+
+		} break;
+		case HTMLTemplaterenderer::ENode::TYPE_HTML_DATA: {
+			const HTMLTemplaterenderer::HTMLDataNode *hd = static_cast<const HTMLTemplaterenderer::HTMLDataNode *>(p_node);
+
+			p_html.append(hd->value);
+
+			return false;
+
+		} break;
+		case HTMLTemplaterenderer::ENode::TYPE_PRINT: {
+			const HTMLTemplaterenderer::PrintNode *pn = static_cast<const HTMLTemplaterenderer::PrintNode *>(p_node);
+
+			if (!pn->expr) {
+				return false;
+			}
+
+			Variant ret;
+			if (_execute(p_data, p_html, pn->expr, ret, r_error_str)) {
+				return true;
+			}
+
+			if (ret.get_type() == Variant::NIL) {
+				return false;
+			}
+
+			p_html.append(String(ret));
+
+			return false;
+		} break;
+		case HTMLTemplaterenderer::ENode::TYPE_CONTROL_FLOW: {
+			// Parser bug
+			return false;
+		} break;
+		case HTMLTemplaterenderer::ENode::TYPE_IF: {
+			//const HTMLTemplaterenderer:: *in = static_cast<const HTMLTemplaterenderer::*>(p_node);
+			return false;
+		} break;
+		case HTMLTemplaterenderer::ENode::TYPE_FOREACH: {
+			//const HTMLTemplaterenderer:: *in = static_cast<const HTMLTemplaterenderer::*>(p_node);
+			return false;
+		} break;
+		case HTMLTemplaterenderer::ENode::TYPE_INPUT: {
+			const HTMLTemplaterenderer::InputNode *in = static_cast<const HTMLTemplaterenderer::InputNode *>(p_node);
+
+			if (p_data.has(in->name)) {
+				r_ret = p_data[in->name];
+				return false;
+			}
+
+			String ns = in->name;
+
+			if (p_data.has(in->name)) {
+				r_ret = p_data[in->name];
+				return false;
+			}
+
+			r_error_str = vformat(RTR("Missing key (%s) in passed dictionary for template."), ns);
+			return true;
+		} break;
+		case HTMLTemplaterenderer::ENode::TYPE_CONSTANT: {
+			const HTMLTemplaterenderer::ConstantNode *c = static_cast<const HTMLTemplaterenderer::ConstantNode *>(p_node);
+			r_ret = c->value;
+
+		} break;
+		case HTMLTemplaterenderer::ENode::TYPE_OPERATOR: {
+			const HTMLTemplaterenderer::OperatorNode *op = static_cast<const HTMLTemplaterenderer::OperatorNode *>(p_node);
+
+			Variant a;
+			bool ret = _execute(p_data, p_html, op->nodes[0], a, r_error_str);
+			if (ret) {
+				return true;
+			}
+
+			Variant b;
+
+			if (op->nodes[1]) {
+				ret = _execute(p_data, p_html, op->nodes[1], b, r_error_str);
+				if (ret) {
+					return true;
+				}
+			}
+
+			bool valid = true;
+			Variant::evaluate(op->op, a, b, r_ret, valid);
+			if (!valid) {
+				r_error_str = vformat(RTR("Invalid operands to operator %s, %s and %s."), Variant::get_operator_name(op->op), Variant::get_type_name(a.get_type()), Variant::get_type_name(b.get_type()));
+				return true;
+			}
+
+		} break;
+		case HTMLTemplaterenderer::ENode::TYPE_INDEX: {
+			const HTMLTemplaterenderer::IndexNode *index = static_cast<const HTMLTemplaterenderer::IndexNode *>(p_node);
+
+			Variant base;
+			bool ret = _execute(p_data, p_html, index->base, base, r_error_str);
+			if (ret) {
+				return true;
+			}
+
+			Variant idx;
+
+			ret = _execute(p_data, p_html, index->index, idx, r_error_str);
+			if (ret) {
+				return true;
+			}
+
+			bool valid;
+			r_ret = base.get(idx, &valid);
+			if (!valid) {
+				r_error_str = vformat(RTR("Invalid index of type %s for base type %s"), Variant::get_type_name(idx.get_type()), Variant::get_type_name(base.get_type()));
+				return true;
+			}
+
+		} break;
+		case HTMLTemplaterenderer::ENode::TYPE_NAMED_INDEX: {
+			const HTMLTemplaterenderer::NamedIndexNode *index = static_cast<const HTMLTemplaterenderer::NamedIndexNode *>(p_node);
+
+			Variant base;
+			bool ret = _execute(p_data, p_html, index->base, base, r_error_str);
+			if (ret) {
+				return true;
+			}
+
+			bool valid;
+			r_ret = base.get_named(index->name, &valid);
+			if (!valid) {
+				r_error_str = vformat(RTR("Invalid named index '%s' for base type %s"), String(index->name), Variant::get_type_name(base.get_type()));
+				return true;
+			}
+
+		} break;
+		case HTMLTemplaterenderer::ENode::TYPE_ARRAY: {
+			const HTMLTemplaterenderer::ArrayNode *array = static_cast<const HTMLTemplaterenderer::ArrayNode *>(p_node);
+
+			Array arr;
+			arr.resize(array->array.size());
+			for (int i = 0; i < array->array.size(); i++) {
+				Variant value;
+				bool ret = _execute(p_data, p_html, array->array[i], value, r_error_str);
+
+				if (ret) {
+					return true;
+				}
+				arr[i] = value;
+			}
+
+			r_ret = arr;
+
+		} break;
+		case HTMLTemplaterenderer::ENode::TYPE_DICTIONARY: {
+			const HTMLTemplaterenderer::DictionaryNode *dictionary = static_cast<const HTMLTemplaterenderer::DictionaryNode *>(p_node);
+
+			Dictionary d;
+			for (int i = 0; i < dictionary->dict.size(); i += 2) {
+				Variant key;
+				bool ret = _execute(p_data, p_html, dictionary->dict[i + 0], key, r_error_str);
+
+				if (ret) {
+					return true;
+				}
+
+				Variant value;
+				ret = _execute(p_data, p_html, dictionary->dict[i + 1], value, r_error_str);
+				if (ret) {
+					return true;
+				}
+
+				d[key] = value;
+			}
+
+			r_ret = d;
+		} break;
+		case HTMLTemplaterenderer::ENode::TYPE_CONSTRUCTOR: {
+			const HTMLTemplaterenderer::ConstructorNode *constructor = static_cast<const HTMLTemplaterenderer::ConstructorNode *>(p_node);
+
+			Vector<Variant> arr;
+			Vector<const Variant *> argp;
+			arr.resize(constructor->arguments.size());
+			argp.resize(constructor->arguments.size());
+
+			for (int i = 0; i < constructor->arguments.size(); i++) {
+				Variant value;
+				bool ret = _execute(p_data, p_html, constructor->arguments[i], value, r_error_str);
+
+				if (ret) {
+					return true;
+				}
+				arr.write[i] = value;
+				argp.write[i] = &arr[i];
+			}
+
+			Variant::CallError ce;
+			r_ret = Variant::construct(constructor->data_type, (const Variant **)argp.ptr(), argp.size(), ce);
+
+			if (ce.error != Variant::CallError::CALL_OK) {
+				r_error_str = vformat(RTR("Invalid arguments to construct '%s'"), Variant::get_type_name(constructor->data_type));
+				return true;
+			}
+
+		} break;
+		case HTMLTemplaterenderer::ENode::TYPE_BUILTIN_FUNC: {
+			const HTMLTemplaterenderer::BuiltinFuncNode *bifunc = static_cast<const HTMLTemplaterenderer::BuiltinFuncNode *>(p_node);
+
+			Vector<Variant> arr;
+			Vector<const Variant *> argp;
+			arr.resize(bifunc->arguments.size());
+			argp.resize(bifunc->arguments.size());
+
+			for (int i = 0; i < bifunc->arguments.size(); i++) {
+				Variant value;
+				bool ret = _execute(p_data, p_html, bifunc->arguments[i], value, r_error_str);
+				if (ret) {
+					return true;
+				}
+				arr.write[i] = value;
+				argp.write[i] = &arr[i];
+			}
+
+			Variant::CallError ce;
+			exec_func(bifunc->func, (const Variant **)argp.ptr(), argp.size(), &r_ret, ce, r_error_str);
+
+			if (ce.error != Variant::CallError::CALL_OK) {
+				r_error_str = "Builtin Call Failed. " + r_error_str;
+				return true;
+			}
+
+		} break;
+		case HTMLTemplaterenderer::ENode::TYPE_CALL: {
+			const HTMLTemplaterenderer::CallNode *call = static_cast<const HTMLTemplaterenderer::CallNode *>(p_node);
+
+			Variant base;
+			bool ret = _execute(p_data, p_html, call->base, base, r_error_str);
+
+			if (ret) {
+				return true;
+			}
+
+			Vector<Variant> arr;
+			Vector<const Variant *> argp;
+			arr.resize(call->arguments.size());
+			argp.resize(call->arguments.size());
+
+			for (int i = 0; i < call->arguments.size(); i++) {
+				Variant value;
+				ret = _execute(p_data, p_html, call->arguments[i], value, r_error_str);
+
+				if (ret) {
+					return true;
+				}
+				arr.write[i] = value;
+				argp.write[i] = &arr[i];
+			}
+
+			Variant::CallError ce;
+			r_ret = base.call(call->method, (const Variant **)argp.ptr(), argp.size(), ce);
+
+			if (ce.error != Variant::CallError::CALL_OK) {
+				r_error_str = vformat(RTR("On call to '%s':"), String(call->method));
+				return true;
+			}
+
+		} break;
+	}
 	return false;
 }
