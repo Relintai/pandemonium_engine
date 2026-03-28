@@ -29,29 +29,6 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-// New builtin funcs:
-// exists(<var name>)
-// equals(<var1>, <var2>)
-// approx_equals(<var1>, <var2>)
-// mod(<var1>, <var2>)
-// set(<key (str), no need for "">, <value>)  ret value(?)  (if value is null, unset)
-// set_if(<bool expr>, <key (str), no need for "">, <value>)  ret value(?)  (if value is null, unset)
-// get(<ket (str), no need for "">, <default>)
-// int(), float(), str()
-// range(<var1>, <var2 opt>, <var 3 opt>)
-// keys(<var1 Dict>)
-// values(<var1 Dict>)
-// tr() translate
-// trt()
-// nltobr(); and/or maybe br()? there is also pbr
-// sel(<bool>, <if true val>, <if false val>), select() ? s() ?
-
-// Could be:
-// PrintNode -> bool raw,bool supressed, fill in during compile
-// So {{ <expr> }} : whatever is returned gets printed as-is, maybe except for nulls, escaped (except it the outer ENode is pr, pbr, etc)
-// So {{; <expr> }} Run expression, no output
-// So {{% <expr> }} Explicit raw
-
 // Comments?
 // {{ ... // <comment up to }}>  }}
 // {{ /* }}
@@ -62,22 +39,6 @@
 // Or could return it as TK_COMMENT for debugging
 
 // No assignment operator, set should be good enough
-
-// operators: All variant ops including in  (note that it can't do assignment)
-
-// {{if <bool expr> }}
-// {{elif <bool expr> }}
-// {{else}}
-// {{endif}}
-
-// {{for <variable declaration> in <collection> }}
-// {{endfor}}
-
-// other stuff:
-// Recursive indexing now should work
-
-// Array and dictionary construction?
-// [], and {} (or could be pscript like: |{}|, but here it's not really necessary)
 
 #include "html_template_renderer.h"
 
