@@ -46,20 +46,6 @@
 // nltobr(); and/or maybe br()? there is also pbr
 // sel(<bool>, <if true val>, <if false val>), select() ? s() ?
 
-// {{ <var> }} Should this still remain an alternate to {{ p(<var1>) }} ?
-// maybe just an other syntax for supressed output?:
-// {{%  }}
-// {{#  }}
-// {{:  }}
-// {{;  }}
-// Or maybe:
-// {{p <var1> }}
-// {{% <var1> }}
-// {{# <var1> }}
-// {{= <var1> }}
-// {{: <var1> }}
-// p, pr, etc methods should return strings, then these should just work
-
 // Could be:
 // PrintNode -> bool raw,bool supressed, fill in during compile
 // So {{ <expr> }} : whatever is returned gets printed as-is, maybe except for nulls, escaped (except it the outer ENode is pr, pbr, etc)
@@ -79,36 +65,18 @@
 
 // operators: All variant ops including in  (note that it can't do assignment)
 
-// ternary _template_text:  Not good enough, needs raw, normal version etc. sel() method instead, or maybe normal ternary operator: <> ? <> : <>
-// {{? <bool expr>; <true expr>; <false expr> }}
-// Could also just parse: Equivalent to qr, qp etc (so if false expr is null, just emit "", same for true expr)
-// {{? <bool expr>; <true expr> }}
-// Could also just parse: Equivalent to qr, qp etc (so if false expr is null, just emit "", same for true expr)
-// {{? <bool expr>;; <false expr> }}
-// assignment? Just assign to the input dictionary
-
-// if? If there are bool _template_texts and ternary, an if should probably also be here
-// It should still be relatively simple, as there are no scopes, and no real proper variable declarations, and stack
 // {{if <bool expr> }}
 // {{elif <bool expr> }}
 // {{else}}
 // {{endif}}
 
-// foreach?
-// It does need variable declaration, but it could be just added to the input dictionary.
-// Also with the range built in, this could also double as normal for like in gdscript
 // {{for <variable declaration> in <collection> }}
 // {{endfor}}
-// Variant can do the iteration, that mechanism should just be used.
-// in _execute
-// variant iter init, while !iter end, set name to data dict, call body expr chain
 
 // other stuff:
 // Recursive indexing now should work
 
 // Array and dictionary construction?
-// No need, do arrays and dicts in template scripts
-// Should probably be done anyway, not much complexity, but good flexibility
 // [], and {} (or could be pscript like: |{}|, but here it's not really necessary)
 
 #include "html_template_renderer.h"
