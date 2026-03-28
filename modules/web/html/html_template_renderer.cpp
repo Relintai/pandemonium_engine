@@ -43,6 +43,21 @@
 // tr() translate
 // trt()
 
+// {{ <var> }} Should this still remain an alternate to {{ p(<var1>) }} ?
+// maybe just an other syntax for supressed output?:
+// {{%  }}
+// {{#  }}
+// Or maybe:
+// {{p <var1> }}
+// {{% <var1> }}
+// {{# <var1> }}
+
+// Comments
+// {{ ... // <comment up to }}>  }}
+// {{ /* }}
+// commented out
+// {{ */ }}
+
 // No assignment operator, set should be good enough
 
 // operators: All variant ops including in  (note that it can't do assignment)
@@ -156,6 +171,39 @@ const char *HTMLTemplaterenderer::func_name[HTMLTemplaterenderer::FUNC_MAX] = {
 	"approx_equals",
 };
 
+String HTMLTemplaterenderer::get_func_name(BuiltinFunc p_func) {
+	ERR_FAIL_INDEX_V(p_func, FUNC_MAX, String());
+	return func_name[p_func];
+}
+
+int HTMLTemplaterenderer::get_func_argument_count(BuiltinFunc p_func) {
+#if 0
+	switch (p_func) {
+		case FUNC_MAX: {
+		}
+	}
+#endif
+	return 0;
+}
+
+#define VALIDATE_ARG_NUM(m_arg)                                          \
+	if (!p_inputs[m_arg]->is_num()) {                                    \
+		r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT; \
+		r_error.argument = m_arg;                                        \
+		r_error.expected = Variant::REAL;                                \
+		return;                                                          \
+	}
+
+void HTMLTemplaterenderer::exec_func(BuiltinFunc p_func, const Variant **p_inputs, Variant *r_return, Variant::CallError &r_error, String &r_error_str) {
+	r_error.error = Variant::CallError::CALL_OK;
+#if 0
+	switch (p_func) {
+		default: {
+		}
+	}
+#endif
+}
+
 HTMLTemplaterenderer::BuiltinFunc HTMLTemplaterenderer::find_function(const String &p_string) {
 	for (int i = 0; i < FUNC_MAX; i++) {
 		if (p_string == func_name[i]) {
@@ -249,7 +297,6 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 
 						if (buf.length() != 0) {
 							--str_ofs; // so next token will be double curly
-							_tokenizer_in_text_mode = false;
 							r_token.value = buf.as_string();
 						} else {
 							r_token.type = TK_DOUBLE_CURLY_BRACKET_OPEN;
@@ -719,6 +766,688 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 
 	r_token.type = TK_ERROR;
 	return ERR_PARSE_ERROR;
+}
+
+HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression() {
+	Vector<ExpressionNode> expression;
+
+	while (true) {
+		//keep appending stuff to expression
+		ENode *expr = nullptr;
+
+		Token tk;
+		_get_token(tk);
+		if (_error_set) {
+			return nullptr;
+		}
+
+		switch (tk.type) {
+			//if htmldata
+			//if just return new enode.
+			//expression should be empty, but that probably can't happen, it's a parser bug
+			//double open
+			//if true unexoected
+			//_tokenizer_in_text_mode = false;
+			//double close
+			//_tokenizer_in_text_mode = true; or onexpoected
+			case TK_CURLY_BRACKET_OPEN: {
+				//a dictionary
+				DictionaryNode *dn = alloc_node<DictionaryNode>();
+
+				while (true) {
+					int cofs = str_ofs;
+					_get_token(tk);
+					if (tk.type == TK_CURLY_BRACKET_CLOSE) {
+						break;
+					}
+					str_ofs = cofs; //revert
+					//parse an expression
+					ENode *subexpr = _parse_expression();
+					if (!subexpr) {
+						return nullptr;
+					}
+					dn->dict.push_back(subexpr);
+
+					_get_token(tk);
+					if (tk.type != TK_COLON) {
+						_set_error("Expected ':'");
+						return nullptr;
+					}
+
+					subexpr = _parse_expression();
+					if (!subexpr) {
+						return nullptr;
+					}
+
+					dn->dict.push_back(subexpr);
+
+					cofs = str_ofs;
+					_get_token(tk);
+					if (tk.type == TK_COMMA) {
+						//all good
+					} else if (tk.type == TK_CURLY_BRACKET_CLOSE) {
+						str_ofs = cofs;
+					} else {
+						_set_error("Expected ',' or '}'");
+					}
+				}
+
+				expr = dn;
+			} break;
+			case TK_BRACKET_OPEN: {
+				//an array
+
+				ArrayNode *an = alloc_node<ArrayNode>();
+
+				while (true) {
+					int cofs = str_ofs;
+					_get_token(tk);
+					if (tk.type == TK_BRACKET_CLOSE) {
+						break;
+					}
+					str_ofs = cofs; //revert
+					//parse an expression
+					ENode *subexpr = _parse_expression();
+					if (!subexpr) {
+						return nullptr;
+					}
+					an->array.push_back(subexpr);
+
+					cofs = str_ofs;
+					_get_token(tk);
+					if (tk.type == TK_COMMA) {
+						//all good
+					} else if (tk.type == TK_BRACKET_CLOSE) {
+						str_ofs = cofs;
+					} else {
+						_set_error("Expected ',' or ']'");
+					}
+				}
+
+				expr = an;
+			} break;
+			case TK_PARENTHESIS_OPEN: {
+				//a suexpression
+				ENode *e = _parse_expression();
+				if (_error_set) {
+					return nullptr;
+				}
+				_get_token(tk);
+				if (tk.type != TK_PARENTHESIS_CLOSE) {
+					_set_error("Expected ')'");
+					return nullptr;
+				}
+
+				expr = e;
+
+			} break;
+			case TK_IDENTIFIER: {
+				String identifier = tk.value;
+
+				int cofs = str_ofs;
+				_get_token(tk);
+				if (tk.type == TK_PARENTHESIS_OPEN) {
+					//function call
+					CallNode *func_call = alloc_node<CallNode>();
+					func_call->method = identifier;
+					SelfNode *self_node = alloc_node<SelfNode>();
+					func_call->base = self_node;
+
+					while (true) {
+						int cofs2 = str_ofs;
+						_get_token(tk);
+						if (tk.type == TK_PARENTHESIS_CLOSE) {
+							break;
+						}
+						str_ofs = cofs2; //revert
+						//parse an expression
+						ENode *subexpr = _parse_expression();
+						if (!subexpr) {
+							return nullptr;
+						}
+
+						func_call->arguments.push_back(subexpr);
+
+						cofs2 = str_ofs;
+						_get_token(tk);
+						if (tk.type == TK_COMMA) {
+							//all good
+						} else if (tk.type == TK_PARENTHESIS_CLOSE) {
+							str_ofs = cofs2;
+						} else {
+							_set_error("Expected ',' or ')'");
+						}
+					}
+
+					expr = func_call;
+				} else {
+					//named indexing
+					str_ofs = cofs;
+
+					InputNode *input = alloc_node<InputNode>();
+					input->name = identifier;
+					expr = input;
+				}
+			} break;
+			case TK_CONSTANT: {
+				ConstantNode *constant = alloc_node<ConstantNode>();
+				constant->value = tk.value;
+				expr = constant;
+			} break;
+			case TK_BASIC_TYPE: {
+				//constructor..
+
+				Variant::Type bt = Variant::Type(int(tk.value));
+				_get_token(tk);
+				if (tk.type != TK_PARENTHESIS_OPEN) {
+					_set_error("Expected '('");
+					return nullptr;
+				}
+
+				ConstructorNode *constructor = alloc_node<ConstructorNode>();
+				constructor->data_type = bt;
+
+				while (true) {
+					int cofs = str_ofs;
+					_get_token(tk);
+					if (tk.type == TK_PARENTHESIS_CLOSE) {
+						break;
+					}
+					str_ofs = cofs; //revert
+					//parse an expression
+					ENode *subexpr = _parse_expression();
+					if (!subexpr) {
+						return nullptr;
+					}
+
+					constructor->arguments.push_back(subexpr);
+
+					cofs = str_ofs;
+					_get_token(tk);
+					if (tk.type == TK_COMMA) {
+						//all good
+					} else if (tk.type == TK_PARENTHESIS_CLOSE) {
+						str_ofs = cofs;
+					} else {
+						_set_error("Expected ',' or ')'");
+					}
+				}
+
+				expr = constructor;
+
+			} break;
+			case TK_BUILTIN_FUNC: {
+				//builtin function
+
+				_get_token(tk);
+				if (tk.type != TK_PARENTHESIS_OPEN) {
+					_set_error("Expected '('");
+					return nullptr;
+				}
+
+				BuiltinFuncNode *bifunc = alloc_node<BuiltinFuncNode>();
+				bifunc->func = BuiltinFunc(int(tk.value));
+
+				while (true) {
+					int cofs = str_ofs;
+					_get_token(tk);
+					if (tk.type == TK_PARENTHESIS_CLOSE) {
+						break;
+					}
+					str_ofs = cofs; //revert
+					//parse an expression
+					ENode *subexpr = _parse_expression();
+					if (!subexpr) {
+						return nullptr;
+					}
+
+					bifunc->arguments.push_back(subexpr);
+
+					cofs = str_ofs;
+					_get_token(tk);
+					if (tk.type == TK_COMMA) {
+						//all good
+					} else if (tk.type == TK_PARENTHESIS_CLOSE) {
+						str_ofs = cofs;
+					} else {
+						_set_error("Expected ',' or ')'");
+					}
+				}
+
+				int expected_args = get_func_argument_count(bifunc->func);
+				if (bifunc->arguments.size() != expected_args) {
+					_set_error("Builtin func '" + get_func_name(bifunc->func) + "' expects " + itos(expected_args) + " arguments.");
+				}
+
+				expr = bifunc;
+
+			} break;
+			case TK_OP_SUB: {
+				ExpressionNode e;
+				e.is_op = true;
+				e.op = Variant::OP_NEGATE;
+				expression.push_back(e);
+				continue;
+			} break;
+			case TK_OP_NOT: {
+				ExpressionNode e;
+				e.is_op = true;
+				e.op = Variant::OP_NOT;
+				expression.push_back(e);
+				continue;
+			} break;
+
+			default: {
+				_set_error("Expected expression.");
+				return nullptr;
+			} break;
+		}
+
+		//before going to operators, must check indexing!
+
+		while (true) {
+			int cofs2 = str_ofs;
+			_get_token(tk);
+			if (_error_set) {
+				return nullptr;
+			}
+
+			bool done = false;
+
+			switch (tk.type) {
+				case TK_BRACKET_OPEN: {
+					//value indexing
+
+					IndexNode *index = alloc_node<IndexNode>();
+					index->base = expr;
+
+					ENode *what = _parse_expression();
+					if (!what) {
+						return nullptr;
+					}
+
+					index->index = what;
+
+					_get_token(tk);
+					if (tk.type != TK_BRACKET_CLOSE) {
+						_set_error("Expected ']' at end of index.");
+						return nullptr;
+					}
+					expr = index;
+
+				} break;
+				case TK_PERIOD: {
+					//named indexing or function call
+					_get_token(tk);
+					if (tk.type != TK_IDENTIFIER) {
+						_set_error("Expected identifier after '.'");
+						return nullptr;
+					}
+
+					StringName identifier = tk.value;
+
+					int cofs = str_ofs;
+					_get_token(tk);
+					if (tk.type == TK_PARENTHESIS_OPEN) {
+						//function call
+						CallNode *func_call = alloc_node<CallNode>();
+						func_call->method = identifier;
+						func_call->base = expr;
+
+						while (true) {
+							int cofs3 = str_ofs;
+							_get_token(tk);
+							if (tk.type == TK_PARENTHESIS_CLOSE) {
+								break;
+							}
+							str_ofs = cofs3; //revert
+							//parse an expression
+							ENode *subexpr = _parse_expression();
+							if (!subexpr) {
+								return nullptr;
+							}
+
+							func_call->arguments.push_back(subexpr);
+
+							cofs3 = str_ofs;
+							_get_token(tk);
+							if (tk.type == TK_COMMA) {
+								//all good
+							} else if (tk.type == TK_PARENTHESIS_CLOSE) {
+								str_ofs = cofs3;
+							} else {
+								_set_error("Expected ',' or ')'");
+							}
+						}
+
+						expr = func_call;
+					} else {
+						//named indexing
+						str_ofs = cofs;
+
+						NamedIndexNode *index = alloc_node<NamedIndexNode>();
+						index->base = expr;
+						index->name = identifier;
+						expr = index;
+					}
+
+				} break;
+				default: {
+					str_ofs = cofs2;
+					done = true;
+				} break;
+			}
+
+			if (done) {
+				break;
+			}
+		}
+
+		//push expression
+		{
+			ExpressionNode e;
+			e.is_op = false;
+			e.node = expr;
+			expression.push_back(e);
+		}
+
+		//ok finally look for an operator
+
+		int cofs = str_ofs;
+		_get_token(tk);
+		if (_error_set) {
+			return nullptr;
+		}
+
+		Variant::Operator op = Variant::OP_MAX;
+
+		switch (tk.type) {
+			case TK_OP_IN:
+				op = Variant::OP_IN;
+				break;
+			case TK_OP_EQUAL:
+				op = Variant::OP_EQUAL;
+				break;
+			case TK_OP_NOT_EQUAL:
+				op = Variant::OP_NOT_EQUAL;
+				break;
+			case TK_OP_LESS:
+				op = Variant::OP_LESS;
+				break;
+			case TK_OP_LESS_EQUAL:
+				op = Variant::OP_LESS_EQUAL;
+				break;
+			case TK_OP_GREATER:
+				op = Variant::OP_GREATER;
+				break;
+			case TK_OP_GREATER_EQUAL:
+				op = Variant::OP_GREATER_EQUAL;
+				break;
+			case TK_OP_AND:
+				op = Variant::OP_AND;
+				break;
+			case TK_OP_OR:
+				op = Variant::OP_OR;
+				break;
+			case TK_OP_NOT:
+				op = Variant::OP_NOT;
+				break;
+			case TK_OP_ADD:
+				op = Variant::OP_ADD;
+				break;
+			case TK_OP_SUB:
+				op = Variant::OP_SUBTRACT;
+				break;
+			case TK_OP_MUL:
+				op = Variant::OP_MULTIPLY;
+				break;
+			case TK_OP_DIV:
+				op = Variant::OP_DIVIDE;
+				break;
+			case TK_OP_MOD:
+				op = Variant::OP_MODULE;
+				break;
+			case TK_OP_SHIFT_LEFT:
+				op = Variant::OP_SHIFT_LEFT;
+				break;
+			case TK_OP_SHIFT_RIGHT:
+				op = Variant::OP_SHIFT_RIGHT;
+				break;
+			case TK_OP_BIT_AND:
+				op = Variant::OP_BIT_AND;
+				break;
+			case TK_OP_BIT_OR:
+				op = Variant::OP_BIT_OR;
+				break;
+			case TK_OP_BIT_XOR:
+				op = Variant::OP_BIT_XOR;
+				break;
+			case TK_OP_BIT_INVERT:
+				op = Variant::OP_BIT_NEGATE;
+				break;
+			default: {
+			};
+		}
+
+		if (op == Variant::OP_MAX) { //stop appending stuff
+			str_ofs = cofs;
+			break;
+		}
+
+		//push operator and go on
+		{
+			ExpressionNode e;
+			e.is_op = true;
+			e.op = op;
+			expression.push_back(e);
+		}
+	}
+
+	/* Reduce the set set of expressions and place them in an operator tree, respecting precedence */
+
+	while (expression.size() > 1) {
+		int next_op = -1;
+		int min_priority = 0xFFFFF;
+		bool is_unary = false;
+
+		for (int i = 0; i < expression.size(); i++) {
+			if (!expression[i].is_op) {
+				continue;
+			}
+
+			int priority;
+
+			bool unary = false;
+
+			switch (expression[i].op) {
+				case Variant::OP_BIT_NEGATE:
+					priority = 0;
+					unary = true;
+					break;
+				case Variant::OP_NEGATE:
+					priority = 1;
+					unary = true;
+					break;
+
+				case Variant::OP_MULTIPLY:
+					priority = 2;
+					break;
+				case Variant::OP_DIVIDE:
+					priority = 2;
+					break;
+				case Variant::OP_MODULE:
+					priority = 2;
+					break;
+
+				case Variant::OP_ADD:
+					priority = 3;
+					break;
+				case Variant::OP_SUBTRACT:
+					priority = 3;
+					break;
+
+				case Variant::OP_SHIFT_LEFT:
+					priority = 4;
+					break;
+				case Variant::OP_SHIFT_RIGHT:
+					priority = 4;
+					break;
+
+				case Variant::OP_BIT_AND:
+					priority = 5;
+					break;
+				case Variant::OP_BIT_XOR:
+					priority = 6;
+					break;
+				case Variant::OP_BIT_OR:
+					priority = 7;
+					break;
+
+				case Variant::OP_LESS:
+					priority = 8;
+					break;
+				case Variant::OP_LESS_EQUAL:
+					priority = 8;
+					break;
+				case Variant::OP_GREATER:
+					priority = 8;
+					break;
+				case Variant::OP_GREATER_EQUAL:
+					priority = 8;
+					break;
+
+				case Variant::OP_EQUAL:
+					priority = 8;
+					break;
+				case Variant::OP_NOT_EQUAL:
+					priority = 8;
+					break;
+
+				case Variant::OP_IN:
+					priority = 10;
+					break;
+
+				case Variant::OP_NOT:
+					priority = 11;
+					unary = true;
+					break;
+				case Variant::OP_AND:
+					priority = 12;
+					break;
+				case Variant::OP_OR:
+					priority = 13;
+					break;
+
+				default: {
+					_set_error("Parser bug, invalid operator in expression: " + itos(expression[i].op));
+					return nullptr;
+				}
+			}
+
+			if (priority < min_priority) {
+				// < is used for left to right (default)
+				// <= is used for right to left
+
+				next_op = i;
+				min_priority = priority;
+				is_unary = unary;
+			}
+		}
+
+		if (next_op == -1) {
+			_set_error("Yet another parser bug....");
+			ERR_FAIL_V(nullptr);
+		}
+
+		// OK! create operator..
+		if (is_unary) {
+			int expr_pos = next_op;
+			while (expression[expr_pos].is_op) {
+				expr_pos++;
+				if (expr_pos == expression.size()) {
+					//can happen..
+					_set_error("Unexpected end of expression...");
+					return nullptr;
+				}
+			}
+
+			//consecutively do unary operators
+			for (int i = expr_pos - 1; i >= next_op; i--) {
+				OperatorNode *op = alloc_node<OperatorNode>();
+				op->op = expression[i].op;
+				op->nodes[0] = expression[i + 1].node;
+				op->nodes[1] = nullptr;
+				expression.write[i].is_op = false;
+				expression.write[i].node = op;
+				expression.remove(i + 1);
+			}
+
+		} else {
+			if (next_op < 1 || next_op >= (expression.size() - 1)) {
+				_set_error("Parser bug...");
+				ERR_FAIL_V(nullptr);
+			}
+
+			OperatorNode *op = alloc_node<OperatorNode>();
+			op->op = expression[next_op].op;
+
+			if (expression[next_op - 1].is_op) {
+				_set_error("Parser bug...");
+				ERR_FAIL_V(nullptr);
+			}
+
+			if (expression[next_op + 1].is_op) {
+				// this is not invalid and can really appear
+				// but it becomes invalid anyway because no binary op
+				// can be followed by a unary op in a valid combination,
+				// due to how precedence works, unaries will always disappear first
+
+				_set_error("Unexpected two consecutive operators.");
+				return nullptr;
+			}
+
+			op->nodes[0] = expression[next_op - 1].node; //expression goes as left
+			op->nodes[1] = expression[next_op + 1].node; //next expression goes as right
+
+			//replace all 3 nodes by this operator and make it an expression
+			expression.write[next_op - 1].node = op;
+			expression.remove(next_op);
+			expression.remove(next_op);
+		}
+	}
+
+	return expression[0].node;
+}
+
+bool HTMLTemplaterenderer::_compile_expression() {
+	if (!_dirty) {
+		return _error_set;
+	}
+
+	if (_nodes) {
+		memdelete(_nodes);
+		_nodes = nullptr;
+		_root = nullptr;
+	}
+
+	_error_str = String();
+	_error_set = false;
+	str_ofs = 0;
+
+	// TODO
+	//_root = _parse_expression();
+
+	if (_error_set) {
+		_root = nullptr;
+		if (_nodes) {
+			memdelete(_nodes);
+		}
+		_nodes = nullptr;
+		return true;
+	}
+
+	_dirty = false;
+	return false;
 }
 
 bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, ENode *p_node, Variant &r_ret, String &r_error_str) {

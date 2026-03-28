@@ -71,6 +71,9 @@ protected:
 
 	static const char *func_name[FUNC_MAX];
 
+	static int get_func_argument_count(BuiltinFunc p_func);
+	static String get_func_name(BuiltinFunc p_func);
+	static void exec_func(BuiltinFunc p_func, const Variant **p_inputs, Variant *r_return, Variant::CallError &r_error, String &r_error_str);
 	static BuiltinFunc find_function(const String &p_string);
 
 	enum TokenType {
@@ -143,11 +146,17 @@ protected:
 
 	struct ENode {
 		enum Type {
+			TYPE_INPUT,
 			TYPE_CONSTANT,
+			TYPE_SELF,
 			TYPE_INDEX,
 			TYPE_NAMED_INDEX,
 			TYPE_BUILTIN_FUNC,
+			TYPE_CALL,
 			TYPE_OPERATOR,
+			TYPE_ARRAY,
+			TYPE_DICTIONARY,
+			TYPE_CONSTRUCTOR,
 			TYPE_BLOCK,
 			TYPE_CONTROL_FLOW,
 			TYPE_HTML_DATA,
@@ -170,8 +179,28 @@ protected:
 		}
 	};
 
+	struct ExpressionNode {
+		bool is_op;
+		union {
+			Variant::Operator op;
+			ENode *node;
+		};
+	};
+
+	ENode *_parse_expression();
+	bool _compile_expression();
+
+	struct InputNode : public ENode {
+		StringName name;
+
+		InputNode() {
+			type = TYPE_INPUT;
+		}
+	};
+
 	struct ConstantNode : public ENode {
 		Variant value;
+
 		ConstantNode() {
 			type = TYPE_CONSTANT;
 		}
@@ -216,6 +245,48 @@ protected:
 			type = TYPE_OPERATOR;
 			nodes[0] = nullptr;
 			nodes[1] = nullptr;
+		}
+	};
+
+	struct SelfNode : public ENode {
+		SelfNode() {
+			type = TYPE_SELF;
+		}
+	};
+
+	struct CallNode : public ENode {
+		ENode *base;
+		StringName method;
+		Vector<ENode *> arguments;
+
+		CallNode() {
+			type = TYPE_CALL;
+			base = nullptr;
+		}
+	};
+
+	struct ArrayNode : public ENode {
+		Vector<ENode *> array;
+
+		ArrayNode() {
+			type = TYPE_ARRAY;
+		}
+	};
+
+	struct DictionaryNode : public ENode {
+		Vector<ENode *> dict;
+
+		DictionaryNode() {
+			type = TYPE_DICTIONARY;
+		}
+	};
+
+	struct ConstructorNode : public ENode {
+		Variant::Type data_type;
+		Vector<ENode *> arguments;
+
+		ConstructorNode() {
+			type = TYPE_CONSTRUCTOR;
 		}
 	};
 
