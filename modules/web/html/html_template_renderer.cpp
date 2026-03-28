@@ -110,12 +110,6 @@ String HTMLTemplaterenderer::render(const Dictionary &p_data, const bool p_show_
 }
 
 bool HTMLTemplaterenderer::compile(const String &p_text) {
-	/* TODO
-	if (!_dirty) {
-		return _error_set;
-	}
-	*/
-
 	if (_nodes) {
 		memdelete(_nodes);
 		_nodes = nullptr;
@@ -143,7 +137,6 @@ bool HTMLTemplaterenderer::compile(const String &p_text) {
 		return true;
 	}
 
-	_dirty = false;
 	return false;
 }
 
@@ -161,7 +154,6 @@ HTMLTemplaterenderer::HTMLTemplaterenderer() {
 	_nodes = NULL;
 
 	_execution_error = false;
-	_dirty = true;
 }
 
 HTMLTemplaterenderer::~HTMLTemplaterenderer() {

@@ -397,7 +397,6 @@ protected:
 	String _template_text;
 
 	bool _execution_error;
-	bool _dirty;
 
 	bool _execute(Dictionary &p_data, StringBuilder &p_html, ENode *p_node, Variant &r_ret, String &r_error_str);
 };
