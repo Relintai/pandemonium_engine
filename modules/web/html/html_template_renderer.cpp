@@ -164,7 +164,11 @@ bool HTMLTemplateRenderer::compile(const String &p_text, const int p_start_line)
 	return false;
 }
 
-String HTMLTemplateRenderer::get_compile_error_str() {
+String HTMLTemplateRenderer::get_template_text() const {
+	return _template_text;
+}
+
+String HTMLTemplateRenderer::get_compile_error_str() const {
 	return _compile_error_str;
 }
 
@@ -189,6 +193,7 @@ void HTMLTemplateRenderer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("render", "data", "p_show_error"), &HTMLTemplateRenderer::render_result, DEFVAL(false));
 	ClassDB::bind_method(D_METHOD("compile", "text", "start_line"), &HTMLTemplateRenderer::compile, DEFVAL(1));
 
+	ClassDB::bind_method(D_METHOD("get_template_text"), &HTMLTemplateRenderer::get_template_text);
 	ClassDB::bind_method(D_METHOD("get_compile_error_str"), &HTMLTemplateRenderer::get_compile_error_str);
 }
 

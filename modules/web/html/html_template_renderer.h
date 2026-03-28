@@ -69,7 +69,8 @@ public:
 
 	bool compile(const String &p_text, const int p_start_line = 1);
 
-	String get_compile_error_str();
+	String get_template_text() const;
+	String get_compile_error_str() const;
 
 	HTMLTemplateRenderer();
 	~HTMLTemplateRenderer();
