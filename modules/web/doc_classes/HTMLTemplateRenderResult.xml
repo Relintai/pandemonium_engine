@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="HTMLTemplateRenderResult" inherits="Reference">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+	</methods>
+	<members>
+		<member name="error_text" type="String" setter="set_error_text" getter="get_error_text" default="&quot;&quot;">
+		</member>
+		<member name="had_error" type="bool" setter="set_had_error" getter="get_had_error" default="false">
+		</member>
+		<member name="html" type="String" setter="set_html" getter="get_html" default="&quot;&quot;">
+		</member>
+	</members>
+	<constants>
+	</constants>
+</class>

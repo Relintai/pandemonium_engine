@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="HTMLTemplateRenderer" inherits="Reference">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="compile">
+			<return type="bool" />
+			<argument index="0" name="text" type="String" />
+			<argument index="1" name="start_line" type="int" default="1" />
+			<description>
+			</description>
+		</method>
+		<method name="get_compile_error_str">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="render">
+			<return type="HTMLTemplateRenderResult" />
+			<argument index="0" name="data" type="Dictionary" />
+			<argument index="1" name="p_show_error" type="bool" default="false" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>
