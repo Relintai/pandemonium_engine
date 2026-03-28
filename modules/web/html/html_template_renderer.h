@@ -60,8 +60,8 @@ protected:
 	String _error_text;
 };
 
-class HTMLTemplaterenderer : public Reference {
-	GDCLASS(HTMLTemplaterenderer, Reference);
+class HTMLTemplateRenderer : public Reference {
+	GDCLASS(HTMLTemplateRenderer, Reference);
 
 public:
 	String render(const Dictionary &p_data, bool &r_execution_error, String &r_error_txt, const bool p_show_error = false);
@@ -71,8 +71,8 @@ public:
 
 	String get_compile_error_str();
 
-	HTMLTemplaterenderer();
-	~HTMLTemplaterenderer();
+	HTMLTemplateRenderer();
+	~HTMLTemplateRenderer();
 
 protected:
 	static void _bind_methods();

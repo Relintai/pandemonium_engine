@@ -128,7 +128,7 @@ void HTMLTemplateRenderResult::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "error_text"), "set_error_text", "get_error_text");
 }
 
-String HTMLTemplaterenderer::render(const Dictionary &p_data, bool &r_execution_error, String &r_error_txt, const bool p_show_error) {
+String HTMLTemplateRenderer::render(const Dictionary &p_data, bool &r_execution_error, String &r_error_txt, const bool p_show_error) {
 	ERR_FAIL_COND_V_MSG(_compile_error_set, String(), "There was previously a parse error: " + _compile_error_str + ".");
 
 	Dictionary data = p_data;
@@ -147,7 +147,7 @@ String HTMLTemplaterenderer::render(const Dictionary &p_data, bool &r_execution_
 	return html.as_string();
 }
 
-Ref<HTMLTemplateRenderResult> HTMLTemplaterenderer::render_result(const Dictionary &p_data, const bool p_show_error) {
+Ref<HTMLTemplateRenderResult> HTMLTemplateRenderer::render_result(const Dictionary &p_data, const bool p_show_error) {
 	Ref<HTMLTemplateRenderResult> ret;
 	ret.instance();
 
@@ -183,7 +183,7 @@ Ref<HTMLTemplateRenderResult> HTMLTemplaterenderer::render_result(const Dictiona
 	return ret;
 }
 
-bool HTMLTemplaterenderer::compile(const String &p_text, const int p_start_line) {
+bool HTMLTemplateRenderer::compile(const String &p_text, const int p_start_line) {
 	if (_nodes) {
 		memdelete(_nodes);
 		_nodes = nullptr;
@@ -214,11 +214,11 @@ bool HTMLTemplaterenderer::compile(const String &p_text, const int p_start_line)
 	return false;
 }
 
-String HTMLTemplaterenderer::get_compile_error_str() {
+String HTMLTemplateRenderer::get_compile_error_str() {
 	return _compile_error_str;
 }
 
-HTMLTemplaterenderer::HTMLTemplaterenderer() {
+HTMLTemplateRenderer::HTMLTemplateRenderer() {
 	_compile_error_set = false;
 	_str_ofs = 0;
 	_tokenizer_in_text_mode = true;
@@ -228,21 +228,21 @@ HTMLTemplaterenderer::HTMLTemplaterenderer() {
 	_nodes = NULL;
 }
 
-HTMLTemplaterenderer::~HTMLTemplaterenderer() {
+HTMLTemplateRenderer::~HTMLTemplateRenderer() {
 	// root will also be freed automatically
 	if (_nodes) {
 		memdelete(_nodes);
 	}
 }
 
-void HTMLTemplaterenderer::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("render", "data", "p_show_error"), &HTMLTemplaterenderer::render_result, DEFVAL(false));
-	ClassDB::bind_method(D_METHOD("compile", "text", "start_line"), &HTMLTemplaterenderer::compile, DEFVAL(1));
+void HTMLTemplateRenderer::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("render", "data", "p_show_error"), &HTMLTemplateRenderer::render_result, DEFVAL(false));
+	ClassDB::bind_method(D_METHOD("compile", "text", "start_line"), &HTMLTemplateRenderer::compile, DEFVAL(1));
 
-	ClassDB::bind_method(D_METHOD("get_compile_error_str"), &HTMLTemplaterenderer::get_compile_error_str);
+	ClassDB::bind_method(D_METHOD("get_compile_error_str"), &HTMLTemplateRenderer::get_compile_error_str);
 }
 
-const char *HTMLTemplaterenderer::func_name[HTMLTemplaterenderer::FUNC_MAX] = {
+const char *HTMLTemplateRenderer::func_name[HTMLTemplateRenderer::FUNC_MAX] = {
 	"p",
 	"pr",
 	"pb",
@@ -267,12 +267,12 @@ const char *HTMLTemplaterenderer::func_name[HTMLTemplaterenderer::FUNC_MAX] = {
 	"str",
 };
 
-String HTMLTemplaterenderer::get_func_name(BuiltinFunc p_func) {
+String HTMLTemplateRenderer::get_func_name(BuiltinFunc p_func) {
 	ERR_FAIL_INDEX_V(p_func, FUNC_MAX, String());
 	return func_name[p_func];
 }
 
-bool HTMLTemplaterenderer::validate_func_argument_count(BuiltinFunc p_func, const int p_arg_count, bool p_set_error) {
+bool HTMLTemplateRenderer::validate_func_argument_count(BuiltinFunc p_func, const int p_arg_count, bool p_set_error) {
 	int expected_args = 0;
 
 	switch (p_func) {
@@ -340,7 +340,7 @@ bool HTMLTemplaterenderer::validate_func_argument_count(BuiltinFunc p_func, cons
 		return;                                                          \
 	}
 
-void HTMLTemplaterenderer::exec_func(BuiltinFunc p_func, const Variant **p_inputs, const int p_input_count, Dictionary &p_data, Variant *r_return, Variant::CallError &r_error, String &r_error_str) {
+void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_inputs, const int p_input_count, Dictionary &p_data, Variant *r_return, Variant::CallError &r_error, String &r_error_str) {
 	r_error.error = Variant::CallError::CALL_OK;
 	switch (p_func) {
 		case FUNC_PRINT:
@@ -758,7 +758,7 @@ void HTMLTemplaterenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 	}
 }
 
-HTMLTemplaterenderer::BuiltinFunc HTMLTemplaterenderer::find_function(const String &p_string) {
+HTMLTemplateRenderer::BuiltinFunc HTMLTemplateRenderer::find_function(const String &p_string) {
 	for (int i = 0; i < FUNC_MAX; i++) {
 		if (p_string == func_name[i]) {
 			return BuiltinFunc(i);
@@ -768,7 +768,7 @@ HTMLTemplaterenderer::BuiltinFunc HTMLTemplaterenderer::find_function(const Stri
 	return FUNC_MAX;
 }
 
-const char *HTMLTemplaterenderer::token_name[TK_MAX] = {
+const char *HTMLTemplateRenderer::token_name[TK_MAX] = {
 	"HTML DATA",
 	"CURLY BRACKET OPEN",
 	"CURLY BRACKET CLOSE",
@@ -817,7 +817,7 @@ const char *HTMLTemplaterenderer::token_name[TK_MAX] = {
 	"ERROR"
 };
 
-String HTMLTemplaterenderer::stringify_token(const Token &tk) {
+String HTMLTemplateRenderer::stringify_token(const Token &tk) {
 	switch (tk.type) {
 		case TK_HTML_DATA:
 			return "HTML data";
@@ -930,7 +930,7 @@ static bool _is_binary_digit(char32_t c) {
 	return (c == '0' || c == '1');
 }
 
-Error HTMLTemplaterenderer::_get_token(Token &r_token) {
+Error HTMLTemplateRenderer::_get_token(Token &r_token) {
 	// Text mode
 
 	if (_tokenizer_in_text_mode) {
@@ -1459,7 +1459,7 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 	return ERR_PARSE_ERROR;
 }
 
-HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, bool p_skip_next_token_get) {
+HTMLTemplateRenderer::ENode *HTMLTemplateRenderer::_parse_expression(Token &tk, bool p_skip_next_token_get) {
 	Vector<ExpressionNode> expression;
 
 	while (true) {
@@ -2116,7 +2116,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 	return expression[0].node;
 }
 
-void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token &tk, bool p_skip_next_token_get) {
+void HTMLTemplateRenderer::_parse_control_flow(BlockNode *p_parent_block, Token &tk, bool p_skip_next_token_get) {
 	ERR_FAIL_COND(!p_parent_block);
 
 	bool expect_double_curly_close = false;
@@ -2504,10 +2504,10 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 
 //#define EXECUTE_DEBUG
 
-bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, ENode *p_node, Variant &r_ret, String &r_error_str) {
+bool HTMLTemplateRenderer::_execute(Dictionary &p_data, StringBuilder &p_html, ENode *p_node, Variant &r_ret, String &r_error_str) {
 	switch (p_node->type) {
-		case HTMLTemplaterenderer::ENode::TYPE_BLOCK: {
-			const HTMLTemplaterenderer::BlockNode *b = static_cast<const HTMLTemplaterenderer::BlockNode *>(p_node);
+		case HTMLTemplateRenderer::ENode::TYPE_BLOCK: {
+			const HTMLTemplateRenderer::BlockNode *b = static_cast<const HTMLTemplateRenderer::BlockNode *>(p_node);
 
 #ifdef EXECUTE_DEBUG
 			ERR_PRINT("============  BlockNode");
@@ -2524,8 +2524,8 @@ bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 			return false;
 
 		} break;
-		case HTMLTemplaterenderer::ENode::TYPE_HTML_DATA: {
-			const HTMLTemplaterenderer::HTMLDataNode *hd = static_cast<const HTMLTemplaterenderer::HTMLDataNode *>(p_node);
+		case HTMLTemplateRenderer::ENode::TYPE_HTML_DATA: {
+			const HTMLTemplateRenderer::HTMLDataNode *hd = static_cast<const HTMLTemplateRenderer::HTMLDataNode *>(p_node);
 
 #ifdef EXECUTE_DEBUG
 			ERR_PRINT("============  TYPE_HTML_DATA");
@@ -2536,8 +2536,8 @@ bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 			return false;
 
 		} break;
-		case HTMLTemplaterenderer::ENode::TYPE_PRINT: {
-			const HTMLTemplaterenderer::PrintNode *pn = static_cast<const HTMLTemplaterenderer::PrintNode *>(p_node);
+		case HTMLTemplateRenderer::ENode::TYPE_PRINT: {
+			const HTMLTemplateRenderer::PrintNode *pn = static_cast<const HTMLTemplateRenderer::PrintNode *>(p_node);
 
 #ifdef EXECUTE_DEBUG
 			ERR_PRINT("============  TYPE_PRINT");
@@ -2568,18 +2568,18 @@ bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 
 			return false;
 		} break;
-		case HTMLTemplaterenderer::ENode::TYPE_CONTROL_FLOW: {
+		case HTMLTemplateRenderer::ENode::TYPE_CONTROL_FLOW: {
 #ifdef EXECUTE_DEBUG
 			ERR_PRINT("============  TYPE_CONTROL_FLOW");
 #endif
 			// Parser bug
 			return false;
 		} break;
-		case HTMLTemplaterenderer::ENode::TYPE_IF: {
+		case HTMLTemplateRenderer::ENode::TYPE_IF: {
 #ifdef EXECUTE_DEBUG
 			ERR_PRINT("============  TYPE_IF");
 #endif
-			const HTMLTemplaterenderer::IfNode *in = static_cast<const HTMLTemplaterenderer::IfNode *>(p_node);
+			const HTMLTemplateRenderer::IfNode *in = static_cast<const HTMLTemplateRenderer::IfNode *>(p_node);
 
 			if (in->else_branch) {
 				if (in->body) {
@@ -2618,11 +2618,11 @@ bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 
 			return false;
 		} break;
-		case HTMLTemplaterenderer::ENode::TYPE_FOREACH: {
+		case HTMLTemplateRenderer::ENode::TYPE_FOREACH: {
 #ifdef EXECUTE_DEBUG
 			ERR_PRINT("============  TYPE_FOREACH");
 #endif
-			const HTMLTemplaterenderer::ForeachNode *in = static_cast<const HTMLTemplaterenderer::ForeachNode *>(p_node);
+			const HTMLTemplateRenderer::ForeachNode *in = static_cast<const HTMLTemplateRenderer::ForeachNode *>(p_node);
 
 			if (!in->body) {
 				return false;
@@ -2675,8 +2675,8 @@ bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 
 			return false;
 		} break;
-		case HTMLTemplaterenderer::ENode::TYPE_INPUT: {
-			const HTMLTemplaterenderer::InputNode *in = static_cast<const HTMLTemplaterenderer::InputNode *>(p_node);
+		case HTMLTemplateRenderer::ENode::TYPE_INPUT: {
+			const HTMLTemplateRenderer::InputNode *in = static_cast<const HTMLTemplateRenderer::InputNode *>(p_node);
 
 #ifdef EXECUTE_DEBUG
 			ERR_PRINT("============  InputNode");
@@ -2697,13 +2697,13 @@ bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 			r_error_str = vformat(RTR("Missing key (%s) in passed dictionary for template."), ns);
 			return true;
 		} break;
-		case HTMLTemplaterenderer::ENode::TYPE_CONSTANT: {
-			const HTMLTemplaterenderer::ConstantNode *c = static_cast<const HTMLTemplaterenderer::ConstantNode *>(p_node);
+		case HTMLTemplateRenderer::ENode::TYPE_CONSTANT: {
+			const HTMLTemplateRenderer::ConstantNode *c = static_cast<const HTMLTemplateRenderer::ConstantNode *>(p_node);
 			r_ret = c->value;
 
 		} break;
-		case HTMLTemplaterenderer::ENode::TYPE_OPERATOR: {
-			const HTMLTemplaterenderer::OperatorNode *op = static_cast<const HTMLTemplaterenderer::OperatorNode *>(p_node);
+		case HTMLTemplateRenderer::ENode::TYPE_OPERATOR: {
+			const HTMLTemplateRenderer::OperatorNode *op = static_cast<const HTMLTemplateRenderer::OperatorNode *>(p_node);
 
 			Variant a;
 			bool ret = _execute(p_data, p_html, op->nodes[0], a, r_error_str);
@@ -2728,8 +2728,8 @@ bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 			}
 
 		} break;
-		case HTMLTemplaterenderer::ENode::TYPE_INDEX: {
-			const HTMLTemplaterenderer::IndexNode *index = static_cast<const HTMLTemplaterenderer::IndexNode *>(p_node);
+		case HTMLTemplateRenderer::ENode::TYPE_INDEX: {
+			const HTMLTemplateRenderer::IndexNode *index = static_cast<const HTMLTemplateRenderer::IndexNode *>(p_node);
 
 			Variant base;
 			bool ret = _execute(p_data, p_html, index->base, base, r_error_str);
@@ -2752,8 +2752,8 @@ bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 			}
 
 		} break;
-		case HTMLTemplaterenderer::ENode::TYPE_NAMED_INDEX: {
-			const HTMLTemplaterenderer::NamedIndexNode *index = static_cast<const HTMLTemplaterenderer::NamedIndexNode *>(p_node);
+		case HTMLTemplateRenderer::ENode::TYPE_NAMED_INDEX: {
+			const HTMLTemplateRenderer::NamedIndexNode *index = static_cast<const HTMLTemplateRenderer::NamedIndexNode *>(p_node);
 
 			Variant base;
 			bool ret = _execute(p_data, p_html, index->base, base, r_error_str);
@@ -2769,8 +2769,8 @@ bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 			}
 
 		} break;
-		case HTMLTemplaterenderer::ENode::TYPE_ARRAY: {
-			const HTMLTemplaterenderer::ArrayNode *array = static_cast<const HTMLTemplaterenderer::ArrayNode *>(p_node);
+		case HTMLTemplateRenderer::ENode::TYPE_ARRAY: {
+			const HTMLTemplateRenderer::ArrayNode *array = static_cast<const HTMLTemplateRenderer::ArrayNode *>(p_node);
 
 			Array arr;
 			arr.resize(array->array.size());
@@ -2787,8 +2787,8 @@ bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 			r_ret = arr;
 
 		} break;
-		case HTMLTemplaterenderer::ENode::TYPE_DICTIONARY: {
-			const HTMLTemplaterenderer::DictionaryNode *dictionary = static_cast<const HTMLTemplaterenderer::DictionaryNode *>(p_node);
+		case HTMLTemplateRenderer::ENode::TYPE_DICTIONARY: {
+			const HTMLTemplateRenderer::DictionaryNode *dictionary = static_cast<const HTMLTemplateRenderer::DictionaryNode *>(p_node);
 
 			Dictionary d;
 			for (int i = 0; i < dictionary->dict.size(); i += 2) {
@@ -2810,8 +2810,8 @@ bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 
 			r_ret = d;
 		} break;
-		case HTMLTemplaterenderer::ENode::TYPE_CONSTRUCTOR: {
-			const HTMLTemplaterenderer::ConstructorNode *constructor = static_cast<const HTMLTemplaterenderer::ConstructorNode *>(p_node);
+		case HTMLTemplateRenderer::ENode::TYPE_CONSTRUCTOR: {
+			const HTMLTemplateRenderer::ConstructorNode *constructor = static_cast<const HTMLTemplateRenderer::ConstructorNode *>(p_node);
 
 			Vector<Variant> arr;
 			Vector<const Variant *> argp;
@@ -2838,8 +2838,8 @@ bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 			}
 
 		} break;
-		case HTMLTemplaterenderer::ENode::TYPE_BUILTIN_FUNC: {
-			const HTMLTemplaterenderer::BuiltinFuncNode *bifunc = static_cast<const HTMLTemplaterenderer::BuiltinFuncNode *>(p_node);
+		case HTMLTemplateRenderer::ENode::TYPE_BUILTIN_FUNC: {
+			const HTMLTemplateRenderer::BuiltinFuncNode *bifunc = static_cast<const HTMLTemplateRenderer::BuiltinFuncNode *>(p_node);
 
 			Vector<Variant> arr;
 			Vector<const Variant *> argp;
@@ -2865,8 +2865,8 @@ bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 			}
 
 		} break;
-		case HTMLTemplaterenderer::ENode::TYPE_CALL: {
-			const HTMLTemplaterenderer::CallNode *call = static_cast<const HTMLTemplaterenderer::CallNode *>(p_node);
+		case HTMLTemplateRenderer::ENode::TYPE_CALL: {
+			const HTMLTemplateRenderer::CallNode *call = static_cast<const HTMLTemplateRenderer::CallNode *>(p_node);
 
 			Variant base;
 			bool ret = _execute(p_data, p_html, call->base, base, r_error_str);
