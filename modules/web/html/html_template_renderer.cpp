@@ -73,6 +73,7 @@
 // {{ */ }}
 // Tokenizer could just start ignoring everything after /* in non text mode up to */, so technically it doesn't even need }}{{
 // {{ stuff <next token>/* <tokenizer just ignores it>  ....}} {{ .........  */ }} Netx token would be }}
+// Or could return it as TK_COMMENT for debugging
 
 // No assignment operator, set should be good enough
 
