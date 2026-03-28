@@ -182,7 +182,7 @@ protected:
 	}
 
 	bool _tokenizer_in_text_mode;
-	int str_ofs;
+	int _str_ofs;
 	int _current_line;
 
 	Error _get_token(Token &r_token);

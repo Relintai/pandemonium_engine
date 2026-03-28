@@ -194,7 +194,7 @@ bool HTMLTemplaterenderer::compile(const String &p_text, const int p_start_line)
 	_tokenizer_in_text_mode = true;
 	_compile_error_str = String();
 	_compile_error_set = false;
-	str_ofs = 0;
+	_str_ofs = 0;
 	_current_line = p_start_line;
 
 	_root = alloc_node<BlockNode>();
@@ -220,7 +220,7 @@ String HTMLTemplaterenderer::get_error_str() {
 
 HTMLTemplaterenderer::HTMLTemplaterenderer() {
 	_compile_error_set = false;
-	str_ofs = 0;
+	_str_ofs = 0;
 	_tokenizer_in_text_mode = true;
 	_current_line = 1;
 
@@ -939,7 +939,7 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 		StringBuffer<256> buf;
 
 		while (true) {
-#define GET_CHAR() (str_ofs >= _template_text.length() ? 0 : _template_text[str_ofs++])
+#define GET_CHAR() (_str_ofs >= _template_text.length() ? 0 : _template_text[_str_ofs++])
 
 			CharType cchar = GET_CHAR();
 
@@ -954,24 +954,24 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 					return OK;
 				};
 				case '{': {
-					if (_template_text[str_ofs] == '{') {
+					if (_template_text[_str_ofs] == '{') {
 						// {{
 
 						if (buf.length() != 0) {
-							--str_ofs; // so next token will be double curly
+							--_str_ofs; // so next token will be double curly
 							r_token.value = buf.as_string();
 						} else {
-							++str_ofs;
+							++_str_ofs;
 							r_token.type = TK_DOUBLE_CURLY_BRACKET_OPEN;
 						}
 
 						return OK;
-					} else if (_template_text[str_ofs] == '\\') {
+					} else if (_template_text[_str_ofs] == '\\') {
 						// Escapes
 						// {\{ -> {{ in html, {\\{ -> {\{ in html, {\\\{ -> {\\{ in html
 
 						// Consuming a single \ (this one) should do the trick
-						++str_ofs;
+						++_str_ofs;
 					} else {
 						// Just a { in html
 						buf.append(cchar);
@@ -998,7 +998,7 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 
 	// in expression mode
 	while (true) {
-#define GET_CHAR() (str_ofs >= _template_text.length() ? 0 : _template_text[str_ofs++])
+#define GET_CHAR() (_str_ofs >= _template_text.length() ? 0 : _template_text[_str_ofs++])
 
 		CharType cchar = GET_CHAR();
 
@@ -1008,9 +1008,9 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 				return OK;
 			};
 			case '{': {
-				if (_template_text[str_ofs] == '{') {
+				if (_template_text[_str_ofs] == '{') {
 					r_token.type = TK_DOUBLE_CURLY_BRACKET_OPEN;
-					++str_ofs;
+					++_str_ofs;
 				} else {
 					r_token.type = TK_CURLY_BRACKET_OPEN;
 				}
@@ -1018,9 +1018,9 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 				return OK;
 			};
 			case '}': {
-				if (_template_text[str_ofs] == '}') {
+				if (_template_text[_str_ofs] == '}') {
 					r_token.type = TK_DOUBLE_CURLY_BRACKET_CLOSE;
-					++str_ofs;
+					++_str_ofs;
 				} else {
 					r_token.type = TK_CURLY_BRACKET_CLOSE;
 				}
@@ -1067,33 +1067,33 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 				return OK;
 			};
 			case '!': {
-				if (_template_text[str_ofs] == '=') {
+				if (_template_text[_str_ofs] == '=') {
 					r_token.type = TK_OP_NOT_EQUAL;
-					str_ofs++;
+					_str_ofs++;
 				} else {
 					r_token.type = TK_OP_NOT;
 				}
 				return OK;
 			};
 			case '>': {
-				if (_template_text[str_ofs] == '=') {
+				if (_template_text[_str_ofs] == '=') {
 					r_token.type = TK_OP_GREATER_EQUAL;
-					str_ofs++;
-				} else if (_template_text[str_ofs] == '>') {
+					_str_ofs++;
+				} else if (_template_text[_str_ofs] == '>') {
 					r_token.type = TK_OP_SHIFT_RIGHT;
-					str_ofs++;
+					_str_ofs++;
 				} else {
 					r_token.type = TK_OP_GREATER;
 				}
 				return OK;
 			};
 			case '<': {
-				if (_template_text[str_ofs] == '=') {
+				if (_template_text[_str_ofs] == '=') {
 					r_token.type = TK_OP_LESS_EQUAL;
-					str_ofs++;
-				} else if (_template_text[str_ofs] == '<') {
+					_str_ofs++;
+				} else if (_template_text[_str_ofs] == '<') {
 					r_token.type = TK_OP_SHIFT_LEFT;
-					str_ofs++;
+					_str_ofs++;
 				} else {
 					r_token.type = TK_OP_LESS;
 				}
@@ -1120,18 +1120,18 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 				return OK;
 			};
 			case '&': {
-				if (_template_text[str_ofs] == '&') {
+				if (_template_text[_str_ofs] == '&') {
 					r_token.type = TK_OP_AND;
-					str_ofs++;
+					_str_ofs++;
 				} else {
 					r_token.type = TK_OP_BIT_AND;
 				}
 				return OK;
 			};
 			case '|': {
-				if (_template_text[str_ofs] == '|') {
+				if (_template_text[_str_ofs] == '|') {
 					r_token.type = TK_OP_OR;
-					str_ofs++;
+					_str_ofs++;
 				} else {
 					r_token.type = TK_OP_BIT_OR;
 				}
@@ -1257,7 +1257,7 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 					break;
 				}
 
-				CharType next_char = (str_ofs >= _template_text.length()) ? 0 : _template_text[str_ofs];
+				CharType next_char = (_str_ofs >= _template_text.length()) ? 0 : _template_text[_str_ofs];
 				if (_is_number(cchar) || (cchar == '.' && _is_number(next_char))) {
 					//a number
 
@@ -1349,7 +1349,7 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 					}
 
 					if (c != 0) {
-						str_ofs--;
+						_str_ofs--;
 					}
 
 					r_token.type = TK_CONSTANT;
@@ -1375,7 +1375,7 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 						first = false;
 					}
 
-					str_ofs--; //go back one
+					_str_ofs--; //go back one
 
 					if (id == "in") {
 						r_token.type = TK_OP_IN;
@@ -1489,12 +1489,12 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 				DictionaryNode *dn = alloc_node<DictionaryNode>();
 
 				while (true) {
-					int cofs = str_ofs;
+					int cofs = _str_ofs;
 					_get_token(tk);
 					if (tk.type == TK_CURLY_BRACKET_CLOSE) {
 						break;
 					}
-					str_ofs = cofs; //revert
+					_str_ofs = cofs; //revert
 					//parse an expression
 					ENode *subexpr = _parse_expression(tk);
 					if (!subexpr) {
@@ -1515,12 +1515,12 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 
 					dn->dict.push_back(subexpr);
 
-					cofs = str_ofs;
+					cofs = _str_ofs;
 					_get_token(tk);
 					if (tk.type == TK_COMMA) {
 						//all good
 					} else if (tk.type == TK_CURLY_BRACKET_CLOSE) {
-						str_ofs = cofs;
+						_str_ofs = cofs;
 					} else {
 						_compile_set_error("Expected ',' or '}'");
 					}
@@ -1534,12 +1534,12 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 				ArrayNode *an = alloc_node<ArrayNode>();
 
 				while (true) {
-					int cofs = str_ofs;
+					int cofs = _str_ofs;
 					_get_token(tk);
 					if (tk.type == TK_BRACKET_CLOSE) {
 						break;
 					}
-					str_ofs = cofs; //revert
+					_str_ofs = cofs; //revert
 					//parse an expression
 					ENode *subexpr = _parse_expression(tk);
 					if (!subexpr) {
@@ -1547,12 +1547,12 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 					}
 					an->array.push_back(subexpr);
 
-					cofs = str_ofs;
+					cofs = _str_ofs;
 					_get_token(tk);
 					if (tk.type == TK_COMMA) {
 						//all good
 					} else if (tk.type == TK_BRACKET_CLOSE) {
-						str_ofs = cofs;
+						_str_ofs = cofs;
 					} else {
 						_compile_set_error("Expected ',' or ']'");
 					}
@@ -1578,7 +1578,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 			case TK_IDENTIFIER: {
 				String identifier = tk.value;
 
-				int cofs = str_ofs;
+				int cofs = _str_ofs;
 				_get_token(tk);
 				if (tk.type == TK_PARENTHESIS_OPEN) {
 					/*
@@ -1591,12 +1591,12 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 					func_call->base = NULL;
 
 					while (true) {
-						int cofs2 = str_ofs;
+						int cofs2 = _str_ofs;
 						_get_token(tk);
 						if (tk.type == TK_PARENTHESIS_CLOSE) {
 							break;
 						}
-						str_ofs = cofs2; //revert
+						_str_ofs = cofs2; //revert
 						//parse an expression
 						ENode *subexpr = _parse_expression(tk);
 						if (!subexpr) {
@@ -1605,12 +1605,12 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 
 						func_call->arguments.push_back(subexpr);
 
-						cofs2 = str_ofs;
+						cofs2 = _str_ofs;
 						_get_token(tk);
 						if (tk.type == TK_COMMA) {
 							//all good
 						} else if (tk.type == TK_PARENTHESIS_CLOSE) {
-							str_ofs = cofs2;
+							_str_ofs = cofs2;
 						} else {
 							_compile_set_error("Expected ',' or ')'");
 						}
@@ -1622,7 +1622,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 					return nullptr;
 				} else {
 					//named indexing
-					str_ofs = cofs;
+					_str_ofs = cofs;
 
 					InputNode *input = alloc_node<InputNode>();
 					input->name = identifier;
@@ -1648,12 +1648,12 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 				constructor->data_type = bt;
 
 				while (true) {
-					int cofs = str_ofs;
+					int cofs = _str_ofs;
 					_get_token(tk);
 					if (tk.type == TK_PARENTHESIS_CLOSE) {
 						break;
 					}
-					str_ofs = cofs; //revert
+					_str_ofs = cofs; //revert
 					//parse an expression
 					ENode *subexpr = _parse_expression(tk);
 					if (!subexpr) {
@@ -1662,12 +1662,12 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 
 					constructor->arguments.push_back(subexpr);
 
-					cofs = str_ofs;
+					cofs = _str_ofs;
 					_get_token(tk);
 					if (tk.type == TK_COMMA) {
 						//all good
 					} else if (tk.type == TK_PARENTHESIS_CLOSE) {
-						str_ofs = cofs;
+						_str_ofs = cofs;
 					} else {
 						_compile_set_error("Expected ',' or ')'");
 					}
@@ -1689,12 +1689,12 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 				bifunc->func = BuiltinFunc(int(tk.value));
 
 				while (true) {
-					int cofs = str_ofs;
+					int cofs = _str_ofs;
 					_get_token(tk);
 					if (tk.type == TK_PARENTHESIS_CLOSE) {
 						break;
 					}
-					str_ofs = cofs; //revert
+					_str_ofs = cofs; //revert
 					//parse an expression
 					ENode *subexpr = _parse_expression(tk);
 					if (!subexpr) {
@@ -1703,12 +1703,12 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 
 					bifunc->arguments.push_back(subexpr);
 
-					cofs = str_ofs;
+					cofs = _str_ofs;
 					_get_token(tk);
 					if (tk.type == TK_COMMA) {
 						//all good
 					} else if (tk.type == TK_PARENTHESIS_CLOSE) {
-						str_ofs = cofs;
+						_str_ofs = cofs;
 					} else {
 						_compile_set_error("Expected ',' or ')'");
 					}
@@ -1743,7 +1743,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 		//before going to operators, must check indexing!
 
 		while (true) {
-			int cofs2 = str_ofs;
+			int cofs2 = _str_ofs;
 			_get_token(tk);
 			if (_compile_error_set) {
 				return nullptr;
@@ -1783,7 +1783,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 
 					StringName identifier = tk.value;
 
-					int cofs = str_ofs;
+					int cofs = _str_ofs;
 					_get_token(tk);
 					if (tk.type == TK_PARENTHESIS_OPEN) {
 						//function call
@@ -1792,12 +1792,12 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 						func_call->base = expr;
 
 						while (true) {
-							int cofs3 = str_ofs;
+							int cofs3 = _str_ofs;
 							_get_token(tk);
 							if (tk.type == TK_PARENTHESIS_CLOSE) {
 								break;
 							}
-							str_ofs = cofs3; //revert
+							_str_ofs = cofs3; //revert
 							//parse an expression
 							ENode *subexpr = _parse_expression(tk);
 							if (!subexpr) {
@@ -1806,12 +1806,12 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 
 							func_call->arguments.push_back(subexpr);
 
-							cofs3 = str_ofs;
+							cofs3 = _str_ofs;
 							_get_token(tk);
 							if (tk.type == TK_COMMA) {
 								//all good
 							} else if (tk.type == TK_PARENTHESIS_CLOSE) {
-								str_ofs = cofs3;
+								_str_ofs = cofs3;
 							} else {
 								_compile_set_error("Expected ',' or ')'");
 							}
@@ -1820,7 +1820,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 						expr = func_call;
 					} else {
 						//named indexing
-						str_ofs = cofs;
+						_str_ofs = cofs;
 
 						NamedIndexNode *index = alloc_node<NamedIndexNode>();
 						index->base = expr;
@@ -1830,7 +1830,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 
 				} break;
 				default: {
-					str_ofs = cofs2;
+					_str_ofs = cofs2;
 					done = true;
 				} break;
 			}
@@ -1850,7 +1850,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 
 		//ok finally look for an operator
 
-		int cofs = str_ofs;
+		int cofs = _str_ofs;
 		_get_token(tk);
 		if (_compile_error_set) {
 			return nullptr;
@@ -1927,7 +1927,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 		}
 
 		if (op == Variant::OP_MAX) { //stop appending stuff
-			str_ofs = cofs;
+			_str_ofs = cofs;
 			break;
 		}
 
@@ -2495,7 +2495,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				//ERR_PRINT(vformat("DEBUG: 2 token type : %s, value: %s", token_name[tk.type], String(tk.value)));
 
 				expect_double_curly_close = true;
-				// No need, _parse_expression rewinds str_ofs
+				// No need, _parse_expression rewinds _str_ofs
 				//p_skip_next_token_get = true;
 			} break;
 		}
