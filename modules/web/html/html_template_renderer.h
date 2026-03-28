@@ -127,6 +127,8 @@ protected:
 		Variant value;
 	};
 
+	static String stringify_token(const Token &tk);
+
 	String _error_str;
 	bool _error_set;
 

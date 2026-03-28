@@ -140,9 +140,11 @@ String HTMLTemplaterenderer::render(const Dictionary &p_data, const bool p_show_
 }
 
 bool HTMLTemplaterenderer::compile(const String &p_text) {
+	/* TODO
 	if (!_dirty) {
 		return _error_set;
 	}
+	*/
 
 	if (_nodes) {
 		memdelete(_nodes);
@@ -150,10 +152,12 @@ bool HTMLTemplaterenderer::compile(const String &p_text) {
 		_root = nullptr;
 	}
 
+	_template_text = p_text;
+	_tokenizer_in_text_mode = true;
 	_error_str = String();
 	_error_set = false;
 	str_ofs = 0;
-	_current_line = 0;
+	_current_line = 1;
 
 	_root = alloc_node<BlockNode>();
 
@@ -181,7 +185,7 @@ HTMLTemplaterenderer::HTMLTemplaterenderer() {
 	_error_set = false;
 	str_ofs = 0;
 	_tokenizer_in_text_mode = true;
-	_current_line = 0;
+	_current_line = 1;
 
 	_root = NULL;
 	_nodes = NULL;
@@ -510,6 +514,95 @@ const char *HTMLTemplaterenderer::token_name[TK_MAX] = {
 	"ERROR"
 };
 
+String HTMLTemplaterenderer::stringify_token(const Token &tk) {
+	switch (tk.type) {
+		case TK_HTML_DATA:
+			return "HTML data";
+		case TK_CURLY_BRACKET_OPEN:
+			return "'{'";
+		case TK_CURLY_BRACKET_CLOSE:
+			return "'}'";
+		case TK_DOUBLE_CURLY_BRACKET_OPEN:
+			return "'{{'";
+		case TK_DOUBLE_CURLY_BRACKET_CLOSE:
+			return "'}}'";
+		case TK_BRACKET_OPEN:
+			return "'['";
+		case TK_BRACKET_CLOSE:
+			return "']'";
+		case TK_PARENTHESIS_OPEN:
+			return "'('";
+		case TK_PARENTHESIS_CLOSE:
+			return "')'";
+		case TK_SEMI_COLON:
+			return "';'";
+		case TK_IDENTIFIER:
+			return vformat("identifier ('%s')", String(tk.value));
+		case TK_BUILTIN_FUNC:
+			return vformat("built-in func ('%s')", String(tk.value));
+		case TK_CONSTANT:
+			return vformat("constant ('%s')", String(tk.value));
+		case TK_BASIC_TYPE:
+			return vformat("basic type ('%s')", String(tk.value));
+		case TK_COLON:
+			return "':'";
+		case TK_COMMA:
+			return "','";
+		case TK_PERIOD:
+			return "'.'";
+		case TK_OP_IN:
+			return "'in'";
+		case TK_OP_EQUAL:
+			return "'=='";
+		case TK_OP_NOT_EQUAL:
+			return "'!='";
+		case TK_OP_LESS:
+			return "'<'";
+		case TK_OP_LESS_EQUAL:
+			return "'<='";
+		case TK_OP_GREATER:
+			return "'>'";
+		case TK_OP_GREATER_EQUAL:
+			return "'>='";
+		case TK_OP_AND:
+			return "'&&'";
+		case TK_OP_OR:
+			return "'||'";
+		case TK_OP_NOT:
+			return "'!'";
+		case TK_OP_ADD:
+			return "'+'";
+		case TK_OP_SUB:
+			return "'-'";
+		case TK_OP_MUL:
+			return "'*'";
+		case TK_OP_DIV:
+			return "'/'";
+		case TK_OP_MOD:
+			return "'%'";
+		case TK_OP_SHIFT_LEFT:
+			return "'>>'";
+		case TK_OP_SHIFT_RIGHT:
+			return "'<<'";
+		case TK_OP_BIT_AND:
+			return "'&'";
+		case TK_OP_BIT_OR:
+			return "'|'";
+		case TK_OP_BIT_XOR:
+			return "'^'";
+		case TK_OP_BIT_INVERT:
+			return "'~'";
+		case TK_EOF:
+			return "EOF";
+		case TK_ERROR:
+			return "Error";
+		default:
+			break;
+	}
+
+	return String();
+}
+
 static bool _is_number(CharType c) {
 	return (c >= '0' && c <= '9');
 }
@@ -553,6 +646,7 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 							--str_ofs; // so next token will be double curly
 							r_token.value = buf.as_string();
 						} else {
+							++str_ofs;
 							r_token.type = TK_DOUBLE_CURLY_BRACKET_OPEN;
 						}
 
@@ -601,7 +695,7 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 			case '{': {
 				if (_template_text[str_ofs] == '{') {
 					r_token.type = TK_DOUBLE_CURLY_BRACKET_OPEN;
-					str_ofs++;
+					++str_ofs;
 				} else {
 					r_token.type = TK_CURLY_BRACKET_OPEN;
 				}
@@ -611,7 +705,7 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 			case '}': {
 				if (_template_text[str_ofs] == '}') {
 					r_token.type = TK_DOUBLE_CURLY_BRACKET_CLOSE;
-					str_ofs++;
+					++str_ofs;
 				} else {
 					r_token.type = TK_CURLY_BRACKET_CLOSE;
 				}
@@ -1056,6 +1150,13 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 		}
 
 		switch (tk.type) {
+			case TK_DOUBLE_CURLY_BRACKET_OPEN: {
+				_set_error("Unexpected '{{'");
+				return nullptr;
+			} break;
+			case TK_DOUBLE_CURLY_BRACKET_CLOSE: {
+				return nullptr;
+			} break;
 			case TK_CURLY_BRACKET_OPEN: {
 				//a dictionary
 				DictionaryNode *dn = alloc_node<DictionaryNode>();
@@ -1708,10 +1809,11 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 		}
 
 		if (expect_double_curly_close && tk.type != TK_DOUBLE_CURLY_BRACKET_CLOSE) {
-			expect_double_curly_close = false;
-			_set_error(vformat("Expected '}}'. Token type : %s, value: %s", token_name[tk.type], String(tk.value)));
+			_set_error(vformat("Expected '}}'. Got %s instead", stringify_token(tk)));
 			return;
 		}
+
+		expect_double_curly_close = false;
 
 		switch (tk.type) {
 			case TK_EOF: {
@@ -1765,6 +1867,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				p_parent_block->block.push_back(n);
 
 				expect_double_curly_close = true;
+				p_skip_next_token_get = true;
 			} break;
 			case TK_OP_MOD: {
 				// So {{% <expr> }} Explicit raw
@@ -1787,6 +1890,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				p_parent_block->block.push_back(n);
 
 				expect_double_curly_close = true;
+				p_skip_next_token_get = true;
 			} break;
 
 				// {{if <bool expr> }}
@@ -1807,6 +1911,8 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 					return;
 				}
 
+				//ERR_PRINT(vformat("DEBUG: 1 token type : %s, value: %s", token_name[tk.type], String(tk.value)));
+
 				PrintNode *n = alloc_node<PrintNode>();
 				n->expr = _parse_expression(tk, true);
 
@@ -1821,7 +1927,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 					if (n->expr->type == ENode::TYPE_BUILTIN_FUNC) {
 						BuiltinFuncNode *bn = static_cast<BuiltinFuncNode *>(n->expr);
 
-						// Backwards compatibility
+						// Backwards compatibility, and ease of use
 						switch (bn->func) {
 							case FUNC_PRINT_BR: // Needs to be raw, function escaped, but need raw <br>
 							case FUNC_PRINT_RAW:
@@ -1841,16 +1947,26 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 
 				p_parent_block->block.push_back(n);
 
+				//ERR_PRINT(vformat("DEBUG: 2 token type : %s, value: %s", token_name[tk.type], String(tk.value)));
+
 				expect_double_curly_close = true;
+				// No need, _parse_expression rewinds str_ofs
+				//p_skip_next_token_get = true;
 			} break;
 		}
 	}
 }
 
+//#define EXECUTE_DEBUG
+
 bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, ENode *p_node, Variant &r_ret, String &r_error_str) {
 	switch (p_node->type) {
 		case HTMLTemplaterenderer::ENode::TYPE_BLOCK: {
 			const HTMLTemplaterenderer::BlockNode *b = static_cast<const HTMLTemplaterenderer::BlockNode *>(p_node);
+
+#ifdef EXECUTE_DEBUG
+			ERR_PRINT("============  BlockNode");
+#endif
 
 			for (int i = 0; i < b->block.size(); ++i) {
 				ENode *n = b->block[i];
@@ -1866,6 +1982,10 @@ bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 		case HTMLTemplaterenderer::ENode::TYPE_HTML_DATA: {
 			const HTMLTemplaterenderer::HTMLDataNode *hd = static_cast<const HTMLTemplaterenderer::HTMLDataNode *>(p_node);
 
+#ifdef EXECUTE_DEBUG
+			ERR_PRINT("============  TYPE_HTML_DATA");
+#endif
+
 			p_html.append(hd->value);
 
 			return false;
@@ -1873,6 +1993,10 @@ bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 		} break;
 		case HTMLTemplaterenderer::ENode::TYPE_PRINT: {
 			const HTMLTemplaterenderer::PrintNode *pn = static_cast<const HTMLTemplaterenderer::PrintNode *>(p_node);
+
+#ifdef EXECUTE_DEBUG
+			ERR_PRINT("============  TYPE_PRINT");
+#endif
 
 			if (!pn->expr) {
 				return false;
@@ -1883,28 +2007,49 @@ bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 				return true;
 			}
 
+			if (pn->supressed) {
+				return false;
+			}
+
 			if (ret.get_type() == Variant::NIL) {
 				return false;
 			}
 
-			p_html.append(String(ret));
+			if (pn->raw) {
+				p_html.append(String(ret));
+			} else {
+				p_html.append(String(ret).xml_escape());
+			}
 
 			return false;
 		} break;
 		case HTMLTemplaterenderer::ENode::TYPE_CONTROL_FLOW: {
+#ifdef EXECUTE_DEBUG
+			ERR_PRINT("============  TYPE_CONTROL_FLOW");
+#endif
 			// Parser bug
 			return false;
 		} break;
 		case HTMLTemplaterenderer::ENode::TYPE_IF: {
+#ifdef EXECUTE_DEBUG
+			ERR_PRINT("============  TYPE_IF");
+#endif
 			//const HTMLTemplaterenderer:: *in = static_cast<const HTMLTemplaterenderer::*>(p_node);
 			return false;
 		} break;
 		case HTMLTemplaterenderer::ENode::TYPE_FOREACH: {
+#ifdef EXECUTE_DEBUG
+			ERR_PRINT("============  TYPE_FOREACH");
+#endif
 			//const HTMLTemplaterenderer:: *in = static_cast<const HTMLTemplaterenderer::*>(p_node);
 			return false;
 		} break;
 		case HTMLTemplaterenderer::ENode::TYPE_INPUT: {
 			const HTMLTemplaterenderer::InputNode *in = static_cast<const HTMLTemplaterenderer::InputNode *>(p_node);
+
+#ifdef EXECUTE_DEBUG
+			ERR_PRINT("============  InputNode");
+#endif
 
 			if (p_data.has(in->name)) {
 				r_ret = p_data[in->name];
@@ -1913,8 +2058,8 @@ bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 
 			String ns = in->name;
 
-			if (p_data.has(in->name)) {
-				r_ret = p_data[in->name];
+			if (p_data.has(ns)) {
+				r_ret = p_data[ns];
 				return false;
 			}
 
