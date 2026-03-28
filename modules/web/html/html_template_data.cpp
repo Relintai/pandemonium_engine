@@ -52,7 +52,9 @@ void HTMLTemplateData::set_template(const StringName &p_name, const String &p_va
 
 	Ref<HTMLTemplateRenderer> renderer;
 	renderer.instance();
-	renderer->compile(p_value, 1, true);
+	if (renderer->compile(p_value, 1, true)) {
+		ERR_PRINT(vformat("Error in template! Name: %s. HTMLTemplateData name: %s, path: %s.", p_name, get_name(), get_path()));
+	}
 	_template_renderers[p_name] = renderer;
 
 	emit_changed();
@@ -101,7 +103,9 @@ void HTMLTemplateData::set_templates(const Dictionary &p_dict) {
 
 		Ref<HTMLTemplateRenderer> renderer;
 		renderer.instance();
-		renderer->compile(data, 1, true);
+		if (renderer->compile(data, 1, true)) {
+			ERR_PRINT(vformat("Error in template! Name: %s. HTMLTemplateData name: %s, path: %s.", k, get_name(), get_path()));
+		}
 		_template_renderers[k] = renderer;
 	}
 
@@ -135,7 +139,9 @@ Error HTMLTemplateData::load_from_file(const String &p_file) {
 	f->close();
 	memdelete(f);
 
-	load_from_string(data);
+	if (load_from_string(data)) {
+		ERR_PRINT(vformat("File name: %s.", p_file));
+	}
 
 	return OK;
 }
@@ -160,9 +166,11 @@ Error HTMLTemplateData::save_to_file(const String &p_file) const {
 
 	return OK;
 }
-void HTMLTemplateData::load_from_string(const String &p_data) {
+bool HTMLTemplateData::load_from_string(const String &p_data) {
 	_templates.clear();
 	_template_renderers.clear();
+
+	bool had_error = false;
 
 	Vector<String> lines = p_data.split("\n", false);
 
@@ -182,7 +190,10 @@ void HTMLTemplateData::load_from_string(const String &p_data) {
 
 				Ref<HTMLTemplateRenderer> renderer;
 				renderer.instance();
-				renderer->compile(current_str, section_line_start, true);
+				if (renderer->compile(current_str, section_line_start, true)) {
+					ERR_PRINT(vformat("Section name: %s.", current_section_name));
+					had_error = true;
+				}
 				_template_renderers[csnsn] = renderer;
 			}
 
@@ -202,6 +213,8 @@ void HTMLTemplateData::load_from_string(const String &p_data) {
 	}
 
 	emit_changed();
+
+	return had_error;
 }
 String HTMLTemplateData::save_as_string() const {
 	String data;

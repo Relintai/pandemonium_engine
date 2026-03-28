@@ -97,7 +97,9 @@ void HTMLTemplate::set_template_override(const StringName &p_name, const String 
 
 	Ref<HTMLTemplateRenderer> renderer;
 	renderer.instance();
-	renderer->compile(p_value, 1, true);
+	if (renderer->compile(p_value, 1, true)) {
+		ERR_PRINT(vformat("Template override name: %s, resource name: %s path: %s", p_name, get_name(), get_path()));
+	}
 	_template_override_renderers[p_name] = renderer;
 }
 void HTMLTemplate::remove_template_override(const StringName &p_name) {
@@ -165,7 +167,9 @@ void HTMLTemplate::set_template_default(const StringName &p_name, const String &
 
 	Ref<HTMLTemplateRenderer> renderer;
 	renderer.instance();
-	renderer->compile(p_value, 1, true);
+	if (renderer->compile(p_value, 1, true)) {
+		ERR_PRINT(vformat("Template default name: %s, resource name: %s path: %s", p_name, get_name(), get_path()));
+	}
 	_template_default_renderers[p_name] = renderer;
 }
 void HTMLTemplate::remove_template_default(const StringName &p_name) {

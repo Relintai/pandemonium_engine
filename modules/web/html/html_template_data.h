@@ -60,7 +60,7 @@ public:
 	Error load_from_file(const String &p_file);
 	Error save_to_file(const String &p_file) const;
 
-	void load_from_string(const String &p_data);
+	bool load_from_string(const String &p_data);
 	String save_as_string() const;
 
 	HTMLTemplateData();
