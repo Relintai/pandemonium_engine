@@ -489,6 +489,8 @@ const char *HTMLTemplaterenderer::token_name[TK_MAX] = {
 	"COLON",
 	"COMMA",
 	"PERIOD",
+	"FOR",
+	"ENDFOR",
 	"OP IN",
 	"OP EQUAL",
 	"OP NOT EQUAL",
@@ -550,6 +552,10 @@ String HTMLTemplaterenderer::stringify_token(const Token &tk) {
 			return "','";
 		case TK_PERIOD:
 			return "'.'";
+		case TK_FOR:
+			return "'for'";
+		case TK_ENDFOR:
+			return "'endfor'";
 		case TK_OP_IN:
 			return "'in'";
 		case TK_OP_EQUAL:
@@ -1091,6 +1097,10 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 						r_token.type = TK_OP_OR;
 					} else if (id == "and") {
 						r_token.type = TK_OP_AND;
+					} else if (id == "for") {
+						r_token.type = TK_FOR;
+					} else if (id == "endfor") {
+						r_token.type = TK_ENDFOR;
 					} else {
 						for (int i = 0; i < Variant::VARIANT_MAX; i++) {
 							if (id == Variant::get_type_name(Variant::Type(i))) {
@@ -1411,7 +1421,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 			} break;
 
 			default: {
-				_set_error("Expected expression.");
+				_set_error(vformat("Expected expression. Got: %s", stringify_token(tk)));
 				return nullptr;
 			} break;
 		}
@@ -1898,9 +1908,81 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				// {{else}}
 				// {{endif}}
 
+			case TK_FOR: {
 				// {{for <variable declaration> in <collection> }}
+
+				if (_tokenizer_in_text_mode) {
+					_set_error(vformat("Unexpected token '%' in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
+					return;
+				}
+
+				ForeachNode *n = alloc_node<ForeachNode>();
+
+				_get_token(tk);
+
+				if (tk.type != TK_IDENTIFIER) {
+					_set_error(vformat("Unexpected token %s after for.  Syntax: {{for <variable> in <expr> }}. Got: %s", stringify_token(tk)));
+					return;
+				}
+
+				n->iter_variable = tk.value;
+
+				_get_token(tk);
+
+				if (tk.type != TK_OP_IN) {
+					_set_error(vformat("Expected 'in' after for. Syntax: {{for <variable> in <expr>}}. Got: %s", stringify_token(tk)));
+					return;
+				}
+
+				n->iter_init_expr = _parse_expression(tk);
+
+				if (_error_set) {
+					return;
+				}
+
+				_get_token(tk);
+
+				if (tk.type != TK_DOUBLE_CURLY_BRACKET_CLOSE) {
+					_set_error(vformat("Expected '}}' after for. Syntax: {{for <variable> in <expr>}}. Got: %s", stringify_token(tk)));
+					return;
+				}
+
+				_tokenizer_in_text_mode = true;
+
+				n->body = alloc_node<BlockNode>();
+				n->body->parent_block = n;
+
+				_parse_control_flow(n->body, tk);
+
+				if (_error_set) {
+					return;
+				}
+
+				p_parent_block->block.push_back(n);
+
+				expect_double_curly_close = false;
+				p_skip_next_token_get = false;
+			} break;
+			case TK_ENDFOR: {
 				// {{endfor}}
 
+				_get_token(tk);
+
+				if (tk.type != TK_DOUBLE_CURLY_BRACKET_CLOSE) {
+					_set_error(vformat("Expected '}}' after endfor. Syntax: {{endfor}}. Got: %s", stringify_token(tk)));
+					return;
+				}
+
+				if (p_parent_block->parent_block->type != ENode::TYPE_FOREACH) {
+					_set_error(vformat("Unexpected '{{endfor}}'"));
+					return;
+				}
+
+				return;
+
+				//expect_double_curly_close = false;
+				//p_skip_next_token_get = false;
+			}
 			default: {
 				// Either
 				// {{ <expr> }} : whatever is returned gets printed as-is, maybe except for nulls, escaped (except it the outer ENode is pr, pbr, etc)
@@ -2041,7 +2123,57 @@ bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 #ifdef EXECUTE_DEBUG
 			ERR_PRINT("============  TYPE_FOREACH");
 #endif
-			//const HTMLTemplaterenderer:: *in = static_cast<const HTMLTemplaterenderer::*>(p_node);
+			const HTMLTemplaterenderer::ForeachNode *in = static_cast<const HTMLTemplaterenderer::ForeachNode *>(p_node);
+
+			if (!in->body) {
+				return false;
+			}
+
+			Variant iter_base;
+			if (_execute(p_data, p_html, in->iter_init_expr, iter_base, r_error_str)) {
+				return true;
+			}
+
+			Variant iter;
+			bool valid;
+			bool init = iter_base.iter_init(iter, valid);
+
+			if (!valid) {
+				r_error_str = vformat(RTR("Invalid arguments to construct iterator for data type: '%s'"), Variant::get_type_name(iter_base.get_type()));
+				return true;
+			}
+
+			if (!init) {
+				return false;
+			}
+
+			Variant value = iter_base.iter_get(iter, valid);
+
+			if (!valid) {
+				r_error_str = vformat(RTR("Invalid arguments to construct iterator for data type: '%s'"), Variant::get_type_name(iter_base.get_type()));
+				return true;
+			}
+
+			p_data[in->iter_variable] = value;
+			Variant ret;
+			if (_execute(p_data, p_html, in->body, r_ret, r_error_str)) {
+				return true;
+			}
+
+			while (iter_base.iter_next(iter, valid)) {
+				if (!valid) {
+					r_error_str = vformat(RTR("Invalid arguments to continue iterator for data type: '%s'"), Variant::get_type_name(iter_base.get_type()));
+					return true;
+				}
+
+				value = iter_base.iter_get(iter, valid);
+				p_data[in->iter_variable] = value;
+
+				if (_execute(p_data, p_html, in->body, r_ret, r_error_str)) {
+					return true;
+				}
+			}
+
 			return false;
 		} break;
 		case HTMLTemplaterenderer::ENode::TYPE_INPUT: {

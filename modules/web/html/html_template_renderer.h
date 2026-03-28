@@ -94,6 +94,8 @@ protected:
 		TK_COLON,
 		TK_COMMA,
 		TK_PERIOD,
+		TK_FOR,
+		TK_ENDFOR,
 		TK_OP_IN,
 		TK_OP_EQUAL,
 		TK_OP_NOT_EQUAL,
@@ -296,10 +298,12 @@ protected:
 	// Contains a list of ControlFlowNodes.
 	// Normal expressions are always in Control Nodes (like in if conditions, etc)
 	struct BlockNode : public ENode {
+		ENode *parent_block;
 		Vector<ControlFlowNode *> block;
 
 		BlockNode() {
 			type = Type::TYPE_BLOCK;
+			parent_block = NULL;
 		}
 	};
 
@@ -350,12 +354,13 @@ protected:
 	// {{for <variable declaration> in <collection> }}
 	// {{endfor}}
 	struct ForeachNode : public ControlFlowNode {
-		ENode *condition;
+		StringName iter_variable;
+		ENode *iter_init_expr;
 		BlockNode *body;
 
 		ForeachNode() {
 			type = TYPE_FOREACH;
-			condition = nullptr;
+			iter_init_expr = nullptr;
 			body = nullptr;
 		}
 	};
