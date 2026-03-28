@@ -41,6 +41,7 @@
 
 class HTMLTemplateData;
 class WebServerRequest;
+class HTMLTemplateRenderer;
 
 class HTMLTemplate : public Resource {
 	GDCLASS(HTMLTemplate, Resource);
@@ -71,6 +72,8 @@ public:
 	void set_template_override(const StringName &p_name, const String &p_value);
 	void remove_template_override(const StringName &p_name);
 
+	Ref<HTMLTemplateRenderer> get_template_override_renderer(const StringName &p_name) const;
+
 	void clear_template_overrides();
 
 	Dictionary get_template_overrides() const;
@@ -82,6 +85,8 @@ public:
 	void set_template_default(const StringName &p_name, const String &p_value);
 	void remove_template_default(const StringName &p_name);
 
+	Ref<HTMLTemplateRenderer> get_template_default_renderer(const StringName &p_name) const;
+
 	void clear_template_defaults();
 
 	Dictionary get_template_defaults() const;
@@ -90,11 +95,15 @@ public:
 	// Use
 
 	String get_template_text(const StringName &p_name);
+	Ref<HTMLTemplateRenderer> get_template_renderer(const StringName &p_name);
 
 	String call_template_method(const TemplateExpressionMethods p_method, const Array &p_data, const bool p_first_var_decides_print);
 	Variant process_template_expression_variable(const String &p_variable, const Dictionary &p_data, const bool p_allow_missing = false);
 	String process_template_expression(const String &p_expression, const Dictionary &p_data);
+	String render_template_old(const String &p_text, const Dictionary &p_data);
+
 	String render_template(const String &p_text, const Dictionary &p_data);
+	String renderer_render_template(Ref<HTMLTemplateRenderer> p_renderer, const Dictionary &p_data);
 
 	String get_and_render_template(const StringName &p_name, const Dictionary &p_data);
 
@@ -124,6 +133,9 @@ protected:
 
 	HashMap<StringName, String> _template_overrides;
 	HashMap<StringName, String> _template_defaults;
+
+	HashMap<StringName, Ref<HTMLTemplateRenderer>> _template_override_renderers;
+	HashMap<StringName, Ref<HTMLTemplateRenderer>> _template_default_renderers;
 
 	String _editor_new_template_override_key;
 	String _editor_new_template_default_key;

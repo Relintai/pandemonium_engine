@@ -94,13 +94,30 @@ String HTMLTemplate::get_template_override(const StringName &p_name) const {
 }
 void HTMLTemplate::set_template_override(const StringName &p_name, const String &p_value) {
 	_template_overrides[p_name] = p_value;
+
+	Ref<HTMLTemplateRenderer> renderer;
+	renderer.instance();
+	renderer->compile(p_value, 1, true);
+	_template_override_renderers[p_name] = renderer;
 }
 void HTMLTemplate::remove_template_override(const StringName &p_name) {
 	_template_overrides.erase(p_name);
+	_template_override_renderers.erase(p_name);
+}
+
+Ref<HTMLTemplateRenderer> HTMLTemplate::get_template_override_renderer(const StringName &p_name) const {
+	const Ref<HTMLTemplateRenderer> *val = _template_override_renderers.getptr(p_name);
+
+	if (!val) {
+		return Ref<HTMLTemplateRenderer>();
+	}
+
+	return *val;
 }
 
 void HTMLTemplate::clear_template_overrides() {
 	_template_overrides.clear();
+	_template_override_renderers.clear();
 }
 
 Dictionary HTMLTemplate::get_template_overrides() const {
@@ -145,13 +162,30 @@ String HTMLTemplate::get_template_default(const StringName &p_name) const {
 }
 void HTMLTemplate::set_template_default(const StringName &p_name, const String &p_value) {
 	_template_defaults[p_name] = p_value;
+
+	Ref<HTMLTemplateRenderer> renderer;
+	renderer.instance();
+	renderer->compile(p_value, 1, true);
+	_template_default_renderers[p_name] = renderer;
 }
 void HTMLTemplate::remove_template_default(const StringName &p_name) {
 	_template_defaults.erase(p_name);
+	_template_default_renderers.erase(p_name);
+}
+
+Ref<HTMLTemplateRenderer> HTMLTemplate::get_template_default_renderer(const StringName &p_name) const {
+	const Ref<HTMLTemplateRenderer> *val = _template_default_renderers.getptr(p_name);
+
+	if (!val) {
+		return Ref<HTMLTemplateRenderer>();
+	}
+
+	return *val;
 }
 
 void HTMLTemplate::clear_template_defaults() {
 	_template_defaults.clear();
+	_template_default_renderers.clear();
 }
 
 Dictionary HTMLTemplate::get_template_defaults() const {
@@ -215,6 +249,40 @@ String HTMLTemplate::get_template_text(const StringName &p_name) {
 	}
 
 	return String();
+}
+Ref<HTMLTemplateRenderer> HTMLTemplate::get_template_renderer(const StringName &p_name) {
+	// First try overrides
+	Ref<HTMLTemplateRenderer> *sptr = _template_override_renderers.getptr(p_name);
+
+	if (sptr) {
+		return *sptr;
+	}
+
+	// Go thourgh templates
+
+	for (int i = 0; i < _templates.size(); ++i) {
+		Ref<HTMLTemplateData> d = _templates[i];
+
+		if (!d.is_valid()) {
+			continue;
+		}
+
+		Ref<HTMLTemplateRenderer> r = d->get_template_renderer(p_name);
+
+		if (r.is_valid()) {
+			return r;
+		}
+	}
+
+	// At last try default
+
+	sptr = _template_default_renderers.getptr(p_name);
+
+	if (sptr) {
+		return *sptr;
+	}
+
+	return Ref<HTMLTemplateRenderer>();
 }
 
 String HTMLTemplate::call_template_method(const TemplateExpressionMethods p_method, const Array &p_data, const bool p_first_var_decides_print) {
@@ -586,7 +654,7 @@ method_name_search_done:
 	return call_template_method(call_method, final_values, first_var_decides_print);
 }
 
-String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_data) {
+String HTMLTemplate::render_template_old(const String &p_text, const Dictionary &p_data) {
 	// {\{ Escaped {{
 	// {\\{ -> {\{ etc
 	// {{ p(var) }} // print, escaped, also includes to string cast
@@ -833,10 +901,33 @@ String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_d
 	return result.as_string();
 }
 
-String HTMLTemplate::get_and_render_template(const StringName &p_name, const Dictionary &p_data) {
-	String text = get_template_text(p_name);
+String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_data) {
+	Ref<HTMLTemplateRenderer> renderer;
+	renderer.instance();
+	if (renderer->compile(p_text, 1, true)) {
+		return String();
+	}
 
-	return render_template(text, p_data);
+	bool exec_error = false;
+	String error_text;
+	return renderer->render(p_data, exec_error, error_text, true);
+}
+String HTMLTemplate::renderer_render_template(Ref<HTMLTemplateRenderer> p_renderer, const Dictionary &p_data) {
+	if (!p_renderer.is_valid()) {
+		return String();
+	}
+
+	bool exec_error = false;
+	String error_text;
+	return p_renderer->render(p_data, exec_error, error_text, true);
+}
+
+String HTMLTemplate::get_and_render_template(const StringName &p_name, const Dictionary &p_data) {
+	Ref<HTMLTemplateRenderer> renderer = get_template_renderer(p_name);
+
+	ERR_FAIL_COND_V(!renderer.is_valid(), String());
+
+	return renderer_render_template(renderer, p_data);
 }
 
 String HTMLTemplate::render(const Ref<WebServerRequest> &p_request, const Dictionary &p_data) {
@@ -865,7 +956,7 @@ void HTMLTemplate::_on_editor_template_button_pressed(const StringName &p_proper
 			// This way add_key can also be used as a key
 			if (key == "add_key_button") {
 				if (!_editor_new_template_override_key.empty()) {
-					_template_overrides[_editor_new_template_override_key] = "";
+					set_template_override(_editor_new_template_override_key, "");
 
 					_editor_new_template_override_key = "";
 
@@ -880,6 +971,7 @@ void HTMLTemplate::_on_editor_template_button_pressed(const StringName &p_proper
 
 		if (property == "delete_key_button") {
 			_template_overrides.erase(key);
+			_template_override_renderers.erase(key);
 			property_list_changed_notify();
 		}
 
@@ -895,7 +987,7 @@ void HTMLTemplate::_on_editor_template_button_pressed(const StringName &p_proper
 			// This way add_key can also be used as a key
 			if (key == "add_key_button") {
 				if (!_editor_new_template_default_key.empty()) {
-					_template_defaults[_editor_new_template_default_key] = "";
+					set_template_default(_editor_new_template_default_key, "");
 
 					_editor_new_template_default_key = "";
 
@@ -910,6 +1002,7 @@ void HTMLTemplate::_on_editor_template_button_pressed(const StringName &p_proper
 
 		if (property == "delete_key_button") {
 			_template_defaults.erase(key);
+			_template_default_renderers.erase(key);
 			property_list_changed_notify();
 		}
 
@@ -938,7 +1031,7 @@ bool HTMLTemplate::_set(const StringName &p_name, const Variant &p_value) {
 		String property = name.get_slicec('/', 2);
 
 		if (property == "value") {
-			_template_overrides[key] = String(p_value);
+			set_template_override(key, String(p_value));
 		}
 
 		return true;
@@ -962,7 +1055,7 @@ bool HTMLTemplate::_set(const StringName &p_name, const Variant &p_value) {
 		String property = name.get_slicec('/', 2);
 
 		if (property == "value") {
-			_template_defaults[key] = String(p_value);
+			set_template_default(key, String(p_value));
 		}
 
 		return true;
@@ -1070,6 +1163,8 @@ void HTMLTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_template_override", "name", "value"), &HTMLTemplate::set_template_override);
 	ClassDB::bind_method(D_METHOD("remove_template_override", "name"), &HTMLTemplate::remove_template_override);
 
+	ClassDB::bind_method(D_METHOD("get_template_override_renderer", "name"), &HTMLTemplate::get_template_override_renderer);
+
 	ClassDB::bind_method(D_METHOD("clear_template_overrides"), &HTMLTemplate::clear_template_overrides);
 
 	ClassDB::bind_method(D_METHOD("get_template_overrides"), &HTMLTemplate::get_template_overrides);
@@ -1082,6 +1177,8 @@ void HTMLTemplate::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_template_default", "name", "value"), &HTMLTemplate::set_template_default);
 	ClassDB::bind_method(D_METHOD("remove_template_default", "name"), &HTMLTemplate::remove_template_default);
 
+	ClassDB::bind_method(D_METHOD("get_template_default_renderer", "name"), &HTMLTemplate::get_template_default_renderer);
+
 	ClassDB::bind_method(D_METHOD("clear_template_defaults"), &HTMLTemplate::clear_template_defaults);
 
 	ClassDB::bind_method(D_METHOD("get_template_defaults"), &HTMLTemplate::get_template_defaults);
@@ -1091,11 +1188,14 @@ void HTMLTemplate::_bind_methods() {
 	// Use
 
 	ClassDB::bind_method(D_METHOD("get_template_text", "name"), &HTMLTemplate::get_template_text);
+	ClassDB::bind_method(D_METHOD("get_template_renderer", "name"), &HTMLTemplate::get_template_renderer);
 
 	ClassDB::bind_method(D_METHOD("call_template_method", "method", "data", "first_var_decides_print"), &HTMLTemplate::call_template_method);
 	ClassDB::bind_method(D_METHOD("process_template_expression_variable", "variable", "data", "allow_missing"), &HTMLTemplate::process_template_expression_variable, false);
 	ClassDB::bind_method(D_METHOD("process_template_expression", "expression", "data"), &HTMLTemplate::process_template_expression);
+
 	ClassDB::bind_method(D_METHOD("render_template", "text", "data"), &HTMLTemplate::render_template);
+	ClassDB::bind_method(D_METHOD("renderer_render_template", "renderer", "data"), &HTMLTemplate::renderer_render_template);
 
 	ClassDB::bind_method(D_METHOD("get_and_render_template", "name", "data"), &HTMLTemplate::get_and_render_template);
 
