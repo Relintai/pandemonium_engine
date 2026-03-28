@@ -209,11 +209,13 @@ const char *HTMLTemplateRenderer::func_name[HTMLTemplateRenderer::FUNC_MAX] = {
 	"pb",
 	"prb",
 	"vf",
+	"vfr",
 	"qp",
 	"qpr",
 	"qpb",
 	"qprb",
 	"qvf",
+	"qvfr",
 	"exists",
 	"approx_equals",
 	"setvar",
@@ -242,11 +244,13 @@ bool HTMLTemplateRenderer::validate_func_argument_count(BuiltinFunc p_func, cons
 		case FUNC_PRINT_BR:
 		case FUNC_PRINT_RAW_BR:
 		case FUNC_VFORMAT:
+		case FUNC_VFORMAT_RAW:
 		case FUNC_QPRINT:
 		case FUNC_QPRINT_RAW:
 		case FUNC_QPRINT_BR:
 		case FUNC_QPRINT_RAW_BR:
 		case FUNC_QVFORMAT:
+		case FUNC_QVFORMAT_RAW:
 			return true;
 		case FUNC_EXISTS:
 		case FUNC_TR:
@@ -344,7 +348,8 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 			*r_return = b.as_string().newline_to_br();
 			return;
 		} break;
-		case FUNC_VFORMAT: {
+		case FUNC_VFORMAT:
+		case FUNC_VFORMAT_RAW: {
 			if (p_input_count == 0) {
 				*r_return = String();
 				return;
@@ -432,7 +437,8 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 
 			*r_return = b.as_string().newline_to_br();
 		} break;
-		case FUNC_QVFORMAT: {
+		case FUNC_QVFORMAT:
+		case FUNC_QVFORMAT_RAW: {
 			if (p_input_count < 2) {
 				*r_return = String();
 				return;
@@ -2441,8 +2447,8 @@ void HTMLTemplateRenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 							case FUNC_QPRINT_BR:
 							case FUNC_QPRINT_RAW:
 							case FUNC_QPRINT_RAW_BR:
-							case FUNC_VFORMAT:
-							case FUNC_QVFORMAT: {
+							case FUNC_VFORMAT_RAW:
+							case FUNC_QVFORMAT_RAW: {
 								n->raw = true;
 							} break;
 							default: {
