@@ -7,7 +7,7 @@
 		A class that can parse and render HTML using a simple templating language.
 		This class uses a templating syntax like: [code]{{ EXPRESSION }}[/code]. Everything inbetween [code]{{ }}[/code] is an expression that the system will replace during rendering with actual values from a passed in Dictionary.
 		Available expressions:
-		{{ &lt;expr&gt; }}: Print escaped. Whatever is returned by expr gets printed and html excaped (except if the outer expression is pr, pbr, qpr, qprb, vf, qvf.). Null turns into an empty string.
+		{{ &lt;expr&gt; }}: Print escaped. Whatever is returned by expr gets printed and html excaped (except if the outer expression is pr, pbr, qpr, qprb, vfr, qvfr.). Null turns into an empty string.
 		{{; <expr> }}: Supress. Runs expression, no output.
 		{{% <expr> }} Print raw. Prints the result of the expression as raw unescaped html. Null turns into an empty string.
 		{{if <bool expr> }} ... html ... {{elif <bool expr> }} ... html ... {{else}} ... html ... {{endif}}: if / else / elif / endif.
@@ -31,41 +31,44 @@
 		4. [code]pr(var)[/code] - print_raw, not escaped, also includes a cast to string.
 		5. [code]pb(var)[/code] - print_newline_to_br, escaped, turns newlines into br tags, also includes a to string cast.
 		6. [code]prb(var)[/code] - print_raw_newline_to_br, not escaped, turns newlines into br tags, also includes a to string cast.
-		7. [code]vf("%d %d", var1, var2)[/code] - vformat or snprintf or String fromatting using % in gdscript.
-		8. [code]qp(var1, var2)[/code] -  Same as p, but only prints when it's first argument evaluates to true. (First arg is not printed!)
-		9. [code]qpr(var1, var2)[/code] - Same as pr, but only prints when it's first argument evaluates to true. (First arg is not printed!)
-		10. [code]qpb(var1, var2)[/code] - Same as pb, but only prints when it's first argument evaluates to true. (First arg is not printed!)
-		11. [code]qprb(var1, var2)[/code] - Same as prb, but only prints when it's first argument evaluates to true. (First arg is not printed!)
-		12. [code]qvf(var1, "%d %d", var1, var2)[/code] - Same as vf, but only prints when it's first argument evaluates to true. (First arg is not printed!)
-		13. [code]p(var_arr[0])[/code] - Array indexing.
-		14. [code]p(var_dict["x"]), p(var_dict[x]), p(var_dict['x'])[/code] - Dictionary indexing.
-		15. [code]p(var1, var2)[/code] - All methods supports multiple arguments.
-		16. Let's say [code]var1[/code] is a [Vector3], [code]var["x"][/code] and [code]var[0][/code] work.
-		17. Indexing will also call [code]get()[/code] on [Object]s.
-		18. [code]p(var[var[var[2]]])[/code] Recursive indexing.
-		19. Method calls on object that are passed in.
-		20. Array creation: [ 1, 2, 3, 4 ]
-		21. Dictionary creation: { "key1": "val1", "key2": "val2" }
-		22. exists("varname"): Returns whether the given variable is set.
-		23. approx_equals(var1, var2): Returns whether the 2 variables are approximately equal.
-		24. setvar("varname", value): Sets variable's value in the input dictionary.
-		25. setvar_if(expr, "varname", value): Sets variable's value in the input dictionary, if expr evaluates to true.
-		26. getvar("varname"): Returns varname's value or null.
-		27. getvar("varname", default_value): Returns varname's value, or the default given.
-		28. range(to): Creates an iterator that goes from 0 to to.
-		29. range(from, to): Creates an iterator that goes from from to to.
-		30. range(from, to, step): Creates an iterator that goes from from to to by step.
-		31. keys(some_dict): Returns the keys from the given dictionary as an array.
-		32. values(some_dict): Returns the values from the given dictionary as an array.
-		33. tr("key"): Retrieves a translation from the TranslationServer.
-		34. trt("key", "locale"): Retrieves a translation from the TranslationServer.
-		35. select(expr, val1, val2): If expr evaluates to true, then it returns val1, else it returns val2.
-		36. int(), float(), str(): Conversion methods.
-		37. Any variant can also be constructed: Vector2, Vector3, Transform ...
-		38. Methods on variants can also be called: "str".strip_edges() ...
+		7. [code]vf("%d %d", var1, var2)[/code] - vformat or snprintf or String fromatting using % in gdscript. Escaped.
+		8. [code]vfr("%d %d", var1, var2)[/code] - vformat or snprintf or String fromatting using % in gdscript. Not Escaped.
+		9. [code]qp(var1, var2)[/code] -  Same as p, but only prints when it's first argument evaluates to true. (First arg is not printed!)
+		10. [code]qpr(var1, var2)[/code] - Same as pr, but only prints when it's first argument evaluates to true. (First arg is not printed!)
+		11. [code]qpb(var1, var2)[/code] - Same as pb, but only prints when it's first argument evaluates to true. (First arg is not printed!)
+		12. [code]qprb(var1, var2)[/code] - Same as prb, but only prints when it's first argument evaluates to true. (First arg is not printed!)
+		13. [code]qvf(var1, "%d %d", var1, var2)[/code] - Same as vf, but only prints when it's first argument evaluates to true. Escaped. (First arg is not printed!)
+		14. [code]qvfr(var1, "%d %d", var1, var2)[/code] - Same as vf, but only prints when it's first argument evaluates to true. Not escaped. (First arg is not printed!)
+		15. [code]p(var_arr[0])[/code] - Array indexing.
+		16. [code]p(var_dict["x"]), p(var_dict[x]), p(var_dict['x'])[/code] - Dictionary indexing.
+		17. [code]p(var1, var2)[/code] - All methods supports multiple arguments.
+		18. Let's say [code]var1[/code] is a [Vector3], [code]var["x"][/code] and [code]var[0][/code] work.
+		19. Indexing will also call [code]get()[/code] on [Object]s.
+		20. [code]p(var[var[var[2]]])[/code] Recursive indexing.
+		21. Method calls on object that are passed in.
+		22. Array creation: [ 1, 2, 3, 4 ]
+		23. Dictionary creation: { "key1": "val1", "key2": "val2" }
+		24. exists("varname"): Returns whether the given variable is set.
+		25. approx_equals(var1, var2): Returns whether the 2 variables are approximately equal.
+		26. setvar("varname", value): Sets variable's value in the input dictionary.
+		27. setvar_if(expr, "varname", value): Sets variable's value in the input dictionary, if expr evaluates to true.
+		28. getvar("varname"): Returns varname's value or null.
+		29. getvar("varname", default_value): Returns varname's value, or the default given.
+		30. range(to): Creates an iterator that goes from 0 to to.
+		31. range(from, to): Creates an iterator that goes from from to to.
+		32. range(from, to, step): Creates an iterator that goes from from to to by step.
+		33. keys(some_dict): Returns the keys from the given dictionary as an array.
+		34. values(some_dict): Returns the values from the given dictionary as an array.
+		35. tr("key"): Retrieves a translation from the TranslationServer.
+		36. trt("key", "locale"): Retrieves a translation from the TranslationServer.
+		37. select(expr, val1, val2): If expr evaluates to true, then it returns val1, else it returns val2.
+		38. int(), float(), str(): Conversion methods.
+		39. Any variant can also be constructed: Vector2, Vector3, Transform ...
+		40. Methods on variants can also be called: "str".strip_edges() ...
 		So this is how your HTML will look like: [code]... HTML markup ... {{ p(var) }} ... {{ pr(var) }} ... {{ pb(var) }} ... {{ prb(var, var2) }} ... {{ vf("%d %d", var1, var2) }} ... etc.[/code]
 		Note: For a different approach to generating HTML, you can also take a look at [HTMLBuilder].
 		Note: In the old language this also worked: [code]var[x][/code], where x is supposed to be a string. This doesn't work anymore, as with the current feature set this would be very error prone, and confusing.
+		Note: In the old language vf and qvf were always in raw print mode. This was likely not a good idea, so a raw version now also exists from them. Either search and replate to those, or use raw print mode with {{% }}.
 	</description>
 	<tutorials>
 	</tutorials>
