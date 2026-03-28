@@ -71,6 +71,8 @@
 // {{ /* }}
 // commented out
 // {{ */ }}
+// Tokenizer could just start ignoring everything after /* in non text mode up to */, so technically it doesn't even need }}{{
+// {{ stuff <next token>/* <tokenizer just ignores it>  ....}} {{ .........  */ }} Netx token would be }}
 
 // No assignment operator, set should be good enough
 
