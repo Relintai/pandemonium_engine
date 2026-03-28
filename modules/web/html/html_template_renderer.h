@@ -69,7 +69,7 @@ public:
 
 	bool compile(const String &p_text, const int p_start_line = 1);
 
-	String get_error_str();
+	String get_compile_error_str();
 
 	HTMLTemplaterenderer();
 	~HTMLTemplaterenderer();

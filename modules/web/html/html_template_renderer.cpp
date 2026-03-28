@@ -214,7 +214,7 @@ bool HTMLTemplaterenderer::compile(const String &p_text, const int p_start_line)
 	return false;
 }
 
-String HTMLTemplaterenderer::get_error_str() {
+String HTMLTemplaterenderer::get_compile_error_str() {
 	return _compile_error_str;
 }
 
@@ -239,7 +239,7 @@ void HTMLTemplaterenderer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("render", "data", "p_show_error"), &HTMLTemplaterenderer::render_result, DEFVAL(false));
 	ClassDB::bind_method(D_METHOD("compile", "text", "start_line"), &HTMLTemplaterenderer::compile, DEFVAL(1));
 
-	ClassDB::bind_method(D_METHOD("get_error_str"), &HTMLTemplaterenderer::get_error_str);
+	ClassDB::bind_method(D_METHOD("get_compile_error_str"), &HTMLTemplaterenderer::get_compile_error_str);
 }
 
 const char *HTMLTemplaterenderer::func_name[HTMLTemplaterenderer::FUNC_MAX] = {
