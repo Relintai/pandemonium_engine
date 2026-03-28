@@ -129,7 +129,7 @@ void HTMLTemplateRenderResult::_bind_methods() {
 }
 
 String HTMLTemplaterenderer::render(const Dictionary &p_data, bool &r_execution_error, String &r_error_txt, const bool p_show_error) {
-	ERR_FAIL_COND_V_MSG(_compile_error_set, String(), "There was previously a parse error: " + _error_str + ".");
+	ERR_FAIL_COND_V_MSG(_compile_error_set, String(), "There was previously a parse error: " + _compile_error_str + ".");
 
 	Dictionary data = p_data;
 	StringBuilder html;
@@ -153,7 +153,7 @@ Ref<HTMLTemplateRenderResult> HTMLTemplaterenderer::render_result(const Dictiona
 
 	if (_compile_error_set) {
 		ret->set_had_error(true);
-		ret->set_error_text(_error_str);
+		ret->set_error_text(_compile_error_str);
 
 		if (p_show_error) {
 			ERR_FAIL_COND_V_MSG(_compile_error_set, ret, ret->get_error_text());
@@ -192,7 +192,7 @@ bool HTMLTemplaterenderer::compile(const String &p_text, const int p_start_line)
 
 	_template_text = p_text;
 	_tokenizer_in_text_mode = true;
-	_error_str = String();
+	_compile_error_str = String();
 	_compile_error_set = false;
 	str_ofs = 0;
 	_current_line = p_start_line;
@@ -215,7 +215,7 @@ bool HTMLTemplaterenderer::compile(const String &p_text, const int p_start_line)
 }
 
 String HTMLTemplaterenderer::get_error_str() {
-	return _error_str;
+	return _compile_error_str;
 }
 
 HTMLTemplaterenderer::HTMLTemplaterenderer() {

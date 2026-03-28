@@ -170,14 +170,14 @@ protected:
 
 	static String stringify_token(const Token &tk);
 
-	String _error_str;
+	String _compile_error_str;
 	bool _compile_error_set;
 
 	void _compile_set_error(const String &p_err) {
 		if (_compile_error_set) {
 			return;
 		}
-		_error_str = p_err + vformat(" near line %d.", _current_line);
+		_compile_error_str = p_err + vformat(" near line %d.", _current_line);
 		_compile_error_set = true;
 	}
 
