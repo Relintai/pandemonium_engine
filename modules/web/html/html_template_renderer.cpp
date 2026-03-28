@@ -115,6 +115,7 @@
 
 #include "core/string/string_buffer.h"
 #include "core/string/string_builder.h"
+#include "core/variant/variant.h"
 
 String HTMLTemplaterenderer::render(const Dictionary &p_data, const bool p_show_error) {
 	ERR_FAIL_COND_V_MSG(_error_set, String(), "There was previously a parse error: " + _error_str + ".");
@@ -193,12 +194,26 @@ String HTMLTemplaterenderer::get_func_name(BuiltinFunc p_func) {
 }
 
 int HTMLTemplaterenderer::get_func_argument_count(BuiltinFunc p_func) {
-#if 0
 	switch (p_func) {
+		case FUNC_PRINT:
+		case FUNC_PRINT_RAW:
+		case FUNC_PRINT_BR:
+		case FUNC_PRINT_RAW_BR:
+		case FUNC_VFORMAT:
+		case FUNC_QPRINT:
+		case FUNC_QPRINT_RAW:
+		case FUNC_QPRINT_BR:
+		case FUNC_QPRINT_RAW_BR:
+		case FUNC_QVFORMAT:
+			return -1;
+		case FUNC_EXISTS:
+			return 1;
+		case FUNC_EQUALS:
+		case FUNC_APPROX_EQUALS:
+			return 2;
 		case FUNC_MAX: {
-		}
+		} break;
 	}
-#endif
 	return 0;
 }
 
@@ -210,14 +225,205 @@ int HTMLTemplaterenderer::get_func_argument_count(BuiltinFunc p_func) {
 		return;                                                          \
 	}
 
-void HTMLTemplaterenderer::exec_func(BuiltinFunc p_func, const Variant **p_inputs, Variant *r_return, Variant::CallError &r_error, String &r_error_str) {
+void HTMLTemplaterenderer::exec_func(BuiltinFunc p_func, const Variant **p_inputs, const int p_input_count, Variant *r_return, Variant::CallError &r_error, String &r_error_str) {
 	r_error.error = Variant::CallError::CALL_OK;
-#if 0
 	switch (p_func) {
+		case FUNC_PRINT:
+		case FUNC_PRINT_RAW: {
+			if (p_input_count == 0) {
+				*r_return = String();
+				return;
+			}
+
+			StringBuilder b;
+
+			for (int i = 0; i < p_input_count; ++i) {
+				Variant v = *p_inputs[i];
+
+				if (v.get_type() != Variant::NIL) {
+					b.append(String(v));
+				}
+			}
+
+			*r_return = b.as_string();
+			return;
+		} break;
+		case FUNC_PRINT_BR:
+		case FUNC_PRINT_RAW_BR: {
+			if (p_input_count == 0) {
+				*r_return = String();
+				return;
+			}
+
+			StringBuilder b;
+
+			for (int i = 0; i < p_input_count; ++i) {
+				Variant v = *p_inputs[i];
+
+				if (v.get_type() != Variant::NIL) {
+					b.append(String(v));
+				}
+			}
+
+			*r_return = b.as_string().newline_to_br();
+			return;
+		} break;
+		case FUNC_VFORMAT: {
+			if (p_input_count == 0) {
+				*r_return = String();
+				return;
+			}
+
+			Variant vfstr = *p_inputs[0];
+			String fstr;
+
+			if (vfstr.get_type() == Variant::NIL) {
+				*r_return = String();
+				return;
+			}
+
+			fstr = String(vfstr);
+
+			Array args;
+
+			for (int i = 1; i < p_input_count; ++i) {
+				Variant v = *p_inputs[i];
+
+				args.append(String(v));
+			}
+
+			bool error = false;
+			String fmt = fstr.sprintf(args, &error);
+
+			if (error) {
+				r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
+				r_error.argument = 0;
+				r_error.expected = Variant::STRING;
+			}
+
+			*r_return = fmt;
+
+		} break;
+		case FUNC_QPRINT:
+		case FUNC_QPRINT_RAW: {
+			if (p_input_count < 2) {
+				*r_return = String();
+				return;
+			}
+
+			Variant qv = *p_inputs[0];
+
+			if (!qv.booleanize()) {
+				*r_return = String();
+				return;
+			}
+
+			StringBuilder b;
+
+			for (int i = 1; i < p_input_count; ++i) {
+				Variant v = *p_inputs[i];
+
+				if (v.get_type() != Variant::NIL) {
+					b.append(String(v));
+				}
+			}
+
+			*r_return = b.as_string();
+		} break;
+		case FUNC_QPRINT_BR:
+		case FUNC_QPRINT_RAW_BR: {
+			if (p_input_count < 2) {
+				*r_return = String();
+				return;
+			}
+
+			Variant qv = *p_inputs[0];
+
+			if (!qv.booleanize()) {
+				*r_return = String();
+				return;
+			}
+
+			StringBuilder b;
+
+			for (int i = 1; i < p_input_count; ++i) {
+				Variant v = *p_inputs[i];
+
+				if (v.get_type() != Variant::NIL) {
+					b.append(String(v));
+				}
+			}
+
+			*r_return = b.as_string().newline_to_br();
+		} break;
+		case FUNC_QVFORMAT: {
+			if (p_input_count < 2) {
+				*r_return = String();
+				return;
+			}
+
+			Variant qv = *p_inputs[0];
+
+			if (!qv.booleanize()) {
+				*r_return = String();
+				return;
+			}
+
+			Variant vfstr = *p_inputs[1];
+			String fstr;
+
+			if (vfstr.get_type() == Variant::NIL) {
+				*r_return = String();
+				return;
+			}
+
+			fstr = String(vfstr);
+
+			Array args;
+
+			for (int i = 2; i < p_input_count; ++i) {
+				Variant v = *p_inputs[i];
+
+				args.append(String(v));
+			}
+
+			bool error = false;
+			String fmt = fstr.sprintf(args, &error);
+
+			if (error) {
+				r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
+				r_error.argument = 0;
+				r_error.expected = Variant::STRING;
+			}
+
+			*r_return = fmt;
+		} break;
+		case FUNC_EXISTS: {
+			// TODO
+		} break;
+		case FUNC_EQUALS: {
+			VALIDATE_ARG_NUM(0);
+			*r_return = Math::tan((double)*p_inputs[0]);
+		} break;
+		case FUNC_APPROX_EQUALS: {
+			if (p_inputs[0]->get_type() == Variant::INT && p_inputs[1]->get_type() == Variant::INT) {
+				int64_t a = *p_inputs[0];
+				int64_t b = *p_inputs[1];
+				*r_return = a == b;
+			} else {
+				VALIDATE_ARG_NUM(0);
+				VALIDATE_ARG_NUM(1);
+
+				real_t a = *p_inputs[0];
+				real_t b = *p_inputs[1];
+
+				*r_return = Math::is_equal_approx(a, b);
+			}
+
+		} break;
 		default: {
-		}
+		} break;
 	}
-#endif
 }
 
 HTMLTemplaterenderer::BuiltinFunc HTMLTemplaterenderer::find_function(const String &p_string) {
@@ -1044,7 +1250,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, 
 				}
 
 				int expected_args = get_func_argument_count(bifunc->func);
-				if (bifunc->arguments.size() != expected_args) {
+				if (expected_args != -1 && bifunc->arguments.size() != expected_args) {
 					_set_error("Builtin func '" + get_func_name(bifunc->func) + "' expects " + itos(expected_args) + " arguments.");
 				}
 
