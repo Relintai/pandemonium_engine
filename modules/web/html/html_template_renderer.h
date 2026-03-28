@@ -64,8 +64,17 @@ protected:
 		FUNC_QPRINT_RAW_BR,
 		FUNC_QVFORMAT,
 		FUNC_EXISTS,
-		FUNC_EQUALS,
 		FUNC_APPROX_EQUALS,
+		FUNC_SETVAR,
+		FUNC_SETVAR_IF,
+		FUNC_GETVAR,
+		FUNC_RANGE,
+		FUNC_KEYS,
+		FUNC_VALUES,
+		FUNC_TR,
+		FUNC_TRT,
+		FUNC_SELECT,
+		FUNC_STR,
 		FUNC_MAX
 	};
 
@@ -73,7 +82,7 @@ protected:
 
 	bool validate_func_argument_count(BuiltinFunc p_func, const int p_arg_count, bool p_set_error = true);
 	static String get_func_name(BuiltinFunc p_func);
-	static void exec_func(BuiltinFunc p_func, const Variant **p_inputs, const int p_input_count, Variant *r_return, Variant::CallError &r_error, String &r_error_str);
+	static void exec_func(BuiltinFunc p_func, const Variant **p_inputs, const int p_input_count, Dictionary &p_data, Variant *r_return, Variant::CallError &r_error, String &r_error_str);
 	static BuiltinFunc find_function(const String &p_string);
 
 	enum TokenType {

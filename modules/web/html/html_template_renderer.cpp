@@ -113,6 +113,8 @@
 
 #include "html_template_renderer.h"
 
+#include "core/string/translation.h"
+
 #include "core/string/string_buffer.h"
 #include "core/string/string_builder.h"
 #include "core/variant/variant.h"
@@ -219,8 +221,17 @@ const char *HTMLTemplaterenderer::func_name[HTMLTemplaterenderer::FUNC_MAX] = {
 	"qprb",
 	"qvf",
 	"exists",
-	"equals",
 	"approx_equals",
+	"setvar",
+	"setvar_if",
+	"getvar",
+	"range",
+	"keys",
+	"values",
+	"tr",
+	"trt",
+	"select",
+	"str",
 };
 
 String HTMLTemplaterenderer::get_func_name(BuiltinFunc p_func) {
@@ -244,10 +255,36 @@ bool HTMLTemplaterenderer::validate_func_argument_count(BuiltinFunc p_func, cons
 		case FUNC_QVFORMAT:
 			return true;
 		case FUNC_EXISTS:
+		case FUNC_TR:
+		case FUNC_KEYS:
+		case FUNC_VALUES:
+		case FUNC_STR:
 			expected_args = 1;
-		case FUNC_EQUALS:
 		case FUNC_APPROX_EQUALS:
+		case FUNC_TRT:
+		case FUNC_SETVAR:
 			expected_args = 2;
+		case FUNC_SETVAR_IF:
+		case FUNC_SELECT:
+			expected_args = 3;
+		case FUNC_RANGE:
+			if (p_arg_count < 1 || p_arg_count > 3) {
+				if (p_set_error) {
+					_set_error("Builtin func '" + get_func_name(p_func) + "' expects 1-3 arguments.");
+				}
+				return false;
+			} else {
+				return true;
+			}
+		case FUNC_GETVAR:
+			if (p_arg_count < 1 || p_arg_count > 2) {
+				if (p_set_error) {
+					_set_error("Builtin func '" + get_func_name(p_func) + "' expects 1-2 arguments.");
+				}
+				return false;
+			} else {
+				return true;
+			}
 		case FUNC_MAX: {
 		} break;
 	}
@@ -270,7 +307,7 @@ bool HTMLTemplaterenderer::validate_func_argument_count(BuiltinFunc p_func, cons
 		return;                                                          \
 	}
 
-void HTMLTemplaterenderer::exec_func(BuiltinFunc p_func, const Variant **p_inputs, const int p_input_count, Variant *r_return, Variant::CallError &r_error, String &r_error_str) {
+void HTMLTemplaterenderer::exec_func(BuiltinFunc p_func, const Variant **p_inputs, const int p_input_count, Dictionary &p_data, Variant *r_return, Variant::CallError &r_error, String &r_error_str) {
 	r_error.error = Variant::CallError::CALL_OK;
 	switch (p_func) {
 		case FUNC_PRINT:
@@ -444,11 +481,22 @@ void HTMLTemplaterenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 			*r_return = fmt;
 		} break;
 		case FUNC_EXISTS: {
-			// TODO
-		} break;
-		case FUNC_EQUALS: {
-			VALIDATE_ARG_NUM(0);
-			*r_return = Math::tan((double)*p_inputs[0]);
+			StringName key = *p_inputs[0];
+
+			if (p_data.has(key)) {
+				*r_return = true;
+				return;
+			}
+
+			String ks = key;
+
+			if (p_data.has(ks)) {
+				*r_return = true;
+				return;
+			}
+
+			*r_return = false;
+			return;
 		} break;
 		case FUNC_APPROX_EQUALS: {
 			if (p_inputs[0]->get_type() == Variant::INT && p_inputs[1]->get_type() == Variant::INT) {
@@ -466,6 +514,212 @@ void HTMLTemplaterenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 			}
 
 		} break;
+		case FUNC_SETVAR: {
+			String k = *p_inputs[0];
+			k = k.strip_edges();
+
+			if (k.empty()) {
+				r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
+				r_error.argument = 0;
+				r_error.expected = Variant::STRING;
+				r_error_str = "Builtin func set(): Empty key given.";
+				return;
+			}
+
+			Variant b = *p_inputs[1];
+
+			// ALready has String key, reuse it
+			if (p_data.has(k)) {
+				if (b.get_type() == Variant::NIL) {
+					p_data.erase(k);
+				} else {
+					p_data[k] = b;
+				}
+
+				return;
+			}
+
+			StringName key = k;
+
+			if (b.get_type() == Variant::NIL) {
+				if (p_data.has(key)) {
+					p_data.erase(key);
+				}
+			} else {
+				p_data[key] = b;
+			}
+			return;
+		} break;
+		case FUNC_SETVAR_IF: {
+			Variant test = *p_inputs[0];
+
+			if (!test.booleanize()) {
+				return;
+			}
+
+			String k = *p_inputs[1];
+			k = k.strip_edges();
+
+			if (k.empty()) {
+				r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
+				r_error.argument = 1;
+				r_error.expected = Variant::STRING;
+				r_error_str = "Builtin func set(): Empty key given.";
+				return;
+			}
+
+			Variant b = *p_inputs[2];
+
+			// ALready has String key, reuse it
+			if (p_data.has(k)) {
+				if (b.get_type() == Variant::NIL) {
+					p_data.erase(k);
+				} else {
+					p_data[k] = b;
+				}
+
+				return;
+			}
+
+			StringName key = k;
+
+			if (b.get_type() == Variant::NIL) {
+				if (p_data.has(key)) {
+					p_data.erase(key);
+				}
+			} else {
+				p_data[key] = b;
+			}
+			return;
+		} break;
+		case FUNC_GETVAR: {
+			Variant default_val = *p_inputs[1];
+
+			String k = *p_inputs[0];
+			k = k.strip_edges();
+
+			if (k.empty()) {
+				*r_return = default_val;
+				return;
+			}
+
+			StringName key = k;
+
+			if (p_data.has(key)) {
+				*r_return = p_data[key];
+
+				return;
+			}
+
+			if (p_data.has(k)) {
+				*r_return = p_data[k];
+
+				return;
+			}
+
+			*r_return = default_val;
+			return;
+
+		} break;
+		case FUNC_RANGE: {
+			if (p_input_count == 1) {
+				if (p_inputs[0]->get_type() == Variant::INT) {
+					int64_t a = *p_inputs[0];
+					*r_return = a;
+				} else {
+					VALIDATE_ARG_NUM(0);
+					real_t a = *p_inputs[0];
+					*r_return = a;
+				}
+			} else if (p_input_count == 2) {
+				if (p_inputs[0]->get_type() == Variant::INT && p_inputs[1]->get_type() == Variant::INT) {
+					int64_t a = *p_inputs[0];
+					int64_t b = *p_inputs[1];
+					*r_return = Vector2i(a, b);
+				} else {
+					VALIDATE_ARG_NUM(0);
+					VALIDATE_ARG_NUM(1);
+					real_t a = *p_inputs[0];
+					real_t b = *p_inputs[1];
+					*r_return = Vector2(a, b);
+				}
+			} else if (p_input_count == 3) {
+				if (p_inputs[0]->get_type() == Variant::INT && p_inputs[1]->get_type() == Variant::INT && p_inputs[2]->get_type() == Variant::INT) {
+					int64_t a = *p_inputs[0];
+					int64_t b = *p_inputs[1];
+					int64_t c = *p_inputs[2];
+					*r_return = Vector3i(a, b, c);
+				} else {
+					VALIDATE_ARG_NUM(0);
+					VALIDATE_ARG_NUM(1);
+					VALIDATE_ARG_NUM(2);
+					real_t a = *p_inputs[0];
+					real_t b = *p_inputs[1];
+					real_t c = *p_inputs[2];
+					*r_return = Vector3(a, b, c);
+				}
+			}
+		} break;
+		case FUNC_KEYS: {
+			Variant v = *p_inputs[0];
+
+			if (v.get_type() != Variant::DICTIONARY) {
+				r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
+				r_error.argument = 0;
+				r_error.expected = Variant::DICTIONARY;
+				return;
+			}
+
+			Dictionary d = v;
+
+			*r_return = d.keys();
+			return;
+
+		} break;
+		case FUNC_VALUES: {
+			Variant v = *p_inputs[0];
+
+			if (v.get_type() != Variant::DICTIONARY) {
+				r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
+				r_error.argument = 0;
+				r_error.expected = Variant::DICTIONARY;
+				return;
+			}
+
+			Dictionary d = v;
+
+			*r_return = d.values();
+			return;
+		} break;
+		case FUNC_TR: {
+			StringName message = *p_inputs[0];
+
+			*r_return = TranslationServer::get_singleton()->tr(message);
+			return;
+		} break;
+		case FUNC_TRT: {
+			StringName message = *p_inputs[0];
+			String locale = *p_inputs[1];
+
+			*r_return = TranslationServer::get_singleton()->trt(message, locale);
+			return;
+		} break;
+		case FUNC_SELECT: {
+			Variant test = *p_inputs[0];
+
+			if (test.booleanize()) {
+				*r_return = *p_inputs[1];
+			} else {
+				*r_return = *p_inputs[2];
+			}
+
+			return;
+		} break;
+		case FUNC_STR: {
+			*r_return = String(*p_inputs[0]);
+			return;
+		} break;
+
 		default: {
 		} break;
 	}
@@ -2570,7 +2824,7 @@ bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 			}
 
 			Variant::CallError ce;
-			exec_func(bifunc->func, (const Variant **)argp.ptr(), argp.size(), &r_ret, ce, r_error_str);
+			exec_func(bifunc->func, (const Variant **)argp.ptr(), argp.size(), p_data, &r_ret, ce, r_error_str);
 
 			if (ce.error != Variant::CallError::CALL_OK) {
 				r_error_str = "Builtin Call Failed. " + r_error_str;
