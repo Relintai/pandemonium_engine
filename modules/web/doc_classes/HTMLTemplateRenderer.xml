@@ -8,10 +8,10 @@
 		This class uses a templating syntax like: [code]{{ EXPRESSION }}[/code]. Everything inbetween [code]{{ }}[/code] is an expression that the system will replace during rendering with actual values from a passed in Dictionary.
 		Available expressions:
 		{{ &lt;expr&gt; }}: Print escaped. Whatever is returned by expr gets printed and html excaped (except if the outer expression is pr, pbr, qpr, qprb, vfr, qvfr.). Null turns into an empty string.
-		{{; <expr> }}: Supress. Runs expression, no output.
-		{{% <expr> }} Print raw. Prints the result of the expression as raw unescaped html. Null turns into an empty string.
-		{{if <bool expr> }} ... html ... {{elif <bool expr> }} ... html ... {{else}} ... html ... {{endif}}: if / else / elif / endif.
-		{{for <variable declaration> in <collection> }} ... html ... {{endfor}}: Foreach.
+		{{; &lt;expr&gt; }}: Supress. Runs expression, no output.
+		{{% &lt;expr&gt; }} Print raw. Prints the result of the expression as raw unescaped html. Null turns into an empty string.
+		{{if &lt;bool expr&gt; }} ... html ... {{elif &lt;bool expr&gt; }} ... html ... {{else}} ... html ... {{endif}}: if / else / elif / endif.
+		{{for &lt;variable declaration&gt; in &lt;collection&gt; }} ... html ... {{endfor}}: Foreach.
 		{{ /* .... comment ... */ }} or {{ /* }} ... {{ */ }}: Comments. Cannot be nested.
 		Assuming you pass in the following Dictionary to [method render]:
 		[code]var d : Dictionary = {
