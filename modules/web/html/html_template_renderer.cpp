@@ -491,6 +491,10 @@ const char *HTMLTemplaterenderer::token_name[TK_MAX] = {
 	"PERIOD",
 	"FOR",
 	"ENDFOR",
+	"IF",
+	"ELIF",
+	"ELSE",
+	"ENDIF",
 	"OP IN",
 	"OP EQUAL",
 	"OP NOT EQUAL",
@@ -556,6 +560,14 @@ String HTMLTemplaterenderer::stringify_token(const Token &tk) {
 			return "'for'";
 		case TK_ENDFOR:
 			return "'endfor'";
+		case TK_IF:
+			return "'if'";
+		case TK_ELIF:
+			return "'elif'";
+		case TK_ELSE:
+			return "'else'";
+		case TK_ENDIF:
+			return "'endif'";
 		case TK_OP_IN:
 			return "'in'";
 		case TK_OP_EQUAL:
@@ -1101,6 +1113,14 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 						r_token.type = TK_FOR;
 					} else if (id == "endfor") {
 						r_token.type = TK_ENDFOR;
+					} else if (id == "if") {
+						r_token.type = TK_IF;
+					} else if (id == "elif") {
+						r_token.type = TK_ELIF;
+					} else if (id == "else") {
+						r_token.type = TK_ELSE;
+					} else if (id == "endif") {
+						r_token.type = TK_ENDIF;
 					} else {
 						for (int i = 0; i < Variant::VARIANT_MAX; i++) {
 							if (id == Variant::get_type_name(Variant::Type(i))) {
@@ -1902,12 +1922,161 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				expect_double_curly_close = true;
 				p_skip_next_token_get = true;
 			} break;
-
+			case TK_IF: {
 				// {{if <bool expr> }}
-				// {{else if <bool expr> }} or {{elif}}?
+
+				if (_tokenizer_in_text_mode) {
+					_set_error(vformat("Unexpected token '%' in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
+					return;
+				}
+
+				IfNode *n = alloc_node<IfNode>();
+
+				n->condition = _parse_expression(tk);
+
+				if (_error_set) {
+					return;
+				}
+
+				_get_token(tk);
+
+				if (tk.type != TK_DOUBLE_CURLY_BRACKET_CLOSE) {
+					_set_error(vformat("Expected '}}' after if. Syntax: {{if <expr>}}. Got: %s", stringify_token(tk)));
+					return;
+				}
+
+				_tokenizer_in_text_mode = true;
+
+				n->body = alloc_node<BlockNode>();
+				n->body->parent_node = n;
+
+				_parse_control_flow(n->body, tk);
+
+				if (_error_set) {
+					return;
+				}
+
+				p_parent_block->block.push_back(n);
+
+				expect_double_curly_close = false;
+				p_skip_next_token_get = false;
+			} break;
+			case TK_ELIF: {
+				// {{elif <bool expr> }}
+
+				if (_tokenizer_in_text_mode) {
+					_set_error(vformat("Unexpected token '%' in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
+					return;
+				}
+
+				if (p_parent_block->parent_node->type != ENode::TYPE_IF) {
+					_set_error(vformat("Unexpected '{{elif <expr>}}'"));
+					return;
+				}
+
+				IfNode *parent_if = static_cast<IfNode *>(p_parent_block->parent_node);
+
+				if (parent_if->next_if) {
+					_set_error(vformat("Unexpected '{{elif <expr>}}'"));
+					return;
+				}
+
+				IfNode *n = alloc_node<IfNode>();
+
+				n->condition = _parse_expression(tk);
+
+				if (_error_set) {
+					return;
+				}
+
+				_get_token(tk);
+
+				if (tk.type != TK_DOUBLE_CURLY_BRACKET_CLOSE) {
+					_set_error(vformat("Expected '}}' after if. Syntax: {{elif <expr>}}. Got: %s", stringify_token(tk)));
+					return;
+				}
+
+				_tokenizer_in_text_mode = true;
+
+				n->body = alloc_node<BlockNode>();
+				n->body->parent_node = n;
+
+				_parse_control_flow(n->body, tk);
+
+				if (_error_set) {
+					return;
+				}
+
+				parent_if->next_if = n;
+
+				expect_double_curly_close = false;
+				p_skip_next_token_get = false;
+			} break;
+			case TK_ELSE: {
 				// {{else}}
+
+				if (_tokenizer_in_text_mode) {
+					_set_error(vformat("Unexpected token '%' in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
+					return;
+				}
+
+				if (p_parent_block->parent_node->type != ENode::TYPE_IF) {
+					_set_error(vformat("Unexpected '{{else}}'"));
+					return;
+				}
+
+				IfNode *parent_if = static_cast<IfNode *>(p_parent_block->parent_node);
+
+				if (parent_if->next_if) {
+					_set_error(vformat("Unexpected '{{else}}'"));
+					return;
+				}
+
+				_get_token(tk);
+
+				if (tk.type != TK_DOUBLE_CURLY_BRACKET_CLOSE) {
+					_set_error(vformat("Expected '}}' after else. Syntax: {{else}}. Got: %s", stringify_token(tk)));
+					return;
+				}
+
+				_tokenizer_in_text_mode = true;
+
+				IfNode *n = alloc_node<IfNode>();
+				n->else_branch = true;
+				n->body = alloc_node<BlockNode>();
+				n->body->parent_node = n;
+
+				_parse_control_flow(n->body, tk);
+
+				if (_error_set) {
+					return;
+				}
+
+				parent_if->next_if = n;
+
+				expect_double_curly_close = false;
+				p_skip_next_token_get = false;
+			} break;
+			case TK_ENDIF: {
 				// {{endif}}
 
+				_get_token(tk);
+
+				if (tk.type != TK_DOUBLE_CURLY_BRACKET_CLOSE) {
+					_set_error(vformat("Expected '}}' after endif. Syntax: {{endif}}. Got: %s", stringify_token(tk)));
+					return;
+				}
+
+				if (p_parent_block->parent_node->type != ENode::TYPE_IF) {
+					_set_error(vformat("Unexpected '{{endif}}'"));
+					return;
+				}
+
+				return;
+
+				//expect_double_curly_close = false;
+				//p_skip_next_token_get = false;
+			} break;
 			case TK_FOR: {
 				// {{for <variable declaration> in <collection> }}
 
@@ -1950,7 +2119,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				_tokenizer_in_text_mode = true;
 
 				n->body = alloc_node<BlockNode>();
-				n->body->parent_block = n;
+				n->body->parent_node = n;
 
 				_parse_control_flow(n->body, tk);
 
@@ -1973,7 +2142,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 					return;
 				}
 
-				if (p_parent_block->parent_block->type != ENode::TYPE_FOREACH) {
+				if (p_parent_block->parent_node->type != ENode::TYPE_FOREACH) {
 					_set_error(vformat("Unexpected '{{endfor}}'"));
 					return;
 				}
@@ -1982,7 +2151,7 @@ void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 
 				//expect_double_curly_close = false;
 				//p_skip_next_token_get = false;
-			}
+			} break;
 			default: {
 				// Either
 				// {{ <expr> }} : whatever is returned gets printed as-is, maybe except for nulls, escaped (except it the outer ENode is pr, pbr, etc)
@@ -2116,7 +2285,43 @@ bool HTMLTemplaterenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 #ifdef EXECUTE_DEBUG
 			ERR_PRINT("============  TYPE_IF");
 #endif
-			//const HTMLTemplaterenderer:: *in = static_cast<const HTMLTemplaterenderer::*>(p_node);
+			const HTMLTemplaterenderer::IfNode *in = static_cast<const HTMLTemplaterenderer::IfNode *>(p_node);
+
+			if (in->else_branch) {
+				if (in->body) {
+					if (_execute(p_data, p_html, in->body, r_ret, r_error_str)) {
+						return true;
+					}
+				}
+
+				return false;
+			}
+
+			bool bresult = false;
+			Variant vresult;
+
+			if (in->condition) {
+				if (_execute(p_data, p_html, in->condition, vresult, r_error_str)) {
+					return true;
+				}
+			}
+
+			bresult = vresult.booleanize();
+
+			if (bresult) {
+				if (in->body) {
+					if (_execute(p_data, p_html, in->body, r_ret, r_error_str)) {
+						return true;
+					}
+				}
+			} else {
+				if (in->next_if) {
+					if (_execute(p_data, p_html, in->next_if, r_ret, r_error_str)) {
+						return true;
+					}
+				}
+			}
+
 			return false;
 		} break;
 		case HTMLTemplaterenderer::ENode::TYPE_FOREACH: {

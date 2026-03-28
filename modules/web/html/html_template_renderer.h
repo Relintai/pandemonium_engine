@@ -96,6 +96,10 @@ protected:
 		TK_PERIOD,
 		TK_FOR,
 		TK_ENDFOR,
+		TK_IF,
+		TK_ELIF,
+		TK_ELSE,
+		TK_ENDIF,
 		TK_OP_IN,
 		TK_OP_EQUAL,
 		TK_OP_NOT_EQUAL,
@@ -298,12 +302,12 @@ protected:
 	// Contains a list of ControlFlowNodes.
 	// Normal expressions are always in Control Nodes (like in if conditions, etc)
 	struct BlockNode : public ENode {
-		ENode *parent_block;
+		ENode *parent_node;
 		Vector<ControlFlowNode *> block;
 
 		BlockNode() {
 			type = Type::TYPE_BLOCK;
-			parent_block = NULL;
+			parent_node = NULL;
 		}
 	};
 
@@ -341,13 +345,15 @@ protected:
 	struct IfNode : public ControlFlowNode {
 		ENode *condition;
 		BlockNode *body;
-		BlockNode *body_else;
+		IfNode *next_if;
+		bool else_branch;
 
 		IfNode() {
 			type = TYPE_IF;
 			condition = nullptr;
 			body = nullptr;
-			body_else = nullptr;
+			next_if = nullptr;
+			else_branch = false;
 		}
 	};
 
