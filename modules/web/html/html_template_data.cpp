@@ -209,7 +209,16 @@ bool HTMLTemplateData::load_from_string(const String &p_data) {
 	}
 
 	if (!current_section_name.empty()) {
-		_templates[current_section_name] = current_str;
+		StringName csnsn = current_section_name;
+
+		_templates[csnsn] = current_str;
+		Ref<HTMLTemplateRenderer> renderer;
+		renderer.instance();
+		if (renderer->compile(current_str, section_line_start, true)) {
+			ERR_PRINT(vformat("Section name: %s.", current_section_name));
+			had_error = true;
+		}
+		_template_renderers[csnsn] = renderer;
 	}
 
 	emit_changed();
