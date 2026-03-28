@@ -149,6 +149,7 @@ HTMLTemplaterenderer::HTMLTemplaterenderer() {
 	_error_set = false;
 	str_ofs = 0;
 	_tokenizer_in_text_mode = true;
+	_current_line = 0;
 
 	_root = NULL;
 	_nodes = NULL;
@@ -239,6 +240,7 @@ const char *HTMLTemplaterenderer::token_name[TK_MAX] = {
 	"BRACKET CLOSE",
 	"PARENTHESIS OPEN",
 	"PARENTHESIS CLOSE",
+	"SEMI COLON",
 	"IDENTIFIER",
 	"BUILTIN FUNC",
 	"CONSTANT",
@@ -332,6 +334,10 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 					break;
 				};
 				default: {
+					if (cchar == '\n') {
+						++_current_line;
+					}
+
 					buf.append(cchar);
 					break;
 				};
@@ -397,6 +403,10 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 			};
 			case ':': {
 				r_token.type = TK_COLON;
+				return OK;
+			};
+			case ';': {
+				r_token.type = TK_SEMI_COLON;
 				return OK;
 			};
 			case '=': {
@@ -497,6 +507,10 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 				while (true) {
 					CharType ch = GET_CHAR();
 
+					if (ch == '\n') {
+						++_current_line;
+					}
+
 					if (ch == 0) {
 						_set_error("Unterminated String");
 						r_token.type = TK_ERROR;
@@ -590,6 +604,10 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 			} break;
 			default: {
 				if (cchar <= 32) {
+					if (cchar == '\n') {
+						++_current_line;
+					}
+
 					break;
 				}
 
@@ -783,28 +801,24 @@ Error HTMLTemplaterenderer::_get_token(Token &r_token) {
 	return ERR_PARSE_ERROR;
 }
 
-HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression() {
+HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression(Token &tk, bool p_skip_next_token_get) {
 	Vector<ExpressionNode> expression;
 
 	while (true) {
 		//keep appending stuff to expression
 		ENode *expr = nullptr;
 
-		Token tk;
-		_get_token(tk);
+		if (!p_skip_next_token_get) {
+			_get_token(tk);
+		} else {
+			p_skip_next_token_get = false;
+		}
+
 		if (_error_set) {
 			return nullptr;
 		}
 
 		switch (tk.type) {
-			//if htmldata
-			//if just return new enode.
-			//expression should be empty, but that probably can't happen, it's a parser bug
-			//double open
-			//if true unexoected
-			//_tokenizer_in_text_mode = false;
-			//double close
-			//_tokenizer_in_text_mode = true; or onexpoected
 			case TK_CURLY_BRACKET_OPEN: {
 				//a dictionary
 				DictionaryNode *dn = alloc_node<DictionaryNode>();
@@ -817,7 +831,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression() {
 					}
 					str_ofs = cofs; //revert
 					//parse an expression
-					ENode *subexpr = _parse_expression();
+					ENode *subexpr = _parse_expression(tk);
 					if (!subexpr) {
 						return nullptr;
 					}
@@ -829,7 +843,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression() {
 						return nullptr;
 					}
 
-					subexpr = _parse_expression();
+					subexpr = _parse_expression(tk);
 					if (!subexpr) {
 						return nullptr;
 					}
@@ -862,7 +876,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression() {
 					}
 					str_ofs = cofs; //revert
 					//parse an expression
-					ENode *subexpr = _parse_expression();
+					ENode *subexpr = _parse_expression(tk);
 					if (!subexpr) {
 						return nullptr;
 					}
@@ -883,7 +897,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression() {
 			} break;
 			case TK_PARENTHESIS_OPEN: {
 				//a suexpression
-				ENode *e = _parse_expression();
+				ENode *e = _parse_expression(tk);
 				if (_error_set) {
 					return nullptr;
 				}
@@ -916,7 +930,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression() {
 						}
 						str_ofs = cofs2; //revert
 						//parse an expression
-						ENode *subexpr = _parse_expression();
+						ENode *subexpr = _parse_expression(tk);
 						if (!subexpr) {
 							return nullptr;
 						}
@@ -970,7 +984,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression() {
 					}
 					str_ofs = cofs; //revert
 					//parse an expression
-					ENode *subexpr = _parse_expression();
+					ENode *subexpr = _parse_expression(tk);
 					if (!subexpr) {
 						return nullptr;
 					}
@@ -1011,7 +1025,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression() {
 					}
 					str_ofs = cofs; //revert
 					//parse an expression
-					ENode *subexpr = _parse_expression();
+					ENode *subexpr = _parse_expression(tk);
 					if (!subexpr) {
 						return nullptr;
 					}
@@ -1076,7 +1090,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression() {
 					IndexNode *index = alloc_node<IndexNode>();
 					index->base = expr;
 
-					ENode *what = _parse_expression();
+					ENode *what = _parse_expression(tk);
 					if (!what) {
 						return nullptr;
 					}
@@ -1117,7 +1131,7 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression() {
 							}
 							str_ofs = cofs3; //revert
 							//parse an expression
-							ENode *subexpr = _parse_expression();
+							ENode *subexpr = _parse_expression(tk);
 							if (!subexpr) {
 								return nullptr;
 							}
@@ -1434,6 +1448,159 @@ HTMLTemplaterenderer::ENode *HTMLTemplaterenderer::_parse_expression() {
 	return expression[0].node;
 }
 
+void HTMLTemplaterenderer::_parse_control_flow(BlockNode *p_parent_block, Token &tk, bool p_skip_next_token_get) {
+	ERR_FAIL_COND(!p_parent_block);
+
+	bool expect_double_curly_close = false;
+
+	while (true) {
+		if (!p_skip_next_token_get) {
+			_get_token(tk);
+		} else {
+			p_skip_next_token_get = false;
+		}
+
+		if (_error_set) {
+			return;
+		}
+
+		if (expect_double_curly_close && tk.type != TK_DOUBLE_CURLY_BRACKET_CLOSE) {
+			expect_double_curly_close = false;
+			_set_error(vformat("Unhandled token! Token type : %d, value: %s", (int)tk.type, String(tk.value)));
+			return;
+		}
+
+		switch (tk.type) {
+			case TK_HTML_DATA: {
+				HTMLDataNode *n = alloc_node<HTMLDataNode>();
+				n->value = tk.value;
+
+				p_parent_block->block.push_back(n);
+			} break;
+			case TK_DOUBLE_CURLY_BRACKET_OPEN: {
+				if (!_tokenizer_in_text_mode) {
+					_set_error("Unexpected token '{{'");
+					return;
+				}
+
+				// We just need to switch to expression parsing mode.
+				// The next iter will figure out expression type
+
+				_tokenizer_in_text_mode = false;
+
+			} break;
+			case TK_DOUBLE_CURLY_BRACKET_CLOSE: {
+				if (_tokenizer_in_text_mode) {
+					_set_error("Unexpected token TK_DOUBLE_CURLY_BRACKET_CLOSE ('}}') in text parser mode. Parser bug!");
+					return;
+				}
+
+				_tokenizer_in_text_mode = true;
+			} break;
+				// If we get here we are just after {{, or parser bug.
+			case TK_SEMI_COLON: {
+				// So {{; <expr> }} Run expression, no output
+
+				if (_tokenizer_in_text_mode) {
+					_set_error(vformat("Unhandled token in text parser mode. Parser bug! token type : %d, value: %s", (int)tk.type, String(tk.value)));
+					return;
+				}
+
+				PrintNode *n = alloc_node<PrintNode>();
+				n->expr = _parse_expression(tk, true);
+
+				if (_error_set) {
+					return;
+				}
+
+				n->raw = false;
+				n->supressed = true;
+
+				p_parent_block->block.push_back(n);
+
+				expect_double_curly_close = true;
+			} break;
+			case TK_OP_MOD: {
+				// So {{% <expr> }} Explicit raw
+
+				if (_tokenizer_in_text_mode) {
+					_set_error(vformat("Unhandled token in text parser mode. Parser bug! token type : %d, value: %s", (int)tk.type, String(tk.value)));
+					return;
+				}
+
+				PrintNode *n = alloc_node<PrintNode>();
+				n->expr = _parse_expression(tk, true);
+
+				if (_error_set) {
+					return;
+				}
+
+				n->raw = true;
+				n->supressed = false;
+
+				p_parent_block->block.push_back(n);
+
+				expect_double_curly_close = true;
+			} break;
+
+				// {{if <bool expr> }}
+				// {{else if <bool expr> }} or {{elif}}?
+				// {{else}}
+				// {{endif}}
+
+				// {{for <variable declaration> in <collection> }}
+				// {{endfor}}
+
+			default: {
+				// Either
+				// {{ <expr> }} : whatever is returned gets printed as-is, maybe except for nulls, escaped (except it the outer ENode is pr, pbr, etc)
+				// or error
+
+				if (_tokenizer_in_text_mode) {
+					_set_error(vformat("Unhandled token in text parser mode. Parser bug! token type : %d, value: %s", (int)tk.type, String(tk.value)));
+					return;
+				}
+
+				PrintNode *n = alloc_node<PrintNode>();
+				n->expr = _parse_expression(tk, true);
+
+				if (_error_set) {
+					return;
+				}
+
+				n->raw = false;
+				n->supressed = false;
+
+				if (n->expr) {
+					if (n->expr->type == ENode::TYPE_BUILTIN_FUNC) {
+						BuiltinFuncNode *bn = static_cast<BuiltinFuncNode *>(n->expr);
+
+						// Backwards compatibility
+						switch (bn->func) {
+							case FUNC_PRINT_BR: // Needs to be raw, function escaped, but need raw <br>
+							case FUNC_PRINT_RAW:
+							case FUNC_PRINT_RAW_BR:
+							case FUNC_QPRINT_BR:
+							case FUNC_QPRINT_RAW:
+							case FUNC_QPRINT_RAW_BR:
+							case FUNC_VFORMAT:
+							case FUNC_QVFORMAT: {
+								n->raw = true;
+							} break;
+							default: {
+							} break;
+						}
+					}
+				}
+
+				p_parent_block->block.push_back(n);
+
+				expect_double_curly_close = true;
+			} break;
+		}
+	}
+}
+
 bool HTMLTemplaterenderer::_compile_expression() {
 	if (!_dirty) {
 		return _error_set;
@@ -1448,9 +1615,12 @@ bool HTMLTemplaterenderer::_compile_expression() {
 	_error_str = String();
 	_error_set = false;
 	str_ofs = 0;
+	_current_line = 0;
 
-	// TODO
-	//_root = _parse_expression();
+	_root = alloc_node<BlockNode>();
+
+	Token tk;
+	_parse_control_flow(_root, tk);
 
 	if (_error_set) {
 		_root = nullptr;

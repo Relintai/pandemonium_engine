@@ -86,6 +86,7 @@ protected:
 		TK_BRACKET_CLOSE,
 		TK_PARENTHESIS_OPEN,
 		TK_PARENTHESIS_CLOSE,
+		TK_SEMI_COLON,
 		TK_IDENTIFIER,
 		TK_BUILTIN_FUNC,
 		TK_CONSTANT,
@@ -133,12 +134,13 @@ protected:
 		if (_error_set) {
 			return;
 		}
-		_error_str = p_err;
+		_error_str = p_err + vformat(" near line %d.", _current_line);
 		_error_set = true;
 	}
 
 	bool _tokenizer_in_text_mode;
 	int str_ofs;
+	int _current_line;
 
 	Error _get_token(Token &r_token);
 
@@ -187,9 +189,6 @@ protected:
 			ENode *node;
 		};
 	};
-
-	ENode *_parse_expression();
-	bool _compile_expression();
 
 	struct InputNode : public ENode {
 		StringName name;
@@ -373,6 +372,12 @@ protected:
 		_nodes = node;
 		return node;
 	}
+
+	ENode *_parse_expression(Token &tk, bool p_skip_next_token_get = false);
+	void _parse_control_flow(BlockNode *p_parent_block, Token &tk, bool p_skip_next_token_get = false);
+
+	// NEeds rework
+	bool _compile_expression();
 
 	BlockNode *_root;
 	ENode *_nodes;
