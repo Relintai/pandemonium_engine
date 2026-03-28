@@ -160,6 +160,7 @@ protected:
 			TYPE_BLOCK,
 			TYPE_CONTROL_FLOW,
 			TYPE_HTML_DATA,
+			TYPE_PRINT,
 			TYPE_IF,
 			TYPE_FOREACH,
 		};
@@ -290,12 +291,16 @@ protected:
 		}
 	};
 
+	// Base ControlFlowNode for logical separation
+	// Only here for easier understanding of logic
 	struct ControlFlowNode : public ENode {
 		ControlFlowNode() {
 			type = Type::TYPE_CONTROL_FLOW;
 		}
 	};
 
+	// Contains a list of ControlFlowNodes.
+	// Normal expressions are always in Control Nodes (like in if conditions, etc)
 	struct BlockNode : public ENode {
 		Vector<ControlFlowNode *> block;
 
@@ -306,6 +311,7 @@ protected:
 
 	// ControlFlowNodes
 
+	// Raw html outside of {{, etc
 	struct HTMLDataNode : public ControlFlowNode {
 		String value;
 
@@ -314,6 +320,26 @@ protected:
 		}
 	};
 
+	// So {{ <expr> }} : whatever is returned gets printed as-is, maybe except for nulls, escaped (except it the outer ENode is pr, pbr, etc)
+	// So {{; <expr> }} Run expression, no output
+	// So {{% <expr> }} Explicit raw
+	struct PrintNode : public ControlFlowNode {
+		ENode *expr;
+
+		bool raw;
+		bool supressed;
+
+		PrintNode() {
+			type = TYPE_PRINT;
+			raw = false;
+			supressed = false;
+		}
+	};
+
+	// {{if <bool expr> }}
+	// {{elif <bool expr> }}
+	// {{else}}
+	// {{endif}}
 	struct IfNode : public ControlFlowNode {
 		ENode *condition;
 		BlockNode *body;
@@ -327,6 +353,8 @@ protected:
 		}
 	};
 
+	// {{for <variable declaration> in <collection> }}
+	// {{endfor}}
 	struct ForeachNode : public ControlFlowNode {
 		ENode *condition;
 		BlockNode *body;

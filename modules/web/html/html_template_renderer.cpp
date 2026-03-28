@@ -106,9 +106,6 @@
 // other stuff:
 // Recursive indexing now should work
 
-// Variant call / Object call?
-// likely not a good idea, skip
-
 // Array and dictionary construction?
 // No need, do arrays and dicts in template scripts
 // Should probably be done anyway, not much complexity, but good flexibility
