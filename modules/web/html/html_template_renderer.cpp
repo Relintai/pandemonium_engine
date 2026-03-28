@@ -78,7 +78,7 @@
 
 // operators: All variant ops including in  (note that it can't do assignment)
 
-// ternary _template_text:  Not good enough, needs raw, normal version etc. sel() method instead, or maybe normal ternary operator
+// ternary _template_text:  Not good enough, needs raw, normal version etc. sel() method instead, or maybe normal ternary operator: <> ? <> : <>
 // {{? <bool expr>; <true expr>; <false expr> }}
 // Could also just parse: Equivalent to qr, qp etc (so if false expr is null, just emit "", same for true expr)
 // {{? <bool expr>; <true expr> }}
