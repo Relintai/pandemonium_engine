@@ -67,7 +67,7 @@ public:
 	String render(const Dictionary &p_data, bool &r_execution_error, String &r_error_txt, const bool p_show_error = false);
 	Ref<HTMLTemplateRenderResult> render_result(const Dictionary &p_data, const bool p_show_error = false);
 
-	bool compile(const String &p_text, const int p_start_line = 1);
+	bool compile(const String &p_text, const int p_start_line = 1, const bool p_show_error = false);
 
 	String get_template_text() const;
 	String get_compile_error_str() const;

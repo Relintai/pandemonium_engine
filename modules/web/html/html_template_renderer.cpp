@@ -133,7 +133,7 @@ Ref<HTMLTemplateRenderResult> HTMLTemplateRenderer::render_result(const Dictiona
 	return ret;
 }
 
-bool HTMLTemplateRenderer::compile(const String &p_text, const int p_start_line) {
+bool HTMLTemplateRenderer::compile(const String &p_text, const int p_start_line, const bool p_show_error) {
 	if (_nodes) {
 		memdelete(_nodes);
 		_nodes = nullptr;
@@ -158,6 +158,11 @@ bool HTMLTemplateRenderer::compile(const String &p_text, const int p_start_line)
 			memdelete(_nodes);
 		}
 		_nodes = nullptr;
+
+		if (p_show_error) {
+			ERR_FAIL_COND_V_MSG(p_show_error, true, _compile_error_str);
+		}
+
 		return true;
 	}
 
@@ -191,7 +196,7 @@ HTMLTemplateRenderer::~HTMLTemplateRenderer() {
 
 void HTMLTemplateRenderer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("render", "data", "p_show_error"), &HTMLTemplateRenderer::render_result, DEFVAL(false));
-	ClassDB::bind_method(D_METHOD("compile", "text", "start_line"), &HTMLTemplateRenderer::compile, DEFVAL(1));
+	ClassDB::bind_method(D_METHOD("compile", "text", "start_line", "show_error"), &HTMLTemplateRenderer::compile, DEFVAL(1), DEFVAL(false));
 
 	ClassDB::bind_method(D_METHOD("get_template_text"), &HTMLTemplateRenderer::get_template_text);
 	ClassDB::bind_method(D_METHOD("get_compile_error_str"), &HTMLTemplateRenderer::get_compile_error_str);
