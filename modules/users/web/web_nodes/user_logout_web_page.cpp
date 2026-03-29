@@ -43,6 +43,13 @@
 #include "modules/web/http/web_server.h"
 #include "modules/web/http/web_server_request.h"
 
+bool UserLogoutWebPage::get_render_menu_after_logout() const {
+	return _render_menu_after_logout;
+}
+void UserLogoutWebPage::set_render_menu_after_logout(const bool p_value) {
+	_render_menu_after_logout = p_value;
+}
+
 void UserLogoutWebPage::_render_index(Ref<WebServerRequest> request) {
 	Ref<User> user = request->get_meta("user");
 
@@ -57,6 +64,12 @@ void UserLogoutWebPage::_render_index(Ref<WebServerRequest> request) {
 	request->set_session(Ref<HTTPSession>());
 
 	emit_signal("user_logged_out", request, user);
+
+	request->remove_meta("user");
+
+	if (_render_menu_after_logout) {
+		render_menu(request);
+	}
 
 	if (has_method("_render_user_page")) {
 		Dictionary d;
@@ -74,6 +87,9 @@ void UserLogoutWebPage::_render_index(Ref<WebServerRequest> request) {
 }
 
 UserLogoutWebPage::UserLogoutWebPage() {
+	set_should_render_menu(false);
+
+	_render_menu_after_logout = true;
 }
 
 UserLogoutWebPage::~UserLogoutWebPage() {
@@ -81,4 +97,8 @@ UserLogoutWebPage::~UserLogoutWebPage() {
 
 void UserLogoutWebPage::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("user_logged_out", PropertyInfo(Variant::OBJECT, "request", PROPERTY_HINT_RESOURCE_TYPE, "WebServerRequest"), PropertyInfo(Variant::OBJECT, "user", PROPERTY_HINT_RESOURCE_TYPE, "User")));
+
+	ClassDB::bind_method(D_METHOD("get_render_menu_after_logout"), &UserLogoutWebPage::get_render_menu_after_logout);
+	ClassDB::bind_method(D_METHOD("set_render_menu_after_logout", "val"), &UserLogoutWebPage::set_render_menu_after_logout);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "render_menu_after_logout"), "set_render_menu_after_logout", "get_render_menu_after_logout");
 }

@@ -46,6 +46,9 @@ class UserLogoutWebPage : public UserWebPage {
 	GDCLASS(UserLogoutWebPage, UserWebPage);
 
 public:
+	bool get_render_menu_after_logout() const;
+	void set_render_menu_after_logout(const bool p_value);
+
 	void _render_index(Ref<WebServerRequest> request);
 
 	UserLogoutWebPage();
@@ -53,6 +56,8 @@ public:
 
 protected:
 	static void _bind_methods();
+
+	bool _render_menu_after_logout;
 };
 
 #endif
