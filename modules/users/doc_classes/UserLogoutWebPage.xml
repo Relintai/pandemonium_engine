@@ -11,6 +11,13 @@
 	</tutorials>
 	<methods>
 	</methods>
+	<members>
+		<member name="render_menu_after_logout" type="bool" setter="set_render_menu_after_logout" getter="get_render_menu_after_logout" default="true">
+			Whether to render the menu or not.
+			This [UserWebPage] needs to render the menu delayed compared to the others.
+		</member>
+		<member name="should_render_menu" type="bool" setter="set_should_render_menu" getter="get_should_render_menu" overrides="UserWebPage" default="false" />
+	</members>
 	<signals>
 		<signal name="user_logged_out">
 			<argument index="0" name="request" type="WebServerRequest" />
