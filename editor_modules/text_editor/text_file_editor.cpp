@@ -439,9 +439,11 @@ void TextFileEditor::save_file(const String &current_path) {
 
 	update_list();
 
-	Vector<String> files;
-	files.push_back(current_path);
-	EditorFileSystem::get_singleton()->reimport_files(files);
+	if (ResourceLoader::is_imported(current_path)) {
+		Vector<String> files;
+		files.push_back(current_path);
+		EditorFileSystem::get_singleton()->reimport_files(files);
+	}
 }
 
 void TextFileEditor::clean_editor() {
