@@ -42,6 +42,8 @@
 #include "text_editor_settings.h"
 #include "text_editor_vanilla_editor.h"
 
+#include "editor/editor_file_system.h"
+
 #include "scene/gui/box_container.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/file_dialog.h"
@@ -436,6 +438,10 @@ void TextFileEditor::save_file(const String &current_path) {
 	}
 
 	update_list();
+
+	Vector<String> files;
+	files.push_back(current_path);
+	EditorFileSystem::get_singleton()->reimport_files(files);
 }
 
 void TextFileEditor::clean_editor() {
