@@ -4,6 +4,7 @@
 	</brief_description>
 	<description>
 		The default coordinate system of PDF: the lower-left corner is at coordinates (0, 0), and the upper-right corner is at coordinates (width, height). The default resolution is 72dpi.
+		Please note that currently when running from a pack file (.pck) trying to load files directly from "res://" will fail. (For example pdf.font_load_ttf_from_file("res://some_font.ttf"); will not work.) Either use _from_mem (for example font_load_ttf_from_mem()) versions of methods, or copy the needed files out from "res://" to somewhere else (probably "user://").
 	</description>
 	<tutorials>
 	</tutorials>
