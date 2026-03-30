@@ -7,9 +7,10 @@
 		A class that can parse and render HTML using a simple templating language.
 		This class uses a templating syntax like: [code]{{ EXPRESSION }}[/code]. Everything inbetween [code]{{ }}[/code] is an expression that the system will replace during rendering with actual values from a passed in Dictionary.
 		Available expressions:
-		{{ &lt;expr&gt; }}: Print escaped. Whatever is returned by expr gets printed and html excaped (except if the outer expression is pr, pbr, qpr, qprb, vfr, qvfr.). Null turns into an empty string.
-		{{; &lt;expr&gt; }}: Supress. Runs expression, no output.
-		{{% &lt;expr&gt; }} Print raw. Prints the result of the expression as raw unescaped html. Null turns into an empty string.
+		{{ &lt;expr&gt; }}: Print escaped. Whatever is returned by expr gets printed and html excaped (except if the outer expression is a built-in print expression like p, pr, pb, pbr, qpr, qprb, vf, vfr, qvfr. etc. these methods do their own escapes and have special handling for backwards compatibility). Null turns into an empty string.
+		{{# &lt;expr&gt; }}: Supress. Runs expression, no output.
+		{{; &lt;expr&gt; }}: Force escaped. Always prints the result of the expression as escaped html. Null turns into an empty string.
+		{{% &lt;expr&gt; }} Print raw. Always prints the result of the expression as raw unescaped html. Null turns into an empty string.
 		{{if &lt;bool expr&gt; }} ... html ... {{elif &lt;bool expr&gt; }} ... html ... {{else}} ... html ... {{endif}}: if / else / elif / endif.
 		{{for &lt;variable declaration&gt; in &lt;collection&gt; }} ... html ... {{endfor}}: Foreach.
 		{{ /* .... comment ... */ }} or {{ /* }} ... {{ */ }}: Comments. Cannot be nested.
