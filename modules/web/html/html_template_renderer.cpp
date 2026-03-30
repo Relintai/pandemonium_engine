@@ -307,7 +307,25 @@ bool HTMLTemplateRenderer::validate_func_argument_count(BuiltinFunc p_func, cons
 void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_inputs, const int p_input_count, Dictionary &p_data, Variant *r_return, Variant::CallError &r_error, String &r_error_str) {
 	r_error.error = Variant::CallError::CALL_OK;
 	switch (p_func) {
-		case FUNC_PRINT:
+		case FUNC_PRINT: {
+			if (p_input_count == 0) {
+				*r_return = String();
+				return;
+			}
+
+			StringBuilder b;
+
+			for (int i = 0; i < p_input_count; ++i) {
+				Variant v = *p_inputs[i];
+
+				if (v.get_type() != Variant::NIL) {
+					b.append(String(v));
+				}
+			}
+
+			*r_return = b.as_string().xml_escape();
+			return;
+		} break;
 		case FUNC_PRINT_RAW: {
 			if (p_input_count == 0) {
 				*r_return = String();
@@ -327,7 +345,25 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 			*r_return = b.as_string();
 			return;
 		} break;
-		case FUNC_PRINT_BR:
+		case FUNC_PRINT_BR: {
+			if (p_input_count == 0) {
+				*r_return = String();
+				return;
+			}
+
+			StringBuilder b;
+
+			for (int i = 0; i < p_input_count; ++i) {
+				Variant v = *p_inputs[i];
+
+				if (v.get_type() != Variant::NIL) {
+					b.append(String(v));
+				}
+			}
+
+			*r_return = b.as_string().xml_escape().newline_to_br();
+			return;
+		} break;
 		case FUNC_PRINT_RAW_BR: {
 			if (p_input_count == 0) {
 				*r_return = String();
@@ -347,7 +383,42 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 			*r_return = b.as_string().newline_to_br();
 			return;
 		} break;
-		case FUNC_VFORMAT:
+		case FUNC_VFORMAT: {
+			if (p_input_count == 0) {
+				*r_return = String();
+				return;
+			}
+
+			Variant vfstr = *p_inputs[0];
+			String fstr;
+
+			if (vfstr.get_type() == Variant::NIL) {
+				*r_return = String();
+				return;
+			}
+
+			fstr = String(vfstr);
+
+			Array args;
+
+			for (int i = 1; i < p_input_count; ++i) {
+				Variant v = *p_inputs[i];
+
+				args.append(String(v));
+			}
+
+			bool error = false;
+			String fmt = fstr.sprintf(args, &error);
+
+			if (error) {
+				r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
+				r_error.argument = 0;
+				r_error.expected = Variant::STRING;
+			}
+
+			*r_return = fmt.xml_escape();
+
+		} break;
 		case FUNC_VFORMAT_RAW: {
 			if (p_input_count == 0) {
 				*r_return = String();
@@ -384,7 +455,31 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 			*r_return = fmt;
 
 		} break;
-		case FUNC_QPRINT:
+		case FUNC_QPRINT: {
+			if (p_input_count < 2) {
+				*r_return = String();
+				return;
+			}
+
+			Variant qv = *p_inputs[0];
+
+			if (!qv.booleanize()) {
+				*r_return = String();
+				return;
+			}
+
+			StringBuilder b;
+
+			for (int i = 1; i < p_input_count; ++i) {
+				Variant v = *p_inputs[i];
+
+				if (v.get_type() != Variant::NIL) {
+					b.append(String(v));
+				}
+			}
+
+			*r_return = b.as_string().xml_escape();
+		} break;
 		case FUNC_QPRINT_RAW: {
 			if (p_input_count < 2) {
 				*r_return = String();
@@ -410,7 +505,31 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 
 			*r_return = b.as_string();
 		} break;
-		case FUNC_QPRINT_BR:
+		case FUNC_QPRINT_BR: {
+			if (p_input_count < 2) {
+				*r_return = String();
+				return;
+			}
+
+			Variant qv = *p_inputs[0];
+
+			if (!qv.booleanize()) {
+				*r_return = String();
+				return;
+			}
+
+			StringBuilder b;
+
+			for (int i = 1; i < p_input_count; ++i) {
+				Variant v = *p_inputs[i];
+
+				if (v.get_type() != Variant::NIL) {
+					b.append(String(v));
+				}
+			}
+
+			*r_return = b.as_string().xml_escape().newline_to_br();
+		} break;
 		case FUNC_QPRINT_RAW_BR: {
 			if (p_input_count < 2) {
 				*r_return = String();
@@ -436,7 +555,48 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 
 			*r_return = b.as_string().newline_to_br();
 		} break;
-		case FUNC_QVFORMAT:
+		case FUNC_QVFORMAT: {
+			if (p_input_count < 2) {
+				*r_return = String();
+				return;
+			}
+
+			Variant qv = *p_inputs[0];
+
+			if (!qv.booleanize()) {
+				*r_return = String();
+				return;
+			}
+
+			Variant vfstr = *p_inputs[1];
+			String fstr;
+
+			if (vfstr.get_type() == Variant::NIL) {
+				*r_return = String();
+				return;
+			}
+
+			fstr = String(vfstr);
+
+			Array args;
+
+			for (int i = 2; i < p_input_count; ++i) {
+				Variant v = *p_inputs[i];
+
+				args.append(String(v));
+			}
+
+			bool error = false;
+			String fmt = fstr.sprintf(args, &error);
+
+			if (error) {
+				r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
+				r_error.argument = 0;
+				r_error.expected = Variant::STRING;
+			}
+
+			*r_return = fmt.xml_escape();
+		} break;
 		case FUNC_QVFORMAT_RAW: {
 			if (p_input_count < 2) {
 				*r_return = String();
@@ -2441,7 +2601,7 @@ void HTMLTemplateRenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 			} break;
 			default: {
 				// Either
-				// {{ <expr> }} : whatever is returned gets printed as-is, maybe except for nulls, escaped (except it the outer ENode is pr, pbr, etc)
+				// {{ <expr> }}
 				// or error
 
 				if (_tokenizer_in_text_mode) {
@@ -2450,6 +2610,8 @@ void HTMLTemplateRenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				}
 
 				//ERR_PRINT(vformat("DEBUG: 1 token type : %s, value: %s", token_name[tk.type], String(tk.value)));
+
+				// {{ <expr> }}
 
 				PrintNode *n = alloc_node<PrintNode>();
 				n->expr = _parse_expression(tk, true);
@@ -2461,19 +2623,24 @@ void HTMLTemplateRenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				n->raw = false;
 				n->supressed = false;
 
+				// Check if the outer expression is a built/in print call like p(), qp(), vf() etc
 				if (n->expr) {
 					if (n->expr->type == ENode::TYPE_BUILTIN_FUNC) {
 						BuiltinFuncNode *bn = static_cast<BuiltinFuncNode *>(n->expr);
 
-						// Backwards compatibility, and ease of use
+						// These methods do their own escape, so just make it raw
 						switch (bn->func) {
-							case FUNC_PRINT_BR: // Needs to be raw, function escaped, but need raw <br>
+							case FUNC_PRINT:
 							case FUNC_PRINT_RAW:
+							case FUNC_PRINT_BR:
 							case FUNC_PRINT_RAW_BR:
-							case FUNC_QPRINT_BR:
-							case FUNC_QPRINT_RAW:
-							case FUNC_QPRINT_RAW_BR:
+							case FUNC_VFORMAT:
 							case FUNC_VFORMAT_RAW:
+							case FUNC_QPRINT:
+							case FUNC_QPRINT_RAW:
+							case FUNC_QPRINT_BR:
+							case FUNC_QPRINT_RAW_BR:
+							case FUNC_QVFORMAT:
 							case FUNC_QVFORMAT_RAW: {
 								n->raw = true;
 							} break;
