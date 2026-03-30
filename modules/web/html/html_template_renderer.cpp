@@ -912,6 +912,7 @@ const char *HTMLTemplateRenderer::token_name[TK_MAX] = {
 	"COLON",
 	"COMMA",
 	"PERIOD",
+	"HASH",
 	"FOR",
 	"ENDFOR",
 	"IF",
@@ -979,6 +980,8 @@ String HTMLTemplateRenderer::stringify_token(const Token &tk) {
 			return "','";
 		case TK_PERIOD:
 			return "'.'";
+		case TK_HASH:
+			return "'#'";
 		case TK_FOR:
 			return "'for'";
 		case TK_ENDFOR:
@@ -1179,6 +1182,10 @@ Error HTMLTemplateRenderer::_get_token(Token &r_token) {
 			};
 			case ';': {
 				r_token.type = TK_SEMI_COLON;
+				return OK;
+			};
+			case '#': {
+				r_token.type = TK_HASH;
 				return OK;
 			};
 			case '=': {
@@ -2323,16 +2330,16 @@ void HTMLTemplateRenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				_tokenizer_in_text_mode = true;
 			} break;
 				// If we get here we are just after {{, or parser bug.
-			case TK_SEMI_COLON: {
-				// So {{; <expr> }} Run expression, no output
+			case TK_HASH: {
+				// So {{# <expr> }} Run expression, no output
 
 				if (_tokenizer_in_text_mode) {
-					_compile_set_error(vformat("Unexpected token ';' in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
+					_compile_set_error(vformat("Unexpected token '#' in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
 					return;
 				}
 
 				PrintNode *n = alloc_node<PrintNode>();
-				n->expr = _parse_expression(tk, true);
+				n->expr = _parse_expression(tk);
 
 				if (_compile_error_set) {
 					return;
@@ -2344,7 +2351,30 @@ void HTMLTemplateRenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				p_parent_block->block.push_back(n);
 
 				expect_double_curly_close = true;
-				p_skip_next_token_get = true;
+				p_skip_next_token_get = false;
+			} break;
+			case TK_SEMI_COLON: {
+				// So {{; <expr> }} Run expression, force escape output.
+
+				if (_tokenizer_in_text_mode) {
+					_compile_set_error(vformat("Unexpected token ';' in text parser mode. Parser bug! token type : %s, value: %s", token_name[tk.type], String(tk.value)));
+					return;
+				}
+
+				PrintNode *n = alloc_node<PrintNode>();
+				n->expr = _parse_expression(tk);
+
+				if (_compile_error_set) {
+					return;
+				}
+
+				n->raw = false;
+				n->supressed = false;
+
+				p_parent_block->block.push_back(n);
+
+				expect_double_curly_close = true;
+				p_skip_next_token_get = false;
 			} break;
 			case TK_OP_MOD: {
 				// So {{% <expr> }} Explicit raw
@@ -2355,7 +2385,7 @@ void HTMLTemplateRenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				}
 
 				PrintNode *n = alloc_node<PrintNode>();
-				n->expr = _parse_expression(tk, true);
+				n->expr = _parse_expression(tk);
 
 				if (_compile_error_set) {
 					return;
@@ -2367,7 +2397,7 @@ void HTMLTemplateRenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				p_parent_block->block.push_back(n);
 
 				expect_double_curly_close = true;
-				p_skip_next_token_get = true;
+				p_skip_next_token_get = false;
 			} break;
 			case TK_IF: {
 				// {{if <bool expr> }}

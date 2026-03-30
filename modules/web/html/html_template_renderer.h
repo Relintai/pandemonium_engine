@@ -132,6 +132,7 @@ protected:
 		TK_COLON,
 		TK_COMMA,
 		TK_PERIOD,
+		TK_HASH,
 		TK_FOR,
 		TK_ENDFOR,
 		TK_IF,
