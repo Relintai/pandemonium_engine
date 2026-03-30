@@ -3247,6 +3247,17 @@ void GDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 
 				tokenizer->advance();
 
+				bool iter_val_has_explicit_type = false;
+				DataType iter_type;
+				if (tokenizer->get_token() == GDScriptTokenizer::TK_COLON) {
+					iter_val_has_explicit_type = true;
+
+					if (!_parse_type(iter_type)) {
+						_set_error("Expected a type for an argument.");
+						return;
+					}
+				}
+
 				if (tokenizer->get_token() != GDScriptTokenizer::TK_OP_IN) {
 					_set_error("\"in\" expected after identifier.");
 					return;
@@ -3261,8 +3272,6 @@ void GDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 					}
 					return;
 				}
-
-				DataType iter_type;
 
 				if (container->type == Node::TYPE_OPERATOR) {
 					OperatorNode *op = static_cast<OperatorNode *>(container);
@@ -3331,9 +3340,11 @@ void GDScriptParser::_parse_block(BlockNode *p_block, bool p_static) {
 							}
 						}
 
-						iter_type.has_type = true;
-						iter_type.kind = DataType::BUILTIN;
-						iter_type.builtin_type = Variant::INT;
+						if (!iter_val_has_explicit_type) {
+							iter_type.has_type = true;
+							iter_type.kind = DataType::BUILTIN;
+							iter_type.builtin_type = Variant::INT;
+						}
 					}
 				}
 
