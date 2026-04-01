@@ -301,7 +301,7 @@ String HTMLTemplate::render_template(const String &p_text, const Dictionary &p_d
 	String res = renderer->render(p_data, exec_error, error_text, false);
 
 	if (exec_error) {
-		ERR_PRINT(vformat("Error when rendering template: %s, Template: name: %s, Path: %s", error_text, get_name(), get_path()));
+		ERR_PRINT(vformat("%s Name: \"%s\", Path: \"%s\"", error_text, get_name(), get_path()));
 	}
 
 	return res;
@@ -316,7 +316,7 @@ String HTMLTemplate::renderer_render_template(Ref<HTMLTemplateRenderer> p_render
 	String res = p_renderer->render(p_data, exec_error, error_text, false);
 
 	if (exec_error) {
-		ERR_PRINT(vformat("Error when rendering template: %s, Template: name: %s, Path: %s", error_text, get_name(), get_path()));
+		ERR_PRINT(vformat("%s Name: \"%s\", Path: \"%s\"", error_text, get_name(), get_path()));
 	}
 
 	return res;
