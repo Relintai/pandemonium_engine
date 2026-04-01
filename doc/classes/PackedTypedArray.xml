@@ -8,6 +8,10 @@
 		Unlike the normal [Array] and [TypedArray], this class stores everything internally as the most sapce efficient way as possible.
 		Like [TypedArray], it enforces the given types.
 		Unlike PoolVectors it does not use pool allocations, so it's not limited by the (compile time) preset memory pool size.
+		The drawback to this class compared to [TypedArray] is that indexing has more complexity, as the underlying inner storage types actually change.
+		Note that storing [Object] derived classes is done using Variants similar to [TypedArray].
+		Also note that for the engine side (c++), very low-level and efficient data retrieval and set methods exists for this class.
+		In most cases using [TypedArray] is recommended over this. This class is best for storing bigger chunks of data in a memory efficient way, and/or when lower level data needs to be accesses quickly from both scripting and engine side c++, without using memory pools.
 		[b]Examples:[/b]
 		[codeblock]
 		var packed_typed_array : PackedTypedArray = PackedTypedArray([ 1, 2, 3, 4]) # Type will be automatically inferred
