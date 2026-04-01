@@ -404,7 +404,7 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 			for (int i = 1; i < p_input_count; ++i) {
 				Variant v = *p_inputs[i];
 
-				args.append(String(v));
+				args.append(v);
 			}
 
 			bool error = false;
@@ -441,7 +441,7 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 			for (int i = 1; i < p_input_count; ++i) {
 				Variant v = *p_inputs[i];
 
-				args.append(String(v));
+				args.append(v);
 			}
 
 			bool error = false;
@@ -585,7 +585,7 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 			for (int i = 2; i < p_input_count; ++i) {
 				Variant v = *p_inputs[i];
 
-				args.append(String(v));
+				args.append(v);
 			}
 
 			bool error = false;
@@ -628,7 +628,7 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 			for (int i = 2; i < p_input_count; ++i) {
 				Variant v = *p_inputs[i];
 
-				args.append(String(v));
+				args.append(v);
 			}
 
 			bool error = false;
