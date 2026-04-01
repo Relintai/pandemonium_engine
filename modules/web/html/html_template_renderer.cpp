@@ -2921,8 +2921,8 @@ bool HTMLTemplateRenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 					if (ret) {
 						return true;
 					}
-					arr.write[i] = value;
-					argp.write[i] = &arr[i];
+					arr.write[i - 1] = value;
+					argp.write[i - 1] = &arr[i - 1];
 				}
 
 				Variant::CallError ce;
