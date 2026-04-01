@@ -111,6 +111,7 @@ protected:
 
 	bool validate_func_argument_count(BuiltinFunc p_func, const int p_arg_count, bool p_set_error = true);
 	static String get_func_name(BuiltinFunc p_func);
+	static bool is_func_run_determined_by_first_arg(BuiltinFunc p_func);
 	static void exec_func(BuiltinFunc p_func, const Variant **p_inputs, const int p_input_count, Dictionary &p_data, Variant *r_return, Variant::CallError &r_error, String &r_error_str);
 	static BuiltinFunc find_function(const String &p_string);
 
@@ -276,9 +277,12 @@ protected:
 	struct BuiltinFuncNode : public ENode {
 		BuiltinFunc func;
 		Vector<ENode *> arguments;
+		bool first_arg_determines_run;
+
 		BuiltinFuncNode() {
 			type = TYPE_BUILTIN_FUNC;
 			func = BuiltinFunc::FUNC_PRINT;
+			first_arg_determines_run = false;
 		}
 	};
 

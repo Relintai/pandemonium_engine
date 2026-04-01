@@ -234,6 +234,22 @@ String HTMLTemplateRenderer::get_func_name(BuiltinFunc p_func) {
 	return func_name[p_func];
 }
 
+bool HTMLTemplateRenderer::is_func_run_determined_by_first_arg(BuiltinFunc p_func) {
+	switch (p_func) {
+		case FUNC_QPRINT:
+		case FUNC_QPRINT_RAW:
+		case FUNC_QPRINT_BR:
+		case FUNC_QPRINT_RAW_BR:
+		case FUNC_QVFORMAT:
+		case FUNC_QVFORMAT_RAW:
+			return true;
+		default:
+			return false;
+	}
+
+	return false;
+}
+
 bool HTMLTemplateRenderer::validate_func_argument_count(BuiltinFunc p_func, const int p_arg_count, bool p_set_error) {
 	int expected_args = 0;
 
@@ -307,172 +323,16 @@ bool HTMLTemplateRenderer::validate_func_argument_count(BuiltinFunc p_func, cons
 void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_inputs, const int p_input_count, Dictionary &p_data, Variant *r_return, Variant::CallError &r_error, String &r_error_str) {
 	r_error.error = Variant::CallError::CALL_OK;
 	switch (p_func) {
-		case FUNC_PRINT: {
-			if (p_input_count == 0) {
-				*r_return = String();
-				return;
-			}
-
-			StringBuilder b;
-
-			for (int i = 0; i < p_input_count; ++i) {
-				Variant v = *p_inputs[i];
-
-				if (v.get_type() != Variant::NIL) {
-					b.append(String(v));
-				}
-			}
-
-			*r_return = b.as_string().xml_escape();
-			return;
-		} break;
-		case FUNC_PRINT_RAW: {
-			if (p_input_count == 0) {
-				*r_return = String();
-				return;
-			}
-
-			StringBuilder b;
-
-			for (int i = 0; i < p_input_count; ++i) {
-				Variant v = *p_inputs[i];
-
-				if (v.get_type() != Variant::NIL) {
-					b.append(String(v));
-				}
-			}
-
-			*r_return = b.as_string();
-			return;
-		} break;
-		case FUNC_PRINT_BR: {
-			if (p_input_count == 0) {
-				*r_return = String();
-				return;
-			}
-
-			StringBuilder b;
-
-			for (int i = 0; i < p_input_count; ++i) {
-				Variant v = *p_inputs[i];
-
-				if (v.get_type() != Variant::NIL) {
-					b.append(String(v));
-				}
-			}
-
-			*r_return = b.as_string().xml_escape().newline_to_br();
-			return;
-		} break;
-		case FUNC_PRINT_RAW_BR: {
-			if (p_input_count == 0) {
-				*r_return = String();
-				return;
-			}
-
-			StringBuilder b;
-
-			for (int i = 0; i < p_input_count; ++i) {
-				Variant v = *p_inputs[i];
-
-				if (v.get_type() != Variant::NIL) {
-					b.append(String(v));
-				}
-			}
-
-			*r_return = b.as_string().newline_to_br();
-			return;
-		} break;
-		case FUNC_VFORMAT: {
-			if (p_input_count == 0) {
-				*r_return = String();
-				return;
-			}
-
-			Variant vfstr = *p_inputs[0];
-			String fstr;
-
-			if (vfstr.get_type() == Variant::NIL) {
-				*r_return = String();
-				return;
-			}
-
-			fstr = String(vfstr);
-
-			Array args;
-
-			for (int i = 1; i < p_input_count; ++i) {
-				Variant v = *p_inputs[i];
-
-				args.append(v);
-			}
-
-			bool error = false;
-			String fmt = fstr.sprintf(args, &error);
-
-			if (error) {
-				r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
-				r_error.argument = 0;
-				r_error.expected = Variant::STRING;
-				r_error_str = fmt;
-			}
-
-			*r_return = fmt.xml_escape();
-
-		} break;
-		case FUNC_VFORMAT_RAW: {
-			if (p_input_count == 0) {
-				*r_return = String();
-				return;
-			}
-
-			Variant vfstr = *p_inputs[0];
-			String fstr;
-
-			if (vfstr.get_type() == Variant::NIL) {
-				*r_return = String();
-				return;
-			}
-
-			fstr = String(vfstr);
-
-			Array args;
-
-			for (int i = 1; i < p_input_count; ++i) {
-				Variant v = *p_inputs[i];
-
-				args.append(v);
-			}
-
-			bool error = false;
-			String fmt = fstr.sprintf(args, &error);
-
-			if (error) {
-				r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
-				r_error.argument = 0;
-				r_error.expected = Variant::STRING;
-				r_error_str = fmt;
-			}
-
-			*r_return = fmt;
-
-		} break;
+		case FUNC_PRINT:
 		case FUNC_QPRINT: {
-			if (p_input_count < 2) {
-				*r_return = String();
-				return;
-			}
-
-			Variant qv = *p_inputs[0];
-
-			if (!qv.booleanize()) {
+			if (p_input_count == 0) {
 				*r_return = String();
 				return;
 			}
 
 			StringBuilder b;
 
-			for (int i = 1; i < p_input_count; ++i) {
+			for (int i = 0; i < p_input_count; ++i) {
 				Variant v = *p_inputs[i];
 
 				if (v.get_type() != Variant::NIL) {
@@ -481,23 +341,18 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 			}
 
 			*r_return = b.as_string().xml_escape();
+			return;
 		} break;
+		case FUNC_PRINT_RAW:
 		case FUNC_QPRINT_RAW: {
-			if (p_input_count < 2) {
-				*r_return = String();
-				return;
-			}
-
-			Variant qv = *p_inputs[0];
-
-			if (!qv.booleanize()) {
+			if (p_input_count == 0) {
 				*r_return = String();
 				return;
 			}
 
 			StringBuilder b;
 
-			for (int i = 1; i < p_input_count; ++i) {
+			for (int i = 0; i < p_input_count; ++i) {
 				Variant v = *p_inputs[i];
 
 				if (v.get_type() != Variant::NIL) {
@@ -506,23 +361,18 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 			}
 
 			*r_return = b.as_string();
+			return;
 		} break;
+		case FUNC_PRINT_BR:
 		case FUNC_QPRINT_BR: {
-			if (p_input_count < 2) {
-				*r_return = String();
-				return;
-			}
-
-			Variant qv = *p_inputs[0];
-
-			if (!qv.booleanize()) {
+			if (p_input_count == 0) {
 				*r_return = String();
 				return;
 			}
 
 			StringBuilder b;
 
-			for (int i = 1; i < p_input_count; ++i) {
+			for (int i = 0; i < p_input_count; ++i) {
 				Variant v = *p_inputs[i];
 
 				if (v.get_type() != Variant::NIL) {
@@ -531,23 +381,18 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 			}
 
 			*r_return = b.as_string().xml_escape().newline_to_br();
+			return;
 		} break;
+		case FUNC_PRINT_RAW_BR:
 		case FUNC_QPRINT_RAW_BR: {
-			if (p_input_count < 2) {
-				*r_return = String();
-				return;
-			}
-
-			Variant qv = *p_inputs[0];
-
-			if (!qv.booleanize()) {
+			if (p_input_count == 0) {
 				*r_return = String();
 				return;
 			}
 
 			StringBuilder b;
 
-			for (int i = 1; i < p_input_count; ++i) {
+			for (int i = 0; i < p_input_count; ++i) {
 				Variant v = *p_inputs[i];
 
 				if (v.get_type() != Variant::NIL) {
@@ -556,21 +401,16 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 			}
 
 			*r_return = b.as_string().newline_to_br();
+			return;
 		} break;
+		case FUNC_VFORMAT:
 		case FUNC_QVFORMAT: {
-			if (p_input_count < 2) {
+			if (p_input_count == 0) {
 				*r_return = String();
 				return;
 			}
 
-			Variant qv = *p_inputs[0];
-
-			if (!qv.booleanize()) {
-				*r_return = String();
-				return;
-			}
-
-			Variant vfstr = *p_inputs[1];
+			Variant vfstr = *p_inputs[0];
 			String fstr;
 
 			if (vfstr.get_type() == Variant::NIL) {
@@ -582,7 +422,7 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 
 			Array args;
 
-			for (int i = 2; i < p_input_count; ++i) {
+			for (int i = 1; i < p_input_count; ++i) {
 				Variant v = *p_inputs[i];
 
 				args.append(v);
@@ -593,27 +433,22 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 
 			if (error) {
 				r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
-				r_error.argument = 1;
+				r_error.argument = 0;
 				r_error.expected = Variant::STRING;
 				r_error_str = fmt;
 			}
 
 			*r_return = fmt.xml_escape();
+
 		} break;
+		case FUNC_VFORMAT_RAW:
 		case FUNC_QVFORMAT_RAW: {
-			if (p_input_count < 2) {
+			if (p_input_count == 0) {
 				*r_return = String();
 				return;
 			}
 
-			Variant qv = *p_inputs[0];
-
-			if (!qv.booleanize()) {
-				*r_return = String();
-				return;
-			}
-
-			Variant vfstr = *p_inputs[1];
+			Variant vfstr = *p_inputs[0];
 			String fstr;
 
 			if (vfstr.get_type() == Variant::NIL) {
@@ -625,7 +460,7 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 
 			Array args;
 
-			for (int i = 2; i < p_input_count; ++i) {
+			for (int i = 1; i < p_input_count; ++i) {
 				Variant v = *p_inputs[i];
 
 				args.append(v);
@@ -636,12 +471,13 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 
 			if (error) {
 				r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
-				r_error.argument = 1;
+				r_error.argument = 0;
 				r_error.expected = Variant::STRING;
 				r_error_str = fmt;
 			}
 
 			*r_return = fmt;
+
 		} break;
 		case FUNC_EXISTS: {
 			StringName key = *p_inputs[0];
@@ -1851,6 +1687,7 @@ HTMLTemplateRenderer::ENode *HTMLTemplateRenderer::_parse_expression(Token &tk, 
 
 				BuiltinFuncNode *bifunc = alloc_node<BuiltinFuncNode>();
 				bifunc->func = BuiltinFunc(int(tk.value));
+				bifunc->first_arg_determines_run = is_func_run_determined_by_first_arg(bifunc->func);
 
 				while (true) {
 					int cofs = _str_ofs;
@@ -3035,27 +2872,66 @@ bool HTMLTemplateRenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 		case HTMLTemplateRenderer::ENode::TYPE_BUILTIN_FUNC: {
 			const HTMLTemplateRenderer::BuiltinFuncNode *bifunc = static_cast<const HTMLTemplateRenderer::BuiltinFuncNode *>(p_node);
 
-			Vector<Variant> arr;
-			Vector<const Variant *> argp;
-			arr.resize(bifunc->arguments.size());
-			argp.resize(bifunc->arguments.size());
+			if (!bifunc->first_arg_determines_run) {
+				Vector<Variant> arr;
+				Vector<const Variant *> argp;
+				arr.resize(bifunc->arguments.size());
+				argp.resize(bifunc->arguments.size());
 
-			for (int i = 0; i < bifunc->arguments.size(); i++) {
+				for (int i = 0; i < bifunc->arguments.size(); i++) {
+					Variant value;
+					bool ret = _execute(p_data, p_html, bifunc->arguments[i], value, r_error_str);
+					if (ret) {
+						return true;
+					}
+					arr.write[i] = value;
+					argp.write[i] = &arr[i];
+				}
+
+				Variant::CallError ce;
+				exec_func(bifunc->func, (const Variant **)argp.ptr(), argp.size(), p_data, &r_ret, ce, r_error_str);
+
+				if (ce.error != Variant::CallError::CALL_OK) {
+					r_error_str = vformat("Builtin Call Failed. Func name: %s. Error: %s.", get_func_name(bifunc->func), r_error_str);
+					return true;
+				}
+			} else {
+				if (bifunc->arguments.size() < 1) {
+					return false;
+				}
+
+				Vector<Variant> arr;
+				Vector<const Variant *> argp;
+
+				arr.resize(bifunc->arguments.size() - 1);
+				argp.resize(bifunc->arguments.size() - 1);
+
 				Variant value;
-				bool ret = _execute(p_data, p_html, bifunc->arguments[i], value, r_error_str);
+				bool ret = _execute(p_data, p_html, bifunc->arguments[0], value, r_error_str);
 				if (ret) {
 					return true;
 				}
-				arr.write[i] = value;
-				argp.write[i] = &arr[i];
-			}
 
-			Variant::CallError ce;
-			exec_func(bifunc->func, (const Variant **)argp.ptr(), argp.size(), p_data, &r_ret, ce, r_error_str);
+				if (!value.booleanize()) {
+					return false;
+				}
 
-			if (ce.error != Variant::CallError::CALL_OK) {
-				r_error_str = vformat("Builtin Call Failed. Func name: %s. Error: %s.", get_func_name(bifunc->func), r_error_str);
-				return true;
+				for (int i = 1; i < bifunc->arguments.size(); i++) {
+					ret = _execute(p_data, p_html, bifunc->arguments[i], value, r_error_str);
+					if (ret) {
+						return true;
+					}
+					arr.write[i] = value;
+					argp.write[i] = &arr[i];
+				}
+
+				Variant::CallError ce;
+				exec_func(bifunc->func, (const Variant **)argp.ptr(), argp.size(), p_data, &r_ret, ce, r_error_str);
+
+				if (ce.error != Variant::CallError::CALL_OK) {
+					r_error_str = vformat("Builtin Call Failed. Func name: %s. Error: %s.", get_func_name(bifunc->func), r_error_str);
+					return true;
+				}
 			}
 
 		} break;
