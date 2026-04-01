@@ -414,6 +414,7 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 				r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
 				r_error.argument = 0;
 				r_error.expected = Variant::STRING;
+				r_error_str = fmt;
 			}
 
 			*r_return = fmt.xml_escape();
@@ -450,6 +451,7 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 				r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
 				r_error.argument = 0;
 				r_error.expected = Variant::STRING;
+				r_error_str = fmt;
 			}
 
 			*r_return = fmt;
@@ -591,8 +593,9 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 
 			if (error) {
 				r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
-				r_error.argument = 0;
+				r_error.argument = 1;
 				r_error.expected = Variant::STRING;
+				r_error_str = fmt;
 			}
 
 			*r_return = fmt.xml_escape();
@@ -633,8 +636,9 @@ void HTMLTemplateRenderer::exec_func(BuiltinFunc p_func, const Variant **p_input
 
 			if (error) {
 				r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
-				r_error.argument = 0;
+				r_error.argument = 1;
 				r_error.expected = Variant::STRING;
+				r_error_str = fmt;
 			}
 
 			*r_return = fmt;
@@ -3050,7 +3054,7 @@ bool HTMLTemplateRenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 			exec_func(bifunc->func, (const Variant **)argp.ptr(), argp.size(), p_data, &r_ret, ce, r_error_str);
 
 			if (ce.error != Variant::CallError::CALL_OK) {
-				r_error_str = "Builtin Call Failed. " + r_error_str;
+				r_error_str = vformat("Builtin Call Failed. Func name: %s. Error: %s.", get_func_name(bifunc->func), r_error_str);
 				return true;
 			}
 
