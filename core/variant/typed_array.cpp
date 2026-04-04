@@ -909,7 +909,7 @@ int TypedArray::get_variant_type() const {
 	return _p->type;
 }
 void TypedArray::set_variant_type(const int p_variant_type) {
-	ERR_FAIL_COND(_p->array.size() > 0);
+	ERR_FAIL_COND(_p->type != Variant::NIL || _p->array.size() > 0);
 
 	_p->type = static_cast<Variant::Type>(p_variant_type);
 }
@@ -918,7 +918,8 @@ StringName TypedArray::get_object_class_name() const {
 	return _p->object_class_name;
 }
 void TypedArray::set_object_class_name(const StringName &p_object_type_name) {
-	ERR_FAIL_COND(_p->array.size() > 0);
+	ERR_FAIL_COND((_p->type != Variant::NIL && _p->type != Variant::OBJECT) || _p->array.size() > 0);
+	ERR_FAIL_COND(_p->type == Variant::OBJECT && _p->object_class_name != StringName());
 
 	_p->object_class_name = p_object_type_name;
 
@@ -929,7 +930,7 @@ void TypedArray::set_object_class_name(const StringName &p_object_type_name) {
 }
 
 void TypedArray::set_type_from_name(const StringName &p_type_name) {
-	ERR_FAIL_COND(_p->array.size() > 0);
+	ERR_FAIL_COND(_p->type != Variant::NIL || _p->array.size() > 0);
 
 	String type_name = p_type_name;
 	Variant::Type variant_type = Variant::VARIANT_MAX;
@@ -958,7 +959,7 @@ void TypedArray::set_type_from_name(const StringName &p_type_name) {
 }
 
 void TypedArray::set_type_from(const TypedArray &p_array) {
-	ERR_FAIL_COND(_p->array.size() > 0);
+	ERR_FAIL_COND(_p->type != Variant::NIL || _p->array.size() > 0);
 
 	_p->type = p_array._p->type;
 	_p->object_class_name = p_array._p->object_class_name;
@@ -971,7 +972,7 @@ void TypedArray::set_type_from(const TypedArray &p_array) {
 }
 
 void TypedArray::set_type_from_variant(const Variant &p_variant) {
-	ERR_FAIL_COND(_p->array.size() > 0);
+	ERR_FAIL_COND(_p->type != Variant::NIL || _p->array.size() > 0);
 
 	_p->type = p_variant.get_type();
 
@@ -1008,7 +1009,7 @@ void TypedArray::set_type_from_variant(const Variant &p_variant) {
 	}
 }
 void TypedArray::set_type_from_array_element(const Variant &p_array) {
-	ERR_FAIL_COND(_p->array.size() > 0);
+	ERR_FAIL_COND(_p->type != Variant::NIL || _p->array.size() > 0);
 
 	switch (p_array.get_type()) {
 		case Variant::NIL:

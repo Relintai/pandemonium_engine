@@ -380,14 +380,14 @@
 			<argument index="0" name="object_type_name" type="StringName" />
 			<description>
 				Sets the name for the [Object] derived class if the type that is stored is TYPE_OBJECT.
-				Will print an error, and won't do anything if the size is greater than 0.
+				Can only be set once.
 			</description>
 		</method>
 		<method name="set_type_from">
 			<argument index="0" name="array" type="TypedArray" />
 			<description>
 				Copies the type information from an another PackedTypedArray.
-				Will print an error, and won't do anything if the size is greater than 0.
+				Can only be set once.
 			</description>
 		</method>
 		<method name="set_type_from_array_element">
@@ -395,28 +395,28 @@
 			<description>
 				This class sets itself up internally to take values from the given array.
 				Will print an error, and won't do anything if the given value is not any array type.
-				Will print an error, and won't do anything if the size is greater than 0.
+				Can only be set once.
 			</description>
 		</method>
 		<method name="set_type_from_name">
 			<argument index="0" name="type_name" type="StringName" />
 			<description>
 				Set the internally stored type using any type name.
-				Will print an error, and won't do anything if the size is greater than 0.
+				Can only be set once.
 			</description>
 		</method>
 		<method name="set_type_from_variant">
 			<argument index="0" name="variant" type="Variant" />
 			<description>
 				This class sets itself up internally to be able to store the given value.
-				Will print an error, and won't do anything if the size is greater than 0.
+				Can only be set once.
 			</description>
 		</method>
 		<method name="set_variant_type">
 			<argument index="0" name="variant_type" type="int" />
 			<description>
 				Sets the internally stored variant type.
-				Will print an error, and won't do anything if the size is greater than 0.
+				Can only be set once.
 			</description>
 		</method>
 		<method name="shuffle">

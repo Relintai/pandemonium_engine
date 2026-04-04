@@ -2770,10 +2770,14 @@ int PackedTypedArray::get_variant_type() const {
 	return _p->type;
 }
 void PackedTypedArray::set_variant_type(const int p_variant_type) {
+	ERR_FAIL_COND(_p->type != Variant::NIL || _p->data);
+
+	/*
 	if (_p->data) {
 		ERR_FAIL_COND(size() > 0);
 		_p->clear();
 	}
+	*/
 
 	_p->type = static_cast<Variant::Type>(p_variant_type);
 }
@@ -2782,10 +2786,14 @@ PackedTypedArray::IntType PackedTypedArray::get_int_type() const {
 	return _p->int_type;
 }
 void PackedTypedArray::set_int_type(const IntType p_int_type) {
+	ERR_FAIL_COND(_p->type != Variant::NIL || _p->data);
+
+	/*
 	if (_p->data) {
 		ERR_FAIL_COND(size() > 0);
 		_p->clear();
 	}
+	*/
 
 	_p->int_type = p_int_type;
 }
@@ -2794,10 +2802,15 @@ StringName PackedTypedArray::get_object_class_name() const {
 	return _p->object_class_name;
 }
 void PackedTypedArray::set_object_class_name(const StringName &p_object_type_name) {
+	ERR_FAIL_COND(_p->type != Variant::NIL || _p->data);
+	ERR_FAIL_COND(_p->type == Variant::OBJECT && _p->object_class_name != StringName());
+
+	/*
 	if (_p->data) {
 		ERR_FAIL_COND(size() > 0);
 		_p->clear();
 	}
+	*/
 
 	_p->object_class_name = p_object_type_name;
 	_p->is_global_class = ScriptServer::is_global_class(p_object_type_name);
@@ -2807,10 +2820,14 @@ void PackedTypedArray::set_object_class_name(const StringName &p_object_type_nam
 }
 
 void PackedTypedArray::set_type_from_name(const StringName &p_type_name) {
+	ERR_FAIL_COND(_p->type != Variant::NIL || _p->data);
+
+	/*
 	if (_p->data) {
 		ERR_FAIL_COND(size() > 0);
 		_p->clear();
 	}
+	*/
 
 	String type_name = p_type_name;
 	Variant::Type variant_type = Variant::VARIANT_MAX;
@@ -2841,10 +2858,14 @@ void PackedTypedArray::set_type_from_name(const StringName &p_type_name) {
 }
 
 void PackedTypedArray::set_type_from_variant(const Variant &p_variant) {
+	ERR_FAIL_COND(_p->type != Variant::NIL || _p->data);
+
+	/*
 	if (_p->data) {
 		ERR_FAIL_COND(size() > 0);
 		_p->clear();
 	}
+	*/
 
 	_p->type = p_variant.get_type();
 	_p->int_type = INT_TYPE_SIGNED_64;
@@ -2883,10 +2904,14 @@ void PackedTypedArray::set_type_from_variant(const Variant &p_variant) {
 }
 
 void PackedTypedArray::set_type_from_array_element(const Variant &p_array) {
+	ERR_FAIL_COND(_p->type != Variant::NIL || _p->data);
+
+	/*
 	if (_p->data) {
 		ERR_FAIL_COND(size() > 0);
 		_p->clear();
 	}
+	*/
 
 	switch (p_array.get_type()) {
 		case Variant::NIL:
@@ -3021,10 +3046,14 @@ void PackedTypedArray::set_type_from_array_element(const Variant &p_array) {
 }
 
 void PackedTypedArray::set_type_from(const PackedTypedArray &p_array) {
+	ERR_FAIL_COND(_p->type != Variant::NIL || _p->data);
+
+	/*
 	if (_p->data) {
 		ERR_FAIL_COND(size() > 0);
 		_p->clear();
 	}
+	*/
 
 	_p->type = p_array._p->type;
 	_p->object_class_name = p_array._p->object_class_name;
@@ -3164,8 +3193,8 @@ PackedTypedArray::PackedTypedArray(const StringName &p_type_name, const Variant 
 PackedTypedArray::PackedTypedArray(const StringName &p_type_name, const Variant &p_from, const IntType p_int_type) {
 	_p = memnew(PackedTypedArrayPrivate);
 	_p->refcount.init();
-	set_type_from_name(p_type_name);
 	_p->int_type = p_int_type;
+	set_type_from_name(p_type_name);
 	append_from(p_from);
 }
 
