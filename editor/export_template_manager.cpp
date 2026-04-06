@@ -393,8 +393,8 @@ Error ExportTemplateManager::install_android_template_from_file(const String &p_
 	err = da->make_dir_recursive("android/build");
 	ERR_FAIL_COND_V(err != OK, err);
 	{
-		// Add an empty .gdignore file to avoid scan.
-		FileAccessRef f = FileAccess::open("res://android/build/.gdignore", FileAccess::WRITE);
+		// Add an empty .pignore file to avoid scan.
+		FileAccessRef f = FileAccess::open("res://android/build/.pignore", FileAccess::WRITE);
 		ERR_FAIL_COND_V(!f, ERR_CANT_CREATE);
 		f->store_line("");
 		f->close();

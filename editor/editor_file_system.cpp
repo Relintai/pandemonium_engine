@@ -2008,16 +2008,16 @@ void EditorFileSystem::_create_project_data_dir_if_necessary() {
 	}
 	memdelete(da);
 
-	// Check that the project data directory '.gdignore' file exists
-	String project_data_gdignore_file_path = project_data_path.plus_file(".gdignore");
-	if (!FileAccess::exists(project_data_gdignore_file_path)) {
-		// Add an empty .gdignore file to avoid scan.
-		FileAccessRef f = FileAccess::open(project_data_gdignore_file_path, FileAccess::WRITE);
+	// Check that the project data directory '.pignore' file exists
+	String project_data_pignore_file_path = project_data_path.plus_file(".pignore");
+	if (!FileAccess::exists(project_data_pignore_file_path)) {
+		// Add an empty .pignore file to avoid scan.
+		FileAccessRef f = FileAccess::open(project_data_pignore_file_path, FileAccess::WRITE);
 		if (f) {
 			f->store_line("");
 			f->close();
 		} else {
-			ERR_FAIL_MSG("Failed to create file " + project_data_gdignore_file_path);
+			ERR_FAIL_MSG("Failed to create file " + project_data_pignore_file_path);
 		}
 	}
 }
@@ -2104,6 +2104,10 @@ bool EditorFileSystem::_should_skip_directory(const String &p_path) {
 	}
 
 	if (FileAccess::exists(p_path.plus_file("project.pandemonium"))) { // skip if another project inside this
+		return true;
+	}
+
+	if (FileAccess::exists(p_path.plus_file(".pignore"))) { // skip if a `.pignore` file is inside this
 		return true;
 	}
 

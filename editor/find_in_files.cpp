@@ -251,8 +251,8 @@ void FindInFiles::_scan_dir(String path, PoolStringArray &out_folders) {
 			break;
 		}
 
-		// If there is a .gdignore file in the directory, don't bother searching it
-		if (file == ".gdignore") {
+		// If there is a .pignore or .gdignore file in the directory, don't bother searching it
+		if (file == ".pignore" || file == ".gdignore") {
 			break;
 		}
 
