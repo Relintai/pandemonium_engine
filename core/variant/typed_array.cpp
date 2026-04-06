@@ -67,7 +67,7 @@ void TypedArray::_ref(const TypedArray &p_from) const {
 		return; // whatever it is, nothing to do here move along
 	}
 
-	if (_p->type != Variant::NIL) {
+	if (_p && _p->type != Variant::NIL) {
 		ERR_FAIL_COND(_p->type != _fp->type || _p->object_class_name != _fp->object_class_name || _p->is_global_class != _fp->is_global_class);
 	}
 
