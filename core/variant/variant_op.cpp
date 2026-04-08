@@ -292,6 +292,14 @@ bool Variant::booleanize() const {
 		_RETURN_FAIL                                                                                                                \
 	};
 
+#define DEFAULT_OP_STR_REV_SN(m_prefix, m_op_name, m_name, m_op, m_type)                                                            \
+	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                                                        \
+		if (p_b.type == STRING_NAME)                                                                                                \
+			_RETURN(*reinterpret_cast<const m_type *>(p_b._data._mem) m_op * reinterpret_cast<const StringName *>(p_a._data._mem)); \
+                                                                                                                                    \
+		_RETURN_FAIL                                                                                                                \
+	};
+
 #define DEFAULT_OP_STR(m_prefix, m_op_name, m_name, m_op, m_type)                                                                   \
 	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                                                        \
 		if (p_b.type == STRING)                                                                                                     \
@@ -300,6 +308,14 @@ bool Variant::booleanize() const {
 			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op * reinterpret_cast<const StringName *>(p_b._data._mem)); \
 		if (p_b.type == NODE_PATH)                                                                                                  \
 			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op * reinterpret_cast<const NodePath *>(p_b._data._mem));   \
+                                                                                                                                    \
+		_RETURN_FAIL                                                                                                                \
+	};
+
+#define DEFAULT_OP_STR_SN(m_prefix, m_op_name, m_name, m_op, m_type)                                                                \
+	CASE_TYPE(m_prefix, m_op_name, m_name) {                                                                                        \
+		if (p_b.type == STRING_NAME)                                                                                                \
+			_RETURN(*reinterpret_cast<const m_type *>(p_a._data._mem) m_op * reinterpret_cast<const StringName *>(p_b._data._mem)); \
                                                                                                                                     \
 		_RETURN_FAIL                                                                                                                \
 	};
@@ -915,6 +931,7 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			DEFAULT_OP_LOCALMEM(math, OP_LESS, VECTOR4, <, Vector4);
 			DEFAULT_OP_LOCALMEM(math, OP_LESS, VECTOR4I, <, Vector4i);
 			DEFAULT_OP_LOCALMEM(math, OP_LESS, RID, <, ::RID);
+			DEFAULT_OP_STR_SN(math, OP_LESS, STRING_NAME, <, StringName);
 
 			DEFAULT_OP_ARRAY_LT(math, OP_LESS, POOL_BYTE_ARRAY, uint8_t);
 			DEFAULT_OP_ARRAY_LT(math, OP_LESS, POOL_INT_ARRAY, int);
@@ -938,7 +955,6 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			CASE_TYPE(math, OP_LESS, TRANSFORM)
 			CASE_TYPE(math, OP_LESS, TRANSFORM2D)
 			CASE_TYPE(math, OP_LESS, PROJECTION)
-			CASE_TYPE(math, OP_LESS, STRING_NAME)
 			CASE_TYPE(math, OP_LESS, COLOR)
 			CASE_TYPE(math, OP_LESS, NODE_PATH)
 			CASE_TYPE(math, OP_LESS, DICTIONARY)
@@ -962,6 +978,7 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			DEFAULT_OP_LOCALMEM(math, OP_LESS_EQUAL, VECTOR4, <=, Vector4);
 			DEFAULT_OP_LOCALMEM(math, OP_LESS_EQUAL, VECTOR4I, <=, Vector4i);
 			DEFAULT_OP_LOCALMEM(math, OP_LESS_EQUAL, RID, <=, ::RID);
+			DEFAULT_OP_STR_SN(math, OP_LESS_EQUAL, STRING_NAME, <=, StringName);
 
 			CASE_TYPE(math, OP_LESS_EQUAL, NIL)
 			CASE_TYPE(math, OP_LESS_EQUAL, BOOL)
@@ -976,7 +993,6 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			CASE_TYPE(math, OP_LESS_EQUAL, PROJECTION)
 			CASE_TYPE(math, OP_LESS_EQUAL, COLOR)
 			CASE_TYPE(math, OP_LESS_EQUAL, NODE_PATH)
-			CASE_TYPE(math, OP_LESS_EQUAL, STRING_NAME)
 			CASE_TYPE(math, OP_LESS_EQUAL, DICTIONARY)
 			CASE_TYPE(math, OP_LESS_EQUAL, ARRAY)
 			CASE_TYPE(math, OP_LESS_EQUAL, TYPED_ARRAY)
@@ -1113,6 +1129,7 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			DEFAULT_OP_ARRAY_GT(math, OP_GREATER, POOL_VECTOR4_ARRAY, Vector4);
 			DEFAULT_OP_ARRAY_GT(math, OP_GREATER, POOL_VECTOR4I_ARRAY, Vector4i);
 			DEFAULT_OP_ARRAY_GT(math, OP_GREATER, POOL_COLOR_ARRAY, Color);
+			DEFAULT_OP_STR_REV_SN(math, OP_GREATER, STRING_NAME, <, StringName);
 
 			CASE_TYPE(math, OP_GREATER, NIL)
 			CASE_TYPE(math, OP_GREATER, RECT2)
@@ -1121,7 +1138,6 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			CASE_TYPE(math, OP_GREATER, QUATERNION)
 			CASE_TYPE(math, OP_GREATER, AABB)
 			CASE_TYPE(math, OP_GREATER, BASIS)
-			CASE_TYPE(math, OP_GREATER, STRING_NAME)
 			CASE_TYPE(math, OP_GREATER, TRANSFORM)
 			CASE_TYPE(math, OP_GREATER, TRANSFORM2D)
 			CASE_TYPE(math, OP_GREATER, PROJECTION)
@@ -1148,6 +1164,7 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			DEFAULT_OP_LOCALMEM_REV(math, OP_GREATER_EQUAL, VECTOR4, <=, Vector4);
 			DEFAULT_OP_LOCALMEM_REV(math, OP_GREATER_EQUAL, VECTOR4I, <=, Vector4i);
 			DEFAULT_OP_LOCALMEM_REV(math, OP_GREATER_EQUAL, RID, <=, ::RID);
+			DEFAULT_OP_STR_REV_SN(math, OP_GREATER_EQUAL, STRING_NAME, <=, StringName);
 
 			CASE_TYPE(math, OP_GREATER_EQUAL, NIL)
 			CASE_TYPE(math, OP_GREATER_EQUAL, BOOL)
@@ -1163,7 +1180,6 @@ void Variant::evaluate(const Operator &p_op, const Variant &p_a,
 			CASE_TYPE(math, OP_GREATER_EQUAL, COLOR)
 			CASE_TYPE(math, OP_GREATER_EQUAL, NODE_PATH)
 			CASE_TYPE(math, OP_GREATER_EQUAL, DICTIONARY)
-			CASE_TYPE(math, OP_GREATER_EQUAL, STRING_NAME)
 			CASE_TYPE(math, OP_GREATER_EQUAL, ARRAY)
 			CASE_TYPE(math, OP_GREATER_EQUAL, TYPED_ARRAY)
 			CASE_TYPE(math, OP_GREATER_EQUAL, PACKED_TYPED_ARRAY)
