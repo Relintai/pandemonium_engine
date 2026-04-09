@@ -7,10 +7,117 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="close">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="open">
+			<return type="int" enum="Error" />
+			<argument index="0" name="file" type="String" />
+			<argument index="1" name="open_mode" type="int" enum="ZipCompressor.OpenMode" />
+			<description>
+			</description>
+		</method>
+		<method name="unzip_close_current_file">
+			<return type="void" />
+			<description>
+			</description>
+		</method>
+		<method name="unzip_get_current_file_compressed_size">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="unzip_get_current_file_crc">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="unzip_get_current_file_data">
+			<return type="PoolByteArray" />
+			<description>
+			</description>
+		</method>
+		<method name="unzip_get_current_file_disk_num_start">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="unzip_get_current_file_external_file_attributes">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="unzip_get_current_file_internal_file_attributes">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="unzip_get_current_file_name">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="unzip_get_current_file_uncompressed_size">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="unzip_get_file_position">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="unzip_go_to_first_file">
+			<return type="int" enum="Error" />
+			<description>
+			</description>
+		</method>
+		<method name="unzip_locate_file">
+			<return type="int" enum="Error" />
+			<argument index="0" name="file_name" type="String" />
+			<argument index="1" name="case_sensitive" type="bool" default="true" />
+			<description>
+			</description>
+		</method>
+		<method name="unzip_next_file">
+			<return type="int" enum="Error" />
+			<description>
+			</description>
+		</method>
+		<method name="unzip_open_current_file">
+			<return type="int" enum="Error" />
+			<description>
+			</description>
+		</method>
+		<method name="unzip_read_file_chunk">
+			<return type="PoolByteArray" />
+			<argument index="0" name="max_length" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="unzip_seek_file">
+			<return type="void" />
+			<argument index="0" name="pos" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="unzip_to_folder">
 			<return type="int" enum="Error" />
 			<argument index="0" name="zip_file" type="String" />
 			<argument index="1" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="unzip_write_current_file_to_file">
+			<return type="void" />
+			<argument index="0" name="file_path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="zip_close_file_in_zip">
+			<return type="void" />
 			<description>
 			</description>
 		</method>
@@ -21,7 +128,40 @@
 			<description>
 			</description>
 		</method>
+		<method name="zip_open_new_file_in_zip">
+			<return type="void" />
+			<argument index="0" name="file_path" type="String" />
+			<argument index="1" name="mode" type="int" default="420" />
+			<description>
+			</description>
+		</method>
+		<method name="zip_write_data_to_in_file_in_zip">
+			<return type="void" />
+			<argument index="0" name="data" type="PoolByteArray" />
+			<description>
+			</description>
+		</method>
+		<method name="zip_write_file_to_in_file_in_zip">
+			<return type="void" />
+			<argument index="0" name="file_path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="zip_write_text_to_in_file_in_zip">
+			<return type="void" />
+			<argument index="0" name="text" type="String" />
+			<description>
+			</description>
+		</method>
 	</methods>
 	<constants>
+		<constant name="OPEN_MODE_CREATE" value="0" enum="OpenMode">
+		</constant>
+		<constant name="OPEN_MODE_CREATE_AFTER" value="1" enum="OpenMode">
+		</constant>
+		<constant name="OPEN_MODE_ADD_IN_ZIP" value="2" enum="OpenMode">
+		</constant>
+		<constant name="OPEN_MODE_UNZIP" value="3" enum="OpenMode">
+		</constant>
 	</constants>
 </class>

@@ -466,8 +466,48 @@ ZipCompressor::~ZipCompressor() {
 }
 
 void ZipCompressor::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("open", "file", "open_mode"), &ZipCompressor::open);
+	ClassDB::bind_method(D_METHOD("close"), &ZipCompressor::close);
+
+	// Zip creation
+
+	ClassDB::bind_method(D_METHOD("zip_open_new_file_in_zip", "file_path", "mode"), &ZipCompressor::zip_open_new_file_in_zip, DEFVAL(0000644));
+	ClassDB::bind_method(D_METHOD("zip_write_file_to_in_file_in_zip", "file_path"), &ZipCompressor::zip_write_file_to_in_file_in_zip);
+	ClassDB::bind_method(D_METHOD("zip_write_data_to_in_file_in_zip", "data"), &ZipCompressor::zip_write_data_to_in_file_in_zip);
+	ClassDB::bind_method(D_METHOD("zip_write_text_to_in_file_in_zip", "text"), &ZipCompressor::zip_write_text_to_in_file_in_zip);
+	ClassDB::bind_method(D_METHOD("zip_close_file_in_zip"), &ZipCompressor::zip_close_file_in_zip);
+
+	// Unzipping
+
+	ClassDB::bind_method(D_METHOD("unzip_go_to_first_file"), &ZipCompressor::unzip_go_to_first_file);
+	ClassDB::bind_method(D_METHOD("unzip_next_file"), &ZipCompressor::unzip_next_file);
+	ClassDB::bind_method(D_METHOD("unzip_locate_file", "file_name", "case_sensitive"), &ZipCompressor::unzip_locate_file, DEFVAL(true));
+
+	ClassDB::bind_method(D_METHOD("unzip_get_current_file_name"), &ZipCompressor::unzip_get_current_file_name);
+	ClassDB::bind_method(D_METHOD("unzip_get_current_file_internal_file_attributes"), &ZipCompressor::unzip_get_current_file_internal_file_attributes);
+	ClassDB::bind_method(D_METHOD("unzip_get_current_file_external_file_attributes"), &ZipCompressor::unzip_get_current_file_external_file_attributes);
+	ClassDB::bind_method(D_METHOD("unzip_get_current_file_compressed_size"), &ZipCompressor::unzip_get_current_file_compressed_size);
+	ClassDB::bind_method(D_METHOD("unzip_get_current_file_uncompressed_size"), &ZipCompressor::unzip_get_current_file_uncompressed_size);
+	ClassDB::bind_method(D_METHOD("unzip_get_current_file_crc"), &ZipCompressor::unzip_get_current_file_crc);
+	ClassDB::bind_method(D_METHOD("unzip_get_current_file_disk_num_start"), &ZipCompressor::unzip_get_current_file_disk_num_start);
+
+	ClassDB::bind_method(D_METHOD("unzip_open_current_file"), &ZipCompressor::unzip_open_current_file);
+	ClassDB::bind_method(D_METHOD("unzip_close_current_file"), &ZipCompressor::unzip_close_current_file);
+	ClassDB::bind_method(D_METHOD("unzip_read_file_chunk", "max_length"), &ZipCompressor::unzip_read_file_chunk);
+	ClassDB::bind_method(D_METHOD("unzip_get_file_position"), &ZipCompressor::unzip_get_file_position);
+	ClassDB::bind_method(D_METHOD("unzip_seek_file", "pos"), &ZipCompressor::unzip_seek_file);
+
+	ClassDB::bind_method(D_METHOD("unzip_write_current_file_to_file", "file_path"), &ZipCompressor::unzip_write_current_file_to_file);
+	ClassDB::bind_method(D_METHOD("unzip_get_current_file_data"), &ZipCompressor::unzip_get_current_file_data);
+
+	// Helper methods
 	ClassDB::bind_method(D_METHOD("zip_folder", "path", "zip_file"), &ZipCompressor::zip_folder);
 	ClassDB::bind_method(D_METHOD("unzip_to_folder", "zip_file", "path"), &ZipCompressor::unzip_to_folder);
+
+	BIND_ENUM_CONSTANT(OPEN_MODE_CREATE);
+	BIND_ENUM_CONSTANT(OPEN_MODE_CREATE_AFTER);
+	BIND_ENUM_CONSTANT(OPEN_MODE_ADD_IN_ZIP);
+	BIND_ENUM_CONSTANT(OPEN_MODE_UNZIP);
 }
 
 void ZipCompressor::_zip_folder_recursive(zipFile &p_zip, const String &p_root_path, const String &p_folder) {
