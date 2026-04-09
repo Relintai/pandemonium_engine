@@ -44,6 +44,51 @@ class ZipCompressor : public Reference {
 	GDCLASS(ZipCompressor, Reference);
 
 public:
+	enum OpenMode {
+		OPEN_MODE_CREATE = 0,
+		OPEN_MODE_CREATE_AFTER,
+		OPEN_MODE_ADD_IN_ZIP,
+		OPEN_MODE_UNZIP,
+	};
+
+	Error open(const String &p_file, const OpenMode p_open_mode);
+	void close();
+
+	// Zip creation
+
+	void zip_open_new_file_in_zip(const String &p_file_path);
+	void zip_write_file_to_in_file_in_zip(const String &p_file_path);
+	void zip_write_data_to_in_file_in_zip(const PoolByteArray &p_data);
+	void zip_write_text_to_in_file_in_zip(const String &p_text);
+	void zip_close_file_in_zip();
+
+	/*
+	zipOpenNewFileInZip4(p_zip, );
+	zipWriteInFileInZip(p_zip, buf, got);
+	zipCloseFileInZip(p_zip);
+	*/
+
+	// Unzipping
+
+	void unzip_go_to_first_file();
+	bool unzip_next_file();
+	void unzip_read_current_file();
+	void unzip_close_current_file();
+	void unzip_get_current_file_size();
+	void unzip_write_current_file_to_file();
+	PoolByteArray unzip_get_current_file_data();
+
+	/*
+	int ret = unzGoToFirstFile(pkg);
+	ret = unzGoToNextFile(pkg);
+	unzOpenCurrentFile(pkg);
+	unzReadCurrentFile(pkg, data.ptrw(), data.size());
+	unzCloseCurrentFile(pkg);
+
+	unzGetCurrentFileInfo(pkg, &info, fname, 16384, nullptr, 0, nullptr, 0);
+	*/
+
+	// Helper methods
 	Error zip_folder(const String &p_path, const String &p_zip_file);
 	Error unzip_to_folder(const String &p_zip_file, const String &p_path);
 
@@ -53,8 +98,19 @@ public:
 protected:
 	static void _bind_methods();
 
+	// Helper for zip_folder()
 	void _zip_folder_recursive(zipFile &p_zip, const String &p_root_path, const String &p_folder);
+
+	enum InternalMode {
+		INTERNAL_MODE_UNINITIALIZED,
+		INTERNAL_MODE_UNZIP,
+		INTERNAL_MODE_ZIP,
+	};
+
+	InternalMode _internal_mode;
 };
+
+VARIANT_ENUM_CAST(ZipCompressor::OpenMode);
 
 #endif
 

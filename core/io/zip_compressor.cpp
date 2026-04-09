@@ -136,6 +136,7 @@ Error ZipCompressor::unzip_to_folder(const String &p_zip_file, const String &p_p
 }
 
 ZipCompressor::ZipCompressor() {
+	_internal_mode = INTERNAL_MODE_UNINITIALIZED;
 }
 
 ZipCompressor::~ZipCompressor() {
