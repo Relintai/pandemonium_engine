@@ -209,7 +209,6 @@ Error ZipCompressor::unzip_to_folder(const String &p_zip_file, const String &p_p
 
 	String contents_dir = p_path.trim_suffix("/").trim_suffix("\\");
 
-	int fc = 0;
 	ret = unzGoToFirstFile(pkg);
 	while (ret == UNZ_OK) {
 		// Get filename.
@@ -256,7 +255,6 @@ Error ZipCompressor::unzip_to_folder(const String &p_zip_file, const String &p_p
 
 		if (!f) {
 			ret = unzGoToNextFile(pkg);
-			fc++;
 			ERR_CONTINUE_MSG(true, "Can't open file from path '" + String(to_write) + "'.");
 		}
 
@@ -267,7 +265,6 @@ Error ZipCompressor::unzip_to_folder(const String &p_zip_file, const String &p_p
 #endif
 
 		ret = unzGoToNextFile(pkg);
-		fc++;
 	}
 
 	unzClose(pkg);
