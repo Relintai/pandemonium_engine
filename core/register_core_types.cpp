@@ -60,6 +60,9 @@
 #include "core/io/translation_loader_po.h"
 #include "core/io/udp_server.h"
 #include "core/io/xml_parser.h"
+#ifdef MINIZIP_ENABLED
+#include "core/io/zip_compressor.h"
+#endif
 #include "core/log/logger_backend.h"
 #include "core/math/a_star.h"
 #include "core/math/expression.h"
@@ -222,6 +225,10 @@ void register_core_types() {
 	ClassDB::register_class<_StringBuilder>();
 
 	ClassDB::register_class<XMLParser>();
+
+#ifdef MINIZIP_ENABLED
+	ClassDB::register_class<ZipCompressor>();
+#endif
 
 	ClassDB::register_class<ConfigFile>();
 

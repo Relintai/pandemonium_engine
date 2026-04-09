@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="ZipCompressor" inherits="Reference">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="unzip_to_folder">
+			<return type="int" enum="Error" />
+			<argument index="0" name="zip_file" type="String" />
+			<argument index="1" name="path" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="zip_folder">
+			<return type="int" enum="Error" />
+			<argument index="0" name="path" type="String" />
+			<argument index="1" name="zip_file" type="String" />
+			<description>
+			</description>
+		</method>
+	</methods>
+	<constants>
+	</constants>
+</class>
