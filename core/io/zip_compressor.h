@@ -56,23 +56,17 @@ public:
 
 	// Zip creation
 
-	void zip_open_new_file_in_zip(const String &p_file_path);
+	void zip_open_new_file_in_zip(const String &p_file_path, const uint32_t p_mode = 0000644);
 	void zip_write_file_to_in_file_in_zip(const String &p_file_path);
 	void zip_write_data_to_in_file_in_zip(const PoolByteArray &p_data);
 	void zip_write_text_to_in_file_in_zip(const String &p_text);
 	void zip_close_file_in_zip();
 
-	/*
-	zipOpenNewFileInZip4(p_zip, );
-	zipWriteInFileInZip(p_zip, buf, got);
-	zipCloseFileInZip(p_zip);
-	*/
-
 	// Unzipping
 
-	void unzip_go_to_first_file();
-	bool unzip_next_file();
-	void unzip_read_current_file();
+	Error unzip_go_to_first_file();
+	Error unzip_next_file();
+	Error unzip_read_current_file();
 	void unzip_close_current_file();
 	void unzip_get_current_file_size();
 	void unzip_write_current_file_to_file();
@@ -108,6 +102,14 @@ protected:
 	};
 
 	InternalMode _internal_mode;
+
+	// Zip
+	FileAccess *_dst_f;
+	zlib_filefunc_def _io_dst;
+	zipFile _zip;
+
+	// Unzip
+	unzFile _unzip_file;
 };
 
 VARIANT_ENUM_CAST(ZipCompressor::OpenMode);

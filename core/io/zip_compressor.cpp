@@ -37,6 +37,146 @@
 #include "core/os/file_access.h"
 #include "core/os/os.h"
 
+Error ZipCompressor::open(const String &p_file, const OpenMode p_open_mode) {
+	if (_internal_mode != INTERNAL_MODE_UNINITIALIZED) {
+		close();
+	}
+
+	if (p_open_mode == OPEN_MODE_UNZIP) {
+		_dst_f = nullptr;
+		_io_dst = zipio_create_io_from_file(&_dst_f);
+
+		_unzip_file = unzOpen2(p_file.utf8().get_data(), &_io_dst);
+
+		if (!_unzip_file) {
+			return ERR_FILE_CANT_OPEN;
+		}
+
+		_internal_mode = INTERNAL_MODE_UNZIP;
+	} else {
+		_dst_f = nullptr;
+		_io_dst = zipio_create_io_from_file(&_dst_f);
+
+		int append = 0;
+
+		switch (p_open_mode) {
+			case OPEN_MODE_UNZIP:
+			case OPEN_MODE_CREATE:
+				append = APPEND_STATUS_CREATE;
+				break;
+			case OPEN_MODE_CREATE_AFTER:
+				append = APPEND_STATUS_CREATEAFTER;
+				break;
+			case OPEN_MODE_ADD_IN_ZIP:
+				append = APPEND_STATUS_ADDINZIP;
+				break;
+		}
+
+		_zip = zipOpen2(p_file.utf8().get_data(), append, nullptr, &_io_dst);
+
+		if (!_zip) {
+			return ERR_FILE_CANT_OPEN;
+		}
+
+		_internal_mode = INTERNAL_MODE_ZIP;
+	}
+
+	return OK;
+}
+void ZipCompressor::close() {
+	if (_internal_mode == INTERNAL_MODE_UNINITIALIZED) {
+		return;
+	}
+
+	if (_internal_mode == INTERNAL_MODE_UNZIP) {
+		unzClose(_unzip_file);
+	} else {
+		zipClose(_zip, nullptr);
+	}
+
+	_internal_mode = INTERNAL_MODE_UNINITIALIZED;
+}
+
+// Zip creation
+
+void ZipCompressor::zip_open_new_file_in_zip(const String &p_file_path, const uint32_t p_mode) {
+	ERR_FAIL_COND(_internal_mode != INTERNAL_MODE_ZIP);
+
+	OS::Time time = OS::get_singleton()->get_time();
+	OS::Date date = OS::get_singleton()->get_date();
+
+	zip_fileinfo zipfi;
+	zipfi.tmz_date.tm_hour = time.hour;
+	zipfi.tmz_date.tm_mday = date.day;
+	zipfi.tmz_date.tm_min = time.min;
+	zipfi.tmz_date.tm_mon = date.month - 1; // Note: "tm" month range - 0..11, Pandemonium month range - 1..12, http://www.cplusplus.com/reference/ctime/tm/
+	zipfi.tmz_date.tm_sec = time.sec;
+	zipfi.tmz_date.tm_year = date.year;
+	zipfi.dosDate = 0;
+	// 0120000: symbolic link type
+	// 0100000: regular file type
+	// 0000755: permissions rwxr-xr-x
+	// 0000644: permissions rw-r--r--
+	zipfi.external_fa = (p_mode << 16L) | !(p_mode & 0200);
+	zipfi.internal_fa = 0;
+
+	zipOpenNewFileInZip4(_zip,
+			p_file_path.utf8().get_data(),
+			&zipfi,
+			nullptr,
+			0,
+			nullptr,
+			0,
+			nullptr,
+			Z_DEFLATED,
+			Z_DEFAULT_COMPRESSION,
+			0,
+			-MAX_WBITS,
+			DEF_MEM_LEVEL,
+			Z_DEFAULT_STRATEGY,
+			nullptr,
+			0,
+			0x0314, // "version made by", 0x03 - Unix, 0x14 - ZIP specification version 2.0, required to store Unix file permissions
+			0);
+}
+void ZipCompressor::zip_write_file_to_in_file_in_zip(const String &p_file_path) {
+	ERR_FAIL_COND(_internal_mode != INTERNAL_MODE_ZIP);
+
+	FileAccessRef fa = FileAccess::open(p_file_path, FileAccess::READ);
+	if (!fa) {
+		ERR_PRINT(vformat(TTR("Could not open file to read from path \"%s\"."), p_file_path));
+		return;
+	}
+
+	const int bufsize = 16384;
+	uint8_t buf[bufsize];
+
+	while (true) {
+		uint64_t got = fa->get_buffer(buf, bufsize);
+		if (got == 0) {
+			break;
+		}
+		zipWriteInFileInZip(_zip, buf, got);
+	}
+}
+void ZipCompressor::zip_write_data_to_in_file_in_zip(const PoolByteArray &p_data) {
+	ERR_FAIL_COND(_internal_mode != INTERNAL_MODE_ZIP);
+
+	PoolByteArray::Read r = p_data.read();
+
+	zipWriteInFileInZip(_zip, r.ptr(), p_data.size());
+}
+void ZipCompressor::zip_write_text_to_in_file_in_zip(const String &p_text) {
+	ERR_FAIL_COND(_internal_mode != INTERNAL_MODE_ZIP);
+
+	zipWriteInFileInZip(_zip, p_text.utf8().get_data(), p_text.utf8().size());
+}
+void ZipCompressor::zip_close_file_in_zip() {
+	ERR_FAIL_COND(_internal_mode != INTERNAL_MODE_ZIP);
+
+	zipCloseFileInZip(_zip);
+}
+
 Error ZipCompressor::zip_folder(const String &p_path, const String &p_zip_file) {
 	FileAccess *dst_f = nullptr;
 	zlib_filefunc_def io_dst = zipio_create_io_from_file(&dst_f);
@@ -137,6 +277,7 @@ Error ZipCompressor::unzip_to_folder(const String &p_zip_file, const String &p_p
 
 ZipCompressor::ZipCompressor() {
 	_internal_mode = INTERNAL_MODE_UNINITIALIZED;
+	_dst_f = NULL;
 }
 
 ZipCompressor::~ZipCompressor() {
