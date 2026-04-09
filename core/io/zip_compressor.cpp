@@ -177,6 +177,189 @@ void ZipCompressor::zip_close_file_in_zip() {
 	zipCloseFileInZip(_zip);
 }
 
+// Unzipping
+
+Error ZipCompressor::unzip_go_to_first_file() {
+	ERR_FAIL_COND_V(_internal_mode != INTERNAL_MODE_UNZIP, ERR_UNCONFIGURED);
+
+	if (_unzip_file_open) {
+		unzip_close_current_file();
+	}
+
+	int ret = unzGoToFirstFile(_unzip_file);
+
+	if (ret == UNZ_OK) {
+		_unzip_load_file_info();
+		return OK;
+	}
+
+	return ERR_DOES_NOT_EXIST;
+}
+Error ZipCompressor::unzip_next_file() {
+	ERR_FAIL_COND_V(_internal_mode != INTERNAL_MODE_UNZIP, ERR_UNCONFIGURED);
+
+	if (_unzip_file_open) {
+		unzip_close_current_file();
+	}
+
+	int ret = unzGoToNextFile(_unzip_file);
+
+	if (ret == UNZ_END_OF_LIST_OF_FILE) {
+		return ERR_FILE_EOF;
+	}
+
+	if (ret == UNZ_OK) {
+		_unzip_load_file_info();
+		return OK;
+	}
+
+	return ERR_DOES_NOT_EXIST;
+}
+Error ZipCompressor::unzip_locate_file(const String &p_file_name, const bool p_case_sensitive) {
+	ERR_FAIL_COND_V(_internal_mode != INTERNAL_MODE_UNZIP, ERR_UNCONFIGURED);
+
+	if (_unzip_file_open) {
+		unzip_close_current_file();
+	}
+
+	int ret = unzLocateFile(_unzip_file, p_file_name.utf8().get_data(), p_case_sensitive ? 1 : 2);
+
+	if (ret == UNZ_OK) {
+		_unzip_load_file_info();
+		return OK;
+	}
+
+	return ERR_DOES_NOT_EXIST;
+}
+
+String ZipCompressor::unzip_get_current_file_name() {
+	return _unzip_current_file_name;
+}
+uint32_t ZipCompressor::unzip_get_current_file_internal_file_attributes() {
+	return _unzip_current_file_info.internal_fa;
+}
+uint32_t ZipCompressor::unzip_get_current_file_external_file_attributes() {
+	return _unzip_current_file_info.external_fa;
+}
+uint32_t ZipCompressor::unzip_get_current_file_compressed_size() {
+	return _unzip_current_file_info.compressed_size;
+}
+uint32_t ZipCompressor::unzip_get_current_file_uncompressed_size() {
+	return _unzip_current_file_info.uncompressed_size;
+}
+uint32_t ZipCompressor::unzip_get_current_file_crc() {
+	return _unzip_current_file_info.crc;
+}
+uint32_t ZipCompressor::unzip_get_current_file_disk_num_start() {
+	return _unzip_current_file_info.disk_num_start;
+}
+
+Error ZipCompressor::unzip_open_current_file() {
+	ERR_FAIL_COND_V(_internal_mode != INTERNAL_MODE_UNZIP, ERR_UNCONFIGURED);
+
+	if (_unzip_file_open) {
+		unzip_close_current_file();
+	}
+
+	if (unzOpenCurrentFile(_unzip_file) == UNZ_OK) {
+		_unzip_file_open = true;
+		_unzip_load_file_info();
+		return OK;
+	}
+
+	return ERR_FILE_CANT_OPEN;
+}
+void ZipCompressor::unzip_close_current_file() {
+	ERR_FAIL_COND(_internal_mode != INTERNAL_MODE_UNZIP);
+
+	if (!_unzip_file_open) {
+		return;
+	}
+
+	unzCloseCurrentFile(_unzip_file);
+	_unzip_file_open = false;
+}
+PoolByteArray ZipCompressor::unzip_read_file_chunk(const uint32_t p_max_length) {
+	ERR_FAIL_COND_V(_internal_mode != INTERNAL_MODE_UNZIP, PoolByteArray());
+	ERR_FAIL_COND_V(!_unzip_file_open, PoolByteArray());
+
+	PoolByteArray data;
+	data.resize(p_max_length);
+	PoolByteArray::Write w = data.write();
+
+	int size = unzReadCurrentFile(_unzip_file, w.ptr(), data.size());
+
+	ERR_FAIL_COND_V(size < 0, PoolByteArray());
+
+	data.resize(size);
+
+	return data;
+}
+uint32_t ZipCompressor::unzip_get_file_position() {
+	ERR_FAIL_COND_V(_internal_mode != INTERNAL_MODE_UNZIP, ERR_UNCONFIGURED);
+	ERR_FAIL_COND_V(!_unzip_file_open, ERR_UNCONFIGURED);
+
+	return unzGetOffset(_unzip_file);
+}
+void ZipCompressor::unzip_seek_file(const uint32_t p_pos) {
+	ERR_FAIL_COND(_internal_mode != INTERNAL_MODE_UNZIP);
+	ERR_FAIL_COND(!_unzip_file_open);
+
+	ERR_FAIL_COND(unzSetOffset(_unzip_file, p_pos) != UNZ_OK);
+}
+
+void ZipCompressor::unzip_write_current_file_to_file(const String &p_file_path) {
+	ERR_FAIL_COND(_internal_mode != INTERNAL_MODE_UNZIP);
+
+	if (_unzip_file_open) {
+		unzip_close_current_file();
+	}
+
+	Vector<uint8_t> data;
+	data.resize(_unzip_current_file_info.uncompressed_size);
+
+	// Read
+	unzOpenCurrentFile(_unzip_file);
+	unzReadCurrentFile(_unzip_file, data.ptrw(), data.size());
+	unzCloseCurrentFile(_unzip_file);
+
+	FileAccessRef f = FileAccess::open(p_file_path, FileAccess::WRITE);
+
+	ERR_FAIL_COND_MSG(!f, "Can't open file from path '" + p_file_path + "'.");
+
+	f->store_buffer(data.ptr(), data.size());
+
+#ifndef WINDOWS_ENABLED
+	FileAccess::set_unix_permissions(p_file_path, (_unzip_current_file_info.external_fa >> 16) & 0x01FF);
+#endif
+}
+PoolByteArray ZipCompressor::unzip_get_current_file_data() {
+	ERR_FAIL_COND_V(_internal_mode != INTERNAL_MODE_UNZIP, PoolByteArray());
+
+	if (_unzip_file_open) {
+		unzip_close_current_file();
+	}
+
+	PoolByteArray data;
+	data.resize(_unzip_current_file_info.uncompressed_size);
+	PoolByteArray::Write w = data.write();
+
+	// Read
+	unzOpenCurrentFile(_unzip_file);
+	unzReadCurrentFile(_unzip_file, w.ptr(), data.size());
+	unzCloseCurrentFile(_unzip_file);
+
+	return data;
+}
+
+void ZipCompressor::_unzip_load_file_info() {
+	char fname[16384];
+	unzGetCurrentFileInfo(_unzip_file, &_unzip_current_file_info, fname, 16384, nullptr, 0, nullptr, 0);
+
+	_unzip_current_file_name = String::utf8(fname).simplify_path();
+}
+
+// Helper methods
 Error ZipCompressor::zip_folder(const String &p_path, const String &p_zip_file) {
 	FileAccess *dst_f = nullptr;
 	zlib_filefunc_def io_dst = zipio_create_io_from_file(&dst_f);
@@ -275,6 +458,8 @@ Error ZipCompressor::unzip_to_folder(const String &p_zip_file, const String &p_p
 ZipCompressor::ZipCompressor() {
 	_internal_mode = INTERNAL_MODE_UNINITIALIZED;
 	_dst_f = NULL;
+	_unzip_file_open = false;
+	_unzip_file = NULL;
 }
 
 ZipCompressor::~ZipCompressor() {

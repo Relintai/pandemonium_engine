@@ -66,21 +66,24 @@ public:
 
 	Error unzip_go_to_first_file();
 	Error unzip_next_file();
-	Error unzip_read_current_file();
+	Error unzip_locate_file(const String &p_file_name, const bool p_case_sensitive = true);
+
+	String unzip_get_current_file_name();
+	uint32_t unzip_get_current_file_internal_file_attributes();
+	uint32_t unzip_get_current_file_external_file_attributes();
+	uint32_t unzip_get_current_file_compressed_size();
+	uint32_t unzip_get_current_file_uncompressed_size();
+	uint32_t unzip_get_current_file_crc();
+	uint32_t unzip_get_current_file_disk_num_start();
+
+	Error unzip_open_current_file();
 	void unzip_close_current_file();
-	void unzip_get_current_file_size();
-	void unzip_write_current_file_to_file();
+	PoolByteArray unzip_read_file_chunk(const uint32_t p_max_length);
+	uint32_t unzip_get_file_position();
+	void unzip_seek_file(const uint32_t p_pos);
+
+	void unzip_write_current_file_to_file(const String &p_file_path);
 	PoolByteArray unzip_get_current_file_data();
-
-	/*
-	int ret = unzGoToFirstFile(pkg);
-	ret = unzGoToNextFile(pkg);
-	unzOpenCurrentFile(pkg);
-	unzReadCurrentFile(pkg, data.ptrw(), data.size());
-	unzCloseCurrentFile(pkg);
-
-	unzGetCurrentFileInfo(pkg, &info, fname, 16384, nullptr, 0, nullptr, 0);
-	*/
 
 	// Helper methods
 	Error zip_folder(const String &p_path, const String &p_zip_file);
@@ -91,6 +94,8 @@ public:
 
 protected:
 	static void _bind_methods();
+
+	void _unzip_load_file_info();
 
 	// Helper for zip_folder()
 	void _zip_folder_recursive(zipFile &p_zip, const String &p_root_path, const String &p_folder);
@@ -110,6 +115,9 @@ protected:
 
 	// Unzip
 	unzFile _unzip_file;
+	unz_file_info _unzip_current_file_info;
+	bool _unzip_file_open;
+	String _unzip_current_file_name;
 };
 
 VARIANT_ENUM_CAST(ZipCompressor::OpenMode);
