@@ -190,6 +190,8 @@ public:
 	WebServer *get_server();
 	WebNode *get_web_root();
 
+	void emit_sent(const bool p_error);
+
 	WebServerRequest();
 	~WebServerRequest();
 

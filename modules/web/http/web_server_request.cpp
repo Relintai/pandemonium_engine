@@ -615,6 +615,10 @@ WebNode *WebServerRequest::get_web_root() {
 	return _web_root;
 }
 
+void WebServerRequest::emit_sent(const bool p_error) {
+	emit_signal("sent", p_error);
+}
+
 WebServerRequest::WebServerRequest() {
 	//session.unref();
 	//server = nullptr;
@@ -648,6 +652,8 @@ void WebServerRequest::_set_web_root(WebNode *v) {
 }
 
 void WebServerRequest::_bind_methods() {
+	ADD_SIGNAL(MethodInfo("sent", PropertyInfo(Variant::BOOL, "error")));
+
 	ClassDB::bind_method(D_METHOD("get_head"), &WebServerRequest::get_head);
 	ClassDB::bind_method(D_METHOD("set_head", "val"), &WebServerRequest::set_head);
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "head"), "set_head", "get_head");
@@ -789,4 +795,6 @@ void WebServerRequest::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_server"), &WebServerRequest::get_server);
 	ClassDB::bind_method(D_METHOD("get_web_root"), &WebServerRequest::get_web_root);
+
+	ClassDB::bind_method(D_METHOD("emit_sent", "error"), &WebServerRequest::emit_sent);
 }

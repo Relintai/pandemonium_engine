@@ -47,7 +47,12 @@ void HTTPServerConnection::update() {
 	}
 
 	if (OS::get_singleton()->get_ticks_usec() - time > _timeout_usec) {
+		if (_current_request.is_valid()) {
+			_current_request->emit_sent(true);
+		}
+
 		close();
+
 		return;
 	}
 
@@ -64,6 +69,10 @@ void HTTPServerConnection::update() {
 			Ref<CryptoKey> key = Ref<CryptoKey>(CryptoKey::create());
 			Error err = key->load(_http_server->_ssl_key_file);
 			if (err != OK) {
+				if (_current_request.is_valid()) {
+					_current_request->emit_sent(true);
+				}
+
 				close();
 				ERR_FAIL_COND(err != OK);
 			}
@@ -71,11 +80,19 @@ void HTTPServerConnection::update() {
 			_certificate = Ref<X509Certificate>(X509Certificate::create());
 			err = _certificate->load(_http_server->_ssl_cert_file);
 			if (err != OK) {
+				if (_current_request.is_valid()) {
+					_current_request->emit_sent(true);
+				}
+
 				close();
 				ERR_FAIL_COND(err != OK);
 			}
 
 			if (ssl->accept_stream(tcp, key, _certificate) != OK) {
+				if (_current_request.is_valid()) {
+					_current_request->emit_sent(true);
+				}
+
 				close();
 				return;
 			}
@@ -89,6 +106,10 @@ void HTTPServerConnection::update() {
 		}
 
 		if (ssl->get_status() != StreamPeerSSL::STATUS_CONNECTED) {
+			if (_current_request.is_valid()) {
+				_current_request->emit_sent(true);
+			}
+
 			close();
 			return;
 		}
@@ -110,6 +131,8 @@ void HTTPServerConnection::update() {
 			// we will get back to this
 			return;
 		}
+
+		_current_request->emit_sent(false);
 
 		_current_request.unref();
 	}
@@ -163,6 +186,8 @@ void HTTPServerConnection::update() {
 			return;
 		}
 
+		_current_request->emit_sent(false);
+
 		_current_request.unref();
 
 		if (_http_parser->get_request_count() == 0 && _http_parser->is_finished()) {
@@ -171,6 +196,10 @@ void HTTPServerConnection::update() {
 	}
 
 	if (_http_parser->has_error()) {
+		if (_current_request.is_valid()) {
+			_current_request->emit_sent(true);
+		}
+
 		close();
 	}
 }
@@ -657,6 +686,8 @@ void HTTPServerConnection::send_raw_data(Ref<WebServerRequest> request, const Po
 
 	Error err = peer->put_data((const uint8_t *)cs.get_data(), cs.size() - 1);
 	if (err != OK) {
+		r->emit_sent(true);
+
 		close();
 		return;
 	}
@@ -703,6 +734,7 @@ void HTTPServerConnection::update_send_file(Ref<SimpleWebServerRequest> request)
 
 		if (err != OK) {
 			close_file(request);
+			request->emit_sent(true);
 			close();
 			_file_buffer_start = 0;
 			_file_buffer_end = 0;
@@ -759,6 +791,7 @@ void HTTPServerConnection::update_send_data(Ref<SimpleWebServerRequest> request)
 
 		if (err != OK) {
 			request->_raw_data_buffer.clear();
+			request->emit_sent(true);
 			close();
 			_raw_data_buffer_start = 0;
 			_raw_data_buffer_end = 0;
@@ -779,10 +812,16 @@ void HTTPServerConnection::update_send_data(Ref<SimpleWebServerRequest> request)
 	_raw_data_buffer_end = 0;
 }
 
-void HTTPServerConnection::close() {
+void HTTPServerConnection::close(const bool p_forced) {
 #if CONNECTION_OPEN_CLOSE_DEBUG
 	ERR_PRINT("CONN CLOSE");
 #endif
+
+	if (p_forced) {
+		if (_current_request.is_valid()) {
+			_current_request->emit_sent(true);
+		}
+	}
 
 	if (ssl.is_valid()) {
 		ssl->disconnect_from_stream();
@@ -1127,7 +1166,7 @@ void HTTPServerSimple::_clear_clients() {
 
 	_connections_lock.write_lock();
 	for (List<Ref<HTTPServerConnection>>::Element *e = _connections.front(); e; e = e->next()) {
-		e->get()->close();
+		e->get()->close(true);
 	}
 
 	_connections.clear();

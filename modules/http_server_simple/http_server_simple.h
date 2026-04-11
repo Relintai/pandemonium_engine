@@ -69,7 +69,7 @@ public:
 	void update_send_file(Ref<SimpleWebServerRequest> request);
 	void update_send_data(Ref<SimpleWebServerRequest> request);
 
-	void close();
+	void close(const bool p_forced = false);
 	bool closed();
 
 	bool has_more_messages();

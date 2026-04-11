@@ -125,6 +125,13 @@
 				Returns all the custom response headers that were previously set.
 			</description>
 		</method>
+		<method name="emit_sent">
+			<return type="void" />
+			<argument index="0" name="error" type="bool" />
+			<description>
+				Emits the sent signal.
+			</description>
+		</method>
 		<method name="get_cookie">
 			<return type="String" />
 			<argument index="0" name="key" type="String" />
@@ -339,6 +346,7 @@
 			<return type="String" />
 			<argument index="0" name="add" type="String" />
 			<description>
+				Equivalent to [code]get_url_root_current() + add[/code];
 			</description>
 		</method>
 		<method name="get_url_root_parent" qualifiers="const">
@@ -588,6 +596,14 @@
 			The status code that the server will set in the response.
 		</member>
 	</members>
+	<signals>
+		<signal name="sent">
+			<argument index="0" name="error" type="bool" />
+			<description>
+				Emitted when this request is sent. The error parameter tells whether there was an error while sending.
+			</description>
+		</signal>
+	</signals>
 	<constants>
 	</constants>
 </class>
