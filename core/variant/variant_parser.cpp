@@ -1448,26 +1448,11 @@ Error VariantParser::_parse_typed_array(TypedArray &array, Stream *p_stream, int
 	// Currently at type
 
 	String type_name = token.value;
-	StringName object_type_name;
-	Variant::Type variant_type = Variant::VARIANT_MAX;
-
-	for (int i = 0; i < Variant::VARIANT_MAX; i++) {
-		if (type_name == Variant::get_type_name(Variant::Type(i))) {
-			variant_type = Variant::Type(i);
-			break;
-		}
-	}
-
-	if (variant_type == Variant::VARIANT_MAX) {
-		variant_type = Variant::OBJECT;
-	}
-
-	object_type_name = type_name;
+	StringName object_type_name = type_name;
 
 	// TODO validate object_type_name
 
-	array.set_variant_type(variant_type);
-	array.set_object_class_name(object_type_name);
+	array.set_type_from_name(object_type_name);
 
 	// Consume ,
 	if (p_stream->is_eof()) {
@@ -1586,26 +1571,11 @@ Error VariantParser::_parse_packed_typed_array(PackedTypedArray &array, Stream *
 	// Currently at type
 
 	String type_name = token.value;
-	StringName object_type_name;
-	Variant::Type variant_type = Variant::VARIANT_MAX;
-
-	for (int i = 0; i < Variant::VARIANT_MAX; i++) {
-		if (type_name == Variant::get_type_name(Variant::Type(i))) {
-			variant_type = Variant::Type(i);
-			break;
-		}
-	}
-
-	if (variant_type == Variant::VARIANT_MAX) {
-		variant_type = Variant::OBJECT;
-	}
-
-	object_type_name = type_name;
+	StringName object_type_name = type_name;
 
 	// TODO validate object_type_name
 
-	array.set_variant_type(variant_type);
-	array.set_object_class_name(object_type_name);
+	array.set_type_from_name(object_type_name);
 
 	// Consume ,
 	if (p_stream->is_eof()) {
