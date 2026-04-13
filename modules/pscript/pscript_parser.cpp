@@ -4448,6 +4448,90 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 									_ADVANCE_AND_CONSUME_NEWLINES;
 
 								} break;
+								case Variant::TYPED_ARRAY: {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER) {
+										current_export.hint = PROPERTY_HINT_RESOURCE_TYPE;
+										current_export.hint_string = tokenizer->get_token_identifier();
+										_ADVANCE_AND_CONSUME_NEWLINES;
+										if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+											_set_error("Expected \")\" in the hint.");
+											return;
+										}
+									} else if (tokenizer->get_token() == PScriptTokenizer::TK_BUILT_IN_TYPE) {
+										current_export.hint = PROPERTY_HINT_RESOURCE_TYPE;
+										current_export.hint_string = Variant::get_type_name(tokenizer->get_token_type());
+										_ADVANCE_AND_CONSUME_NEWLINES;
+										if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+											_set_error("Expected \")\" in the hint.");
+											return;
+										}
+									}
+								} break;
+
+								case Variant::PACKED_TYPED_ARRAY: {
+									if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER) {
+										current_export.hint = PROPERTY_HINT_RESOURCE_TYPE;
+										current_export.hint_string = tokenizer->get_token_identifier();
+										_ADVANCE_AND_CONSUME_NEWLINES;
+									} else if (tokenizer->get_token() == PScriptTokenizer::TK_BUILT_IN_TYPE) {
+										current_export.hint = PROPERTY_HINT_RESOURCE_TYPE;
+										current_export.hint_string = Variant::get_type_name(tokenizer->get_token_type());
+										_ADVANCE_AND_CONSUME_NEWLINES;
+									}
+
+									if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
+										_ADVANCE_AND_CONSUME_NEWLINES;
+
+										if (tokenizer->get_token() == PScriptTokenizer::TK_CONSTANT && tokenizer->get_token_constant().is_num()) {
+											int int_type = tokenizer->get_token_constant();
+
+											if (int_type < PackedTypedArray::INT_TYPE_SIGNED_8 || int_type > PackedTypedArray::INT_TYPE_UNSIGNED_64) {
+												_set_error("Number must be a value from PackedTypedArray.IntType.");
+												return;
+											}
+
+											current_export.hint_string += ":" + String::num(int_type);
+										} else if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER) {
+											int int_type = -1;
+
+											String enum_value_identifier = tokenizer->get_token_identifier();
+
+											if (enum_value_identifier == "INT_TYPE_SIGNED_8") {
+												int_type = PackedTypedArray::INT_TYPE_SIGNED_8;
+											} else if (enum_value_identifier == "INT_TYPE_UNSIGNED_8") {
+												int_type = PackedTypedArray::INT_TYPE_UNSIGNED_8;
+											} else if (enum_value_identifier == "INT_TYPE_SIGNED_16") {
+												int_type = PackedTypedArray::INT_TYPE_SIGNED_16;
+											} else if (enum_value_identifier == "INT_TYPE_UNSIGNED_16") {
+												int_type = PackedTypedArray::INT_TYPE_UNSIGNED_16;
+											} else if (enum_value_identifier == "INT_TYPE_SIGNED_32") {
+												int_type = PackedTypedArray::INT_TYPE_SIGNED_32;
+											} else if (enum_value_identifier == "INT_TYPE_UNSIGNED_32") {
+												int_type = PackedTypedArray::INT_TYPE_UNSIGNED_32;
+											} else if (enum_value_identifier == "INT_TYPE_SIGNED_64") {
+												int_type = PackedTypedArray::INT_TYPE_SIGNED_64;
+											} else if (enum_value_identifier == "INT_TYPE_UNSIGNED_64") {
+												int_type = PackedTypedArray::INT_TYPE_UNSIGNED_64;
+											} else {
+												_set_error("Identifier must be a value from PackedTypedArray.IntType.");
+												return;
+											}
+
+											current_export.hint_string += ":" + String::num(int_type);
+										} else {
+											_set_error("Number must be a value from PackedTypedArray.IntType, or a value's name.");
+											return;
+										}
+
+										_ADVANCE_AND_CONSUME_NEWLINES;
+									}
+
+									if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+										_set_error("Expected \")\" in the hint.");
+										return;
+									}
+
+								} break;
 								default: {
 									current_export = PropertyInfo();
 									_set_error("Type \"" + Variant::get_type_name(type) + "\" can't take hints.");
@@ -8905,7 +8989,7 @@ Error PScriptParser::_parse(const String &p_base_path) {
 #ifdef DEBUG_ENABLED
 
 	// Resolve warning ignores
-	Vector<Pair<int, String> > warning_skips = tokenizer->get_warning_skips();
+	Vector<Pair<int, String>> warning_skips = tokenizer->get_warning_skips();
 	GLOBAL_CACHED(global_treat_warnings_as_errors, bool, "debug/pscript/warnings/treat_warnings_as_errors");
 
 	bool warning_is_error = global_treat_warnings_as_errors;
