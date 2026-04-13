@@ -196,6 +196,57 @@ bool PScriptParser::_parse_arguments(Node *p_parent, Vector<Node *> &p_args, boo
 				return false;
 			}
 
+			// Turn builtin type to a StringName
+			// This allows builtin types to be used as is in function parameters:
+			// TypedArray(int);
+			if (arg->type == Node::TYPE_TYPE) {
+				TypeNode *tn = static_cast<TypeNode *>(arg);
+				DataType dt = tn->get_datatype();
+
+				StringName type_name = Variant::get_type_name(tn->vtype);
+
+				ConstantNode *cn = alloc_node<ConstantNode>();
+				cn->value = type_name;
+				cn->datatype = _type_from_variant(cn->value);
+
+				arg = cn;
+			}
+
+			// Turn builtin type to a StringName
+			// This allows Native types, and global classes to be used as is in function parameters:
+			// TypedArray(Mesh);
+			if (arg->type == Node::TYPE_CONSTANT) {
+				ConstantNode *cn = static_cast<ConstantNode *>(arg);
+
+				if (cn->datatype.has_type) {
+					if (cn->datatype.kind == DataType::NATIVE) {
+						Variant value = cn->value;
+						PScriptNativeClass *nc = Object::cast_to<PScriptNativeClass>(value);
+
+						if (nc) {
+							ConstantNode *cnn = alloc_node<ConstantNode>();
+							cnn->value = nc->get_name();
+							cnn->datatype = _type_from_variant(cnn->value);
+							arg = cnn;
+						}
+					}
+				} else {
+					Variant value = cn->value;
+					Script *sc = Object::cast_to<Script>(value);
+
+					if (sc) {
+						String global_class_name = sc->get_global_class_name();
+
+						if (!global_class_name.empty()) {
+							ConstantNode *cnn = alloc_node<ConstantNode>();
+							cnn->value = StringName(global_class_name);
+							cnn->datatype = _type_from_variant(cnn->value);
+							arg = cnn;
+						}
+					}
+				}
+			}
+
 			p_args.push_back(arg);
 
 			if (tokenizer->get_token() == PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
@@ -1125,6 +1176,11 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 			e.op = OperatorNode::OP_IS_BUILTIN;
 			expression.write[expression.size() - 1] = e;
 
+			TypeNode *tn = alloc_node<TypeNode>();
+			tn->vtype = tokenizer->get_token_type();
+			expr = tn;
+			tokenizer->advance();
+		} else if (tokenizer->get_token() == PScriptTokenizer::TK_BUILT_IN_TYPE) {
 			TypeNode *tn = alloc_node<TypeNode>();
 			tn->vtype = tokenizer->get_token_type();
 			expr = tn;
