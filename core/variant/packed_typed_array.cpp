@@ -2806,7 +2806,7 @@ StringName PackedTypedArray::get_object_class_name() const {
 	return _p->object_class_name;
 }
 void PackedTypedArray::set_object_class_name(const StringName &p_object_type_name) {
-	ERR_FAIL_COND(_p->type != Variant::NIL || _p->data);
+	ERR_FAIL_COND((_p->type != Variant::NIL && _p->type != Variant::OBJECT) || _p->data);
 	ERR_FAIL_COND(_p->type == Variant::OBJECT && _p->object_class_name != StringName());
 
 	/*
