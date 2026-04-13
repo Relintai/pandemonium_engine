@@ -1196,6 +1196,7 @@ bool TypedArray::can_take_variant(const Variant &p_value) const {
 				StringName global_class_name = script->get_global_class_name();
 
 				if (global_class_name == StringName()) {
+					script = script->get_base_script();
 					continue;
 				}
 
