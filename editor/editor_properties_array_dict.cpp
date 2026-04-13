@@ -251,26 +251,31 @@ void EditorPropertyArray::update_property() {
 		case Variant::TYPED_ARRAY: {
 			arrtype = "TypedArray";
 
-			TypedArray a = array;
-			subtype = Variant::Type(a.get_variant_type());
-			subtype_hint_string = a.get_object_class_name();
-			if (subtype == Variant::OBJECT) {
-				subtype_hint = PROPERTY_HINT_RESOURCE_TYPE;
-			} else {
-				subtype_hint = PROPERTY_HINT_NONE;
+			if (subtype == Variant::NIL) {
+				TypedArray a = array;
+				subtype = Variant::Type(a.get_variant_type());
+				subtype_hint_string = a.get_object_class_name();
+				if (subtype == Variant::OBJECT) {
+					subtype_hint = PROPERTY_HINT_RESOURCE_TYPE;
+				} else {
+					subtype_hint = PROPERTY_HINT_NONE;
+				}
 			}
 
 		} break;
 		case Variant::PACKED_TYPED_ARRAY: {
 			arrtype = "PackedTypedArray";
 
-			PackedTypedArray a = array;
-			subtype = Variant::Type(a.get_variant_type());
-			subtype_hint_string = a.get_object_class_name();
-			if (subtype == Variant::OBJECT) {
-				subtype_hint = PROPERTY_HINT_RESOURCE_TYPE;
-			} else {
-				subtype_hint = PROPERTY_HINT_NONE;
+			if (subtype == Variant::NIL) {
+				PackedTypedArray a = array;
+				subtype = Variant::Type(a.get_variant_type());
+				subtype_hint_string = a.get_object_class_name();
+				if (subtype == Variant::OBJECT) {
+					subtype_hint = PROPERTY_HINT_RESOURCE_TYPE;
+				} else {
+					subtype_hint = PROPERTY_HINT_NONE;
+				}
+				packed_typed_array_int_type = a.get_int_type();
 			}
 
 		} break;
@@ -688,6 +693,48 @@ void EditorPropertyArray::setup(Variant::Type p_array_type, const String &p_hint
 			subtype_hint_string = p_hint_string.substr(hint_subtype_separator + 1, p_hint_string.size() - hint_subtype_separator - 1);
 			subtype = Variant::Type(subtype_string.to_int());
 		}
+	} else if (array_type == Variant::TYPED_ARRAY && !p_hint_string.empty()) {
+		for (int i = 0; i < Variant::VARIANT_MAX; i++) {
+			if (p_hint_string == Variant::get_type_name(Variant::Type(i))) {
+				subtype = Variant::Type(i);
+				break;
+			}
+		}
+
+		if (subtype == Variant::VARIANT_MAX) {
+			subtype = Variant::OBJECT;
+		}
+
+		if (subtype == Variant::OBJECT) {
+			subtype_hint_string = p_hint_string;
+		}
+
+	} else if (array_type == Variant::PACKED_TYPED_ARRAY && !p_hint_string.empty()) {
+		String type_hint_string = p_hint_string;
+
+		int hint_int_type_separator = p_hint_string.find(":");
+		if (hint_int_type_separator >= 0) {
+			type_hint_string = p_hint_string.substr(0, hint_int_type_separator);
+
+			String int_size_string = p_hint_string.substr(hint_int_type_separator + 1, p_hint_string.size() - hint_int_type_separator - 1);
+
+			packed_typed_array_int_type = static_cast<PackedTypedArray::IntType>(int_size_string.to_int());
+		}
+
+		for (int i = 0; i < Variant::VARIANT_MAX; i++) {
+			if (type_hint_string == Variant::get_type_name(Variant::Type(i))) {
+				subtype = Variant::Type(i);
+				break;
+			}
+		}
+
+		if (subtype == Variant::VARIANT_MAX) {
+			subtype = Variant::OBJECT;
+		}
+
+		if (subtype == Variant::OBJECT) {
+			subtype_hint_string = p_hint_string;
+		}
 	}
 }
 
@@ -817,6 +864,7 @@ EditorPropertyArray::EditorPropertyArray() {
 	subtype_hint_string = "";
 
 	dropping = false;
+	packed_typed_array_int_type = PackedTypedArray::INT_TYPE_SIGNED_64;
 }
 
 ///////////////////// DICTIONARY ///////////////////////////

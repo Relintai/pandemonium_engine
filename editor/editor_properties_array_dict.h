@@ -111,6 +111,7 @@ class EditorPropertyArray : public EditorProperty {
 	Variant::Type subtype;
 	PropertyHint subtype_hint;
 	String subtype_hint_string;
+	PackedTypedArray::IntType packed_typed_array_int_type;
 
 	int reorder_from_index = -1;
 	int reorder_to_index = -1;
