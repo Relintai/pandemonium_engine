@@ -617,7 +617,7 @@ void PScriptFunctions::call(Function p_func, const Variant **p_args, int p_arg_c
 				r_ret = Variant();
 				return;
 			}
-			if (p_args[1]->get_type() != Variant::STRING && p_args[1]->get_type() != Variant::NODE_PATH) {
+			if (p_args[1]->get_type() != Variant::STRING && p_args[1]->get_type() != Variant::STRING_NAME && p_args[1]->get_type() != Variant::NODE_PATH) {
 				r_error.error = Variant::CallError::CALL_ERROR_INVALID_ARGUMENT;
 				r_error.argument = 1;
 				r_error.expected = Variant::STRING;
