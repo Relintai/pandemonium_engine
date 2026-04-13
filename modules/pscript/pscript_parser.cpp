@@ -4452,7 +4452,9 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 									if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER) {
 										current_export.hint = PROPERTY_HINT_RESOURCE_TYPE;
 										current_export.hint_string = tokenizer->get_token_identifier();
+
 										_ADVANCE_AND_CONSUME_NEWLINES;
+
 										if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 											_set_error("Expected \")\" in the hint.");
 											return;
@@ -4460,7 +4462,26 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 									} else if (tokenizer->get_token() == PScriptTokenizer::TK_BUILT_IN_TYPE) {
 										current_export.hint = PROPERTY_HINT_RESOURCE_TYPE;
 										current_export.hint_string = Variant::get_type_name(tokenizer->get_token_type());
+
 										_ADVANCE_AND_CONSUME_NEWLINES;
+
+										if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+											_set_error("Expected \")\" in the hint.");
+											return;
+										}
+									} else if (tokenizer->get_token() == PScriptTokenizer::TK_CONSTANT) {
+										Variant val = tokenizer->get_token_constant();
+
+										if (val.get_type() != Variant::STRING && val.get_type() != Variant::STRING_NAME) {
+											_set_error("Expected String or StringName constant in the hint.");
+											return;
+										}
+
+										current_export.hint = PROPERTY_HINT_RESOURCE_TYPE;
+										current_export.hint_string = val;
+
+										_ADVANCE_AND_CONSUME_NEWLINES;
+
 										if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
 											_set_error("Expected \")\" in the hint.");
 											return;
@@ -4476,6 +4497,18 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 									} else if (tokenizer->get_token() == PScriptTokenizer::TK_BUILT_IN_TYPE) {
 										current_export.hint = PROPERTY_HINT_RESOURCE_TYPE;
 										current_export.hint_string = Variant::get_type_name(tokenizer->get_token_type());
+										_ADVANCE_AND_CONSUME_NEWLINES;
+									} else if (tokenizer->get_token() == PScriptTokenizer::TK_CONSTANT) {
+										Variant val = tokenizer->get_token_constant();
+
+										if (val.get_type() != Variant::STRING && val.get_type() != Variant::STRING_NAME) {
+											_set_error("Expected String or StringName constant in the hint.");
+											return;
+										}
+
+										current_export.hint = PROPERTY_HINT_RESOURCE_TYPE;
+										current_export.hint_string = val;
+
 										_ADVANCE_AND_CONSUME_NEWLINES;
 									}
 
