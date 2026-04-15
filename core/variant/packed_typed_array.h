@@ -160,8 +160,7 @@ public:
 
 	PackedTypedArray();
 	PackedTypedArray(const PackedTypedArray &p_from);
-	PackedTypedArray(const StringName &p_type_name, const Variant &p_from);
-	PackedTypedArray(const StringName &p_type_name, const Variant &p_from, const IntType p_int_type);
+	PackedTypedArray(const StringName &p_type_name, const IntType p_int_type);
 
 	// Both this and the TypedArray(const TypedArray &p_from); constructors are useful,
 	// but having them both will do lots of clashes when converting from Variant.

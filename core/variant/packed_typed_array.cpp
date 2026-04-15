@@ -3189,18 +3189,11 @@ PackedTypedArray::PackedTypedArray(const PackedTypedArray &p_from) {
 	_ref(p_from);
 }
 
-PackedTypedArray::PackedTypedArray(const StringName &p_type_name, const Variant &p_from) {
-	_p = memnew(PackedTypedArrayPrivate);
-	_p->refcount.init();
-	append_from(p_from);
-}
-
-PackedTypedArray::PackedTypedArray(const StringName &p_type_name, const Variant &p_from, const IntType p_int_type) {
+PackedTypedArray::PackedTypedArray(const StringName &p_type_name, const IntType p_int_type) {
 	_p = memnew(PackedTypedArrayPrivate);
 	_p->refcount.init();
 	_p->int_type = p_int_type;
 	set_type_from_name(p_type_name);
-	append_from(p_from);
 }
 
 /*

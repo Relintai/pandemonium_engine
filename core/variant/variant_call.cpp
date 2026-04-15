@@ -1979,17 +1979,11 @@ struct _VariantCall {
 	}
 
 	static void PackedTypedArray_init1(Variant &r_ret, const Variant **p_args) {
-		r_ret = PackedTypedArray((*p_args[0]).operator StringName(), *p_args[1], (PackedTypedArray::IntType)(p_args[2]->operator int()));
+		r_ret = PackedTypedArray((*p_args[0]).operator StringName(), (PackedTypedArray::IntType)(p_args[1]->operator int()));
 	}
 
 	static void PackedTypedArray_init2(Variant &r_ret, const Variant **p_args) {
-		r_ret = PackedTypedArray((*p_args[0]).operator StringName(), *p_args[1]);
-	}
-
-	static void PackedTypedArray_init3(Variant &r_ret, const Variant **p_args) {
-		PackedTypedArray a;
-		a.set_type_from_name((*p_args[0]).operator StringName());
-		r_ret = a;
+		r_ret = PackedTypedArray((*p_args[0]).operator StringName(), PackedTypedArray::INT_TYPE_SIGNED_64);
 	}
 
 	static void add_constructor(VariantConstructFunc p_func, const Variant::Type p_type,
@@ -3754,9 +3748,8 @@ void register_variant_methods() {
 	_VariantCall::add_constructor(_VariantCall::TypedArray_init1, Variant::TYPED_ARRAY, "type_name", Variant::STRING_NAME, "from", Variant::NIL);
 	_VariantCall::add_constructor(_VariantCall::TypedArray_init2, Variant::TYPED_ARRAY, "type_name", Variant::STRING_NAME);
 
-	_VariantCall::add_constructor(_VariantCall::PackedTypedArray_init1, Variant::PACKED_TYPED_ARRAY, "type_name", Variant::STRING_NAME, "from", Variant::NIL, "int_type", Variant::INT);
-	_VariantCall::add_constructor(_VariantCall::PackedTypedArray_init2, Variant::PACKED_TYPED_ARRAY, "type_name", Variant::STRING_NAME, "from", Variant::NIL);
-	_VariantCall::add_constructor(_VariantCall::PackedTypedArray_init3, Variant::PACKED_TYPED_ARRAY, "type_name", Variant::STRING_NAME);
+	_VariantCall::add_constructor(_VariantCall::PackedTypedArray_init1, Variant::PACKED_TYPED_ARRAY, "type_name", Variant::STRING_NAME, "int_type", Variant::INT);
+	_VariantCall::add_constructor(_VariantCall::PackedTypedArray_init2, Variant::PACKED_TYPED_ARRAY, "type_name", Variant::STRING_NAME);
 
 	/* REGISTER CONSTANTS */
 
