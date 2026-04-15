@@ -88,7 +88,7 @@ public:
 					bool templates_ok = true;
 
 					// Even if we have TypedArray, we don't want to check if template args are unset, because
-					// Untemplates TypedArrays have to be supported (mostly due to how bindings work)
+					// Untemplated TypedArrays have to be supported (mostly due to how bindings work)
 					if (template_arguments != StringName() && other.template_arguments != StringName()) {
 						templates_ok = template_arguments == other.template_arguments;
 					}
