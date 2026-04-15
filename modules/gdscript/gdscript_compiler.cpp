@@ -126,6 +126,7 @@ GDScriptDataType GDScriptCompiler::_gdtype_from_datatype(const GDScriptParser::D
 		case GDScriptParser::DataType::BUILTIN: {
 			result.kind = GDScriptDataType::BUILTIN;
 			result.builtin_type = p_datatype.builtin_type;
+			result.template_arguments = p_datatype.template_arguments;
 		} break;
 		case GDScriptParser::DataType::NATIVE: {
 			result.kind = GDScriptDataType::NATIVE;

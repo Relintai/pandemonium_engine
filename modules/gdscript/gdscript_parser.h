@@ -65,6 +65,10 @@ public:
 		StringName native_type;
 		Ref<Script> script_type;
 		ClassNode *class_type;
+		// Only relevant for TypedArray and PackedTypedArray, StringName() for every other case
+		// TypedArray: <type>
+		// PackedTypedArray: if int: <type>:<int type>  else: <type>
+		StringName template_arguments;
 
 		String to_string() const;
 
@@ -77,7 +81,15 @@ public:
 			}
 			switch (kind) {
 				case BUILTIN: {
-					return builtin_type == other.builtin_type;
+					bool templates_ok = true;
+
+					// Even if we have TypedArray, we don't want to check if template args are unset, because
+					// Untemplated TypedArrays have to be supported (mostly due to how bindings work)
+					if (template_arguments != StringName() && other.template_arguments != StringName()) {
+						templates_ok = template_arguments == other.template_arguments;
+					}
+
+					return builtin_type == other.builtin_type && templates_ok;
 				} break;
 				case NATIVE: {
 					return native_type == other.native_type;
