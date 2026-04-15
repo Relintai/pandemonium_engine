@@ -1156,6 +1156,189 @@ GDScriptParser::Node *GDScriptParser::_parse_expression(Node *p_parent, bool p_s
 			tn->vtype = tokenizer->get_token_type();
 			expr = tn;
 			tokenizer->advance();
+		} else if (tokenizer->get_token() == GDScriptTokenizer::TK_BUILT_IN_TYPE && tokenizer->get_token(next_valid_offset) == GDScriptTokenizer::TK_OP_LESS) {
+			OperatorNode *op = alloc_node<OperatorNode>();
+			op->op = OperatorNode::OP_CALL;
+
+			TypeNode *tn = alloc_node<TypeNode>();
+			tn->vtype = tokenizer->get_token_type();
+			op->arguments.push_back(tn);
+
+			if (tokenizer->get_token_type() == Variant::TYPED_ARRAY) {
+				if (tokenizer->get_token(1) == GDScriptTokenizer::TK_OP_LESS) {
+					tokenizer->advance();
+					tokenizer->advance();
+
+					if (tokenizer->get_token() == GDScriptTokenizer::TK_CURSOR) {
+						completion_cursor = StringName();
+						completion_type = COMPLETION_TYPE_HINT;
+						completion_class = current_class;
+						completion_function = current_function;
+						completion_line = tokenizer->get_token_line();
+						completion_argument = 0;
+						completion_block = current_block;
+						completion_found = true;
+						completion_ident_is_call = false;
+						tokenizer->advance();
+					}
+
+					StringName type_arg;
+
+					if (tokenizer->get_token() == GDScriptTokenizer::TK_BUILT_IN_TYPE) {
+						type_arg = Variant::get_type_name(tokenizer->get_token_type());
+					} else if (tokenizer->get_token() == GDScriptTokenizer::TK_IDENTIFIER) {
+						type_arg = tokenizer->get_token_identifier();
+					} else if (tokenizer->get_token() == GDScriptTokenizer::TK_PR_VOID) {
+						type_arg = "Nil";
+					} else {
+						_set_error("Unexpected token.");
+						return nullptr;
+					}
+
+					tokenizer->advance();
+					if (tokenizer->get_token() != GDScriptTokenizer::TK_OP_GREATER) {
+						_set_error("Missing '>'.");
+						return nullptr;
+					}
+
+					// Create node
+
+					ConstantNode *constant = alloc_node<ConstantNode>();
+					constant->value = type_arg;
+					constant->datatype = _type_from_variant(constant->value);
+					constant->line = tokenizer->get_token_line();
+					op->arguments.push_back(constant);
+				}
+			} else if (tokenizer->get_token_type() == Variant::PACKED_TYPED_ARRAY) {
+				if (tokenizer->get_token(1) == GDScriptTokenizer::TK_OP_LESS) {
+					tokenizer->advance();
+					tokenizer->advance();
+
+					if (tokenizer->get_token() == GDScriptTokenizer::TK_CURSOR) {
+						completion_cursor = StringName();
+						completion_type = COMPLETION_TYPE_HINT;
+						completion_class = current_class;
+						completion_function = current_function;
+						completion_line = tokenizer->get_token_line();
+						completion_argument = 0;
+						completion_block = current_block;
+						completion_found = true;
+						completion_ident_is_call = false;
+						tokenizer->advance();
+					}
+
+					StringName type_arg;
+
+					if (tokenizer->get_token() == GDScriptTokenizer::TK_BUILT_IN_TYPE) {
+						type_arg = Variant::get_type_name(tokenizer->get_token_type());
+					} else if (tokenizer->get_token() == GDScriptTokenizer::TK_IDENTIFIER) {
+						type_arg = tokenizer->get_token_identifier();
+					} else if (tokenizer->get_token() == GDScriptTokenizer::TK_PR_VOID) {
+						type_arg = "Nil";
+					} else {
+						_set_error("Unexpected token.");
+						return nullptr;
+					}
+
+					ConstantNode *constant = alloc_node<ConstantNode>();
+					constant->value = type_arg;
+					constant->datatype = _type_from_variant(constant->value);
+					constant->line = tokenizer->get_token_line();
+					op->arguments.push_back(constant);
+
+					tokenizer->advance();
+
+					if (tokenizer->get_token() == GDScriptTokenizer::TK_COMMA) {
+						tokenizer->advance();
+
+						if (tokenizer->get_token() == GDScriptTokenizer::TK_CURSOR) {
+							completion_cursor = StringName();
+							completion_type = COMPLETION_BUILT_IN_TYPE_CONSTANT;
+							completion_built_in_constant = Variant::PACKED_TYPED_ARRAY;
+							completion_class = current_class;
+							completion_function = current_function;
+							completion_line = tokenizer->get_token_line();
+							completion_argument = 0;
+							completion_block = current_block;
+							completion_found = true;
+							completion_ident_is_call = false;
+							tokenizer->advance();
+						}
+
+						if (tokenizer->get_token() == GDScriptTokenizer::TK_CONSTANT && tokenizer->get_token_constant().is_num()) {
+							int int_type = tokenizer->get_token_constant();
+
+							if (int_type < PackedTypedArray::INT_TYPE_SIGNED_8 || int_type > PackedTypedArray::INT_TYPE_UNSIGNED_64) {
+								_set_error("Number must be a value from PackedTypedArray.IntType.");
+								return nullptr;
+							}
+
+							constant = alloc_node<ConstantNode>();
+							constant->value = int_type;
+							constant->datatype = _type_from_variant(constant->value);
+							constant->line = tokenizer->get_token_line();
+							op->arguments.push_back(constant);
+
+							tokenizer->advance();
+						} else if (tokenizer->get_token() == GDScriptTokenizer::TK_IDENTIFIER) {
+							int int_type = -1;
+
+							String enum_value_identifier = tokenizer->get_token_identifier();
+
+							if (enum_value_identifier == "INT_TYPE_SIGNED_8") {
+								int_type = PackedTypedArray::INT_TYPE_SIGNED_8;
+							} else if (enum_value_identifier == "INT_TYPE_UNSIGNED_8") {
+								int_type = PackedTypedArray::INT_TYPE_UNSIGNED_8;
+							} else if (enum_value_identifier == "INT_TYPE_SIGNED_16") {
+								int_type = PackedTypedArray::INT_TYPE_SIGNED_16;
+							} else if (enum_value_identifier == "INT_TYPE_UNSIGNED_16") {
+								int_type = PackedTypedArray::INT_TYPE_UNSIGNED_16;
+							} else if (enum_value_identifier == "INT_TYPE_SIGNED_32") {
+								int_type = PackedTypedArray::INT_TYPE_SIGNED_32;
+							} else if (enum_value_identifier == "INT_TYPE_UNSIGNED_32") {
+								int_type = PackedTypedArray::INT_TYPE_UNSIGNED_32;
+							} else if (enum_value_identifier == "INT_TYPE_SIGNED_64") {
+								int_type = PackedTypedArray::INT_TYPE_SIGNED_64;
+							} else if (enum_value_identifier == "INT_TYPE_UNSIGNED_64") {
+								int_type = PackedTypedArray::INT_TYPE_UNSIGNED_64;
+							} else {
+								_set_error("Unexpected token.");
+								return nullptr;
+							}
+
+							constant = alloc_node<ConstantNode>();
+							constant->value = int_type;
+							constant->datatype = _type_from_variant(constant->value);
+							constant->line = tokenizer->get_token_line();
+							op->arguments.push_back(constant);
+
+							tokenizer->advance();
+						} else {
+							_set_error("Number must be a value from PackedTypedArray.IntType, or a value's name.");
+
+							// Hack to avoid a bunch of errors like this: ERROR: Condition "tk_rb[ofs].type != TK_IDENTIFIER" is true. Returned: StringName()
+							// From _parse_class().
+							if (tokenizer->get_token() == GDScriptTokenizer::TK_OP_GREATER) {
+								tokenizer->advance();
+							}
+
+							return nullptr;
+						}
+					}
+
+					if (tokenizer->get_token() != GDScriptTokenizer::TK_OP_GREATER) {
+						_set_error("Missing '>'.");
+						return nullptr;
+					}
+				}
+			}
+
+			tokenizer->advance(2);
+
+			if (!_parse_arguments(op, op->arguments, p_static, true, p_parsing_constant)) {
+				return nullptr;
+			}
+			expr = op;
 		} else {
 			//find list [ or find dictionary {
 			_set_error("Error parsing expression, misplaced: " + String(tokenizer->get_token_name(tokenizer->get_token())));
