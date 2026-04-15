@@ -1131,6 +1131,11 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 			tokenizer->advance();
 
 		} else if (tokenizer->get_token() == PScriptTokenizer::TK_BUILT_IN_TYPE && tokenizer->get_token(next_valid_offset) == PScriptTokenizer::TK_OP_LESS) {
+			// Special Handling for:
+			// .. var = TypedArray<type>();
+			// .. var = PackedTypedArray<type>();
+			// .. var = PackedTypedArray<type, int type>();
+
 			OperatorNode *op = alloc_node<OperatorNode>();
 			op->op = OperatorNode::OP_CALL;
 
