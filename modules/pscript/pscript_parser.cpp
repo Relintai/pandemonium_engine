@@ -4606,13 +4606,19 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 												return;
 											}
 
-											current_export.hint_string += ":" + String::num(int_type);
+											if (current_export.hint_string == "int") {
+												current_export.hint_string += ":" + String::num(int_type);
+											}
 										} else {
 											_set_error("Number must be a value from PackedTypedArray.IntType, or a value's name.");
 											return;
 										}
 
 										_ADVANCE_AND_CONSUME_NEWLINES;
+									} else {
+										if (current_export.hint_string == "int") {
+											current_export.hint_string += ":" + String::num((int)PackedTypedArray::INT_TYPE_SIGNED_64);
+										}
 									}
 
 									if (tokenizer->get_token() != PScriptTokenizer::TK_PARENTHESIS_CLOSE) {
@@ -5559,6 +5565,13 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 										_add_warning(PScriptWarning::EXPORT_HINT_TYPE_MISTMATCH, member.line, Variant::get_type_name(cn->value.get_type()), Variant::get_type_name(member._export.type));
 									}
 								}
+
+								if (member._export.type == Variant::TYPED_ARRAY || member._export.type == Variant::PACKED_TYPED_ARRAY) {
+									if (member.data_type.template_arguments != member._export.hint_string) {
+										_set_error(vformat("Can't convert the provided value to the export type. Template arguments: \"%s\", Hint string: \"%s\"", String(member.data_type.template_arguments), member._export.hint_string));
+										return;
+									}
+								}
 							}
 							member.default_value = cn->value;
 						}
@@ -5894,7 +5907,10 @@ String PScriptParser::DataType::to_string() const {
 		case BUILTIN: {
 			if (builtin_type == Variant::NIL) {
 				return "null";
+			} else if (builtin_type == Variant::TYPED_ARRAY || builtin_type == Variant::PACKED_TYPED_ARRAY) {
+				return Variant::get_type_name(builtin_type) + "<" + String(template_arguments) + ">";
 			}
+
 			return Variant::get_type_name(builtin_type);
 		} break;
 		case NATIVE: {
@@ -6005,6 +6021,161 @@ bool PScriptParser::_parse_type(DataType &r_type, bool p_can_be_void, bool p_adv
 				r_type.native_type = "Object";
 			} else {
 				r_type.kind = DataType::BUILTIN;
+
+				if (tokenizer->get_token_type() == Variant::TYPED_ARRAY) {
+					if (tokenizer->get_token(1) == PScriptTokenizer::TK_OP_LESS) {
+						tokenizer->advance();
+						tokenizer->advance();
+
+						if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
+							completion_cursor = StringName();
+							completion_type = COMPLETION_TYPE_HINT;
+							completion_class = current_class;
+							completion_function = current_function;
+							completion_line = tokenizer->get_token_line();
+							completion_argument = 0;
+							completion_block = current_block;
+							completion_found = true;
+							completion_ident_is_call = p_can_be_void;
+							tokenizer->advance();
+						}
+
+						if (tokenizer->get_token() == PScriptTokenizer::TK_BUILT_IN_TYPE) {
+							r_type.template_arguments = Variant::get_type_name(tokenizer->get_token_type());
+						} else if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER) {
+							r_type.template_arguments = tokenizer->get_token_identifier();
+						} else if (tokenizer->get_token() == PScriptTokenizer::TK_PR_VARIANT) {
+							// Do nothing
+						} else if (tokenizer->get_token() == PScriptTokenizer::TK_PR_VOID) {
+							// Do nothing
+						} else {
+							_set_error("Unexpected token.");
+							return false;
+						}
+
+						tokenizer->advance();
+						if (tokenizer->get_token() != PScriptTokenizer::TK_OP_GREATER) {
+							_set_error("Missing '>'.");
+							return false;
+						}
+					}
+				} else if (tokenizer->get_token_type() == Variant::PACKED_TYPED_ARRAY) {
+					if (tokenizer->get_token(1) == PScriptTokenizer::TK_OP_LESS) {
+						tokenizer->advance();
+						tokenizer->advance();
+
+						if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
+							completion_cursor = StringName();
+							completion_type = COMPLETION_TYPE_HINT;
+							completion_class = current_class;
+							completion_function = current_function;
+							completion_line = tokenizer->get_token_line();
+							completion_argument = 0;
+							completion_block = current_block;
+							completion_found = true;
+							completion_ident_is_call = p_can_be_void;
+							tokenizer->advance();
+						}
+
+						if (tokenizer->get_token() == PScriptTokenizer::TK_BUILT_IN_TYPE) {
+							r_type.template_arguments = Variant::get_type_name(tokenizer->get_token_type());
+						} else if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER) {
+							r_type.template_arguments = tokenizer->get_token_identifier();
+						} else if (tokenizer->get_token() == PScriptTokenizer::TK_PR_VARIANT) {
+							// Do nothing
+						} else if (tokenizer->get_token() == PScriptTokenizer::TK_PR_VOID) {
+							// Do nothing
+						} else {
+							_set_error("Unexpected token.");
+							return false;
+						}
+
+						tokenizer->advance();
+
+						if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
+							tokenizer->advance();
+
+							if (tokenizer->get_token() == PScriptTokenizer::TK_CURSOR) {
+								completion_cursor = StringName();
+								completion_type = COMPLETION_BUILT_IN_TYPE_CONSTANT;
+								completion_built_in_constant = Variant::PACKED_TYPED_ARRAY;
+								completion_class = current_class;
+								completion_function = current_function;
+								completion_line = tokenizer->get_token_line();
+								completion_argument = 0;
+								completion_block = current_block;
+								completion_found = true;
+								completion_ident_is_call = p_can_be_void;
+								tokenizer->advance();
+							}
+
+							if (tokenizer->get_token() == PScriptTokenizer::TK_CONSTANT && tokenizer->get_token_constant().is_num()) {
+								int int_type = tokenizer->get_token_constant();
+
+								if (int_type < PackedTypedArray::INT_TYPE_SIGNED_8 || int_type > PackedTypedArray::INT_TYPE_UNSIGNED_64) {
+									_set_error("Number must be a value from PackedTypedArray.IntType.");
+									return false;
+								}
+
+								if (r_type.template_arguments == "int") {
+									r_type.template_arguments = String(r_type.template_arguments) + ":" + String::num(int_type);
+								}
+
+								tokenizer->advance();
+							} else if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER) {
+								int int_type = -1;
+
+								String enum_value_identifier = tokenizer->get_token_identifier();
+
+								if (enum_value_identifier == "INT_TYPE_SIGNED_8") {
+									int_type = PackedTypedArray::INT_TYPE_SIGNED_8;
+								} else if (enum_value_identifier == "INT_TYPE_UNSIGNED_8") {
+									int_type = PackedTypedArray::INT_TYPE_UNSIGNED_8;
+								} else if (enum_value_identifier == "INT_TYPE_SIGNED_16") {
+									int_type = PackedTypedArray::INT_TYPE_SIGNED_16;
+								} else if (enum_value_identifier == "INT_TYPE_UNSIGNED_16") {
+									int_type = PackedTypedArray::INT_TYPE_UNSIGNED_16;
+								} else if (enum_value_identifier == "INT_TYPE_SIGNED_32") {
+									int_type = PackedTypedArray::INT_TYPE_SIGNED_32;
+								} else if (enum_value_identifier == "INT_TYPE_UNSIGNED_32") {
+									int_type = PackedTypedArray::INT_TYPE_UNSIGNED_32;
+								} else if (enum_value_identifier == "INT_TYPE_SIGNED_64") {
+									int_type = PackedTypedArray::INT_TYPE_SIGNED_64;
+								} else if (enum_value_identifier == "INT_TYPE_UNSIGNED_64") {
+									int_type = PackedTypedArray::INT_TYPE_UNSIGNED_64;
+								} else {
+									_set_error("Unexpected token.");
+									return false;
+								}
+
+								if (r_type.template_arguments == "int") {
+									r_type.template_arguments = String(r_type.template_arguments) + ":" + String::num(int_type);
+								}
+
+								tokenizer->advance();
+							} else {
+								_set_error("Number must be a value from PackedTypedArray.IntType, or a value's name.");
+
+								// Hack to avoid a bunch of errors like this: ERROR: Condition "tk_rb[ofs].type != TK_IDENTIFIER" is true. Returned: StringName()
+								// From _parse_class().
+								if (tokenizer->get_token() == PScriptTokenizer::TK_OP_GREATER) {
+									tokenizer->advance();
+								}
+
+								return false;
+							}
+						} else {
+							if (r_type.template_arguments == "int") {
+								r_type.template_arguments = String(r_type.template_arguments) + ":" + String::num((int)PackedTypedArray::INT_TYPE_SIGNED_64);
+							}
+						}
+
+						if (tokenizer->get_token() != PScriptTokenizer::TK_OP_GREATER) {
+							_set_error("Missing '>'.");
+							return false;
+						}
+					}
+				}
 			}
 		} break;
 		case PScriptTokenizer::TK_IDENTIFIER: {
@@ -6321,6 +6492,26 @@ PScriptParser::DataType PScriptParser::_type_from_variant(const Variant &p_value
 		} else {
 			result.kind = DataType::NATIVE;
 		}
+	} else if (result.builtin_type == Variant::TYPED_ARRAY) {
+		TypedArray arr = p_value;
+		if (arr.get_variant_type() != Variant::NIL) {
+			String typename_str = arr.get_typename_string();
+			if (!typename_str.empty()) {
+				result.template_arguments = typename_str;
+			}
+		}
+	} else if (result.builtin_type == Variant::PACKED_TYPED_ARRAY) {
+		PackedTypedArray arr = p_value;
+		if (arr.get_variant_type() != Variant::NIL) {
+			String typename_str = arr.get_typename_string();
+			if (!typename_str.empty()) {
+				if (typename_str == "int") {
+					result.template_arguments = typename_str + ":" + String::num((int)arr.get_int_type());
+				} else {
+					result.template_arguments = typename_str;
+				}
+			}
+		}
 	}
 
 	return result;
@@ -6352,6 +6543,17 @@ PScriptParser::DataType PScriptParser::_type_from_property(const PropertyInfo &p
 				ret.native_type = p_property.class_name;
 			}
 		}
+	} else if (p_property.type == Variant::TYPED_ARRAY) {
+		ret.kind = DataType::BUILTIN;
+		if (p_property.hint == PROPERTY_HINT_RESOURCE_TYPE) {
+			ret.template_arguments = p_property.hint_string;
+		}
+	} else if (p_property.type == Variant::PACKED_TYPED_ARRAY) {
+		ret.kind = DataType::BUILTIN;
+		if (p_property.hint == PROPERTY_HINT_RESOURCE_TYPE) {
+			// Should already in the proper form
+			ret.template_arguments = p_property.hint_string;
+		}
 	} else {
 		ret.kind = DataType::BUILTIN;
 	}
@@ -6368,6 +6570,7 @@ PScriptParser::DataType PScriptParser::_type_from_ptype(const PScriptDataType &p
 	result.builtin_type = p_ptype.builtin_type;
 	result.native_type = p_ptype.native_type;
 	result.script_type = Ref<Script>(p_ptype.script_type);
+	result.template_arguments = p_ptype.template_arguments;
 
 	switch (p_ptype.kind) {
 		case PScriptDataType::UNINITIALIZED: {
@@ -6549,9 +6752,22 @@ bool PScriptParser::_is_type_compatible(const DataType &p_container, const DataT
 
 	if (p_container.kind == DataType::BUILTIN && p_expression.kind == DataType::BUILTIN) {
 		bool valid = p_container.builtin_type == p_expression.builtin_type;
-		if (p_allow_implicit_conversion) {
-			valid = valid || Variant::can_convert_strict(p_expression.builtin_type, p_container.builtin_type);
+		// Check template hints
+
+		if (valid) {
+			if (p_container.builtin_type == Variant::TYPED_ARRAY || p_container.builtin_type == Variant::PACKED_TYPED_ARRAY) {
+				if (p_container.template_arguments != StringName() && p_expression.template_arguments != StringName()) {
+					return p_container.template_arguments == p_expression.template_arguments;
+				} else {
+					return true;
+				}
+			}
+		} else {
+			if (p_allow_implicit_conversion) {
+				valid = valid || Variant::can_convert_strict(p_expression.builtin_type, p_container.builtin_type);
+			}
 		}
+
 		return valid;
 	}
 

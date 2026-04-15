@@ -56,6 +56,7 @@ struct PScriptDataType {
 	StringName native_type;
 	Script *script_type;
 	Ref<Script> script_type_ref;
+	StringName template_arguments;
 
 	bool is_type(const Variant &p_variant, bool p_allow_implicit_conversion = false) const {
 		if (!has_type) {
@@ -68,6 +69,29 @@ struct PScriptDataType {
 			case BUILTIN: {
 				Variant::Type var_type = p_variant.get_type();
 				bool valid = builtin_type == var_type;
+
+				if (valid) {
+					if (builtin_type == Variant::TYPED_ARRAY) {
+						if (template_arguments != StringName()) {
+							TypedArray arr = p_variant;
+
+							return arr.get_typename_string() == template_arguments;
+						}
+					} else if (builtin_type == Variant::TYPED_ARRAY) {
+						if (template_arguments != StringName()) {
+							PackedTypedArray arr = p_variant;
+
+							String typename_string = arr.get_typename_string();
+
+							if (typename_string == "int") {
+								typename_string += ":" + String::num((int)arr.get_int_type());
+							}
+
+							return arr.get_typename_string() == template_arguments;
+						}
+					}
+				}
+
 				if (!valid && p_allow_implicit_conversion) {
 					valid = Variant::can_convert_strict(var_type, builtin_type);
 				}
@@ -132,6 +156,14 @@ struct PScriptDataType {
 					break;
 				case BUILTIN: {
 					info.type = builtin_type;
+
+					if (builtin_type == Variant::TYPED_ARRAY || builtin_type == Variant::PACKED_TYPED_ARRAY) {
+						if (template_arguments != StringName()) {
+							info.hint = PROPERTY_HINT_RESOURCE_TYPE;
+							info.hint_string = template_arguments;
+						}
+					}
+
 				} break;
 				case NATIVE: {
 					info.type = Variant::OBJECT;

@@ -126,6 +126,7 @@ PScriptDataType PScriptCompiler::_ptype_from_datatype(const PScriptParser::DataT
 		case PScriptParser::DataType::BUILTIN: {
 			result.kind = PScriptDataType::BUILTIN;
 			result.builtin_type = p_datatype.builtin_type;
+			result.template_arguments = p_datatype.template_arguments;
 		} break;
 		case PScriptParser::DataType::NATIVE: {
 			result.kind = PScriptDataType::NATIVE;
