@@ -4963,7 +4963,9 @@ void GDScriptParser::_parse_class(ClassNode *p_class) {
 												return;
 											}
 
-											current_export.hint_string += ":" + String::num(int_type);
+											if (current_export.hint_string == "int") {
+												current_export.hint_string += ":" + String::num(int_type);
+											}
 										} else if (tokenizer->get_token() == GDScriptTokenizer::TK_IDENTIFIER) {
 											int int_type = -1;
 
