@@ -5251,6 +5251,11 @@ void GDScriptParser::_parse_class(ClassNode *p_class) {
 					if (member.data_type.kind == DataType::BUILTIN) {
 						member._export.type = member.data_type.builtin_type;
 						member._export.usage |= PROPERTY_USAGE_SCRIPT_VARIABLE;
+
+						if (member.data_type.template_arguments != StringName()) {
+							member._export.hint = PROPERTY_HINT_RESOURCE_TYPE;
+							member._export.hint_string = member.data_type.template_arguments;
+						}
 					} else if (member.data_type.kind == DataType::NATIVE) {
 						if (ClassDB::is_parent_class(member.data_type.native_type, "Resource")) {
 							member._export.type = Variant::OBJECT;
