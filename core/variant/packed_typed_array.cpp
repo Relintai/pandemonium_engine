@@ -2848,7 +2848,6 @@ void PackedTypedArray::set_type_from_name(const StringName &p_type_name) {
 	}
 
 	_p->type = variant_type;
-	_p->int_type = INT_TYPE_SIGNED_64;
 
 	if (variant_type == Variant::OBJECT) {
 		_p->object_class_name = p_type_name;
@@ -2872,7 +2871,6 @@ void PackedTypedArray::set_type_from_variant(const Variant &p_variant) {
 	*/
 
 	_p->type = p_variant.get_type();
-	_p->int_type = INT_TYPE_SIGNED_64;
 
 	if (_p->type == Variant::OBJECT) {
 		Object *obj = ObjectDB::get_instance(p_variant.get_object_instance_id());
