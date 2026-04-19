@@ -52,7 +52,6 @@ slim_args_editor = ''
 
 #slim_args_editor += 'module_bmp_enabled=no '
 #slim_args_editor += 'module_broken_seals_module_enabled=no '
-#slim_args_editor += 'module_cscript_enabled=no '
 #slim_args_editor += 'module_csg_enabled=no '
 #slim_args_editor += 'module_database_enabled=no '
 #slim_args_editor += 'module_database_sqlite_enabled=no '
