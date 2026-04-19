@@ -2726,7 +2726,7 @@ void register_variant_methods() {
 	ADDFUNC0R(STRING, POOL_BYTE_ARRAY, String, sha256_buffer, varray());
 
 	ADDFUNC0R(STRING, BOOL, String, empty, varray());
-	ADDFUNC1R(STRING, BOOL, String, contains, STRING, "str", varray(true));
+	ADDFUNC1R(STRING, BOOL, String, contains, STRING, "str", varray());
 
 	ADDFUNC0R(STRING, BOOL, String, is_abs_path, varray());
 	ADDFUNC0R(STRING, BOOL, String, is_rel_path, varray());
