@@ -119,6 +119,7 @@ slim_args_editor = ''
 #slim_args_editor += 'module_camera_drivers_enabled=no ' # Depends on the camera server module.
 #slim_args_editor += 'module_pscript_enabled=no '
 #slim_args_editor += 'module_pdf_generator_enabled=no '
+#slim_args_editor += 'module_webp_enabled=no '
 
 # Editor Modules
 
