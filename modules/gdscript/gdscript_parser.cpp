@@ -8488,6 +8488,9 @@ void GDScriptParser::_check_class_level_types(ClassNode *p_class) {
 			}
 
 			if (v.data_type.infer_type) {
+// If DEBUG_METHODS_ENABLED is not defined, type inference cannot always work reliably.
+// Just disable the errors in this case. (If a type cannot be inferred it will just become a normal variant.)
+#ifdef DEBUG_METHODS_ENABLED
 				if (!expr_type.has_type) {
 					_set_error("The assigned value doesn't have a set type; the variable type can't be inferred.", v.line);
 					return;
@@ -8496,6 +8499,7 @@ void GDScriptParser::_check_class_level_types(ClassNode *p_class) {
 					_set_error("The variable type cannot be inferred because its value is \"null\".", v.line);
 					return;
 				}
+#endif
 				v.data_type = expr_type;
 				v.data_type.is_constant = false;
 			}
@@ -8930,6 +8934,11 @@ void GDScriptParser::_check_block_types(BlockNode *p_block) {
 						}
 					}
 					if (lv->datatype.infer_type) {
+// If DEBUG_METHODS_ENABLED is not defined, type inference cannot always work reliably.
+// Just disable the errors in this case. (If a type cannot be inferred it will just become a normal variant.)
+// Currently DEBUG_METHODS_ENABLED is tied to DEBUG_ENABLED, maybe eventually DEBUG_METHODS_ENABLED could be enabled separately using
+// the build system.
+#ifdef DEBUG_METHODS_ENABLED
 						if (!assign_type.has_type) {
 							_set_error("The assigned value doesn't have a set type; the variable type can't be inferred.", lv->line);
 							return;
@@ -8938,6 +8947,7 @@ void GDScriptParser::_check_block_types(BlockNode *p_block) {
 							_set_error("The variable type cannot be inferred because its value is \"null\".", lv->line);
 							return;
 						}
+#endif
 						lv->datatype = assign_type;
 						lv->datatype.is_constant = false;
 					}
