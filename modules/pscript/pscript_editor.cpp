@@ -1417,19 +1417,42 @@ static bool _guess_identifier_type(PScriptCompletionContext &p_context, const St
 			r_type.type.has_type = true;
 			r_type.type.kind = PScriptParser::DataType::NATIVE;
 			r_type.type.native_type = target_id;
-			if (Engine::get_singleton()->has_singleton(target_id)) {
-				r_type.type.is_meta_type = false;
-				r_type.value = Engine::get_singleton()->get_singleton_object(target_id);
-			} else {
-				r_type.type.is_meta_type = true;
-				const RBMap<StringName, int>::Element *target_elem = PScriptLanguage::get_singleton()->get_global_map().find(target_id);
-				// Check because classes like EditorNode are in ClassDB by now, but unknown to PScript
-				if (!target_elem) {
-					return false;
+
+			if (i == 0) {
+				if (Engine::get_singleton()->has_singleton(target_id)) {
+					r_type.type.is_meta_type = false;
+					r_type.value = Engine::get_singleton()->get_singleton_object(target_id);
+				} else {
+					r_type.type.is_meta_type = true;
+					const RBMap<StringName, int>::Element *target_elem = PScriptLanguage::get_singleton()->get_global_map().find(target_id);
+					// Check because classes like EditorNode are in ClassDB by now, but unknown to PScript
+					if (!target_elem) {
+						return false;
+					}
+					int idx = target_elem->get();
+					r_type.value = PScriptLanguage::get_singleton()->get_global_array()[idx];
 				}
-				int idx = target_elem->get();
-				r_type.value = PScriptLanguage::get_singleton()->get_global_array()[idx];
+			} else {
+				if (Engine::get_singleton()->has_singleton(target_id)) {
+					r_type.type.is_meta_type = false;
+					r_type.value = Engine::get_singleton()->get_singleton_object(target_id);
+				} else if (Engine::get_singleton()->has_singleton(p_identifier)) {
+					// Singleton binder classes begind with an underscore, but they are registeres without one usually.
+					// For example _OS is the actual class, but it's registered as OS.
+					r_type.type.is_meta_type = false;
+					r_type.value = Engine::get_singleton()->get_singleton_object(p_identifier);
+				} else {
+					r_type.type.is_meta_type = true;
+					const RBMap<StringName, int>::Element *target_elem = PScriptLanguage::get_singleton()->get_global_map().find(target_id);
+					// Check because classes like EditorNode are in ClassDB by now, but unknown to PScript
+					if (!target_elem) {
+						return false;
+					}
+					int idx = target_elem->get();
+					r_type.value = PScriptLanguage::get_singleton()->get_global_array()[idx];
+				}
 			}
+
 			return true;
 		}
 	}
