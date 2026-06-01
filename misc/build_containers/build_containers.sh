@@ -10,7 +10,17 @@ mkdir -p logs
 export docker_build="docker build --build-arg img_version=${img_version} "
 
 docker build -t pandemonium-fedora:${img_version} -f Dockerfile.base . 2>&1 | tee logs/base.log
+
+if [ ! -e "${files_root}"/aarch64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 ] || [ ! -e "${files_root}"/arm-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 ] \
+|| [ ! -e "${files_root}"/i686-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 ] || [ ! -e "${files_root}"/x86_64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 ]; then
+    echo "Linux toolchains are required."
+		echo "It can be downloaded from: https://github.com/Relintai/buildroot/releases or https://pandemoniumengine.org/toolchains"
+		echo "It can be built using: https://github.com/Relintai/buildroot or https://git.relintai.net/Relintai/buildroot"
+    exit 1
+fi
+
 $docker_build -t pandemonium-linux:${img_version} -f Dockerfile.linux . 2>&1 | tee logs/linux.log
+
 $docker_build -t pandemonium-windows:${img_version} -f Dockerfile.windows . 2>&1 | tee logs/windows.log
 $docker_build -t pandemonium-javascript:${img_version} -f Dockerfile.javascript . 2>&1 | tee logs/javascript.log
 $docker_build -t pandemonium-android:${img_version} -f Dockerfile.android . 2>&1 | tee logs/android.log

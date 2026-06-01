@@ -1,46 +1,50 @@
 ARG img_version
 FROM pandemonium-fedora:${img_version}
 
-# Todo host the buildroot files somewhere
+COPY files/x86_64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 /root/files/
+COPY files/i686-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 /root/files/
+COPY files/aarch64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 /root/files/
+COPY files/arm-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 /root/files/
 
-ENV GODOT_SDK_LINUX_X86_64=/root/x86_64-godot-linux-gnu_sdk-buildroot
-ENV GODOT_SDK_LINUX_X86_32=/root/i686-godot-linux-gnu_sdk-buildroot
-ENV GODOT_SDK_LINUX_ARM64=/root/aarch64-godot-linux-gnu_sdk-buildroot
-ENV GODOT_SDK_LINUX_ARM32=/root/arm-godot-linux-gnueabihf_sdk-buildroot
+ENV PANDEMONIUN_SDK_LINUX_X86_64=/root/x86_64-pandemonium-linux-gnu_sdk-buildroot
+ENV PANDEMONIUN_SDK_LINUX_X86_32=/root/i686-pandemonium-linux-gnu_sdk-buildroot
+ENV PANDEMONIUN_SDK_LINUX_ARM64=/root/aarch64-pandemonium-linux-gnu_sdk-buildroot
+ENV PANDEMONIUN_SDK_LINUX_ARM32=/root/arm-pandemonium-linux-gnueabihf_sdk-buildroot
 
 ENV BASE_PATH=${PATH}
 
-RUN curl -LO https://github.com/godotengine/buildroot/releases/download/godot-2023.08.x-4/x86_64-godot-linux-gnu_sdk-buildroot.tar.bz2 && \
-    tar xf x86_64-godot-linux-gnu_sdk-buildroot.tar.bz2 && \
-    rm -f x86_64-godot-linux-gnu_sdk-buildroot.tar.bz2 && \
-    cd x86_64-godot-linux-gnu_sdk-buildroot && \
+RUN cp /root/files/x86_64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 . && \
+    tar xf x86_64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 && \
+    rm -f x86_64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 && \
+    cd x86_64-pandemonium-linux-gnu_sdk-buildroot && \
     ./relocate-sdk.sh && \
-		ln -s x86_64-godot-linux-gnu-objcopy bin/objcopy && \
-    ln -s x86_64-godot-linux-gnu-strip bin/strip && \
+		ln -s x86_64-pandemonium-linux-gnu-objcopy bin/objcopy && \
+    ln -s x86_64-pandemonium-linux-gnu-strip bin/strip && \
     cd /root && \
-		curl -LO https://github.com/godotengine/buildroot/releases/download/godot-2023.08.x-4/i686-godot-linux-gnu_sdk-buildroot.tar.bz2 && \
-    tar xf i686-godot-linux-gnu_sdk-buildroot.tar.bz2 && \
-    rm -f i686-godot-linux-gnu_sdk-buildroot.tar.bz2 && \
-    cd i686-godot-linux-gnu_sdk-buildroot && \
+		cp /root/files/i686-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 . && \
+    tar xf i686-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 && \
+    rm -f i686-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 && \
+    cd i686-pandemonium-linux-gnu_sdk-buildroot && \
     ./relocate-sdk.sh && \
-		ln -s i686-godot-linux-gnu-objcopy bin/objcopy && \
-    ln -s i686-godot-linux-gnu-strip bin/strip && \
+		ln -s i686-pandemonium-linux-gnu-objcopy bin/objcopy && \
+    ln -s i686-pandemonium-linux-gnu-strip bin/strip && \
     cd /root && \
-		curl -LO https://github.com/godotengine/buildroot/releases/download/godot-2023.08.x-4/aarch64-godot-linux-gnu_sdk-buildroot.tar.bz2 && \
-    tar xf aarch64-godot-linux-gnu_sdk-buildroot.tar.bz2 && \
-    rm -f aarch64-godot-linux-gnu_sdk-buildroot.tar.bz2 && \
-    cd aarch64-godot-linux-gnu_sdk-buildroot && \
+		cp /root/files/aarch64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 . && \
+    tar xf aarch64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 && \
+    rm -f aarch64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 && \
+    cd aarch64-pandemonium-linux-gnu_sdk-buildroot && \
     ./relocate-sdk.sh && \
-		ln -s aarch64-godot-linux-gnu-objcopy bin/objcopy && \
-    ln -s aarch64-godot-linux-gnu-strip bin/strip && \
+		ln -s aarch64-pandemonium-linux-gnu-objcopy bin/objcopy && \
+    ln -s aarch64-pandemonium-linux-gnu-strip bin/strip && \
     cd /root && \
-		curl -LO https://github.com/godotengine/buildroot/releases/download/godot-2023.08.x-4/arm-godot-linux-gnueabihf_sdk-buildroot.tar.bz2 && \
-    tar xf arm-godot-linux-gnueabihf_sdk-buildroot.tar.bz2 && \
-    rm -f arm-godot-linux-gnueabihf_sdk-buildroot.tar.bz2 && \
-    cd arm-godot-linux-gnueabihf_sdk-buildroot && \
+		cp /root/files/arm-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 . && \
+    tar xf arm-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 && \
+    rm -f arm-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 && \
+    cd arm-pandemonium-linux-gnueabihf_sdk-buildroot && \
     ./relocate-sdk.sh && \
-    ln -s arm-godot-linux-gnueabihf-objcopy bin/objcopy && \
-    ln -s arm-godot-linux-gnueabihf-strip bin/strip
+    ln -s arm-pandemonium-linux-gnueabihf-objcopy bin/objcopy && \
+    ln -s arm-pandemonium-linux-gnueabihf-strip bin/strip \
+    rm -rf /root/files
 
 
 CMD /bin/bash
