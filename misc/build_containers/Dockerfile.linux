@@ -15,24 +15,32 @@ RUN curl -LO https://github.com/godotengine/buildroot/releases/download/godot-20
     rm -f x86_64-godot-linux-gnu_sdk-buildroot.tar.bz2 && \
     cd x86_64-godot-linux-gnu_sdk-buildroot && \
     ./relocate-sdk.sh && \
+		ln -s x86_64-godot-linux-gnu-objcopy bin/objcopy && \
+    ln -s x86_64-godot-linux-gnu-strip bin/strip && \
     cd /root && \
 		curl -LO https://github.com/godotengine/buildroot/releases/download/godot-2023.08.x-4/i686-godot-linux-gnu_sdk-buildroot.tar.bz2 && \
     tar xf i686-godot-linux-gnu_sdk-buildroot.tar.bz2 && \
     rm -f i686-godot-linux-gnu_sdk-buildroot.tar.bz2 && \
     cd i686-godot-linux-gnu_sdk-buildroot && \
     ./relocate-sdk.sh && \
+		ln -s i686-godot-linux-gnu-objcopy bin/objcopy && \
+    ln -s i686-godot-linux-gnu-strip bin/strip && \
     cd /root && \
 		curl -LO https://github.com/godotengine/buildroot/releases/download/godot-2023.08.x-4/aarch64-godot-linux-gnu_sdk-buildroot.tar.bz2 && \
     tar xf aarch64-godot-linux-gnu_sdk-buildroot.tar.bz2 && \
     rm -f aarch64-godot-linux-gnu_sdk-buildroot.tar.bz2 && \
     cd aarch64-godot-linux-gnu_sdk-buildroot && \
     ./relocate-sdk.sh && \
+		ln -s aarch64-godot-linux-gnu-objcopy bin/objcopy && \
+    ln -s aarch64-godot-linux-gnu-strip bin/strip && \
     cd /root && \
 		curl -LO https://github.com/godotengine/buildroot/releases/download/godot-2023.08.x-4/arm-godot-linux-gnueabihf_sdk-buildroot.tar.bz2 && \
     tar xf arm-godot-linux-gnueabihf_sdk-buildroot.tar.bz2 && \
     rm -f arm-godot-linux-gnueabihf_sdk-buildroot.tar.bz2 && \
     cd arm-godot-linux-gnueabihf_sdk-buildroot && \
-    ./relocate-sdk.sh
+    ./relocate-sdk.sh && \
+    ln -s arm-godot-linux-gnueabihf-objcopy bin/objcopy && \
+    ln -s arm-godot-linux-gnueabihf-strip bin/strip
 
 
 CMD /bin/bash
