@@ -344,6 +344,7 @@ Nothing yet.
 - Only add the :<int> postfix to ints in PScript's export hints in every case.
 - Implement proper autoexport support for TypedArray and PackedTypedArray.
 - Make autocomplete for singletons more reliable in PScript.
+- Fix error when trying to index TypedArrays and PackedTypedArrays in PScript.
 
 #### PScript
 
@@ -376,6 +377,7 @@ Nothing yet.
 - Only add the :<int> postfix to ints in PScript's export hints in every case.
 - Implement proper autoexport support for TypedArray and PackedTypedArray.
 - Make autocomplete for singletons more reliable in PScript.
+- Fix error when trying to index TypedArrays and PackedTypedArrays in PScript.
 
 #### Webp
 
