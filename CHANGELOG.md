@@ -4,8 +4,411 @@ All notable changes to this project will be documented in this file.
 
 ## [Master]
 
+Nothing yet.
+
+## [5.1.0]
+
+### Highlights
+
+- Added a new pdf_generator module. It uses libharu.
+- Added send_raw_data() helper method to WebServerRequest.
+- Added helper methods to easily set the Content-Disposition header in WebServerRequest. Also added custom_response_header_erase() helper method.
+- Reworked the html templating language and interpreter. Now it's a poroper recursive-descent parser. It now has operators, math, if, for,
+  while, recursive indexing, comments, built in methods, and can also call Object methods, and much more.
+  It is backwards compatible except for a few edge cases. See the new HTMLTemplateRenderer class's documentation in the editor,
+  or the demos in the docs repository.
+- Added a new ZipCompressor class.
+- Added back the webp module.
+- Allow explicit type declaration of for's iterator variable in GDScript.
+  - So now something like this will work: "for s : String in arr:"
+  - Typing is optional so "for s in arr:" will still work.
+- Implement a template-like syntax for TypedArray and PackedTypedArray variable declarations for PScript and GDScript. Looks like:
+  - TypedArray<Mesh> marr = TypedArray("Mesh");
+  - PackedTypedArray<int> ptarr = PackedTypedArray(@"int");
+  - PackedTypedArray<int, 1> = PackedTypedArray(@"int", 1);
+  - PackedTypedArray<int, INT_TYPE_UNSIGNED_16> = PackedTypedArray(@"int", PackedTypedArray.INT_TYPE_UNSIGNED_16);
+  - TypedArray<int> v = TypedArray<int>();
+  - TypedArray<Mesh> marr = TypedArray<Mesh>();
+  - PackedTypedArray<int> ptarr = PackedTypedArray<int>();
+  - PackedTypedArray<int, 1> = PackedTypedArray<int, 1>();
+  - PackedTypedArray<int, INT_TYPE_UNSIGNED_16> = PackedTypedArray<int, INT_TYPE_UNSIGNED_16>();
+  - Methods: TypedArray<Mesh> typed_array_hint_test_1() { ... }
+  - Methods: func typed_array_hint_test_1() -> TypedArray<int, INT_TYPE_UNSIGNED_16>: ... 
+
+### Breaking Changes
+
+- HTML templating language:
+  - In the old language this also worked: var\[x\], where x is supposed to be a string. This doesn't work anymore,
+    as with the current feature set this would be very error prone, and confusing. Now you need to use var\["x"\] or var\['x'\] explicitly.
+  - In the old language vf and qvf were always in raw print mode. This was likely not a good idea, so a raw
+	  version now also exists from them. Either search and replate to those, or use raw print mode with {{% }}.
+  - The new implementation is a bit stricter, stray closing parentheses `)` or other similar syntax issues might now show up as an error.
+- Only allow setting the type in TypedArray and PackedTypedArray once.
+  - This way they are closer to templates.
+  - Not doing this will likely cause issues later if the binds start using
+    them more, as the inner type changing because of scripting can cause
+    crashes on the c++ side.
+- Ref now also checks the types in TypedArray and PackedTypedArray.
+
+### Core
+
+- Added get_filesystem_abspath_for() helper method to FileAccess.
+- Simplify get_filesystem_abspath_for() helper method in DirAccess.
+- Bind get_filesystem_abspath_for() to File, also don't require a directory to be opened for the Directory's version.
+- Added a binder class for StringBuilder.
+- Elaborate on the pros and cons of PackedTypedArray in the docs. Also notes.
+- Only allow setting the type in TypedArray and PackedTypedArray once.
+  - This way they are closer to templates.
+  - Not doing this will likely cause issues later if the binds start using
+    them more, as the inner type changing because of scripting can cause
+    crashes on the c++ side.
+- Ref now also checks the types in TypedArray and PackedTypedArray.
+- Handle <, <=, >, >= for StringName as Variant op. This fixes StringNames as Dictionary literals (as well as probably other things).
+- Fix parsing TypedArray and PackedTypedArray.
+- Fix PackedTypedArray::set_object_class_name() check.
+- Fix potential infinite loop in TypedArray::can_take_variant() and PackedTypedArray::can_take_variant().
+- Fix erroneous constructor in PackedTypedArray.
+- Don't override int type when setting concrete type in PackedTypedArray.
+- Fix String's contains() having a default parameter in the binds.
+
+#### ZipCompressor
+
+- Initial setup for a ZipCompressor class.
+- Initial unzip and zip api for ZipCompressor.
+- Implement zip api for ZipCompressor.
+- Remove unused variable.
+- Implement unzip api for ZipCompressor.
+- Bind all new methods in ZipCompressor.
+
+
+### Editor
+
+- Accept .pignore files as an alternative to .gdignore. Also auto-create .pignore files instead of .gdignore.
+- Implemented in-editor property hint support for TypedArray and PackedTypedArray.
+- Fix crash when a texture is imported as lossy.
+  This is because the webp module was removed, and it's was apparently
+  used for lossy textures. Even though the module will be added back in
+  the next commit, this turns the crash into a printed error.
+
+### Modules
+
+- The cscript module no longer exists, remove random references and mentions to it.
+
+#### Terraman
+
+- Fix a default value of TerrainWorld::mesh_data_resource_add_material()'s bind.
+
+#### Voxelman
+
+- Backport "Fix a default value of TerrainWorld::mesh_data_resource_add_material()'s bind." from Terraman.
+
+#### PDF Generator
+
+- Added a new pdf_generator module.
+- Set up libharu build.
+- Fix warning.
+- PDFDocument class initial setup.
+- PDFPage class initial setup.
+- PDFFont and PDFImage class initial setup.
+- Define having libpng.
+- Initial font and image loading.
+- Add binds to more of the font loading api.
+- Bind set compression mode.
+- Bind some of the text rendering api so the test project setup can begin.
+- Bind text width helper method for PDFPage.
+- Fix path transformation in PDFDocument. Also fix font loading.
+- Added draw_image() method to PDFPage.
+- Added get_width() and get_height() methods to PDFImage.
+- Add hpdf_config.h header.
+- Improved PDFDocument::get_contents() logic.
+- Use HPDF_ReadFromStream instead of HPDF_GetContents in PDFDocument::get_contents().
+- Added missing apis from hpdf.h as comments and also tweaks.
+- Added page layout property for PDFDocument.
+- Rework document helper codestyle in PDFDocument.
+- Make function name style consistent in PDFDocument.
+- Bind page mode for PDFDocument.
+- Added PDFDocument::page_add_label() helper method.
+- Added viewer_preference property to PDFDocument.
+- Added more helper classes to the pdf generator module.
+- Move comments around.
+- Move comments.
+- Added PDFEncoder class.
+- Implement encoding specific methods to PDFDocument.
+- Add avaliable encodings to PDFEncoder.
+- Added PDFDocument::outline_create() method.
+- Implement the rest of the image loading methods in PDFDocument.
+- Remove now unneeded comment.
+- Added open_action_set() hepler method to PDFDocument.
+- Add XObject methods to PDFDocument.
+- Added PDFDict class.
+- Added PDFDate class.
+- Implement info dictionary methods to PDFDocument.
+- Implement pdf a conformance methods in PDFDocument.
+- Implement encryption methods in PDFDocument.
+- Implement file embedding api in PDFDocument.
+- Make PDFDocument's api consistently return nulls.
+- Implement the extended graphic state api for PDFDocument.
+- Implement the shading api for PDFDocument.
+- Fix variable type.
+- Move methods in file.
+- Implement boundary_set() helper method to PDFPage.
+- Implement size_set() helper method to PDFPage.
+- Implement more helper methods to PDFPage.
+- Implement more helper methods to PDFPage.
+- Implement more helper methods to PDFPage.
+- Implement dash_get() method in PDFPage.
+- Implement more helper methods to PDFPage.
+- Implement text_rendering_mode_get() method in PDFPage. ALso tweak some enum constant names.
+- Implement more helper methods to PDFPage.
+- Implement more helper methods to PDFPage.
+- Implement remaining General graphics state operators to PDFPage.
+- Implement Special graphic state operators to PDFPage.
+- Implement Path construction operators to PDFPage.
+- Implement Path painting operators to PDFPage.
+- Implement Clipping paths operators to PDFPage.
+- Make set_font_and_size() in PDFPage behave similarly to the other apis.
+- Implement remaining text state operators to PDFPage.
+- Implement Text position operators to PDFPage.
+- Implement the remaining Text showing operators to PDFPage.
+- Implement the remaining Color showing operators to PDFPage.
+- Implement XObjects operators to PDFPage.
+- Implement the remaining Compatibility operators to PDFPage.
+- Create PDFAnnotation subclasses.
+- Fix u3d file load type.
+- Implement javascript loading api to PDFDocument.
+- Added 3d view creation api to PDFDocument and PDFPage.
+- Implement 4 annotation creation methods in PDFPage.
+- Now Pages store a weak ref to their owner document. Also implemented 4 more annotation creation methods in PDFPage.
+- Implement more annotation creation methods in PDFPage.
+- Move the AnnotationType enum to a different class.
+- Implement the remaining annotation creation methods in PDFPage.
+- Implement 3D Measure api to PDFPage.
+- Implement External Data api to PDFPage.
+- Implement the 3D View api to PDFPage.
+- Implement the destination api to PDFPage.
+- Add error codes as an enum to PDFDocument.
+- Apparently not all c++ compilers support c style initializers.
+- Implement and bind all methods in PDF3DMeasure.
+- Implement and bind all methods in PDF3DView.
+- Implement and bind all methods in PDF3DViewNode.
+- Implement and bind most methods for PDFAnnotations.
+- Added PDFAnnotationMarkup class and made some of the Annotation classes inherit from it.
+- Implement and bind the remaining methods for PDFAnnotations.
+- Implement and bind all methods in PDFDestination.
+- Implement and bind all methods in PDFEmbeddedFile.
+- Implement and bind all methods in PDFEncoder.
+- Implement and bind all methods in PDFExData.
+- Zero status by default.
+- Implement and bind all methods in PDFExtGState.
+- Implement and bind all methods in PDFFont.
+- Added an icon for PDFDocument.
+- Implement and bind all methods in PDFImage.
+- Implement and bind all methods in PDFOutline.
+- Implement and bind all methods in PDFShading.
+- Implement and bind all methods in PDFU3D.
+- Added as_x_object() helper method to PDFImage.
+- Fix the return type of PDFPage::measure_text().
+- Fix missing argument names in PDFPage.
+- Update sample module config.
+- Docs form PDFDocument's error codes.
+- Initial docs for the PDFEncoder.
+- Initial description for PDFPage.
+- Add docs for get_status().
+- Initial desscription for PDFFont.
+- Fix bound argument names.
+- Added image_load_png_from_file_delayed() to PDFDocument.
+- Add built-in font list to PDFFont's docs.
+- Docs for PDFDocument pt1.
+- Docs for PDFDocument pt2.
+- Docs for PDFDate.
+- Bind permission constants in PDFDocument.
+- Docs for PDFFont.
+- Added GraphicsMode enum to PDFPage.
+- Initial docs for PDFPage.
+- Initial docs for PDFPage.
+- Docs for PDFEncoder.
+- Initial docs for some of the annotations.
+- Docs for PDFDestination.
+- Docs for PDFOutline.
+- Initial docs for PDFImage.
+- Rect positions are used as the bottom left point now in the pdf_generator module.
+- Fix PDFDocument::save_to_mem().
+- Temporarily add note that PDFDocument currently can't load files directly inside a .pck.
+
+#### Web
+
+- Added send_raw_data() helper method to WebServerRequest.
+- Added missing virtual declarations to WebServerRequestScriptable.
+- Added helper methods to easily set the Content-Disposition header in WebServerRequest. Also added custom_response_header_erase() helper method.
+- Tweak the content_disposition helper methods in WebServerRequest.
+- Added automatic Content-Type header setup when sending raw data in HTTPServerConnection.
+- Added content_disposition_set() helper method to WebServerRequest. And also a small tweak.
+- Add docs for the new methods.
+- Emit changed signals in HTMLTemplateData.
+- Render the menu in UserLogoutWebPage delayed. Also unset user meta.
+- Docs for the new property.
+- Added icons for HTMLTemplate, HTMLTemplateData, and HTMLTemplateMultilang.
+
+##### HTMLTemplaterenderer Rework
+
+- HTMLTemplaterenderer class setup.
+- Initial HTMLTemplaterenderer setup.
+- Initial tokenization setup for HTMLTemplaterenderer.
+- Constructor and destructor for HTMLTemplaterenderer.
+- HTML Data tokenization.
+- Also handle double curly brace open in non-html data mode.
+- Added more methods to HTMLTemplaterenderer (from Expression).
+- Added PrintNode and more notes.
+- Initial control flow parsing setup for HTMLTemplateRenderer.
+- Initial builtin function implementation for HTMLTemplaterenderer.
+- HTMLTemplaterenderer initial execution setup.
+- Now HTMLTemplaterenderer actually works.
+- Implement foreach for HTMLTemplaterenderer.
+- Implement if/elif/else/endif for HTMLTemplaterenderer.
+- Rework built-in function argument count validation in HTMLTemplaterenderer.
+- Implement the planned new builtins to HTMLTemplaterenderer.
+- Rename _set_error() to _compile_set_error() in HTMLTemplaterenderer.
+- Rename _error_set to _compile_error_set in HTMLTemplaterenderer.
+- Rename _error_str to _compile_error_str in HTMLTemplaterenderer.
+- Rename str_ofs to _str_ofs in HTMLTemplaterenderer.
+- Rename get_error_str() to get_compile_error_str() in HTMLTemplaterenderer.
+- Rename HTMLTemplaterenderer to HTMLTemplateRenderer.
+- Docs for HTMLTemplateRenderResult.
+- Docs for HTMLTemplateRenderer.
+- Added a raw version for the vf and qvf methods in HTMLTemplateRenderer.
+  - Previously vf and qvf were alyways in raw mode. This was likely not
+    that good of an idea, so now they got split.
+- Update HTMLTemplateRenderer docs.
+- Implement comment support for HTMLTemplateRenderer.
+- Fix escapes in HTMLTemplateRenderer's docs.
+- Added get_template_text() to HTMLTemplateRenderer.
+- Now HTMLTemplateData automatically compiles all it's templates using HTMLTemplateRenderer.
+- Added show error parameter to HTMLTemplateRenderer::compile().
+- Set show error in HTMLTemplateData when compiling templates.
+- Remove unnecessary methods in HTMLTemplate.
+- Now HTMLTemplate also uses the new HTMLTemplateRenderer.
+- Removed the old renderer from HTMLTemplate.
+- Better error reporting.
+- Don't skip compiling the last template section.
+- Better error message when rendering a template in HTMLTemplate.
+- Make all builtin print methods escape their own ouput in HTMLTemplateRenderer, and just print raw if they are the outer expression in a simple {{  }} block.
+  This should fix the newline to br variants.
+- Tweak the html template renderer's syntax. Also fixed some issues with parsing.
+  - {{# }} is the output supression now.
+  - {{; }} is force escape now.
+- Improved some of the error messages in HTMLTemplateRenderer.
+- Don't convert vformat builtin method arguments to string in HTMLTemplateRenderer.
+- Fix all q print variants in HTMLTemplateRenderer.
+  - Also tweaked the way they are implemented so everything is a bit more
+    cleaner.
+
+#### Web Server Simple
+
+- Added a sent signal to WebServerRequest.
+
+#### Editor Text Editor
+
+- Make editor reimport files when tey are saved in the test editor module.
+- Fix error when editing non-imported files in the TextFileEditor.
+
+#### GDScript
+
+- Allow explicit type declaration of for's iterator variable in GDScript.
+  - So now something like this will work: "for s : String in arr:"
+  - Typing is optional so "for s in arr:" will still work.
+- Make funcref work with StringNames in GDScript.
+- Disable type inference errors in release builds.
+
+##### Backports from PScript:
+
+- Added export type hint support for TypedArray and PackedTypedArray for PScript.
+  Examples:
+  - export(TypedArray, <some type>).
+  - export(PackedTypedArray, <some type>).
+  - export(PackedTypedArray, <some type>, <int_type>).
+- Also allow strings as TypedArray and PackedTypedArray export type hints.
+- Implement a template-like syntax for TypedArray and PackedTypedArray variable declarations for PScript.
+  - It's a bit of a hack, but it's expremely simple, and should work
+    properly for most cases. It retains supports untyped assignment aswell.
+  - This syntax is currently only available for variable declarations, it
+    will be done for instancing eventually aswell.
+  - Looks like:
+    - TypedArray<Mesh> marr = TypedArray("Mesh");
+    - PackedTypedArray<int> ptarr = PackedTypedArray(@"int");
+    - PackedTypedArray<int, 1> = PackedTypedArray(@"int", 1);
+    - PackedTypedArray<int, INT_TYPE_UNSIGNED_16> = PackedTypedArray(@"int", PackedTypedArray.INT_TYPE_UNSIGNED_16);
+    - Methods: TypedArray<Mesh> typed_array_hint_test_1() { ... }
+- Implement a template-like syntax for TypedArray and PackedTypedArray variable instancing for PScript.
+  - Now the following syntax will work:
+    - TypedArray<int> v = TypedArray<int>();
+- Only add the :<int> postfix to ints in PScript's export hints in every case.
+- Implement proper autoexport support for TypedArray and PackedTypedArray.
+- Make autocomplete for singletons more reliable in PScript.
+
+#### PScript
+
+- Added export type hint support for TypedArray and PackedTypedArray for PScript.
+  Examples:
+  - export(TypedArray, <some type>).
+  - export(PackedTypedArray, <some type>).
+  - export(PackedTypedArray, <some type>, <int_type>).
+- Also allow strings as TypedArray and PackedTypedArray export type hints.
+- They get converted to StringNames instead of giving an error now.
+- This makes the following syntax work:
+  - TypedArray(int);
+  - TypedArray(Mesh);
+  - TypedArray(SomeGlobalClass);
+- Make funcref work with StringNames in PScript.
+- Implement a template-like syntax for TypedArray and PackedTypedArray variable declarations for PScript.
+  - It's a bit of a hack, but it's expremely simple, and should work
+    properly for most cases. It retains supports untyped assignment aswell.
+  - This syntax is currently only available for variable declarations, it
+    will be done for instancing eventually aswell.
+  - Looks like:
+    - TypedArray<Mesh> marr = TypedArray("Mesh");
+    - PackedTypedArray<int> ptarr = PackedTypedArray(@"int");
+    - PackedTypedArray<int, 1> = PackedTypedArray(@"int", 1);
+    - PackedTypedArray<int, INT_TYPE_UNSIGNED_16> = PackedTypedArray(@"int", PackedTypedArray.INT_TYPE_UNSIGNED_16);
+    - Methods: TypedArray<Mesh> typed_array_hint_test_1() { ... }
+- Implement a template-like syntax for TypedArray and PackedTypedArray variable instancing for PScript.
+  - Now the following syntax will work:
+    - TypedArray<int> v = TypedArray<int>();
+- Only add the :<int> postfix to ints in PScript's export hints in every case.
+- Implement proper autoexport support for TypedArray and PackedTypedArray.
+- Make autocomplete for singletons more reliable in PScript.
+
+#### Webp
+
+- Added back the webp module from https://github.com/Relintai/webp.
+- Update libwebp to 1.3.2.
+- Update version string.
+- Add missing file to SCSub.
+- Update header guards.
+- Update module registrtation method signature.
+- Set up copyright.txt for the webp module.
+- Update the sample module config file.
+
+### Other
+
+- Rework the Multi window support long term plan in the readme as I finally found a way to do it that I like.
+- Get rid of the temp folder.
+
+#### Build Containers
+
+- Backport [Linux] Fix separate debug symbols for arm from godot build containers.
+  https://github.com/godotengine/build-containers/commit/3f3cc50c3f91c2be66e37aece9d9a57284e39db7
+- Rework the linux build container, now it needs the toolchains to be present instead of donwloading them.
+  Also it now uses pandemonium specific ones.
+
+### Backports
+
 Backported everything up to and including https://github.com/godotengine/godot/commit/a758f086be106f8ddfb62d01502b76858a44c3c7 
 merge commit: https://github.com/godotengine/godot/commit/b8f0d51e6328aa803b3589e523204f398d1e6ef8
+
+#### Godot 3.x
+
+- `FTI` - Fix property release updates
+  Ensures properties are correctly updated to the server when being removed from the property update list.
 
 ## [5.0.0]
 
