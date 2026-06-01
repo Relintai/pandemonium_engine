@@ -7358,6 +7358,8 @@ GDScriptParser::DataType GDScriptParser::_reduce_node_type(Node *p_node) {
 									// Arrays/string have variable indexing, can't test directly
 									case Variant::STRING:
 									case Variant::ARRAY:
+									case Variant::TYPED_ARRAY:
+									case Variant::PACKED_TYPED_ARRAY:
 									case Variant::DICTIONARY:
 									case Variant::POOL_BYTE_ARRAY:
 									case Variant::POOL_COLOR_ARRAY:
