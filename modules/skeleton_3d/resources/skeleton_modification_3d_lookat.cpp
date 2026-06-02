@@ -260,7 +260,7 @@ SkeletonModification3DLookAt::SkeletonModification3DLookAt() {
 
 	bone_idx = -1;
 	target_node_cache = 0;
-	additional_rotation = Vector3(1, 0, 0);
+	additional_rotation = Vector3(0, 0, 0);
 	lock_rotation_to_plane = false;
 	enabled = true;
 	lock_rotation_plane = ROTATION_PLANE_X;
