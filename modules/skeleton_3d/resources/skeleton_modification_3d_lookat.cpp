@@ -215,7 +215,7 @@ void SkeletonModification3DLookAt::set_additional_rotation(Vector3 p_offset) {
 }
 
 bool SkeletonModification3DLookAt::get_lock_rotation_to_plane() const {
-	return lock_rotation_plane;
+	return lock_rotation_to_plane;
 }
 
 void SkeletonModification3DLookAt::set_lock_rotation_to_plane(bool p_lock_rotation) {
