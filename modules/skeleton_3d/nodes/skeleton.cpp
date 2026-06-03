@@ -1268,7 +1268,7 @@ Transform Skeleton::local_pose_to_global_pose_no_override(int p_bone_idx, Transf
 	ERR_FAIL_INDEX_V(p_bone_idx, bone_size, Transform());
 
 	if (bones[p_bone_idx].parent >= 0) {
-		return bones[p_bone_idx].pose_global_no_override * p_local_pose;
+		return get_bone_global_pose_no_override(p_bone_idx) * p_local_pose;
 	} else {
 		return p_local_pose;
 	}
