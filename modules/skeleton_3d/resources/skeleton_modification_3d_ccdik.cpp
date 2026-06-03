@@ -168,13 +168,14 @@ void SkeletonModification3DCCDIK::_execute_ccdik_joint(int p_joint_idx, Spatial 
 		return;
 	}
 
-	Transform bone_trans = stack->skeleton->global_pose_to_local_pose(ccdik_data.bone_idx, stack->skeleton->get_bone_global_pose(ccdik_data.bone_idx));
 	Transform tip_trans = stack->skeleton->global_pose_to_local_pose(ccdik_data.bone_idx, stack->skeleton->world_transform_to_global_pose(p_tip->get_global_transform()));
 	Transform target_trans = stack->skeleton->global_pose_to_local_pose(ccdik_data.bone_idx, stack->skeleton->world_transform_to_global_pose(p_target->get_global_transform()));
 
 	if (tip_trans.origin.distance_to(target_trans.origin) <= 0.01) {
 		return;
 	}
+
+	Transform bone_trans;
 
 	// Inspired (and very loosely based on) by the CCDIK algorithm made by Zalo on GitHub (https://github.com/zalo/MathUtilities)
 	// Convert the 3D position to a 2D position so we can use Atan2 (via the angle function)
@@ -229,7 +230,8 @@ void SkeletonModification3DCCDIK::_execute_ccdik_joint(int p_joint_idx, Spatial 
 		bone_trans.basis.set_axis_angle(rotation_axis, rotation_angle);
 	}
 
-	stack->skeleton->set_bone_local_pose_override(ccdik_data.bone_idx, bone_trans, stack->strength, true);
+	Transform bone_local_pose = stack->skeleton->get_bone_local_pose(ccdik_data.bone_idx);
+	stack->skeleton->set_bone_local_pose_override(ccdik_data.bone_idx, bone_local_pose * bone_trans, stack->strength, true);
 	stack->skeleton->force_update_bone_children_transforms(ccdik_data.bone_idx);
 }
 
