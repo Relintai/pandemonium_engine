@@ -168,6 +168,10 @@ void SkeletonModification3DFABRIK::_execute(real_t p_delta) {
 		if (_print_execution_error(fabrik_data_chain[i].length < 0, "FABRIK Joint " + itos(i) + " has an invalid joint length. Cannot execute!")) {
 			return;
 		}
+
+		stack->skeleton->set_bone_local_pose_override(fabrik_data_chain[i].bone_idx, Transform(), 0, false);
+		stack->skeleton->force_update_bone_children_transforms(fabrik_data_chain[i].bone_idx);
+
 		fabrik_transforms[i] = stack->skeleton->get_bone_global_pose(fabrik_data_chain[i].bone_idx);
 
 		// Apply magnet positions:
@@ -288,7 +292,16 @@ void SkeletonModification3DFABRIK::chain_apply() {
 			current_bone_trans.basis.rotate_local(forward_vector, fabrik_data_chain[i].roll);
 		}
 		current_bone_trans.origin = current_trans.origin;
-		stack->skeleton->set_bone_local_pose_override(current_bone_idx, stack->skeleton->global_pose_to_local_pose(current_bone_idx, current_bone_trans), stack->strength, true);
+
+		int parent_bone = stack->skeleton->get_bone_parent(current_bone_idx);
+
+		if (parent_bone > -1) {
+			Transform tf = stack->skeleton->global_pose_to_local_pose(parent_bone, current_bone_trans);
+			stack->skeleton->set_bone_local_pose_override(current_bone_idx, tf, stack->strength, true);
+		} else {
+			stack->skeleton->set_bone_local_pose_override(current_bone_idx, current_bone_trans, stack->strength, true);
+			stack->skeleton->force_update_bone_children_transforms(current_bone_idx);
+		}
 	}
 
 	// Update all the bones so the next modification has up-to-date data.
