@@ -97,25 +97,25 @@ void SkeletonModification3DLookAt::_execute(real_t p_delta) {
 	if (_print_execution_error(bone_idx <= -1, "Bone index is invalid. Cannot execute modification!")) {
 		return;
 	}
-	Transform new_bone_trans = stack->skeleton->get_bone_local_pose_override(bone_idx);
-	if (new_bone_trans == Transform()) {
-		new_bone_trans = stack->skeleton->get_bone_pose(bone_idx);
-	}
-	Vector3 target_pos = stack->skeleton->global_pose_to_local_pose(bone_idx, stack->skeleton->world_transform_to_global_pose(target->get_global_transform())).origin;
+
+	Transform bone_local_pose = stack->skeleton->get_bone_local_pose_no_override(bone_idx);
+	Vector3 target_pos = stack->skeleton->global_pose_to_local_pose_no_override(bone_idx, stack->skeleton->world_transform_to_global_pose(target->get_global_transform())).origin;
 
 	// Lock the rotation to a plane relative to the bone by changing the target position
 	if (lock_rotation_to_plane) {
+		Transform bone_pose = stack->skeleton->get_bone_pose(bone_idx);
+
 		if (lock_rotation_plane == ROTATION_PLANE::ROTATION_PLANE_X) {
-			target_pos.x = new_bone_trans.origin.x;
+			target_pos.x = bone_pose.origin.x;
 		} else if (lock_rotation_plane == ROTATION_PLANE::ROTATION_PLANE_Y) {
-			target_pos.y = new_bone_trans.origin.y;
+			target_pos.y = bone_pose.origin.y;
 		} else if (lock_rotation_plane == ROTATION_PLANE::ROTATION_PLANE_Z) {
-			target_pos.z = new_bone_trans.origin.z;
+			target_pos.z = bone_pose.origin.z;
 		}
 	}
 
 	// Look at the target!
-	new_bone_trans = new_bone_trans.looking_at(target_pos, Vector3(0, 1, 0));
+	Transform new_bone_trans = bone_local_pose.looking_at(target_pos, Vector3(0, 1, 0));
 	// Convert from Z-forward to whatever direction the bone faces.
 	stack->skeleton->update_bone_rest_forward_vector(bone_idx);
 	new_bone_trans.basis = stack->skeleton->global_pose_z_forward_to_bone_forward(bone_idx, new_bone_trans.basis);
