@@ -85,6 +85,9 @@ struct _NO_DISCARD_CLASS_ Basis {
 
 	void rotate_to_align(const Vector3 &p_start_direction, const Vector3 &p_end_direction);
 
+	// Used by SkeletonModification3DTwoBoneIK. Either bugged, or need a different name. Not bound.
+	void rotate_to_align_axis_angle(const Vector3 &p_start_direction, const Vector3 &p_end_direction);
+
 	Vector3 rotref_posscale_decomposition(Basis &rotref) const;
 
 	Vector3 get_euler_xyz() const;
