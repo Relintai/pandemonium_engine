@@ -1257,7 +1257,7 @@ Transform Skeleton::local_pose_to_global_pose(int p_bone_idx, Transform p_local_
 	ERR_FAIL_INDEX_V(p_bone_idx, bone_size, Transform());
 
 	if (bones[p_bone_idx].parent >= 0) {
-		return bones[p_bone_idx].pose_global * p_local_pose;
+		return get_bone_global_pose(p_bone_idx) * p_local_pose;
 	} else {
 		return p_local_pose;
 	}
