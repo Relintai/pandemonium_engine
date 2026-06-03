@@ -98,13 +98,27 @@ void SkeletonModification3DLookAt::_execute(real_t p_delta) {
 		return;
 	}
 
-	Transform bone_local_pose = stack->skeleton->get_bone_local_pose_no_override(bone_idx);
-	Vector3 target_pos = stack->skeleton->global_pose_to_local_pose_no_override(bone_idx, stack->skeleton->world_transform_to_global_pose(target->get_global_transform())).origin;
+	// Reset override
+	// Needs to be done, as we need the proper position if there are modifications on previous bones.
+	// (no override versions ignore overrides on the previous bones aswell.)
+	// Maybe Skeleton could support getting this directly without reset eventually.
+	stack->skeleton->set_bone_local_pose_override(bone_idx, Transform(), stack->strength, false);
+	stack->skeleton->force_update_bone_children_transforms(bone_idx);
+
+	int parent_bone = stack->skeleton->get_bone_parent(bone_idx);
+
+	if (parent_bone == -1) {
+		parent_bone = bone_idx;
+	}
+
+	// Oor bone's pose in it's local space (from the parent bone's transform)
+	// It's origin should be the tip
+	Transform bone_pose = stack->skeleton->get_bone_pose(bone_idx);
+	// target pos from the point of view of the parent bone's tip!
+	Vector3 target_pos = stack->skeleton->global_pose_to_local_pose(parent_bone, stack->skeleton->world_transform_to_global_pose(target->get_global_transform())).origin;
 
 	// Lock the rotation to a plane relative to the bone by changing the target position
 	if (lock_rotation_to_plane) {
-		Transform bone_pose = stack->skeleton->get_bone_pose(bone_idx);
-
 		if (lock_rotation_plane == ROTATION_PLANE::ROTATION_PLANE_X) {
 			target_pos.x = bone_pose.origin.x;
 		} else if (lock_rotation_plane == ROTATION_PLANE::ROTATION_PLANE_Y) {
@@ -115,15 +129,23 @@ void SkeletonModification3DLookAt::_execute(real_t p_delta) {
 	}
 
 	// Look at the target!
-	Transform new_bone_trans = bone_local_pose.looking_at(target_pos, Vector3(0, 1, 0));
+	Transform new_bone_trans = bone_pose.looking_at(target_pos, Vector3(0, 1, 0));
 	// Convert from Z-forward to whatever direction the bone faces.
 	stack->skeleton->update_bone_rest_forward_vector(bone_idx);
 	new_bone_trans.basis = stack->skeleton->global_pose_z_forward_to_bone_forward(bone_idx, new_bone_trans.basis);
 
 	// Apply additional rotation
-	new_bone_trans.basis.rotate_local(Vector3(1, 0, 0), additional_rotation.x);
-	new_bone_trans.basis.rotate_local(Vector3(0, 1, 0), additional_rotation.y);
-	new_bone_trans.basis.rotate_local(Vector3(0, 0, 1), additional_rotation.z);
+	if (!Math::is_zero_approx(additional_rotation.x)) {
+		new_bone_trans.basis.rotate_local(Vector3(1, 0, 0), additional_rotation.x);
+	}
+
+	if (!Math::is_zero_approx(additional_rotation.y)) {
+		new_bone_trans.basis.rotate_local(Vector3(0, 1, 0), additional_rotation.y);
+	}
+
+	if (!Math::is_zero_approx(additional_rotation.z)) {
+		new_bone_trans.basis.rotate_local(Vector3(0, 0, 1), additional_rotation.z);
+	}
 
 	stack->skeleton->set_bone_local_pose_override(bone_idx, new_bone_trans, stack->strength, true);
 	stack->skeleton->force_update_bone_children_transforms(bone_idx);
