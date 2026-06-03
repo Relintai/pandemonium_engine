@@ -1200,9 +1200,8 @@ Transform Skeleton::global_pose_to_local_pose(int p_bone_idx, Transform p_global
 	ERR_FAIL_INDEX_V(p_bone_idx, bone_size, Transform());
 
 	if (bones[p_bone_idx].parent >= 0) {
-		int parent_bone_idx = bones[p_bone_idx].parent;
-		Transform conversion_transform = get_bone_global_pose(parent_bone_idx).affine_inverse();
-		return conversion_transform * p_global_pose;
+			Transform conversion_transform = get_bone_global_pose(p_bone_idx).affine_inverse();
+			return conversion_transform * p_global_pose;
 	} else {
 		return p_global_pose;
 	}
@@ -1211,9 +1210,9 @@ Transform Skeleton::global_pose_to_local_pose(int p_bone_idx, Transform p_global
 Transform Skeleton::local_pose_to_global_pose(int p_bone_idx, Transform p_local_pose) {
 	const int bone_size = bones.size();
 	ERR_FAIL_INDEX_V(p_bone_idx, bone_size, Transform());
+
 	if (bones[p_bone_idx].parent >= 0) {
-		int parent_bone_idx = bones[p_bone_idx].parent;
-		return bones[parent_bone_idx].pose_global * p_local_pose;
+		return bones[p_bone_idx].pose_global * p_local_pose;
 	} else {
 		return p_local_pose;
 	}
