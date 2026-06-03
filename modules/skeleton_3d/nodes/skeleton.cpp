@@ -433,6 +433,7 @@ Transform Skeleton::get_bone_global_pose_no_override(int p_bone) const {
 
 	return bones[p_bone].pose_global_no_override;
 }
+
 Transform Skeleton::get_bone_local_pose(int p_bone) const {
 	const int bone_size = bones.size();
 	ERR_FAIL_INDEX_V(p_bone, bone_size, Transform());
@@ -445,6 +446,22 @@ Transform Skeleton::get_bone_local_pose(int p_bone) const {
 		int parent_bone_idx = bones[p_bone].parent;
 		Transform conversion_transform = get_bone_global_pose(parent_bone_idx).affine_inverse();
 		return conversion_transform * get_bone_global_pose(p_bone);
+	} else {
+		return Transform();
+	}
+}
+Transform Skeleton::get_bone_local_pose_no_override(int p_bone) const {
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone, bone_size, Transform());
+
+	if (dirty && updating == 0) {
+		const_cast<Skeleton *>(this)->notification(NOTIFICATION_UPDATE_SKELETON);
+	}
+
+	if (bones[p_bone].parent >= 0) {
+		int parent_bone_idx = bones[p_bone].parent;
+		Transform conversion_transform = get_bone_global_pose_no_override(parent_bone_idx).affine_inverse();
+		return conversion_transform * get_bone_global_pose_no_override(p_bone);
 	} else {
 		return Transform();
 	}
@@ -1223,12 +1240,35 @@ Transform Skeleton::global_pose_to_local_pose(int p_bone_idx, Transform p_global
 	}
 }
 
+Transform Skeleton::global_pose_to_local_pose_no_override(int p_bone_idx, Transform p_global_pose) {
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone_idx, bone_size, Transform());
+
+	if (bones[p_bone_idx].parent >= 0) {
+		Transform conversion_transform = get_bone_global_pose_no_override(p_bone_idx).affine_inverse();
+		return conversion_transform * p_global_pose;
+	} else {
+		return p_global_pose;
+	}
+}
+
 Transform Skeleton::local_pose_to_global_pose(int p_bone_idx, Transform p_local_pose) {
 	const int bone_size = bones.size();
 	ERR_FAIL_INDEX_V(p_bone_idx, bone_size, Transform());
 
 	if (bones[p_bone_idx].parent >= 0) {
 		return bones[p_bone_idx].pose_global * p_local_pose;
+	} else {
+		return p_local_pose;
+	}
+}
+
+Transform Skeleton::local_pose_to_global_pose_no_override(int p_bone_idx, Transform p_local_pose) {
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone_idx, bone_size, Transform());
+
+	if (bones[p_bone_idx].parent >= 0) {
+		return bones[p_bone_idx].pose_global_no_override * p_local_pose;
 	} else {
 		return p_local_pose;
 	}
@@ -1347,6 +1387,7 @@ void Skeleton::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_bone_global_pose_no_override", "bone_idx"), &Skeleton::get_bone_global_pose_no_override);
 
 	ClassDB::bind_method(D_METHOD("get_bone_local_pose", "bone_idx"), &Skeleton::get_bone_local_pose);
+	ClassDB::bind_method(D_METHOD("get_bone_local_pose_no_override", "bone_idx"), &Skeleton::get_bone_local_pose_no_override);
 
 	ClassDB::bind_method(D_METHOD("clear_bones_local_pose_override"), &Skeleton::clear_bones_local_pose_override);
 	ClassDB::bind_method(D_METHOD("set_bone_local_pose_override", "bone_idx", "pose", "amount", "persistent"), &Skeleton::set_bone_local_pose_override, DEFVAL(false));
@@ -1362,7 +1403,9 @@ void Skeleton::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("global_pose_to_world_transform", "global_pose"), &Skeleton::global_pose_to_world_transform);
 	ClassDB::bind_method(D_METHOD("world_transform_to_global_pose", "world_transform"), &Skeleton::world_transform_to_global_pose);
 	ClassDB::bind_method(D_METHOD("global_pose_to_local_pose", "bone_idx", "global_pose"), &Skeleton::global_pose_to_local_pose);
+	ClassDB::bind_method(D_METHOD("global_pose_to_local_pose_no_override", "bone_idx", "global_pose"), &Skeleton::global_pose_to_local_pose_no_override);
 	ClassDB::bind_method(D_METHOD("local_pose_to_global_pose", "bone_idx", "local_pose"), &Skeleton::local_pose_to_global_pose);
+	ClassDB::bind_method(D_METHOD("local_pose_to_global_pose_no_override", "bone_idx", "local_pose"), &Skeleton::local_pose_to_global_pose_no_override);
 	ClassDB::bind_method(D_METHOD("global_pose_z_forward_to_bone_forward", "bone_idx", "basis"), &Skeleton::global_pose_z_forward_to_bone_forward);
 
 	ClassDB::bind_method(D_METHOD("set_show_rest_only"), &Skeleton::set_show_rest_only);

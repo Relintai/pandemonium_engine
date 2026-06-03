@@ -214,10 +214,12 @@ public:
 	void set_bone_rest(int p_bone, const Transform &p_rest);
 	Transform get_bone_rest(int p_bone) const;
 	Transform get_bone_global_rest(int p_bone) const;
+
 	Transform get_bone_global_pose(int p_bone) const;
 	Transform get_bone_global_pose_no_override(int p_bone) const;
 
 	Transform get_bone_local_pose(int p_bone) const;
+	Transform get_bone_local_pose_no_override(int p_bone) const;
 
 	void set_bone_enabled(int p_bone, bool p_enabled);
 	bool is_bone_enabled(int p_bone) const;
@@ -267,7 +269,9 @@ public:
 	Transform global_pose_to_world_transform(Transform p_global_pose);
 	Transform world_transform_to_global_pose(Transform p_transform);
 	Transform global_pose_to_local_pose(int p_bone_idx, Transform p_global_pose);
+	Transform global_pose_to_local_pose_no_override(int p_bone_idx, Transform p_global_pose);
 	Transform local_pose_to_global_pose(int p_bone_idx, Transform p_local_pose);
+	Transform local_pose_to_global_pose_no_override(int p_bone_idx, Transform p_local_pose);
 
 	Basis global_pose_z_forward_to_bone_forward(int p_bone_idx, Basis p_basis);
 
