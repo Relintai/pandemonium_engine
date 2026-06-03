@@ -433,6 +433,22 @@ Transform Skeleton::get_bone_global_pose_no_override(int p_bone) const {
 
 	return bones[p_bone].pose_global_no_override;
 }
+Transform Skeleton::get_bone_local_pose(int p_bone) const {
+	const int bone_size = bones.size();
+	ERR_FAIL_INDEX_V(p_bone, bone_size, Transform());
+
+	if (dirty && updating == 0) {
+		const_cast<Skeleton *>(this)->notification(NOTIFICATION_UPDATE_SKELETON);
+	}
+
+	if (bones[p_bone].parent >= 0) {
+		int parent_bone_idx = bones[p_bone].parent;
+		Transform conversion_transform = get_bone_global_pose(parent_bone_idx).affine_inverse();
+		return conversion_transform * get_bone_global_pose(p_bone);
+	} else {
+		return Transform();
+	}
+}
 
 void Skeleton::clear_bones_local_pose_override() {
 	for (int i = 0; i < bones.size(); i += 1) {
@@ -1329,6 +1345,8 @@ void Skeleton::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_bone_global_pose_override", "bone_idx"), &Skeleton::get_bone_global_pose_override);
 	ClassDB::bind_method(D_METHOD("get_bone_global_pose", "bone_idx"), &Skeleton::get_bone_global_pose);
 	ClassDB::bind_method(D_METHOD("get_bone_global_pose_no_override", "bone_idx"), &Skeleton::get_bone_global_pose_no_override);
+
+	ClassDB::bind_method(D_METHOD("get_bone_local_pose", "bone_idx"), &Skeleton::get_bone_local_pose);
 
 	ClassDB::bind_method(D_METHOD("clear_bones_local_pose_override"), &Skeleton::clear_bones_local_pose_override);
 	ClassDB::bind_method(D_METHOD("set_bone_local_pose_override", "bone_idx", "pose", "amount", "persistent"), &Skeleton::set_bone_local_pose_override, DEFVAL(false));

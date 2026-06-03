@@ -217,6 +217,8 @@ public:
 	Transform get_bone_global_pose(int p_bone) const;
 	Transform get_bone_global_pose_no_override(int p_bone) const;
 
+	Transform get_bone_local_pose(int p_bone) const;
+
 	void set_bone_enabled(int p_bone, bool p_enabled);
 	bool is_bone_enabled(int p_bone) const;
 
