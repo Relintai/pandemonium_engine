@@ -175,10 +175,24 @@ void SkeletonModification3DJiggle::_execute_jiggle_joint(int p_joint_idx, Spatia
 		return;
 	}
 
-	Transform bone_local_pos = stack->skeleton->get_bone_local_pose_override(jiggle_data_chain[p_joint_idx].bone_idx);
-	if (bone_local_pos == Transform()) {
-		bone_local_pos = stack->skeleton->get_bone_pose(jiggle_data_chain[p_joint_idx].bone_idx);
+	int bone_idx = jiggle_data_chain[p_joint_idx].bone_idx;
+
+	// Reset override
+	// Needs to be done, as we need the proper position if there are modifications on previous bones.
+	// (no override versions ignore overrides on the previous bones aswell.)
+	// Maybe Skeleton could support getting this directly without reset eventually.
+	stack->skeleton->set_bone_local_pose_override(bone_idx, Transform(), 0, false);
+	stack->skeleton->force_update_bone_children_transforms(bone_idx);
+
+	int parent_bone = stack->skeleton->get_bone_parent(bone_idx);
+
+	if (parent_bone == -1) {
+		parent_bone = bone_idx;
 	}
+
+	// Our bone's pose in it's local space (from the parent bone's transform)
+	// It's origin should be the tip
+	Transform bone_local_pos = stack->skeleton->get_bone_pose(bone_idx);
 
 	Transform new_bone_trans = stack->skeleton->local_pose_to_global_pose(jiggle_data_chain[p_joint_idx].bone_idx, bone_local_pos);
 	Vector3 target_position = stack->skeleton->world_transform_to_global_pose(p_target->get_global_transform()).origin;
