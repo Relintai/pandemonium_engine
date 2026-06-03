@@ -111,7 +111,7 @@ void SkeletonModification3DLookAt::_execute(real_t p_delta) {
 		parent_bone = bone_idx;
 	}
 
-	// Oor bone's pose in it's local space (from the parent bone's transform)
+	// Our bone's pose in it's local space (from the parent bone's transform)
 	// It's origin should be the tip
 	Transform bone_pose = stack->skeleton->get_bone_pose(bone_idx);
 	// target pos from the point of view of the parent bone's tip!
