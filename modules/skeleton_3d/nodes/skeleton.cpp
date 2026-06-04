@@ -1383,6 +1383,10 @@ void Skeleton::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("force_update_all_bone_transforms"), &Skeleton::force_update_all_bone_transforms);
 	ClassDB::bind_method(D_METHOD("force_update_bone_children_transforms", "bone_idx"), &Skeleton::force_update_bone_children_transforms);
 
+	ClassDB::bind_method(D_METHOD("update_bone_rest_forward_vector", "bone_idx", "force_update"), &Skeleton::update_bone_rest_forward_vector, DEFVAL(false));
+	ClassDB::bind_method(D_METHOD("update_bone_rest_forward_axis", "bone_idx", "force_update"), &Skeleton::update_bone_rest_forward_axis, DEFVAL(false));
+	ClassDB::bind_method(D_METHOD("get_bone_axis_forward_vector", "bone_idx"), &Skeleton::get_bone_axis_forward_vector);
+
 	// Helper functions
 	ClassDB::bind_method(D_METHOD("global_pose_to_world_transform", "global_pose"), &Skeleton::global_pose_to_world_transform);
 	ClassDB::bind_method(D_METHOD("world_transform_to_global_pose", "world_transform"), &Skeleton::world_transform_to_global_pose);
