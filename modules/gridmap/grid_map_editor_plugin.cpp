@@ -475,6 +475,15 @@ EditorPlugin::AfterGUIInput GridMapEditor::do_input_action(Camera *p_camera, con
 		si.new_value = -1;
 		si.new_orientation = 0;
 		si.old_value = node->get_cell_item(cell[0], cell[1], cell[2]);
+
+		// If we right click on an empty space return, this way the editor is much more usable.
+		// This will make the spatial viewport start looking around
+		// It's not perfect, this editor will need a bigger overhaul eventually.
+		if (p_click && si.old_value == -1) {
+			input_action = INPUT_NONE;
+			return EditorPlugin::AFTER_GUI_INPUT_PASS;
+		}
+
 		si.old_orientation = node->get_cell_item_orientation(cell[0], cell[1], cell[2]);
 		set_items.push_back(si);
 		node->set_cell_item(cell[0], cell[1], cell[2], -1);
