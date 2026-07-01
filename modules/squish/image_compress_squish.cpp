@@ -43,7 +43,8 @@ void image_decompress_squish(Image *p_image) {
 	int mm_count = p_image->get_mipmap_count();
 	data.resize(target_size);
 
-	PoolVector<uint8_t>::Read rb = p_image->get_data().read();
+	PoolVector<uint8_t> image_data = p_image->get_data();
+	PoolVector<uint8_t>::Read rb = image_data.read();
 	PoolVector<uint8_t>::Write wb = data.write();
 
 	int squish_flags = Image::FORMAT_MAX;
@@ -174,7 +175,8 @@ void image_compress_squish(Image *p_image, float p_lossy_quality, Image::Compres
 		data.resize(target_size);
 		int shift = Image::get_format_pixel_rshift(target_format);
 
-		PoolVector<uint8_t>::Read rb = p_image->get_data().read();
+		PoolVector<uint8_t> image_data = p_image->get_data();
+		PoolVector<uint8_t>::Read rb = image_data.read();
 		PoolVector<uint8_t>::Write wb = data.write();
 
 		int dst_ofs = 0;

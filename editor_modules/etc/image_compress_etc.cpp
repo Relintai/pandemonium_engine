@@ -186,7 +186,8 @@ static void _compress_etc(Image *p_img, float p_lossy_quality, bool force_etc1_f
 		}
 	}
 
-	PoolVector<uint8_t>::Read r = img->get_data().read();
+	PoolVector<uint8_t> img_data = img->get_data();
+	PoolVector<uint8_t>::Read r = img_data.read();
 	ERR_FAIL_COND(!r.ptr());
 
 	unsigned int target_size = Image::get_image_data_size(imgw, imgh, etc_format, p_img->has_mipmaps());

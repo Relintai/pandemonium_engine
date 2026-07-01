@@ -371,7 +371,8 @@ public: // OS
 			return;
 		Ref<Image> i = icon->duplicate();
 		i->convert(Image::FORMAT_RGBA8);
-		PoolVector<uint8_t>::Read r = i->get_data().read();
+		PoolVector<uint8_t> icon_data = i->get_data();
+		PoolVector<uint8_t>::Read r = icon_data.read();
 		os_.set_icon(i->get_width(), i->get_height(), r.ptr());
 	}
 

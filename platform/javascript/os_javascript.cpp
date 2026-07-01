@@ -551,7 +551,8 @@ void OS_JavaScript::set_custom_mouse_cursor(const RES &p_cursor, CursorShape p_s
 
 		PoolByteArray png;
 		size_t len;
-		PoolByteArray::Read r = image->get_data().read();
+		PoolVector<uint8_t> image_data = image->get_data();
+		PoolByteArray::Read r = image_data.read();
 		ERR_FAIL_COND(!png_image_write_get_memory_size(png_meta, len, 0, r.ptr(), 0, NULL));
 
 		png.resize(len);
@@ -1217,7 +1218,8 @@ void OS_JavaScript::set_icon(const Ref<Image> &p_icon) {
 
 	PoolByteArray png;
 	size_t len;
-	PoolByteArray::Read r = icon->get_data().read();
+	PoolVector<uint8_t> icon_data = icon->get_data();
+	PoolByteArray::Read r = icon_data.read();
 	ERR_FAIL_COND(!png_image_write_get_memory_size(png_meta, len, 0, r.ptr(), 0, NULL));
 
 	png.resize(len);

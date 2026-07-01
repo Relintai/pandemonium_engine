@@ -183,7 +183,8 @@ void image_compress_cvtt(Image *p_image, float p_lossy_quality, Image::CompressS
 			p_image->convert(Image::FORMAT_RGBH);
 		}
 
-		PoolVector<uint8_t>::Read rb = p_image->get_data().read();
+		PoolVector<uint8_t> image_data = p_image->get_data();
+		PoolVector<uint8_t>::Read rb = image_data.read();
 
 		const uint16_t *source_data = reinterpret_cast<const uint16_t *>(&rb[0]);
 		int pixel_element_count = w * h * 3;
@@ -199,7 +200,8 @@ void image_compress_cvtt(Image *p_image, float p_lossy_quality, Image::CompressS
 		p_image->convert(Image::FORMAT_RGBA8); //still uses RGBA to convert
 	}
 
-	PoolVector<uint8_t>::Read rb = p_image->get_data().read();
+	PoolVector<uint8_t> image_data = p_image->get_data();
+	PoolVector<uint8_t>::Read rb = image_data.read();
 
 	PoolVector<uint8_t> data;
 	int target_size = Image::get_image_data_size(w, h, target_format, p_image->has_mipmaps());
@@ -307,7 +309,8 @@ void image_decompress_cvtt(Image *p_image) {
 	int w = p_image->get_width();
 	int h = p_image->get_height();
 
-	PoolVector<uint8_t>::Read rb = p_image->get_data().read();
+	PoolVector<uint8_t> image_data = p_image->get_data();
+	PoolVector<uint8_t>::Read rb = image_data.read();
 
 	PoolVector<uint8_t> data;
 	int target_size = Image::get_image_data_size(w, h, target_format, p_image->has_mipmaps());

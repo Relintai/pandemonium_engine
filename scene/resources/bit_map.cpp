@@ -52,7 +52,8 @@ void BitMap::create_from_image_alpha(const Ref<Image> &p_image, float p_threshol
 
 	create(Size2(img->get_width(), img->get_height()));
 
-	PoolVector<uint8_t>::Read r = img->get_data().read();
+	PoolVector<uint8_t> img_data = img->get_data();
+	PoolVector<uint8_t>::Read r = img_data.read();
 	uint8_t *w = bitmask.ptrw();
 
 	for (int i = 0; i < width * height; i++) {

@@ -3289,7 +3289,8 @@ void OS_Windows::set_icon(const Ref<Image> &p_icon) {
 	encode_uint32(0, &icon_bmp[36]);
 
 	uint8_t *wr = &icon_bmp[40];
-	PoolVector<uint8_t>::Read r = icon->get_data().read();
+	PoolVector<uint8_t> icon_data = icon->get_data();
+	PoolVector<uint8_t>::Read r = icon_data.read();
 
 	for (int i = 0; i < h; i++) {
 		for (int j = 0; j < w; j++) {

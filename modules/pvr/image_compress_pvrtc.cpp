@@ -63,7 +63,8 @@ static void _compress_pvrtc4(Image *p_img) {
 	PoolVector<uint8_t> data = new_img->get_data();
 	{
 		PoolVector<uint8_t>::Write wr = data.write();
-		PoolVector<uint8_t>::Read r = img->get_data().read();
+		PoolVector<uint8_t> img_data = img->get_data();
+		PoolVector<uint8_t>::Read r = img_data.read();
 
 		for (int i = 0; i <= new_img->get_mipmap_count(); i++) {
 			int ofs, size, w, h;

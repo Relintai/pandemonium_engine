@@ -510,7 +510,8 @@ Vector<Color> VoxelLightBaker::_get_bake_texture(Ref<Image> p_image, const Color
 	p_image->convert(Image::FORMAT_RGBA8);
 	p_image->resize(bake_texture_size, bake_texture_size, Image::INTERPOLATE_CUBIC);
 
-	PoolVector<uint8_t>::Read r = p_image->get_data().read();
+	PoolVector<uint8_t> image_data = p_image->get_data();
+	PoolVector<uint8_t>::Read r = image_data.read();
 	ret.resize(bake_texture_size * bake_texture_size);
 
 	for (int i = 0; i < bake_texture_size * bake_texture_size; i++) {

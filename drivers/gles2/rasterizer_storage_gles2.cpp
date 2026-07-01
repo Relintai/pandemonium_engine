@@ -698,7 +698,9 @@ void RasterizerStorageGLES2::texture_set_data(RID p_texture, const Ref<Image> &p
 	GLenum blit_target = (texture->target == GL_TEXTURE_CUBE_MAP) ? _cube_side_enum[p_layer] : GL_TEXTURE_2D;
 
 	texture->data_size = img->get_data().size();
-	PoolVector<uint8_t>::Read read = img->get_data().read();
+
+	PoolVector<uint8_t> image_data = img->get_data();
+	PoolVector<uint8_t>::Read read = image_data.read();
 	ERR_FAIL_COND(!read.ptr());
 
 	gl_wrapper.gl_active_texture(GL_TEXTURE0);

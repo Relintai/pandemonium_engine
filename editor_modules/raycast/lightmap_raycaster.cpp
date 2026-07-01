@@ -90,7 +90,8 @@ void LightmapRaycasterEmbree::set_mesh_alpha_texture(Ref<Image> p_alpha_texture,
 		tex.data.resize(tex.size.x * tex.size.y);
 
 		{
-			PoolVector<uint8_t>::Read r = p_alpha_texture->get_data().read();
+			PoolVector<uint8_t> alpha_texture_data = p_alpha_texture->get_data();
+			PoolVector<uint8_t>::Read r = alpha_texture_data.read();
 			uint8_t *ptrw = tex.data.ptrw();
 			for (int i = 0; i < tex.size.x * tex.size.y; ++i) {
 				ptrw[i] = r[i];
