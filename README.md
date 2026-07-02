@@ -361,3 +361,31 @@ The Inverse Kinematics system has some bugs, those should be fixed.
 
 Also it will probably need som api and usage improvements.
 
+### Build System
+
+I just noticed that scons is getting the ai treatment very hard. I see lots of co-authored by claude...
+
+So seems like the clock is ticking, things are likely to break eventually.
+
+Fortunately I have been thinking about removing scons as a dependency yeas ago (SCSCons folder was one of the experiments
+to not have to rely on scons being installed). I guess I'll need to continue working on this.
+
+If I have to rework a build system I'd prefer to not depend on constantly changing
+technologies. I don't need that for job security, I don't have time for that.
+
+I see a few ways realistically:
+
+- Use the engine's scripting language itself
+  - Either an older SCons could be ported to GDScript.
+	- Or a new build system could be written, that's similar enough to SCons so it's not that much work to port everything.
+  - Obviously this would be the most ridiculous (and probably needs the least amount of work)
+    out of all of these, but engine needs to be bootstrapped on new platforms, which would be annoying.
+- Use [sfw](https://github.com/Relintai/sfw) to create a simple single cpp build system for the engine.
+- Create something similar to sfw but it's a build system.
+- Create a simple scripting language (or take PScript for example) using sfw, and just use that for the build.
+- Use an extremely portable scripting language like lua or python directly. Lua would be preferable, as it's very stable,
+  but I don't like the syntax that much. Pyhton is annoying because it's ever changing, but it's syntax is better.
+
+Note that other traditional build systems will not work, there are a bunch of failed pull request in godot's
+repository as a testimony. Most build systems are made for way simpler projects.
+
