@@ -385,6 +385,8 @@ I see a few ways realistically:
 - Create a simple scripting language (or take PScript for example) using sfw, and just use that for the build.
 - Use an extremely portable scripting language like lua or python directly. Lua would be preferable, as it's very stable,
   but I don't like the syntax that much. Pyhton is annoying because it's ever changing, but it's syntax is better.
+- Fork SCons, publish it on pypi and just use that. If I have to fork I'd rather also get rid of pypi as a dependency too.
+- Continue with the SCSCons built in scons thing, so it doesn't have to be installed anymore.
 
 Note that other traditional build systems will not work, there are a bunch of failed pull request in godot's
 repository as a testimony. Most build systems are made for way simpler projects.
