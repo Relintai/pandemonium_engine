@@ -377,7 +377,7 @@ I see a few ways realistically:
 
 - Use the engine's scripting language itself
   - Either an older SCons could be ported to GDScript.
-	- Or a new build system could be written, that's similar enough to SCons so it's not that much work to port everything.
+  - Or a new build system could be written, that's similar enough to SCons so it's not that much work to port everything.
   - Obviously this would be the most ridiculous (and probably needs the least amount of work)
     out of all of these, but engine needs to be bootstrapped on new platforms, which would be annoying.
 - Use [sfw](https://github.com/Relintai/sfw) to create a simple single cpp build system for the engine.
