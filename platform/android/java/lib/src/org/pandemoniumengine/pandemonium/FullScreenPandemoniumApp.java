@@ -41,6 +41,7 @@ import android.view.View;
 import android.view.WindowManager;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -72,6 +73,15 @@ public abstract class FullScreenPandemoniumApp extends FragmentActivity implemen
 		EdgeToEdge.enable(this);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.pandemonium_app_layout);
+
+		getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+			@Override
+			public void handleOnBackPressed() {
+				if (pandemoniumFragment != null) {
+					pandemoniumFragment.onBackPressed();
+				}
+			}
+		});
 
 		handleStartIntent(getIntent(), true);
 
@@ -189,15 +199,6 @@ public abstract class FullScreenPandemoniumApp extends FragmentActivity implemen
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 		if (pandemoniumFragment != null) {
 			pandemoniumFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
-		}
-	}
-
-	@Override
-	public void onBackPressed() {
-		if (pandemoniumFragment != null) {
-			pandemoniumFragment.onBackPressed();
-		} else {
-			super.onBackPressed();
 		}
 	}
 
