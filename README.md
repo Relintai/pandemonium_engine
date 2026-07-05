@@ -391,3 +391,11 @@ I see a few ways realistically:
 Note that other traditional build systems will not work, there are a bunch of failed pull request in godot's
 repository as a testimony. Most build systems are made for way simpler projects.
 
+### Local CI and Nightlies
+
+Eventually set up a local CI which would actually build for every supported platform,
+could also use it to build and make nightlies available.
+
+Note that I would have already done this if the American AI clownpanies wouldn't have gone berserk
+and screwed us over with hardware prices, but it will be done eventually.
+
