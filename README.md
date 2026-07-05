@@ -234,6 +234,15 @@ It should also mirror the engine specific repositories and the release zip-s.
 
 It should also look at least acceptable.
 
+#### Git
+
+Set up a git mirror on the engine's domain aswell, not just on my personal page.
+
+Also should probably migrate from gitea eventually, as they seem to be using llm-s for coding a lot now,
+and I'd prefer if they don't blow up my server with low quality code after doing this for the next few years.
+
+Forgejo seems pretty good for now, or I could probably throw something together (or port something) eventually.
+
 ### Multi window support
 
 Add multi window support for the engine.
