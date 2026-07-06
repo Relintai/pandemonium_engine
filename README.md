@@ -408,3 +408,12 @@ could also use it to build and make nightlies available.
 Note that I would have already done this if the American AI clownpanies wouldn't have gone berserk
 and screwed us over with hardware prices, but it will be done eventually.
 
+### Small TODOs
+
+#### TiledWall
+
+- 4 vertex mesh. This would allow for arbitrary shapes.
+- splined mesh? Spline on 4 sides?
+- N vertex mesh.
+
+
