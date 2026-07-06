@@ -278,6 +278,18 @@ Not yet sure how to do it, so it's still simple.
 
 WebUserAdmin editor.
 
+#### Password Reset Node
+
+Since this can be done lots of ways, the best way I think would be to make it abstract,
+and implement tiny bits.
+
+- Render a page.
+- Ask for email.
+- Call virtual, or fire signal.
+- Try to render success page.
+
+And just print error in the default implementation.
+
 ### Git integration
 
 Maybe an extremely simple git integration could be added to the editor.
