@@ -285,7 +285,6 @@ Not yet sure how to do it, so it's still simple.
 Probably the best solution is to just script it per project, and add some sample implementations
 to the demos repository, and mention them in the docs, as there are too many ways to do this.
 
-
 #### Password Reset Node
 
 Since this can be done lots of ways, the best way I think would be to make it abstract,
@@ -297,6 +296,12 @@ and implement tiny bits.
 - Try to render success page.
 
 And just print error in the default implementation.
+
+### Users
+
+The User class should probably have an is_email_valid property.
+
+An UserEmailValidationCheck Middleware could be added.
 
 ### Git integration
 
