@@ -267,7 +267,9 @@ Their api does not need to match the built in popups exactly.
 
 ### WebNodes
 
-WebUserAdmin editor.
+#### WebUserAdmin editor.
+
+The implementation should probably be in the demos repository for easy customization.
 
 #### 2FA
 
