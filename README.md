@@ -267,6 +267,10 @@ Their api does not need to match the built in popups exactly.
 
 ### WebNodes
 
+WebUserAdmin editor.
+
+#### 2FA
+
 Login node should support 2FA with email and TOTP. Maybe it could be a new UserLogin2FANode.
 2FA Login Options helper class maybe?
 2FALoginOptionSMTP -> SMTP module adds it, needs to be inherited from to access the SMTP Node.
@@ -276,7 +280,9 @@ Register needs to work with 2FA. Or 2FA Setup node?
 
 Not yet sure how to do it, so it's still simple.
 
-WebUserAdmin editor.
+Probably the best solution is to just script it per project, and add some sample implementations
+to the demos repository, and mention them in the docs, as there are too many ways to do this.
+
 
 #### Password Reset Node
 
