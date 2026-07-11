@@ -271,20 +271,6 @@ Their api does not need to match the built in popups exactly.
 
 The implementation should probably be in the demos repository for easy customization.
 
-#### 2FA
-
-Login node should support 2FA with email and TOTP. Maybe it could be a new UserLogin2FANode.
-2FA Login Options helper class maybe?
-2FALoginOptionSMTP -> SMTP module adds it, needs to be inherited from to access the SMTP Node.
-Maybe also do 2FALoginOptionSMTPAutoload -> Looks up the given autoload.
-
-Register needs to work with 2FA. Or 2FA Setup node?
-
-Not yet sure how to do it, so it's still simple.
-
-Probably the best solution is to just script it per project, and add some sample implementations
-to the demos repository, and mention them in the docs, as there are too many ways to do this.
-
 #### Password Reset Node
 
 Since this can be done lots of ways, the best way I think would be to make it abstract,
