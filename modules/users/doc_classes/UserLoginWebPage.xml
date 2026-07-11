@@ -15,6 +15,16 @@
 		d["error_str"] = error_str; String, html containing the problems.
 		d["uname_val"] = uname_val; The username input value.
 		d["pass_val"] = pass_val; The password input value.[/code]
+		If you want to reimplement this class yourself, this is how to set up a user's session on login success:
+		[code]//PScript:
+		HTTPSession session = request.get_or_create_session();
+		session.add("user_id", user.get_user_id());
+		WebServerCookie c = WebServerCookie.new();
+		c.set_data("session_id", session.get_session_id());
+		c.set_path("/");
+		request.response_add_cookie(c);
+		// ...
+		// Send the request[/code]
 	</description>
 	<tutorials>
 		<link title="Website with users using the SQLite db backend">$DOCS_URL/07_demo_projects/web/users_sqlite</link>
