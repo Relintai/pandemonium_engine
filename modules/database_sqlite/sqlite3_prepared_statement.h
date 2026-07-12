@@ -66,21 +66,21 @@ public:
 	virtual Error clear_bindings();
 
 	// Querying
-	virtual String get_column_name(const int p_index);
-	virtual String get_column_decltype(const int p_index);
-	virtual Type get_column_type(const int p_index);
+	virtual String column_name_get(const int p_index);
+	virtual String column_decltype_get(const int p_index);
+	virtual Type column_type_get(const int p_index);
 
-	virtual String get_column_database_name(const int p_index);
-	virtual String get_column_table_name(const int p_index);
-	virtual String get_column_origin_name(const int p_index);
+	virtual String column_database_name_get(const int p_index);
+	virtual String column_table_name_get(const int p_index);
+	virtual String column_origin_name_get(const int p_index);
 
-	virtual Vector<uint8_t> get_column_blob(const int p_index);
-	virtual float get_column_float(const int p_index);
-	virtual double get_column_double(const int p_index);
-	virtual int64_t get_column_int(const int p_index);
-	virtual int get_column_int64(const int p_index);
-	virtual String get_column_text(const int p_index);
-	virtual Variant get_column_value(const int p_index);
+	virtual Vector<uint8_t> column_blob_get(const int p_index);
+	virtual float column_float_get(const int p_index);
+	virtual double column_double_get(const int p_index);
+	virtual int64_t column_int_get(const int p_index);
+	virtual int column_int64_get(const int p_index);
+	virtual String column_text_get(const int p_index);
+	virtual Variant column_value_get(const int p_index);
 
 	virtual int get_column_count();
 

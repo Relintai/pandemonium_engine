@@ -259,7 +259,7 @@ Error SQLite3PreparedStatement::clear_bindings() {
 }
 
 // Querying
-String SQLite3PreparedStatement::get_column_name(const int p_index) {
+String SQLite3PreparedStatement::column_name_get(const int p_index) {
 	if (!_prepared_statement) {
 		return String();
 	}
@@ -269,7 +269,7 @@ String SQLite3PreparedStatement::get_column_name(const int p_index) {
 
 	return String::utf8(cname);
 }
-String SQLite3PreparedStatement::get_column_decltype(const int p_index) {
+String SQLite3PreparedStatement::column_decltype_get(const int p_index) {
 	if (!_prepared_statement) {
 		return String();
 	}
@@ -279,7 +279,7 @@ String SQLite3PreparedStatement::get_column_decltype(const int p_index) {
 
 	return String::utf8(cname);
 }
-PreparedStatement::Type SQLite3PreparedStatement::get_column_type(const int p_index) {
+PreparedStatement::Type SQLite3PreparedStatement::column_type_get(const int p_index) {
 	if (!_prepared_statement) {
 		return TYPE_UNKNOWN;
 	}
@@ -304,7 +304,7 @@ PreparedStatement::Type SQLite3PreparedStatement::get_column_type(const int p_in
 	return TYPE_UNKNOWN;
 }
 
-String SQLite3PreparedStatement::get_column_database_name(const int p_index) {
+String SQLite3PreparedStatement::column_database_name_get(const int p_index) {
 #ifdef SQLITE_ENABLE_COLUMN_METADATA
 	if (!_prepared_statement) {
 		return String();
@@ -318,7 +318,7 @@ String SQLite3PreparedStatement::get_column_database_name(const int p_index) {
 	return String();
 #endif
 }
-String SQLite3PreparedStatement::get_column_table_name(const int p_index) {
+String SQLite3PreparedStatement::column_table_name_get(const int p_index) {
 #ifdef SQLITE_ENABLE_COLUMN_METADATA
 	if (!_prepared_statement) {
 		return String();
@@ -332,7 +332,7 @@ String SQLite3PreparedStatement::get_column_table_name(const int p_index) {
 	return String();
 #endif
 }
-String SQLite3PreparedStatement::get_column_origin_name(const int p_index) {
+String SQLite3PreparedStatement::column_origin_name_get(const int p_index) {
 #ifdef SQLITE_ENABLE_COLUMN_METADATA
 	if (!_prepared_statement) {
 		return String();
@@ -347,7 +347,7 @@ String SQLite3PreparedStatement::get_column_origin_name(const int p_index) {
 #endif
 }
 
-Vector<uint8_t> SQLite3PreparedStatement::get_column_blob(const int p_index) {
+Vector<uint8_t> SQLite3PreparedStatement::column_blob_get(const int p_index) {
 	if (!_prepared_statement) {
 		return Vector<uint8_t>();
 	}
@@ -367,31 +367,31 @@ Vector<uint8_t> SQLite3PreparedStatement::get_column_blob(const int p_index) {
 
 	return r;
 }
-float SQLite3PreparedStatement::get_column_float(const int p_index) {
-	return static_cast<float>(get_column_double(p_index));
+float SQLite3PreparedStatement::column_float_get(const int p_index) {
+	return static_cast<float>(column_double_get(p_index));
 }
-double SQLite3PreparedStatement::get_column_double(const int p_index) {
+double SQLite3PreparedStatement::column_double_get(const int p_index) {
 	if (!_prepared_statement) {
 		return 0;
 	}
 
 	return sqlite3_column_double(_prepared_statement, p_index);
 }
-int64_t SQLite3PreparedStatement::get_column_int(const int p_index) {
+int64_t SQLite3PreparedStatement::column_int_get(const int p_index) {
 	if (!_prepared_statement) {
 		return 0;
 	}
 
 	return sqlite3_column_int(_prepared_statement, p_index);
 }
-int SQLite3PreparedStatement::get_column_int64(const int p_index) {
+int SQLite3PreparedStatement::column_int64_get(const int p_index) {
 	if (!_prepared_statement) {
 		return 0;
 	}
 
 	return sqlite3_column_int64(_prepared_statement, p_index);
 }
-String SQLite3PreparedStatement::get_column_text(const int p_index) {
+String SQLite3PreparedStatement::column_text_get(const int p_index) {
 	if (!_prepared_statement) {
 		return String();
 	}
@@ -405,22 +405,22 @@ String SQLite3PreparedStatement::get_column_text(const int p_index) {
 	return String::utf8(val);
 }
 
-Variant SQLite3PreparedStatement::get_column_value(const int p_index) {
+Variant SQLite3PreparedStatement::column_value_get(const int p_index) {
 	if (!_prepared_statement) {
 		return Variant();
 	}
 
-	switch (get_column_type(p_index)) {
+	switch (column_type_get(p_index)) {
 		case TYPE_BLOB:
-			return Variant(get_column_blob(p_index));
+			return Variant(column_blob_get(p_index));
 		case TYPE_DOUBLE:
-			return Variant(get_column_double(p_index));
+			return Variant(column_double_get(p_index));
 			break;
 		case TYPE_INT:
-			return Variant(get_column_int(p_index));
+			return Variant(column_int_get(p_index));
 			break;
 		case TYPE_TEXT:
-			return Variant(get_column_text(p_index));
+			return Variant(column_text_get(p_index));
 			break;
 		case TYPE_NULL:
 		default:
