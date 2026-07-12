@@ -105,29 +105,29 @@ public:
 	int get_current_column_index() const;
 	void set_current_column_index(const int p_index);
 
-	String get_next_column_name();
-	String get_next_column_decltype();
-	Type get_next_column_type();
+	String next_column_name_get();
+	String next_column_decltype_get();
+	Type next_column_type_get();
 
-	String get_next_column_database_name();
-	String get_next_column_table_name();
-	String get_next_column_origin_name();
+	String next_column_database_name_get();
+	String next_column_table_name_get();
+	String next_column_origin_name_get();
 
-	String get_current_column_name();
-	String get_current_column_decltype();
-	Type get_current_column_type();
+	String current_column_name_get();
+	String current_column_decltype_get();
+	Type current_column_type_get();
 
-	String get_current_column_database_name();
-	String get_current_column_table_name();
-	String get_current_column_origin_name();
+	String current_column_database_name_get();
+	String current_column_table_name_get();
+	String current_column_origin_name_get();
 
-	Vector<uint8_t> get_next_column_blob();
-	float get_next_column_float();
-	double get_next_column_double();
-	int64_t get_next_column_int();
-	int get_next_column_int64();
-	String get_next_column_text();
-	Variant get_next_column_value();
+	Vector<uint8_t> next_column_blob_get();
+	float next_column_float_get();
+	double next_column_double_get();
+	int64_t next_column_int_get();
+	int next_column_int64_get();
+	String next_column_text_get();
+	Variant next_column_value_get();
 
 	// Binding auto next api
 	Error set_next_bind_blob(const Vector<uint8_t> &p_value);
