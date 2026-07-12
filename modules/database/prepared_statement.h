@@ -105,40 +105,40 @@ public:
 	int get_current_column_index() const;
 	void set_current_column_index(const int p_index);
 
-	String next_column_name();
-	String next_column_decltype();
-	Type next_column_type();
+	String get_next_column_name();
+	String get_next_column_decltype();
+	Type get_next_column_type();
 
-	String next_column_database_name();
-	String next_column_table_name();
-	String next_column_origin_name();
+	String get_next_column_database_name();
+	String get_next_column_table_name();
+	String get_next_column_origin_name();
 
-	String current_column_name();
-	String current_column_decltype();
-	Type current_column_type();
+	String get_current_column_name();
+	String get_current_column_decltype();
+	Type get_current_column_type();
 
-	String current_column_database_name();
-	String current_column_table_name();
-	String current_column_origin_name();
+	String get_current_column_database_name();
+	String get_current_column_table_name();
+	String get_current_column_origin_name();
 
-	Vector<uint8_t> next_column_blob();
-	float next_column_float();
-	double next_column_double();
-	int64_t next_column_int();
-	int next_column_int64();
-	String next_column_text();
-	Variant next_column_value();
+	Vector<uint8_t> get_next_column_blob();
+	float get_next_column_float();
+	double get_next_column_double();
+	int64_t get_next_column_int();
+	int get_next_column_int64();
+	String get_next_column_text();
+	Variant get_next_column_value();
 
 	// Binding auto next api
-	Error next_bind_blob(const Vector<uint8_t> &p_value);
-	Error next_bind_float(const float p_value);
-	Error next_bind_double(const double p_value);
-	Error next_bind_int(const int p_value);
-	Error next_bind_int64(const int64_t p_value);
-	Error next_bind_null();
-	Error next_bind_text(const String &p_value);
-	Error next_bind_zeroblob(const int p_num);
-	Error next_bind_value(const Variant &p_value);
+	Error set_next_bind_blob(const Vector<uint8_t> &p_value);
+	Error set_next_bind_float(const float p_value);
+	Error set_next_bind_double(const double p_value);
+	Error set_next_bind_int(const int p_value);
+	Error set_next_bind_int64(const int64_t p_value);
+	Error set_next_bind_null();
+	Error set_next_bind_text(const String &p_value);
+	Error set_next_bind_zeroblob(const int p_num);
+	Error set_next_bind_value(const Variant &p_value);
 
 	int next_column();
 

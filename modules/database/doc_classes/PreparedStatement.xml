@@ -60,7 +60,7 @@
 		ps.prepare();
 		while ps.step() == OK:
 		    print("ps.column_count(): " + str(ps.column_count()))
-		    print("id: " + str(ps.next_column_int()))
+		    print("id: " + str(ps.get_next_column_int()))
 		[/code]
 		Querying an unknown amount of rows v2:
 		[code]#GDScript
@@ -70,7 +70,7 @@
 		ps.step();
 		while ps.has_data():
 		    print("ps.column_count(): " + str(ps.column_count()))
-		    print("id: " + str(ps.next_column_int()))
+		    print("id: " + str(ps.get_next_column_int()))
 		    ps.step();
 		[/code]
 	</description>
@@ -275,37 +275,37 @@
 				Read a [Variant] from the index-th column. (Indexed from 0)
 			</description>
 		</method>
-		<method name="current_column_database_name">
+		<method name="get_current_column_database_name">
 			<return type="String" />
 			<description>
 				Returns the database's name from which the column is from if the database backend supports it.
 			</description>
 		</method>
-		<method name="current_column_decltype">
+		<method name="get_current_column_decltype">
 			<return type="String" />
 			<description>
 				Returns the declared type of the given column.
 			</description>
 		</method>
-		<method name="current_column_name">
+		<method name="get_current_column_name">
 			<return type="String" />
 			<description>
 				Returns the column's name if the database backend supports it.
 			</description>
 		</method>
-		<method name="current_column_origin_name">
+		<method name="get_current_column_origin_name">
 			<return type="String" />
 			<description>
 				Returns the column's origin name if the database backend supports it.
 			</description>
 		</method>
-		<method name="current_column_table_name">
+		<method name="get_current_column_table_name">
 			<return type="String" />
 			<description>
 				Returns the column's table name if the database backend supports it.
 			</description>
 		</method>
-		<method name="current_column_type">
+		<method name="get_current_column_type">
 			<return type="int" enum="PreparedStatement.Type" />
 			<description>
 				Returns the column's type.
@@ -355,62 +355,62 @@
 				Returns whether there is still data to be read.
 			</description>
 		</method>
-		<method name="next_bind_blob">
+		<method name="set_next_bind_blob">
 			<return type="int" enum="Error" />
 			<argument index="0" name="value" type="PoolByteArray" />
 			<description>
 				Bind a blob to the current column, then go to the next.
 			</description>
 		</method>
-		<method name="next_bind_double">
+		<method name="set_next_bind_double">
 			<return type="int" enum="Error" />
 			<argument index="0" name="value" type="float" />
 			<description>
 				Bind a double to the current column, then go to the next.
 			</description>
 		</method>
-		<method name="next_bind_float">
+		<method name="set_next_bind_float">
 			<return type="int" enum="Error" />
 			<argument index="0" name="value" type="float" />
 			<description>
 				Bind a float to the current column, then go to the next.
 			</description>
 		</method>
-		<method name="next_bind_int">
+		<method name="set_next_bind_int">
 			<return type="int" enum="Error" />
 			<argument index="0" name="value" type="int" />
 			<description>
 				Bind an int to the current column, then go to the next.
 			</description>
 		</method>
-		<method name="next_bind_int64">
+		<method name="set_next_bind_int64">
 			<return type="int" enum="Error" />
 			<argument index="0" name="value" type="int" />
 			<description>
 				Bind an int64 to the current column, then go to the next.
 			</description>
 		</method>
-		<method name="next_bind_null">
+		<method name="set_next_bind_null">
 			<return type="int" enum="Error" />
 			<description>
 				Bind a null to the current column, then go to the next.
 			</description>
 		</method>
-		<method name="next_bind_text">
+		<method name="set_next_bind_text">
 			<return type="int" enum="Error" />
 			<argument index="0" name="value" type="String" />
 			<description>
 				Bind text to the current column, then go to the next.
 			</description>
 		</method>
-		<method name="next_bind_value">
+		<method name="set_next_bind_value">
 			<return type="int" enum="Error" />
 			<argument index="0" name="value" type="Variant" />
 			<description>
 				Bind a value to the current column, then go to the next.
 			</description>
 		</method>
-		<method name="next_bind_zeroblob">
+		<method name="set_next_bind_zeroblob">
 			<return type="int" enum="Error" />
 			<argument index="0" name="value" type="int" />
 			<description>
@@ -423,79 +423,79 @@
 				Go to the next column.
 			</description>
 		</method>
-		<method name="next_column_blob">
+		<method name="get_next_column_blob">
 			<return type="PoolByteArray" />
 			<description>
 				Read a blob from the current column, then go to the next.
 			</description>
 		</method>
-		<method name="next_column_database_name">
+		<method name="get_next_column_database_name">
 			<return type="String" />
 			<description>
 				Returns the database's name from which the column is from if the database backend supports it, then go to the next.
 			</description>
 		</method>
-		<method name="next_column_decltype">
+		<method name="get_next_column_decltype">
 			<return type="String" />
 			<description>
 				Returns the declared type of the given column, then go to the next.
 			</description>
 		</method>
-		<method name="next_column_double">
+		<method name="get_next_column_double">
 			<return type="float" />
 			<description>
 				Read a double from the current column, then go to the next.
 			</description>
 		</method>
-		<method name="next_column_float">
+		<method name="get_next_column_float">
 			<return type="float" />
 			<description>
 				Read a float from the current column, then go to the next.
 			</description>
 		</method>
-		<method name="next_column_int">
+		<method name="get_next_column_int">
 			<return type="int" />
 			<description>
 				Read an int from the current column, then go to the next.
 			</description>
 		</method>
-		<method name="next_column_int64">
+		<method name="get_next_column_int64">
 			<return type="int" />
 			<description>
 				Read an int64 from the current column, then go to the next.
 			</description>
 		</method>
-		<method name="next_column_name">
+		<method name="get_next_column_name">
 			<return type="String" />
 			<description>
 				Returns the column's name if the database backend supports it, then go to the next.
 			</description>
 		</method>
-		<method name="next_column_origin_name">
+		<method name="get_next_column_origin_name">
 			<return type="String" />
 			<description>
 				Returns the column's origin name if the database backend supports it, then go to the next.
 			</description>
 		</method>
-		<method name="next_column_table_name">
+		<method name="get_next_column_table_name">
 			<return type="String" />
 			<description>
 				Returns the column's table name if the database backend supports it, then go to the next.
 			</description>
 		</method>
-		<method name="next_column_text">
+		<method name="get_next_column_text">
 			<return type="String" />
 			<description>
 				Read a text from the current column, then go to the next.
 			</description>
 		</method>
-		<method name="next_column_type">
+		<method name="get_next_column_type">
 			<return type="int" enum="PreparedStatement.Type" />
 			<description>
 				Returns the column's type, then go to the next.
 			</description>
 		</method>
-		<method name="next_column_value">
+		<method name="get_next_column_value">
 			<return type="Variant" />
 			<description>
 				Read a value from the current column, then go to the next.
