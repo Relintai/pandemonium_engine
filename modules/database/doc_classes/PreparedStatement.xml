@@ -167,6 +167,7 @@
 			<return type="int" />
 			<description>
 				Return the number of columns in the result set.
+				Just because this returns a number greater than 0, it does not mean there is going to be rows returned.
 			</description>
 		</method>
 		<method name="column_database_name">
@@ -257,6 +258,7 @@
 			<return type="int" />
 			<description>
 				Returns the number of columns in the current row.
+				Returns 0 if there is no more rows available, or no more data is available.
 			</description>
 		</method>
 		<method name="finalize">
