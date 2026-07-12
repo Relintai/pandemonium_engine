@@ -53,6 +53,26 @@
 			    ps.bind_double(3, randf() * 100000)
 			    ps.step()
 		[/code]
+		Querying an unknown amount of rows:
+		[code]#GDScript
+		var ps : PreparedStatement = DatabaseManager.ddb.get_connection().create_prepared_statement();
+		ps.sql = "SELECT id FROM data_table;";
+		ps.prepare();
+		while ps.step() == OK:
+		    print("ps.column_count(): " + str(ps.column_count()))
+		    print("id: " + str(ps.next_column_int()))
+		[/code]
+		Querying an unknown amount of rows v2:
+		[code]#GDScript
+		var ps : PreparedStatement = DatabaseManager.ddb.get_connection().create_prepared_statement();
+		ps.sql = "SELECT id FROM data_table;";
+		ps.prepare();
+		ps.step();
+		while ps.has_data():
+		    print("ps.column_count(): " + str(ps.column_count()))
+		    print("id: " + str(ps.next_column_int()))
+		    ps.step();
+		[/code]
 	</description>
 	<tutorials>
 	</tutorials>
