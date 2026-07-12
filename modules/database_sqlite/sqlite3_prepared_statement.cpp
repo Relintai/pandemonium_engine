@@ -473,6 +473,10 @@ Error SQLite3PreparedStatement::step() {
 		return OK;
 	}
 
+	if (res == SQLITE_DONE) {
+		return ERR_FILE_EOF;
+	}
+
 	if (res != SQLITE_OK) {
 		return FAILED;
 	}

@@ -369,7 +369,8 @@
 		<method name="step">
 			<return type="int" enum="Error" />
 			<description>
-				Step the query. When calling this the first time it runs the query. Subsequent calls read rows.
+				Step the query. When calling this the first time it runs the query getting the first row (if available). Subsequent calls read next rows.
+				Returns OK on success, ERR_FILE_EOF when done, and FAILED when there was an error.
 			</description>
 		</method>
 	</methods>
