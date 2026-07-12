@@ -74,31 +74,31 @@ public:
 	virtual Error bind_zeroblob(const int p_index, const int p_num) = 0;
 	virtual Error bind_value(const int p_index, const Variant &p_value) = 0;
 
-	virtual int bind_parameter_index(const String &p_name) = 0;
-	virtual String bind_parameter_name(const int p_index) = 0;
+	virtual int get_bind_parameter_index(const String &p_name) = 0;
+	virtual String get_bind_parameter_name(const int p_index) = 0;
 
-	virtual int bind_parameter_count() = 0;
+	virtual int get_bind_parameter_count() = 0;
 
 	virtual Error clear_bindings() = 0;
 
 	// Querying
-	virtual String column_name(const int p_index) = 0;
-	virtual String column_decltype(const int p_index) = 0;
-	virtual Type column_type(const int p_index) = 0;
+	virtual String get_column_name(const int p_index) = 0;
+	virtual String get_column_decltype(const int p_index) = 0;
+	virtual Type get_column_type(const int p_index) = 0;
 
-	virtual String column_database_name(const int p_index) = 0;
-	virtual String column_table_name(const int p_index) = 0;
-	virtual String column_origin_name(const int p_index) = 0;
+	virtual String get_column_database_name(const int p_index) = 0;
+	virtual String get_column_table_name(const int p_index) = 0;
+	virtual String get_column_origin_name(const int p_index) = 0;
 
-	virtual Vector<uint8_t> column_blob(const int p_index) = 0;
-	virtual float column_float(const int p_index) = 0;
-	virtual double column_double(const int p_index) = 0;
-	virtual int64_t column_int(const int p_index) = 0;
-	virtual int column_int64(const int p_index) = 0;
-	virtual String column_text(const int p_index) = 0;
-	virtual Variant column_value(const int p_index) = 0;
+	virtual Vector<uint8_t> get_column_blob(const int p_index) = 0;
+	virtual float get_column_float(const int p_index) = 0;
+	virtual double get_column_double(const int p_index) = 0;
+	virtual int64_t get_column_int(const int p_index) = 0;
+	virtual int get_column_int64(const int p_index) = 0;
+	virtual String get_column_text(const int p_index) = 0;
+	virtual Variant get_column_value(const int p_index) = 0;
 
-	virtual int column_count() = 0;
+	virtual int get_column_count() = 0;
 
 	virtual int get_last_insert_rowid() = 0;
 
@@ -147,7 +147,7 @@ public:
 	// Control
 	virtual Error prepare() = 0;
 	virtual Error step() = 0;
-	virtual int data_count() = 0;
+	virtual int get_data_count() = 0;
 	virtual Error reset() = 0;
 	virtual Error finalize() = 0;
 

@@ -58,38 +58,38 @@ public:
 	virtual Error bind_zeroblob(const int p_index, const int p_num);
 	virtual Error bind_value(const int p_index, const Variant &p_value);
 
-	virtual int bind_parameter_index(const String &p_name);
-	virtual String bind_parameter_name(const int p_index);
+	virtual int get_bind_parameter_index(const String &p_name);
+	virtual String get_bind_parameter_name(const int p_index);
 
-	virtual int bind_parameter_count();
+	virtual int get_bind_parameter_count();
 
 	virtual Error clear_bindings();
 
 	// Querying
-	virtual String column_name(const int p_index);
-	virtual String column_decltype(const int p_index);
-	virtual Type column_type(const int p_index);
+	virtual String get_column_name(const int p_index);
+	virtual String get_column_decltype(const int p_index);
+	virtual Type get_column_type(const int p_index);
 
-	virtual String column_database_name(const int p_index);
-	virtual String column_table_name(const int p_index);
-	virtual String column_origin_name(const int p_index);
+	virtual String get_column_database_name(const int p_index);
+	virtual String get_column_table_name(const int p_index);
+	virtual String get_column_origin_name(const int p_index);
 
-	virtual Vector<uint8_t> column_blob(const int p_index);
-	virtual float column_float(const int p_index);
-	virtual double column_double(const int p_index);
-	virtual int64_t column_int(const int p_index);
-	virtual int column_int64(const int p_index);
-	virtual String column_text(const int p_index);
-	virtual Variant column_value(const int p_index);
+	virtual Vector<uint8_t> get_column_blob(const int p_index);
+	virtual float get_column_float(const int p_index);
+	virtual double get_column_double(const int p_index);
+	virtual int64_t get_column_int(const int p_index);
+	virtual int get_column_int64(const int p_index);
+	virtual String get_column_text(const int p_index);
+	virtual Variant get_column_value(const int p_index);
 
-	virtual int column_count();
+	virtual int get_column_count();
 
 	virtual int get_last_insert_rowid();
 
 	// Control
 	virtual Error prepare();
 	virtual Error step();
-	virtual int data_count();
+	virtual int get_data_count();
 	virtual Error reset();
 	virtual Error finalize();
 

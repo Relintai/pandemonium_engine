@@ -78,7 +78,7 @@
 		ps.sql = "SELECT id FROM data_table;";
 		ps.prepare();
 		while ps.step() == OK:
-		    print("ps.column_count(): " + str(ps.column_count()))
+		    print("ps.column_count(): " + str(ps.get_column_count()))
 		    print("id: " + str(ps.get_next_column_int()))
 		[/code]
 		Querying an unknown amount of rows v2:
@@ -88,7 +88,7 @@
 		ps.prepare();
 		ps.step();
 		while ps.has_data():
-		    print("ps.column_count(): " + str(ps.column_count()))
+		    print("ps.column_count(): " + str(ps.get_column_count()))
 		    print("id: " + str(ps.get_next_column_int()))
 		    ps.step();
 		[/code]
@@ -143,13 +143,13 @@
 				Bind null to the index-th parameter. (Indexed from 0)
 			</description>
 		</method>
-		<method name="bind_parameter_count">
+		<method name="get_bind_parameter_count">
 			<return type="int" />
 			<description>
 				The bindable parameter count in a query.
 			</description>
 		</method>
-		<method name="bind_parameter_index">
+		<method name="get_bind_parameter_index">
 			<return type="int" />
 			<argument index="0" name="name" type="String" />
 			<description>
@@ -158,7 +158,7 @@
 				Indexed from 0, -1 means not found.
 			</description>
 		</method>
-		<method name="bind_parameter_name">
+		<method name="get_bind_parameter_name">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
@@ -196,98 +196,98 @@
 				Clear all bound parameters, effectively setting their values back to null.
 			</description>
 		</method>
-		<method name="column_blob">
+		<method name="get_column_blob">
 			<return type="PoolByteArray" />
 			<argument index="0" name="index" type="int" />
 			<description>
 				Read a blob from the index-th column. (Indexed from 0)
 			</description>
 		</method>
-		<method name="column_count">
+		<method name="get_column_count">
 			<return type="int" />
 			<description>
 				Return the number of columns in the result set.
 				Just because this returns a number greater than 0, it does not mean there is going to be rows returned.
 			</description>
 		</method>
-		<method name="column_database_name">
+		<method name="get_column_database_name">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
 				Returns the database's name from which the column is from if the database backend supports it.
 			</description>
 		</method>
-		<method name="column_decltype">
+		<method name="get_column_decltype">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
 				Returns the declared type of the given column.
 			</description>
 		</method>
-		<method name="column_double">
+		<method name="get_column_double">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
 				Read a double from the index-th column. (Indexed from 0)
 			</description>
 		</method>
-		<method name="column_float">
+		<method name="get_column_float">
 			<return type="float" />
 			<argument index="0" name="index" type="int" />
 			<description>
 				Read a float from the index-th column. (Indexed from 0)
 			</description>
 		</method>
-		<method name="column_int">
+		<method name="get_column_int">
 			<return type="int" />
 			<argument index="0" name="index" type="int" />
 			<description>
 				Read an int from the index-th column. (Indexed from 0)
 			</description>
 		</method>
-		<method name="column_int64">
+		<method name="get_column_int64">
 			<return type="int" />
 			<argument index="0" name="index" type="int" />
 			<description>
 				Read an int64 from the index-th column. (Indexed from 0)
 			</description>
 		</method>
-		<method name="column_name">
+		<method name="get_column_name">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
 				Read the index-th's column's name. (Indexed from 0)
 			</description>
 		</method>
-		<method name="column_origin_name">
+		<method name="get_column_origin_name">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
 				Returns the column's origin name if the database backend supports it. (Indexed from 0)
 			</description>
 		</method>
-		<method name="column_table_name">
+		<method name="get_column_table_name">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
 				Returns the column's table name if the database backend supports it. (Indexed from 0)
 			</description>
 		</method>
-		<method name="column_text">
+		<method name="get_column_text">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
 			<description>
 				Read a text from the index-th column. (Indexed from 0)
 			</description>
 		</method>
-		<method name="column_type">
+		<method name="get_column_type">
 			<return type="int" enum="PreparedStatement.Type" />
 			<argument index="0" name="index" type="int" />
 			<description>
 				Returns the column's type. (Indexed from 0)
 			</description>
 		</method>
-		<method name="column_value">
+		<method name="get_column_value">
 			<return type="Variant" />
 			<argument index="0" name="index" type="int" />
 			<description>
@@ -330,7 +330,7 @@
 				Returns the column's type.
 			</description>
 		</method>
-		<method name="data_count">
+		<method name="get_data_count">
 			<return type="int" />
 			<description>
 				Returns the number of columns in the current row.

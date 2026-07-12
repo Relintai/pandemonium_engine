@@ -216,7 +216,7 @@ Error SQLite3PreparedStatement::bind_value(const int p_index, const Variant &p_v
 	return ERR_UNAVAILABLE;
 }
 
-int SQLite3PreparedStatement::bind_parameter_index(const String &p_name) {
+int SQLite3PreparedStatement::get_bind_parameter_index(const String &p_name) {
 	if (!_prepared_statement) {
 		return -1;
 	}
@@ -225,7 +225,7 @@ int SQLite3PreparedStatement::bind_parameter_index(const String &p_name) {
 
 	return sqlite3_bind_parameter_index(_prepared_statement, cs.get_data()) - 1;
 }
-String SQLite3PreparedStatement::bind_parameter_name(const int p_index) {
+String SQLite3PreparedStatement::get_bind_parameter_name(const int p_index) {
 	if (!_prepared_statement) {
 		return String();
 	}
@@ -236,7 +236,7 @@ String SQLite3PreparedStatement::bind_parameter_name(const int p_index) {
 	return String::utf8(pname);
 }
 
-int SQLite3PreparedStatement::bind_parameter_count() {
+int SQLite3PreparedStatement::get_bind_parameter_count() {
 	if (!_prepared_statement) {
 		return ERR_UNCONFIGURED;
 	}
@@ -259,7 +259,7 @@ Error SQLite3PreparedStatement::clear_bindings() {
 }
 
 // Querying
-String SQLite3PreparedStatement::column_name(const int p_index) {
+String SQLite3PreparedStatement::get_column_name(const int p_index) {
 	if (!_prepared_statement) {
 		return String();
 	}
@@ -269,7 +269,7 @@ String SQLite3PreparedStatement::column_name(const int p_index) {
 
 	return String::utf8(cname);
 }
-String SQLite3PreparedStatement::column_decltype(const int p_index) {
+String SQLite3PreparedStatement::get_column_decltype(const int p_index) {
 	if (!_prepared_statement) {
 		return String();
 	}
@@ -279,7 +279,7 @@ String SQLite3PreparedStatement::column_decltype(const int p_index) {
 
 	return String::utf8(cname);
 }
-PreparedStatement::Type SQLite3PreparedStatement::column_type(const int p_index) {
+PreparedStatement::Type SQLite3PreparedStatement::get_column_type(const int p_index) {
 	if (!_prepared_statement) {
 		return TYPE_UNKNOWN;
 	}
@@ -304,7 +304,7 @@ PreparedStatement::Type SQLite3PreparedStatement::column_type(const int p_index)
 	return TYPE_UNKNOWN;
 }
 
-String SQLite3PreparedStatement::column_database_name(const int p_index) {
+String SQLite3PreparedStatement::get_column_database_name(const int p_index) {
 #ifdef SQLITE_ENABLE_COLUMN_METADATA
 	if (!_prepared_statement) {
 		return String();
@@ -318,7 +318,7 @@ String SQLite3PreparedStatement::column_database_name(const int p_index) {
 	return String();
 #endif
 }
-String SQLite3PreparedStatement::column_table_name(const int p_index) {
+String SQLite3PreparedStatement::get_column_table_name(const int p_index) {
 #ifdef SQLITE_ENABLE_COLUMN_METADATA
 	if (!_prepared_statement) {
 		return String();
@@ -332,7 +332,7 @@ String SQLite3PreparedStatement::column_table_name(const int p_index) {
 	return String();
 #endif
 }
-String SQLite3PreparedStatement::column_origin_name(const int p_index) {
+String SQLite3PreparedStatement::get_column_origin_name(const int p_index) {
 #ifdef SQLITE_ENABLE_COLUMN_METADATA
 	if (!_prepared_statement) {
 		return String();
@@ -347,7 +347,7 @@ String SQLite3PreparedStatement::column_origin_name(const int p_index) {
 #endif
 }
 
-Vector<uint8_t> SQLite3PreparedStatement::column_blob(const int p_index) {
+Vector<uint8_t> SQLite3PreparedStatement::get_column_blob(const int p_index) {
 	if (!_prepared_statement) {
 		return Vector<uint8_t>();
 	}
@@ -367,31 +367,31 @@ Vector<uint8_t> SQLite3PreparedStatement::column_blob(const int p_index) {
 
 	return r;
 }
-float SQLite3PreparedStatement::column_float(const int p_index) {
-	return static_cast<float>(column_double(p_index));
+float SQLite3PreparedStatement::get_column_float(const int p_index) {
+	return static_cast<float>(get_column_double(p_index));
 }
-double SQLite3PreparedStatement::column_double(const int p_index) {
+double SQLite3PreparedStatement::get_column_double(const int p_index) {
 	if (!_prepared_statement) {
 		return 0;
 	}
 
 	return sqlite3_column_double(_prepared_statement, p_index);
 }
-int64_t SQLite3PreparedStatement::column_int(const int p_index) {
+int64_t SQLite3PreparedStatement::get_column_int(const int p_index) {
 	if (!_prepared_statement) {
 		return 0;
 	}
 
 	return sqlite3_column_int(_prepared_statement, p_index);
 }
-int SQLite3PreparedStatement::column_int64(const int p_index) {
+int SQLite3PreparedStatement::get_column_int64(const int p_index) {
 	if (!_prepared_statement) {
 		return 0;
 	}
 
 	return sqlite3_column_int64(_prepared_statement, p_index);
 }
-String SQLite3PreparedStatement::column_text(const int p_index) {
+String SQLite3PreparedStatement::get_column_text(const int p_index) {
 	if (!_prepared_statement) {
 		return String();
 	}
@@ -405,22 +405,22 @@ String SQLite3PreparedStatement::column_text(const int p_index) {
 	return String::utf8(val);
 }
 
-Variant SQLite3PreparedStatement::column_value(const int p_index) {
+Variant SQLite3PreparedStatement::get_column_value(const int p_index) {
 	if (!_prepared_statement) {
 		return Variant();
 	}
 
-	switch (column_type(p_index)) {
+	switch (get_column_type(p_index)) {
 		case TYPE_BLOB:
-			return Variant(column_blob(p_index));
+			return Variant(get_column_blob(p_index));
 		case TYPE_DOUBLE:
-			return Variant(column_double(p_index));
+			return Variant(get_column_double(p_index));
 			break;
 		case TYPE_INT:
-			return Variant(column_int(p_index));
+			return Variant(get_column_int(p_index));
 			break;
 		case TYPE_TEXT:
-			return Variant(column_text(p_index));
+			return Variant(get_column_text(p_index));
 			break;
 		case TYPE_NULL:
 		default:
@@ -430,7 +430,7 @@ Variant SQLite3PreparedStatement::column_value(const int p_index) {
 	return Variant();
 }
 
-int SQLite3PreparedStatement::column_count() {
+int SQLite3PreparedStatement::get_column_count() {
 	if (!_prepared_statement) {
 		return 0;
 	}
@@ -483,7 +483,7 @@ Error SQLite3PreparedStatement::step() {
 
 	return OK;
 }
-int SQLite3PreparedStatement::data_count() {
+int SQLite3PreparedStatement::get_data_count() {
 	if (!_prepared_statement) {
 		return 0;
 	}
