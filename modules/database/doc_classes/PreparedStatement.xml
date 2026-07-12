@@ -14,7 +14,7 @@
 		[code]INSERT INTO table VALUES(?, ?, ?, ?);[/code]
 		And then you can substitute values into the [code]?[/code]-s.
 		Usge example:
-		[code]
+		[code]#GDScript
 			var qb : QueryBuilder = DatabaseManager.ddb.get_connection().get_query_builder()
 			var ps : PreparedStatement = qb.create_prepared_statement()
 
@@ -26,14 +26,14 @@
 			for i in range(10):
 			    ps.reset()
 
-			    ps.bind_text(1, "vc" + str(randi()))
-			    ps.bind_text(2, "text" + str(randi()))
-			    ps.bind_int(3, randi())
-			    ps.bind_double(4, randf() * 100000)
+			    ps.bind_text(0, "vc" + str(randi()))
+			    ps.bind_text(1, "text" + str(randi()))
+			    ps.bind_int(2, randi())
+			    ps.bind_double(3, randf() * 100000)
 			    ps.step()
 		[/code]
 		Usge example using [QueryBuilder]:
-		[code]
+		[code]#GDScript
 			var qb : QueryBuilder = DatabaseManager.ddb.get_connection().get_query_builder()
 			qb.insert("data_table", "data_varchar,data_text,data_int,data_double").values()
 			qb.valph().valph().valph().valph().cvalues()
@@ -47,10 +47,10 @@
 			for i in range(10):
 			    ps.reset()
 
-			    ps.bind_text(1, "vc" + str(randi()))
-			    ps.bind_text(2, "text" + str(randi()))
-			    ps.bind_int(3, randi())
-			    ps.bind_double(4, randf() * 100000)
+			    ps.bind_text(0, "vc" + str(randi()))
+			    ps.bind_text(1, "text" + str(randi()))
+			    ps.bind_int(2, randi())
+			    ps.bind_double(3, randf() * 100000)
 			    ps.step()
 		[/code]
 	</description>
