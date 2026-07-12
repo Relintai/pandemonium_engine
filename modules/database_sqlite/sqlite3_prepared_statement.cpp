@@ -75,7 +75,7 @@ Error SQLite3PreparedStatement::bind_blob(const int p_index, const Vector<uint8_
 	return OK;
 }
 Error SQLite3PreparedStatement::bind_float(const int p_index, const float p_value) {
-	return bind_double(p_index + 1, p_value);
+	return bind_double(p_index, p_value);
 }
 Error SQLite3PreparedStatement::bind_double(const int p_index, const double p_value) {
 	if (!_prepared_statement) {
