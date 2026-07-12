@@ -524,6 +524,7 @@
 	</methods>
 	<members>
 		<member name="current_column_index" type="int" setter="set_current_column_index" getter="get_current_column_index">
+			The index of the current column. Used by next_* and current_* getters and setters. [method step] resets it to 0.
 		</member>
 		<member name="sql" type="String" setter="set_sql" getter="get_sql">
 			The sql statement to send to the database.
