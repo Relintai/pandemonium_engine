@@ -118,6 +118,10 @@ Error PreparedStatement::next_bind_value(const Variant &p_value) {
 	return bind_value(_current_column_index++, p_value);
 }
 
+int PreparedStatement::next_column() {
+	return ++_current_column_index;
+}
+
 PreparedStatement::PreparedStatement() {
 	_current_column_index = 0;
 }
@@ -205,6 +209,8 @@ void PreparedStatement::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("next_bind_text", "value"), &PreparedStatement::next_bind_text);
 	ClassDB::bind_method(D_METHOD("next_bind_zeroblob", "value"), &PreparedStatement::next_bind_zeroblob);
 	ClassDB::bind_method(D_METHOD("next_bind_value", "value"), &PreparedStatement::next_bind_value);
+
+	ClassDB::bind_method(D_METHOD("next_column"), &PreparedStatement::next_column);
 
 	// Control
 

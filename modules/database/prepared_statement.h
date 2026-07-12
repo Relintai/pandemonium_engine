@@ -132,6 +132,8 @@ public:
 	Error next_bind_zeroblob(const int p_num);
 	Error next_bind_value(const Variant &p_value);
 
+	int next_column();
+
 	// Control
 	virtual Error prepare() = 0;
 	virtual Error step() = 0;
