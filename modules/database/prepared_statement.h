@@ -121,6 +121,17 @@ public:
 	String next_column_text();
 	Variant next_column_value();
 
+	// Binding auto next api
+	Error next_bind_blob(const Vector<uint8_t> &p_value);
+	Error next_bind_float(const float p_value);
+	Error next_bind_double(const double p_value);
+	Error next_bind_int(const int p_value);
+	Error next_bind_int64(const int64_t p_value);
+	Error next_bind_null();
+	Error next_bind_text(const String &p_value);
+	Error next_bind_zeroblob(const int p_num);
+	Error next_bind_value(const Variant &p_value);
+
 	// Control
 	virtual Error prepare() = 0;
 	virtual Error step() = 0;

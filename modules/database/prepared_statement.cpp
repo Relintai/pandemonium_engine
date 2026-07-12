@@ -89,6 +89,35 @@ Variant PreparedStatement::next_column_value() {
 	return column_value(_current_column_index++);
 }
 
+// Binding auto next api
+Error PreparedStatement::next_bind_blob(const Vector<uint8_t> &p_value) {
+	return bind_blob(_current_column_index++, p_value);
+}
+Error PreparedStatement::next_bind_float(const float p_value) {
+	return bind_float(_current_column_index++, p_value);
+}
+Error PreparedStatement::next_bind_double(const double p_value) {
+	return bind_double(_current_column_index++, p_value);
+}
+Error PreparedStatement::next_bind_int(const int p_value) {
+	return bind_int(_current_column_index++, p_value);
+}
+Error PreparedStatement::next_bind_int64(const int64_t p_value) {
+	return bind_int64(_current_column_index++, p_value);
+}
+Error PreparedStatement::next_bind_null() {
+	return bind_null(_current_column_index++);
+}
+Error PreparedStatement::next_bind_text(const String &p_value) {
+	return bind_text(_current_column_index++, p_value);
+}
+Error PreparedStatement::next_bind_zeroblob(const int p_num) {
+	return bind_zeroblob(_current_column_index++, p_num);
+}
+Error PreparedStatement::next_bind_value(const Variant &p_value) {
+	return bind_value(_current_column_index++, p_value);
+}
+
 PreparedStatement::PreparedStatement() {
 	_current_column_index = 0;
 }
@@ -164,6 +193,18 @@ void PreparedStatement::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("next_column_int64"), &PreparedStatement::next_column_int64);
 	ClassDB::bind_method(D_METHOD("next_column_text"), &PreparedStatement::next_column_text);
 	ClassDB::bind_method(D_METHOD("next_column_value"), &PreparedStatement::next_column_value);
+
+	// Binding auto next api
+
+	ClassDB::bind_method(D_METHOD("next_bind_blob", "value"), &PreparedStatement::next_bind_blob);
+	ClassDB::bind_method(D_METHOD("next_bind_float", "value"), &PreparedStatement::next_bind_float);
+	ClassDB::bind_method(D_METHOD("next_bind_double", "value"), &PreparedStatement::next_bind_double);
+	ClassDB::bind_method(D_METHOD("next_bind_int", "value"), &PreparedStatement::next_bind_int);
+	ClassDB::bind_method(D_METHOD("next_bind_int64", "value"), &PreparedStatement::next_bind_int64);
+	ClassDB::bind_method(D_METHOD("next_bind_null"), &PreparedStatement::next_bind_null);
+	ClassDB::bind_method(D_METHOD("next_bind_text", "value"), &PreparedStatement::next_bind_text);
+	ClassDB::bind_method(D_METHOD("next_bind_zeroblob", "value"), &PreparedStatement::next_bind_zeroblob);
+	ClassDB::bind_method(D_METHOD("next_bind_value", "value"), &PreparedStatement::next_bind_value);
 
 	// Control
 
