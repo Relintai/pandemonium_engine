@@ -142,6 +142,10 @@ int PreparedStatement::next_column() {
 	return ++_current_column_index;
 }
 
+bool PreparedStatement::has_data() {
+	return data_count() > 0;
+}
+
 PreparedStatement::PreparedStatement() {
 	_current_column_index = 0;
 }
@@ -239,6 +243,8 @@ void PreparedStatement::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("next_bind_value", "value"), &PreparedStatement::next_bind_value);
 
 	ClassDB::bind_method(D_METHOD("next_column"), &PreparedStatement::next_column);
+
+	ClassDB::bind_method(D_METHOD("has_data"), &PreparedStatement::has_data);
 
 	// Control
 

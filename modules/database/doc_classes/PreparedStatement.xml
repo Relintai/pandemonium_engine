@@ -321,6 +321,11 @@
 				Returns the normalized version of the original sql, if the database backend supports it.
 			</description>
 		</method>
+		<method name="has_data">
+			<return type="bool" />
+			<description>
+			</description>
+		</method>
 		<method name="next_bind_blob">
 			<return type="int" enum="Error" />
 			<argument index="0" name="value" type="PoolByteArray" />

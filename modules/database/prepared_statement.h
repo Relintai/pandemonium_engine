@@ -142,6 +142,8 @@ public:
 
 	int next_column();
 
+	bool has_data();
+
 	// Control
 	virtual Error prepare() = 0;
 	virtual Error step() = 0;
