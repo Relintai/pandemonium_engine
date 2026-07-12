@@ -82,6 +82,12 @@
 				Force updates the bone transform for the bone at [code]bone_idx[/code] and all of its children.
 			</description>
 		</method>
+		<method name="get_bone_axis_forward_vector">
+			<return type="Vector3" />
+			<argument index="0" name="bone_idx" type="int" />
+			<description>
+			</description>
+		</method>
 		<method name="get_bone_children">
 			<return type="PoolIntArray" />
 			<argument index="0" name="bone_idx" type="int" />
@@ -121,6 +127,18 @@
 			<argument index="0" name="bone_idx" type="int" />
 			<description>
 				Returns the global rest transform for [code]bone_idx[/code].
+			</description>
+		</method>
+		<method name="get_bone_local_pose" qualifiers="const">
+			<return type="Transform" />
+			<argument index="0" name="bone_idx" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="get_bone_local_pose_no_override" qualifiers="const">
+			<return type="Transform" />
+			<argument index="0" name="bone_idx" type="int" />
+			<description>
 			</description>
 		</method>
 		<method name="get_bone_local_pose_override" qualifiers="const">
@@ -198,6 +216,13 @@
 				This can be used to easily convert a global pose from [method get_bone_global_pose] to a global transform in [method set_bone_local_pose_override].
 			</description>
 		</method>
+		<method name="global_pose_to_local_pose_no_override">
+			<return type="Transform" />
+			<argument index="0" name="bone_idx" type="int" />
+			<argument index="1" name="global_pose" type="Transform" />
+			<description>
+			</description>
+		</method>
 		<method name="global_pose_to_world_transform">
 			<return type="Transform" />
 			<argument index="0" name="global_pose" type="Transform" />
@@ -234,6 +259,13 @@
 			<description>
 				Converts the passed-in local pose to a global pose relative to the inputted bone, [code]bone_idx[/code].
 				This could be used to convert [method get_bone_pose] for use with the [method set_bone_global_pose_override] function.
+			</description>
+		</method>
+		<method name="local_pose_to_global_pose_no_override">
+			<return type="Transform" />
+			<argument index="0" name="bone_idx" type="int" />
+			<argument index="1" name="local_pose" type="Transform" />
+			<description>
 			</description>
 		</method>
 		<method name="localize_rests">
@@ -401,6 +433,20 @@
 			<argument index="0" name="bone_idx" type="int" />
 			<description>
 				Unparents the bone at [code]bone_idx[/code] and sets its rest position to that of it's parent prior to being reset.
+			</description>
+		</method>
+		<method name="update_bone_rest_forward_axis">
+			<return type="void" />
+			<argument index="0" name="bone_idx" type="int" />
+			<argument index="1" name="force_update" type="bool" default="false" />
+			<description>
+			</description>
+		</method>
+		<method name="update_bone_rest_forward_vector">
+			<return type="void" />
+			<argument index="0" name="bone_idx" type="int" />
+			<argument index="1" name="force_update" type="bool" default="false" />
+			<description>
 			</description>
 		</method>
 		<method name="world_transform_to_global_pose">

@@ -75,19 +75,8 @@
 		<method name="PackedTypedArray">
 			<return type="PackedTypedArray" />
 			<argument index="0" name="type_name" type="StringName" />
-			<argument index="1" name="from" type="Variant" />
+			<argument index="1" name="int_type" type="int" />
 			<description>
-				Constructs a packed typed array from the given value (has to be any array type), that only allows the type given by the type_name parameter.
-			</description>
-		</method>
-		<method name="PackedTypedArray">
-			<return type="PackedTypedArray" />
-			<argument index="0" name="type_name" type="StringName" />
-			<argument index="1" name="from" type="Variant" />
-			<argument index="2" name="int_type" type="int" />
-			<description>
-				Constructs a packed typed array from the given value (has to be any array type), that only allows the type given by the type_name parameter.
-				This constructor also sets up the internal int type.
 			</description>
 		</method>
 		<method name="append">

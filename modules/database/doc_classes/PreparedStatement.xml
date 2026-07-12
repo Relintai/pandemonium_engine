@@ -255,6 +255,36 @@
 				Read a [Variant] from the index-th column. (Indexed from 0)
 			</description>
 		</method>
+		<method name="current_column_database_name">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="current_column_decltype">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="current_column_name">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="current_column_origin_name">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="current_column_table_name">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="current_column_type">
+			<return type="int" enum="PreparedStatement.Type" />
+			<description>
+			</description>
+		</method>
 		<method name="data_count">
 			<return type="int" />
 			<description>
@@ -289,6 +319,64 @@
 			<return type="String" />
 			<description>
 				Returns the normalized version of the original sql, if the database backend supports it.
+			</description>
+		</method>
+		<method name="next_bind_blob">
+			<return type="int" enum="Error" />
+			<argument index="0" name="value" type="PoolByteArray" />
+			<description>
+			</description>
+		</method>
+		<method name="next_bind_double">
+			<return type="int" enum="Error" />
+			<argument index="0" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="next_bind_float">
+			<return type="int" enum="Error" />
+			<argument index="0" name="value" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="next_bind_int">
+			<return type="int" enum="Error" />
+			<argument index="0" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="next_bind_int64">
+			<return type="int" enum="Error" />
+			<argument index="0" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="next_bind_null">
+			<return type="int" enum="Error" />
+			<description>
+			</description>
+		</method>
+		<method name="next_bind_text">
+			<return type="int" enum="Error" />
+			<argument index="0" name="value" type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="next_bind_value">
+			<return type="int" enum="Error" />
+			<argument index="0" name="value" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="next_bind_zeroblob">
+			<return type="int" enum="Error" />
+			<argument index="0" name="value" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="next_column">
+			<return type="int" />
+			<description>
 			</description>
 		</method>
 		<method name="next_column_blob">
