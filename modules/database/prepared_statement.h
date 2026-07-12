@@ -113,6 +113,14 @@ public:
 	String next_column_table_name();
 	String next_column_origin_name();
 
+	String current_column_name();
+	String current_column_decltype();
+	Type current_column_type();
+
+	String current_column_database_name();
+	String current_column_table_name();
+	String current_column_origin_name();
+
 	Vector<uint8_t> next_column_blob();
 	float next_column_float();
 	double next_column_double();

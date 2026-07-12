@@ -67,6 +67,26 @@ String PreparedStatement::next_column_origin_name() {
 	return column_origin_name(_current_column_index++);
 }
 
+String PreparedStatement::current_column_name() {
+	return column_name(_current_column_index);
+}
+String PreparedStatement::current_column_decltype() {
+	return column_decltype(_current_column_index);
+}
+PreparedStatement::Type PreparedStatement::current_column_type() {
+	return column_type(_current_column_index);
+}
+
+String PreparedStatement::current_column_database_name() {
+	return column_database_name(_current_column_index);
+}
+String PreparedStatement::current_column_table_name() {
+	return column_table_name(_current_column_index);
+}
+String PreparedStatement::current_column_origin_name() {
+	return column_origin_name(_current_column_index);
+}
+
 Vector<uint8_t> PreparedStatement::next_column_blob() {
 	return column_blob(_current_column_index++);
 }
@@ -189,6 +209,14 @@ void PreparedStatement::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("next_column_database_name"), &PreparedStatement::next_column_database_name);
 	ClassDB::bind_method(D_METHOD("next_column_table_name"), &PreparedStatement::next_column_table_name);
 	ClassDB::bind_method(D_METHOD("next_column_origin_name"), &PreparedStatement::next_column_origin_name);
+
+	ClassDB::bind_method(D_METHOD("current_column_name"), &PreparedStatement::current_column_name);
+	ClassDB::bind_method(D_METHOD("current_column_decltype"), &PreparedStatement::current_column_decltype);
+	ClassDB::bind_method(D_METHOD("current_column_type"), &PreparedStatement::current_column_type);
+
+	ClassDB::bind_method(D_METHOD("current_column_database_name"), &PreparedStatement::current_column_database_name);
+	ClassDB::bind_method(D_METHOD("current_column_table_name"), &PreparedStatement::current_column_table_name);
+	ClassDB::bind_method(D_METHOD("current_column_origin_name"), &PreparedStatement::current_column_origin_name);
 
 	ClassDB::bind_method(D_METHOD("next_column_blob"), &PreparedStatement::next_column_blob);
 	ClassDB::bind_method(D_METHOD("next_column_float"), &PreparedStatement::next_column_float);
