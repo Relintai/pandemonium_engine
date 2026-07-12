@@ -79,7 +79,7 @@
 		ps.prepare();
 		while ps.step() == OK:
 		    print("ps.column_count(): " + str(ps.get_column_count()))
-		    print("id: " + str(ps.get_next_column_int()))
+		    print("id: " + str(ps.next_column_int_get()))
 		[/code]
 		Querying an unknown amount of rows v2:
 		[code]#GDScript
@@ -89,7 +89,7 @@
 		ps.step();
 		while ps.has_data():
 		    print("ps.column_count(): " + str(ps.get_column_count()))
-		    print("id: " + str(ps.get_next_column_int()))
+		    print("id: " + str(ps.next_column_int_get()))
 		    ps.step();
 		[/code]
 	</description>
