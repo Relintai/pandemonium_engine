@@ -62,7 +62,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="PoolByteArray" />
 			<description>
-				Bind a blob to the index-th parameter. (Indexed from 1)
+				Bind a blob to the index-th parameter. (Indexed from 0)
 			</description>
 		</method>
 		<method name="bind_double">
@@ -70,7 +70,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
-				Bind a double to the index-th parameter. (Indexed from 1)
+				Bind a double to the index-th parameter. (Indexed from 0)
 			</description>
 		</method>
 		<method name="bind_float">
@@ -78,7 +78,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="float" />
 			<description>
-				Bind a float to the index-th parameter. (Indexed from 1)
+				Bind a float to the index-th parameter. (Indexed from 0)
 			</description>
 		</method>
 		<method name="bind_int">
@@ -86,7 +86,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="int" />
 			<description>
-				Bind an int to the index-th parameter. (Indexed from 1)
+				Bind an int to the index-th parameter. (Indexed from 0)
 			</description>
 		</method>
 		<method name="bind_int64">
@@ -94,14 +94,14 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="int" />
 			<description>
-				Bind a 64bit int to the index-th parameter. (Indexed from 1)
+				Bind a 64bit int to the index-th parameter. (Indexed from 0)
 			</description>
 		</method>
 		<method name="bind_null">
 			<return type="int" enum="Error" />
 			<argument index="0" name="index" type="int" />
 			<description>
-				Bind null to the index-th parameter. (Indexed from 1)
+				Bind null to the index-th parameter. (Indexed from 0)
 			</description>
 		</method>
 		<method name="bind_parameter_count">
@@ -116,6 +116,7 @@
 			<description>
 				Some database backends support naming bind parameters using a special syntax.
 				Use this method to get back the index of a named parameter.
+				Indexed from 0, -1 means not found.
 			</description>
 		</method>
 		<method name="bind_parameter_name">
@@ -131,7 +132,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="String" />
 			<description>
-				Bind a [String] to the index-th parameter. (Indexed from 1)
+				Bind a [String] to the index-th parameter. (Indexed from 0)
 			</description>
 		</method>
 		<method name="bind_value">
@@ -139,7 +140,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="value" type="Variant" />
 			<description>
-				Bind a [Variant] to the index-th parameter. This mwthod will call other bind methods based on the value's type. (Indexed from 1)
+				Bind a [Variant] to the index-th parameter. This mwthod will call other bind methods based on the value's type. (Indexed from 0)
 			</description>
 		</method>
 		<method name="bind_zeroblob">
@@ -147,7 +148,7 @@
 			<argument index="0" name="index" type="int" />
 			<argument index="1" name="num" type="int" />
 			<description>
-				Bind an empty blob with the size of num to the index-th parameter. (Indexed from 1)
+				Bind an empty blob with the size of num to the index-th parameter. (Indexed from 0)
 			</description>
 		</method>
 		<method name="clear_bindings">

@@ -66,7 +66,7 @@ Error SQLite3PreparedStatement::bind_blob(const int p_index, const Vector<uint8_
 		return ERR_UNCONFIGURED;
 	}
 
-	int res = sqlite3_bind_blob(_prepared_statement, p_index, p_value.ptr(), p_value.size(), SQLITE_TRANSIENT);
+	int res = sqlite3_bind_blob(_prepared_statement, p_index + 1, p_value.ptr(), p_value.size(), SQLITE_TRANSIENT);
 
 	if (res != SQLITE_OK) {
 		return FAILED;
@@ -75,14 +75,14 @@ Error SQLite3PreparedStatement::bind_blob(const int p_index, const Vector<uint8_
 	return OK;
 }
 Error SQLite3PreparedStatement::bind_float(const int p_index, const float p_value) {
-	return bind_double(p_index, p_value);
+	return bind_double(p_index + 1, p_value);
 }
 Error SQLite3PreparedStatement::bind_double(const int p_index, const double p_value) {
 	if (!_prepared_statement) {
 		return ERR_UNCONFIGURED;
 	}
 
-	int res = sqlite3_bind_double(_prepared_statement, p_index, p_value);
+	int res = sqlite3_bind_double(_prepared_statement, p_index + 1, p_value);
 
 	if (res != SQLITE_OK) {
 		return FAILED;
@@ -95,7 +95,7 @@ Error SQLite3PreparedStatement::bind_int(const int p_index, const int p_value) {
 		return ERR_UNCONFIGURED;
 	}
 
-	int res = sqlite3_bind_int(_prepared_statement, p_index, p_value);
+	int res = sqlite3_bind_int(_prepared_statement, p_index + 1, p_value);
 
 	if (res != SQLITE_OK) {
 		return FAILED;
@@ -108,7 +108,7 @@ Error SQLite3PreparedStatement::bind_int64(const int p_index, const int64_t p_va
 		return ERR_UNCONFIGURED;
 	}
 
-	int res = sqlite3_bind_int64(_prepared_statement, p_index, p_value);
+	int res = sqlite3_bind_int64(_prepared_statement, p_index + 1, p_value);
 
 	if (res != SQLITE_OK) {
 		return FAILED;
@@ -121,7 +121,7 @@ Error SQLite3PreparedStatement::bind_null(const int p_index) {
 		return ERR_UNCONFIGURED;
 	}
 
-	int res = sqlite3_bind_null(_prepared_statement, p_index);
+	int res = sqlite3_bind_null(_prepared_statement, p_index + 1);
 
 	if (res != SQLITE_OK) {
 		return FAILED;
@@ -137,7 +137,7 @@ Error SQLite3PreparedStatement::bind_text(const int p_index, const String &p_val
 	CharString cs = p_value.utf8();
 
 	//cs.size() - 1 -> Don't send the null terminator, as then the text will be interpreted as blob
-	int res = sqlite3_bind_text(_prepared_statement, p_index, cs.get_data(), cs.size() - 1, SQLITE_TRANSIENT);
+	int res = sqlite3_bind_text(_prepared_statement, p_index + 1, cs.get_data(), cs.size() - 1, SQLITE_TRANSIENT);
 
 	if (res != SQLITE_OK) {
 		return FAILED;
@@ -150,7 +150,7 @@ Error SQLite3PreparedStatement::bind_zeroblob(const int p_index, const int p_num
 		return ERR_UNCONFIGURED;
 	}
 
-	int res = sqlite3_bind_zeroblob(_prepared_statement, p_index, p_num);
+	int res = sqlite3_bind_zeroblob(_prepared_statement, p_index + 1, p_num);
 
 	if (res != SQLITE_OK) {
 		return FAILED;
@@ -223,7 +223,7 @@ int SQLite3PreparedStatement::bind_parameter_index(const String &p_name) {
 
 	CharString cs = p_name.utf8();
 
-	return sqlite3_bind_parameter_index(_prepared_statement, cs.get_data());
+	return sqlite3_bind_parameter_index(_prepared_statement, cs.get_data()) - 1;
 }
 String SQLite3PreparedStatement::bind_parameter_name(const int p_index) {
 	if (!_prepared_statement) {
@@ -231,7 +231,7 @@ String SQLite3PreparedStatement::bind_parameter_name(const int p_index) {
 	}
 
 	// don't free it
-	const char *pname = sqlite3_bind_parameter_name(_prepared_statement, p_index);
+	const char *pname = sqlite3_bind_parameter_name(_prepared_statement, p_index + 1);
 
 	return String::utf8(pname);
 }
