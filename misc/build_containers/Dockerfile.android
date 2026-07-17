@@ -2,7 +2,7 @@ ARG img_version
 FROM pandemonium-fedora:${img_version}
 
 ENV ANDROID_SDK_ROOT=/root/sdk
-ENV ANDROID_NDK_VERSION=28.1.13356709
+ENV ANDROID_NDK_VERSION=29.0.14206865
 ENV ANDROID_NDK_ROOT=${ANDROID_SDK_ROOT}/ndk/${ANDROID_NDK_VERSION}
 
 # java-17-openjdk-devel = temurin-17-jdk
@@ -12,11 +12,11 @@ RUN dnf -y install --setopt=install_weak_deps=False adoptium-temurin-java-reposi
 	  dnf -y install --setopt=install_weak_deps=False \
     gcc gcc-c++ temurin-17-jdk ncurses-compat-libs && \
     mkdir -p sdk && cd sdk && \
-    export CMDLINETOOLS=commandlinetools-linux-11076708_latest.zip && \
+    export CMDLINETOOLS=commandlinetools-linux-14742923_latest.zip && \
     curl -LO https://dl.google.com/android/repository/${CMDLINETOOLS} && \
     unzip ${CMDLINETOOLS} && \
     rm ${CMDLINETOOLS} && \
     yes | cmdline-tools/bin/sdkmanager --sdk_root="${ANDROID_SDK_ROOT}" --licenses && \
-    cmdline-tools/bin/sdkmanager --sdk_root="${ANDROID_SDK_ROOT}" "ndk;${ANDROID_NDK_VERSION}" 'cmdline-tools;latest' 'build-tools;35.0.0' 'platforms;android-35' 'cmake;3.22.1'
+    cmdline-tools/bin/sdkmanager --sdk_root="${ANDROID_SDK_ROOT}" "ndk;${ANDROID_NDK_VERSION}" 'cmdline-tools;latest' 'build-tools;36.1.0' 'platforms;android-36' 'cmake;3.31.6'
 
 CMD /bin/bash
