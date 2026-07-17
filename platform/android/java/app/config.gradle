@@ -20,7 +20,7 @@ ext.versions = [
     // The 16 KiB page size compatibility option that was added in r27 is now on by default. If necessary, you can still opt-out (see below).
     // https://developer.android.com/guide/practices/page-sizes
     // Starting November 1st, 2025, all new apps and updates to existing apps submitted to Google Play and targeting Android 15+ devices must support 16 KB page sizes on 64-bit devices.
-    ndkVersion         : '29.1.14206865' // Also update 'platform/android/detect.py#get_ndk_version' when this is updated.
+    ndkVersion         : '29.0.14206865' // Also update 'platform/android/detect.py#get_ndk_version' when this is updated.
 ]
 
 ext.getExportPackageName = { ->
