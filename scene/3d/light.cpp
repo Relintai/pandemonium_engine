@@ -296,7 +296,7 @@ void Light::_notification(int p_what) {
 		} break;
 		case NOTIFICATION_EXIT_TREE: {
 			if (blob_light.is_valid()) {
-				VS::get_singleton()->blob_light_set_visible(blob_light, false);
+				RS::get_singleton()->blob_light_set_visible(blob_light, false);
 			}
 		} break;
 
