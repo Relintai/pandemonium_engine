@@ -52,6 +52,7 @@
 #include <android/input.h>
 #include <core/os/keyboard.h>
 #include <dlfcn.h>
+#include <stdlib.h>
 
 #include "java_pandemonium_io_wrapper.h"
 #include "java_pandemonium_wrapper.h"
@@ -816,6 +817,11 @@ Error OS_Android::kill(const ProcessID &p_pid) {
 	}
 
 	return OS_Unix::kill(p_pid);
+}
+
+Error OS_Android::get_entropy(uint8_t *r_buffer, int p_bytes) {
+	arc4random_buf(r_buffer, p_bytes);
+	return OK;
 }
 
 OS_Android::~OS_Android() {
