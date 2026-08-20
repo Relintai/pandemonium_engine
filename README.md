@@ -148,6 +148,13 @@ exception, a contributor will need to demonstrate clarity of the license and
 copyright status for the tool's output in relation to its training model and
 code, to the satisfaction of the project maintainers.
 
+## Todos before the next release
+
+- Fix up docs for PScrit.
+- Update docs for GDScript, add the new features to it.
+- Update build containers.
+- Backport some of the new changes from godot 3.x.
+
 ## Some Long term plans
 
 These are the planned new features. On top of this there will be lots of unplanned things,
