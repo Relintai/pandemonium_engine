@@ -148,6 +148,12 @@ exception, a contributor will need to demonstrate clarity of the license and
 copyright status for the tool's output in relation to its training model and
 code, to the satisfaction of the project maintainers.
 
+## Breaking changes policy
+
+A strict no breaks policy would be ideal, but unfortunately that won't work for a project of this type.
+
+Breaking changes can (and will) happen, but their rate and impact should be minimized as much as possible.
+
 ## Todos before the next release
 
 - Fix up docs for PScrit.
