@@ -118,6 +118,14 @@ Breaking changes can (and will) happen, but their rate and impact should be mini
 - Update docs for GDScript, add the new features to it.
 - Update build containers.
 - Backport some of the new changes from godot 3.x.
+- GDNative api has some bugs, at least one of the functions have a wrong return value.
+  Go through it all again, fix everything, and then actually start versioning it.
+- Add a nightly build name variant to the build all sctipt.
+- Include a file containing sha / md5 hashes with the releases.
+- FRT build containers might need the tts dependency.
+- Add a script to automate nightly generation.
+  (I found 2 old ddr4 memory sticks lying around, and with that I was able to 
+  build a good enough computer that can do nightlies and CI.)
 
 ## Some Long term plans
 
