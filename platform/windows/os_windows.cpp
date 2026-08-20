@@ -3350,6 +3350,7 @@ String OS_Windows::get_stdin_string() {
 	if (ReadConsoleW(GetStdHandle(STD_INPUT_HANDLE), buff, 1024, &count, nullptr)) {
 		return String::utf16((const char16_t *)buff, count);
 	}
+	return String();
 }
 
 void OS_Windows::enable_for_stealing_focus(ProcessID pid) {
