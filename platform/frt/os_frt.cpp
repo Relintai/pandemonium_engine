@@ -77,6 +77,15 @@
 #include "servers/rendering/rendering_server_raster.h"
 #include "servers/rendering_server.h"
 
+#if defined(__FreeBSD__) || defined(__OpenBSD__) || (defined(__GLIBC_MINOR__) && (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 26))
+// In <unistd.h>.
+// One day... (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700)
+// https://publications.opengroup.org/standards/unix/c211
+#define UNIX_GET_ENTROPY
+#elif !defined(NO_URANDOM)
+#include <fcntl.h>
+#endif
+
 #ifndef GLES3_DISABLED
 #define VIDEO_DRIVER_GLES2 0
 #define VIDEO_DRIVER_GLES3 1
@@ -439,6 +448,33 @@ public:
 	}
 	bool can_draw() const { return true; };
 	String get_name() const { return "FRT"; }
+
+	virtual Error get_entropy(uint8_t *r_buffer, int p_bytes) {
+#if defined(UNIX_GET_ENTROPY)
+		int left = p_bytes;
+		int ofs = 0;
+		do {
+			int chunk = MIN(left, 256);
+			ERR_FAIL_COND_V(getentropy(r_buffer + ofs, chunk), FAILED);
+			left -= chunk;
+			ofs += chunk;
+		} while (left > 0);
+// Define this yourself if you don't want to fall back to /dev/urandom.
+#elif !defined(NO_URANDOM)
+		int r = open("/dev/urandom", O_RDONLY);
+		ERR_FAIL_COND_V(r < 0, FAILED);
+		int left = p_bytes;
+		do {
+			ssize_t ret = read(r, r_buffer, p_bytes);
+			ERR_FAIL_COND_V(ret <= 0, FAILED);
+			left -= ret;
+		} while (left > 0);
+#else
+		return ERR_UNAVAILABLE;
+#endif
+		return OK;
+	}
+
 	void move_window_to_foreground() {}
 	void set_cursor_shape(CursorShape shape) {}
 	void set_custom_mouse_cursor(const RES &, OS::CursorShape, const Vector2 &) {}
