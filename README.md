@@ -99,12 +99,12 @@ to be on the safe side I'm adopting the following policy (very similar to zig's)
 - No LLMs for issues.
 - No LLMs for patches / pull requests.
 - No LLMs for comments on the bug tracker, including translation.
+- No generative AI models for other assets. (For example icons.)
 - English is the main language of the issue tracker, but I can also speak Hungarian.
   You can write in your own language, but if you can, include an english translation aswell.
-- For translation you can use traditional tools. (Yes, these use neural networks, but these are
-  not LLMs. They also only use fraction of the power and compute.)
-  - For example here's a FOSS one, thay you can even run locally. (Should work on raspberry pi tier hardware): [libretranslate](https://libretranslate.com/).
-- No generative AI models for other assets. (For example icons.)
+  - For translation you can use traditional tools. (Yes, these use neural networks, but these are
+    not LLMs. They also only use fraction of the power and compute.)
+    - For example here's a FOSS one, thay you can even run locally. (Should work on raspberry pi tier hardware): [libretranslate](https://libretranslate.com/).
 
 ## Breaking changes policy
 
