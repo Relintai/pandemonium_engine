@@ -145,7 +145,7 @@ pandemonium_bool GDAPI pandemonium_typed_array_can_take_variant(const pandemoniu
 
 void GDAPI pandemonium_typed_array_new(pandemonium_typed_array *r_dest);
 void GDAPI pandemonium_typed_array_new_copy(pandemonium_typed_array *r_dest, const pandemonium_typed_array *p_src);
-void GDAPI pandemonium_typed_array_new_from_variant(pandemonium_typed_array *r_dest, const pandemonium_string_name *p_type_name, const pandemonium_variant *p_variant);
+void GDAPI pandemonium_typed_array_new_append_from(pandemonium_typed_array *r_dest, const pandemonium_string_name *p_type_name, const pandemonium_variant *p_variant);
 void GDAPI pandemonium_typed_array_new_pool_byte_array(pandemonium_typed_array *r_dest, const pandemonium_pool_byte_array *p_pba);
 void GDAPI pandemonium_typed_array_new_pool_int_array(pandemonium_typed_array *r_dest, const pandemonium_pool_int_array *p_pia);
 void GDAPI pandemonium_typed_array_new_pool_real_array(pandemonium_typed_array *r_dest, const pandemonium_pool_real_array *p_pra);

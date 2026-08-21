@@ -56,7 +56,7 @@ void GDAPI pandemonium_typed_array_new_copy(pandemonium_typed_array *r_dest, con
 	memnew_placement(dest, TypedArray(*src));
 }
 
-void GDAPI pandemonium_typed_array_new_from_variant(pandemonium_typed_array *r_dest, const pandemonium_string_name *p_type_name, const pandemonium_variant *p_variant) {
+void GDAPI pandemonium_typed_array_new_append_from(pandemonium_typed_array *r_dest, const pandemonium_string_name *p_type_name, const pandemonium_variant *p_variant) {
 	TypedArray *dest = (TypedArray *)r_dest;
 	const StringName *type_name = (const StringName *)p_type_name;
 	const Variant *variant = (const Variant *)p_variant;
