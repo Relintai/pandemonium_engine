@@ -7263,7 +7263,7 @@ PScriptParser::DataType PScriptParser::_reduce_node_type(Node *p_node) {
 							return DataType();
 						}
 						if (signal_type.has_type && (signal_type.kind != DataType::BUILTIN || (signal_type.builtin_type != Variant::STRING && signal_type.builtin_type != Variant::STRING_NAME))) {
-							_set_error("The second argument of \"yield()\" must be a string or a StringName.", op->line);
+							_set_error("The second argument of \"yield()\" must be a String or a StringName.", op->line);
 							return DataType();
 						}
 					}
