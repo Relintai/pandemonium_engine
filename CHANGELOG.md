@@ -134,11 +134,11 @@ Nothing yet.
 - Move comments.
 - Added PDFEncoder class.
 - Implement encoding specific methods to PDFDocument.
-- Add avaliable encodings to PDFEncoder.
+- Add available encodings to PDFEncoder.
 - Added PDFDocument::outline_create() method.
 - Implement the rest of the image loading methods in PDFDocument.
 - Remove now unneeded comment.
-- Added open_action_set() hepler method to PDFDocument.
+- Added open_action_set() helper method to PDFDocument.
 - Add XObject methods to PDFDocument.
 - Added PDFDict class.
 - Added PDFDate class.
@@ -214,7 +214,7 @@ Nothing yet.
 - Initial docs for the PDFEncoder.
 - Initial description for PDFPage.
 - Add docs for get_status().
-- Initial desscription for PDFFont.
+- Initial description for PDFFont.
 - Fix bound argument names.
 - Added image_load_png_from_file_delayed() to PDFDocument.
 - Add built-in font list to PDFFont's docs.
@@ -276,7 +276,7 @@ Nothing yet.
 - Docs for HTMLTemplateRenderResult.
 - Docs for HTMLTemplateRenderer.
 - Added a raw version for the vf and qvf methods in HTMLTemplateRenderer.
-  - Previously vf and qvf were alyways in raw mode. This was likely not
+  - Previously vf and qvf were always in raw mode. This was likely not
     that good of an idea, so now they got split.
 - Update HTMLTemplateRenderer docs.
 - Implement comment support for HTMLTemplateRenderer.
@@ -291,10 +291,10 @@ Nothing yet.
 - Better error reporting.
 - Don't skip compiling the last template section.
 - Better error message when rendering a template in HTMLTemplate.
-- Make all builtin print methods escape their own ouput in HTMLTemplateRenderer, and just print raw if they are the outer expression in a simple {{  }} block.
+- Make all builtin print methods escape their own output in HTMLTemplateRenderer, and just print raw if they are the outer expression in a simple {{  }} block.
   This should fix the newline to br variants.
 - Tweak the html template renderer's syntax. Also fixed some issues with parsing.
-  - {{# }} is the output supression now.
+  - {{# }} is the output suppression now.
   - {{; }} is force escape now.
 - Improved some of the error messages in HTMLTemplateRenderer.
 - Don't convert vformat builtin method arguments to string in HTMLTemplateRenderer.
@@ -308,7 +308,7 @@ Nothing yet.
 
 #### Editor Text Editor
 
-- Make editor reimport files when tey are saved in the test editor module.
+- Make editor reimport files when they are saved in the test editor module.
 - Fix error when editing non-imported files in the TextFileEditor.
 
 #### GDScript
@@ -329,9 +329,9 @@ Nothing yet.
 - Also allow strings as TypedArray and PackedTypedArray export type hints.
 - Implement a template-like syntax for TypedArray and PackedTypedArray variable declarations for PScript.
   - It's a bit of a hack, but it's expremely simple, and should work
-    properly for most cases. It retains supports untyped assignment aswell.
+    properly for most cases. It retains supports untyped assignment as well.
   - This syntax is currently only available for variable declarations, it
-    will be done for instancing eventually aswell.
+    will be done for instancing eventually as well.
   - Looks like:
     - TypedArray<Mesh> marr = TypedArray("Mesh");
     - PackedTypedArray<int> ptarr = PackedTypedArray(@"int");
@@ -362,9 +362,9 @@ Nothing yet.
 - Make funcref work with StringNames in PScript.
 - Implement a template-like syntax for TypedArray and PackedTypedArray variable declarations for PScript.
   - It's a bit of a hack, but it's expremely simple, and should work
-    properly for most cases. It retains supports untyped assignment aswell.
+    properly for most cases. It retains supports untyped assignment as well.
   - This syntax is currently only available for variable declarations, it
-    will be done for instancing eventually aswell.
+    will be done for instancing eventually as well.
   - Looks like:
     - TypedArray<Mesh> marr = TypedArray("Mesh");
     - PackedTypedArray<int> ptarr = PackedTypedArray(@"int");
@@ -399,7 +399,7 @@ Nothing yet.
 
 - Backport [Linux] Fix separate debug symbols for arm from godot build containers.
   https://github.com/godotengine/build-containers/commit/3f3cc50c3f91c2be66e37aece9d9a57284e39db7
-- Rework the linux build container, now it needs the toolchains to be present instead of donwloading them.
+- Rework the linux build container, now it needs the toolchains to be present instead of downloading them.
   Also it now uses pandemonium specific ones.
 
 ### Backports
@@ -444,7 +444,7 @@ merge commit: https://github.com/godotengine/godot/commit/b8f0d51e6328aa803b3589
 
 - Added new Variant types: TypedArray and PackedTypedArray.
 - Added missing constructor for Rect2I.
-- Bound 2 constuctors for Projection.
+- Bound 2 constructors for Projection.
 - Add approximate deep equals support for TypedArray and PackedTypedArray.
 - Added missing types to Variant::deep_equal().
 - Remove duplicate label.
@@ -469,8 +469,8 @@ merge commit: https://github.com/godotengine/godot/commit/b8f0d51e6328aa803b3589
 - Also set pthread priority.
 - Added the pthread implementation as platform thread overrides to all flatforms that can use it unmodified.
   - A better system will be needed for this eventually.
-- Override thread implementation for android aswell.
-- Setup native threads for windows aswell.
+- Override thread implementation for android as well.
+- Setup native threads for windows as well.
 - Fix missing return value.
 - pthread_setschedprio doesn't exists on osx.
 - Fix Windows thread's global static callback method trying to access Thread's private members.
@@ -478,7 +478,7 @@ merge commit: https://github.com/godotengine/godot/commit/b8f0d51e6328aa803b3589
 - iOS doesn't have pthread_setschedprio either.
 - Disable temporarily the pthread_setschedparam calls.
 - Init _main_thread_id to 0 everywhere.
-- Add platform thread override to the javascript platform aswell.
+- Add platform thread override to the javascript platform as well.
 - Make the default thread implementation in core the dummy one.
 - Move thread_posix.h and cpp.
 - Now platform_threads.h are used whwnewer NO_THREADS is defined. Removed PLATFORM_THREAD_OVERRIDE.
@@ -728,7 +728,7 @@ merge commit: https://github.com/godotengine/godot/commit/b8f0d51e6328aa803b3589
 - Backport comment.
 - Backport 64696b534b7118fdf91ccccecb4cb6016d2f98d5 to voxelman.
   Don't destroy and re-generate meshes in TerrainChunk's _enter and
-  _exit_tree, just hide / show them. This makes scene tab swithing with
+  _exit_tree, just hide / show them. This makes scene tab switching with
   TerrainWorlds in the editor a lot simpler.
 - Backport 61a43daa45c848ef30e51c6c3c1f906a1c808b40 to voxelman.
   Removed unnecessary check.
@@ -736,12 +736,12 @@ merge commit: https://github.com/godotengine/godot/commit/b8f0d51e6328aa803b3589
   TerrainChunkDefault lod change code cleanups and improvements. Also set
   scenario on entering and exiting the tree.
 - Don't complain if chunk is already used by an another world for now.
-  This can happen when realoding scenes that have chunks saved in them.
+  This can happen when reloading scenes that have chunks saved in them.
   Maybe eventually a different solution might be needed, but for now this
   seems fine.
 - Set space for the colliders when entering and exiting tree in VoxelChunkDefault.
 - Implement visible collision shapes support for Voxelman.
-- Set scenario for debug meshes aswell in VoxelChunkDefault, also free them in free_chunk().
+- Set scenario for debug meshes as well in VoxelChunkDefault, also free them in free_chunk().
 - Free the body first.
 - Hide and show debug mesh in VoxelChunkDefault::_visibility_changed().
 - Revert "Hide and show debug mesh in VoxelChunkDefault::_visibility_changed()."
@@ -795,7 +795,7 @@ merge commit: https://github.com/godotengine/godot/commit/b8f0d51e6328aa803b3589
 
 - Backport 9e6a7208b8136601d833537577ad19d6c4064e7a to terraman.
   Don't complain if chunk is already used by an another world for now.
-  This can happen when realoding scenes that have chunks saved in them.
+  This can happen when reloading scenes that have chunks saved in them.
   Maybe eventually a different solution might be needed, but for now this
   seems fine.
 - Backport cf354576b264c6ff66827b4c140fe32131fb5de4 to terraman.
@@ -804,7 +804,7 @@ merge commit: https://github.com/godotengine/godot/commit/b8f0d51e6328aa803b3589
 - Backport 6a49e5b4fba61013901c61e82c5fee9f9570581d to terraman.
   Implement visible collision shapes support for Voxelman.
 - Backport 061b404a57c7b5379264e918d17ec4a5431db733 to terraman.
-  Set scenario for debug meshes aswell in VoxelChunkDefault, also free
+  Set scenario for debug meshes as well in VoxelChunkDefault, also free
   them in free_chunk().
 - Backport 3635ba7b797d993e2943967e53f3f80cd7316fa2 to terraman.
   Free the body first.
@@ -859,7 +859,7 @@ merge commit: https://github.com/godotengine/godot/commit/b8f0d51e6328aa803b3589
 - Only allow ; as the end statement.
 - Remove type inference (:= operator) from pscript.
 - Removed yield from pscript.
-- Added a new dictinary literal to pscript, as the plain curly brace is going to be used for scopes.
+- Added a new dictionary literal to pscript, as the plain curly brace is going to be used for scopes.
   - |{ key: value, ... }|
 - Fix crash.
 - Fix dev assert being triggered.
@@ -867,7 +867,7 @@ merge commit: https://github.com/godotengine/godot/commit/b8f0d51e6328aa803b3589
 - Fix parsing if.
 - Removed the pass keyword from pscript.
 - Rename the self keyword to this in PScript.
-- Udpated the keyword list in PScriptLanguage::get_reserved_words().
+- Updated the keyword list in PScriptLanguage::get_reserved_words().
 - Added Variant as a usable type to PScript.
 - Implement c-like function definition syntax for PScript.
 - Implement c-like syntax for class variables in PScript..
@@ -882,15 +882,15 @@ merge commit: https://github.com/godotengine/godot/commit/b8f0d51e6328aa803b3589
 - Removed _parse_type_identifier as it did not handle subclasses directly.
 - Added :: as a token, classes inside classes now use this as their type. (Similar to how c++ does it.)
 - Remove note, as the :: syntax seems better.
-- Allow indexing in expressions using :: aswell.
+- Allow indexing in expressions using :: as well.
   This makes :: behave in expressions exactly like ".", or indexing with
   [], (even method calls will work with it), except it won't work if it's
   in the first literal in the line. Eventually this will likely get
   refined.
 - Tweak errors.
 - Remove the now unused elif token from PScript.
-- Require ; after class_name aswell in PScript.
-- Allow : to be used as extend aswell in PScript.
+- Require ; after class_name as well in PScript.
+- Allow : to be used as extend as well in PScript.
 - Implement // style comments for PScript.
 - Remove var keyword from PScript.
 - Fix Instanting inner classes inside their outer classes.
@@ -900,7 +900,7 @@ merge commit: https://github.com/godotengine/godot/commit/b8f0d51e6328aa803b3589
 - Add PScripts to the default rearch extension list.
 - Rename the current for to foreach in PScript.
 - Fix up templates for PScript.
-- Keyword list udpates.
+- Keyword list updates.
 - Update method auto complete hints for PScript.
 - Also ignore // in PScriptLanguage::auto_indent_code().
 - Update 2 more autocomplete argument hints for PScript.
@@ -942,7 +942,7 @@ merge commit: https://github.com/godotengine/godot/commit/b8f0d51e6328aa803b3589
   - It currently works with signals.
 - Fix inserting StringName and NodePath symbols in all cases I was able to find.
 - Rework the ternary operator in PScript to be more c-like.
-- Unfortunately the : is alredy taken dictionary literal, and I had to
+- Unfortunately the : is already taken dictionary literal, and I had to
   use a new token. It ended up being: &lt;&gt;.
 - Fortunately though the &lt;&gt; token actually really makes sense for a
   choice.
@@ -959,7 +959,7 @@ merge commit: https://github.com/godotengine/godot/commit/b8f0d51e6328aa803b3589
 - Fix switch statement falling into statements when not having a default case, and the given value did not match any cases in PScript.
 - Fix parsing expressions after switch statements in PScript. This also fixed switch statements inside switch statements.
 - Allow const and const reference parameters, variables, and const methods similar to how they are often used on the engine side.
-- Don't allow const reference as a variable, it's unecessary.
+- Don't allow const reference as a variable, it's unnecessary.
 - Implement Ref&lt;&gt; for PScript. It's just syntactic sugar.
 - Add Ref to the identifier and reserved keywords list.
 - Fix build when GDScript and / or PScript is disabled.
@@ -1163,7 +1163,7 @@ merge commit: https://github.com/godotengine/godot/commit/a117d512b00f1646db174e
 #### Terraman
 
 - Deprecate voxel_scale getter and setter in TerrainVorld. Added equivalent terrain_scale getter and setter.
-- Depreacte helper methods with voxel in their name in TerrainWorld. Added equivalent new ones for their replacement.
+- Deprecate helper methods with voxel in their name in TerrainWorld. Added equivalent new ones for their replacement.
   - voxel -> data
 - Deprecated voxel_scale getter and setter in TerrainChunk. Added terrain_Scale replacement.
 - Deprecated voxel_world getter and setter in TerrainChunk. Added terrain_world getter and setter instead.
@@ -1290,7 +1290,7 @@ merge commit: https://github.com/godotengine/godot/commit/a117d512b00f1646db174e
   - It's a straight rename because I'm pretty sure there weren't in use by
     anyone ever.
 - Rename apply_voxel_scale parameter to apply_terrain_scale in TerrainWorld's prop_add() method.
-- Depreacte helper methods with voxel in their name in TerrainWorld. Added equivalent new ones for their replacement.
+- Deprecate helper methods with voxel in their name in TerrainWorld. Added equivalent new ones for their replacement.
   - voxel -> data
 - Deprecated voxel_scale getter and setter in TerrainChunk. Added terrain_Scale replacement.
 - Rename apply_voxel_scale parameters to apply_terrain_scale in TerrainChunk.
@@ -1306,7 +1306,7 @@ merge commit: https://github.com/godotengine/godot/commit/a117d512b00f1646db174e
   - draw_debug_voxels -> draw_debug_datas
   - draw_debug_voxel_lights -> draw_debug_terrain_lights
 - Replace the word Voxel from error messages in TerrainLibrary.
-- Added dperecation notes and also small fixes to TerrainWorld's class docs.
+- Added deprecation notes and also small fixes to TerrainWorld's class docs.
 - Added description for the terrain_scale property in TerrainWorld's docs.
 - Deprecated voxel_name property in TerrainSurface. Added surface_name instead.
 - Fix typo in TerrainPropJob and TerrainTerrainJob's method names.
@@ -1491,7 +1491,7 @@ c++ only:
 - Removed unnecessary #if.
 - Added alter table helper methods to TableBuilder.
 - Split concatenations into multiple lines in SQLite3TableBuilder, since now TableBuilders use a StringBuilder this saves a little bit on concatenating strings.
-- Added recommandations to PreparedStatement and QueryBuilder's docs.
+- Added recommendations to PreparedStatement and QueryBuilder's docs.
 - Added Database::get_backend_name() virtual method.
 - Document set_table_version() being able to remove entries.
 - Full and improved docs for the entire module.
@@ -1587,7 +1587,7 @@ c++ only:
 - Set maximum password length in UserRegisterWebPage just for good measure (256).
 - Also set a maximum password length of 256 in UserLoginWebPage.
 - Remove unneeded comments in UserLoginWebPage.
-- Set maximum password length of 256 in UserSettingsWebPage aswell.
+- Set maximum password length of 256 in UserSettingsWebPage as well.
 - Remove unneeded comments in UserSettingsWebPage.
 - Include cleanups in UserWebPages.
 - Added missing user locks.
@@ -1634,7 +1634,7 @@ c++ only:
 - Fix visibility toggling in TerrainChunkDefault even if lods are disabled.
 - Also check whether chunks are building when doing a priority generation.
 - Bind is_priority_generation bool in TerrainWorld. Also set it to false in the constructor, but set it to true when eneteeing tree if the world already has chunks loaded.
-- Don't destroy and re-generate meshes in TerrainChunk's _enter and _exit_tree, just hide / show them. This makes scene tab swithing with TerrainWorlds in the editor a lot simpler.
+- Don't destroy and re-generate meshes in TerrainChunk's _enter and _exit_tree, just hide / show them. This makes scene tab switching with TerrainWorlds in the editor a lot simpler.
 - TerrainChunkDefault lod change code cleanups and improvements. Also set scenario on entering and exiting the tree.
 
 #### entity_spell_system
@@ -1788,7 +1788,7 @@ Breaking changes:
 - Added set_look_at helper method to Basis.
 - Transform now uses Basis::create_looking_at.
 - Added non-static looking_at and from_scale helper methods to Basis.
-- Undo unecessary breaking change to gdnative.
+- Undo unnecessary breaking change to gdnative.
 - Renamed looking_at to create_looking_at, and from_scale to create_from_scale in Basis.
 
 ### Scene
@@ -1895,7 +1895,7 @@ Breaking changes:
 - Clear meshes as needed in TerrainTerrainJob.
 - Clear meshes as needed in TerrainPropJob.
 - Fix crash on shutdown.
-- Udpate the gizmo size properly in TerrainWorldEditor.
+- Update the gizmo size properly in TerrainWorldEditor.
 - Optimized UndoRedo usage in TerrainWorldEditor.
 - Implemented the TerrainWorldGizmo.
 - Renamed the new gizmo.
@@ -1963,7 +1963,7 @@ Breaking changes:
   Reduces boiler plate by templating `get_instance()` for the cast type, while remaining backward compatible to the existing functionality.
 - Make drop_mouse_on_gui_input_disabled GLOBAL_GET cached.
 - Drop mouse focus and over when gui input is globally disabled
-  Since some porjects may be relying on the former behavior, this is opt-in via a new project setting, disabled by default, but enabled for new projects, since it's the new standard behavior (and the only one in 4.0).
+  Since some projects may be relying on the former behavior, this is opt-in via a new project setting, disabled by default, but enabled for new projects, since it's the new standard behavior (and the only one in 4.0).
 - Add GLOBAL_GET cached macros.
   GLOBAL_GET is an expensive operation which should not be used each frame / tick.
   This PR adds macros which do a cheaper revision check, and only call the expensive GLOBAL_GET when project settings have changed.
@@ -2247,7 +2247,7 @@ Breaking changes:
 
 ##### Database
 
-- Use StringBuilder in TableBuilder aswell.
+- Use StringBuilder in TableBuilder as well.
 - QueryBuilder now uses a StringBuilder internally.
 - Hide result String in TableBuilder. Also add reset() method to it.
 - Made query_result in QueryBuilder protected.
@@ -2379,7 +2379,7 @@ Highlights:
 
 Breaking changes:
 
-- Android dependencies had to be updated, unfortunately this raises the required java version to 17. On the flip side hovewer there is a new editor java home setting, and also the JAVA_HOME environment variable gets picked up.
+- Android dependencies had to be updated, unfortunately this raises the required java version to 17. On the flip side however there is a new editor java home setting, and also the JAVA_HOME environment variable gets picked up.
 - Build containers now use docker instead of podman.
 - Removed parse_files() from WebServerRequest. It's doesn't work well with how the http protocol works. It did not do anything. If you called it just remove that call.
 
@@ -2459,7 +2459,7 @@ Breaking changes:
 ### Removed
 
 - Removed parse_files() from WebServerRequest. It's doesn't work well with how the http protocol works.
-- Removed Vector2i(Vector2) constructor, added a Vector2i conversion operator to Vector2 instead. This solves ambigous Variant to Vector2i conversion errors.
+- Removed Vector2i(Vector2) constructor, added a Vector2i conversion operator to Vector2 instead. This solves ambiguous Variant to Vector2i conversion errors.
 
 ### Backports
 
@@ -2487,7 +2487,7 @@ Breaking changes:
   Update Nexus plugin version from 1.1.0 to 1.3.0
   m4gr3d
   https://github.com/godotengine/godot/commit/eba77be573793243a91322c7eb8e345695c3b813
-  Unfortunately this raises the required java version to 17. On the flip side hovewer there is a new editor java home setting, and also the JAVA_HOME environment variable gets picked up.
+  Unfortunately this raises the required java version to 17. On the flip side however there is a new editor java home setting, and also the JAVA_HOME environment variable gets picked up.
 - Add is_zero_approx methods to Vector{2,3}
 - Check duplicate keys in dictionary literals: enums and const variables
   Check identifiers (const variables and unnamed enums) and named
@@ -2613,7 +2613,7 @@ Breaking changes:
 #### Editor
 
 - Added back ResourceImporterOBJ from godot.
-- Added a new editor setting (docks/filesystem/wide_bottom_panel) which makes the file system appear in the bottom panel instad of as a dock.
+- Added a new editor setting (docks/filesystem/wide_bottom_panel) which makes the file system appear in the bottom panel instead of as a dock.
 - Now the names of the main screen plugins can be hidden in the editor by the new interface/editor/hide_main_screen_plugin_names editor setting. (If a plugin does not have an icon fall back to using it's name.)
 
 #### Scene
@@ -2792,7 +2792,7 @@ Breaking changes:
 - Fix AABB.encloses failing on shared upper bound This differs from `Rect2` and was fixed for those classes in the past
 - Implement UWP version of `OS.get_unique_id` function.
 - Prevent using name with leading dot when create/rename/duplicate scene/folder/script/resource Fixes #62497
-- Fix unitialized variables in `core`
+- Fix uninitialized variables in `core`
 - Fix typo.
 - Remove unused struct in GradientTexture1D
 - GDScript: Prevent native class shadowing
@@ -2804,7 +2804,7 @@ Breaking changes:
 - Fix Android editor crash issue Fix issue causing the Android editor to crash when pressing back from a running project
 - Automatically pick the Android sdk path using environment variables
 - Also backported the previous change for cscript.
-- Far faster and more efficient method of checking if an identifer refers an autoload.
+- Far faster and more efficient method of checking if an identifier refers an autoload.
 - Make gizmo plugin handle SpriteBase3D instead of Sprite3D
 - Fix grayscale dds loading
 - Fix glGet overflows by using 64 bit versions Certain glGet operations require 64 bit versions according to the GLES spec. The previous code was susceptible to overflow bugs,  especially running under ANGLE.
@@ -2836,7 +2836,7 @@ Breaking changes:
 
 - Added back the translations from godot.
 - Added back missing descriptions to Translation's class docs.
-- Added translate_to() method to TranslationServer, and trt() method to Object. This let's you transalte strings into specific (noon app wide) locales.
+- Added translate_to() method to TranslationServer, and trt() method to Object. This let's you translate strings into specific (noon app wide) locales.
 - Added missing Variant conversion and zero cases.
 
 #### Docs
@@ -2986,7 +2986,7 @@ Breaking changes:
 - Added a VSeparator to the To Prop editor buttons.
 - Group the Anchor and Presets buttons under a common HBoxContainer in CanvasItemEditor.
 - Added a VSeparator to the NavigationPolygonEditor and the NavigationMeshEditor.
-- Removed the diffferently styled context menu from  the SpatialEditor and the CanvasItemEditor. New controls are now added directly to the main FlowContainer, so they wrap properly. While having a different background for context sensitive items can look good, it doesn't work well if it's not per plugin.
+- Removed the differently styled context menu from  the SpatialEditor and the CanvasItemEditor. New controls are now added directly to the main FlowContainer, so they wrap properly. While having a different background for context sensitive items can look good, it doesn't work well if it's not per plugin.
 
 #### Modules
 
@@ -3124,7 +3124,7 @@ Breaking changes:
 
 #### Godot4
 
-- Backported the editor constrol changes for the new shortcut system from godot4.
+- Backported the editor control changes for the new shortcut system from godot4.
 - Backported the shortcut context system from godot4.
 - Backported _shortcut_input() virtual from godot4.
 - Backported the CallInputType parameter for SceneTree::_call_input_pause() from godot4.
@@ -3145,7 +3145,7 @@ Breaking changes:
 - Backported from godot4:  Update navigation obstacle API Updates navigation obstacle API. - smix8 https://github.com/godotengine/godot/commit/c1fc331b8865bd099df210fa434782bc9b60b2d8
 - Backported from godot4:  Add agent pause mode to NavigationServer Adds agent pause mode to NavigationServer. - smix8 https://github.com/godotengine/godot/commit/ae9dd47d0c1c237d0733439862aa5ff651dcac2
 - Backported from godot4:  Fix cell_height for navigation meshes Fixes `cell_height` for navigation meshes. - smix8 https://github.com/godotengine/godot/commit/180a5cded1d01e8c8965f009624652ee6ef1807c
-- Backported from godot4:  Allow negative NavigationAgent2D path debug line_width for thin lines Allows the line_width for NavigationAgent2D path debug to go negativ for thin line rendering. - smix8 https://github.com/godotengine/godot/commit/f6a10c0565e32e0170bcce71635d8bad16077d1d
+- Backported from godot4:  Allow negative NavigationAgent2D path debug line_width for thin lines Allows the line_width for NavigationAgent2D path debug to go negative for thin line rendering. - smix8 https://github.com/godotengine/godot/commit/f6a10c0565e32e0170bcce71635d8bad16077d1d
 - Backported from godot4: Fix NavMesh map_update_id returning 0 results in errors - zorbathut https://github.com/godotengine/godot/commit/d0564f2466cec9d0e108cadf18f2aae642c90be7
 - Backported from godot4:  Add detail to NavigationAgent signal descriptions Adds detail to NavigationAgent signal descriptions. - smix8 https://github.com/godotengine/godot/commit/99e70ab6efd18c0ed472041dcc2b7b3ae1c22de1
 - Backported from godot4:  Fix pathfinding funnel adding unwanted point Fixes pathfinding funnel adding unwanted point due to precision issues. - smix8 https://github.com/godotengine/godot/commit/c51e2644466b96d414d4e42a9cfe283ce1162264
@@ -3221,7 +3221,7 @@ It was insipred by godot 4's ProcessGroup system, however while Godot 4's implem
 - Fix property binding hints.
 - Fix property types. Auras have been merged into Spells a while ago.
 - Fix some property names being the same as getters / setters.
-- Fixed disrepancies between a few getter and setters.
+- Fixed discrepancies between a few getter and setters.
 - Bind missing enum values.
 - Fix duplicate parameter names in binding.
 - Fix the order of some default arguments in bindings.
@@ -3504,7 +3504,7 @@ Refactor ScriptEditor and ScriptTextEditor with added method to retrieve the scr
 - Added HAS_TRIVIAL_CONSTRUCTOR, HAS_TRIVIAL_DESTRUCTOR, and HAS_TRIVIAL_COPY macros to typedefs to fix new clang deprecations.
 - Added Size and Point typedefs for Vector3i and Vector4i. 
 - Added log10 to the Math class. 
-- Added a Math singleton exposing math functions directly to scripts. The idea is to make the disrepancies between scripts and engine side code smaller.
+- Added a Math singleton exposing math functions directly to scripts. The idea is to make the discrepancies between scripts and engine side code smaller.
 - Added erf to Math. 
 
 #### Servers
@@ -3544,7 +3544,7 @@ Refactor ScriptEditor and ScriptTextEditor with added method to retrieve the scr
 - Pre-create the required folders for the self signed cert files automatically.
 - Implement sending keep alive connection type if a connection has more than one request for HTTPServerSimple. Also more togglable debugging.
 - Implement max request size limit for HTTPServerSimple. 
-- Now post and get parameters can be set / changed in requests from scripts aswell.
+- Now post and get parameters can be set / changed in requests from scripts as well.
 - Added missing helper method to WebServerRequest. 
 - Added more mimetypes to the HTTPServerSimple. 
 
@@ -3688,7 +3688,7 @@ Backported everything up to and including https://github.com/godotengine/godot/c
 - Fix stylus tilt Y direction. 
 - iOS: Add new model identifiers for DPI metrics 
 - Support Git worktrees in generation of hash header 
-- Fix get_path() is not working when files are opend with `open_compressed` And also fixed `get_absolute_path()` in the same way
+- Fix get_path() is not working when files are opened with `open_compressed` And also fixed `get_absolute_path()` in the same way
 - Make CollisionShape selection box use shape AABB 
 - Bump json5 from 1.0.1 to 1.0.2 in /platform/web 
 - zlib/minizip: Update to version 1.2.13, remove zlib from freetype Security update, fixes CVE-2022-37434 in zlib.
@@ -3805,7 +3805,7 @@ This also removes the unused `block` argument, which is always `true`.
 
 - Added support for specifying a COPYRIGHT.txt file for modules.
 - Never print an error message in Object::get_meta(). 
-- Remove now superfluos check from String's operator[]. 
+- Remove now superfluous check from String's operator[]. 
 - Add _FORCE_INLINE_ to String's resize(). 
 - Added set_length helper method to String.
 
@@ -4189,7 +4189,7 @@ Added an icon for UserModule.
 - Check whether the gltf module is enabled or not before trying to use it.
 - Main build script: Properly set module_ name _enabled in environment to false for modules that get disabled using can_build().
 - Fix serializing variants into binary files.
-- Use AnimationPlayer's root property instead of just getting it's parent when exprting a GLTFDocument.
+- Use AnimationPlayer's root property instead of just getting it's parent when exporting a GLTFDocument.
 - Use string length() instead of size() as it was intended in HTMLParser, and BBCodeParser.
 - HTMLParser now properly parses doctype in a case insensitive way. Also improved an error message a bit.
 

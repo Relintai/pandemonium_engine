@@ -370,7 +370,7 @@
 			<return type="int" />
 			<argument index="0" name="ext_g_state" type="PDFExtGState" />
 			<description>
-				Applyies the graphics state to the page.
+				Applies the graphics state to the page.
 				Graphics Mode
 				- Before and after - GRAPHICS_MODE_PAGE_DESCRIPTION.
 			</description>
@@ -473,7 +473,7 @@
 			<argument index="3" name="angle_2" type="float" />
 			<description>
 				Appends a circle arc to the current path. Angles are given in degrees, with 0 degrees being vertical, upward, from the (x,y) position.
-				- ang1 - The angle of the begining of the arc.
+				- ang1 - The angle of the beginning of the arc.
 				- ang2 - The angle of the end of the arc. It must be greater than ang1.
 				Graphics Mode
 				- Before - GRAPHICS_MODE_PAGE_DESCRIPTION or GRAPHICS_MODE_PATH_OBJECT.
@@ -523,7 +523,7 @@
 			<argument index="0" name="cp_start" type="Vector2" />
 			<argument index="1" name="end_point" type="Vector2" />
 			<description>
-				Appends a Bézier curve to the current path using two spesified points. The point (x1, y1) and the point (x3, y3) are used as the control points for a Bézier curve and current point is moved to the point (x3, y3).
+				Appends a Bézier curve to the current path using two specified points. The point (x1, y1) and the point (x3, y3) are used as the control points for a Bézier curve and current point is moved to the point (x3, y3).
 				Before and after - GRAPHICS_MODE_PATH_OBJECT.
 			</description>
 		</method>

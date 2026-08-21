@@ -8,7 +8,7 @@
 		Can be extended using both inheritance and [UserModule]s. [UserModule]s are more dynamic compared to inheritance, but they can also be made always available. 
 		Since applications need to be able to create [User] classes from multiple places, and both their setup and their storage can get very involved, this is handled by [UserDB] and [UserManager]s. This also means means, that:
 		- Always create them using [method UserDB.create_user], to get a proper subclass with the proper [UserModule] setup that your application expects.
-		User accounts (due to their nature) might need to be used in a heavily concurent environment. The web module is a perfect example of this. Due to this, internally they have an [RWLock] and they provide an api so it can be controlled from the outside.
+		User accounts (due to their nature) might need to be used in a heavily concurrent environment. The web module is a perfect example of this. Due to this, internally they have an [RWLock] and they provide an api so it can be controlled from the outside.
 		Please note that [RWLock]s are not re-entrant! This means that the same thread cannot lock it more than once! This also means that this class can't automatically close it's own lock. (Note that similar classes work the same way.)
 		In Essence:
 		- Always close locks when doing more than one operations on them at once.

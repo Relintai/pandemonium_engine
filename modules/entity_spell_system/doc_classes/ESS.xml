@@ -5,9 +5,9 @@
 	</brief_description>
 	<description>
 		Gives access to entity and spell related data, providing easy lookups.
-		Make sure that you add everything both server and clientside before use, because the system uses ids (get_id()) for server clinet communications. This also means that ids should be unique per resources for every ESS-related resources.
+		Make sure that you add everything both server and clientside before use, because the system uses ids (get_id()) for server client communications. This also means that ids should be unique per resources for every ESS-related resources.
 		For example you shouldn't register 2 spells with id 1 (you will get an error).
-		Even if you don't use multiplayer, the systen uses ids, so you have to register all spells that you want to use.
+		Even if you don't use multiplayer, the system uses ids, so you have to register all spells that you want to use.
 		[ESSResourceDB] and it's derived classes can help with collecting spells and managins spell ids.
 		Also grants access easy to ESS-related project settings.
 	</description>

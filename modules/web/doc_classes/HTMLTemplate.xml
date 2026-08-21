@@ -5,7 +5,7 @@
 	</brief_description>
 	<description>
 		A class that can be used to easily render HTML with. An instance of this class could be one of a traditional web application's View. (From the Model-View-Controller or MVC pattern.)
-		Some traditional web applications use a templating language to render their final output using a set of variables. Some templating language examples: Blade, Handlebars, Razor, etc. Some of these have features like for loops, ifs, they can even support method calls. This class implements similar functinality, albeit in a different manner.
+		Some traditional web applications use a templating language to render their final output using a set of variables. Some templating language examples: Blade, Handlebars, Razor, etc. Some of these have features like for loops, ifs, they can even support method calls. This class implements similar functionality, albeit in a different manner.
 		The render control logic should be implemented by overriding [method _render], variable substitutions can be done using the available helper methods.
 		[HTMLTemplateRenderer] is used to render templates. See it's docs for the syntax.
 		Note: For a different approach to generating HTML, you can also take a look at [HTMLBuilder].

@@ -1616,7 +1616,7 @@ void EditorScriptEditorDebugger::_notification(int p_what) {
 
 					EditorNode::get_log()->add_message("--- Debugging process started ---", EditorLog::MSG_TYPE_EDITOR);
 #ifdef ANDROID_ENABLED
-					EditorNode::get_log()->add_message("Please note that curently if you run your app in the \"Same as Editor\" Window Placement, android will kill it after a few seconds if it goes to the background (= debug breaks). You can circumvent this by using the \"Side-by-side\" mode when debugging. It is available under Editor Settings->Window Placement->Android Window.", EditorLog::MSG_TYPE_EDITOR);
+					EditorNode::get_log()->add_message("Please note that currently if you run your app in the \"Same as Editor\" Window Placement, android will kill it after a few seconds if it goes to the background (= debug breaks). You can circumvent this by using the \"Side-by-side\" mode when debugging. It is available under Editor Settings->Window Placement->Android Window.", EditorLog::MSG_TYPE_EDITOR);
 #endif
 
 					ppeer->set_stream_peer(connection);

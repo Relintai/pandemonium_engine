@@ -706,10 +706,10 @@
 			Compress the streams of the image objects.
 		</constant>
 		<constant name="COMPRESSION_MODE_METADATA" value="4" enum="CompressionMode">
-			Other stream datas (fonts, cmaps and so on) are compressed.
+			Other stream data (fonts, cmaps and so on) are compressed.
 		</constant>
 		<constant name="COMPRESSION_MODE_ALL" value="15" enum="CompressionMode">
-			All stream datas are compressed (HPDF_COMP_TEXT | HPDF_COMP_IMAGE | HPDF_COMP_METADATA).
+			All stream data are compressed (HPDF_COMP_TEXT | HPDF_COMP_IMAGE | HPDF_COMP_METADATA).
 		</constant>
 		<constant name="COMPRESSION_MODE_MASK" value="255" enum="CompressionMode">
 		</constant>

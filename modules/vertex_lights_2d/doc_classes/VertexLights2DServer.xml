@@ -6,7 +6,7 @@
 	<description>
 		A server that provides a way to store static lights that can be used to bake lighting information into mesh vertex data, or [CanvasItem]'s color modulation.
 		With this class extremely complex light information can be stored and used with no additional cost on the GPU side.
-		After adding lights, you can use [member sample_light] to sample lighting at a specified point in the map's space, then use the resulting [Color] to either further modifty the modulate property of [CanvasItem]s, or you can render meshes using this color in you custom _draw methods.
+		After adding lights, you can use [member sample_light] to sample lighting at a specified point in the map's space, then use the resulting [Color] to either further modify the modulate property of [CanvasItem]s, or you can render meshes using this color in you custom _draw methods.
 		The drawback of this method is that it's more expensive change lights.
 		Note that you can use the normal 2D lighting system on top of this if you need dynamic lights (like [Light2D]). That system is better suited for that purpose.
 		Currently this class stores lights inside quadrants. Their optimal size should be a bit more than the radius of the biggest light you want to have.
@@ -247,7 +247,7 @@
 			<argument index="3" name="layer" type="int" default="0" />
 			<argument index="4" name="z_index" type="int" default="0" />
 			<description>
-				Sample the lighing information at a specific position.
+				Sample the lighting information at a specific position.
 			</description>
 		</method>
 		<method name="set_default_quadrant_size">
@@ -271,7 +271,7 @@
 			The light's color gets added to the resulting colors.
 		</constant>
 		<constant name="VERTEX_LIGHT_2D_MODE_SUB" value="1" enum="VertexLight2DMode">
-			The light's color gets substracted to the resulting colors.
+			The light's color gets subtracted to the resulting colors.
 		</constant>
 		<constant name="VERTEX_LIGHT_2D_MODE_MIX" value="2" enum="VertexLight2DMode">
 			The light's color gets blended with the resulting colors.
