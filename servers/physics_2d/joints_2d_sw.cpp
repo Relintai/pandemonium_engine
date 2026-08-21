@@ -239,7 +239,7 @@ k_tensor(Body2DSW *a, Body2DSW *b, Vector2 r1, Vector2 r2, Vector2 *k1, Vector2 
 	k21 += r1nxy;
 	k22 += r1xsq;
 
-	// add the influnce from r2
+	// add the influence from r2
 	real_t b_i_inv = b->get_inv_inertia();
 	real_t r2xsq = r2.x * r2.x * b_i_inv;
 	real_t r2ysq = r2.y * r2.y * b_i_inv;

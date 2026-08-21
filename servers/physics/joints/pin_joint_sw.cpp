@@ -91,7 +91,7 @@ void PinJointSW::solve(real_t p_step) {
 
 		Vector3 rel_pos1 = pivotAInW - A->get_transform().origin;
 		Vector3 rel_pos2 = pivotBInW - B->get_transform().origin;
-		//this jacobian entry could be re-used for all iterations
+		//this jacobian entry could be reused for all iterations
 
 		Vector3 vel1 = A->get_velocity_in_local_point(rel_pos1);
 		Vector3 vel2 = B->get_velocity_in_local_point(rel_pos2);

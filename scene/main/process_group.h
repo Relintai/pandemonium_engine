@@ -108,7 +108,7 @@ public:
 	void unregister_node_internal_physics_process(Node *p_node);
 	void node_internal_physics_process_changed(Node *p_node);
 
-	//This way the property doesn't lose it's vlaue when using a no thread build
+	//This way the property doesn't lose it's value when using a no thread build
 	bool should_use_threads() const;
 
 	bool is_working() const;

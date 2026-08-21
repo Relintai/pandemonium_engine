@@ -59,7 +59,7 @@ else:
 
 lib_arch_dir = ""
 
-# in NDK27 there is also a riscv platofrm (riscv64-linux-android). TODO
+# in NDK27 there is also a riscv platform (riscv64-linux-android). TODO
 if get_min_sdk_version(env["ndk_platform"]) >= 25:
     if env["android_arch"] == "armv7":
         lib_arch_dir = "arm-linux-androideabi"

@@ -128,7 +128,7 @@ Ref<AudioEffectInstance> AudioEffectRecord::instance() {
 	ins.instance();
 	ins->is_recording = false;
 
-	//Re-using the buffer size calculations from audio_effect_delay.cpp
+	//Reusing the buffer size calculations from audio_effect_delay.cpp
 	float ring_buffer_max_size = IO_BUFFER_SIZE_MS;
 	ring_buffer_max_size /= 1000.0; //convert to seconds
 	ring_buffer_max_size *= AudioServer::get_singleton()->get_mix_rate();

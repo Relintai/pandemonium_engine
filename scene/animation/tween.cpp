@@ -1847,7 +1847,7 @@ bool Tween::targeting_method(Object *p_object, StringName p_method, Object *p_in
 	Variant initial_val = p_initial->call(p_initial_method, nullptr, 0, error);
 	ERR_FAIL_COND_V(error.error != Variant::CallError::CALL_OK, false);
 
-	// Convert initial INT values to REAL as they aer better for interpolation
+	// Convert initial INT values to REAL as they are better for interpolation
 	if (initial_val.get_type() == Variant::INT) {
 		initial_val = initial_val.operator real_t();
 	}

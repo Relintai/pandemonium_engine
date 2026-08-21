@@ -89,7 +89,7 @@ const PandemoniumAudio = {
                     PandemoniumAudio.input = PandemoniumAudio.ctx.createMediaStreamSource(stream);
                     callback(PandemoniumAudio.input);
                 } catch (e) {
-                    PandemoniumRuntime.error('Failed creaating input.', e);
+                    PandemoniumRuntime.error('Failed creating input.', e);
                 }
             }
             if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {

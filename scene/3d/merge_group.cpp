@@ -1083,7 +1083,7 @@ void MergeGroup::_find_mesh_instances_recursive(int p_depth, Node *p_node, Local
 	// Ensure meshes are added in reverse order.
 	// This is important for performance because
 	// it turns out queue_delete is very inefficient
-	// deleteing multiple child nodes from the front of the list
+	// deleting multiple child nodes from the front of the list
 	// due to ordered_remove() etc.
 	for (int c = p_node->get_child_count() - 1; c >= 0; c--) {
 		_find_mesh_instances_recursive(p_depth + 1, p_node->get_child(c), r_mis, p_shadows, p_flag_invalid_meshes);

@@ -33,7 +33,7 @@ the builtins namespace or the global module list so that the rest
 of our code can use the objects and names imported here regardless of
 Python version. As a result, if this module is used, it should violate
 the normal convention for imports (standard library imports first,
-then program-specific imports, each ordered aplhabetically)
+then program-specific imports, each ordered alphabetically)
 and needs to be listed first.
 
 The rest of the things here will be in individual compatibility modules

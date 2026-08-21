@@ -57,7 +57,7 @@ def _validator(key, val, env, vals) -> None:
 
 
 def EnumVariable(key, help, default, allowed_values, map={}, ignorecase=0) -> Tuple[str, str, str, Callable, Callable]:
-    """Return a tuple describing an enumaration SCons Variable.
+    """Return a tuple describing an enumeration SCons Variable.
 
     The input parameters describe an option with only certain values
     allowed. Returns A tuple including an appropriate converter and

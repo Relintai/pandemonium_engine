@@ -324,7 +324,7 @@ void RenderingServerCanvas::_finalize_and_merge_local_bound_to_branch(Item *p_ca
 		if (p_canvas_item->use_identity_xform) {
 			// This is incredibly inefficient, but should only occur for e.g. CPUParticles2D,
 			// and is difficult to avoid because global transform is not usually kept track of
-			// in RenderingServer (only final transform which is combinated with camera, and that
+			// in RenderingServer (only final transform which is combined with camera, and that
 			// is only calculated on render, so is no use for culling purposes).
 			Transform2D global_xform = _calculate_item_global_xform(p_canvas_item);
 			this_rect = global_xform.affine_inverse().xform(this_rect);

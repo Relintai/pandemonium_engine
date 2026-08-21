@@ -74,7 +74,7 @@ Semaphore::Semaphore() {
 	_semaphore = (void *)CreateSemaphoreEx(
 			NULL,
 			0,
-			0xFFFFFFF, //wathever
+			0xFFFFFFF, //whatever
 			NULL,
 			0,
 			SEMAPHORE_ALL_ACCESS);
@@ -82,7 +82,7 @@ Semaphore::Semaphore() {
 	_semaphore = (void *)CreateSemaphore(
 			NULL,
 			0,
-			0xFFFFFFF, //wathever
+			0xFFFFFFF, //whatever
 			NULL);
 #endif
 }

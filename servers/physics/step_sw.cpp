@@ -245,7 +245,7 @@ void StepSW::step(SpaceSW *p_space, real_t p_delta, int p_iterations) {
 	{
 		ConstraintSW *ci = constraint_island_list;
 		while (ci) {
-			//iterating each island separatedly improves cache efficiency
+			//iterating each island separately improves cache efficiency
 			_solve_island(ci, p_iterations, p_delta);
 			ci = ci->get_island_list_next();
 		}

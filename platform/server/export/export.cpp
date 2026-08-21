@@ -80,7 +80,7 @@ void register_server_exporter() {
 	platform_linux_http_server->set_os_name("X11");
 	platform_linux_http_server->set_chmod_flags(0755);
 
-	// TODO the server platform can be built on bsd, and OSX. Add those eventually aswell.
+	// TODO the server platform can be built on bsd, and OSX. Add those eventually as well.
 
 	EditorExport::get_singleton()->add_export_platform(platform_linux_server);
 	EditorExport::get_singleton()->add_export_platform(platform_linux_http_server);

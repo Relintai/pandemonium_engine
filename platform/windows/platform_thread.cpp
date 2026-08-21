@@ -32,7 +32,7 @@
 
 // Is there any upsides to hashing thread ids at all?
 // If the issue was that threads increase by one, it's still doesn't makes sense,
-// as it's trivial to figure out which int casued a given hash...
+// as it's trivial to figure out which int caused a given hash...
 //ID id = _thread_id_hash(std::thread::id());
 
 #include "core/object/script_language.h"

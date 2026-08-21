@@ -174,7 +174,7 @@ void BroadPhase2DHashGrid::_enter_grid(Element *p_elem, const Rect2 &p_rect, boo
 		}
 	}
 
-	//pair separatedly with large elements
+	//pair separately with large elements
 
 	for (RBMap<Element *, RC>::Element *E = large_elements.front(); E; E = E->next()) {
 		if (E->key() == p_elem) {

@@ -1324,7 +1324,7 @@ void ConcavePolygonShapeSW::_cull_segment(int p_idx, _SegmentCullParams *p_param
 					vertices[2],
 					&res)) {
 			real_t d = p_params->dir.dot(res) - p_params->dir.dot(p_params->from);
-			//TODO, seems segmen/triangle intersection is broken :(
+			//TODO, seems segment/triangle intersection is broken :(
 			if (d > 0 && d < p_params->min_d) {
 				p_params->min_d = d;
 				p_params->result = res;

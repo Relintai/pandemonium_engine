@@ -611,7 +611,7 @@ void VehicleBody::_resolve_single_bilateral(PhysicsDirectBodyState *s, const Vec
 	if (body2) {
 		rel_pos2 = pos2 - body2->get_global_transform().origin;
 	}
-	//this jacobian entry could be re-used for all iterations
+	//this jacobian entry could be reused for all iterations
 
 	Vector3 vel1 = s->get_linear_velocity() + (s->get_angular_velocity()).cross(rel_pos1); // * mPos);
 	Vector3 vel2;

@@ -152,7 +152,7 @@ _HOST_TARGET_TO_BAT_ARCH_GT14 = {
 
 # before 14.1 (VS2017):
 # Given a (host, target) tuple, return the argument for the bat file;
-# Both host and target should be canoncalized.
+# Both host and target should be canonicalized.
 # If the target already looks like a pair, return it - these are
 # pseudo targets (mainly used by Express versions)
 _HOST_TARGET_ARCH_TO_BAT_ARCH = {
@@ -822,7 +822,7 @@ def msvc_find_valid_batch_script(env, version):
     host_platform, target_platform, req_target_platform = platforms
 
     # Most combinations of host + target are straightforward.
-    # While all MSVC / Visual Studio tools are pysically 32-bit, they
+    # While all MSVC / Visual Studio tools are physically 32-bit, they
     # make it look like there are 64-bit tools if the host is 64-bit,
     # so you can invoke the environment batch script to set up to build,
     # say, amd64 host -> x86 target. Express versions are an exception:

@@ -182,7 +182,7 @@ class PathListCache:
         we're not going to bother splitting strings into path elements,
         or massaging strings into Nodes, to identify that equivalence.
         We just want to eliminate obvious redundancy from the normal
-        case of re-using exactly the same cloned value for a path.
+        case of reusing exactly the same cloned value for a path.
         """
         if SCons.Util.is_Sequence(pathlist):
             pathlist = tuple(SCons.Util.flatten(pathlist))
