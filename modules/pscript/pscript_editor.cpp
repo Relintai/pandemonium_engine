@@ -2674,7 +2674,7 @@ static void _find_call_arguments(PScriptCompletionContext &p_context, const PScr
 
 Error PScriptLanguage::complete_code(const String &p_code, const String &p_path, Object *p_owner, List<ScriptCodeCompletionOption> *r_options, bool &r_forced, String &r_call_hint) {
 	const String quote_style = EditorSettingsQuick::get_text_editor_completion_use_single_quotes() ? "'" : "\"";
-	//const bool add_string_name_symbol = EditorSettingsQuick::get_text_editor_completion_string_add_string_name_symbol();
+	const bool add_string_name_symbol = EditorSettingsQuick::get_text_editor_completion_string_add_string_name_symbol();
 	//const bool add_node_path_symbol = EditorSettingsQuick::get_text_editor_completion_string_add_node_path_symbol();
 
 	PScriptParser parser;
@@ -2957,7 +2957,12 @@ Error PScriptLanguage::complete_code(const String &p_code, const String &p_path,
 					case PScriptParser::DataType::CLASS: {
 						for (int i = 0; i < base_type.class_type->_signals.size(); i++) {
 							ScriptCodeCompletionOption option(base_type.class_type->_signals[i].name.operator String(), ScriptCodeCompletionOption::KIND_SIGNAL);
-							option.insert_text = quote_style + option.display + quote_style;
+
+							if (add_string_name_symbol) {
+								option.insert_text = "@";
+							}
+							option.insert_text += quote_style + option.display + quote_style;
+
 							options.insert(option.display, option);
 						}
 						base_type = base_type.class_type->base_type;
@@ -2969,7 +2974,14 @@ Error PScriptLanguage::complete_code(const String &p_code, const String &p_path,
 							List<MethodInfo> signals;
 							scr->get_script_signal_list(&signals);
 							for (List<MethodInfo>::Element *E = signals.front(); E; E = E->next()) {
-								ScriptCodeCompletionOption option(quote_style + E->get().name + quote_style, ScriptCodeCompletionOption::KIND_SIGNAL);
+								String insert_text;
+								if (add_string_name_symbol) {
+									insert_text = "@";
+								}
+								insert_text += quote_style + E->get().name + quote_style;
+
+								ScriptCodeCompletionOption option(insert_text, ScriptCodeCompletionOption::KIND_SIGNAL);
+
 								options.insert(option.display, option);
 							}
 							Ref<Script> base_script = scr->get_base_script();
@@ -2997,7 +3009,13 @@ Error PScriptLanguage::complete_code(const String &p_code, const String &p_path,
 						List<MethodInfo> signals;
 						ClassDB::get_signal_list(class_name, &signals);
 						for (List<MethodInfo>::Element *E = signals.front(); E; E = E->next()) {
-							ScriptCodeCompletionOption option(quote_style + E->get().name + quote_style, ScriptCodeCompletionOption::KIND_SIGNAL);
+							String insert_text;
+							if (add_string_name_symbol) {
+								insert_text = "@";
+							}
+							insert_text += quote_style + E->get().name + quote_style;
+
+							ScriptCodeCompletionOption option(insert_text, ScriptCodeCompletionOption::KIND_SIGNAL);
 							options.insert(option.display, option);
 						}
 					} break;
