@@ -75,7 +75,7 @@ typedef enum {
 
 const pandemonium_variant GDAPI pandemonium_packed_typed_array_operator_index_const(const pandemonium_packed_typed_array *p_self, const pandemonium_int p_idx);
 
-void GDAPI pandemonium_packed_typed_array_set(pandemonium_packed_typed_array *p_self, const pandemonium_int p_idx, const pandemonium_variant *p_value);
+pandemonium_bool GDAPI pandemonium_packed_typed_array_set(pandemonium_packed_typed_array *p_self, const pandemonium_int p_idx, const pandemonium_variant *p_value);
 pandemonium_variant GDAPI pandemonium_packed_typed_array_get(const pandemonium_packed_typed_array *p_self, const pandemonium_int p_idx);
 
 pandemonium_int GDAPI pandemonium_packed_typed_array_size(const pandemonium_packed_typed_array *p_self);

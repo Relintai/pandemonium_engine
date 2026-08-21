@@ -188,10 +188,10 @@ void GDAPI pandemonium_packed_typed_array_new_pool_color_array(pandemonium_packe
 	}
 }
 
-void GDAPI pandemonium_packed_typed_array_set(pandemonium_packed_typed_array *p_self, const pandemonium_int p_idx, const pandemonium_variant *p_value) {
+pandemonium_bool GDAPI pandemonium_packed_typed_array_set(pandemonium_packed_typed_array *p_self, const pandemonium_int p_idx, const pandemonium_variant *p_value) {
 	PackedTypedArray *self = (PackedTypedArray *)p_self;
 	Variant *val = (Variant *)p_value;
-	self->set(p_idx, *val);
+	return self->set(p_idx, *val);
 }
 
 pandemonium_variant GDAPI pandemonium_packed_typed_array_get(const pandemonium_packed_typed_array *p_self, const pandemonium_int p_idx) {
