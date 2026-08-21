@@ -6,6 +6,200 @@ All notable changes to this project will be documented in this file.
 
 Nothing yet.
 
+## [5.2.0]
+
+Relatively small release due to me having to work on finishing my dissertation.
+The more interesting work shall continue eventually.
+
+### Highlights
+
+- PreparedStatement got a huge cleanup, and it should be properly usable now.
+  - Bind parameter indexing now start at 0, so it works the same as value retrieval.
+- 3D Skeletons got some getter and setter usability improvements.
+  - The available IK algorithms were also improved / mostly fixed.
+- Make the GridMap's editor much more usable.
+- Added back the `yield` keyword to PScript.
+
+### Breaking Changes
+
+- PreparedStatement got a huge cleanup, methods were renamed, but new ones were also added.
+  It should be realtively trivial to update old PreparedStatement code though.
+  - Please note that Bind parameter indexing now start at 0, so when updating subtract 1 from each index.
+    You can also make use of the new next style apia (`set_next_bind_float`, `set_next_bind_int` etc.) to
+	  get rid of indices alltogether.
+- 3D Skeletons got some getter and setter usability improvements, very advanced uses might be affected.
+- GDNative api had some bugs and missing methods, so the headers had to be changed. This means gdnative
+  modules need to be recompiled. The plan is that with the next release GDNative's 1.0 api will be finalized,
+  and versioning will start. (Note that it might not need any more changes already, so only small
+  tweaks and issues are expected.)
+
+### Core
+
+- Fix all img->get_data().read() style calls.
+
+### Modules
+
+#### Skeleton3D
+
+- Fix default value of the additional_rotation property in SkeletonModification3DLookAt.
+- Fix global_pose_to_local_pose() and global_pose_to_local_pose() in Skeleton.
+  These used to use parent bone pose * rest, but rest influence was
+  removed, so now they basically just used the parent bone's transform.
+- Added get_bone_local_pose() helper method to Skeleton.
+- Backported 'Fix get_bone_pose_global_no_override()' from godot 4.
+  - lyuma
+  https://github.com/godotengine/godot/commit/565803ce3dbaabbd1cff76e3191c4297f212a0de
+- Fix SkeletonModification3DCCDIK.
+- Added more helper methods to Skeleton.
+- Fix potential bug in Skeleton::local_pose_to_global_pose().
+- Fix logic in SkeletonModification3DLookAt.
+- Remove superflous space in SkeletonModification3DLookAt's lock_rotation_plane's enum binder values.
+- Now SkeletonModification3DLookAt::get_lock_rotation_to_plane() returns the proper variable.
+- Don't use variable directly in Skeleton::local_pose_to_global_pose_no_override() as it might need to be updated.
+- Actually fix SkeletonModification3DLookAt. Also small improvements.
+- Unset override in a better way.
+- Fix some of the helper methods in Skeleton.
+- Fix SkeletonModification3DFABRIK.
+- Fix SkeletonModification3DJiggle.
+- Work on SkeletonModification3DTwoBoneIK.
+- Fix SkeletonModification3DTwoBoneIK except when a pole node is not provided.
+- Bind more methods in Skeleton.
+- Now Skeleton::get_bone_global_pose_no_override() uses the final transform of the parent bone chain.
+  It's more useful this way, and also this behaviour is probably the
+  expected one. The previous behaviour can be reconstructed from script
+  manually if desired. Or if it turn out to be useful it will be added
+  back as a different getter.
+
+#### GridMap
+
+- Make the GridMap's editor much more usable.
+- Tweak the Gridmap Editor's menu buttons.
+
+#### PDFGenerator
+
+- Fix new error caught by ci after a compiler update.
+
+#### Web
+
+- Added an example code to UserLoginWebPage's docs that show how to set up the user session on login success.
+- Added note and recommendation on implementing 2FA to UserLoginWebPage's docs.
+
+#### Database
+
+- Indicate done state with ERR_FILE_EOF in PreparedStatement::step().
+- Improve docs for PreparedStatement's column_count() and data_count().
+- Make SQLite3PreparedStatement's bind functions to be indexed from 0 instead of from 1.
+  - This makes every index in SQLite3PreparedStatement to be 0 based.
+  - This is a small api break.
+- Added an auto advancing bind api for PreparedStatement.
+- Added next_column helper method to PreparedStatement.
+- Added more column info helper methods to PreparedStatement.
+- Re-extracted class docs.
+- Update indexing in PreparedStatement's docs.
+- Added has_data() helper method to PreparedStatement.
+- Added more usage examples to PreparedStatement's docs.
+- Added docs for PreparedStatement's new methods.
+- Don't increment index twice when using bind_float().
+- Also add a description to current_column_index in PreparedStatement's docs.
+- Renamed the next* and current* helper methods in PreparedStatement to be more similar to QueryResult's api.
+- Added an another usage example to PreparedStatement.
+- Tweak getter names in PreparedStatement.
+- Moved some of the get prefixes to postfixes in PreparedStatement.
+- Moved more of the get prefixes to postfixes in PreparedStatement.
+- Update PreparedStatement's docs.
+
+#### PScript
+
+- Restored yield to PScript.
+  Added the pscript_no_yield compile time option so it can be disabled
+  when building if it's not needed.
+- Allow StringNames as signal names in yield for PScript. Also use StringNames directly when setting up the signal connection.
+- Honor the add_string_name_symbol setting for yield signal names in PScript's code editor.
+- Fix docs for pscript's function_may_yield, and yield.
+
+#### GDScript
+
+- Allow StringNames as signal names in yield for GDscript aswell.
+
+#### GDNative
+
+- Added a missing constructor to gdnative's typed array header.
+- Fix the return value of GDNative's PackedTypedArray's set.
+- Rename the new constructor in GDNative's TypedArray api.
+- Added missing constructor for GDNative's PackedTypedArray.
+- Update gdnative api's json.
+
+### Platform
+
+- Added get_entropy() to the frt backends.
+- Fix control reaches end of non-void function warning in OS_Windows::get_stdin_string().
+
+### Other
+
+- Added md5 sum generation to the make release script.
+- Ran Codespell over the entire codebase.
+- Tweaks to the codespell script.
+
+#### Readme
+
+- Added a todos section to the readme.
+- Added a breaking changes policy.
+- Simplified and explicitly spelled out things in the Use of AI content generators readme section.
+  It's very similar to zig's policy now, but in essence nothing really
+  changed apart from the wording.
+- Small tweaks to the readme.
+
+##### Plans
+
+- Add a build system long term goal. Unfortunately.
+- Add local ci and nightlies as a long term plan.
+- Website git long ther plan.
+- Added plans for the PasswordReset Node.
+- WebUserAdmin editor long term plan.
+- Added a long term plan for the User class.
+
+#### Github CI
+
+- Disable windows x86 builds for now as the github windows runner seems to be broken.
+  - I'ts 2026, so I'll just assume that somebody forgot to tell their AI
+  to not make mistakes, so I'm just disabling it for now temporarily.
+  - The releases are built locally using mingw so that will be unaffected.
+
+#### Build Containers
+
+- Update android build container.
+
+### Backports
+
+#### Godot 3.x
+
+- Preserve the output from the gradle build command
+  Updates `EditorNode#execute_and_show_output(...)` to return the output of the executed command.
+  Co-authored-by: Fredia Huya-Kouadio <fhuyakou@gmail.com>
+- Fix `safe_unproject_position()`
+  * fixes returning center of the viewport (instead of top left) when the 3D position is at the origin
+  * +y is up in 3D but down in 2D, so the Y polarity needs flipping in the recovery branch
+- Backport some of the fixes from https://github.com/godotengine/godot/commit/13d050475599bad648678c2371d7258dbf6ff372 .
+- Android versions bump for 2026
+- mbedTLS: Update to 3.6.7
+  (cherry picked from commit 1de7e257ffc38a88b2b931c2ea1672e27812a225)
+- `BlobShadows` - Ensure blob shadow is hidden when light exits tree
+- Blob Shadows - Fade is frame rate independent, and configurable
+- core: Backport OS::get_entropy from 4.x
+- mbedTLS: Always use Godot's OS as entropy source
+- Fix audio crackling issues due to incorrect WASAPI buffer size
+  (cherry picked from commit 179b0786c6fa3a432dba9e8fc023a620c11a8a5d)
+- iOS: Bump min. version to 15.0, remove 32-bit code, add min. target export option.
+- Minor BVH correctness fixes
+- Suppress error when device is invalidated after `IAudioClient::GetBufferSize`
+  Co-authored-by: chocola-mint <56677134+chocola-mint@users.noreply.github.com>
+- Ping `master` cache after saving cache
+  Stripped down 3.x version, also updates the action version to `v6` to ensure compatibility.
+  Also changed the default cache path used for the action to ensure compatibility.
+- libpng: Update to 1.6.58
+- Fix x86_64 iOS simulator build.
+
+
 ## [5.1.0]
 
 ### Highlights
