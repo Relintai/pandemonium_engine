@@ -372,12 +372,12 @@ protected:
 		ENode *expr;
 
 		bool raw;
-		bool supressed;
+		bool suppressed;
 
 		PrintNode() {
 			type = TYPE_PRINT;
 			raw = false;
-			supressed = false;
+			suppressed = false;
 		}
 	};
 

@@ -66,7 +66,7 @@
 			Herb item type.
 		</constant>
 		<constant name="ITEM_TYPE_ORE" value="8" enum="ItemType">
-			Ore item type.
+			Or item type.
 		</constant>
 		<constant name="ITEM_TYPE_GEMSTONE" value="16" enum="ItemType">
 			Gemstone item type.

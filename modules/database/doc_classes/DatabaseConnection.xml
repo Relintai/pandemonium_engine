@@ -26,14 +26,14 @@
 		<method name="ensure_version_table_exists">
 			<return type="void" />
 			<description>
-				Ensures that a table that contains the database's verison exists for compatibility checks.
+				Ensures that a table that contains the database's version exists for compatibility checks.
 			</description>
 		</method>
 		<method name="escape">
 			<return type="String" />
 			<argument index="0" name="str" type="String" />
 			<description>
-				Escapes the given [String] using the database backend's excape method.
+				Escapes the given [String] using the database backend's escape method.
 				Use it on user input for sanitization.
 				Note that [QueryBuilder] does this where necessary automatically.
 				Also note that when using [PreparedStatement]s this is not needed.

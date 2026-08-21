@@ -4,7 +4,7 @@
 		Renders markdown.
 	</brief_description>
 	<description>
-		Renders markdown (by defautl as HTML).
+		Renders markdown (by default as HTML).
 		Rendering logic can be customized by overriding [member _renderer_callback] and setting [member render_type] to [member RENDERER_TYPE_CUSTOM].
 	</description>
 	<tutorials>

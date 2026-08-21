@@ -137,7 +137,7 @@ public:
 	/// Maximum value.
 	T max() const;
 
-	/// Minumum value.
+	/// Minimum value.
 	T min(uint32_t p_consider_last = UINT32_MAX) const;
 
 	/// Median value.
@@ -300,7 +300,7 @@ struct NodeChangeListener {
 	bool operator==(const NodeChangeListener &p_other) const;
 };
 
-/// Change listener that rapresents a pair of Object and Method.
+/// Change listener that represents a pair of Object and Method.
 /// This can track the changes of many nodes and variables. It's dispatched
 /// if one or more tracked variable change during the tracked phase, specified
 /// by the flag.
@@ -344,7 +344,7 @@ struct NodeData {
 	CompatObjectID instance_id = CompatObjectID();
 	NodeData *controlled_by = nullptr;
 
-	/// When `false`, this node is not sync. It's usefult to locally pause sync
+	/// When `false`, this node is not sync. It's useful to locally pause sync
 	/// of specific nodes.
 	bool sync_enabled = true;
 

@@ -210,7 +210,7 @@
 		<method name="get_entity_datas" qualifiers="const">
 			<return type="Array" />
 			<description>
-				Returns all entity datas.
+				Returns all entity data.
 			</description>
 		</method>
 		<method name="get_entity_resource">
@@ -223,7 +223,7 @@
 		<method name="get_entity_resource_count">
 			<return type="int" />
 			<description>
-				Returns entity resource coutn.
+				Returns entity resource count.
 			</description>
 		</method>
 		<method name="get_entity_resource_index">
@@ -309,7 +309,7 @@
 		<method name="get_entity_species_datas" qualifiers="const">
 			<return type="Array" />
 			<description>
-				Returns all entity species datas.
+				Returns all entity species data.
 			</description>
 		</method>
 		<method name="get_item_template">
@@ -416,7 +416,7 @@
 			<return type="void" />
 			<argument index="0" name="recipe" type="Array" />
 			<description>
-				Set entity datas.
+				Set entity data.
 			</description>
 		</method>
 		<method name="set_entity_resources">
@@ -437,7 +437,7 @@
 			<return type="void" />
 			<argument index="0" name="recipe" type="Array" />
 			<description>
-				Set entity species datas.
+				Set entity species data.
 			</description>
 		</method>
 		<method name="set_item_templates">

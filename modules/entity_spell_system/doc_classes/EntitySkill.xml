@@ -45,7 +45,7 @@
 			Current skill value.
 		</member>
 		<member name="disabled" type="bool" setter="set_disabled" getter="get_disabled" default="false">
-			Is this skill diabled?
+			Is this skill disabled?
 		</member>
 		<member name="max" type="int" setter="set_max" getter="get_max" default="0">
 			Max skill value.

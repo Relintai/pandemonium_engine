@@ -358,7 +358,7 @@ PoolVector<uint8_t> TOTP::base32_to_raw(const String &p_str) {
 	//                             0  ...                    26   31
 	//const char b32_alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 	// "A-(65) BCDEFGHIJKLMNOPQRSTUVWXYZ-(90) 2-(50) 34567-(55)";
-	// Substract 50 from every char, then lookup:
+	// Subtract 50 from every char, then lookup:
 	// This shouldn't have any issues due to the is_valid_base32 check above.
 	const uint8_t reverse_b32_alphabet[] = {
 		26, 27, 28, 29, 30, 31, // 234567

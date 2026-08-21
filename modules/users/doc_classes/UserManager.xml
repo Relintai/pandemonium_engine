@@ -45,7 +45,7 @@
 			<return type="User" />
 			<argument index="0" name="id" type="int" />
 			<description>
-				Returns the [User] which have the given id or null if it doens't exists.
+				Returns the [User] which have the given id or null if it doesn't exists.
 				[method get_user] calls this.
 			</description>
 		</method>
@@ -53,7 +53,7 @@
 			<return type="User" />
 			<argument index="0" name="user_email" type="String" />
 			<description>
-				Returns the [User] which have the given email or null if it doens't exists.
+				Returns the [User] which have the given email or null if it doesn't exists.
 				[method get_user_email] calls this.
 			</description>
 		</method>
@@ -61,7 +61,7 @@
 			<return type="User" />
 			<argument index="0" name="user_name" type="String" />
 			<description>
-				Returns the [User] which have the given user_name or null if it doens't exists.
+				Returns the [User] which have the given user_name or null if it doesn't exists.
 				[method get_user_name] calls this.
 			</description>
 		</method>
@@ -107,7 +107,7 @@
 			<return type="User" />
 			<argument index="0" name="id" type="int" />
 			<description>
-				Returns the [User] which have the given id or null if it doens't exists.
+				Returns the [User] which have the given id or null if it doesn't exists.
 				Calls [method _get_user].
 			</description>
 		</method>
@@ -115,7 +115,7 @@
 			<return type="User" />
 			<argument index="0" name="user_email" type="String" />
 			<description>
-				Returns the [User] which have the given email or null if it doens't exists.
+				Returns the [User] which have the given email or null if it doesn't exists.
 				Calls [method _get_user_email].
 			</description>
 		</method>
@@ -123,7 +123,7 @@
 			<return type="User" />
 			<argument index="0" name="user_name" type="String" />
 			<description>
-				Returns the [User] which have the given user_name or null if it doens't exists.
+				Returns the [User] which have the given user_name or null if it doesn't exists.
 				Calls [method _get_user_name].
 			</description>
 		</method>

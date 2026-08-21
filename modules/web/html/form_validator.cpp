@@ -218,7 +218,7 @@ PoolStringArray FormAlphaNumericFieldEntry::_validate(Ref<WebServerRequest> requ
 }
 
 FormAlphaNumericFieldEntry::FormAlphaNumericFieldEntry() {
-	_not_alpha_numeric_error = "%s needs to only contain chaarcters of numbers.";
+	_not_alpha_numeric_error = "%s needs to only contain characters of numbers.";
 }
 FormAlphaNumericFieldEntry::~FormAlphaNumericFieldEntry() {
 }

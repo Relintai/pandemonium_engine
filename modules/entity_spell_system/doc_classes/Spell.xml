@@ -675,7 +675,7 @@
 			<return type="void" />
 			<argument index="0" name="data" type="AuraData" />
 			<description>
-				Aura removed via dispell.
+				Aura removed via dispel.
 			</description>
 		</method>
 		<method name="_son_remove_expired" qualifiers="virtual">
@@ -886,7 +886,7 @@
 			<argument index="0" name="aura" type="AuraData" />
 			<argument index="1" name="delta" type="float" />
 			<description>
-				Udpate aura.
+				Update aura.
 			</description>
 		</method>
 		<method name="aura_trigger_get_notification_data" qualifiers="const">
@@ -1469,7 +1469,7 @@
 			<return type="void" />
 			<argument index="0" name="aura" type="AuraData" />
 			<description>
-				Aura removed via dispell.
+				Aura removed via dispel.
 			</description>
 		</method>
 		<method name="son_remove_expired">
@@ -1623,10 +1623,10 @@
 			WHat type of auras this spell dispells.
 		</member>
 		<member name="aura_dispell_count_max" type="int" setter="aura_dispell_set_count_max" getter="aura_dispell_get_count_max" default="0">
-			Max dispell count.
+			Max dispel count.
 		</member>
 		<member name="aura_dispell_count_min" type="int" setter="aura_dispell_set_count_min" getter="aura_dispell_get_count_min" default="0">
-			Min dispell count.
+			Min dispel count.
 		</member>
 		<member name="aura_dispell_enabled" type="bool" setter="aura_dispell_set_enabled" getter="aura_dispell_get_enabled" default="false">
 			Is dispelling enabled?
@@ -1674,7 +1674,7 @@
 			Remove aura state effects.
 		</member>
 		<member name="aura_states_supress" type="int" setter="aura_set_supress_states" getter="aura_get_supress_states" default="0">
-			Supress aura state effects.
+			Suppress aura state effects.
 		</member>
 		<member name="aura_talent_required_spell" type="Spell" setter="aura_set_talent_required_spell" getter="aura_get_talent_required_spell">
 			If this is a talent it's required spell.
@@ -1752,13 +1752,13 @@
 			Damage type.
 		</member>
 		<member name="dispell_aura_types" type="int" setter="dispell_set_aura_types" getter="dispell_get_aura_types" default="0">
-			Dispell aura types.
+			Dispel aura types.
 		</member>
 		<member name="dispell_count_max" type="int" setter="dispell_set_count_max" getter="dispell_get_count_max" default="0">
-			Max dispell count.
+			Max dispel count.
 		</member>
 		<member name="dispell_count_min" type="int" setter="dispell_set_count_min" getter="dispell_get_count_min" default="0">
-			Min dispell count.
+			Min dispel count.
 		</member>
 		<member name="dispell_enabled" type="bool" setter="dispell_set_enabled" getter="dispell_get_enabled" default="false">
 			Is dispelling enabled?
@@ -1910,13 +1910,13 @@
 			Spell cast on target.
 		</constant>
 		<constant name="SPELL_TARGET_TYPE_AROUND" value="2" enum="SpellTargetType">
-			Spell cast arount caster.
+			Spell cast around caster.
 		</constant>
 		<constant name="SPELL_TARGET_TYPE_FRONT" value="3" enum="SpellTargetType">
 			Spell cast in front of caster.
 		</constant>
 		<constant name="SPELL_TARGET_TYPE_AROUND_TARGET" value="4" enum="SpellTargetType">
-			Spell cast arount target.
+			Spell cast around target.
 		</constant>
 		<constant name="SPELL_AOE_TARGET_TYPE_CASTER" value="0" enum="SpellAOETargetType">
 			AoE around caster.

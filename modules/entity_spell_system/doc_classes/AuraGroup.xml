@@ -13,7 +13,7 @@
 	</methods>
 	<members>
 		<member name="text_description" type="String" setter="set_name" getter="get_name" default="&quot;&quot;">
-			Desctiption to help with development.
+			Description to help with development.
 		</member>
 	</members>
 	<constants>

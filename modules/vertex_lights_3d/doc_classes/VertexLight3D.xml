@@ -35,7 +35,7 @@
 			The light's color gets added to the resulting colors.
 		</constant>
 		<constant name="VERTEX_LIGHT_3D_MODE_SUB" value="1" enum="VertexLight3DMode">
-			The light's color gets substracted to the resulting colors.
+			The light's color gets subtracted to the resulting colors.
 		</constant>
 		<constant name="VERTEX_LIGHT_3D_MODE_MIX" value="2" enum="VertexLight3DMode">
 			The light's color gets blended with the resulting colors.

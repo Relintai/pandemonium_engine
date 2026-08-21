@@ -161,7 +161,7 @@
 			Weapin left common skeleton point.
 		</constant>
 		<constant name="COMMON_SKELETON_POINT_WEAPON_RIGHT" value="14" enum="CommonCharacterSkeletonPoints">
-			Weapon rigth common skeleton point.
+			Weapon right common skeleton point.
 		</constant>
 		<constant name="COMMON_SKELETON_POINT_WEAPON_LEFT_BACK" value="15" enum="CommonCharacterSkeletonPoints">
 			Weapon left back common skeleton point.

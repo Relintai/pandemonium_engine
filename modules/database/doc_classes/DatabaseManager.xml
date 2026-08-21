@@ -101,7 +101,7 @@
 			<argument index="1" name="should_seed" type="bool" />
 			<argument index="2" name="pseed" type="int" />
 			<description>
-				Can be emitted using the [member migrate] method when the databse structure needs to be updated (or created).
+				Can be emitted using the [member migrate] method when the database structure needs to be updated (or created).
 			</description>
 		</signal>
 	</signals>

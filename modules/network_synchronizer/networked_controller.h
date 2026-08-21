@@ -57,7 +57,7 @@ struct NoNetController;
 ///
 /// The `NetworkedController` will sync inputs, based on those will perform
 /// operations.
-/// The result of these operations, are guaranteed to be the same accross the
+/// The result of these operations, are guaranteed to be the same across the
 /// peers, if we stay under the assumption that the initial state is the same.
 ///
 /// Is possible to use the `SceneSynchronizer` to keep the state in sync with the
@@ -100,7 +100,7 @@ private:
 	/// The input storage size is used to cap the amount of inputs collected by
 	/// the `PlayerController`.
 	///
-	/// The server sends a message, to all the connected peers, notifing its
+	/// The server sends a message, to all the connected peers, notifying its
 	/// status at a fixed interval.
 	/// The peers, after receiving this update, removes all the old inputs until
 	/// that moment.

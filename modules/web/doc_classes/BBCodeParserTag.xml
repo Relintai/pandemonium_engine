@@ -175,7 +175,7 @@
 	</members>
 	<constants>
 		<constant name="BBCODE_PARSER_TAG_TYPE_NONE" value="0" enum="BBCodeParserTagType">
-			Unknows type.
+			Unknown type.
 		</constant>
 		<constant name="BBCODE_PARSER_TAG_TYPE_OPENING_TAG" value="1" enum="BBCodeParserTagType">
 			Opening tag.

@@ -8,7 +8,7 @@
 		This class uses a templating syntax like: [code]{{ EXPRESSION }}[/code]. Everything inbetween [code]{{ }}[/code] is an expression that the system will replace during rendering with actual values from a passed in Dictionary.
 		Available expressions:
 		{{ &lt;expr&gt; }}: Print. Whatever is returned by expr gets printed and html escaped (except if the outer expression is a built-in print expression like p, pr, pb, pbr, qpr, qprb, vf, vfr, qvfr. etc. these methods do their own escapes and have special handling). Null turns into an empty string.
-		{{# &lt;expr&gt; }}: Supress. Runs expression, no output.
+		{{# &lt;expr&gt; }}: Suppress. Runs expression, no output.
 		{{; &lt;expr&gt; }}: Force escaped. Always prints the result of the expression as escaped html. Null turns into an empty string.
 		{{% &lt;expr&gt; }} Print raw. Always prints the result of the expression as raw unescaped html. Null turns into an empty string.
 		{{if &lt;bool expr&gt; }} ... html ... {{elif &lt;bool expr&gt; }} ... html ... {{else}} ... html ... {{endif}}: if / else / elif / endif.
@@ -33,8 +33,8 @@
 		4. [code]pr(var)[/code] - print_raw, not escaped, also includes a cast to string.
 		5. [code]pb(var)[/code] - print_newline_to_br, escaped, turns newlines into br tags, also includes a to string cast.
 		6. [code]prb(var)[/code] - print_raw_newline_to_br, not escaped, turns newlines into br tags, also includes a to string cast.
-		7. [code]vf("%d %d", var1, var2)[/code] - vformat or snprintf or String fromatting using % in gdscript. Escaped.
-		8. [code]vfr("%d %d", var1, var2)[/code] - vformat or snprintf or String fromatting using % in gdscript. Not Escaped.
+		7. [code]vf("%d %d", var1, var2)[/code] - vformat or snprintf or String formatting using % in gdscript. Escaped.
+		8. [code]vfr("%d %d", var1, var2)[/code] - vformat or snprintf or String formatting using % in gdscript. Not Escaped.
 		9. [code]qp(var1, var2)[/code] -  Same as p, but only prints when it's first argument evaluates to true. (First arg is not printed!)
 		10. [code]qpr(var1, var2)[/code] - Same as pr, but only prints when it's first argument evaluates to true. (First arg is not printed!)
 		11. [code]qpb(var1, var2)[/code] - Same as pb, but only prints when it's first argument evaluates to true. (First arg is not printed!)

@@ -14,7 +14,7 @@
 			<return type="bool" />
 			<argument index="0" name="data" type="String" />
 			<description>
-				Returns whether the given string is fount in the stored data.
+				Returns whether the given string is found in the stored data.
 			</description>
 		</method>
 		<method name="convert_to_string" qualifiers="const">
@@ -59,7 +59,7 @@
 			Return the sotred data.
 		</member>
 		<member name="single" type="bool" setter="set_single" getter="get_single" default="false">
-			Is this a sinlge attribute? Does not have parameters (with =).
+			Is this a single attribute? Does not have parameters (with =).
 		</member>
 	</members>
 	<constants>

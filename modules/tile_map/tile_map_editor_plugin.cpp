@@ -667,7 +667,7 @@ PoolVector<Vector2> TileMapEditor::_bucket_fill(const Point2i &p_start, bool era
 
 	int area = r.get_area();
 	if (preview) {
-		// Test if we can re-use the result from preview bucket fill
+		// Test if we can reuse the result from preview bucket fill
 		bool invalidate_cache = false;
 		// Area changed
 		if (r != bucket_cache_rect) {

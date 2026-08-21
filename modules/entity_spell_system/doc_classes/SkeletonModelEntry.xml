@@ -21,7 +21,7 @@
 			Model Visual Entry.
 		</member>
 		<member name="priority" type="int" setter="set_priority" getter="get_priority" default="0">
-			Proirity.
+			Priority.
 		</member>
 	</members>
 	<constants>

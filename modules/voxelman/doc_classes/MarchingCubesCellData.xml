@@ -5,7 +5,7 @@
 	</brief_description>
 	<description>
 		A class that contains data for the marching cube algorithm.
-		The data is from the transvoxel algorithm's tables (http://transvoxel.org/), although it was modified to support uv maping.
+		The data is from the transvoxel algorithm's tables (http://transvoxel.org/), although it was modified to support uv mapping.
 		Used by [VoxelWorldMarchinCubes].
 		Bindings are unfinished.
 	</description>

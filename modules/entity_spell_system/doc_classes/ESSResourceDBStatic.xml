@@ -5,7 +5,7 @@
 	</brief_description>
 	<description>
 		Resource database for the entity spell system with static in-editor properties.
-		It aslo supports resource id remapping.
+		It also supports resource id remapping.
 	</description>
 	<tutorials>
 	</tutorials>

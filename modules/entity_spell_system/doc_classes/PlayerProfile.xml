@@ -80,7 +80,7 @@
 			Custom data.
 		</member>
 		<member name="id" type="int" setter="set_id" getter="get_id" default="0">
-			Prfile id.
+			Profile id.
 		</member>
 		<member name="last_used_character" type="int" setter="set_last_used_character" getter="get_last_used_character" default="0">
 			Last used character.

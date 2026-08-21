@@ -21,7 +21,7 @@
 			The job's lod index.
 		</member>
 		<member name="simplification_agressiveness" type="float" setter="set_simplification_agressiveness" getter="get_simplification_agressiveness" default="7.0">
-			The simplification agressiveness.
+			The simplification aggressiveness.
 		</member>
 		<member name="simplification_step_ratio" type="float" setter="set_simplification_step_ratio" getter="get_simplification_step_ratio" default="0.8">
 			The simplification step ratio.

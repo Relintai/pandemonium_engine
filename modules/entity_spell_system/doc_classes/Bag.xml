@@ -119,7 +119,7 @@
 			<argument index="0" name="item" type="ItemTemplate" />
 			<argument index="1" name="count" type="int" />
 			<description>
-				Remove X (count) from the specified item. Tkaes stacks into account.
+				Remove X (count) from the specified item. Takes stacks into account.
 				Called by [method remove_items].
 			</description>
 		</method>
@@ -243,7 +243,7 @@
 			<argument index="0" name="item" type="ItemTemplate" />
 			<argument index="1" name="count" type="int" />
 			<description>
-				Remove X (count) from the specified item. Tkaes stacks into account.
+				Remove X (count) from the specified item. Takes stacks into account.
 				Calls [method _remove_items].
 			</description>
 		</method>

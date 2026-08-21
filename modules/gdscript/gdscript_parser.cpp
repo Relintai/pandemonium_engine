@@ -6979,7 +6979,7 @@ GDScriptParser::DataType GDScriptParser::_reduce_node_type(Node *p_node) {
 			node_type.kind = DataType::BUILTIN;
 			node_type.builtin_type = Variant::DICTIONARY;
 #ifdef DEBUG_ENABLED
-			// Check stuff inside the dictionarty
+			// Check stuff inside the dictionary
 			DictionaryNode *dn = static_cast<DictionaryNode *>(p_node);
 			for (int i = 0; i < dn->elements.size(); i++) {
 				_reduce_node_type(dn->elements[i].key);

@@ -2513,7 +2513,7 @@
 			<return type="int" />
 			<description>
 				Return [EntityResource] count.
-				Includes health, and speed resources aswell.
+				Includes health, and speed resources as well.
 			</description>
 		</method>
 		<method name="resource_getc_id">
@@ -2534,7 +2534,7 @@
 			<return type="int" />
 			<description>
 				Return [EntityResource] count.
-				Includes health, and speed resources aswell.
+				Includes health, and speed resources as well.
 			</description>
 		</method>
 		<method name="resource_gets_id">
@@ -3346,7 +3346,7 @@
 			The entity's money.
 		</member>
 		<member name="cseed" type="int" setter="setc_seed" getter="getc_seed">
-			The entity's seed. Can be used to send world seed to clients, or to reduce bandwith usage in certain circumstances.
+			The entity's seed. Can be used to send world seed to clients, or to reduce bandwidth usage in certain circumstances.
 		</member>
 		<member name="cspell_cast_info" type="SpellCastInfo" setter="setc_spell_cast_info" getter="spell_getc_cast_info">
 			The active spell cast info.
@@ -3391,7 +3391,7 @@
 			All knows craft recipes.
 		</member>
 		<member name="sdatas" type="Array" setter="sdatas_set" getter="sdatas_get" default="[  ]">
-			All additional datas.
+			All additional data.
 		</member>
 		<member name="sentity_controller" type="int" setter="entity_controller_sets" getter="entity_controller_gets" enum="EntityEnums.EntityController" default="0">
 			The controller of the entity.
@@ -3403,7 +3403,7 @@
 			The entity's associated data.
 		</member>
 		<member name="sentity_data_path" type="StringName" setter="entity_data_path_sets" getter="entity_data_path_gets" default="@&quot;&quot;">
-			Path for the entity's asociated data in the project.
+			Path for the entity's associated data in the project.
 		</member>
 		<member name="sentity_flags" type="int" setter="sets_entity_flags" getter="gets_entity_flags" default="0">
 			Flags for this entity.
@@ -3466,7 +3466,7 @@
 			THe entity's [EntityResource]s.
 		</member>
 		<member name="sseed" type="int" setter="sets_seed" getter="gets_seed" default="0">
-			The entity's seed. Can be used to send world seed to clients, or to reduce bandwith usage in certain circumstances.
+			The entity's seed. Can be used to send world seed to clients, or to reduce bandwidth usage in certain circumstances.
 		</member>
 		<member name="sskills" type="Array" setter="sskills_set" getter="sskills_get" default="[  ]">
 			THe entity's skills.
@@ -3578,7 +3578,7 @@
 		<signal name="centity_data_changed">
 			<argument index="0" name="data" type="EntityData" />
 			<description>
-				Emitted when the entity's [EntityData] chanages.
+				Emitted when the entity's [EntityData] changes.
 			</description>
 		</signal>
 		<signal name="centity_resource_added">
@@ -3616,7 +3616,7 @@
 		<signal name="cname_changed">
 			<argument index="0" name="entity" type="Entity" />
 			<description>
-				Emitted when the entity's name chnages.
+				Emitted when the entity's name changes.
 			</description>
 		</signal>
 		<signal name="con_damage_dealt">
@@ -3746,13 +3746,13 @@
 		<signal name="diecd">
 			<argument index="0" name="entity" type="Entity" />
 			<description>
-				Emitted when this entity doed.
+				Emitted when this entity does.
 			</description>
 		</signal>
 		<signal name="diesd">
 			<argument index="0" name="entity" type="Entity" />
 			<description>
-				Emitted when this entity doed.
+				Emitted when this entity does.
 			</description>
 		</signal>
 		<signal name="equip_con_fail">
@@ -3980,7 +3980,7 @@
 		<signal name="sentity_data_changed">
 			<argument index="0" name="data" type="EntityData" />
 			<description>
-				Emitted when the entity's [EntityData] chanages.
+				Emitted when the entity's [EntityData] changes.
 			</description>
 		</signal>
 		<signal name="sentity_resource_added">
@@ -4018,7 +4018,7 @@
 		<signal name="sname_changed">
 			<argument index="0" name="entity" type="Entity" />
 			<description>
-				Emitted when the entity's name chnages.
+				Emitted when the entity's name changes.
 			</description>
 		</signal>
 		<signal name="son_damage_dealt">

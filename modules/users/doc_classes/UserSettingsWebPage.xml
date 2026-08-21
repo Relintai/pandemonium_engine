@@ -27,7 +27,7 @@
 			<argument index="0" name="request" type="WebServerRequest" />
 			<argument index="1" name="user" type="User" />
 			<description>
-				Emitted when a user succesfully changes settings.
+				Emitted when a user successfully changes settings.
 			</description>
 		</signal>
 	</signals>

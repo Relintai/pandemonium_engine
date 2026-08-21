@@ -744,7 +744,7 @@ void HTTPServerConnection::update_send_file(Ref<SimpleWebServerRequest> request)
 		loop_count += 1;
 
 		if (loop_count >= _file_buffer_send_max_consecutive_loops) {
-			// Work on other clients aswell.
+			// Work on other clients as well.
 			return;
 		}
 	}
@@ -801,7 +801,7 @@ void HTTPServerConnection::update_send_data(Ref<SimpleWebServerRequest> request)
 		loop_count += 1;
 
 		if (loop_count >= _file_buffer_send_max_consecutive_loops) {
-			// Work on other clients aswell.
+			// Work on other clients as well.
 			return;
 		}
 	}

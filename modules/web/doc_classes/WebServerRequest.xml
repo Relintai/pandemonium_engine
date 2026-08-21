@@ -413,7 +413,7 @@
 			<argument index="1" name="dest_file" type="String" />
 			<argument index="2" name="force" type="bool" default="false" />
 			<description>
-				moves a file contained in the request to the specified destination. If the destionation file exists it will not be overwritten unless force is true.
+				moves a file contained in the request to the specified destination. If the destination file exists it will not be overwritten unless force is true.
 			</description>
 		</method>
 		<method name="parser_get_path">

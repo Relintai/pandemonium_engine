@@ -663,7 +663,7 @@ void HTMLParser::parse(const String &data) {
 				if (data.is_word_at(i, "<script")) {
 					// after the opening <script> tag, the parser goes to data1 state
 					state = STATE_DATA_1;
-					// no else, we need to process the tag istelf!
+					// no else, we need to process the tag itself!
 				}
 
 				for (int j = i + 1; j < data.length(); ++j) {

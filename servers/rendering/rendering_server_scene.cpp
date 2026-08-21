@@ -2016,7 +2016,7 @@ void RenderingServerScene::_update_instance_aabb(Instance *p_instance) {
 		}
 	}
 
-	// <Zylann> This is why I didn't re-use Instance::aabb to implement custom AABBs
+	// <Zylann> This is why I didn't reuse Instance::aabb to implement custom AABBs
 	if (p_instance->extra_margin) {
 		new_aabb.grow_by(p_instance->extra_margin);
 	}
@@ -2925,7 +2925,7 @@ void RenderingServerScene::_prepare_scene(const Transform p_cam_transform, const
 
 	// Note, in stereo rendering:
 	// - p_cam_transform will be a transform in the middle of our two eyes
-	// - p_cam_projection is a wider frustrum that encompasses both eyes
+	// - p_cam_projection is a wider frustum that encompasses both eyes
 
 	Scenario *scenario = scenario_owner.getornull(p_scenario);
 

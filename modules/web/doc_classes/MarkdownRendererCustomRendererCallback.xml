@@ -173,7 +173,7 @@
 			li block.
 		</constant>
 		<constant name="TABLE_FLAG_ALIGN_LEFT" value="1" enum="TableFlags">
-			Left algin.
+			Left align.
 		</constant>
 		<constant name="TABLE_FLAG_ALIGN_RIGHT" value="2" enum="TableFlags">
 			Right align.

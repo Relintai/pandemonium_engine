@@ -2187,7 +2187,7 @@ void HTMLTemplateRenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				}
 
 				n->raw = false;
-				n->supressed = true;
+				n->suppressed = true;
 
 				p_parent_block->block.push_back(n);
 
@@ -2210,7 +2210,7 @@ void HTMLTemplateRenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				}
 
 				n->raw = false;
-				n->supressed = false;
+				n->suppressed = false;
 
 				p_parent_block->block.push_back(n);
 
@@ -2233,7 +2233,7 @@ void HTMLTemplateRenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				}
 
 				n->raw = true;
-				n->supressed = false;
+				n->suppressed = false;
 
 				p_parent_block->block.push_back(n);
 
@@ -2492,7 +2492,7 @@ void HTMLTemplateRenderer::_parse_control_flow(BlockNode *p_parent_block, Token 
 				}
 
 				n->raw = false;
-				n->supressed = false;
+				n->suppressed = false;
 
 				// Check if the outer expression is a built/in print call like p(), qp(), vf() etc
 				if (n->expr) {
@@ -2583,7 +2583,7 @@ bool HTMLTemplateRenderer::_execute(Dictionary &p_data, StringBuilder &p_html, E
 				return true;
 			}
 
-			if (pn->supressed) {
+			if (pn->suppressed) {
 				return false;
 			}
 

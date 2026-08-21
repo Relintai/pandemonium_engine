@@ -26,14 +26,14 @@
 			<return type="User" />
 			<argument index="0" name="id" type="int" />
 			<description>
-				Returns the [User] which have the given id or null if it doens't exists.
+				Returns the [User] which have the given id or null if it doesn't exists.
 			</description>
 		</method>
 		<method name="get_user_email">
 			<return type="User" />
 			<argument index="0" name="user_email" type="String" />
 			<description>
-				Returns the [User] which have the given email or null if it doens't exists.
+				Returns the [User] which have the given email or null if it doesn't exists.
 			</description>
 		</method>
 		<method name="get_user_manager">
@@ -46,7 +46,7 @@
 			<return type="User" />
 			<argument index="0" name="user_name" type="String" />
 			<description>
-				Returns the [User] which have the given user_name or null if it doens't exists.
+				Returns the [User] which have the given user_name or null if it doesn't exists.
 			</description>
 		</method>
 		<method name="is_email_taken">

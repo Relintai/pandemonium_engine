@@ -64,7 +64,7 @@ enum ModuleRegistrationLevel {
 	MODULE_REGISTRATION_LEVEL_TEST,
 
 	// After everything have been set up, or uninitialized.
-	// Good place to change some settings, or maybe to do something like disabling an another modules's editor plugin when necessary.
+	// Good place to change some settings, or maybe to do something like disabling an another modules' editor plugin when necessary.
 	MODULE_REGISTRATION_LEVEL_FINALIZE,
 };
 

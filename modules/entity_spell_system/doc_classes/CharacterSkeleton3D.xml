@@ -201,7 +201,7 @@
 			<return type="int" />
 			<argument index="0" name="bone_index" type="int" />
 			<description>
-				Returns model enrty count.
+				Returns model entry count.
 			</description>
 		</method>
 		<method name="get_model_visual">

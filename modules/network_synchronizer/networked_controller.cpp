@@ -164,7 +164,7 @@ void NetworkedController::set_server_controlled(bool p_server_controlled) {
 
 	if (is_networking_initialized()) {
 		if (is_server_controller()) {
-			// This is the server, let's start the procedure to switch controll mode.
+			// This is the server, let's start the procedure to switch control mode.
 
 #ifdef DEBUG_ENABLED
 			CRASH_COND_MSG(scene_synchronizer == nullptr, "When the `NetworkedController` is a server, the `scene_synchronizer` is always set.");
@@ -950,7 +950,7 @@ bool ServerController::fetch_next_input(real_t p_delta) {
 				// the previous one and increase `ghost_inputs_count` to 1.
 				//
 				// The next iteration, if the packet is not yet arrived the
-				// server trys to take the next packet with the `id` less or
+				// server tries to take the next packet with the `id` less or
 				// equal to `next_packet_id + ghost_packet_id`.
 				//
 				// As you can see the server doesn't lose immediately the hope
@@ -1478,7 +1478,7 @@ void PlayerController::send_frame_input_buffer_to_server() {
 				} else if (frames_snapshot[i].similarity == previous_input_similarity) {
 					// This input is similar to the previous one, the thing is
 					// that the similarity check was done on an older input.
-					// Fortunatelly we are able to compare the similarity id
+					// Fortunately we are able to compare the similarity id
 					// and detect its similarity correctly.
 					is_similar = true;
 				} else {

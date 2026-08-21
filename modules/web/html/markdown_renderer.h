@@ -101,7 +101,7 @@ public:
 	enum AutolinkType {
 		AUTOLINK_TYPE_NONE = 0, /* used internally when it is not an autolink*/
 		AUTOLINK_TYPE_NORMAL, /* normal http/http/ftp/mailto/etc link */
-		AUTOLINK_TYPE_EMAIL /* e-mail link without explit mailto: */
+		AUTOLINK_TYPE_EMAIL /* e-mail link without explicit mailto: */
 	};
 
 	CallbackType get_callback_type() const;

@@ -137,7 +137,7 @@
 			The id of this species.
 		</member>
 		<member name="model_datas" type="Array" setter="set_model_datas" getter="get_model_datas" default="[  ]">
-			The model datas for this species.
+			The model data for this species.
 		</member>
 		<member name="spells" type="Array" setter="set_spells" getter="get_spells" default="[  ]">
 			The spells for this species.

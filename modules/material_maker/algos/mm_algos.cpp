@@ -4730,7 +4730,7 @@ Vector2 MMAlgos::sdf3d_input(const Vector3 &p) {
 //Output - (float) - Shows a white shape on a black background;
 //shape_$(shape)($(uv), $(sides), $(radius)*$radius_map($uv), $(edge)*$edge_map($uv));
 //Inputs:;
-//shape, enum, default: 0, values: circle, ploygon, star, curved_star, rays;
+//shape, enum, default: 0, values: circle, polygon, star, curved_star, rays;
 //sides, int, min: 2, max: 32, default: 3, step:1;
 //radius, float, min: 0, max: 1, default: 1, step:0.01 (universal input);
 //edge, float, min: 0, max: 1, default: 0.2, step:0.01 (universal input);
