@@ -159,7 +159,7 @@ private:
 
 	enum IsolevelBrushType {
 		ISOLEVEL_BRUSH_TYPE_ADD = 0,
-		ISOLEVEL_BRUSH_TYPE_SUBSTRACT,
+		ISOLEVEL_BRUSH_TYPE_SUBTRACT,
 		ISOLEVEL_BRUSH_TYPE_SET,
 		//ISOLEVEL_BRUSH_TYPE_SMOOTH,
 	};
@@ -211,7 +211,7 @@ private:
 	VBoxContainer *_isolevel_brush_tool_container;
 	Ref<ButtonGroup> _isolevel_brush_tool_button_group;
 	ToolButton *_isolevel_brush_type_add_button;
-	ToolButton *_isolevel_brush_type_substract_button;
+	ToolButton *_isolevel_brush_type_subtract_button;
 	ToolButton *_isolevel_brush_type_set_button;
 	//ToolButton *_isolevel_brush_type_smooth_button;
 	ToolButton *_isolevel_brush_liquid_mode_button;

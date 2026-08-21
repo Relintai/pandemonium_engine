@@ -470,7 +470,7 @@ void TerrainWorldEditor::isolevel_brush_draw(const Vector3 &p_world_position) {
 				case ISOLEVEL_BRUSH_TYPE_ADD: {
 					npil = pil + sl;
 				} break;
-				case ISOLEVEL_BRUSH_TYPE_SUBSTRACT: {
+				case ISOLEVEL_BRUSH_TYPE_SUBTRACT: {
 					npil = pil - sl;
 				} break;
 				case ISOLEVEL_BRUSH_TYPE_SET: {
@@ -914,12 +914,12 @@ TerrainWorldEditor::TerrainWorldEditor(EditorNode *p_editor) {
 	_isolevel_brush_type_add_button->set_pressed(true);
 	isolevel_brush_flow_container->add_child(_isolevel_brush_type_add_button);
 
-	_isolevel_brush_type_substract_button = memnew(ToolButton);
-	_isolevel_brush_type_substract_button->set_toggle_mode(true);
-	_isolevel_brush_type_substract_button->set_button_group(_isolevel_brush_tool_button_group);
-	_isolevel_brush_type_substract_button->set_meta("type", ISOLEVEL_BRUSH_TYPE_SUBSTRACT);
-	_isolevel_brush_type_substract_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/isolevel_brush_type_substract", "Isolevel Brush Type Substract", KEY_H));
-	isolevel_brush_flow_container->add_child(_isolevel_brush_type_substract_button);
+	_isolevel_brush_type_subtract_button = memnew(ToolButton);
+	_isolevel_brush_type_subtract_button->set_toggle_mode(true);
+	_isolevel_brush_type_subtract_button->set_button_group(_isolevel_brush_tool_button_group);
+	_isolevel_brush_type_subtract_button->set_meta("type", ISOLEVEL_BRUSH_TYPE_SUBTRACT);
+	_isolevel_brush_type_subtract_button->set_shortcut(ED_SHORTCUT("terrain_world_editor/isolevel_brush_type_subtract", "Isolevel Brush Type Subtract", KEY_H));
+	isolevel_brush_flow_container->add_child(_isolevel_brush_type_subtract_button);
 
 	_isolevel_brush_type_set_button = memnew(ToolButton);
 	_isolevel_brush_type_set_button->set_toggle_mode(true);
@@ -1242,7 +1242,7 @@ void TerrainWorldEditor::_notification(int p_what) {
 
 			// Isolevel Brush
 			_isolevel_brush_type_add_button->set_icon(get_theme_icon("MoveUp", "EditorIcons"));
-			_isolevel_brush_type_substract_button->set_icon(get_theme_icon("MoveDown", "EditorIcons"));
+			_isolevel_brush_type_subtract_button->set_icon(get_theme_icon("MoveDown", "EditorIcons"));
 			_isolevel_brush_type_set_button->set_icon(get_theme_icon("CanvasLayer", "EditorIcons"));
 			//_isolevel_brush_type_smooth_button->set_icon(get_theme_icon("Blend", "EditorIcons"));
 			_isolevel_brush_allow_creating_chunks_button->set_icon(get_theme_icon("Add", "EditorIcons"));
