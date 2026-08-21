@@ -114,8 +114,7 @@ Breaking changes can (and will) happen, but their rate and impact should be mini
 
 ## Todos before the next release
 
-- GDNative api has some bugs, at least one of the functions have a wrong return value.
-  Go through it all again, fix everything, and then actually start versioning it.
+- Codespell, re-extract docs.
 
 ## Todos for the next version
 
@@ -127,6 +126,7 @@ Breaking changes can (and will) happen, but their rate and impact should be mini
   (I found 2 old ddr4 memory sticks lying around, and with that I was able to 
   build a good enough computer that can do nightlies and CI.)
 - Try to setup an editor again, and fix PScript's lsp.
+- Double check all of GDNative's api, fix everything if there are more issues, and call it stable.
 
 ## Some Long term plans
 
