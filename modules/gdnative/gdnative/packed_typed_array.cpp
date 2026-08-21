@@ -56,6 +56,12 @@ void GDAPI pandemonium_packed_typed_array_new_copy(pandemonium_packed_typed_arra
 	memnew_placement(dest, PackedTypedArray(*src));
 }
 
+void GDAPI pandemonium_packed_typed_array_new_type(pandemonium_typed_array *r_dest, const pandemonium_string_name *p_type_name, const pandemonium_packed_typed_array_int_type p_int_type) {
+	PackedTypedArray *dest = (PackedTypedArray *)r_dest;
+	const StringName *type_name = (const StringName *)p_type_name;
+	memnew_placement(dest, PackedTypedArray(*type_name, static_cast<PackedTypedArray::IntType>(p_int_type)));
+}
+
 void GDAPI pandemonium_packed_typed_array_new_pool_byte_array(pandemonium_packed_typed_array *r_dest, const pandemonium_pool_byte_array *p_pba) {
 	PackedTypedArray *dest = (PackedTypedArray *)r_dest;
 	PoolVector<uint8_t> *pca = (PoolVector<uint8_t> *)p_pba;
