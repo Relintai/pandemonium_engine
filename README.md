@@ -116,7 +116,6 @@ Breaking changes can (and will) happen, but their rate and impact should be mini
 
 - GDNative api has some bugs, at least one of the functions have a wrong return value.
   Go through it all again, fix everything, and then actually start versioning it.
-- Include a file containing sha / md5 hashes with the releases.
 
 ## Todos for the next version
 
