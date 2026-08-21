@@ -472,6 +472,8 @@
 		<member name="debug/pscript/warnings/function_conflicts_variable" type="bool" setter="" getter="" default="true">
 			If [code]true[/code], enables warnings when a function is declared with the same name as a variable. This will turn into an error in a future version when first-class functions become supported in PScript.
 		</member>
+		<member name="debug/pscript/warnings/function_may_yield" type="bool" setter="" getter="" default="true">
+		</member>
 		<member name="debug/pscript/warnings/function_used_as_property" type="bool" setter="" getter="" default="true">
 			If [code]true[/code], enables warnings when using a function as if it was a property.
 		</member>

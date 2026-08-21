@@ -1245,6 +1245,13 @@
 				[code]wrapi[/code] is more flexible than using the [method posmod] approach by giving the user control over the minimum value.
 			</description>
 		</method>
+		<method name="yield">
+			<return type="PScriptFunctionState" />
+			<argument index="0" name="object" type="Object" default="null" />
+			<argument index="1" name="signal" type="String" default="&quot;&quot;" />
+			<description>
+			</description>
+		</method>
 	</methods>
 	<constants>
 		<constant name="PI" value="3.141593">

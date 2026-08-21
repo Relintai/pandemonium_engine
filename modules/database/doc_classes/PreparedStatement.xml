@@ -143,29 +143,6 @@
 				Bind null to the index-th parameter. (Indexed from 0)
 			</description>
 		</method>
-		<method name="get_bind_parameter_count">
-			<return type="int" />
-			<description>
-				The bindable parameter count in a query.
-			</description>
-		</method>
-		<method name="get_bind_parameter_index">
-			<return type="int" />
-			<argument index="0" name="name" type="String" />
-			<description>
-				Some database backends support naming bind parameters using a special syntax.
-				Use this method to get back the index of a named parameter.
-				Indexed from 0, -1 means not found.
-			</description>
-		</method>
-		<method name="get_bind_parameter_name">
-			<return type="String" />
-			<argument index="0" name="index" type="int" />
-			<description>
-				Some database backends support naming bind parameters using a special syntax.
-				Use this method to get back the name of a parameter from it's index.
-			</description>
-		</method>
 		<method name="bind_text">
 			<return type="int" enum="Error" />
 			<argument index="0" name="index" type="int" />
@@ -203,13 +180,6 @@
 				Read a blob from the index-th column. (Indexed from 0)
 			</description>
 		</method>
-		<method name="get_column_count">
-			<return type="int" />
-			<description>
-				Return the number of columns in the result set.
-				Just because this returns a number greater than 0, it does not mean there is going to be rows returned.
-			</description>
-		</method>
 		<method name="column_database_name_get">
 			<return type="String" />
 			<argument index="0" name="index" type="int" />
@@ -238,18 +208,18 @@
 				Read a float from the index-th column. (Indexed from 0)
 			</description>
 		</method>
-		<method name="column_int_get">
-			<return type="int" />
-			<argument index="0" name="index" type="int" />
-			<description>
-				Read an int from the index-th column. (Indexed from 0)
-			</description>
-		</method>
 		<method name="column_int64_get">
 			<return type="int" />
 			<argument index="0" name="index" type="int" />
 			<description>
 				Read an int64 from the index-th column. (Indexed from 0)
+			</description>
+		</method>
+		<method name="column_int_get">
+			<return type="int" />
+			<argument index="0" name="index" type="int" />
+			<description>
+				Read an int from the index-th column. (Indexed from 0)
 			</description>
 		</method>
 		<method name="column_name_get">
@@ -330,23 +300,53 @@
 				Returns the column's type.
 			</description>
 		</method>
-		<method name="get_data_count">
-			<return type="int" />
-			<description>
-				Returns the number of columns in the current row.
-				Returns 0 if there is no more rows available, or no more data is available.
-			</description>
-		</method>
 		<method name="finalize">
 			<return type="int" enum="Error" />
 			<description>
 				Free the query from the database system. The destructor calls this automatically.
 			</description>
 		</method>
+		<method name="get_bind_parameter_count">
+			<return type="int" />
+			<description>
+				The bindable parameter count in a query.
+			</description>
+		</method>
+		<method name="get_bind_parameter_index">
+			<return type="int" />
+			<argument index="0" name="name" type="String" />
+			<description>
+				Some database backends support naming bind parameters using a special syntax.
+				Use this method to get back the index of a named parameter.
+				Indexed from 0, -1 means not found.
+			</description>
+		</method>
+		<method name="get_bind_parameter_name">
+			<return type="String" />
+			<argument index="0" name="index" type="int" />
+			<description>
+				Some database backends support naming bind parameters using a special syntax.
+				Use this method to get back the name of a parameter from it's index.
+			</description>
+		</method>
+		<method name="get_column_count">
+			<return type="int" />
+			<description>
+				Return the number of columns in the result set.
+				Just because this returns a number greater than 0, it does not mean there is going to be rows returned.
+			</description>
+		</method>
 		<method name="get_connection" qualifiers="const">
 			<return type="DatabaseConnection" />
 			<description>
 				Returns the owner connection.
+			</description>
+		</method>
+		<method name="get_data_count">
+			<return type="int" />
+			<description>
+				Returns the number of columns in the current row.
+				Returns 0 if there is no more rows available, or no more data is available.
 			</description>
 		</method>
 		<method name="get_expanded_sql">
@@ -372,6 +372,103 @@
 			<return type="bool" />
 			<description>
 				Returns whether there is still data to be read.
+			</description>
+		</method>
+		<method name="next_column">
+			<return type="int" />
+			<description>
+				Go to the next column.
+			</description>
+		</method>
+		<method name="next_column_blob_get">
+			<return type="PoolByteArray" />
+			<description>
+				Read a blob from the current column, then go to the next.
+			</description>
+		</method>
+		<method name="next_column_database_name_get">
+			<return type="String" />
+			<description>
+				Returns the database's name from which the column is from if the database backend supports it, then go to the next.
+			</description>
+		</method>
+		<method name="next_column_decltype_get">
+			<return type="String" />
+			<description>
+				Returns the declared type of the given column, then go to the next.
+			</description>
+		</method>
+		<method name="next_column_double_get">
+			<return type="float" />
+			<description>
+				Read a double from the current column, then go to the next.
+			</description>
+		</method>
+		<method name="next_column_float_get">
+			<return type="float" />
+			<description>
+				Read a float from the current column, then go to the next.
+			</description>
+		</method>
+		<method name="next_column_int64_get">
+			<return type="int" />
+			<description>
+				Read an int64 from the current column, then go to the next.
+			</description>
+		</method>
+		<method name="next_column_int_get">
+			<return type="int" />
+			<description>
+				Read an int from the current column, then go to the next.
+			</description>
+		</method>
+		<method name="next_column_name_get">
+			<return type="String" />
+			<description>
+				Returns the column's name if the database backend supports it, then go to the next.
+			</description>
+		</method>
+		<method name="next_column_origin_name_get">
+			<return type="String" />
+			<description>
+				Returns the column's origin name if the database backend supports it, then go to the next.
+			</description>
+		</method>
+		<method name="next_column_table_name_get">
+			<return type="String" />
+			<description>
+				Returns the column's table name if the database backend supports it, then go to the next.
+			</description>
+		</method>
+		<method name="next_column_text_get">
+			<return type="String" />
+			<description>
+				Read a text from the current column, then go to the next.
+			</description>
+		</method>
+		<method name="next_column_type_get">
+			<return type="int" enum="PreparedStatement.Type" />
+			<description>
+				Returns the column's type, then go to the next.
+			</description>
+		</method>
+		<method name="next_column_value_get">
+			<return type="Variant" />
+			<description>
+				Read a value from the current column, then go to the next.
+			</description>
+		</method>
+		<method name="prepare">
+			<return type="int" enum="Error" />
+			<description>
+				Compiles the sql query in [member sql].
+				You need to call this before trying to use your query. Subsequent calls update the stored query on the database server.
+			</description>
+		</method>
+		<method name="reset">
+			<return type="int" enum="Error" />
+			<description>
+				Reset the query. Call this before trying to use it again with different parameters.
 			</description>
 		</method>
 		<method name="set_next_bind_blob">
@@ -434,103 +531,6 @@
 			<argument index="0" name="value" type="int" />
 			<description>
 				Bind a zeroblob to the current column, then go to the next.
-			</description>
-		</method>
-		<method name="next_column">
-			<return type="int" />
-			<description>
-				Go to the next column.
-			</description>
-		</method>
-		<method name="next_column_blob_get">
-			<return type="PoolByteArray" />
-			<description>
-				Read a blob from the current column, then go to the next.
-			</description>
-		</method>
-		<method name="next_column_database_name_get">
-			<return type="String" />
-			<description>
-				Returns the database's name from which the column is from if the database backend supports it, then go to the next.
-			</description>
-		</method>
-		<method name="next_column_decltype_get">
-			<return type="String" />
-			<description>
-				Returns the declared type of the given column, then go to the next.
-			</description>
-		</method>
-		<method name="next_column_double_get">
-			<return type="float" />
-			<description>
-				Read a double from the current column, then go to the next.
-			</description>
-		</method>
-		<method name="next_column_float_get">
-			<return type="float" />
-			<description>
-				Read a float from the current column, then go to the next.
-			</description>
-		</method>
-		<method name="next_column_int_get">
-			<return type="int" />
-			<description>
-				Read an int from the current column, then go to the next.
-			</description>
-		</method>
-		<method name="next_column_int64_get">
-			<return type="int" />
-			<description>
-				Read an int64 from the current column, then go to the next.
-			</description>
-		</method>
-		<method name="next_column_name_get">
-			<return type="String" />
-			<description>
-				Returns the column's name if the database backend supports it, then go to the next.
-			</description>
-		</method>
-		<method name="next_column_origin_name_get">
-			<return type="String" />
-			<description>
-				Returns the column's origin name if the database backend supports it, then go to the next.
-			</description>
-		</method>
-		<method name="next_column_table_name_get">
-			<return type="String" />
-			<description>
-				Returns the column's table name if the database backend supports it, then go to the next.
-			</description>
-		</method>
-		<method name="next_column_text_get">
-			<return type="String" />
-			<description>
-				Read a text from the current column, then go to the next.
-			</description>
-		</method>
-		<method name="next_column_type_get">
-			<return type="int" enum="PreparedStatement.Type" />
-			<description>
-				Returns the column's type, then go to the next.
-			</description>
-		</method>
-		<method name="next_column_value_get">
-			<return type="Variant" />
-			<description>
-				Read a value from the current column, then go to the next.
-			</description>
-		</method>
-		<method name="prepare">
-			<return type="int" enum="Error" />
-			<description>
-				Compiles the sql query in [member sql].
-				You need to call this before trying to use your query. Subsequent calls update the stored query on the database server.
-			</description>
-		</method>
-		<method name="reset">
-			<return type="int" enum="Error" />
-			<description>
-				Reset the query. Call this before trying to use it again with different parameters.
 			</description>
 		</method>
 		<method name="step">
