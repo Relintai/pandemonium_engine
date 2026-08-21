@@ -129,6 +129,7 @@ Breaking changes can (and will) happen, but their rate and impact should be mini
 - Add a script to automate nightly generation.
   (I found 2 old ddr4 memory sticks lying around, and with that I was able to 
   build a good enough computer that can do nightlies and CI.)
+- Try to setup an editor again, and fix PScript's lsp.
 
 ## Some Long term plans
 
