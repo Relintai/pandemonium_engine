@@ -114,16 +114,14 @@ Breaking changes can (and will) happen, but their rate and impact should be mini
 
 ## Todos before the next release
 
-- Fix up docs for PScrit.
-- Update docs for GDScript, add the new features to it.
-- Update build containers.
-- Backport some of the new changes from godot 3.x.
 - GDNative api has some bugs, at least one of the functions have a wrong return value.
   Go through it all again, fix everything, and then actually start versioning it.
 - Include a file containing sha / md5 hashes with the releases.
 
 ## Todos for the next version
 
+- Fix up docs for PScrit. Make sure to cherry pick it to the previous branch aswell.
+- Update docs for GDScript, add the new features to it. Make sure to cherry pick it to the previous branch aswell.
 - Add a CI build script using the build containers.
 - Add a nightly build name variant to the build all script.
 - Add a script to automate nightly generation.
