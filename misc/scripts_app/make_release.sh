@@ -28,7 +28,7 @@ rm -Rf ${full_project_name}${version_snake_cased}_game_source
 mkdir ${full_project_name}${version_snake_cased}_full_source
 mkdir ${full_project_name}${version_snake_cased}_game_source
 
-# Warn if a file is over a megabyte. Used to catch big temporary files that would slip through outherwise
+# Warn if a file is over a megabyte. Used to catch big temporary files that would slip through otherwise
 python ../pandemonium_engine/misc/scripts_app/copy_repos.py ../ ./${full_project_name}${version_snake_cased}_full_source 1048576
 python ../pandemonium_engine/misc/scripts_app/copy_repos.py ../game/ ./${full_project_name}${version_snake_cased}_game_source
 

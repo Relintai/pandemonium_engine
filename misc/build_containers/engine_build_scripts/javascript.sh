@@ -14,7 +14,7 @@ scons production=yes tools=no target=release custom_modules_shared=no debug_symb
 scons production=yes tools=no target=release_debug custom_modules_shared=no debug_symbols=no threads_enabled=yes platform=javascript "$@"
 scons production=yes tools=no target=release custom_modules_shared=no debug_symbols=no threads_enabled=yes platform=javascript "$@"
 
-# Production flag desn't work on these
+# Production flag doesn't work on these
 
 # Javascript templates gdnative
 scons tools=no target=release_debug custom_modules_shared=no debug_symbols=no gdnative_enabled=yes platform=javascript "$@"

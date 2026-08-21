@@ -4,7 +4,7 @@
 		Run and manage sub processes.
 	</brief_description>
 	<description>
-		This class grants acess to run and manage sub processes with more fine grained control compared to OS.execute().
+		This class grants access to run and manage sub processes with more fine grained control compared to OS.execute().
 	</description>
 	<tutorials>
 	</tutorials>
@@ -50,7 +50,7 @@
 			<return type="int" enum="Error" />
 			<argument index="0" name="signal" type="int" />
 			<description>
-				Send a signal to the runnign process.
+				Send a signal to the running process.
 			</description>
 		</method>
 		<method name="start">

@@ -87,7 +87,7 @@ VertexCacheOptimizer::VERTEX_INDEX_TYPE *VertexCacheOptimizer::_reorder_indices(
 	memset(num_active_tris, 0, sizeof(ADJACENCY_TYPE) * p_num_vertices);
 
 	// First scan over the vertex data, count the total number of
-	// occurrances of each vertex.
+	// occurrences of each vertex.
 	for (int i = 0; i < 3 * p_num_triangles; i++) {
 		if (num_active_tris[p_source_indices[i]] == Constants::MAX_ADJACENCY) {
 			// Unsupported mesh,

@@ -50,7 +50,7 @@ protected:
 		// later we can make some agnostic tooling for this but this is fine for the time being.
 		void add_validation_error(String asset_path, String message);
 		void print_to_csv() {
-			print_verbose("Exporting assset validation log please wait");
+			print_verbose("Exporting asset validation log please wait");
 			String massive_log_file;
 
 			String csv_header = "file_path, error message, extra data\n";

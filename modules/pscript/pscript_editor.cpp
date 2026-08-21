@@ -1449,7 +1449,7 @@ static bool _guess_identifier_type(PScriptCompletionContext &p_context, const St
 					r_type.type.is_meta_type = false;
 					r_type.value = Engine::get_singleton()->get_singleton_object(target_id);
 				} else if (Engine::get_singleton()->has_singleton(p_identifier)) {
-					// Singleton binder classes begind with an underscore, but they are registeres without one usually.
+					// Singleton binder classes begind with an underscore, but they are registers without one usually.
 					// For example _OS is the actual class, but it's registered as OS.
 					r_type.type.is_meta_type = false;
 					r_type.value = Engine::get_singleton()->get_singleton_object(p_identifier);

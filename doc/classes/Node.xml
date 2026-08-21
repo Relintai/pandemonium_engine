@@ -885,14 +885,14 @@
 			<return type="Variant" />
 			<argument index="0" name="method" type="StringName" />
 			<description>
-				Same as [method rpc] but it will only send the call to clients that see ([mehod seen_by_add]) this Node. (v = visibility)
+				Same as [method rpc] but it will only send the call to clients that see ([method seen_by_add]) this Node. (v = visibility)
 			</description>
 		</method>
 		<method name="vrpc_unreliable" qualifiers="vararg">
 			<return type="Variant" />
 			<argument index="0" name="method" type="StringName" />
 			<description>
-				Same as [method rpc_unreliable] but it will only send the call to clients that see ([mehod seen_by_add]) this Node. (v = visibility)
+				Same as [method rpc_unreliable] but it will only send the call to clients that see ([method seen_by_add]) this Node. (v = visibility)
 			</description>
 		</method>
 	</methods>

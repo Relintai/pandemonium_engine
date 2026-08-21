@@ -25,7 +25,7 @@
 			This is the address from where the email will come if you don't override it using [EMail].
 		</member>
 		<member name="email_default_sender_name" type="String" setter="set_email_default_sender_name" getter="get_email_default_sender_name" default="&quot;&quot;">
-			This is the dislpayed name of the address from where the email will come if you don't override it using [EMail].
+			This is the displayed name of the address from where the email will come if you don't override it using [EMail].
 		</member>
 		<member name="host" type="String" setter="set_host" getter="get_host" default="&quot;&quot;">
 			The smtp server's host.
@@ -67,7 +67,7 @@
 		<signal name="result">
 			<argument index="0" name="content" type="Dictionary" />
 			<description>
-				Emitted when a email either successully sent, or encountered an error.
+				Emitted when a email either successfully sent, or encountered an error.
 			</description>
 		</signal>
 	</signals>
@@ -76,7 +76,7 @@
 			No encryption. Username / Password will be sent without encryption. Not recommended if you don't know what you are doing. Usual port: 587.
 		</constant>
 		<constant name="TLS_METHOD_STARTTLS" value="1" enum="TLSMethod">
-			Connect, then use the STARTTLS command, and upgarde to using SSL. Usual port: 587.
+			Connect, then use the STARTTLS command, and upgrade to using SSL. Usual port: 587.
 		</constant>
 		<constant name="TLS_METHOD_SMTPS" value="2" enum="TLSMethod">
 			Connect, and immediately just set up SSL. The best option. Use this whenever you can. Usual port: 465.

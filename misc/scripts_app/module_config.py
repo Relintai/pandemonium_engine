@@ -37,7 +37,7 @@ third_party_addon_repositories = [
 ]
 
 # Relative to the engine directory
-# if not an emtpy string this will be passed to the engine's build script
+# if not an empty string this will be passed to the engine's build script
 # as the custom_modules= parameter.
 custom_module_folders = ""
 # Use this if you are using the alternative .gitignored "custom_modules" module_install_folder

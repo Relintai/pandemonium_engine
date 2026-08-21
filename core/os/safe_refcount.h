@@ -247,7 +247,7 @@ public:
 	_ALWAYS_INLINE_ void set(T p_value) {
 		// Hack for gcc having no plain store with the old syncs.
 		// If this ends up having issues on some platforms, a spinlock can be implemented.
-		// But people seems to use this as a set operation, so it's linkely not going to be an issue.
+		// But people seems to use this as a set operation, so it's likely not going to be an issue.
 		// Gcc docs:
 		// Many targets have only minimal support for such locks, and do not support a full exchange operation. In this case, a target may
 		// support reduced functionality here by which the only valid value to store is the immediate constant 1.
@@ -354,7 +354,7 @@ public:
 	_ALWAYS_INLINE_ void set(T p_value) {
 		// Hack for gcc having no plain store with the old syncs.
 		// If this ends up having issues on some platforms, a spinlock can be implemented.
-		// But people seems to use this as a set operation, so it's linkely not going to be an issue.
+		// But people seems to use this as a set operation, so it's likely not going to be an issue.
 		// Gcc docs:
 		// Many targets have only minimal support for such locks, and do not support a full exchange operation. In this case, a target may
 		// support reduced functionality here by which the only valid value to store is the immediate constant 1.

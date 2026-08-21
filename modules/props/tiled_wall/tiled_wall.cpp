@@ -201,7 +201,7 @@ void TiledWall::refresh() {
 	if (!_cache->get_initialized()) {
 		_cache->mutex_lock();
 
-		//An anouther thread could have initialized it before wo got the mutex!
+		//An another thread could have initialized it before wo got the mutex!
 		if (!_cache->get_initialized()) {
 			//can only be called from the main thread!
 			_cache->initial_setup_default();

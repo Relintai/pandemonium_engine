@@ -5255,7 +5255,7 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 			case PScriptTokenizer::TK_CONSTANT: {
 				if (tokenizer->get_token_constant().get_type() == Variant::STRING) {
 					// TODO think if this is needed.
-					// Technically this makes strings a multiline comment aswell. (Class declaration.)
+					// Technically this makes strings a multiline comment as well. (Class declaration.)
 					tokenizer->advance();
 					// Ignore
 				} else {
@@ -7183,7 +7183,7 @@ PScriptParser::DataType PScriptParser::_reduce_node_type(Node *p_node) {
 			node_type.kind = DataType::BUILTIN;
 			node_type.builtin_type = Variant::DICTIONARY;
 #ifdef DEBUG_ENABLED
-			// Check stuff inside the dictionarty
+			// Check stuff inside the dictionary
 			DictionaryNode *dn = static_cast<DictionaryNode *>(p_node);
 			for (int i = 0; i < dn->elements.size(); i++) {
 				_reduce_node_type(dn->elements[i].key);

@@ -94,7 +94,7 @@ struct _NO_DISCARD_CLASS_ Rect2i {
 		return new_rect;
 	}
 
-	// Returns the instersection between two Rect2is or an empty Rect2i if there is no intersection
+	// Returns the intersection between two Rect2is or an empty Rect2i if there is no intersection
 	inline Rect2i intersection(const Rect2i &p_rect) const {
 		Rect2i new_rect = p_rect;
 

@@ -734,7 +734,7 @@
 			<return type="int" />
 			<description>
 				Returns the string's amount of characters.
-				This does not include the null terminator (\0), use [method size] if you need that in your calculations aswell.
+				This does not include the null terminator (\0), use [method size] if you need that in your calculations as well.
 			</description>
 		</method>
 		<method name="lpad">
@@ -1137,7 +1137,7 @@
 		<method name="to_bool">
 			<return type="bool" />
 			<description>
-				Converts the string's contents to bool. Will handle numeric values and the string containing "true" or "false" aswell.
+				Converts the string's contents to bool. Will handle numeric values and the string containing "true" or "false" as well.
 				[codeblock]
 				print("true".to_bool()) # true
 				print("1".to_bool()) # true

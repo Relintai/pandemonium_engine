@@ -42,7 +42,7 @@
 			<argument index="1" name="base_instance" type="Object" default="null" />
 			<argument index="2" name="show_error" type="bool" default="true" />
 			<description>
-				Same as [method execute] except it does not set member variables. ret[0] is the result, ret[1] is a bool telling you whether execute was successful or not, ret[2] is a String contanining the error string if there was any.
+				Same as [method execute] except it does not set member variables. ret[0] is the result, ret[1] is a bool telling you whether execute was successful or not, ret[2] is a String containing the error string if there was any.
 			</description>
 		</method>
 		<method name="get_error_text" qualifiers="const">

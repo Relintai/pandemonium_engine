@@ -41,7 +41,7 @@
 		<method name="get_cc_data_string">
 			<return type="String" />
 			<description>
-				Helper emthod. Returns cc addresses formatted for the smtp protocoll.
+				Helper emthod. Returns cc addresses formatted for the smtp protocol.
 			</description>
 		</method>
 		<method name="get_cc_personal" qualifiers="const">
@@ -62,7 +62,7 @@
 			<argument index="0" name="email_default_sender_name" type="String" />
 			<argument index="1" name="email_default_sender_email" type="String" />
 			<description>
-				Helper emthod. Returns the email's body formatted for the smtp protocoll.
+				Helper emthod. Returns the email's body formatted for the smtp protocol.
 			</description>
 		</method>
 		<method name="get_recipient_address" qualifiers="const">
@@ -94,7 +94,7 @@
 		<method name="get_to_data_string">
 			<return type="String" />
 			<description>
-				Helper emthod. Returns the target addresses formatted for the smtp protocoll.
+				Helper emthod. Returns the target addresses formatted for the smtp protocol.
 			</description>
 		</method>
 		<method name="remove_cc">
@@ -131,7 +131,7 @@
 			<return type="void" />
 			<argument index="0" name="ccs" type="Array" />
 			<description>
-				Set all ccs. Should countain arrays of size 2. index 0 is address, index 1 is email.
+				Set all ccs. Should contain arrays of size 2. index 0 is address, index 1 is email.
 			</description>
 		</method>
 		<method name="set_recipient_address">
@@ -154,7 +154,7 @@
 			<return type="void" />
 			<argument index="0" name="recipients" type="Array" />
 			<description>
-				Set all recipients. Should countain arrays of size 2. index 0 is address, index 1 is email.
+				Set all recipients. Should contain arrays of size 2. index 0 is address, index 1 is email.
 			</description>
 		</method>
 		<method name="set_sender">

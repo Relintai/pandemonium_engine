@@ -100,7 +100,7 @@ void SkeletonModification3DLookAt::_execute(real_t p_delta) {
 
 	// Reset override
 	// Needs to be done, as we need the proper position if there are modifications on previous bones.
-	// (no override versions ignore overrides on the previous bones aswell.)
+	// (no override versions ignore overrides on the previous bones as well.)
 	// Maybe Skeleton could support getting this directly without reset eventually.
 	stack->skeleton->set_bone_local_pose_override(bone_idx, Transform(), 0, false);
 	stack->skeleton->force_update_bone_children_transforms(bone_idx);

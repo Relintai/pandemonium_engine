@@ -28,7 +28,7 @@
 				In this method all necessary serialized properties should be setup for the chunk to function.
 				For non-serialized properties use [method _setup_chunk].
 				When loading chunks from disk, only [method _setup_chunk] will be called, this one won't.
-				Note the [TerrainChunk] parameter. The first reaced implementation should create the appropiate [TerrainChunk] implementation, then it can call base implementation to do their own initialization on the new instance. Tipically in code this would look like:
+				Note the [TerrainChunk] parameter. The first reaced implementation should create the appropriate [TerrainChunk] implementation, then it can call base implementation to do their own initialization on the new instance. Typically in code this would look like:
 				[code]func _create_chunk(x : int, z : int, chunk : TerrainChunk) -&gt; TerrainChunk:
 				  if (!chunk):
 				    chunk = MyTerrainChunk.new()

@@ -101,7 +101,7 @@ to be on the safe side I'm adopting the following policy (very similar to zig's)
 - No LLMs for comments on the bug tracker, including translation.
 - No generative AI models for other assets. (For example icons.)
 - English is the main language of the issue tracker, but I can also speak Hungarian.
-  You can write in your own language, but if you can, include an english translation aswell.
+  You can write in your own language, but if you can, include an english translation as well.
   - For translation you can use traditional tools. (Yes, these use neural networks, but these are
     not LLMs. They also only use fraction of the power and compute.)
     - For example here's a FOSS one, thay you can even run locally. (Should work on raspberry pi tier hardware): [libretranslate](https://libretranslate.com/).
@@ -118,8 +118,8 @@ Breaking changes can (and will) happen, but their rate and impact should be mini
 
 ## Todos for the next version
 
-- Fix up docs for PScrit. Make sure to cherry pick it to the previous branch aswell.
-- Update docs for GDScript, add the new features to it. Make sure to cherry pick it to the previous branch aswell.
+- Fix up docs for PScrit. Make sure to cherry pick it to the previous branch as well.
+- Update docs for GDScript, add the new features to it. Make sure to cherry pick it to the previous branch as well.
 - Add a CI build script using the build containers.
 - Add a nightly build name variant to the build all script.
 - Add a script to automate nightly generation.
@@ -142,7 +142,7 @@ I'm not too fond of the c++03's template in template syntax thing, and this give
 which is a nice optimization. Also it gives in class variable initialization (no need to only use constructors),
 but if a constructor is present, it should probably be the guideline that it's the only thing to init variables.
 
-I'm pretty sure some of the thirdparty dependencies need c++11, so at least that would be solved aswell.
+I'm pretty sure some of the thirdparty dependencies need c++11, so at least that would be solved as well.
 
 Old description:
 
@@ -183,7 +183,7 @@ A RichTextLabel, but for markdown would be nice to have.
 
 Since now the docs are in markdown, if the MarkDown label is implemented the docs could also be read directly using the editor itself.
 
-Obviously it will need to be pointed to a folder, as the docs are quite big, but it would be realtively trivial to implement.
+Obviously it will need to be pointed to a folder, as the docs are quite big, but it would be relatively trivial to implement.
 
 Also it could host to a web browser using the HTTPServer. (The docs repo has a demo that does this already. It's like 200 lines of code.)
 
@@ -216,7 +216,7 @@ It should also look at least acceptable.
 
 #### Git
 
-Set up a git mirror on the engine's domain aswell, not just on my personal page.
+Set up a git mirror on the engine's domain as well, not just on my personal page.
 
 Also should probably migrate from gitea eventually, as they seem to be using llm-s for coding a lot now,
 and I'd prefer if they don't blow up my server with low quality code after doing this for the next few years.
@@ -239,7 +239,7 @@ Have an another set of popups in an engine module, so they can be disabled if no
 WindowedPopup etc...
 
 Have them inherit from Window, if windowing is enabled, and Control if it's disabled,
-So no performance penalty on platfroms with no windowing.
+So no performance penalty on platforms with no windowing.
 
 Could force windowing support for them to be disabled at compile time even if a platform can do windowing.
 
@@ -303,7 +303,7 @@ It should set a NO_SCRIPTING define.
 
 This would reduce the executable size by quite a bit.
 
-In the editor the docs could be simplifed in this case -> no need for methods, only node descriptions.
+In the editor the docs could be simplified in this case -> no need for methods, only node descriptions.
 
 The editor would work too, so assets can be assembled the same.
 
@@ -359,7 +359,7 @@ Binary shaders could also be saved, and then loaded on demand.
 
 The Inverse Kinematics system has some bugs, those should be fixed.
 
-Also it will probably need som api and usage improvements.
+Also it will probably need some api and usage improvements.
 
 ### Build System
 
@@ -384,7 +384,7 @@ I see a few ways realistically:
 - Create something similar to sfw but it's a build system.
 - Create a simple scripting language (or take PScript for example) using sfw, and just use that for the build.
 - Use an extremely portable scripting language like lua or python directly. Lua would be preferable, as it's very stable,
-  but I don't like the syntax that much. Pyhton is annoying because it's ever changing, but it's syntax is better.
+  but I don't like the syntax that much. Python is annoying because it's ever changing, but it's syntax is better.
 - Fork SCons, publish it on pypi and just use that. If I have to fork I'd rather also get rid of pypi as a dependency too.
 - Continue with the SCSCons built in scons thing, so it doesn't have to be installed anymore.
 

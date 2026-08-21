@@ -5891,7 +5891,7 @@ bool AnimationTrackEditor::is_grouping_tracks() {
 
 void AnimationTrackEditor::_selection_changed() {
 	if (selected_filter->is_pressed()) {
-		_update_tracks(); //needs updatin
+		_update_tracks(); //needs updating
 	} else {
 		for (int i = 0; i < track_edits.size(); i++) {
 			track_edits[i]->update();

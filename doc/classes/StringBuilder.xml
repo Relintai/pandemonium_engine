@@ -5,7 +5,7 @@
 	</brief_description>
 	<description>
 		Build Strings more efficiently.
-		Most String manipulations require the constand copying of data (for example when doing concatenations in a for loop).
+		Most String manipulations require the constant copying of data (for example when doing concatenations in a for loop).
 		Granted it's not nearly as bas as in most garbage collected languages, here it's mostly unnoticable, but this class can make it a bit more efficient.
 	</description>
 	<tutorials>
