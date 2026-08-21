@@ -218,6 +218,11 @@ public:
 		OPCODE_CALL_BUILT_IN,
 		OPCODE_CALL_SELF,
 		OPCODE_CALL_SELF_BASE,
+#ifndef PSCRIPT_NO_YIELD
+		OPCODE_YIELD,
+		OPCODE_YIELD_SIGNAL,
+		OPCODE_YIELD_RESUME,
+#endif
 		OPCODE_JUMP,
 		OPCODE_JUMP_IF,
 		OPCODE_JUMP_IF_NOT,
@@ -378,10 +383,43 @@ public:
 #endif
 	}
 
+#ifndef PSCRIPT_NO_YIELD
+	Variant call(PScriptInstance *p_instance, const Variant **p_args, int p_argcount, Variant::CallError &r_err, CallState *p_state = nullptr);
+#else
 	Variant call(PScriptInstance *p_instance, const Variant **p_args, int p_argcount, Variant::CallError &r_err);
+#endif
 
 	PScriptFunction();
 	~PScriptFunction();
 };
+
+#ifndef PSCRIPT_NO_YIELD
+
+class PScriptFunctionState : public Reference {
+	GDCLASS(PScriptFunctionState, Reference);
+	friend class PScriptFunction;
+	PScriptFunction *function;
+	PScriptFunction::CallState state;
+	Variant _signal_callback(const Variant **p_args, int p_argcount, Variant::CallError &r_error);
+	Ref<PScriptFunctionState> first_state;
+
+	SelfList<PScriptFunctionState> scripts_list;
+	SelfList<PScriptFunctionState> instances_list;
+
+protected:
+	static void _bind_methods();
+
+public:
+	bool is_valid(bool p_extended_check = false) const;
+	Variant resume(const Variant &p_arg = Variant());
+
+	void _clear_stack();
+	void _clear_connections();
+
+	PScriptFunctionState();
+	~PScriptFunctionState();
+};
+
+#endif
 
 #endif // PSCRIPT_FUNCTION_H

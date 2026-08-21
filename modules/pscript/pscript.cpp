@@ -78,6 +78,24 @@ Object *PScriptNativeClass::instance() {
 	return ClassDB::instance(name);
 }
 
+#ifndef PSCRIPT_NO_YIELD
+void PScript::_clear_pending_func_states() {
+	PScriptLanguage::get_singleton()->lock.lock();
+	while (SelfList<PScriptFunctionState> *E = pending_func_states.first()) {
+		// Order matters since clearing the stack may already cause
+		// the PSCriptFunctionState to be destroyed and thus removed from the list.
+		pending_func_states.remove(E);
+		PScriptFunctionState *state = E->self();
+		ObjectID state_id = state->get_instance_id();
+		state->_clear_connections();
+		if (ObjectDB::get_instance(state_id)) {
+			state->_clear_stack();
+		}
+	}
+	PScriptLanguage::get_singleton()->lock.unlock();
+}
+#endif
+
 PScriptInstance *PScript::_create_instance(const Variant **p_args, int p_argcount, Object *p_owner, bool p_isref, Variant::CallError &r_error) {
 	/* STEP 1, CREATE */
 
@@ -676,6 +694,10 @@ Error PScript::reload(bool p_keep_state) {
 		_set_subclass_path(E->get(), path);
 	}
 
+#ifndef PSCRIPT_NO_YIELD
+	_clear_pending_func_states();
+#endif
+
 	return OK;
 }
 
@@ -1001,6 +1023,10 @@ void PScript::_save_orphaned_subclasses() {
 }
 
 PScript::~PScript() {
+#ifndef PSCRIPT_NO_YIELD
+	_clear_pending_func_states();
+#endif
+
 	for (RBMap<StringName, PScriptFunction *>::Element *E = member_functions.front(); E; E = E->next()) {
 		memdelete(E->get());
 	}
@@ -1369,6 +1395,20 @@ PScriptInstance::PScriptInstance() {
 
 PScriptInstance::~PScriptInstance() {
 	PScriptLanguage::singleton->lock.lock();
+
+#ifndef PSCRIPT_NO_YIELD
+	while (SelfList<PScriptFunctionState> *E = pending_func_states.first()) {
+		// Order matters since clearing the stack may already cause
+		// the PSCriptFunctionState to be destroyed and thus removed from the list.
+		pending_func_states.remove(E);
+		PScriptFunctionState *state = E->self();
+		ObjectID state_id = state->get_instance_id();
+		state->_clear_connections();
+		if (ObjectDB::get_instance(state_id)) {
+			state->_clear_stack();
+		}
+	}
+#endif
 
 	if (script.is_valid() && owner) {
 		script->instances.erase(owner);
@@ -1777,6 +1817,9 @@ void PScriptLanguage::get_reserved_words(List<String> *p_words) const {
 		"setget",
 		"signal",
 		"tool",
+#ifndef PSCRIPT_NO_YIELD
+		"yield",
+#endif
 		// var
 		"const",
 		"enum",
@@ -1966,6 +2009,12 @@ String PScriptWarning::get_message() const {
 		case NARROWING_CONVERSION: {
 			return "Narrowing conversion (float is converted to int and loses precision).";
 		} break;
+#ifndef PSCRIPT_NO_YIELD
+		case FUNCTION_MAY_YIELD: {
+			CHECK_SYMBOLS(1);
+			return "Assigned variable is typed but the function '" + symbols[0] + "()' may yield and return a PScriptFunctionState instead.";
+		} break;
+#endif
 		case VARIABLE_CONFLICTS_FUNCTION: {
 			CHECK_SYMBOLS(1);
 			return "Variable declaration of '" + symbols[0] + "' conflicts with a function of the same name.";
@@ -2057,6 +2106,9 @@ String PScriptWarning::get_name_from_code(Code p_code) {
 		"STANDALONE_EXPRESSION",
 		"VOID_ASSIGNMENT",
 		"NARROWING_CONVERSION",
+#ifndef PSCRIPT_NO_YIELD
+		"FUNCTION_MAY_YIELD",
+#endif
 		"VARIABLE_CONFLICTS_FUNCTION",
 		"FUNCTION_CONFLICTS_VARIABLE",
 		"FUNCTION_CONFLICTS_CONSTANT",

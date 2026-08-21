@@ -19,3 +19,9 @@ if env["tools"]:
         env_pdscript.Append(CPPDEFINES=["PSCRIPT_NO_LSP"])
         # Also needed in main env to unexpose --pd-lsp-port option.
         env.Append(CPPDEFINES=["PSCRIPT_NO_LSP"])
+
+
+if env["pscript_no_yield"]:
+    env_pdscript.Append(CPPDEFINES=["PSCRIPT_NO_YIELD"])
+    #env.Append(CPPDEFINES=["PSCRIPT_NO_YIELD"])
+

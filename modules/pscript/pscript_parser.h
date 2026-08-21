@@ -64,6 +64,9 @@ public:
 		bool has_type;
 		bool is_constant;
 		bool is_meta_type; // Whether the value can be used as a type
+#ifndef PSCRIPT_NO_YIELD
+		bool may_yield; // For function calls
+#endif
 
 		Variant::Type builtin_type;
 		StringName native_type;
@@ -116,8 +119,12 @@ public:
 				has_type(false),
 				is_constant(false),
 				is_meta_type(false),
+#ifndef PSCRIPT_NO_YIELD
+				may_yield(false),
+#endif
 				builtin_type(Variant::NIL),
-				class_type(nullptr) {}
+				class_type(nullptr) {
+		}
 	};
 
 	struct Node {
@@ -220,6 +227,9 @@ public:
 
 	struct FunctionNode : public Node {
 		bool _static;
+#ifndef PSCRIPT_NO_YIELD
+		bool has_yield;
+#endif
 		bool has_unreachable_code;
 		StringName name;
 		DataType return_type;
@@ -238,6 +248,9 @@ public:
 		FunctionNode() {
 			type = TYPE_FUNCTION;
 			_static = false;
+#ifndef PSCRIPT_NO_YIELD
+			has_yield = false;
+#endif
 			has_unreachable_code = false;
 		}
 	};
@@ -352,6 +365,9 @@ public:
 			//call/constructor operator
 			OP_CALL,
 			OP_PARENT_CALL,
+#ifndef PSCRIPT_NO_YIELD
+			OP_YIELD,
+#endif
 			OP_IS,
 			OP_IS_BUILTIN,
 			//indexing operator
@@ -517,6 +533,9 @@ public:
 		COMPLETION_RESOURCE_PATH,
 		COMPLETION_INDEX,
 		COMPLETION_VIRTUAL_FUNC,
+#ifndef PSCRIPT_NO_YIELD
+		COMPLETION_YIELD,
+#endif
 		COMPLETION_ASSIGN,
 		COMPLETION_TYPE_HINT,
 		COMPLETION_TYPE_HINT_INDEX,

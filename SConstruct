@@ -199,6 +199,9 @@ opts.Add(BoolVariable("builtin_xatlas", "Use the built-in xatlas library", True)
 # TODO this should go to the raycast module
 opts.Add(BoolVariable("builtin_embree", "Use the built-in Embree library", True))
 
+# TODO this should go to the PScript module
+opts.Add(BoolVariable("pscript_no_yield", "Disable the yield keyword in PScript", False))
+
 # Compilation environment setup
 opts.Add("CXX", "C++ compiler")
 opts.Add("CC", "C compiler")

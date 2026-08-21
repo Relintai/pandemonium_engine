@@ -104,6 +104,9 @@ const char *PScriptTokenizer::token_names[TK_MAX] = {
 	"enum",
 	"preload",
 	"assert",
+#ifndef PSCRIPT_NO_YIELD
+	"yield",
+#endif
 	"signal",
 	"breakpoint",
 	"Ref",
@@ -212,6 +215,9 @@ static const _pscript_kws _keyword_list[] = {
 	{ PScriptTokenizer::TK_PR_VARIANT, "Variant" },
 	{ PScriptTokenizer::TK_PR_PRELOAD, "preload" },
 	{ PScriptTokenizer::TK_PR_ASSERT, "assert" },
+#ifndef PSCRIPT_NO_YIELD
+	{ PScriptTokenizer::TK_PR_YIELD, "yield" },
+#endif
 	{ PScriptTokenizer::TK_PR_SIGNAL, "signal" },
 	{ PScriptTokenizer::TK_PR_BREAKPOINT, "breakpoint" },
 	{ PScriptTokenizer::TK_PR_REF, "Ref" },
@@ -361,6 +367,9 @@ bool PScriptTokenizer::is_token_literal(int p_offset, bool variable_safe) const 
 		case TK_PR_PRELOAD:
 		case TK_PR_EXTENDS:
 		case TK_PR_ASSERT:
+#ifndef PSCRIPT_NO_YIELD
+		case TK_PR_YIELD:
+#endif
 
 		case TK_CF_IF:
 		case TK_CF_ELSE:
