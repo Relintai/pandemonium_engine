@@ -114,7 +114,7 @@ Breaking changes can (and will) happen, but their rate and impact should be mini
 
 ## Todos before the next release
 
-- Codespell, re-extract docs.
+- Nothing.
 
 ## Todos for the next version
 
