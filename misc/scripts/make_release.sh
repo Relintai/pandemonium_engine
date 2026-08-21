@@ -251,3 +251,7 @@ mv pandemonium_v${version_snake_cased}_stable_export_templates.zip pandemonium_v
 mv pandemonium_v${version_snake_cased}_stable_export_templates_server.zip pandemonium_v${version_snake_cased}_stable_export_templates_server.tpz
 mv pandemonium_v${version_snake_cased}_stable_export_templates_sbc.zip pandemonium_v${version_snake_cased}_stable_export_templates_sbc.tpz
 
+
+# Will complatin about the temp directory, but that's fine.
+md5sum * > md5_sums.txt
+
