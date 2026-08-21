@@ -2416,6 +2416,24 @@
                 ]
             },
             {
+                "name": "pandemonium_typed_array_new_append_from",
+                "return_type": "void",
+                "arguments": [
+                    [
+                        "pandemonium_typed_array *",
+                        "r_dest"
+                    ],
+                    [
+                        "const pandemonium_string_name *",
+                        "p_type_name"
+                    ],
+                    [
+                        "const pandemonium_variant *",
+                        "p_variant"
+                    ]
+                ]
+            },
+            {
                 "name": "pandemonium_typed_array_new_pool_byte_array",
                 "return_type": "void",
                 "arguments": [
@@ -2595,7 +2613,7 @@
             },
             {
                 "name": "pandemonium_packed_typed_array_set",
-                "return_type": "void",
+                "return_type": "pandemonium_bool",
                 "arguments": [
                     [
                         "pandemonium_packed_typed_array *",
@@ -3450,6 +3468,24 @@
                     [
                         "const pandemonium_packed_typed_array *",
                         "p_src"
+                    ]
+                ]
+            },
+            {
+                "name": "pandemonium_packed_typed_array_new_type",
+                "return_type": "void",
+                "arguments": [
+                    [
+                        "pandemonium_packed_typed_array *",
+                        "r_dest"
+                    ],
+                    [
+                        "const pandemonium_string_name *",
+                        "p_type_name"
+                    ],
+                    [
+                        "const pandemonium_packed_typed_array_int_type",
+                        "p_int_type"
                     ]
                 ]
             },
