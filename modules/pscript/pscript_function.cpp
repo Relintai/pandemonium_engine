@@ -1322,14 +1322,14 @@ Variant PScriptFunction::call(PScriptInstance *p_instance, const Variant **p_arg
 						err_text = "First argument of yield() not of type object.";
 						OPCODE_BREAK;
 					}
-					if (argname->get_type() != Variant::STRING) {
-						err_text = "Second argument of yield() not a string (for signal name).";
+					if (argname->get_type() != Variant::STRING && argname->get_type() != Variant::STRING_NAME) {
+						err_text = "Second argument of yield() not a String or a StringName (for signal name).";
 						OPCODE_BREAK;
 					}
 #endif
 
 					Object *obj = argobj->operator Object *();
-					String signal = argname->operator String();
+					StringName signal = argname->operator StringName();
 
 					if (argobj->is_invalid_object()) {
 						err_text = "First argument of yield() is a previously freed instance.";
@@ -1340,14 +1340,14 @@ Variant PScriptFunction::call(PScriptInstance *p_instance, const Variant **p_arg
 						err_text = "First argument of yield() is null.";
 						OPCODE_BREAK;
 					}
-					if (signal.length() == 0) {
+					if (signal == StringName()) {
 						err_text = "Second argument of yield() is an empty string (for signal name).";
 						OPCODE_BREAK;
 					}
 
 					Error err = obj->connect(signal, pfs.ptr(), "_signal_callback", varray(pfs), Object::CONNECT_ONESHOT);
 					if (err != OK) {
-						err_text = "Error connecting to signal: " + signal + " during yield().";
+						err_text = "Error connecting to signal: " + String(signal) + " during yield().";
 						OPCODE_BREAK;
 					}
 #else

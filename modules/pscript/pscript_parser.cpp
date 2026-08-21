@@ -7262,8 +7262,8 @@ PScriptParser::DataType PScriptParser::_reduce_node_type(Node *p_node) {
 							_set_error("The first argument of \"yield()\" must be an object.", op->line);
 							return DataType();
 						}
-						if (signal_type.has_type && (signal_type.kind != DataType::BUILTIN || signal_type.builtin_type != Variant::STRING)) {
-							_set_error("The second argument of \"yield()\" must be a string.", op->line);
+						if (signal_type.has_type && (signal_type.kind != DataType::BUILTIN || (signal_type.builtin_type != Variant::STRING && signal_type.builtin_type != Variant::STRING_NAME))) {
+							_set_error("The second argument of \"yield()\" must be a string or a StringName.", op->line);
 							return DataType();
 						}
 					}
