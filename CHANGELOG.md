@@ -25,7 +25,7 @@ The more interesting work shall continue eventually.
 - PreparedStatement got a huge cleanup, methods were renamed, but new ones were also added.
   It should be realtively trivial to update old PreparedStatement code though.
   - Please note that Bind parameter indexing now start at 0, so when updating subtract 1 from each index.
-    You can also make use of the new next style apia (`set_next_bind_float`, `set_next_bind_int` etc.) to
+    You can also make use of the new next style api (`set_next_bind_float`, `set_next_bind_int` etc.) to
 	  get rid of indices alltogether.
 - 3D Skeletons got some getter and setter usability improvements, very advanced uses might be affected.
 - GDNative api had some bugs and missing methods, so the headers had to be changed. This means gdnative
