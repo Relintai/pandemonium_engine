@@ -143,6 +143,8 @@ void ESS::load_resource_db() {
 void ESS::load_all() {
 	load_resource_db();
 
+	ERR_FAIL_COND(!_ess_resource_db.is_valid());
+
 	_ess_resource_db->initialize();
 }
 
