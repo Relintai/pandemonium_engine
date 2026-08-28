@@ -634,19 +634,13 @@ void PScriptTokenizerText::_advance() {
 			case '\n': {
 				line++;
 				INCPOS(1);
-				bool used_spaces = false;
 				int tabs = 0;
 				column = 1;
 				int i = 0;
 				while (true) {
 					if (GETCHAR(i) == ' ') {
 						i++;
-						used_spaces = true;
 					} else if (GETCHAR(i) == '\t') {
-						if (used_spaces) {
-							_make_error("Spaces used before tabs on a line");
-							return;
-						}
 						i++;
 						tabs++;
 					} else {
