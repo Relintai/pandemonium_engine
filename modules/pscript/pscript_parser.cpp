@@ -1501,6 +1501,17 @@ PScriptParser::Node *PScriptParser::_parse_expression(Node *p_parent, bool p_sta
 					expr = op;
 				}
 
+				// If the next token is a newline after a call or indexing, consume it.
+				// This way call chains can be broken up into multiple lines,
+				// For now you can't have empty lines between calls.
+				// If this is replaced with a while loop that also advances the tokenizer on space and tabs,
+				// then any number of lines can be added between them. Not sure if that's desired though.
+				// Currently I think that might cause more potentially weird bugs and issues while using the language.
+				// We'll see in practice.
+				if (tokenizer->get_token() == PScriptTokenizer::TK_NEWLINE) {
+					tokenizer->advance();
+				}
+
 			} else if (tokenizer->get_token() == PScriptTokenizer::TK_OP_PLUS_PLUS || tokenizer->get_token() == PScriptTokenizer::TK_OP_MINUS_MINUS) {
 				// Post increment
 
