@@ -19,6 +19,13 @@ if [[ ! -z "${OFFICIAL}" ]]; then
   custom_envvars='-e BUILD_NAME=official'
 fi
 
+#export NIGHTLY=1;./build_all.sh
+
+if [[ ! -z "${NIGHTLY}" ]]; then
+	echo "NIGHTLY BUILD SET"
+  custom_envvars='-e BUILD_NAME=nightly'
+fi
+
 # Windows Build
 docker run ${custom_envvars} \
 	      -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
