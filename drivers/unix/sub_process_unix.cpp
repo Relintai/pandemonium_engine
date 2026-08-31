@@ -225,8 +225,19 @@ Error SubProcessUnix::poll() {
 }
 
 Error SubProcessUnix::send_signal(const int p_signal) {
-	//Not Yet Impl
-	ERR_FAIL_V(ERR_BUG);
+	if (_process_id == 0) {
+		return FAILED;
+	}
+
+	int err = kill(_process_id, p_signal);
+
+	if (err == EPERM) {
+		return ERR_UNAUTHORIZED;
+	} else if (err == 0) {
+		return OK;
+	}
+
+	return FAILED;
 }
 
 Error SubProcessUnix::send_data(const String &p_data) {
