@@ -272,8 +272,18 @@ Error SubProcessUnix::send_signal(const int p_signal) {
 
 Error SubProcessUnix::send_data(const String &p_data) {
 	if (_comminucation_mode == COMMUNICATION_MODE_WRITE) {
-		//Not Yet Impl
-		ERR_FAIL_V(ERR_BUG);
+		if (!_process_fp) {
+			return FAILED;
+		}
+
+		CharString cs = p_data.utf8();
+
+		if (fputs(cs.get_data(), _process_fp) > 0) {
+			return OK;
+		}
+
+		return FAILED;
+
 	} else if (_comminucation_mode == COMMUNICATION_MODE_READ_WRITE) {
 		//Not Yet Impl
 		ERR_FAIL_V(ERR_BUG);
