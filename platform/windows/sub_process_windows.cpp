@@ -264,8 +264,8 @@ Error SubProcessWindows::poll() {
 }
 
 Error SubProcessWindows::send_signal(const int p_signal) {
-	//Not Yet Impl
-	ERR_FAIL_V(ERR_BUG);
+	// Signals doesn't exists on Windows.
+	return ERR_UNAVAILABLE;
 }
 
 Error SubProcessWindows::send_data(const String &p_data) {
