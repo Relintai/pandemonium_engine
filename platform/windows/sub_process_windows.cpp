@@ -89,8 +89,8 @@ Error SubProcessWindows::start() {
 		_process_info.si.dwFlags |= STARTF_USESTDHANDLES;
 
 		if (_read_std) {
-			ERR_FAIL_COND_V(!CreatePipe(&_read_std_handle[0], &_read_std_handle[1], &sa, 0), ERR_CANT_FORK);
-			ERR_FAIL_COND_V(!SetHandleInformation(_read_std_handle[0], HANDLE_FLAG_INHERIT, 0), ERR_CANT_FORK); // Read handle is for host process only and should not be inherited.
+			ERR_FAIL_COND_V(!CreatePipe(&_read_std_handles[0], &_read_std_handles[1], &sa, 0), ERR_CANT_FORK);
+			ERR_FAIL_COND_V(!SetHandleInformation(_read_std_handles[0], HANDLE_FLAG_INHERIT, 0), ERR_CANT_FORK); // Read handle is for host process only and should not be inherited.
 
 			_process_info.si.hStdOutput = _read_std_handles[1];
 		}
@@ -132,11 +132,11 @@ Error SubProcessWindows::start() {
 		// Fail, cleanup handles
 		if ((_comminucation_mode == COMMUNICATION_MODE_READ || _comminucation_mode == COMMUNICATION_MODE_READ_WRITE) && (_read_std || _read_std_err)) {
 			if (_read_std) {
-				CloseHandle(_read_std_handle[0]); // Cleanup pipe handles.
-				CloseHandle(_read_std_handle[1]);
+				CloseHandle(_read_std_handles[0]); // Cleanup pipe handles.
+				CloseHandle(_read_std_handles[1]);
 
-				_read_std_handle[0] = NULL;
-				_read_std_handle[1] = NULL;
+				_read_std_handles[0] = NULL;
+				_read_std_handles[1] = NULL;
 			}
 
 			if (_read_std_err) {
@@ -163,8 +163,8 @@ Error SubProcessWindows::start() {
 
 	if ((_comminucation_mode == COMMUNICATION_MODE_READ || _comminucation_mode == COMMUNICATION_MODE_READ_WRITE) && (_read_std || _read_std_err)) {
 		if (_read_std) {
-			CloseHandle(_read_std_handle[1]);
-			_read_std_handle[1] = NULL;
+			CloseHandle(_read_std_handles[1]);
+			_read_std_handles[1] = NULL;
 		}
 
 		if (_read_std_err) {
@@ -260,8 +260,8 @@ Error SubProcessWindows::start() {
 			}
 
 			if (_read_std) {
-				CloseHandle(_read_std_handle[0]);
-				_read_std_handle[0] = NULL;
+				CloseHandle(_read_std_handles[0]);
+				_read_std_handles[0] = NULL;
 			}
 
 			if (_read_std_err) {
