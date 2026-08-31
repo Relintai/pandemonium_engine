@@ -55,6 +55,14 @@ Error SubProcessUnix::start() {
 		return ERR_BUSY;
 	}
 
+	if (_pipe_mutex) {
+		_pipe_mutex->lock();
+	}
+	_pipe = String();
+	if (_pipe_mutex) {
+		_pipe_mutex->unlock();
+	}
+
 	if (_blocking && _read_output) {
 		String argss;
 		argss = "\"" + _executable_path + "\"";

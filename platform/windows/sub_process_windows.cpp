@@ -51,6 +51,14 @@ Error SubProcessWindows::start() {
 		return ERR_BUSY;
 	}
 
+	if (_pipe_mutex) {
+		_pipe_mutex->lock();
+	}
+	_pipe = String();
+	if (_pipe_mutex) {
+		_pipe_mutex->unlock();
+	}
+
 	String path = _executable_path.replace("/", "\\");
 
 	String cmdline = _quote_command_line_argument(path);
