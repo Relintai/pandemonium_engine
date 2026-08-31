@@ -167,9 +167,13 @@ python ./misc/scripts_app/copy_repos.py . ./release/temp/pandemonium_v${version_
 
 # ==== Create version.txt for the export templates ====
 
-./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates/version.txt
-./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_server/version.txt
-./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_sbc/version.txt
+#./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates/version.txt
+#./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_server/version.txt
+#./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_sbc/version.txt
+
+./bin/pandemonium_server.x11.opt.tools.64 --version-full-config > release/temp/templates/version.txt
+./bin/pandemonium_server.x11.opt.tools.64 --version-full-config > release/temp/templates_server/version.txt
+./bin/pandemonium_server.x11.opt.tools.64 --version-full-config > release/temp/templates_sbc/version.txt
 
 # ==== GDNative headers
 
@@ -187,7 +191,9 @@ cp bin/gdnative_api_struct.gen.h release/temp/gdnative_headers_v${version_snake_
 
 # Generate JSON dump of the Pandemonium API for GDNative bindings.
 
-./bin/pandemonium.x11.opt.tools.64 --gdnative-generate-json-api release/temp/gdnative_headers_v${version_snake_cased}/api.json
+#./bin/pandemonium.x11.opt.tools.64 --gdnative-generate-json-api release/temp/gdnative_headers_v${version_snake_cased}/api.json
+
+./bin/pandemonium_server.x11.opt.tools.64 --gdnative-generate-json-api release/temp/gdnative_headers_v${version_snake_cased}/api.json
 
 # ==== Zip everything ====
 
