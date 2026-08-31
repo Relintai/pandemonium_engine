@@ -49,6 +49,13 @@ public:
 
 	static SubProcess *create();
 
+	// Either this should be removed, and
+	// instead a write_stdin property should be added.
+	// Or could be reworked as flags, then the other properties (get_read_std, get_read_std_err ...) can be rmoved.
+	// It would then need read stdin, stderr, and write
+	// Maybe it could be named communicationflags
+	// COMMUNICATION_FLAGS_STDIN_ENABLED =1 ...
+	// Also the Unix backend needs to be reworked to use pipes
 	enum SubProcessCommunicationMode {
 		COMMUNICATION_MODE_NONE = 0,
 		COMMUNICATION_MODE_READ = 1,
@@ -74,6 +81,7 @@ public:
 	bool get_read_std_err() const;
 	void set_read_std_err(const bool p_value);
 
+	// Needs a better name
 	bool get_use_pipe_mutex() const;
 	void set_use_pipe_mutex(const bool p_value);
 
@@ -95,6 +103,7 @@ public:
 	virtual Error stop() = 0;
 	virtual Error poll() = 0;
 	virtual Error send_signal(const int p_signal) = 0;
+	// It should probably be renamed write_stdin()?
 	virtual Error send_data(const String &p_data) = 0;
 	virtual bool is_process_running() const = 0;
 
