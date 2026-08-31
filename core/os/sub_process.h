@@ -49,6 +49,13 @@ public:
 
 	static SubProcess *create();
 
+	enum SubProcessCommunicationMode {
+		COMMUNICATION_MODE_NONE = 0,
+		COMMUNICATION_MODE_READ = 1,
+		COMMUNICATION_MODE_WRITE = 2,
+		COMMUNICATION_MODE_READ_WRITE = 3,
+	};
+
 	String get_executable_path() const;
 	void set_executable_path(const String &p_executable_path);
 
@@ -58,8 +65,8 @@ public:
 	bool get_blocking() const;
 	void set_blocking(const bool p_value);
 
-	bool get_read_output() const;
-	void set_read_output(const bool p_value);
+	SubProcessCommunicationMode get_comminucation_mode() const;
+	void set_comminucation_mode(const SubProcessCommunicationMode p_mode);
 
 	bool get_read_std() const;
 	void set_read_std(const bool p_value);
@@ -73,7 +80,8 @@ public:
 	bool get_open_console() const;
 	void set_open_console(const bool p_value);
 
-	String get_data();
+	String get_std_out();
+	String get_std_err();
 
 	int get_process_id() const {
 		return _process_id;
@@ -90,7 +98,7 @@ public:
 	virtual Error send_data(const String &p_data) = 0;
 	virtual bool is_process_running() const = 0;
 
-	Error run(const String &p_executable_path, const Vector<String> &p_arguments, bool p_output = true, bool p_blocking = true, bool p_read_std_err = false, bool p_use_pipe_mutex = false, bool p_open_console = false);
+	Error run(const String &p_executable_path, const Vector<String> &p_arguments, const SubProcessCommunicationMode p_mode = COMMUNICATION_MODE_READ, bool p_blocking = true, bool p_read_std_err = false, bool p_use_pipe_mutex = false, bool p_open_console = false);
 
 	template <class T>
 	static void make_default() {
@@ -108,15 +116,17 @@ protected:
 
 	bool _blocking;
 
-	bool _read_output;
+	SubProcessCommunicationMode _comminucation_mode;
 
 	bool _read_std;
 	bool _read_std_err;
 
-	String _pipe;
+	String _std_out;
+	String _std_err;
 
 	bool _use_pipe_mutex;
 
+	// TODO this needs to be split
 	Mutex *_pipe_mutex;
 
 	bool _open_console;

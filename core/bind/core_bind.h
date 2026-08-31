@@ -708,6 +708,13 @@ protected:
 	static void _bind_methods();
 
 public:
+	enum SubProcessCommunicationMode {
+		COMMUNICATION_MODE_NONE = SubProcess::COMMUNICATION_MODE_NONE,
+		COMMUNICATION_MODE_READ = SubProcess::COMMUNICATION_MODE_READ,
+		COMMUNICATION_MODE_WRITE = SubProcess::COMMUNICATION_MODE_WRITE,
+		COMMUNICATION_MODE_READ_WRITE = SubProcess::COMMUNICATION_MODE_READ_WRITE,
+	};
+
 	String get_executable_path() const;
 	void set_executable_path(const String &p_executable_path);
 
@@ -717,8 +724,8 @@ public:
 	bool get_blocking() const;
 	void set_blocking(const bool p_value);
 
-	bool get_read_output() const;
-	void set_read_output(const bool p_value);
+	SubProcessCommunicationMode get_comminucation_mode() const;
+	void set_comminucation_mode(const SubProcessCommunicationMode p_mode);
 
 	bool get_read_std() const;
 	void set_read_std(const bool p_value);
@@ -732,7 +739,9 @@ public:
 	bool get_open_console() const;
 	void set_open_console(const bool p_value);
 
-	String get_data() const;
+	String get_std_out();
+	String get_std_err();
+
 	int get_process_id() const;
 	int get_exitcode() const;
 
@@ -746,6 +755,8 @@ public:
 	_SubProcess();
 	virtual ~_SubProcess();
 };
+
+VARIANT_ENUM_CAST(_SubProcess::SubProcessCommunicationMode);
 
 class _Marshalls : public Object {
 	GDCLASS(_Marshalls, Object);

@@ -50,7 +50,8 @@ public:
 
 protected:
 	String _quote_command_line_argument(const String &p_text) const;
-	void _append_to_pipe(char *p_bytes, int p_size);
+	void _append_to_std_out(char *p_bytes, int p_size);
+	void _append_to_std_err(char *p_bytes, int p_size);
 
 	struct ProcessInfo {
 		STARTUPINFO si;
@@ -58,9 +59,12 @@ protected:
 	};
 
 	bool _process_started;
-	HANDLE _pipe_handles[2];
+	HANDLE _read_std_handles[2];
+	HANDLE _read_std_err_handles[2];
+	HANDLE _write_handles[2];
 	ProcessInfo _process_info;
 	LocalVector<char> _bytes;
+	LocalVector<char> _err_bytes;
 };
 
 #endif

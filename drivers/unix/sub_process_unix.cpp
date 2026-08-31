@@ -47,6 +47,9 @@ Error SubProcessUnix::start() {
 	// Actual virtual call goes to OS_JavaScript.
 	ERR_FAIL_V(ERR_BUG);
 #else
+
+	ERR_FAIL_COND_V((_comminucation_mode == COMMUNICATION_MODE_WRITE || _comminucation_mode == COMMUNICATION_MODE_READ_WRITE) && _blocking, ERR_UNAVAILABLE);
+
 	if (_executable_path.empty()) {
 		return ERR_FILE_BAD_PATH;
 	}
@@ -58,12 +61,109 @@ Error SubProcessUnix::start() {
 	if (_pipe_mutex) {
 		_pipe_mutex->lock();
 	}
-	_pipe = String();
+	_std_out = String();
+	_std_err = String();
 	if (_pipe_mutex) {
 		_pipe_mutex->unlock();
 	}
 
-	if (_blocking && _read_output) {
+	if (_comminucation_mode == COMMUNICATION_MODE_NONE) {
+		// We just run it, no need to worry about output
+
+		pid_t pid = fork();
+		ERR_FAIL_COND_V(pid < 0, ERR_CANT_FORK);
+
+		if (pid == 0) {
+			// is child
+
+			if (!_blocking) {
+				// For non blocking calls, create a new session-ID so parent won't wait for it.
+				// This ensures the process won't go zombie at end.
+				setsid();
+			}
+
+			Vector<CharString> cs;
+			cs.push_back(_executable_path.utf8());
+			for (int i = 0; i < _arguments.size(); i++) {
+				cs.push_back(_arguments[i].utf8());
+			}
+
+			Vector<char *> args;
+			for (int i = 0; i < cs.size(); i++) {
+				args.push_back((char *)cs[i].get_data());
+			}
+			args.push_back(0);
+
+			execvp(_executable_path.utf8().get_data(), &args[0]);
+			// still alive? something failed..
+			fprintf(stderr, "**ERROR** SubProcessUnix::execute - Could not create child process while executing: %s\n", _executable_path.utf8().get_data());
+			raise(SIGKILL);
+		}
+
+		if (_blocking) {
+			int status;
+			waitpid(pid, &status, 0);
+
+			_exitcode = WIFEXITED(status) ? WEXITSTATUS(status) : status;
+		} else {
+			_process_id = pid;
+		}
+	} else if (_comminucation_mode == COMMUNICATION_MODE_READ) {
+		if (_blocking) {
+			String argss;
+			argss = "\"" + _executable_path + "\"";
+
+			for (int i = 0; i < _arguments.size(); i++) {
+				argss += String(" \"") + _arguments[i] + "\"";
+			}
+
+			if (_read_std_err) {
+				argss += " 2>&1"; // Read stderr too
+			} else {
+				argss += " 2>/dev/null"; //silence stderr
+			}
+			FILE *f = popen(argss.utf8().get_data(), "r");
+
+			ERR_FAIL_COND_V_MSG(!f, ERR_CANT_OPEN, "Cannot pipe stream from process running with following arguments '" + argss + "'.");
+
+			char buf[65535];
+
+			while (fgets(buf, 65535, f)) {
+				if (_pipe_mutex) {
+					_pipe_mutex->lock();
+				}
+				_std_out += String::utf8(buf);
+				if (_pipe_mutex) {
+					_pipe_mutex->unlock();
+				}
+			}
+			int rv = pclose(f);
+
+			_exitcode = WEXITSTATUS(rv);
+
+			return OK;
+		} else {
+			String argss;
+			argss = "\"" + _executable_path + "\"";
+
+			for (int i = 0; i < _arguments.size(); i++) {
+				argss += String(" \"") + _arguments[i] + "\"";
+			}
+
+			if (_read_std_err) {
+				argss += " 2>&1"; // Read stderr too
+			} else {
+				argss += " 2>/dev/null"; //silence stderr
+			}
+
+			_process_fp = popen(argss.utf8().get_data(), "r");
+
+			ERR_FAIL_COND_V_MSG(!_process_fp, ERR_CANT_OPEN, "Cannot pipe stream from process running with following arguments '" + argss + "'.");
+
+			return OK;
+		}
+	} else if (_comminucation_mode == COMMUNICATION_MODE_WRITE) {
+		// Blocking mode does not work here
 		String argss;
 		argss = "\"" + _executable_path + "\"";
 
@@ -71,93 +171,14 @@ Error SubProcessUnix::start() {
 			argss += String(" \"") + _arguments[i] + "\"";
 		}
 
-		if (_read_std_err) {
-			argss += " 2>&1"; // Read stderr too
-		} else {
-			argss += " 2>/dev/null"; //silence stderr
-		}
-		FILE *f = popen(argss.utf8().get_data(), "r");
-
-		ERR_FAIL_COND_V_MSG(!f, ERR_CANT_OPEN, "Cannot pipe stream from process running with following arguments '" + argss + "'.");
-
-		char buf[65535];
-
-		while (fgets(buf, 65535, f)) {
-			if (_pipe_mutex) {
-				_pipe_mutex->lock();
-			}
-			_pipe += String::utf8(buf);
-			if (_pipe_mutex) {
-				_pipe_mutex->unlock();
-			}
-		}
-		int rv = pclose(f);
-
-		_exitcode = WEXITSTATUS(rv);
-
-		return OK;
-	}
-
-	if (!_blocking && _read_output) {
-		String argss;
-		argss = "\"" + _executable_path + "\"";
-
-		for (int i = 0; i < _arguments.size(); i++) {
-			argss += String(" \"") + _arguments[i] + "\"";
-		}
-
-		if (_read_std_err) {
-			argss += " 2>&1"; // Read stderr too
-		} else {
-			argss += " 2>/dev/null"; //silence stderr
-		}
-
-		_process_fp = popen(argss.utf8().get_data(), "r");
+		_process_fp = popen(argss.utf8().get_data(), "w");
 
 		ERR_FAIL_COND_V_MSG(!_process_fp, ERR_CANT_OPEN, "Cannot pipe stream from process running with following arguments '" + argss + "'.");
 
 		return OK;
-	}
-
-	// We just run it, no need to worry about output
-
-	pid_t pid = fork();
-	ERR_FAIL_COND_V(pid < 0, ERR_CANT_FORK);
-
-	if (pid == 0) {
-		// is child
-
-		if (!_blocking) {
-			// For non blocking calls, create a new session-ID so parent won't wait for it.
-			// This ensures the process won't go zombie at end.
-			setsid();
-		}
-
-		Vector<CharString> cs;
-		cs.push_back(_executable_path.utf8());
-		for (int i = 0; i < _arguments.size(); i++) {
-			cs.push_back(_arguments[i].utf8());
-		}
-
-		Vector<char *> args;
-		for (int i = 0; i < cs.size(); i++) {
-			args.push_back((char *)cs[i].get_data());
-		}
-		args.push_back(0);
-
-		execvp(_executable_path.utf8().get_data(), &args[0]);
-		// still alive? something failed..
-		fprintf(stderr, "**ERROR** SubProcessUnix::execute - Could not create child process while executing: %s\n", _executable_path.utf8().get_data());
-		raise(SIGKILL);
-	}
-
-	if (_blocking) {
-		int status;
-		waitpid(pid, &status, 0);
-
-		_exitcode = WIFEXITED(status) ? WEXITSTATUS(status) : status;
-	} else {
-		_process_id = pid;
+	} else if (_comminucation_mode == COMMUNICATION_MODE_READ_WRITE) {
+		// for now
+		return ERR_UNAVAILABLE;
 	}
 
 	return OK;
@@ -203,21 +224,30 @@ Error SubProcessUnix::poll() {
 	ERR_FAIL_V(ERR_BUG);
 #else
 
-	if (_process_fp) {
-		if (fgets(_process_buf, 65535, _process_fp)) {
-			if (_pipe_mutex) {
-				_pipe_mutex->lock();
+	if (_comminucation_mode == COMMUNICATION_MODE_NONE) {
+		return ERR_FILE_EOF;
+	} else if (_comminucation_mode == COMMUNICATION_MODE_READ || _comminucation_mode == COMMUNICATION_MODE_WRITE) {
+		if (_process_fp) {
+			if (fgets(_process_buf, 65535, _process_fp)) {
+				if (_pipe_mutex) {
+					_pipe_mutex->lock();
+				}
+				_std_out = String::utf8(_process_buf);
+				if (_pipe_mutex) {
+					_pipe_mutex->unlock();
+				}
+			} else {
+				// The process finished
+				// Cleanup:
+				stop();
+				return ERR_FILE_EOF;
 			}
-			_pipe = String::utf8(_process_buf);
-			if (_pipe_mutex) {
-				_pipe_mutex->unlock();
-			}
-		} else {
-			// The process finished
-			// Cleanup:
-			stop();
-			return ERR_FILE_EOF;
 		}
+
+		return OK;
+	} else if (_comminucation_mode == COMMUNICATION_MODE_READ_WRITE) {
+		// For now
+		return ERR_UNAVAILABLE;
 	}
 
 	return OK;
@@ -241,8 +271,15 @@ Error SubProcessUnix::send_signal(const int p_signal) {
 }
 
 Error SubProcessUnix::send_data(const String &p_data) {
-	//Not Yet Impl
-	ERR_FAIL_V(ERR_BUG);
+	if (_comminucation_mode == COMMUNICATION_MODE_WRITE) {
+		//Not Yet Impl
+		ERR_FAIL_V(ERR_BUG);
+	} else if (_comminucation_mode == COMMUNICATION_MODE_READ_WRITE) {
+		//Not Yet Impl
+		ERR_FAIL_V(ERR_BUG);
+	}
+
+	return ERR_UNAVAILABLE;
 }
 
 bool SubProcessUnix::is_process_running() const {

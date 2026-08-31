@@ -2703,9 +2703,9 @@ void _SubProcess::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_blocking", "value"), &_SubProcess::set_blocking);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "blocking"), "set_blocking", "get_blocking");
 
-	ClassDB::bind_method(D_METHOD("get_read_output"), &_SubProcess::get_read_output);
-	ClassDB::bind_method(D_METHOD("set_read_output", "value"), &_SubProcess::set_read_output);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "read_output"), "set_read_output", "get_read_output");
+	ClassDB::bind_method(D_METHOD("get_comminucation_mode"), &_SubProcess::get_comminucation_mode);
+	ClassDB::bind_method(D_METHOD("set_comminucation_mode", "value"), &_SubProcess::set_comminucation_mode);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "comminucation_mode", PROPERTY_HINT_ENUM, "None,Read,Write,ReadWrite"), "set_comminucation_mode", "get_comminucation_mode");
 
 	ClassDB::bind_method(D_METHOD("get_read_std"), &_SubProcess::get_read_std);
 	ClassDB::bind_method(D_METHOD("set_read_std", "value"), &_SubProcess::set_read_std);
@@ -2723,7 +2723,9 @@ void _SubProcess::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_open_console", "value"), &_SubProcess::set_open_console);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "open_console"), "set_open_console", "get_open_console");
 
-	ClassDB::bind_method(D_METHOD("get_data"), &_SubProcess::get_data);
+	ClassDB::bind_method(D_METHOD("get_std_out"), &_SubProcess::get_std_out);
+	ClassDB::bind_method(D_METHOD("get_std_err"), &_SubProcess::get_std_err);
+
 	ClassDB::bind_method(D_METHOD("get_process_id"), &_SubProcess::get_process_id);
 	ClassDB::bind_method(D_METHOD("get_exitcode"), &_SubProcess::get_exitcode);
 
@@ -2733,6 +2735,11 @@ void _SubProcess::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("send_signal", "signal"), &_SubProcess::send_signal);
 	ClassDB::bind_method(D_METHOD("send_data", "data"), &_SubProcess::send_data);
 	ClassDB::bind_method(D_METHOD("is_process_running"), &_SubProcess::is_process_running);
+
+	BIND_ENUM_CONSTANT(COMMUNICATION_MODE_NONE);
+	BIND_ENUM_CONSTANT(COMMUNICATION_MODE_READ);
+	BIND_ENUM_CONSTANT(COMMUNICATION_MODE_WRITE);
+	BIND_ENUM_CONSTANT(COMMUNICATION_MODE_READ_WRITE);
 }
 
 String _SubProcess::get_executable_path() const {
@@ -2756,11 +2763,11 @@ void _SubProcess::set_blocking(const bool p_value) {
 	_sub_process->set_blocking(p_value);
 }
 
-bool _SubProcess::get_read_output() const {
-	return _sub_process->get_read_output();
+_SubProcess::SubProcessCommunicationMode _SubProcess::get_comminucation_mode() const {
+	return static_cast<_SubProcess::SubProcessCommunicationMode>(_sub_process->get_comminucation_mode());
 }
-void _SubProcess::set_read_output(const bool p_value) {
-	_sub_process->set_read_output(p_value);
+void _SubProcess::set_comminucation_mode(const SubProcessCommunicationMode p_mode) {
+	_sub_process->set_comminucation_mode(static_cast<SubProcess::SubProcessCommunicationMode>(p_mode));
 }
 
 bool _SubProcess::get_read_std() const {
@@ -2791,9 +2798,13 @@ void _SubProcess::set_open_console(const bool p_value) {
 	_sub_process->set_open_console(p_value);
 }
 
-String _SubProcess::get_data() const {
-	return _sub_process->get_data();
+String _SubProcess::get_std_out() {
+	return _sub_process->get_std_out();
 }
+String _SubProcess::get_std_err() {
+	return _sub_process->get_std_err();
+}
+
 int _SubProcess::get_process_id() const {
 	return _sub_process->get_process_id();
 }

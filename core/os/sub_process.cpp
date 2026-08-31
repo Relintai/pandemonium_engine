@@ -65,13 +65,11 @@ void SubProcess::set_blocking(const bool p_value) {
 	_blocking = p_value;
 }
 
-bool SubProcess::get_read_output() const {
-	return _read_output;
+SubProcess::SubProcessCommunicationMode SubProcess::get_comminucation_mode() const {
+	return _comminucation_mode;
 }
-void SubProcess::set_read_output(const bool p_value) {
-	ERR_FAIL_COND(is_process_running());
-
-	_read_output = p_value;
+void SubProcess::set_comminucation_mode(const SubProcessCommunicationMode p_mode) {
+	_comminucation_mode = p_mode;
 }
 
 bool SubProcess::get_read_std() const {
@@ -110,13 +108,13 @@ void SubProcess::set_open_console(const bool p_value) {
 	_open_console = p_value;
 }
 
-String SubProcess::get_data() {
+String SubProcess::get_std_out() {
 	if (_pipe_mutex) {
 		_pipe_mutex->lock();
 	}
 
-	String data = _pipe;
-	_pipe = String();
+	String data = _std_out;
+	_std_out = String();
 
 	if (_pipe_mutex) {
 		_pipe_mutex->unlock();
@@ -125,7 +123,22 @@ String SubProcess::get_data() {
 	return data;
 }
 
-Error SubProcess::run(const String &p_executable_path, const Vector<String> &p_arguments, bool p_output, bool p_blocking, bool p_read_std_err, bool p_use_pipe_mutex, bool p_open_console) {
+String SubProcess::get_std_err() {
+	if (_pipe_mutex) {
+		_pipe_mutex->lock();
+	}
+
+	String data = _std_err;
+	_std_err = String();
+
+	if (_pipe_mutex) {
+		_pipe_mutex->unlock();
+	}
+
+	return data;
+}
+
+Error SubProcess::run(const String &p_executable_path, const Vector<String> &p_arguments, const SubProcessCommunicationMode p_mode, bool p_blocking, bool p_read_std_err, bool p_use_pipe_mutex, bool p_open_console) {
 	if (is_process_running()) {
 		return ERR_ALREADY_IN_USE;
 	}
@@ -135,7 +148,7 @@ Error SubProcess::run(const String &p_executable_path, const Vector<String> &p_a
 
 	_blocking = p_blocking;
 
-	_read_output = p_output;
+	_comminucation_mode = COMMUNICATION_MODE_READ;
 
 	_read_std = true;
 	_read_std_err = p_read_std_err;
@@ -152,7 +165,7 @@ Error SubProcess::run(const String &p_executable_path, const Vector<String> &p_a
 SubProcess::SubProcess() {
 	_blocking = false;
 
-	_read_output = true;
+	_comminucation_mode = COMMUNICATION_MODE_READ;
 
 	_read_std = true;
 	_read_std_err = false;
