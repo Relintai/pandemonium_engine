@@ -110,6 +110,21 @@ void SubProcess::set_open_console(const bool p_value) {
 	_open_console = p_value;
 }
 
+String SubProcess::get_data() {
+	if (_pipe_mutex) {
+		_pipe_mutex->lock();
+	}
+
+	String data = _pipe;
+	_pipe = String();
+
+	if (_pipe_mutex) {
+		_pipe_mutex->unlock();
+	}
+
+	return data;
+}
+
 Error SubProcess::run(const String &p_executable_path, const Vector<String> &p_arguments, bool p_output, bool p_blocking, bool p_read_std_err, bool p_use_pipe_mutex, bool p_open_console) {
 	if (is_process_running()) {
 		return ERR_ALREADY_IN_USE;

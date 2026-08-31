@@ -73,9 +73,7 @@ public:
 	bool get_open_console() const;
 	void set_open_console(const bool p_value);
 
-	String get_data() const {
-		return _pipe;
-	}
+	String get_data();
 
 	int get_process_id() const {
 		return _process_id;
