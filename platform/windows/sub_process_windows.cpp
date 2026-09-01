@@ -172,7 +172,7 @@ Error SubProcessWindows::start() {
 			_read_std_handles[1] = NULL;
 		}
 
-		if (_read_std_handles[1]) {
+		if (_read_std_err_handles[1]) {
 			CloseHandle(_read_std_err_handles[1]);
 			_read_std_err_handles[1] = NULL;
 		}
