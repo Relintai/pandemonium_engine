@@ -566,11 +566,13 @@ Error SubProcessUnix::send_data(const String &p_data) {
 	ssize_t sent = 0;
 	CharString cs = p_data.utf8();
 
+	// Note, we are using lenght() to skip sending null terminators!
 	while (sent < cs.length()) {
 		ssize_t wb = write(_write_pipes[1], cs.get_data(), cs.length());
 
 		// Error
 		if (wb < 0) {
+			stop();
 			return ERR_FILE_EOF;
 		}
 
