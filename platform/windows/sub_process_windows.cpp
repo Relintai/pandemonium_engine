@@ -387,7 +387,7 @@ Error SubProcessWindows::write_to_stdin(const String &p_data) {
 				_std_in_mutex->unlock();
 			}
 
-			stop();
+			//stop();
 			return ERR_FILE_EOF;
 		}
 
