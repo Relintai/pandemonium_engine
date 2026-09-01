@@ -65,13 +65,13 @@ void SubProcess::set_blocking(const bool p_value) {
 	_blocking = p_value;
 }
 
-int SubProcess::get_comminucation_flags() const {
-	return _comminucation_flags;
+int SubProcess::get_communication_flags() const {
+	return _communication_flags;
 }
-void SubProcess::set_comminucation_flags(const int p_flags) {
+void SubProcess::set_communication_flags(const int p_flags) {
 	ERR_FAIL_COND(is_process_running());
 
-	_comminucation_flags = p_flags;
+	_communication_flags = p_flags;
 }
 
 bool SubProcess::get_use_pipe_mutex() const {
@@ -130,7 +130,7 @@ Error SubProcess::run(const String &p_executable_path, const Vector<String> &p_a
 	_executable_path = p_executable_path;
 	_arguments = p_arguments;
 
-	_comminucation_flags = p_communication_flags;
+	_communication_flags = p_communication_flags;
 	_blocking = p_blocking;
 
 	_use_pipe_mutex = p_use_pipe_mutex;
@@ -145,7 +145,7 @@ Error SubProcess::run(const String &p_executable_path, const Vector<String> &p_a
 SubProcess::SubProcess() {
 	_blocking = false;
 
-	_comminucation_flags = COMMUNICATION_FLAGS_STDOUT;
+	_communication_flags = COMMUNICATION_FLAGS_STDOUT;
 
 	_use_pipe_mutex = false;
 
