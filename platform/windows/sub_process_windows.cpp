@@ -87,14 +87,15 @@ Error SubProcessWindows::start() {
 
 	// Setup Pipes
 	if (_communication_flags != COMMUNICATION_FLAGS_NONE) {
+		SECURITY_ATTRIBUTES sa;
+		sa.nLength = sizeof(SECURITY_ATTRIBUTES);
+		sa.bInheritHandle = true;
+		sa.lpSecurityDescriptor = NULL;
+
+		_process_info.si.dwFlags |= STARTF_USESTDHANDLES;
+
 		if ((_communication_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
 			// Create pipe for StdOut
-			SECURITY_ATTRIBUTES sa;
-			sa.nLength = sizeof(SECURITY_ATTRIBUTES);
-			sa.bInheritHandle = true;
-			sa.lpSecurityDescriptor = NULL;
-
-			_process_info.si.dwFlags |= STARTF_USESTDHANDLES;
 
 			ERR_FAIL_COND_V(!CreatePipe(&_read_std_handles[0], &_read_std_handles[1], &sa, 0), ERR_CANT_FORK);
 			ERR_FAIL_COND_V(!SetHandleInformation(_read_std_handles[0], HANDLE_FLAG_INHERIT, 0), ERR_CANT_FORK); // Read handle is for host process only and should not be inherited.
@@ -106,12 +107,6 @@ Error SubProcessWindows::start() {
 
 		if ((_communication_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
 			// Create pipe for StdOut
-			SECURITY_ATTRIBUTES sa;
-			sa.nLength = sizeof(SECURITY_ATTRIBUTES);
-			sa.bInheritHandle = true;
-			sa.lpSecurityDescriptor = NULL;
-
-			_process_info.si.dwFlags |= STARTF_USESTDHANDLES;
 
 			ERR_FAIL_COND_V(!CreatePipe(&_read_std_err_handles[0], &_read_std_err_handles[1], &sa, 0), ERR_CANT_FORK);
 			ERR_FAIL_COND_V(!SetHandleInformation(_read_std_err_handles[0], HANDLE_FLAG_INHERIT, 0), ERR_CANT_FORK); // Read handle is for host process only and should not be inherited.
@@ -123,15 +118,10 @@ Error SubProcessWindows::start() {
 
 		if ((_communication_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
 			// Create pipe for StdOut and StdErr.
-			SECURITY_ATTRIBUTES sa;
-			sa.nLength = sizeof(SECURITY_ATTRIBUTES);
-			sa.bInheritHandle = true;
-			sa.lpSecurityDescriptor = NULL;
 
 			ERR_FAIL_COND_V(!CreatePipe(&_write_handles[0], &_write_handles[1], &sa, 0), ERR_CANT_FORK);
 			ERR_FAIL_COND_V(!SetHandleInformation(_write_handles[1], HANDLE_FLAG_INHERIT, 0), ERR_CANT_FORK); // Write handle is for host process only and should not be inherited.
 
-			_process_info.si.dwFlags |= STARTF_USESTDHANDLES;
 			_process_info.si.hStdInput = _write_handles[0];
 
 			inherit_handles = true;
