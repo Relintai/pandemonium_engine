@@ -59,9 +59,12 @@ protected:
 	};
 
 	bool _process_started;
+
+	// Pipes are unidirectional, [0] is the read end, [1] is the write end
 	HANDLE _read_std_handles[2];
 	HANDLE _read_std_err_handles[2];
 	HANDLE _write_handles[2];
+
 	ProcessInfo _process_info;
 	LocalVector<char> _bytes;
 	LocalVector<char> _err_bytes;

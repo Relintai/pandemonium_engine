@@ -129,10 +129,10 @@ Error SubProcessWindows::start() {
 			sa.lpSecurityDescriptor = NULL;
 
 			ERR_FAIL_COND_V(!CreatePipe(&_write_handles[0], &_write_handles[1], &sa, 0), ERR_CANT_FORK);
-			ERR_FAIL_COND_V(!SetHandleInformation(_write_handles[0], HANDLE_FLAG_INHERIT, 0), ERR_CANT_FORK); // Read handle is for host process only and should not be inherited.
+			ERR_FAIL_COND_V(!SetHandleInformation(_write_handles[1], HANDLE_FLAG_INHERIT, 0), ERR_CANT_FORK); // Write handle is for host process only and should not be inherited.
 
 			_process_info.si.dwFlags |= STARTF_USESTDHANDLES;
-			_process_info.si.hStdInput = _write_handles[1];
+			_process_info.si.hStdInput = _write_handles[0];
 
 			inherit_handles = true;
 		}
@@ -184,9 +184,9 @@ Error SubProcessWindows::start() {
 			_read_std_err_handles[1] = NULL;
 		}
 
-		if (_write_handles[1]) {
-			CloseHandle(_write_handles[1]);
-			_write_handles[1] = NULL;
+		if (_write_handles[0]) {
+			CloseHandle(_write_handles[0]);
+			_write_handles[0] = NULL;
 		}
 	}
 
@@ -518,7 +518,7 @@ Error SubProcessWindows::write_to_stdin(const String &p_data) {
 	// Note, we are using lenght() to skip sending null terminators!
 	for (;;) {
 		DWORD written;
-		const bool success = WriteFile(_write_handles[0], cs.get_data(), cs.length() - total_written, &written, NULL);
+		const bool success = WriteFile(_write_handles[1], cs.get_data(), cs.length() - total_written, &written, NULL);
 
 		if (!success) {
 			if (_std_in_mutex) {
