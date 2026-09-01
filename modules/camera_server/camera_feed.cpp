@@ -203,8 +203,11 @@ CameraFeed::FeedFormat CameraFeed::get_format() const {
 }
 
 CameraFeed::CameraFeed() {
-	// initialize our feed
-	_id = CameraServer::get_singleton()->get_free_id();
+	// How did this randomly became an issue randomly after around year?
+	if (CameraServer::get_singleton()) {
+		// initialize our feed
+		_id = CameraServer::get_singleton()->get_free_id();
+	}
 	_base_width = 0;
 	_base_height = 0;
 	_selected_format = -1;
