@@ -424,6 +424,7 @@ Error SubProcessUnix::poll() {
 	// Need to check, as read will just keep returning 0 if the process has terminated.
 	// This should the api more convenient to use.
 	if (had_error || !is_process_running()) {
+		stop();
 		return ERR_FILE_EOF;
 	}
 
