@@ -445,15 +445,14 @@ Error SubProcessUnix::poll() {
 		return ERR_UNAVAILABLE;
 	}
 
-	// Need to check, as read will just keep returning 0 if the process has terminated.
-	// This should the api more convenient to use.
-	if (!is_process_running()) {
-		return ERR_FILE_EOF;
-	}
-
 	if (_blocking) {
 		// If it's blocking, and we want to read output from an another thread, we can just do it without poll
 		// Just ignore poll calls
+
+		if (!is_process_running()) {
+			return ERR_FILE_EOF;
+		}
+
 		return OK;
 	}
 
@@ -539,6 +538,12 @@ Error SubProcessUnix::poll() {
 
 			_err_bytes.resize(bytes_in_buffer);
 		}
+	}
+
+	// Need to check, as read will just keep returning 0 if the process has terminated.
+	// This should the api more convenient to use.
+	if (!is_process_running()) {
+		return ERR_FILE_EOF;
 	}
 
 	return OK;

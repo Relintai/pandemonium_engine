@@ -374,13 +374,14 @@ Error SubProcessWindows::poll() {
 	}
 
 	if (_blocking) {
+		// If it's blocking, and we want to read output from an another thread, we can just do it without poll
+		// Just ignore poll calls
+
 		// This should the api more convenient to use.
 		if (!is_process_running()) {
 			return ERR_FILE_EOF;
 		}
 
-		// If it's blocking, and we want to read output from an another thread, we can just do it without poll
-		// Just ignore poll calls
 		return OK;
 	}
 
@@ -468,6 +469,11 @@ Error SubProcessWindows::poll() {
 
 			_err_bytes.resize(bytes_in_buffer);
 		}
+	}
+
+	// This should the api more convenient to use.
+	if (!is_process_running()) {
+		return ERR_FILE_EOF;
 	}
 
 	return OK;
