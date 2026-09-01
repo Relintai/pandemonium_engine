@@ -69,6 +69,9 @@ Error SubProcessWindows::start() {
 		_std_err_mutex->unlock();
 	}
 
+	_bytes.clear();
+	_err_bytes.clear();
+
 	String path = _executable_path.replace("/", "\\");
 
 	String cmdline = _quote_command_line_argument(path);

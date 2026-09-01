@@ -74,6 +74,9 @@ Error SubProcessUnix::start() {
 		_std_err_mutex->unlock();
 	}
 
+	_bytes.clear();
+	_err_bytes.clear();
+
 	if (_communication_flags == COMMUNICATION_FLAGS_NONE) {
 		// We just run it, no need to worry about output
 
