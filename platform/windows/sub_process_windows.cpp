@@ -472,9 +472,10 @@ Error SubProcessWindows::send_data(const String &p_data) {
 
 	DWORD total_written = 0;
 
+	// Note, we are using lenght() to skip sending null terminators!
 	for (;;) {
 		DWORD written;
-		const bool success = WriteFile(_write_handles[0], cs.get_data(), cs.size() - total_written, &written, NULL);
+		const bool success = WriteFile(_write_handles[0], cs.get_data(), cs.length() - total_written, &written, NULL);
 
 		if (!success) {
 			stop();
@@ -483,7 +484,7 @@ Error SubProcessWindows::send_data(const String &p_data) {
 
 		total_written += written;
 
-		if (total_written >= cs.size()) {
+		if (total_written >= cs.length()) {
 			break;
 		}
 	}
