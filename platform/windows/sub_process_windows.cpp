@@ -291,9 +291,9 @@ Error SubProcessWindows::start() {
 			_read_std_err_handles[0] = NULL;
 		}
 
-		if (_write_handles[0]) {
-			CloseHandle(_write_handles[0]);
-			_write_handles[0] = NULL;
+		if (_write_handles[1]) {
+			CloseHandle(_write_handles[1]);
+			_write_handles[1] = NULL;
 		}
 
 		WaitForSingleObject(_process_info.pi.hProcess, INFINITE);
