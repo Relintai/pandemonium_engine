@@ -228,6 +228,9 @@ Error SubProcessWindows::start() {
 
 					bytes_in_buffer = read - (newline_index + 1);
 					memmove(_bytes.ptr(), _bytes.ptr() + bytes_to_convert, bytes_in_buffer);
+				} else {
+					// 0 read, remove chunk. Should probably save actual size as a variable eventually.
+					_bytes.resize(bytes_in_buffer);
 				}
 			}
 
@@ -261,6 +264,9 @@ Error SubProcessWindows::start() {
 
 					err_bytes_in_buffer = err_read - (newline_index + 1);
 					memmove(_err_bytes.ptr(), _err_bytes.ptr() + bytes_to_convert, err_bytes_in_buffer);
+				} else {
+					// 0 read, remove chunk. Should probably save actual size as a variable eventually.
+					_err_bytes.resize(err_bytes_in_buffer);
 				}
 			}
 
@@ -429,6 +435,9 @@ Error SubProcessWindows::poll() {
 			}
 
 			_bytes.resize(bytes_in_buffer);
+		} else {
+			// 0 read, remove chunk. Should probably save actual size as a variable eventually.
+			_bytes.resize(bytes_in_buffer);
 		}
 	}
 
@@ -469,6 +478,9 @@ Error SubProcessWindows::poll() {
 				memmove(_err_bytes.ptr(), _err_bytes.ptr() + bytes_to_convert, bytes_in_buffer);
 			}
 
+			_err_bytes.resize(bytes_in_buffer);
+		} else {
+			// 0 read, remove chunk. Should probably save actual size as a variable eventually.
 			_err_bytes.resize(bytes_in_buffer);
 		}
 	}
