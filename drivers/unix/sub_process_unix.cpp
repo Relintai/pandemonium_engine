@@ -259,6 +259,7 @@ Error SubProcessUnix::start() {
 
 			// StdErr
 			if ((_communication_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+				// We want to read even if stdin errored!
 				if (_read_from_std_err(err_bytes_in_buffer)) {
 					had_error = true;
 				}
