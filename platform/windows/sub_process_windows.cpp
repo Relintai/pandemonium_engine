@@ -298,6 +298,24 @@ Error SubProcessWindows::stop() {
 		return OK;
 	}
 
+	if (!_blocking) {
+		// Process remaining data when doing a non-blocking call, if there any
+
+		// StdIn
+		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
+			if (_bytes.size() > 0) {
+				_append_to_std_out(_bytes.ptr(), _bytes.size());
+			}
+		}
+
+		// StdErr
+		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+			if (_err_bytes.size() > 0) {
+				_append_to_std_err(_err_bytes.ptr(), _err_bytes.size());
+			}
+		}
+	}
+
 	// Cleanup pipe handles.
 	for (int i = 0; i < 2; ++i) {
 		if (_read_std_handles[i]) {
@@ -335,6 +353,12 @@ Error SubProcessWindows::poll() {
 		return ERR_UNAVAILABLE;
 	}
 
+	if (_blocking) {
+		// If it's blocking, and we want to read output from an another thread, we can just do it without poll
+		// Just ignore poll calls
+		return OK;
+	}
+
 	if (!_read_std_handles[0] && !_read_std_err_handles[0]) {
 		return ERR_UNAVAILABLE;
 	}
@@ -349,6 +373,7 @@ Error SubProcessWindows::poll() {
 		const bool success = ReadFile(_read_std_handles[0], _bytes.ptr() + bytes_in_buffer, CHUNK_SIZE, &read, NULL);
 
 		if (!success) {
+			// Note, stop() will process remaning bytes.
 			stop();
 			return ERR_FILE_EOF;
 		}
@@ -377,6 +402,8 @@ Error SubProcessWindows::poll() {
 					_append_to_std_err(_bytes.ptr(), bytes_in_buffer);
 				}
 			}
+
+			_bytes.resize(bytes_in_buffer);
 		}
 	}
 
@@ -390,6 +417,7 @@ Error SubProcessWindows::poll() {
 		const bool success = ReadFile(_read_std_err_handles[0], _err_bytes.ptr() + bytes_in_buffer, CHUNK_SIZE, &read, NULL);
 
 		if (!success) {
+			// Note, stop() will process remaning bytes.
 			stop();
 			return ERR_FILE_EOF;
 		}
@@ -418,6 +446,8 @@ Error SubProcessWindows::poll() {
 					_append_to_std_err(_err_bytes.ptr(), bytes_in_buffer);
 				}
 			}
+
+			_err_bytes.resize(bytes_in_buffer);
 		}
 	}
 
@@ -432,6 +462,10 @@ Error SubProcessWindows::send_signal(const int p_signal) {
 Error SubProcessWindows::send_data(const String &p_data) {
 	if (!is_process_running()) {
 		return ERR_UNCONFIGURED;
+	}
+
+	if (p_data.length() == 0) {
+		return OK;
 	}
 
 	CharString cs = p_data.utf8();
