@@ -72,7 +72,6 @@ public:
 	int get_communication_flags() const;
 	void set_communication_flags(const int p_flags);
 
-	// Needs a better name
 	bool get_use_pipe_mutex() const;
 	void set_use_pipe_mutex(const bool p_value);
 
