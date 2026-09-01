@@ -115,7 +115,17 @@ Error SubProcessUnix::start() {
 
 	// Pipe setup
 
-	// TODO
+	if ((_comminucation_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
+		ERR_FAIL_COND_V(pipe(_read_std_pipes) != 0, FAILED);
+	}
+
+	if ((_comminucation_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+		ERR_FAIL_COND_V(pipe(_read_std_err_pipes) != 0, FAILED);
+	}
+
+	if ((_comminucation_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
+		ERR_FAIL_COND_V(pipe(_write_pipes) != 0, FAILED);
+	}
 
 	// Fork it
 
@@ -124,6 +134,55 @@ Error SubProcessUnix::start() {
 
 	if (pid == 0) {
 		// is child
+
+		// Connect pipes
+
+		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
+			if (dup2(_read_std_pipes[1], STDOUT_FILENO) != STDOUT_FILENO) {
+				fprintf(stderr, "**ERROR** SubProcessUnix::execute - Could not setup std out pipe.\n");
+				raise(SIGKILL);
+				return FAILED;
+			}
+		}
+
+		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+			if (dup2(_read_std_err_pipes[1], STDERR_FILENO) != STDERR_FILENO) {
+				fprintf(stderr, "**ERROR** SubProcessUnix::execute - Could not setup std err pipe.\n");
+				raise(SIGKILL);
+				return FAILED;
+			}
+		}
+
+		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
+			if (dup2(_write_pipes[1], STDIN_FILENO) != STDIN_FILENO) {
+				fprintf(stderr, "**ERROR** SubProcessUnix::execute - Could not setup std in pipe.\n");
+				raise(SIGKILL);
+				return FAILED;
+			}
+		}
+
+		// Close pipes (appaprnelt you need to close all of them, because of dup2)
+
+		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
+			close(_read_std_pipes[0]);
+			close(_read_std_pipes[1]);
+			_read_std_pipes[0] = 0;
+			_read_std_pipes[1] = 0;
+		}
+
+		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+			close(_read_std_err_pipes[0]);
+			close(_read_std_err_pipes[1]);
+			_read_std_err_pipes[0] = 0;
+			_read_std_err_pipes[1] = 0;
+		}
+
+		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
+			close(_write_pipes[0]);
+			close(_write_pipes[1]);
+			_write_pipes[0] = 0;
+			_write_pipes[1] = 0;
+		}
 
 		if (!_blocking) {
 			// For non blocking calls, create a new session-ID so parent won't wait for it.
@@ -156,10 +215,24 @@ Error SubProcessUnix::start() {
 	_process_id = pid;
 
 	// Close unneeded pipes
-	// TODO
+
+	if ((_comminucation_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
+		close(_read_std_pipes[1]);
+		_read_std_pipes[1] = 0;
+	}
+
+	if ((_comminucation_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+		close(_read_std_err_pipes[1]);
+		_read_std_err_pipes[1] = 0;
+	}
+
+	if ((_comminucation_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
+		close(_write_pipes[1]);
+		_write_pipes[1] = 0;
+	}
 
 	if (_blocking) {
-		// RODO read output in while loop
+		// TODO read output in while loop
 		int status;
 		waitpid(pid, &status, 0);
 		_exitcode = WIFEXITED(status) ? WEXITSTATUS(status) : status;
@@ -184,17 +257,17 @@ Error SubProcessUnix::stop() {
 	for (int i = 0; i < 2; ++i) {
 		if (_read_std_pipes[i]) {
 			close(_read_std_pipes[i]);
-			_read_std_pipes[i] = NULL;
+			_read_std_pipes[i] = 0;
 		}
 
 		if (_read_std_err_pipes[i]) {
 			close(_read_std_err_pipes[i]);
-			_read_std_err_pipes[i] = NULL;
+			_read_std_err_pipes[i] = 0;
 		}
 
 		if (_write_pipes[i]) {
 			close(_write_pipes[i]);
-			_write_pipes[i] = NULL;
+			_write_pipes[i] = 0;
 		}
 	}
 

@@ -52,6 +52,7 @@ public:
 
 protected:
 	char _process_buf[65535];
+	// Note that index 0 is at the parent end, index 1 is at the child end
 	int _read_std_pipes[2];
 	int _read_std_err_pipes[2];
 	int _write_pipes[2];
