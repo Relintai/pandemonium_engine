@@ -399,7 +399,7 @@ Error SubProcessWindows::poll() {
 		_bytes.resize(bytes_in_buffer + CHUNK_SIZE);
 		const bool success = ReadFile(_read_std_handles[0], _bytes.ptr() + bytes_in_buffer, CHUNK_SIZE, &read, NULL);
 
-		if (!success) {
+		if (!success || err_read == 0) {
 			// Note, stop() will process remaning bytes, we had an error, so get rid of the new chunk, as it's empty.
 			_bytes.resize(bytes_in_buffer);
 			stop();
@@ -443,7 +443,7 @@ Error SubProcessWindows::poll() {
 		_err_bytes.resize(bytes_in_buffer + CHUNK_SIZE);
 		const bool success = ReadFile(_read_std_err_handles[0], _err_bytes.ptr() + bytes_in_buffer, CHUNK_SIZE, &read, NULL);
 
-		if (!success) {
+		if (!success || err_read == 0) {
 			// Note, stop() will process remaning bytes, we had an error, so get rid of the new chunk, as it's empty.
 			_err_bytes.resize(bytes_in_buffer);
 			stop();
