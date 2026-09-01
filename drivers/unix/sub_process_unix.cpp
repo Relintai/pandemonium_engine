@@ -135,7 +135,7 @@ Error SubProcessUnix::start() {
 	if (pid == 0) {
 		// is child
 
-		// Connect pipes
+		// Connect inherited pipes to stdout / err / in
 
 		if ((_communication_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
 			if (dup2(_read_std_pipes[1], STDOUT_FILENO) != STDOUT_FILENO) {
@@ -154,14 +154,14 @@ Error SubProcessUnix::start() {
 		}
 
 		if ((_communication_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
-			if (dup2(_write_pipes[1], STDIN_FILENO) != STDIN_FILENO) {
+			if (dup2(_write_pipes[0], STDIN_FILENO) != STDIN_FILENO) {
 				fprintf(stderr, "**ERROR** SubProcessUnix::execute - Could not setup std in pipe.\n");
 				raise(SIGKILL);
 				return FAILED;
 			}
 		}
 
-		// Close pipes (appaprnelt you need to close all of them, because of dup2)
+		// Close pipes (apparently you need to close all of them in the child, because of dup2)
 
 		if ((_communication_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
 			close(_read_std_pipes[0]);
@@ -227,8 +227,8 @@ Error SubProcessUnix::start() {
 	}
 
 	if ((_communication_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
-		close(_write_pipes[1]);
-		_write_pipes[1] = 0;
+		close(_write_pipes[0]);
+		_write_pipes[0] = 0;
 	}
 
 	if (_blocking) {
@@ -341,8 +341,8 @@ Error SubProcessUnix::start() {
 		}
 
 		if ((_communication_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
-			close(_write_pipes[0]);
-			_write_pipes[0] = 0;
+			close(_write_pipes[1]);
+			_write_pipes[1] = 0;
 		}
 
 		// Cleanup
@@ -353,7 +353,7 @@ Error SubProcessUnix::start() {
 		waitpid(pid, &status, 0);
 		_exitcode = WIFEXITED(status) ? WEXITSTATUS(status) : status;
 
-		// NOt running anymore
+		// Not running anymore
 		_process_id = 0;
 	}
 
@@ -555,7 +555,7 @@ Error SubProcessUnix::send_data(const String &p_data) {
 		return ERR_UNAVAILABLE;
 	}
 
-	if (!_write_pipes[0]) {
+	if (!_write_pipes[1]) {
 		return ERR_UNAVAILABLE;
 	}
 
@@ -563,17 +563,19 @@ Error SubProcessUnix::send_data(const String &p_data) {
 		return OK;
 	}
 
+	ssize_t sent = 0;
 	CharString cs = p_data.utf8();
 
-	// TODO
+	while (sent < cs.length()) {
+		ssize_t wb = write(_write_pipes[1], cs.get_data(), cs.length());
 
-	int wb = write(_write_pipes[0], cs.get_data(), cs.size());
+		// Error
+		if (wb < 0) {
+			return ERR_FILE_EOF;
+		}
 
-	ERR_PRINT(String::num(wb));
-
-	//	if (write(_write_pipes[0], cs.get_data(), cs.size()) != cs.size()) {
-	//	return ERR_FILE_EOF;
-	//	}
+		sent += wb;
+	}
 
 	return OK;
 }

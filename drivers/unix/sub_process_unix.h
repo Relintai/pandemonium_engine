@@ -59,7 +59,7 @@ protected:
 	LocalVector<char> _bytes;
 	LocalVector<char> _err_bytes;
 
-	// Note that index 0 is at the parent end, index 1 is at the child end
+	// Pipes are unidirectional, [0] is the read end, [1] is the write end
 	int _read_std_pipes[2];
 	int _read_std_err_pipes[2];
 	int _write_pipes[2];
