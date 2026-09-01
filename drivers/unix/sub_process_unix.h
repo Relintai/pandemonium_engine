@@ -51,8 +51,10 @@ public:
 	~SubProcessUnix();
 
 protected:
-	FILE *_process_fp;
 	char _process_buf[65535];
+	int _read_std_pipes[2];
+	int _read_std_err_pipes[2];
+	int _write_pipes[2];
 };
 
 #endif //UNIX ENABLED

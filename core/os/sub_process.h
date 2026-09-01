@@ -49,18 +49,15 @@ public:
 
 	static SubProcess *create();
 
-	// Either this should be removed, and
-	// instead a write_stdin property should be added.
-	// Or could be reworked as flags, then the other properties (get_read_std, get_read_std_err ...) can be rmoved.
-	// It would then need read stdin, stderr, and write
-	// Maybe it could be named communicationflags
-	// COMMUNICATION_FLAGS_STDIN_ENABLED =1 ...
-	// Also the Unix backend needs to be reworked to use pipes
-	enum SubProcessCommunicationMode {
-		COMMUNICATION_MODE_NONE = 0,
-		COMMUNICATION_MODE_READ = 1,
-		COMMUNICATION_MODE_WRITE = 2,
-		COMMUNICATION_MODE_READ_WRITE = 3,
+	enum SubProcessCommunicationFlags {
+		COMMUNICATION_FLAGS_NONE = 0,
+		COMMUNICATION_FLAGS_STDOUT = 1 << 0,
+		COMMUNICATION_FLAGS_STDERR = 1 << 1,
+		COMMUNICATION_FLAGS_STDIN = 1 << 2,
+
+		COMMUNICATION_FLAGS_READ = COMMUNICATION_FLAGS_STDOUT | COMMUNICATION_FLAGS_STDERR,
+		COMMUNICATION_FLAGS_WRITE = COMMUNICATION_FLAGS_STDIN,
+		COMMUNICATION_FLAGS_ALL = COMMUNICATION_FLAGS_STDOUT | COMMUNICATION_FLAGS_STDERR | COMMUNICATION_FLAGS_STDIN,
 	};
 
 	String get_executable_path() const;
@@ -72,14 +69,8 @@ public:
 	bool get_blocking() const;
 	void set_blocking(const bool p_value);
 
-	SubProcessCommunicationMode get_comminucation_mode() const;
-	void set_comminucation_mode(const SubProcessCommunicationMode p_mode);
-
-	bool get_read_std() const;
-	void set_read_std(const bool p_value);
-
-	bool get_read_std_err() const;
-	void set_read_std_err(const bool p_value);
+	int get_comminucation_flags() const;
+	void set_comminucation_flags(const int p_flags);
 
 	// Needs a better name
 	bool get_use_pipe_mutex() const;
@@ -107,7 +98,7 @@ public:
 	virtual Error send_data(const String &p_data) = 0;
 	virtual bool is_process_running() const = 0;
 
-	Error run(const String &p_executable_path, const Vector<String> &p_arguments, const SubProcessCommunicationMode p_mode = COMMUNICATION_MODE_READ, bool p_blocking = true, bool p_read_std_err = false, bool p_use_pipe_mutex = false, bool p_open_console = false);
+	Error run(const String &p_executable_path, const Vector<String> &p_arguments, const int p_communication_flags = COMMUNICATION_FLAGS_STDOUT, bool p_blocking = true, bool p_use_pipe_mutex = false, bool p_open_console = false);
 
 	template <class T>
 	static void make_default() {
@@ -125,10 +116,7 @@ protected:
 
 	bool _blocking;
 
-	SubProcessCommunicationMode _comminucation_mode;
-
-	bool _read_std;
-	bool _read_std_err;
+	int _comminucation_flags;
 
 	String _std_out;
 	String _std_err;

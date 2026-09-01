@@ -708,11 +708,15 @@ protected:
 	static void _bind_methods();
 
 public:
-	enum SubProcessCommunicationMode {
-		COMMUNICATION_MODE_NONE = SubProcess::COMMUNICATION_MODE_NONE,
-		COMMUNICATION_MODE_READ = SubProcess::COMMUNICATION_MODE_READ,
-		COMMUNICATION_MODE_WRITE = SubProcess::COMMUNICATION_MODE_WRITE,
-		COMMUNICATION_MODE_READ_WRITE = SubProcess::COMMUNICATION_MODE_READ_WRITE,
+	enum SubProcessCommunicationFlags {
+		COMMUNICATION_FLAGS_NONE = SubProcess::COMMUNICATION_FLAGS_NONE,
+		COMMUNICATION_FLAGS_STDOUT = SubProcess::COMMUNICATION_FLAGS_STDOUT,
+		COMMUNICATION_FLAGS_STDERR = SubProcess::COMMUNICATION_FLAGS_STDERR,
+		COMMUNICATION_FLAGS_STDIN = SubProcess::COMMUNICATION_FLAGS_STDIN,
+
+		COMMUNICATION_FLAGS_READ = SubProcess::COMMUNICATION_FLAGS_READ,
+		COMMUNICATION_FLAGS_WRITE = SubProcess::COMMUNICATION_FLAGS_WRITE,
+		COMMUNICATION_FLAGS_ALL = SubProcess::COMMUNICATION_FLAGS_ALL,
 	};
 
 	String get_executable_path() const;
@@ -724,14 +728,8 @@ public:
 	bool get_blocking() const;
 	void set_blocking(const bool p_value);
 
-	SubProcessCommunicationMode get_comminucation_mode() const;
-	void set_comminucation_mode(const SubProcessCommunicationMode p_mode);
-
-	bool get_read_std() const;
-	void set_read_std(const bool p_value);
-
-	bool get_read_std_err() const;
-	void set_read_std_err(const bool p_value);
+	int get_comminucation_flags() const;
+	void set_comminucation_flags(const int p_flags);
 
 	bool get_use_pipe_mutex() const;
 	void set_use_pipe_mutex(const bool p_value);
@@ -756,7 +754,7 @@ public:
 	virtual ~_SubProcess();
 };
 
-VARIANT_ENUM_CAST(_SubProcess::SubProcessCommunicationMode);
+VARIANT_ENUM_CAST(_SubProcess::SubProcessCommunicationFlags);
 
 class _Marshalls : public Object {
 	GDCLASS(_Marshalls, Object);

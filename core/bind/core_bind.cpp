@@ -2703,17 +2703,9 @@ void _SubProcess::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_blocking", "value"), &_SubProcess::set_blocking);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "blocking"), "set_blocking", "get_blocking");
 
-	ClassDB::bind_method(D_METHOD("get_comminucation_mode"), &_SubProcess::get_comminucation_mode);
-	ClassDB::bind_method(D_METHOD("set_comminucation_mode", "value"), &_SubProcess::set_comminucation_mode);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "comminucation_mode", PROPERTY_HINT_ENUM, "None,Read,Write,ReadWrite"), "set_comminucation_mode", "get_comminucation_mode");
-
-	ClassDB::bind_method(D_METHOD("get_read_std"), &_SubProcess::get_read_std);
-	ClassDB::bind_method(D_METHOD("set_read_std", "value"), &_SubProcess::set_read_std);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "read_std"), "set_read_std", "get_read_std");
-
-	ClassDB::bind_method(D_METHOD("get_read_std_err"), &_SubProcess::get_read_std_err);
-	ClassDB::bind_method(D_METHOD("set_read_std_err", "value"), &_SubProcess::set_read_std_err);
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "read_std_err"), "set_read_std_err", "get_read_std_err");
+	ClassDB::bind_method(D_METHOD("get_comminucation_flags"), &_SubProcess::get_comminucation_flags);
+	ClassDB::bind_method(D_METHOD("set_comminucation_flags", "value"), &_SubProcess::set_comminucation_flags);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "comminucation_flags", PROPERTY_HINT_FLAGS, "StdOut,StdErr,StdIn"), "set_comminucation_flags", "get_comminucation_flags");
 
 	ClassDB::bind_method(D_METHOD("get_use_pipe_mutex"), &_SubProcess::get_use_pipe_mutex);
 	ClassDB::bind_method(D_METHOD("set_use_pipe_mutex", "value"), &_SubProcess::set_use_pipe_mutex);
@@ -2736,10 +2728,13 @@ void _SubProcess::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("send_data", "data"), &_SubProcess::send_data);
 	ClassDB::bind_method(D_METHOD("is_process_running"), &_SubProcess::is_process_running);
 
-	BIND_ENUM_CONSTANT(COMMUNICATION_MODE_NONE);
-	BIND_ENUM_CONSTANT(COMMUNICATION_MODE_READ);
-	BIND_ENUM_CONSTANT(COMMUNICATION_MODE_WRITE);
-	BIND_ENUM_CONSTANT(COMMUNICATION_MODE_READ_WRITE);
+	BIND_ENUM_CONSTANT(COMMUNICATION_FLAGS_NONE);
+	BIND_ENUM_CONSTANT(COMMUNICATION_FLAGS_STDOUT);
+	BIND_ENUM_CONSTANT(COMMUNICATION_FLAGS_STDERR);
+	BIND_ENUM_CONSTANT(COMMUNICATION_FLAGS_STDIN);
+	BIND_ENUM_CONSTANT(COMMUNICATION_FLAGS_READ);
+	BIND_ENUM_CONSTANT(COMMUNICATION_FLAGS_WRITE);
+	BIND_ENUM_CONSTANT(COMMUNICATION_FLAGS_ALL);
 }
 
 String _SubProcess::get_executable_path() const {
@@ -2763,25 +2758,11 @@ void _SubProcess::set_blocking(const bool p_value) {
 	_sub_process->set_blocking(p_value);
 }
 
-_SubProcess::SubProcessCommunicationMode _SubProcess::get_comminucation_mode() const {
-	return static_cast<_SubProcess::SubProcessCommunicationMode>(_sub_process->get_comminucation_mode());
+int _SubProcess::get_comminucation_flags() const {
+	return _sub_process->get_comminucation_flags();
 }
-void _SubProcess::set_comminucation_mode(const SubProcessCommunicationMode p_mode) {
-	_sub_process->set_comminucation_mode(static_cast<SubProcess::SubProcessCommunicationMode>(p_mode));
-}
-
-bool _SubProcess::get_read_std() const {
-	return _sub_process->get_read_std();
-}
-void _SubProcess::set_read_std(const bool p_value) {
-	_sub_process->set_read_std(p_value);
-}
-
-bool _SubProcess::get_read_std_err() const {
-	return _sub_process->get_read_std_err();
-}
-void _SubProcess::set_read_std_err(const bool p_value) {
-	_sub_process->set_read_std_err(p_value);
+void _SubProcess::set_comminucation_flags(const int p_flags) {
+	_sub_process->set_comminucation_flags(p_flags);
 }
 
 bool _SubProcess::get_use_pipe_mutex() const {

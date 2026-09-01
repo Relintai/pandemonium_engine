@@ -43,8 +43,6 @@
 #include <wchar.h>
 
 Error SubProcessWindows::start() {
-	ERR_FAIL_COND_V((_comminucation_mode == COMMUNICATION_MODE_WRITE || _comminucation_mode == COMMUNICATION_MODE_READ_WRITE) && _blocking, ERR_UNAVAILABLE);
-
 	if (_executable_path.empty()) {
 		return ERR_FILE_BAD_PATH;
 	}
@@ -79,44 +77,56 @@ Error SubProcessWindows::start() {
 	bool inherit_handles = false;
 
 	// Setup Pipes
-	if ((_comminucation_mode == COMMUNICATION_MODE_READ || _comminucation_mode == COMMUNICATION_MODE_READ_WRITE) && (_read_std || _read_std_err)) {
-		// Create pipe for StdOut and StdErr.
-		SECURITY_ATTRIBUTES sa;
-		sa.nLength = sizeof(SECURITY_ATTRIBUTES);
-		sa.bInheritHandle = true;
-		sa.lpSecurityDescriptor = NULL;
+	if (_comminucation_flags != COMMUNICATION_FLAGS_NONE) {
+		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
+			// Create pipe for StdOut
+			SECURITY_ATTRIBUTES sa;
+			sa.nLength = sizeof(SECURITY_ATTRIBUTES);
+			sa.bInheritHandle = true;
+			sa.lpSecurityDescriptor = NULL;
 
-		_process_info.si.dwFlags |= STARTF_USESTDHANDLES;
+			_process_info.si.dwFlags |= STARTF_USESTDHANDLES;
 
-		if (_read_std) {
 			ERR_FAIL_COND_V(!CreatePipe(&_read_std_handles[0], &_read_std_handles[1], &sa, 0), ERR_CANT_FORK);
 			ERR_FAIL_COND_V(!SetHandleInformation(_read_std_handles[0], HANDLE_FLAG_INHERIT, 0), ERR_CANT_FORK); // Read handle is for host process only and should not be inherited.
 
 			_process_info.si.hStdOutput = _read_std_handles[1];
+
+			inherit_handles = true;
 		}
 
-		if (_read_std_err) {
+		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+			// Create pipe for StdOut
+			SECURITY_ATTRIBUTES sa;
+			sa.nLength = sizeof(SECURITY_ATTRIBUTES);
+			sa.bInheritHandle = true;
+			sa.lpSecurityDescriptor = NULL;
+
+			_process_info.si.dwFlags |= STARTF_USESTDHANDLES;
+
 			ERR_FAIL_COND_V(!CreatePipe(&_read_std_err_handles[0], &_read_std_err_handles[1], &sa, 0), ERR_CANT_FORK);
 			ERR_FAIL_COND_V(!SetHandleInformation(_read_std_err_handles[0], HANDLE_FLAG_INHERIT, 0), ERR_CANT_FORK); // Read handle is for host process only and should not be inherited.
 
 			_process_info.si.hStdError = _read_std_err_handles[1];
+
+			inherit_handles = true;
 		}
-		inherit_handles = true;
-	}
 
-	if (_comminucation_mode == COMMUNICATION_MODE_WRITE || _comminucation_mode == COMMUNICATION_MODE_READ_WRITE) {
-		// Create pipe for StdOut and StdErr.
-		SECURITY_ATTRIBUTES sa;
-		sa.nLength = sizeof(SECURITY_ATTRIBUTES);
-		sa.bInheritHandle = true;
-		sa.lpSecurityDescriptor = NULL;
+		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
+			// Create pipe for StdOut and StdErr.
+			SECURITY_ATTRIBUTES sa;
+			sa.nLength = sizeof(SECURITY_ATTRIBUTES);
+			sa.bInheritHandle = true;
+			sa.lpSecurityDescriptor = NULL;
 
-		ERR_FAIL_COND_V(!CreatePipe(&_write_handles[0], &_write_handles[1], &sa, 0), ERR_CANT_FORK);
-		ERR_FAIL_COND_V(!SetHandleInformation(_write_handles[0], HANDLE_FLAG_INHERIT, 0), ERR_CANT_FORK); // Read handle is for host process only and should not be inherited.
+			ERR_FAIL_COND_V(!CreatePipe(&_write_handles[0], &_write_handles[1], &sa, 0), ERR_CANT_FORK);
+			ERR_FAIL_COND_V(!SetHandleInformation(_write_handles[0], HANDLE_FLAG_INHERIT, 0), ERR_CANT_FORK); // Read handle is for host process only and should not be inherited.
 
-		_process_info.si.dwFlags |= STARTF_USESTDHANDLES;
-		_process_info.si.hStdInput = _write_handles[1];
-		inherit_handles = true;
+			_process_info.si.dwFlags |= STARTF_USESTDHANDLES;
+			_process_info.si.hStdInput = _write_handles[1];
+
+			inherit_handles = true;
+		}
 	}
 
 	// Setup process
@@ -129,31 +139,24 @@ Error SubProcessWindows::start() {
 
 	int ret = CreateProcessW(nullptr, (LPWSTR)(modstr.ptrw()), nullptr, nullptr, inherit_handles, creaton_flags, nullptr, nullptr, si_w, &_process_info.pi);
 	if (!ret) {
-		// Fail, cleanup handles
-		if ((_comminucation_mode == COMMUNICATION_MODE_READ || _comminucation_mode == COMMUNICATION_MODE_READ_WRITE) && (_read_std || _read_std_err)) {
-			if (_read_std) {
-				CloseHandle(_read_std_handles[0]); // Cleanup pipe handles.
-				CloseHandle(_read_std_handles[1]);
+		if (_comminucation_flags != COMMUNICATION_FLAGS_NONE) {
+			// Cleanup pipe handles.
+			for (int i = 0; i < 2; ++i) {
+				if (_read_std_handles[i]) {
+					CloseHandle(_read_std_handles[i]);
+					_read_std_handles[i] = NULL;
+				}
 
-				_read_std_handles[0] = NULL;
-				_read_std_handles[1] = NULL;
+				if (_read_std_err_handles[i]) {
+					CloseHandle(_read_std_err_handles[i]);
+					_read_std_err_handles[i] = NULL;
+				}
+
+				if (_write_handles[i]) {
+					CloseHandle(_write_handles[i]);
+					_write_handles[i] = NULL;
+				}
 			}
-
-			if (_read_std_err) {
-				CloseHandle(_read_std_err_handles[0]); // Cleanup pipe handles.
-				CloseHandle(_read_std_err_handles[1]);
-
-				_read_std_err_handles[0] = NULL;
-				_read_std_err_handles[1] = NULL;
-			}
-		}
-
-		if (_comminucation_mode == COMMUNICATION_MODE_WRITE || _comminucation_mode == COMMUNICATION_MODE_READ_WRITE) {
-			CloseHandle(_write_handles[0]); // Cleanup pipe handles.
-			CloseHandle(_write_handles[1]);
-
-			_write_handles[0] = NULL;
-			_write_handles[1] = NULL;
 		}
 
 		return ERR_CANT_FORK;
@@ -161,113 +164,115 @@ Error SubProcessWindows::start() {
 
 	// Close handles that were passed to the subprocess.
 
-	if ((_comminucation_mode == COMMUNICATION_MODE_READ || _comminucation_mode == COMMUNICATION_MODE_READ_WRITE) && (_read_std || _read_std_err)) {
-		if (_read_std) {
+	if (_comminucation_flags != COMMUNICATION_FLAGS_NONE) {
+		if (_read_std_handles[1]) {
 			CloseHandle(_read_std_handles[1]);
 			_read_std_handles[1] = NULL;
 		}
 
-		if (_read_std_err) {
+		if (_read_std_handles[1]) {
 			CloseHandle(_read_std_err_handles[1]);
 			_read_std_err_handles[1] = NULL;
 		}
-	}
 
-	if (_comminucation_mode == COMMUNICATION_MODE_WRITE || _comminucation_mode == COMMUNICATION_MODE_READ_WRITE) {
-		CloseHandle(_write_handles[1]);
-		_write_handles[1] = NULL;
+		if (_write_handles[1]) {
+			CloseHandle(_write_handles[1]);
+			_write_handles[1] = NULL;
+		}
 	}
 
 	if (_blocking) {
-		// No write mode when blocking
-		if (_comminucation_mode == COMMUNICATION_MODE_READ && (_read_std || _read_std_err)) {
-			int bytes_in_buffer = 0;
-			int err_bytes_in_buffer = 0;
+		int bytes_in_buffer = 0;
+		int err_bytes_in_buffer = 0;
 
-			const int CHUNK_SIZE = 4096;
-			DWORD read = 0;
-			DWORD err_read = 0;
-			for (;;) { // Read StdOut and StdErr from pipe.
-				// First go for stdin
-
-				if (_read_std) {
-					_bytes.resize(bytes_in_buffer + CHUNK_SIZE);
-					const bool success = ReadFile(_read_std_handles[0], _bytes.ptr() + bytes_in_buffer, CHUNK_SIZE, &read, NULL);
-					if (!success || read == 0) {
+		const int CHUNK_SIZE = 4096;
+		DWORD read = 0;
+		DWORD err_read = 0;
+		for (;;) { // Read StdOut and StdErr from pipe.
+			// First go for stdin
+			if ((_comminucation_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
+				_bytes.resize(bytes_in_buffer + CHUNK_SIZE);
+				const bool success = ReadFile(_read_std_handles[0], _bytes.ptr() + bytes_in_buffer, CHUNK_SIZE, &read, NULL);
+				if (!success || read == 0) {
+					break;
+				}
+				// Assume that all possible encodings are ASCII-compatible.
+				// Break at newline to allow receiving long output in portions.
+				int newline_index = -1;
+				for (int i = read - 1; i >= 0; i--) {
+					if (_bytes[bytes_in_buffer + i] == '\n') {
+						newline_index = i;
 						break;
 					}
-					// Assume that all possible encodings are ASCII-compatible.
-					// Break at newline to allow receiving long output in portions.
-					int newline_index = -1;
-					for (int i = read - 1; i >= 0; i--) {
-						if (_bytes[bytes_in_buffer + i] == '\n') {
-							newline_index = i;
-							break;
-						}
-					}
-
-					if (newline_index == -1) {
-						bytes_in_buffer += read;
-						continue;
-					}
-
-					const int bytes_to_convert = bytes_in_buffer + (newline_index + 1);
-					_append_to_std_out(_bytes.ptr(), bytes_to_convert);
-
-					bytes_in_buffer = read - (newline_index + 1);
-					memmove(_bytes.ptr(), _bytes.ptr() + bytes_to_convert, bytes_in_buffer);
 				}
 
-				// StdErr
-				if (_read_std_err) {
-					_err_bytes.resize(err_bytes_in_buffer + CHUNK_SIZE);
-					const bool success = ReadFile(_read_std_err_handles[0], _err_bytes.ptr() + err_bytes_in_buffer, CHUNK_SIZE, &err_read, NULL);
-					if (!success || err_read == 0) {
-						break;
-					}
-					// Assume that all possible encodings are ASCII-compatible.
-					// Break at newline to allow receiving long output in portions.
-					int newline_index = -1;
-					for (int i = err_read - 1; i >= 0; i--) {
-						if (_err_bytes[err_bytes_in_buffer + i] == '\n') {
-							newline_index = i;
-							break;
-						}
-					}
-
-					if (newline_index == -1) {
-						err_bytes_in_buffer += err_read;
-						continue;
-					}
-
-					const int bytes_to_convert = err_bytes_in_buffer + (newline_index + 1);
-					_append_to_std_err(_bytes.ptr(), bytes_to_convert);
-
-					err_bytes_in_buffer = read - (newline_index + 1);
-					memmove(_err_bytes.ptr(), _err_bytes.ptr() + bytes_to_convert, bytes_in_buffer);
+				if (newline_index == -1) {
+					bytes_in_buffer += read;
+					continue;
 				}
-			}
 
-			// StdIn
-			if (bytes_in_buffer > 0) {
-				_append_to_std_out(_bytes.ptr(), bytes_in_buffer);
+				const int bytes_to_convert = bytes_in_buffer + (newline_index + 1);
+				_append_to_std_out(_bytes.ptr(), bytes_to_convert);
+
+				bytes_in_buffer = read - (newline_index + 1);
+				memmove(_bytes.ptr(), _bytes.ptr() + bytes_to_convert, bytes_in_buffer);
 			}
 
 			// StdErr
+			if ((_comminucation_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+				_err_bytes.resize(err_bytes_in_buffer + CHUNK_SIZE);
+				const bool success = ReadFile(_read_std_err_handles[0], _err_bytes.ptr() + err_bytes_in_buffer, CHUNK_SIZE, &err_read, NULL);
+				if (!success || err_read == 0) {
+					break;
+				}
+				// Assume that all possible encodings are ASCII-compatible.
+				// Break at newline to allow receiving long output in portions.
+				int newline_index = -1;
+				for (int i = err_read - 1; i >= 0; i--) {
+					if (_err_bytes[err_bytes_in_buffer + i] == '\n') {
+						newline_index = i;
+						break;
+					}
+				}
 
-			if (bytes_in_buffer > 0) {
-				_append_to_std_err(_err_bytes.ptr(), err_bytes_in_buffer);
+				if (newline_index == -1) {
+					err_bytes_in_buffer += err_read;
+					continue;
+				}
+
+				const int bytes_to_convert = err_bytes_in_buffer + (newline_index + 1);
+				_append_to_std_err(_bytes.ptr(), bytes_to_convert);
+
+				err_bytes_in_buffer = read - (newline_index + 1);
+				memmove(_err_bytes.ptr(), _err_bytes.ptr() + bytes_to_convert, bytes_in_buffer);
 			}
 
-			if (_read_std) {
-				CloseHandle(_read_std_handles[0]);
-				_read_std_handles[0] = NULL;
-			}
+			// Note that we don't worry about stdin here, as it can only happen if a thread launches a process in blocking mode, an an another writes to it.
+		}
 
-			if (_read_std_err) {
-				CloseHandle(_read_std_err_handles[0]);
-				_read_std_err_handles[0] = NULL;
-			}
+		// StdIn
+		if (bytes_in_buffer > 0) {
+			_append_to_std_out(_bytes.ptr(), bytes_in_buffer);
+		}
+
+		// StdErr
+		if (bytes_in_buffer > 0) {
+			_append_to_std_err(_err_bytes.ptr(), err_bytes_in_buffer);
+		}
+
+		if (_read_std_handles[0]) {
+			CloseHandle(_read_std_handles[0]);
+			_read_std_handles[0] = NULL;
+		}
+
+		if (_read_std_err_handles[0]) {
+			CloseHandle(_read_std_err_handles[0]);
+			_read_std_err_handles[0] = NULL;
+		}
+
+		if (_write_handles[0]) {
+			CloseHandle(_write_handles[0]);
+			_write_handles[0] = NULL;
 		}
 
 		WaitForSingleObject(_process_info.pi.hProcess, INFINITE);
@@ -327,11 +332,11 @@ Error SubProcessWindows::stop() {
 
 Error SubProcessWindows::poll() {
 	if (!_process_started) {
-		return FAILED;
+		return ERR_UNAVAILABLE;
 	}
 
 	if (!_read_std_handles[0] && !_read_std_err_handles[0]) {
-		return FAILED;
+		return ERR_UNAVAILABLE;
 	}
 
 	if (_read_std_handles[0]) {
@@ -425,8 +430,31 @@ Error SubProcessWindows::send_signal(const int p_signal) {
 }
 
 Error SubProcessWindows::send_data(const String &p_data) {
-	//Not Yet Impl
-	ERR_FAIL_V(ERR_BUG);
+	if (!is_process_running()) {
+		return ERR_UNCONFIGURED;
+	}
+
+	CharString cs = p_data.utf8();
+
+	DWORD total_written = 0;
+
+	for (;;) {
+		DWORD written;
+		const bool success = WriteFile(_write_handles[0], cs.get_data(), cs.size() - total_written, &written, NULL);
+
+		if (!success) {
+			stop();
+			return ERR_FILE_EOF;
+		}
+
+		total_written += written;
+
+		if (total_written >= cs.size()) {
+			break;
+		}
+	}
+
+	return OK;
 }
 
 bool SubProcessWindows::is_process_running() const {

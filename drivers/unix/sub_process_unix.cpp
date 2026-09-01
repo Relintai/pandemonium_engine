@@ -48,8 +48,6 @@ Error SubProcessUnix::start() {
 	ERR_FAIL_V(ERR_BUG);
 #else
 
-	ERR_FAIL_COND_V((_comminucation_mode == COMMUNICATION_MODE_WRITE || _comminucation_mode == COMMUNICATION_MODE_READ_WRITE) && _blocking, ERR_UNAVAILABLE);
-
 	if (_executable_path.empty()) {
 		return ERR_FILE_BAD_PATH;
 	}
@@ -67,7 +65,7 @@ Error SubProcessUnix::start() {
 		_pipe_mutex->unlock();
 	}
 
-	if (_comminucation_mode == COMMUNICATION_MODE_NONE) {
+	if (_comminucation_flags == COMMUNICATION_FLAGS_NONE) {
 		// We just run it, no need to worry about output
 
 		pid_t pid = fork();
@@ -98,87 +96,73 @@ Error SubProcessUnix::start() {
 			// still alive? something failed..
 			fprintf(stderr, "**ERROR** SubProcessUnix::execute - Could not create child process while executing: %s\n", _executable_path.utf8().get_data());
 			raise(SIGKILL);
+			return FAILED;
 		}
+
+		_process_id = pid;
 
 		if (_blocking) {
 			int status;
 			waitpid(pid, &status, 0);
 
 			_exitcode = WIFEXITED(status) ? WEXITSTATUS(status) : status;
-		} else {
-			_process_id = pid;
 		}
-	} else if (_comminucation_mode == COMMUNICATION_MODE_READ) {
-		if (_blocking) {
-			String argss;
-			argss = "\"" + _executable_path + "\"";
-
-			for (int i = 0; i < _arguments.size(); i++) {
-				argss += String(" \"") + _arguments[i] + "\"";
-			}
-
-			if (_read_std_err) {
-				argss += " 2>&1"; // Read stderr too
-			} else {
-				argss += " 2>/dev/null"; //silence stderr
-			}
-			FILE *f = popen(argss.utf8().get_data(), "r");
-
-			ERR_FAIL_COND_V_MSG(!f, ERR_CANT_OPEN, "Cannot pipe stream from process running with following arguments '" + argss + "'.");
-
-			char buf[65535];
-
-			while (fgets(buf, 65535, f)) {
-				if (_pipe_mutex) {
-					_pipe_mutex->lock();
-				}
-				_std_out += String::utf8(buf);
-				if (_pipe_mutex) {
-					_pipe_mutex->unlock();
-				}
-			}
-			int rv = pclose(f);
-
-			_exitcode = WEXITSTATUS(rv);
-
-			return OK;
-		} else {
-			String argss;
-			argss = "\"" + _executable_path + "\"";
-
-			for (int i = 0; i < _arguments.size(); i++) {
-				argss += String(" \"") + _arguments[i] + "\"";
-			}
-
-			if (_read_std_err) {
-				argss += " 2>&1"; // Read stderr too
-			} else {
-				argss += " 2>/dev/null"; //silence stderr
-			}
-
-			_process_fp = popen(argss.utf8().get_data(), "r");
-
-			ERR_FAIL_COND_V_MSG(!_process_fp, ERR_CANT_OPEN, "Cannot pipe stream from process running with following arguments '" + argss + "'.");
-
-			return OK;
-		}
-	} else if (_comminucation_mode == COMMUNICATION_MODE_WRITE) {
-		// Blocking mode does not work here
-		String argss;
-		argss = "\"" + _executable_path + "\"";
-
-		for (int i = 0; i < _arguments.size(); i++) {
-			argss += String(" \"") + _arguments[i] + "\"";
-		}
-
-		_process_fp = popen(argss.utf8().get_data(), "w");
-
-		ERR_FAIL_COND_V_MSG(!_process_fp, ERR_CANT_OPEN, "Cannot pipe stream from process running with following arguments '" + argss + "'.");
 
 		return OK;
-	} else if (_comminucation_mode == COMMUNICATION_MODE_READ_WRITE) {
-		// for now
-		return ERR_UNAVAILABLE;
+	}
+
+	// We run it, and also set up the requested pipes
+
+	// Pipe setup
+
+	// TODO
+
+	// Fork it
+
+	pid_t pid = fork();
+	ERR_FAIL_COND_V(pid < 0, ERR_CANT_FORK);
+
+	if (pid == 0) {
+		// is child
+
+		if (!_blocking) {
+			// For non blocking calls, create a new session-ID so parent won't wait for it.
+			// This ensures the process won't go zombie at end.
+			setsid();
+		}
+
+		Vector<CharString> cs;
+		cs.push_back(_executable_path.utf8());
+		for (int i = 0; i < _arguments.size(); i++) {
+			cs.push_back(_arguments[i].utf8());
+		}
+
+		Vector<char *> args;
+		for (int i = 0; i < cs.size(); i++) {
+			args.push_back((char *)cs[i].get_data());
+		}
+		args.push_back(0);
+
+		// Note that execvp replaces the current process (us) with the one requested.
+		execvp(_executable_path.utf8().get_data(), &args[0]);
+		// still alive? something failed..
+		fprintf(stderr, "**ERROR** SubProcessUnix::execute - Could not create child process while executing: %s\n", _executable_path.utf8().get_data());
+		raise(SIGKILL);
+		return FAILED;
+	}
+
+	// parent
+
+	_process_id = pid;
+
+	// Close unneeded pipes
+	// TODO
+
+	if (_blocking) {
+		// RODO read output in while loop
+		int status;
+		waitpid(pid, &status, 0);
+		_exitcode = WIFEXITED(status) ? WEXITSTATUS(status) : status;
 	}
 
 	return OK;
@@ -191,29 +175,41 @@ Error SubProcessUnix::stop() {
 	// Actual virtual call goes to OS_JavaScript.
 	ERR_FAIL_V(ERR_BUG);
 #else
-	if (_process_fp) {
-		int rv = pclose(_process_fp);
-		_process_fp = NULL;
-		_exitcode = WEXITSTATUS(rv);
-		_process_id = 0;
+
+	if (!_process_id) {
 		return OK;
 	}
 
-	if (_process_id) {
-		int ret = ::kill(_process_id, SIGKILL);
-
-		if (!ret) {
-			//avoid zombie process
-			int st;
-			::waitpid(_process_id, &st, 0);
+	// Cleanup pipe handles.
+	for (int i = 0; i < 2; ++i) {
+		if (_read_std_pipes[i]) {
+			close(_read_std_pipes[i]);
+			_read_std_pipes[i] = NULL;
 		}
 
-		_process_id = 0;
+		if (_read_std_err_pipes[i]) {
+			close(_read_std_err_pipes[i]);
+			_read_std_err_pipes[i] = NULL;
+		}
 
-		return ret ? ERR_INVALID_PARAMETER : OK;
+		if (_write_pipes[i]) {
+			close(_write_pipes[i]);
+			_write_pipes[i] = NULL;
+		}
 	}
 
-	return OK;
+	int ret = ::kill(_process_id, SIGKILL);
+
+	if (!ret) {
+		//avoid zombie process
+		int st;
+		::waitpid(_process_id, &st, 0);
+	}
+
+	_process_id = 0;
+
+	return ret ? ERR_INVALID_PARAMETER : OK;
+
 #endif
 }
 
@@ -224,30 +220,30 @@ Error SubProcessUnix::poll() {
 	ERR_FAIL_V(ERR_BUG);
 #else
 
-	if (_comminucation_mode == COMMUNICATION_MODE_NONE) {
-		return ERR_FILE_EOF;
-	} else if (_comminucation_mode == COMMUNICATION_MODE_READ || _comminucation_mode == COMMUNICATION_MODE_WRITE) {
-		if (_process_fp) {
-			if (fgets(_process_buf, 65535, _process_fp)) {
-				if (_pipe_mutex) {
-					_pipe_mutex->lock();
-				}
-				_std_out = String::utf8(_process_buf);
-				if (_pipe_mutex) {
-					_pipe_mutex->unlock();
-				}
-			} else {
-				// The process finished
-				// Cleanup:
-				stop();
-				return ERR_FILE_EOF;
-			}
-		}
-
-		return OK;
-	} else if (_comminucation_mode == COMMUNICATION_MODE_READ_WRITE) {
-		// For now
+	if (_process_id == 0) {
 		return ERR_UNAVAILABLE;
+	}
+
+	if (!_read_std_pipes[0] && !_read_std_err_pipes[0]) {
+		return ERR_UNAVAILABLE;
+	}
+
+	if (_read_std_pipes[0]) {
+		// NEeds to be like windows's
+		if (read(_read_std_pipes[0], _process_buf, 65535)) {
+			if (_pipe_mutex) {
+				_pipe_mutex->lock();
+			}
+			_std_out = String::utf8(_process_buf);
+			if (_pipe_mutex) {
+				_pipe_mutex->unlock();
+			}
+		} else {
+			// The process finished
+			// Cleanup:
+			stop();
+			return ERR_FILE_EOF;
+		}
 	}
 
 	return OK;
@@ -271,25 +267,21 @@ Error SubProcessUnix::send_signal(const int p_signal) {
 }
 
 Error SubProcessUnix::send_data(const String &p_data) {
-	if (_comminucation_mode == COMMUNICATION_MODE_WRITE) {
-		if (!_process_fp) {
-			return FAILED;
-		}
-
-		CharString cs = p_data.utf8();
-
-		if (fputs(cs.get_data(), _process_fp) > 0) {
-			return OK;
-		}
-
-		return FAILED;
-
-	} else if (_comminucation_mode == COMMUNICATION_MODE_READ_WRITE) {
-		//Not Yet Impl
-		ERR_FAIL_V(ERR_BUG);
+	if (_process_id == 0) {
+		return ERR_UNAVAILABLE;
 	}
 
-	return ERR_UNAVAILABLE;
+	if (!_write_pipes[0]) {
+		return ERR_UNAVAILABLE;
+	}
+
+	CharString cs = p_data.utf8();
+
+	if (write(_write_pipes[0], cs.get_data(), cs.size()) != cs.size()) {
+		return ERR_FILE_EOF;
+	}
+
+	return OK;
 }
 
 bool SubProcessUnix::is_process_running() const {
@@ -298,10 +290,6 @@ bool SubProcessUnix::is_process_running() const {
 	// Actual virtual call goes to OS_JavaScript.
 	ERR_FAIL_V(false);
 #else
-
-	if (_process_fp) {
-		return !feof(_process_fp);
-	}
 
 	if (_process_id == 0) {
 		return false;
@@ -318,7 +306,14 @@ bool SubProcessUnix::is_process_running() const {
 
 SubProcessUnix::SubProcessUnix() :
 		SubProcess() {
-	_process_fp = NULL;
+	_read_std_pipes[0] = 0;
+	_read_std_pipes[1] = 0;
+
+	_read_std_err_pipes[0] = 0;
+	_read_std_err_pipes[1] = 0;
+
+	_write_pipes[0] = 0;
+	_write_pipes[1] = 0;
 }
 SubProcessUnix::~SubProcessUnix() {
 	stop();

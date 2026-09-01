@@ -65,29 +65,13 @@ void SubProcess::set_blocking(const bool p_value) {
 	_blocking = p_value;
 }
 
-SubProcess::SubProcessCommunicationMode SubProcess::get_comminucation_mode() const {
-	return _comminucation_mode;
+int SubProcess::get_comminucation_flags() const {
+	return _comminucation_flags;
 }
-void SubProcess::set_comminucation_mode(const SubProcessCommunicationMode p_mode) {
-	_comminucation_mode = p_mode;
-}
-
-bool SubProcess::get_read_std() const {
-	return _read_std;
-}
-void SubProcess::set_read_std(const bool p_value) {
+void SubProcess::set_comminucation_flags(const int p_flags) {
 	ERR_FAIL_COND(is_process_running());
 
-	_read_std = p_value;
-}
-
-bool SubProcess::get_read_std_err() const {
-	return _read_std_err;
-}
-void SubProcess::set_read_std_err(const bool p_value) {
-	ERR_FAIL_COND(is_process_running());
-
-	_read_std_err = p_value;
+	_comminucation_flags = p_flags;
 }
 
 bool SubProcess::get_use_pipe_mutex() const {
@@ -138,7 +122,7 @@ String SubProcess::get_std_err() {
 	return data;
 }
 
-Error SubProcess::run(const String &p_executable_path, const Vector<String> &p_arguments, const SubProcessCommunicationMode p_mode, bool p_blocking, bool p_read_std_err, bool p_use_pipe_mutex, bool p_open_console) {
+Error SubProcess::run(const String &p_executable_path, const Vector<String> &p_arguments, const int p_communication_flags, bool p_blocking, bool p_use_pipe_mutex, bool p_open_console) {
 	if (is_process_running()) {
 		return ERR_ALREADY_IN_USE;
 	}
@@ -146,12 +130,8 @@ Error SubProcess::run(const String &p_executable_path, const Vector<String> &p_a
 	_executable_path = p_executable_path;
 	_arguments = p_arguments;
 
+	_comminucation_flags = p_communication_flags;
 	_blocking = p_blocking;
-
-	_comminucation_mode = COMMUNICATION_MODE_READ;
-
-	_read_std = true;
-	_read_std_err = p_read_std_err;
 
 	_use_pipe_mutex = p_use_pipe_mutex;
 
@@ -165,10 +145,7 @@ Error SubProcess::run(const String &p_executable_path, const Vector<String> &p_a
 SubProcess::SubProcess() {
 	_blocking = false;
 
-	_comminucation_mode = COMMUNICATION_MODE_READ;
-
-	_read_std = true;
-	_read_std_err = false;
+	_comminucation_flags = COMMUNICATION_FLAGS_STDOUT;
 
 	_use_pipe_mutex = false;
 
