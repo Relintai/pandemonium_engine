@@ -382,7 +382,8 @@ Error SubProcessWindows::poll() {
 		const bool success = ReadFile(_read_std_handles[0], _bytes.ptr() + bytes_in_buffer, CHUNK_SIZE, &read, NULL);
 
 		if (!success) {
-			// Note, stop() will process remaning bytes.
+			// Note, stop() will process remaning bytes, we had an error, so get rid of the new chunk, as it's empty.
+			_bytes.resize(bytes_in_buffer);
 			stop();
 			return ERR_FILE_EOF;
 		}
@@ -406,10 +407,6 @@ Error SubProcessWindows::poll() {
 
 				bytes_in_buffer = read - (newline_index + 1);
 				memmove(_bytes.ptr(), _bytes.ptr() + bytes_to_convert, bytes_in_buffer);
-
-				if (bytes_in_buffer > 0) {
-					_append_to_std_err(_bytes.ptr(), bytes_in_buffer);
-				}
 			}
 
 			_bytes.resize(bytes_in_buffer);
@@ -426,7 +423,8 @@ Error SubProcessWindows::poll() {
 		const bool success = ReadFile(_read_std_err_handles[0], _err_bytes.ptr() + bytes_in_buffer, CHUNK_SIZE, &read, NULL);
 
 		if (!success) {
-			// Note, stop() will process remaning bytes.
+			// Note, stop() will process remaning bytes, we had an error, so get rid of the new chunk, as it's empty.
+			_bytes.resize(bytes_in_buffer);
 			stop();
 			return ERR_FILE_EOF;
 		}
@@ -450,10 +448,6 @@ Error SubProcessWindows::poll() {
 
 				bytes_in_buffer = read - (newline_index + 1);
 				memmove(_err_bytes.ptr(), _err_bytes.ptr() + bytes_to_convert, bytes_in_buffer);
-
-				if (bytes_in_buffer > 0) {
-					_append_to_std_err(_err_bytes.ptr(), bytes_in_buffer);
-				}
 			}
 
 			_err_bytes.resize(bytes_in_buffer);
