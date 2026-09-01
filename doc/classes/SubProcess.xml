@@ -9,12 +9,6 @@
 	<tutorials>
 	</tutorials>
 	<methods>
-		<method name="get_data" qualifiers="const">
-			<return type="String" />
-			<description>
-				Returns the data returned by the last [member poll] run.
-			</description>
-		</method>
 		<method name="get_exitcode" qualifiers="const">
 			<return type="int" />
 			<description>
@@ -25,6 +19,16 @@
 			<return type="int" />
 			<description>
 				Returns the exit code of the running process, or 0.
+			</description>
+		</method>
+		<method name="get_std_err">
+			<return type="String" />
+			<description>
+			</description>
+		</method>
+		<method name="get_std_out">
+			<return type="String" />
+			<description>
 			</description>
 		</method>
 		<method name="is_process_running" qualifiers="const">
@@ -75,25 +79,32 @@
 		<member name="blocking" type="bool" setter="set_blocking" getter="get_blocking" default="false">
 			Whether to block until the subprocess finishes or not.
 		</member>
+		<member name="communication_flags" type="int" setter="set_communication_flags" getter="get_communication_flags" default="1">
+		</member>
 		<member name="executable_path" type="String" setter="set_executable_path" getter="get_executable_path" default="&quot;&quot;">
 			The executable's path that will be run.
 		</member>
 		<member name="open_console" type="bool" setter="set_open_console" getter="get_open_console" default="false">
 			Whether to open a console window or not. Windows only.
 		</member>
-		<member name="read_output" type="bool" setter="set_read_output" getter="get_read_output" default="true">
-			Controls whether to read any output of the subprocess or not.
-		</member>
-		<member name="read_std" type="bool" setter="set_read_std" getter="get_read_std" default="true">
-			Controls whether to read the standard output of the subprocess or not.
-		</member>
-		<member name="read_std_err" type="bool" setter="set_read_std_err" getter="get_read_std_err" default="false">
-			Controls whether to read the standard error output of the subprocess or not.
-		</member>
 		<member name="use_pipe_mutex" type="bool" setter="set_use_pipe_mutex" getter="get_use_pipe_mutex" default="false">
 			Controls whether to use a mutex when reading the output of the subprocess.
 		</member>
 	</members>
 	<constants>
+		<constant name="COMMUNICATION_FLAGS_NONE" value="0" enum="SubProcessCommunicationFlags">
+		</constant>
+		<constant name="COMMUNICATION_FLAGS_STDOUT" value="1" enum="SubProcessCommunicationFlags">
+		</constant>
+		<constant name="COMMUNICATION_FLAGS_STDERR" value="2" enum="SubProcessCommunicationFlags">
+		</constant>
+		<constant name="COMMUNICATION_FLAGS_STDIN" value="4" enum="SubProcessCommunicationFlags">
+		</constant>
+		<constant name="COMMUNICATION_FLAGS_READ" value="3" enum="SubProcessCommunicationFlags">
+		</constant>
+		<constant name="COMMUNICATION_FLAGS_WRITE" value="4" enum="SubProcessCommunicationFlags">
+		</constant>
+		<constant name="COMMUNICATION_FLAGS_ALL" value="7" enum="SubProcessCommunicationFlags">
+		</constant>
 	</constants>
 </class>
