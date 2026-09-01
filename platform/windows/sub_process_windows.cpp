@@ -501,10 +501,25 @@ bool SubProcessWindows::_poll_read_from_std_out() {
 	int bytes_in_buffer = _bytes.size();
 
 	const int CHUNK_SIZE = 4096;
+	int read_size = CHUNK_SIZE;
+
+	DWORD total_available_bytes;
+	if (!PeekNamedPipe(_read_std_handles[0], 0, 0, 0, &total_available_bytes, 0)) {
+		return true;
+	}
+
+	if (total_available_bytes == 0) {
+		return false;
+	}
+
+	if (total_available_bytes < CHUNK_SIZE) {
+		read_size = total_available_bytes;
+	}
+
 	DWORD read = 0;
 
 	_bytes.resize(bytes_in_buffer + CHUNK_SIZE);
-	const bool success = ReadFile(_read_std_handles[0], _bytes.ptr() + bytes_in_buffer, CHUNK_SIZE, &read, NULL);
+	const bool success = ReadFile(_read_std_handles[0], _bytes.ptr() + bytes_in_buffer, read_size, &read, NULL);
 
 	if (!success || read == 0) {
 		// Note, stop() will process remaning bytes, we had an error, so get rid of the new chunk, as it's empty.
@@ -546,10 +561,27 @@ bool SubProcessWindows::_poll_read_from_std_err() {
 	int bytes_in_buffer = _err_bytes.size();
 
 	const int CHUNK_SIZE = 4096;
+
+	const int CHUNK_SIZE = 4096;
+	int read_size = CHUNK_SIZE;
+
+	DWORD total_available_bytes;
+	if (!PeekNamedPipe(_read_std_handles[0], 0, 0, 0, &total_available_bytes, 0)) {
+		return true;
+	}
+
+	if (total_available_bytes == 0) {
+		return false;
+	}
+
+	if (total_available_bytes < CHUNK_SIZE) {
+		read_size = total_available_bytes;
+	}
+
 	DWORD read = 0;
 
 	_err_bytes.resize(bytes_in_buffer + CHUNK_SIZE);
-	const bool success = ReadFile(_read_std_err_handles[0], _err_bytes.ptr() + bytes_in_buffer, CHUNK_SIZE, &read, NULL);
+	const bool success = ReadFile(_read_std_err_handles[0], _err_bytes.ptr() + bytes_in_buffer, read_size, &read, NULL);
 
 	if (!success || read == 0) {
 		// Note, stop() will process remaning bytes, we had an error, so get rid of the new chunk, as it's empty.
