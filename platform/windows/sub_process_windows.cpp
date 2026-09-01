@@ -198,7 +198,8 @@ Error SubProcessWindows::start() {
 				// So if read is 0, there was an issue.
 				const bool success = ReadFile(_read_std_handles[0], _bytes.ptr() + bytes_in_buffer, CHUNK_SIZE, &read, NULL);
 				if (!success || read == 0) {
-					_bytes.resize(bytes_in_buffer);
+					// No need
+					//_bytes.resize(bytes_in_buffer);
 					break;
 				}
 
@@ -229,7 +230,8 @@ Error SubProcessWindows::start() {
 				_err_bytes.resize(err_bytes_in_buffer + CHUNK_SIZE);
 				const bool success = ReadFile(_read_std_err_handles[0], _err_bytes.ptr() + err_bytes_in_buffer, CHUNK_SIZE, &err_read, NULL);
 				if (!success || err_read == 0) {
-					_err_bytes.resize(err_bytes_in_buffer);
+					// No need
+					//_err_bytes.resize(err_bytes_in_buffer);
 					break;
 				}
 
