@@ -319,91 +319,6 @@ Error SubProcessUnix::start() {
 #endif
 }
 
-bool SubProcessUnix::_read_from_std_out(int &bytes_in_buffer) {
-	const int CHUNK_SIZE = 4096;
-
-	ssize_t rbytes = 0;
-	_bytes.resize(bytes_in_buffer + CHUNK_SIZE);
-
-	rbytes = read(_read_std_pipes[0], _bytes.ptr() + bytes_in_buffer, CHUNK_SIZE);
-
-	if (rbytes < 0) {
-		_bytes.resize(bytes_in_buffer);
-		//stop();
-		return true;
-	}
-
-	if (rbytes != 0) {
-		// Assume that all possible encodings are ASCII-compatible.
-		// Break at newline to allow receiving long output in portions.
-		int newline_index = -1;
-		for (int i = rbytes - 1; i >= 0; i--) {
-			if (_bytes[bytes_in_buffer + i] == '\n') {
-				newline_index = i;
-				break;
-			}
-		}
-
-		if (newline_index == -1) {
-			bytes_in_buffer += rbytes;
-			return false;
-		}
-
-		const int bytes_to_convert = bytes_in_buffer + (newline_index + 1);
-		_append_to_std_out(_bytes.ptr(), bytes_to_convert);
-
-		bytes_in_buffer = rbytes - (newline_index + 1);
-		memmove(_bytes.ptr(), _bytes.ptr() + bytes_to_convert, bytes_in_buffer);
-	} else {
-		// 0 read, remove chunk. Should probably save actual size as a variable eventually.
-		_bytes.resize(bytes_in_buffer);
-	}
-
-	return false;
-}
-bool SubProcessUnix::_read_from_std_err(int &err_bytes_in_buffer) {
-	const int CHUNK_SIZE = 4096;
-
-	ssize_t erbytes = 0;
-	_err_bytes.resize(err_bytes_in_buffer + CHUNK_SIZE);
-
-	erbytes = read(_read_std_err_pipes[0], _err_bytes.ptr() + err_bytes_in_buffer, CHUNK_SIZE);
-
-	if (erbytes < 0) {
-		_err_bytes.resize(err_bytes_in_buffer);
-		//stop();
-		return true;
-	}
-
-	if (erbytes != 0) {
-		// Assume that all possible encodings are ASCII-compatible.
-		// Break at newline to allow receiving long output in portions.
-		int newline_index = -1;
-		for (int i = erbytes - 1; i >= 0; i--) {
-			if (_err_bytes[err_bytes_in_buffer + i] == '\n') {
-				newline_index = i;
-				break;
-			}
-		}
-
-		if (newline_index == -1) {
-			err_bytes_in_buffer += erbytes;
-			return false;
-		}
-
-		const int bytes_to_convert = err_bytes_in_buffer + (newline_index + 1);
-		_append_to_std_err(_err_bytes.ptr(), bytes_to_convert);
-
-		err_bytes_in_buffer = erbytes - (newline_index + 1);
-		memmove(_err_bytes.ptr(), _err_bytes.ptr() + bytes_to_convert, err_bytes_in_buffer);
-	} else {
-		// 0 read, remove chunk. Should probably save actual size as a variable eventually.
-		_err_bytes.resize(err_bytes_in_buffer);
-	}
-
-	return false;
-}
-
 Error SubProcessUnix::stop() {
 #ifdef __EMSCRIPTEN__
 	// Don't compile this code at all to avoid undefined references.
@@ -681,6 +596,91 @@ SubProcessUnix::SubProcessUnix() :
 }
 SubProcessUnix::~SubProcessUnix() {
 	stop();
+}
+
+bool SubProcessUnix::_read_from_std_out(int &bytes_in_buffer) {
+	const int CHUNK_SIZE = 4096;
+
+	ssize_t rbytes = 0;
+	_bytes.resize(bytes_in_buffer + CHUNK_SIZE);
+
+	rbytes = read(_read_std_pipes[0], _bytes.ptr() + bytes_in_buffer, CHUNK_SIZE);
+
+	if (rbytes < 0) {
+		_bytes.resize(bytes_in_buffer);
+		//stop();
+		return true;
+	}
+
+	if (rbytes != 0) {
+		// Assume that all possible encodings are ASCII-compatible.
+		// Break at newline to allow receiving long output in portions.
+		int newline_index = -1;
+		for (int i = rbytes - 1; i >= 0; i--) {
+			if (_bytes[bytes_in_buffer + i] == '\n') {
+				newline_index = i;
+				break;
+			}
+		}
+
+		if (newline_index == -1) {
+			bytes_in_buffer += rbytes;
+			return false;
+		}
+
+		const int bytes_to_convert = bytes_in_buffer + (newline_index + 1);
+		_append_to_std_out(_bytes.ptr(), bytes_to_convert);
+
+		bytes_in_buffer = rbytes - (newline_index + 1);
+		memmove(_bytes.ptr(), _bytes.ptr() + bytes_to_convert, bytes_in_buffer);
+	} else {
+		// 0 read, remove chunk. Should probably save actual size as a variable eventually.
+		_bytes.resize(bytes_in_buffer);
+	}
+
+	return false;
+}
+bool SubProcessUnix::_read_from_std_err(int &err_bytes_in_buffer) {
+	const int CHUNK_SIZE = 4096;
+
+	ssize_t erbytes = 0;
+	_err_bytes.resize(err_bytes_in_buffer + CHUNK_SIZE);
+
+	erbytes = read(_read_std_err_pipes[0], _err_bytes.ptr() + err_bytes_in_buffer, CHUNK_SIZE);
+
+	if (erbytes < 0) {
+		_err_bytes.resize(err_bytes_in_buffer);
+		//stop();
+		return true;
+	}
+
+	if (erbytes != 0) {
+		// Assume that all possible encodings are ASCII-compatible.
+		// Break at newline to allow receiving long output in portions.
+		int newline_index = -1;
+		for (int i = erbytes - 1; i >= 0; i--) {
+			if (_err_bytes[err_bytes_in_buffer + i] == '\n') {
+				newline_index = i;
+				break;
+			}
+		}
+
+		if (newline_index == -1) {
+			err_bytes_in_buffer += erbytes;
+			return false;
+		}
+
+		const int bytes_to_convert = err_bytes_in_buffer + (newline_index + 1);
+		_append_to_std_err(_err_bytes.ptr(), bytes_to_convert);
+
+		err_bytes_in_buffer = erbytes - (newline_index + 1);
+		memmove(_err_bytes.ptr(), _err_bytes.ptr() + bytes_to_convert, err_bytes_in_buffer);
+	} else {
+		// 0 read, remove chunk. Should probably save actual size as a variable eventually.
+		_err_bytes.resize(err_bytes_in_buffer);
+	}
+
+	return false;
 }
 
 void SubProcessUnix::_append_to_std_out(char *p_bytes, int p_size) {
