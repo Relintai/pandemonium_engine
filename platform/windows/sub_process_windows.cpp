@@ -188,79 +188,28 @@ Error SubProcessWindows::start() {
 		int err_bytes_in_buffer = 0;
 
 		const int CHUNK_SIZE = 4096;
-		DWORD read = 0;
-		DWORD err_read = 0;
 		for (;;) { // Read StdOut and StdErr from pipe.
+			bool had_error = false;
+
 			// First go for stdin
 			if ((_communication_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
-				_bytes.resize(bytes_in_buffer + CHUNK_SIZE);
-				// Unlike in linux, here ReadFile blocks, until either it can read up to chunk size, or an error happens
-				// So if read is 0, there was an issue.
-				const bool success = ReadFile(_read_std_handles[0], _bytes.ptr() + bytes_in_buffer, CHUNK_SIZE, &read, NULL);
-				if (!success || read == 0) {
-					// No need
-					//_bytes.resize(bytes_in_buffer);
-					break;
+				if (_read_from_std_out(bytes_in_buffer)) {
+					had_error = true;
 				}
-
-				// Assume that all possible encodings are ASCII-compatible.
-				// Break at newline to allow receiving long output in portions.
-				int newline_index = -1;
-				for (int i = read - 1; i >= 0; i--) {
-					if (_bytes[bytes_in_buffer + i] == '\n') {
-						newline_index = i;
-						break;
-					}
-				}
-
-				if (newline_index == -1) {
-					bytes_in_buffer += read;
-					continue;
-				}
-
-				const int bytes_to_convert = bytes_in_buffer + (newline_index + 1);
-				_append_to_std_out(_bytes.ptr(), bytes_to_convert);
-
-				bytes_in_buffer = read - (newline_index + 1);
-				memmove(_bytes.ptr(), _bytes.ptr() + bytes_to_convert, bytes_in_buffer);
 			}
 
 			// StdErr
 			if ((_communication_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
-				_err_bytes.resize(err_bytes_in_buffer + CHUNK_SIZE);
-				const bool success = ReadFile(_read_std_err_handles[0], _err_bytes.ptr() + err_bytes_in_buffer, CHUNK_SIZE, &err_read, NULL);
-				if (!success || err_read == 0) {
-					// No need
-					//_err_bytes.resize(err_bytes_in_buffer);
-					break;
+				// We want to read even if stdin errored!
+				if (_read_from_std_err(err_bytes_in_buffer)) {
+					had_error = true;
 				}
-
-				// Assume that all possible encodings are ASCII-compatible.
-				// Break at newline to allow receiving long output in portions.
-				int newline_index = -1;
-				for (int i = err_read - 1; i >= 0; i--) {
-					if (_err_bytes[err_bytes_in_buffer + i] == '\n') {
-						newline_index = i;
-						break;
-					}
-				}
-
-				if (newline_index == -1) {
-					err_bytes_in_buffer += err_read;
-					continue;
-				}
-
-				const int bytes_to_convert = err_bytes_in_buffer + (newline_index + 1);
-				_append_to_std_err(_err_bytes.ptr(), bytes_to_convert);
-
-				err_bytes_in_buffer = err_read - (newline_index + 1);
-				memmove(_err_bytes.ptr(), _err_bytes.ptr() + bytes_to_convert, err_bytes_in_buffer);
 			}
 
 			// Note that we don't worry about stdin here, as it can only happen if a thread launches a process in blocking mode, an an another writes to it.
 
 			// This is needed to detect if the subprocess have terminated. even if the stdout and stderr is not connected.
-			if (!is_process_running()) {
+			if (had_error || !is_process_running()) {
 				break;
 			}
 		}
@@ -306,6 +255,75 @@ Error SubProcessWindows::start() {
 	}
 
 	return OK;
+}
+
+bool SubProcessWindows::_read_from_std_out(int &bytes_in_buffer) {
+	DWORD read = 0;
+	_bytes.resize(bytes_in_buffer + CHUNK_SIZE);
+	// Unlike in linux, here ReadFile blocks, until either it can read up to chunk size, or an error happens
+	// So if read is 0, there was an issue.
+	const bool success = ReadFile(_read_std_handles[0], _bytes.ptr() + bytes_in_buffer, CHUNK_SIZE, &read, NULL);
+	if (!success || read == 0) {
+		// No need
+		//_bytes.resize(bytes_in_buffer);
+		return true;
+	}
+
+	// Assume that all possible encodings are ASCII-compatible.
+	// Break at newline to allow receiving long output in portions.
+	int newline_index = -1;
+	for (int i = read - 1; i >= 0; i--) {
+		if (_bytes[bytes_in_buffer + i] == '\n') {
+			newline_index = i;
+			break;
+		}
+	}
+
+	if (newline_index == -1) {
+		bytes_in_buffer += read;
+		return false;
+	}
+
+	const int bytes_to_convert = bytes_in_buffer + (newline_index + 1);
+	_append_to_std_out(_bytes.ptr(), bytes_to_convert);
+
+	bytes_in_buffer = read - (newline_index + 1);
+	memmove(_bytes.ptr(), _bytes.ptr() + bytes_to_convert, bytes_in_buffer);
+
+	return false;
+}
+
+bool SubProcessWindows::_read_from_std_err(int &err_bytes_in_buffer) {
+	DWORD err_read = 0;
+	_err_bytes.resize(err_bytes_in_buffer + CHUNK_SIZE);
+	const bool success = ReadFile(_read_std_err_handles[0], _err_bytes.ptr() + err_bytes_in_buffer, CHUNK_SIZE, &err_read, NULL);
+	if (!success || err_read == 0) {
+		// No need
+		//_err_bytes.resize(err_bytes_in_buffer);
+		return true;
+	}
+
+	// Assume that all possible encodings are ASCII-compatible.
+	// Break at newline to allow receiving long output in portions.
+	int newline_index = -1;
+	for (int i = err_read - 1; i >= 0; i--) {
+		if (_err_bytes[err_bytes_in_buffer + i] == '\n') {
+			newline_index = i;
+			break;
+		}
+	}
+
+	if (newline_index == -1) {
+		err_bytes_in_buffer += err_read;
+		return false;
+	}
+
+	const int bytes_to_convert = err_bytes_in_buffer + (newline_index + 1);
+	_append_to_std_err(_err_bytes.ptr(), bytes_to_convert);
+
+	err_bytes_in_buffer = err_read - (newline_index + 1);
+	memmove(_err_bytes.ptr(), _err_bytes.ptr() + bytes_to_convert, err_bytes_in_buffer);
+	return false;
 }
 
 Error SubProcessWindows::stop() {

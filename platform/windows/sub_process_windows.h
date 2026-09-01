@@ -49,6 +49,9 @@ public:
 	~SubProcessWindows();
 
 protected:
+	bool _read_from_std_out(int &bytes_in_buffer);
+	bool _read_from_std_err(int &err_bytes_in_buffer);
+
 	String _quote_command_line_argument(const String &p_text) const;
 	void _append_to_std_out(char *p_bytes, int p_size);
 	void _append_to_std_err(char *p_bytes, int p_size);
