@@ -81,9 +81,9 @@ I don't get hit by a surprise bill of unimaginable size by accident in the futur
 
 Github actions are now disabled for this repository.
 
-Nighlies will likely be available soon, I'll also setup action on my soon to be forgejo gitea mirror.
+Nighlies will likely be available soon, I'll also setup actions on my soon to be forgejo gitea mirror.
 
-Fortunately I was able to put together a build server using 2 stickas of old ddr4 ram and a new cpu and motherboard.
+Fortunately last month I was able to put together a build server using 2 sticks of old ddr4 ram and a new cpu and motherboard.
 Talk about timing.
 
 ### Compiling from source
