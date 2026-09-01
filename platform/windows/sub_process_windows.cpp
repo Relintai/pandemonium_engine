@@ -429,7 +429,7 @@ Error SubProcessWindows::poll() {
 
 		if (!success) {
 			// Note, stop() will process remaning bytes, we had an error, so get rid of the new chunk, as it's empty.
-			_bytes.resize(bytes_in_buffer);
+			_err_bytes.resize(bytes_in_buffer);
 			stop();
 			return ERR_FILE_EOF;
 		}
