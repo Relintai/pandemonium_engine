@@ -241,7 +241,7 @@ Error SubProcessWindows::start() {
 				}
 
 				const int bytes_to_convert = err_bytes_in_buffer + (newline_index + 1);
-				_append_to_std_err(_bytes.ptr(), bytes_to_convert);
+				_append_to_std_err(_err_bytes.ptr(), bytes_to_convert);
 
 				err_bytes_in_buffer = err_read - (newline_index + 1);
 				memmove(_err_bytes.ptr(), _err_bytes.ptr() + bytes_to_convert, err_bytes_in_buffer);
