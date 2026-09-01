@@ -340,7 +340,7 @@ Error SubProcessWindows::poll() {
 	}
 
 	if (_read_std_handles[0]) {
-		int bytes_in_buffer = 0;
+		int bytes_in_buffer = _bytes.size();
 
 		const int CHUNK_SIZE = 4096;
 		DWORD read = 0;
@@ -381,7 +381,7 @@ Error SubProcessWindows::poll() {
 	}
 
 	if (_read_std_err_handles[0]) {
-		int bytes_in_buffer = 0;
+		int bytes_in_buffer = _err_bytes.size();
 
 		const int CHUNK_SIZE = 4096;
 		DWORD read = 0;
