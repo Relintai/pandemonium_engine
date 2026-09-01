@@ -440,6 +440,12 @@ Error SubProcessUnix::poll() {
 		return OK;
 	}
 
+	// Need to check, as read will just keep returning 0 if the process has terminated.
+	// This should the api more convenient to use.
+	if (!is_process_running()) {
+		return ERR_FILE_EOF;
+	}
+
 	if (!_read_std_pipes[0] && !_read_std_err_pipes[0]) {
 		return ERR_UNAVAILABLE;
 	}
