@@ -561,8 +561,6 @@ bool SubProcessWindows::_poll_read_from_std_err() {
 	int bytes_in_buffer = _err_bytes.size();
 
 	const int CHUNK_SIZE = 4096;
-
-	const int CHUNK_SIZE = 4096;
 	int read_size = CHUNK_SIZE;
 
 	DWORD total_available_bytes;
