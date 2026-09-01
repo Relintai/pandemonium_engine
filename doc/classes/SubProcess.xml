@@ -24,11 +24,15 @@
 		<method name="get_std_err">
 			<return type="String" />
 			<description>
+				Returns what the running process put into its's std error stream since the last [method get_std_err] call.
+				Only works if COMMUNICATION_FLAGS_STDERR is set in [member communication_flags].
 			</description>
 		</method>
 		<method name="get_std_out">
 			<return type="String" />
 			<description>
+				Returns what the running process put into its's std out stream since the last [method get_std_out] call.
+				Only works if COMMUNICATION_FLAGS_STDOUT is set in [member communication_flags].
 			</description>
 		</method>
 		<method name="is_process_running" qualifiers="const">
@@ -41,6 +45,7 @@
 			<return type="int" enum="Error" />
 			<description>
 				Reads from the running process's console output if applicable.
+				Return ERR_FILE_EOF if a read cannot be performed anymore, ERR_UNAVAILABLE if settings does not allow reading, OK on success.
 			</description>
 		</method>
 		<method name="send_data">
@@ -54,15 +59,13 @@
 			<return type="int" enum="Error" />
 			<argument index="0" name="signal" type="int" />
 			<description>
-				Send a signal to the running process.
+				Send a signal to the running process. If the underlying operating system supports signals. (Windows doesn't.)
 			</description>
 		</method>
 		<method name="start">
 			<return type="int" enum="Error" />
 			<description>
 				Start a subprocess according to the properties. Will return ERR_BUSY if something is already running.
-				If [member blocking] is true, and [member read_output] is also true, the output can be read from [member get_data()] after this method returns.
-				If [member blocking] is false, and [member read_output] is true, the output can be read (usually line-by-line) from [member get_data()] after every [member poll()] calls.
 			</description>
 		</method>
 		<method name="stop">
@@ -80,6 +83,7 @@
 			Whether to block until the subprocess finishes or not.
 		</member>
 		<member name="communication_flags" type="int" setter="set_communication_flags" getter="get_communication_flags" default="1">
+			Tell the engine what input and / or output stream to connect to.
 		</member>
 		<member name="executable_path" type="String" setter="set_executable_path" getter="get_executable_path" default="&quot;&quot;">
 			The executable's path that will be run.
@@ -93,18 +97,25 @@
 	</members>
 	<constants>
 		<constant name="COMMUNICATION_FLAGS_NONE" value="0" enum="SubProcessCommunicationFlags">
+			No communication.
 		</constant>
 		<constant name="COMMUNICATION_FLAGS_STDOUT" value="1" enum="SubProcessCommunicationFlags">
+			Connect to std out.
 		</constant>
 		<constant name="COMMUNICATION_FLAGS_STDERR" value="2" enum="SubProcessCommunicationFlags">
+			Connect to std err.
 		</constant>
 		<constant name="COMMUNICATION_FLAGS_STDIN" value="4" enum="SubProcessCommunicationFlags">
+			Connect to std in.
 		</constant>
 		<constant name="COMMUNICATION_FLAGS_READ" value="3" enum="SubProcessCommunicationFlags">
+			Connect to both std out and std err.
 		</constant>
 		<constant name="COMMUNICATION_FLAGS_WRITE" value="4" enum="SubProcessCommunicationFlags">
+			Connect to std in.
 		</constant>
 		<constant name="COMMUNICATION_FLAGS_ALL" value="7" enum="SubProcessCommunicationFlags">
+			Connect all streams.
 		</constant>
 	</constants>
 </class>
