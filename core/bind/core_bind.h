@@ -728,8 +728,8 @@ public:
 	bool get_blocking() const;
 	void set_blocking(const bool p_value);
 
-	int get_comminucation_flags() const;
-	void set_comminucation_flags(const int p_flags);
+	int get_communication_flags() const;
+	void set_communication_flags(const int p_flags);
 
 	bool get_use_pipe_mutex() const;
 	void set_use_pipe_mutex(const bool p_value);

@@ -65,7 +65,7 @@ Error SubProcessUnix::start() {
 		_pipe_mutex->unlock();
 	}
 
-	if (_comminucation_flags == COMMUNICATION_FLAGS_NONE) {
+	if (_communication_flags == COMMUNICATION_FLAGS_NONE) {
 		// We just run it, no need to worry about output
 
 		pid_t pid = fork();
@@ -115,15 +115,15 @@ Error SubProcessUnix::start() {
 
 	// Pipe setup
 
-	if ((_comminucation_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
+	if ((_communication_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
 		ERR_FAIL_COND_V(pipe(_read_std_pipes) != 0, FAILED);
 	}
 
-	if ((_comminucation_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+	if ((_communication_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
 		ERR_FAIL_COND_V(pipe(_read_std_err_pipes) != 0, FAILED);
 	}
 
-	if ((_comminucation_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
+	if ((_communication_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
 		ERR_FAIL_COND_V(pipe(_write_pipes) != 0, FAILED);
 	}
 
@@ -137,7 +137,7 @@ Error SubProcessUnix::start() {
 
 		// Connect pipes
 
-		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
+		if ((_communication_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
 			if (dup2(_read_std_pipes[1], STDOUT_FILENO) != STDOUT_FILENO) {
 				fprintf(stderr, "**ERROR** SubProcessUnix::execute - Could not setup std out pipe.\n");
 				raise(SIGKILL);
@@ -145,7 +145,7 @@ Error SubProcessUnix::start() {
 			}
 		}
 
-		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+		if ((_communication_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
 			if (dup2(_read_std_err_pipes[1], STDERR_FILENO) != STDERR_FILENO) {
 				fprintf(stderr, "**ERROR** SubProcessUnix::execute - Could not setup std err pipe.\n");
 				raise(SIGKILL);
@@ -153,7 +153,7 @@ Error SubProcessUnix::start() {
 			}
 		}
 
-		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
+		if ((_communication_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
 			if (dup2(_write_pipes[1], STDIN_FILENO) != STDIN_FILENO) {
 				fprintf(stderr, "**ERROR** SubProcessUnix::execute - Could not setup std in pipe.\n");
 				raise(SIGKILL);
@@ -163,21 +163,21 @@ Error SubProcessUnix::start() {
 
 		// Close pipes (appaprnelt you need to close all of them, because of dup2)
 
-		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
+		if ((_communication_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
 			close(_read_std_pipes[0]);
 			close(_read_std_pipes[1]);
 			_read_std_pipes[0] = 0;
 			_read_std_pipes[1] = 0;
 		}
 
-		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+		if ((_communication_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
 			close(_read_std_err_pipes[0]);
 			close(_read_std_err_pipes[1]);
 			_read_std_err_pipes[0] = 0;
 			_read_std_err_pipes[1] = 0;
 		}
 
-		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
+		if ((_communication_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
 			close(_write_pipes[0]);
 			close(_write_pipes[1]);
 			_write_pipes[0] = 0;
@@ -216,17 +216,17 @@ Error SubProcessUnix::start() {
 
 	// Close unneeded pipes
 
-	if ((_comminucation_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
+	if ((_communication_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
 		close(_read_std_pipes[1]);
 		_read_std_pipes[1] = 0;
 	}
 
-	if ((_comminucation_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+	if ((_communication_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
 		close(_read_std_err_pipes[1]);
 		_read_std_err_pipes[1] = 0;
 	}
 
-	if ((_comminucation_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
+	if ((_communication_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
 		close(_write_pipes[1]);
 		_write_pipes[1] = 0;
 	}
@@ -240,7 +240,7 @@ Error SubProcessUnix::start() {
 		ssize_t erbytes = 0;
 		for (;;) { // Read StdOut and StdErr from pipe.
 			// First go for stdin
-			if ((_comminucation_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
+			if ((_communication_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
 				_bytes.resize(bytes_in_buffer + CHUNK_SIZE);
 
 				rbytes = read(_read_std_pipes[0], _bytes.ptr() + bytes_in_buffer, CHUNK_SIZE);
@@ -277,7 +277,7 @@ Error SubProcessUnix::start() {
 			}
 
 			// StdErr
-			if ((_comminucation_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+			if ((_communication_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
 				_err_bytes.resize(err_bytes_in_buffer + CHUNK_SIZE);
 
 				erbytes = read(_read_std_err_pipes[0], _err_bytes.ptr() + err_bytes_in_buffer, CHUNK_SIZE);
@@ -330,17 +330,17 @@ Error SubProcessUnix::start() {
 
 		// Close all remaining pipes
 
-		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
+		if ((_communication_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
 			close(_read_std_pipes[0]);
 			_read_std_pipes[0] = 0;
 		}
 
-		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+		if ((_communication_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
 			close(_read_std_err_pipes[0]);
 			_read_std_err_pipes[0] = 0;
 		}
 
-		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
+		if ((_communication_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
 			close(_write_pipes[0]);
 			_write_pipes[0] = 0;
 		}
@@ -376,14 +376,14 @@ Error SubProcessUnix::stop() {
 		// Process remaining data when doing a non-blocking call, if there any
 
 		// StdIn
-		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
+		if ((_communication_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
 			if (_bytes.size() > 0) {
 				_append_to_std_out(_bytes.ptr(), _bytes.size());
 			}
 		}
 
 		// StdErr
-		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+		if ((_communication_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
 			if (_err_bytes.size() > 0) {
 				_append_to_std_err(_err_bytes.ptr(), _err_bytes.size());
 			}

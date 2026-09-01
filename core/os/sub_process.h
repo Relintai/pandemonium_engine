@@ -69,8 +69,8 @@ public:
 	bool get_blocking() const;
 	void set_blocking(const bool p_value);
 
-	int get_comminucation_flags() const;
-	void set_comminucation_flags(const int p_flags);
+	int get_communication_flags() const;
+	void set_communication_flags(const int p_flags);
 
 	// Needs a better name
 	bool get_use_pipe_mutex() const;
@@ -116,7 +116,7 @@ protected:
 
 	bool _blocking;
 
-	int _comminucation_flags;
+	int _communication_flags;
 
 	String _std_out;
 	String _std_err;

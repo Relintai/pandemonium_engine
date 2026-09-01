@@ -77,8 +77,8 @@ Error SubProcessWindows::start() {
 	bool inherit_handles = false;
 
 	// Setup Pipes
-	if (_comminucation_flags != COMMUNICATION_FLAGS_NONE) {
-		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
+	if (_communication_flags != COMMUNICATION_FLAGS_NONE) {
+		if ((_communication_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
 			// Create pipe for StdOut
 			SECURITY_ATTRIBUTES sa;
 			sa.nLength = sizeof(SECURITY_ATTRIBUTES);
@@ -95,7 +95,7 @@ Error SubProcessWindows::start() {
 			inherit_handles = true;
 		}
 
-		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+		if ((_communication_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
 			// Create pipe for StdOut
 			SECURITY_ATTRIBUTES sa;
 			sa.nLength = sizeof(SECURITY_ATTRIBUTES);
@@ -112,7 +112,7 @@ Error SubProcessWindows::start() {
 			inherit_handles = true;
 		}
 
-		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
+		if ((_communication_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
 			// Create pipe for StdOut and StdErr.
 			SECURITY_ATTRIBUTES sa;
 			sa.nLength = sizeof(SECURITY_ATTRIBUTES);
@@ -139,7 +139,7 @@ Error SubProcessWindows::start() {
 
 	int ret = CreateProcessW(nullptr, (LPWSTR)(modstr.ptrw()), nullptr, nullptr, inherit_handles, creaton_flags, nullptr, nullptr, si_w, &_process_info.pi);
 	if (!ret) {
-		if (_comminucation_flags != COMMUNICATION_FLAGS_NONE) {
+		if (_communication_flags != COMMUNICATION_FLAGS_NONE) {
 			// Cleanup pipe handles.
 			for (int i = 0; i < 2; ++i) {
 				if (_read_std_handles[i]) {
@@ -164,7 +164,7 @@ Error SubProcessWindows::start() {
 
 	// Close handles that were passed to the subprocess.
 
-	if (_comminucation_flags != COMMUNICATION_FLAGS_NONE) {
+	if (_communication_flags != COMMUNICATION_FLAGS_NONE) {
 		if (_read_std_handles[1]) {
 			CloseHandle(_read_std_handles[1]);
 			_read_std_handles[1] = NULL;
@@ -190,7 +190,7 @@ Error SubProcessWindows::start() {
 		DWORD err_read = 0;
 		for (;;) { // Read StdOut and StdErr from pipe.
 			// First go for stdin
-			if ((_comminucation_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
+			if ((_communication_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
 				_bytes.resize(bytes_in_buffer + CHUNK_SIZE);
 				const bool success = ReadFile(_read_std_handles[0], _bytes.ptr() + bytes_in_buffer, CHUNK_SIZE, &read, NULL);
 				if (!success || read == 0) {
@@ -219,7 +219,7 @@ Error SubProcessWindows::start() {
 			}
 
 			// StdErr
-			if ((_comminucation_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+			if ((_communication_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
 				_err_bytes.resize(err_bytes_in_buffer + CHUNK_SIZE);
 				const bool success = ReadFile(_read_std_err_handles[0], _err_bytes.ptr() + err_bytes_in_buffer, CHUNK_SIZE, &err_read, NULL);
 				if (!success || err_read == 0) {
@@ -302,14 +302,14 @@ Error SubProcessWindows::stop() {
 		// Process remaining data when doing a non-blocking call, if there any
 
 		// StdIn
-		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
+		if ((_communication_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
 			if (_bytes.size() > 0) {
 				_append_to_std_out(_bytes.ptr(), _bytes.size());
 			}
 		}
 
 		// StdErr
-		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+		if ((_communication_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
 			if (_err_bytes.size() > 0) {
 				_append_to_std_err(_err_bytes.ptr(), _err_bytes.size());
 			}

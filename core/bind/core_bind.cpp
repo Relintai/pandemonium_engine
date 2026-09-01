@@ -2703,9 +2703,9 @@ void _SubProcess::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_blocking", "value"), &_SubProcess::set_blocking);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "blocking"), "set_blocking", "get_blocking");
 
-	ClassDB::bind_method(D_METHOD("get_comminucation_flags"), &_SubProcess::get_comminucation_flags);
-	ClassDB::bind_method(D_METHOD("set_comminucation_flags", "value"), &_SubProcess::set_comminucation_flags);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "comminucation_flags", PROPERTY_HINT_FLAGS, "StdOut,StdErr,StdIn"), "set_comminucation_flags", "get_comminucation_flags");
+	ClassDB::bind_method(D_METHOD("get_communication_flags"), &_SubProcess::get_communication_flags);
+	ClassDB::bind_method(D_METHOD("set_communication_flags", "value"), &_SubProcess::set_communication_flags);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "communication_flags", PROPERTY_HINT_FLAGS, "StdOut,StdErr,StdIn"), "set_communication_flags", "get_communication_flags");
 
 	ClassDB::bind_method(D_METHOD("get_use_pipe_mutex"), &_SubProcess::get_use_pipe_mutex);
 	ClassDB::bind_method(D_METHOD("set_use_pipe_mutex", "value"), &_SubProcess::set_use_pipe_mutex);
@@ -2758,11 +2758,11 @@ void _SubProcess::set_blocking(const bool p_value) {
 	_sub_process->set_blocking(p_value);
 }
 
-int _SubProcess::get_comminucation_flags() const {
-	return _sub_process->get_comminucation_flags();
+int _SubProcess::get_communication_flags() const {
+	return _sub_process->get_communication_flags();
 }
-void _SubProcess::set_comminucation_flags(const int p_flags) {
-	_sub_process->set_comminucation_flags(p_flags);
+void _SubProcess::set_communication_flags(const int p_flags) {
+	_sub_process->set_communication_flags(p_flags);
 }
 
 bool _SubProcess::get_use_pipe_mutex() const {
