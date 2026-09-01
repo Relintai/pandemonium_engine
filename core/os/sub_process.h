@@ -93,8 +93,7 @@ public:
 	virtual Error stop() = 0;
 	virtual Error poll() = 0;
 	virtual Error send_signal(const int p_signal) = 0;
-	// It should probably be renamed write_stdin()?
-	virtual Error send_data(const String &p_data) = 0;
+	virtual Error write_to_stdin(const String &p_data) = 0;
 	virtual bool is_process_running() const = 0;
 
 	Error run(const String &p_executable_path, const Vector<String> &p_arguments, const int p_communication_flags = COMMUNICATION_FLAGS_STDOUT, bool p_blocking = true, bool p_use_pipe_mutex = false, bool p_open_console = false);

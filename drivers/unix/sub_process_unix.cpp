@@ -556,7 +556,7 @@ Error SubProcessUnix::send_signal(const int p_signal) {
 	return FAILED;
 }
 
-Error SubProcessUnix::send_data(const String &p_data) {
+Error SubProcessUnix::write_to_stdin(const String &p_data) {
 	if (_process_id == 0) {
 		return ERR_UNAVAILABLE;
 	}

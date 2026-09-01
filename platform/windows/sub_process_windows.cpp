@@ -459,7 +459,7 @@ Error SubProcessWindows::send_signal(const int p_signal) {
 	return ERR_UNAVAILABLE;
 }
 
-Error SubProcessWindows::send_data(const String &p_data) {
+Error SubProcessWindows::write_to_stdin(const String &p_data) {
 	if (!is_process_running()) {
 		return ERR_UNCONFIGURED;
 	}

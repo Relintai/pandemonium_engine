@@ -747,7 +747,7 @@ public:
 	Error stop();
 	Error poll();
 	Error send_signal(const int p_signal);
-	Error send_data(const String &p_data);
+	Error write_to_stdin(const String &p_data);
 	bool is_process_running() const;
 
 	_SubProcess();

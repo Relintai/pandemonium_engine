@@ -48,7 +48,7 @@
 				Return ERR_FILE_EOF if a read cannot be performed anymore, ERR_UNAVAILABLE if settings does not allow reading, OK on success.
 			</description>
 		</method>
-		<method name="send_data">
+		<method name="write_to_stdin">
 			<return type="int" enum="Error" />
 			<argument index="0" name="data" type="String" />
 			<description>

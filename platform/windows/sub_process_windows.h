@@ -42,7 +42,7 @@ public:
 	virtual Error stop();
 	virtual Error poll();
 	virtual Error send_signal(const int p_signal);
-	virtual Error send_data(const String &p_data);
+	virtual Error write_to_stdin(const String &p_data);
 	virtual bool is_process_running() const;
 
 	SubProcessWindows();
