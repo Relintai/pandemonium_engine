@@ -259,30 +259,28 @@ Error SubProcessUnix::start() {
 					return ERR_FILE_EOF;
 				}
 
-				if (rbytes == 0) {
-					break;
-				}
-
-				// Assume that all possible encodings are ASCII-compatible.
-				// Break at newline to allow receiving long output in portions.
-				int newline_index = -1;
-				for (int i = rbytes - 1; i >= 0; i--) {
-					if (_bytes[bytes_in_buffer + i] == '\n') {
-						newline_index = i;
-						break;
+				if (rbytes != 0) {
+					// Assume that all possible encodings are ASCII-compatible.
+					// Break at newline to allow receiving long output in portions.
+					int newline_index = -1;
+					for (int i = rbytes - 1; i >= 0; i--) {
+						if (_bytes[bytes_in_buffer + i] == '\n') {
+							newline_index = i;
+							break;
+						}
 					}
+
+					if (newline_index == -1) {
+						bytes_in_buffer += rbytes;
+						continue;
+					}
+
+					const int bytes_to_convert = bytes_in_buffer + (newline_index + 1);
+					_append_to_std_out(_bytes.ptr(), bytes_to_convert);
+
+					bytes_in_buffer = rbytes - (newline_index + 1);
+					memmove(_bytes.ptr(), _bytes.ptr() + bytes_to_convert, bytes_in_buffer);
 				}
-
-				if (newline_index == -1) {
-					bytes_in_buffer += rbytes;
-					continue;
-				}
-
-				const int bytes_to_convert = bytes_in_buffer + (newline_index + 1);
-				_append_to_std_out(_bytes.ptr(), bytes_to_convert);
-
-				bytes_in_buffer = rbytes - (newline_index + 1);
-				memmove(_bytes.ptr(), _bytes.ptr() + bytes_to_convert, bytes_in_buffer);
 			}
 
 			// StdErr
@@ -296,33 +294,37 @@ Error SubProcessUnix::start() {
 					return ERR_FILE_EOF;
 				}
 
-				if (erbytes == 0) {
-					break;
-				}
-
-				// Assume that all possible encodings are ASCII-compatible.
-				// Break at newline to allow receiving long output in portions.
-				int newline_index = -1;
-				for (int i = erbytes - 1; i >= 0; i--) {
-					if (_err_bytes[err_bytes_in_buffer + i] == '\n') {
-						newline_index = i;
-						break;
+				if (erbytes != 0) {
+					// Assume that all possible encodings are ASCII-compatible.
+					// Break at newline to allow receiving long output in portions.
+					int newline_index = -1;
+					for (int i = erbytes - 1; i >= 0; i--) {
+						if (_err_bytes[err_bytes_in_buffer + i] == '\n') {
+							newline_index = i;
+							break;
+						}
 					}
+
+					if (newline_index == -1) {
+						err_bytes_in_buffer += erbytes;
+						continue;
+					}
+
+					const int bytes_to_convert = err_bytes_in_buffer + (newline_index + 1);
+					_append_to_std_err(_err_bytes.ptr(), bytes_to_convert);
+
+					err_bytes_in_buffer = erbytes - (newline_index + 1);
+					memmove(_err_bytes.ptr(), _err_bytes.ptr() + bytes_to_convert, err_bytes_in_buffer);
 				}
-
-				if (newline_index == -1) {
-					err_bytes_in_buffer += erbytes;
-					continue;
-				}
-
-				const int bytes_to_convert = err_bytes_in_buffer + (newline_index + 1);
-				_append_to_std_err(_err_bytes.ptr(), bytes_to_convert);
-
-				err_bytes_in_buffer = erbytes - (newline_index + 1);
-				memmove(_err_bytes.ptr(), _err_bytes.ptr() + bytes_to_convert, err_bytes_in_buffer);
 			}
 
 			// Note that we don't worry about stdin here, as it can only happen if a thread launches a process in blocking mode, an an another writes to it.
+
+			// This is needed to detect if the subprocess have terminated. even if the stdout and stderr is not connected.
+			// Also on linux read() will not fail if the subprocess is not alive anymore.
+			if (!is_process_running()) {
+				break;
+			}
 		}
 
 		// Read remaining

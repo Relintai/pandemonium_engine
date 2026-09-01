@@ -202,61 +202,72 @@ Error SubProcessWindows::start() {
 			if ((_communication_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
 				_bytes.resize(bytes_in_buffer + CHUNK_SIZE);
 				const bool success = ReadFile(_read_std_handles[0], _bytes.ptr() + bytes_in_buffer, CHUNK_SIZE, &read, NULL);
-				if (!success || read == 0) {
+				if (!success) {
 					break;
 				}
-				// Assume that all possible encodings are ASCII-compatible.
-				// Break at newline to allow receiving long output in portions.
-				int newline_index = -1;
-				for (int i = read - 1; i >= 0; i--) {
-					if (_bytes[bytes_in_buffer + i] == '\n') {
-						newline_index = i;
-						break;
+
+				if (read != 0) {
+					// Assume that all possible encodings are ASCII-compatible.
+					// Break at newline to allow receiving long output in portions.
+					int newline_index = -1;
+					for (int i = read - 1; i >= 0; i--) {
+						if (_bytes[bytes_in_buffer + i] == '\n') {
+							newline_index = i;
+							break;
+						}
 					}
+
+					if (newline_index == -1) {
+						bytes_in_buffer += read;
+						continue;
+					}
+
+					const int bytes_to_convert = bytes_in_buffer + (newline_index + 1);
+					_append_to_std_out(_bytes.ptr(), bytes_to_convert);
+
+					bytes_in_buffer = read - (newline_index + 1);
+					memmove(_bytes.ptr(), _bytes.ptr() + bytes_to_convert, bytes_in_buffer);
 				}
-
-				if (newline_index == -1) {
-					bytes_in_buffer += read;
-					continue;
-				}
-
-				const int bytes_to_convert = bytes_in_buffer + (newline_index + 1);
-				_append_to_std_out(_bytes.ptr(), bytes_to_convert);
-
-				bytes_in_buffer = read - (newline_index + 1);
-				memmove(_bytes.ptr(), _bytes.ptr() + bytes_to_convert, bytes_in_buffer);
 			}
 
 			// StdErr
 			if ((_communication_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
 				_err_bytes.resize(err_bytes_in_buffer + CHUNK_SIZE);
 				const bool success = ReadFile(_read_std_err_handles[0], _err_bytes.ptr() + err_bytes_in_buffer, CHUNK_SIZE, &err_read, NULL);
-				if (!success || err_read == 0) {
+				if (!success) {
 					break;
 				}
-				// Assume that all possible encodings are ASCII-compatible.
-				// Break at newline to allow receiving long output in portions.
-				int newline_index = -1;
-				for (int i = err_read - 1; i >= 0; i--) {
-					if (_err_bytes[err_bytes_in_buffer + i] == '\n') {
-						newline_index = i;
-						break;
+
+				if (err_read != 0) {
+					// Assume that all possible encodings are ASCII-compatible.
+					// Break at newline to allow receiving long output in portions.
+					int newline_index = -1;
+					for (int i = err_read - 1; i >= 0; i--) {
+						if (_err_bytes[err_bytes_in_buffer + i] == '\n') {
+							newline_index = i;
+							break;
+						}
 					}
+
+					if (newline_index == -1) {
+						err_bytes_in_buffer += err_read;
+						continue;
+					}
+
+					const int bytes_to_convert = err_bytes_in_buffer + (newline_index + 1);
+					_append_to_std_err(_err_bytes.ptr(), bytes_to_convert);
+
+					err_bytes_in_buffer = err_read - (newline_index + 1);
+					memmove(_err_bytes.ptr(), _err_bytes.ptr() + bytes_to_convert, err_bytes_in_buffer);
 				}
-
-				if (newline_index == -1) {
-					err_bytes_in_buffer += err_read;
-					continue;
-				}
-
-				const int bytes_to_convert = err_bytes_in_buffer + (newline_index + 1);
-				_append_to_std_err(_err_bytes.ptr(), bytes_to_convert);
-
-				err_bytes_in_buffer = err_read - (newline_index + 1);
-				memmove(_err_bytes.ptr(), _err_bytes.ptr() + bytes_to_convert, err_bytes_in_buffer);
 			}
 
 			// Note that we don't worry about stdin here, as it can only happen if a thread launches a process in blocking mode, an an another writes to it.
+
+			// This is needed to detect if the subprocess have terminated. even if the stdout and stderr is not connected.
+			if (!is_process_running()) {
+				break;
+			}
 		}
 
 		// StdIn
