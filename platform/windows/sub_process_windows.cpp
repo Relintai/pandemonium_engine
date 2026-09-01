@@ -187,7 +187,6 @@ Error SubProcessWindows::start() {
 		int bytes_in_buffer = 0;
 		int err_bytes_in_buffer = 0;
 
-		const int CHUNK_SIZE = 4096;
 		for (;;) { // Read StdOut and StdErr from pipe.
 			bool had_error = false;
 
@@ -428,6 +427,7 @@ bool SubProcessWindows::is_process_running() const {
 }
 
 bool SubProcessWindows::_read_from_std_out(int &bytes_in_buffer) {
+	const int CHUNK_SIZE = 4096;
 	DWORD read = 0;
 	_bytes.resize(bytes_in_buffer + CHUNK_SIZE);
 	// Unlike in linux, here ReadFile blocks, until either it can read up to chunk size, or an error happens
@@ -464,6 +464,7 @@ bool SubProcessWindows::_read_from_std_out(int &bytes_in_buffer) {
 }
 
 bool SubProcessWindows::_read_from_std_err(int &err_bytes_in_buffer) {
+	const int CHUNK_SIZE = 4096;
 	DWORD err_read = 0;
 	_err_bytes.resize(err_bytes_in_buffer + CHUNK_SIZE);
 	const bool success = ReadFile(_read_std_err_handles[0], _err_bytes.ptr() + err_bytes_in_buffer, CHUNK_SIZE, &err_read, NULL);
@@ -508,8 +509,8 @@ bool SubProcessWindows::_poll_read_from_std_out() {
 	if (!success || read == 0) {
 		// Note, stop() will process remaning bytes, we had an error, so get rid of the new chunk, as it's empty.
 		_bytes.resize(bytes_in_buffer);
-		stop();
-		return ERR_FILE_EOF;
+		//stop();
+		return true;
 	}
 
 	if (read != 0) {
@@ -538,6 +539,8 @@ bool SubProcessWindows::_poll_read_from_std_out() {
 		// 0 read, remove chunk. Should probably save actual size as a variable eventually.
 		_bytes.resize(bytes_in_buffer);
 	}
+
+	return false;
 }
 bool SubProcessWindows::_poll_read_from_std_err() {
 	int bytes_in_buffer = _err_bytes.size();
@@ -551,8 +554,8 @@ bool SubProcessWindows::_poll_read_from_std_err() {
 	if (!success || read == 0) {
 		// Note, stop() will process remaning bytes, we had an error, so get rid of the new chunk, as it's empty.
 		_err_bytes.resize(bytes_in_buffer);
-		stop();
-		return ERR_FILE_EOF;
+		//stop();
+		return true;
 	}
 
 	if (read != 0) {
@@ -581,6 +584,8 @@ bool SubProcessWindows::_poll_read_from_std_err() {
 		// 0 read, remove chunk. Should probably save actual size as a variable eventually.
 		_err_bytes.resize(bytes_in_buffer);
 	}
+
+	return false;
 }
 
 String SubProcessWindows::_quote_command_line_argument(const String &p_text) const {
