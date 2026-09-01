@@ -398,9 +398,9 @@ Error SubProcessWindows::write_to_stdin(const String &p_data) {
 	//}
 	//}
 
-	//if (_std_in_mutex) {
-	//_std_in_mutex->unlock();
-	//}
+	if (_std_in_mutex) {
+		_std_in_mutex->unlock();
+	}
 
 	return OK;
 }
