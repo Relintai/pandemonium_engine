@@ -232,10 +232,129 @@ Error SubProcessUnix::start() {
 	}
 
 	if (_blocking) {
-		// TODO read output in while loop
+		int bytes_in_buffer = 0;
+		int err_bytes_in_buffer = 0;
+
+		const int CHUNK_SIZE = 4096;
+		ssize_t rbytes = 0;
+		ssize_t erbytes = 0;
+		for (;;) { // Read StdOut and StdErr from pipe.
+			// First go for stdin
+			if ((_comminucation_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
+				_bytes.resize(bytes_in_buffer + CHUNK_SIZE);
+
+				rbytes = read(_read_std_pipes[0], _bytes.ptr() + bytes_in_buffer, CHUNK_SIZE);
+
+				if (rbytes < 0) {
+					stop();
+					return ERR_FILE_EOF;
+				}
+
+				if (rbytes == 0) {
+					break;
+				}
+
+				// Assume that all possible encodings are ASCII-compatible.
+				// Break at newline to allow receiving long output in portions.
+				int newline_index = -1;
+				for (int i = rbytes - 1; i >= 0; i--) {
+					if (_bytes[bytes_in_buffer + i] == '\n') {
+						newline_index = i;
+						break;
+					}
+				}
+
+				if (newline_index == -1) {
+					bytes_in_buffer += rbytes;
+					continue;
+				}
+
+				const int bytes_to_convert = bytes_in_buffer + (newline_index + 1);
+				_append_to_std_out(_bytes.ptr(), bytes_to_convert);
+
+				bytes_in_buffer = rbytes - (newline_index + 1);
+				memmove(_bytes.ptr(), _bytes.ptr() + bytes_to_convert, bytes_in_buffer);
+			}
+
+			// StdErr
+			if ((_comminucation_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+				_err_bytes.resize(err_bytes_in_buffer + CHUNK_SIZE);
+
+				erbytes = read(_read_std_err_pipes[0], _err_bytes.ptr() + err_bytes_in_buffer, CHUNK_SIZE);
+
+				if (erbytes < 0) {
+					stop();
+					return ERR_FILE_EOF;
+				}
+
+				if (erbytes == 0) {
+					break;
+				}
+
+				// Assume that all possible encodings are ASCII-compatible.
+				// Break at newline to allow receiving long output in portions.
+				int newline_index = -1;
+				for (int i = erbytes - 1; i >= 0; i--) {
+					if (_err_bytes[err_bytes_in_buffer + i] == '\n') {
+						newline_index = i;
+						break;
+					}
+				}
+
+				if (newline_index == -1) {
+					err_bytes_in_buffer += erbytes;
+					continue;
+				}
+
+				const int bytes_to_convert = err_bytes_in_buffer + (newline_index + 1);
+				_append_to_std_err(_err_bytes.ptr(), bytes_to_convert);
+
+				err_bytes_in_buffer = erbytes - (newline_index + 1);
+				memmove(_err_bytes.ptr(), _err_bytes.ptr() + bytes_to_convert, err_bytes_in_buffer);
+			}
+
+			// Note that we don't worry about stdin here, as it can only happen if a thread launches a process in blocking mode, an an another writes to it.
+		}
+
+		// Read remaining
+
+		// StdIn
+		if (bytes_in_buffer > 0) {
+			_append_to_std_out(_bytes.ptr(), bytes_in_buffer);
+		}
+
+		// StdErr
+		if (err_bytes_in_buffer > 0) {
+			_append_to_std_err(_err_bytes.ptr(), err_bytes_in_buffer);
+		}
+
+		// Close all remaining pipes
+
+		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
+			close(_read_std_pipes[0]);
+			_read_std_pipes[0] = 0;
+		}
+
+		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+			close(_read_std_err_pipes[0]);
+			_read_std_err_pipes[0] = 0;
+		}
+
+		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDIN) != 0) {
+			close(_write_pipes[0]);
+			_write_pipes[0] = 0;
+		}
+
+		// Cleanup
+
+		// Grab exit code
 		int status;
+		// "If a child has already changed state, then these calls return immediately."
 		waitpid(pid, &status, 0);
 		_exitcode = WIFEXITED(status) ? WEXITSTATUS(status) : status;
+
+		// NOt running anymore
+		_process_id = 0;
 	}
 
 	return OK;
@@ -251,6 +370,24 @@ Error SubProcessUnix::stop() {
 
 	if (!_process_id) {
 		return OK;
+	}
+
+	if (!_blocking) {
+		// Process remaining data when doing a non-blocking call, if there any
+
+		// StdIn
+		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
+			if (_bytes.size() > 0) {
+				_append_to_std_out(_bytes.ptr(), _bytes.size());
+			}
+		}
+
+		// StdErr
+		if ((_comminucation_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+			if (_err_bytes.size() > 0) {
+				_append_to_std_err(_err_bytes.ptr(), _err_bytes.size());
+			}
+		}
 	}
 
 	// Cleanup pipe handles.
@@ -297,25 +434,99 @@ Error SubProcessUnix::poll() {
 		return ERR_UNAVAILABLE;
 	}
 
+	if (_blocking) {
+		// If it's blocking, and we want to read output from an another thread, we can just do it without poll
+		// Just ignore poll calls
+		return OK;
+	}
+
 	if (!_read_std_pipes[0] && !_read_std_err_pipes[0]) {
 		return ERR_UNAVAILABLE;
 	}
 
 	if (_read_std_pipes[0]) {
-		// NEeds to be like windows's
-		if (read(_read_std_pipes[0], _process_buf, 65535)) {
-			if (_pipe_mutex) {
-				_pipe_mutex->lock();
-			}
-			_std_out = String::utf8(_process_buf);
-			if (_pipe_mutex) {
-				_pipe_mutex->unlock();
-			}
-		} else {
-			// The process finished
-			// Cleanup:
+		const int CHUNK_SIZE = 4096;
+
+		int bytes_in_buffer = _bytes.size();
+
+		_bytes.resize(bytes_in_buffer + CHUNK_SIZE);
+		ssize_t rbytes = read(_read_std_pipes[0], _bytes.ptr() + bytes_in_buffer, CHUNK_SIZE);
+
+		if (rbytes < 0) {
+			// Note, stop() will process remaning bytes.
 			stop();
 			return ERR_FILE_EOF;
+		}
+
+		if (rbytes != 0) {
+			// Assume that all possible encodings are ASCII-compatible.
+			// Break at newline to allow receiving long output in portions.
+			int newline_index = -1;
+			for (int i = rbytes - 1; i >= 0; i--) {
+				if (_bytes[bytes_in_buffer + i] == '\n') {
+					newline_index = i;
+					break;
+				}
+			}
+
+			if (newline_index == -1) {
+				bytes_in_buffer += rbytes;
+			} else {
+				const int bytes_to_convert = bytes_in_buffer + (newline_index + 1);
+				_append_to_std_out(_bytes.ptr(), bytes_to_convert);
+
+				bytes_in_buffer = rbytes - (newline_index + 1);
+				memmove(_bytes.ptr(), _bytes.ptr() + bytes_to_convert, bytes_in_buffer);
+
+				if (bytes_in_buffer > 0) {
+					_append_to_std_err(_bytes.ptr(), bytes_in_buffer);
+				}
+			}
+
+			_bytes.resize(bytes_in_buffer);
+		}
+	}
+
+	if (_read_std_err_pipes[0]) {
+		const int CHUNK_SIZE = 4096;
+
+		int bytes_in_buffer = _err_bytes.size();
+
+		_err_bytes.resize(bytes_in_buffer + CHUNK_SIZE);
+		ssize_t rbytes = read(_read_std_err_pipes[0], _err_bytes.ptr() + bytes_in_buffer, CHUNK_SIZE);
+
+		if (rbytes < 0) {
+			// Note, stop() will process remaning bytes.
+			stop();
+			return ERR_FILE_EOF;
+		}
+
+		if (rbytes != 0) {
+			// Assume that all possible encodings are ASCII-compatible.
+			// Break at newline to allow receiving long output in portions.
+			int newline_index = -1;
+			for (int i = rbytes - 1; i >= 0; i--) {
+				if (_err_bytes[bytes_in_buffer + i] == '\n') {
+					newline_index = i;
+					break;
+				}
+			}
+
+			if (newline_index == -1) {
+				bytes_in_buffer += rbytes;
+			} else {
+				const int bytes_to_convert = bytes_in_buffer + (newline_index + 1);
+				_append_to_std_err(_err_bytes.ptr(), bytes_to_convert);
+
+				bytes_in_buffer = rbytes - (newline_index + 1);
+				memmove(_err_bytes.ptr(), _err_bytes.ptr() + bytes_to_convert, bytes_in_buffer);
+
+				if (bytes_in_buffer > 0) {
+					_append_to_std_err(_err_bytes.ptr(), bytes_in_buffer);
+				}
+			}
+
+			_err_bytes.resize(bytes_in_buffer);
 		}
 	}
 
@@ -348,11 +559,21 @@ Error SubProcessUnix::send_data(const String &p_data) {
 		return ERR_UNAVAILABLE;
 	}
 
+	if (p_data.length() == 0) {
+		return OK;
+	}
+
 	CharString cs = p_data.utf8();
 
-	if (write(_write_pipes[0], cs.get_data(), cs.size()) != cs.size()) {
-		return ERR_FILE_EOF;
-	}
+	// TODO
+
+	int wb = write(_write_pipes[0], cs.get_data(), cs.size());
+
+	ERR_PRINT(String::num(wb));
+
+	//	if (write(_write_pipes[0], cs.get_data(), cs.size()) != cs.size()) {
+	//	return ERR_FILE_EOF;
+	//	}
 
 	return OK;
 }
@@ -390,6 +611,27 @@ SubProcessUnix::SubProcessUnix() :
 }
 SubProcessUnix::~SubProcessUnix() {
 	stop();
+}
+
+void SubProcessUnix::_append_to_std_out(char *p_bytes, int p_size) {
+	if (_pipe_mutex) {
+		_pipe_mutex->lock();
+	}
+	_std_out += String::utf8(p_bytes, p_size);
+	if (_pipe_mutex) {
+		_pipe_mutex->unlock();
+	}
+}
+
+void SubProcessUnix::_append_to_std_err(char *p_bytes, int p_size) {
+	// Try to convert from default ANSI code page to Unicode.
+	if (_pipe_mutex) {
+		_pipe_mutex->lock();
+	}
+	_std_err += String::utf8(p_bytes, p_size);
+	if (_pipe_mutex) {
+		_pipe_mutex->unlock();
+	}
 }
 
 #endif //posix_enabled

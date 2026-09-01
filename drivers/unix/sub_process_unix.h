@@ -34,6 +34,8 @@
 
 #ifdef UNIX_ENABLED
 
+#include "core/containers/local_vector.h"
+
 #include "core/os/sub_process.h"
 
 #include <stdio.h>
@@ -51,7 +53,12 @@ public:
 	~SubProcessUnix();
 
 protected:
-	char _process_buf[65535];
+	void _append_to_std_out(char *p_bytes, int p_size);
+	void _append_to_std_err(char *p_bytes, int p_size);
+
+	LocalVector<char> _bytes;
+	LocalVector<char> _err_bytes;
+
 	// Note that index 0 is at the parent end, index 1 is at the child end
 	int _read_std_pipes[2];
 	int _read_std_err_pipes[2];
