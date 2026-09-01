@@ -255,6 +255,7 @@ Error SubProcessUnix::start() {
 				rbytes = read(_read_std_pipes[0], _bytes.ptr() + bytes_in_buffer, CHUNK_SIZE);
 
 				if (rbytes < 0) {
+					_bytes.resize(bytes_in_buffer);
 					stop();
 					return ERR_FILE_EOF;
 				}
@@ -290,6 +291,7 @@ Error SubProcessUnix::start() {
 				erbytes = read(_read_std_err_pipes[0], _err_bytes.ptr() + err_bytes_in_buffer, CHUNK_SIZE);
 
 				if (erbytes < 0) {
+					_err_bytes.resize(err_bytes_in_buffer);
 					stop();
 					return ERR_FILE_EOF;
 				}
