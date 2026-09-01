@@ -92,7 +92,8 @@
 			Whether to open a console window or not. Windows only.
 		</member>
 		<member name="use_pipe_mutex" type="bool" setter="set_use_pipe_mutex" getter="get_use_pipe_mutex" default="false">
-			Controls whether to use a mutex when reading the output of the subprocess.
+			Controls whether to use a mutex when communicating with the subprocess. All 3 channels (stdout, stderr, stdin) have separate mutexes.
+			Set this to true if you want to send / receive data from multiple threads simultaneously.
 		</member>
 	</members>
 	<constants>

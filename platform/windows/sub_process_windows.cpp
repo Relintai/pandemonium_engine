@@ -51,13 +51,22 @@ Error SubProcessWindows::start() {
 		return ERR_BUSY;
 	}
 
-	if (_pipe_mutex) {
-		_pipe_mutex->lock();
+	_setup_pipe_mutex();
+
+	if (_std_out_mutex) {
+		_std_out_mutex->lock();
 	}
 	_std_out = String();
+	if (_std_out_mutex) {
+		_std_out_mutex->unlock();
+	}
+
+	if (_std_err_mutex) {
+		_std_err_mutex->lock();
+	}
 	_std_err = String();
-	if (_pipe_mutex) {
-		_pipe_mutex->unlock();
+	if (_std_err_mutex) {
+		_std_err_mutex->unlock();
 	}
 
 	String path = _executable_path.replace("/", "\\");
@@ -472,12 +481,20 @@ Error SubProcessWindows::write_to_stdin(const String &p_data) {
 
 	DWORD total_written = 0;
 
+	if (_std_in_mutex) {
+		_std_in_mutex->lock();
+	}
+
 	// Note, we are using lenght() to skip sending null terminators!
 	for (;;) {
 		DWORD written;
 		const bool success = WriteFile(_write_handles[0], cs.get_data(), cs.length() - total_written, &written, NULL);
 
 		if (!success) {
+			if (_std_in_mutex) {
+				_std_in_mutex->unlock();
+			}
+
 			stop();
 			return ERR_FILE_EOF;
 		}
@@ -487,6 +504,10 @@ Error SubProcessWindows::write_to_stdin(const String &p_data) {
 		if (total_written >= cs.length()) {
 			break;
 		}
+	}
+
+	if (_std_in_mutex) {
+		_std_in_mutex->unlock();
 	}
 
 	return OK;
@@ -534,8 +555,8 @@ void SubProcessWindows::_append_to_std_out(char *p_bytes, int p_size) {
 		}
 	}
 
-	if (_pipe_mutex) {
-		_pipe_mutex->lock();
+	if (_std_out_mutex) {
+		_std_out_mutex->lock();
 	}
 	if (wchars.empty()) {
 		// Let's hope it's compatible with UTF-8.
@@ -543,8 +564,8 @@ void SubProcessWindows::_append_to_std_out(char *p_bytes, int p_size) {
 	} else {
 		_std_out += String(wchars.ptr(), total_wchars);
 	}
-	if (_pipe_mutex) {
-		_pipe_mutex->unlock();
+	if (_std_out_mutex) {
+		_std_out_mutex->unlock();
 	}
 }
 
@@ -559,8 +580,8 @@ void SubProcessWindows::_append_to_std_err(char *p_bytes, int p_size) {
 		}
 	}
 
-	if (_pipe_mutex) {
-		_pipe_mutex->lock();
+	if (_std_err_mutex) {
+		_std_err_mutex->lock();
 	}
 	if (wchars.empty()) {
 		// Let's hope it's compatible with UTF-8.
@@ -568,8 +589,8 @@ void SubProcessWindows::_append_to_std_err(char *p_bytes, int p_size) {
 	} else {
 		_std_err += String(wchars.ptr(), total_wchars);
 	}
-	if (_pipe_mutex) {
-		_pipe_mutex->unlock();
+	if (_std_err_mutex) {
+		_std_err_mutex->unlock();
 	}
 }
 

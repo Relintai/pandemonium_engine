@@ -56,13 +56,22 @@ Error SubProcessUnix::start() {
 		return ERR_BUSY;
 	}
 
-	if (_pipe_mutex) {
-		_pipe_mutex->lock();
+	_setup_pipe_mutex();
+
+	if (_std_out_mutex) {
+		_std_out_mutex->lock();
 	}
 	_std_out = String();
+	if (_std_out_mutex) {
+		_std_out_mutex->unlock();
+	}
+
+	if (_std_err_mutex) {
+		_std_err_mutex->lock();
+	}
 	_std_err = String();
-	if (_pipe_mutex) {
-		_pipe_mutex->unlock();
+	if (_std_err_mutex) {
+		_std_err_mutex->unlock();
 	}
 
 	if (_communication_flags == COMMUNICATION_FLAGS_NONE) {
@@ -572,17 +581,29 @@ Error SubProcessUnix::write_to_stdin(const String &p_data) {
 	ssize_t sent = 0;
 	CharString cs = p_data.utf8();
 
+	if (_std_in_mutex) {
+		_std_in_mutex->lock();
+	}
+
 	// Note, we are using lenght() to skip sending null terminators!
 	while (sent < cs.length()) {
 		ssize_t wb = write(_write_pipes[1], cs.get_data(), cs.length());
 
 		// Error
 		if (wb < 0) {
+			if (_std_in_mutex) {
+				_std_in_mutex->unlock();
+			}
+
 			stop();
 			return ERR_FILE_EOF;
 		}
 
 		sent += wb;
+	}
+
+	if (_std_in_mutex) {
+		_std_in_mutex->unlock();
 	}
 
 	return OK;
@@ -624,23 +645,22 @@ SubProcessUnix::~SubProcessUnix() {
 }
 
 void SubProcessUnix::_append_to_std_out(char *p_bytes, int p_size) {
-	if (_pipe_mutex) {
-		_pipe_mutex->lock();
+	if (_std_out_mutex) {
+		_std_out_mutex->lock();
 	}
 	_std_out += String::utf8(p_bytes, p_size);
-	if (_pipe_mutex) {
-		_pipe_mutex->unlock();
+	if (_std_out_mutex) {
+		_std_out_mutex->unlock();
 	}
 }
 
 void SubProcessUnix::_append_to_std_err(char *p_bytes, int p_size) {
-	// Try to convert from default ANSI code page to Unicode.
-	if (_pipe_mutex) {
-		_pipe_mutex->lock();
+	if (_std_err_mutex) {
+		_std_err_mutex->lock();
 	}
 	_std_err += String::utf8(p_bytes, p_size);
-	if (_pipe_mutex) {
-		_pipe_mutex->unlock();
+	if (_std_err_mutex) {
+		_std_err_mutex->unlock();
 	}
 }
 

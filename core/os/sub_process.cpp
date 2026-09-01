@@ -93,30 +93,30 @@ void SubProcess::set_open_console(const bool p_value) {
 }
 
 String SubProcess::get_std_out() {
-	if (_pipe_mutex) {
-		_pipe_mutex->lock();
+	if (_std_out_mutex) {
+		_std_out_mutex->lock();
 	}
 
 	String data = _std_out;
 	_std_out = String();
 
-	if (_pipe_mutex) {
-		_pipe_mutex->unlock();
+	if (_std_out_mutex) {
+		_std_out_mutex->unlock();
 	}
 
 	return data;
 }
 
 String SubProcess::get_std_err() {
-	if (_pipe_mutex) {
-		_pipe_mutex->lock();
+	if (_std_err_mutex) {
+		_std_err_mutex->lock();
 	}
 
 	String data = _std_err;
 	_std_err = String();
 
-	if (_pipe_mutex) {
-		_pipe_mutex->unlock();
+	if (_std_err_mutex) {
+		_std_err_mutex->unlock();
 	}
 
 	return data;
@@ -149,7 +149,9 @@ SubProcess::SubProcess() {
 
 	_use_pipe_mutex = false;
 
-	_pipe_mutex = NULL;
+	_std_out_mutex = NULL;
+	_std_err_mutex = NULL;
+	_std_in_mutex = NULL;
 
 	_open_console = false;
 
@@ -159,13 +161,27 @@ SubProcess::SubProcess() {
 
 void SubProcess::_setup_pipe_mutex() {
 	if (_use_pipe_mutex) {
-		if (!_pipe_mutex) {
-			_pipe_mutex = memnew(Mutex);
+		if (!_std_out_mutex) {
+			_std_out_mutex = memnew(Mutex);
+		}
+		if (!_std_err_mutex) {
+			_std_err_mutex = memnew(Mutex);
+		}
+		if (!_std_in_mutex) {
+			_std_in_mutex = memnew(Mutex);
 		}
 	} else {
-		if (_pipe_mutex) {
-			memdelete(_pipe_mutex);
-			_pipe_mutex = NULL;
+		if (_std_out_mutex) {
+			memdelete(_std_out_mutex);
+			_std_out_mutex = NULL;
+		}
+		if (_std_err_mutex) {
+			memdelete(_std_err_mutex);
+			_std_err_mutex = NULL;
+		}
+		if (_std_in_mutex) {
+			memdelete(_std_in_mutex);
+			_std_in_mutex = NULL;
 		}
 	}
 }

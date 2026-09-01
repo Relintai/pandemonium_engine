@@ -121,8 +121,9 @@ protected:
 
 	bool _use_pipe_mutex;
 
-	// TODO this needs to be split
-	Mutex *_pipe_mutex;
+	Mutex *_std_out_mutex;
+	Mutex *_std_err_mutex;
+	Mutex *_std_in_mutex;
 
 	bool _open_console;
 
