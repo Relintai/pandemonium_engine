@@ -371,36 +371,36 @@ Error SubProcessWindows::write_to_stdin(const String &p_data) {
 
 	CharString cs = p_data.utf8();
 
-	DWORD total_written = 0;
-
 	if (_std_in_mutex) {
 		_std_in_mutex->lock();
 	}
 
+	//DWORD total_written = 0;
+
 	// Note, we are using length() to skip sending null terminators!
-	for (;;) {
-		DWORD written;
-		const bool success = WriteFile(_write_handles[1], cs.get_data(), cs.length() - total_written, &written, NULL);
+	//for (;;) {
+	DWORD written;
+	const bool success = WriteFile(_write_handles[1], cs.get_data(), cs.length(), &written, NULL);
 
-		if (!success) {
-			if (_std_in_mutex) {
-				_std_in_mutex->unlock();
-			}
-
-			//stop();
-			return ERR_FILE_EOF;
+	if (!success) {
+		if (_std_in_mutex) {
+			_std_in_mutex->unlock();
 		}
 
-		total_written += written;
-
-		if ((int)total_written >= cs.length()) {
-			break;
-		}
+		//stop();
+		return ERR_FILE_EOF;
 	}
 
-	if (_std_in_mutex) {
-		_std_in_mutex->unlock();
-	}
+	//total_written += written;
+
+	//if ((int)total_written >= cs.length()) {
+	//break;
+	//}
+	//}
+
+	//if (_std_in_mutex) {
+	//_std_in_mutex->unlock();
+	//}
 
 	return OK;
 }
