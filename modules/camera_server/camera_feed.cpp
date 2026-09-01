@@ -203,7 +203,7 @@ CameraFeed::FeedFormat CameraFeed::get_format() const {
 }
 
 CameraFeed::CameraFeed() {
-	// How did this randomly became an issue randomly after around year?
+	// How did this became an issue randomly after around year?
 	if (CameraServer::get_singleton()) {
 		// initialize our feed
 		_id = CameraServer::get_singleton()->get_free_id();
