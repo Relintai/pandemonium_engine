@@ -443,16 +443,16 @@ Error SubProcessUnix::poll() {
 		return ERR_UNAVAILABLE;
 	}
 
-	if (_blocking) {
-		// If it's blocking, and we want to read output from an another thread, we can just do it without poll
-		// Just ignore poll calls
-		return OK;
-	}
-
 	// Need to check, as read will just keep returning 0 if the process has terminated.
 	// This should the api more convenient to use.
 	if (!is_process_running()) {
 		return ERR_FILE_EOF;
+	}
+
+	if (_blocking) {
+		// If it's blocking, and we want to read output from an another thread, we can just do it without poll
+		// Just ignore poll calls
+		return OK;
 	}
 
 	if (!_read_std_pipes[0] && !_read_std_err_pipes[0]) {
