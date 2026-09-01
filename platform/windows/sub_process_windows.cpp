@@ -518,7 +518,7 @@ Error SubProcessWindows::write_to_stdin(const String &p_data) {
 
 		total_written += written;
 
-		if (total_written >= cs.length()) {
+		if ((int)total_written >= cs.length()) {
 			break;
 		}
 	}
