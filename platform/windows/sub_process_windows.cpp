@@ -369,7 +369,7 @@ Error SubProcessWindows::write_to_stdin(const String &p_data) {
 		return OK;
 	}
 
-	CharString cs = p_data.utf8();
+	Char16String cs = p_data.utf16();
 
 	if (_std_in_mutex) {
 		_std_in_mutex->lock();
@@ -380,7 +380,7 @@ Error SubProcessWindows::write_to_stdin(const String &p_data) {
 	// Note, we are using length() to skip sending null terminators!
 	//for (;;) {
 	DWORD written;
-	const bool success = WriteFile(_write_handles[1], cs.get_data(), cs.length(), &written, NULL);
+	const bool success = WriteFile(_write_handles[1], (const char *)cs.get_data(), cs.length() * sizeof(char16_t), &written, NULL);
 
 	if (!success) {
 		if (_std_in_mutex) {
