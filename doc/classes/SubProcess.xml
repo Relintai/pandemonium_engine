@@ -7,6 +7,7 @@
 		This class grants access to run and manage sub processes with more fine grained control compared to OS.execute().
 	</description>
 	<tutorials>
+		<link>$DOCS_URL/07_demo_projects/misc/sub_process</link>
 	</tutorials>
 	<methods>
 		<method name="get_exitcode" qualifiers="const">
