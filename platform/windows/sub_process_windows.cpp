@@ -333,96 +333,22 @@ Error SubProcessWindows::poll() {
 		return ERR_UNAVAILABLE;
 	}
 
+	bool had_error = false;
+
 	if (_read_std_handles[0]) {
-		int bytes_in_buffer = _bytes.size();
-
-		const int CHUNK_SIZE = 4096;
-		DWORD read = 0;
-
-		_bytes.resize(bytes_in_buffer + CHUNK_SIZE);
-		const bool success = ReadFile(_read_std_handles[0], _bytes.ptr() + bytes_in_buffer, CHUNK_SIZE, &read, NULL);
-
-		if (!success || read == 0) {
-			// Note, stop() will process remaning bytes, we had an error, so get rid of the new chunk, as it's empty.
-			_bytes.resize(bytes_in_buffer);
-			stop();
-			return ERR_FILE_EOF;
-		}
-
-		if (read != 0) {
-			// Assume that all possible encodings are ASCII-compatible.
-			// Break at newline to allow receiving long output in portions.
-			int newline_index = -1;
-			for (int i = read - 1; i >= 0; i--) {
-				if (_bytes[bytes_in_buffer + i] == '\n') {
-					newline_index = i;
-					break;
-				}
-			}
-
-			if (newline_index == -1) {
-				bytes_in_buffer += read;
-			} else {
-				const int bytes_to_convert = bytes_in_buffer + (newline_index + 1);
-				_append_to_std_out(_bytes.ptr(), bytes_to_convert);
-
-				bytes_in_buffer = read - (newline_index + 1);
-				memmove(_bytes.ptr(), _bytes.ptr() + bytes_to_convert, bytes_in_buffer);
-			}
-
-			_bytes.resize(bytes_in_buffer);
-		} else {
-			// 0 read, remove chunk. Should probably save actual size as a variable eventually.
-			_bytes.resize(bytes_in_buffer);
+		if (_poll_read_from_std_out()) {
+			had_error = true;
 		}
 	}
 
 	if (_read_std_err_handles[0]) {
-		int bytes_in_buffer = _err_bytes.size();
-
-		const int CHUNK_SIZE = 4096;
-		DWORD read = 0;
-
-		_err_bytes.resize(bytes_in_buffer + CHUNK_SIZE);
-		const bool success = ReadFile(_read_std_err_handles[0], _err_bytes.ptr() + bytes_in_buffer, CHUNK_SIZE, &read, NULL);
-
-		if (!success || read == 0) {
-			// Note, stop() will process remaning bytes, we had an error, so get rid of the new chunk, as it's empty.
-			_err_bytes.resize(bytes_in_buffer);
-			stop();
-			return ERR_FILE_EOF;
-		}
-
-		if (read != 0) {
-			// Assume that all possible encodings are ASCII-compatible.
-			// Break at newline to allow receiving long output in portions.
-			int newline_index = -1;
-			for (int i = read - 1; i >= 0; i--) {
-				if (_err_bytes[bytes_in_buffer + i] == '\n') {
-					newline_index = i;
-					break;
-				}
-			}
-
-			if (newline_index == -1) {
-				bytes_in_buffer += read;
-			} else {
-				const int bytes_to_convert = bytes_in_buffer + (newline_index + 1);
-				_append_to_std_err(_err_bytes.ptr(), bytes_to_convert);
-
-				bytes_in_buffer = read - (newline_index + 1);
-				memmove(_err_bytes.ptr(), _err_bytes.ptr() + bytes_to_convert, bytes_in_buffer);
-			}
-
-			_err_bytes.resize(bytes_in_buffer);
-		} else {
-			// 0 read, remove chunk. Should probably save actual size as a variable eventually.
-			_err_bytes.resize(bytes_in_buffer);
+		if (_poll_read_from_std_err()) {
+			had_error = true;
 		}
 	}
 
 	// This should the api more convenient to use.
-	if (!is_process_running()) {
+	if (had_error || !is_process_running()) {
 		return ERR_FILE_EOF;
 	}
 
@@ -451,7 +377,7 @@ Error SubProcessWindows::write_to_stdin(const String &p_data) {
 		_std_in_mutex->lock();
 	}
 
-	// Note, we are using lenght() to skip sending null terminators!
+	// Note, we are using length() to skip sending null terminators!
 	for (;;) {
 		DWORD written;
 		const bool success = WriteFile(_write_handles[1], cs.get_data(), cs.length() - total_written, &written, NULL);
@@ -567,6 +493,93 @@ bool SubProcessWindows::_read_from_std_err(int &err_bytes_in_buffer) {
 	err_bytes_in_buffer = err_read - (newline_index + 1);
 	memmove(_err_bytes.ptr(), _err_bytes.ptr() + bytes_to_convert, err_bytes_in_buffer);
 	return false;
+}
+
+bool SubProcessWindows::_poll_read_from_std_out() {
+	int bytes_in_buffer = _bytes.size();
+
+	const int CHUNK_SIZE = 4096;
+	DWORD read = 0;
+
+	_bytes.resize(bytes_in_buffer + CHUNK_SIZE);
+	const bool success = ReadFile(_read_std_handles[0], _bytes.ptr() + bytes_in_buffer, CHUNK_SIZE, &read, NULL);
+
+	if (!success || read == 0) {
+		// Note, stop() will process remaning bytes, we had an error, so get rid of the new chunk, as it's empty.
+		_bytes.resize(bytes_in_buffer);
+		stop();
+		return ERR_FILE_EOF;
+	}
+
+	if (read != 0) {
+		// Assume that all possible encodings are ASCII-compatible.
+		// Break at newline to allow receiving long output in portions.
+		int newline_index = -1;
+		for (int i = read - 1; i >= 0; i--) {
+			if (_bytes[bytes_in_buffer + i] == '\n') {
+				newline_index = i;
+				break;
+			}
+		}
+
+		if (newline_index == -1) {
+			bytes_in_buffer += read;
+		} else {
+			const int bytes_to_convert = bytes_in_buffer + (newline_index + 1);
+			_append_to_std_out(_bytes.ptr(), bytes_to_convert);
+
+			bytes_in_buffer = read - (newline_index + 1);
+			memmove(_bytes.ptr(), _bytes.ptr() + bytes_to_convert, bytes_in_buffer);
+		}
+
+		_bytes.resize(bytes_in_buffer);
+	} else {
+		// 0 read, remove chunk. Should probably save actual size as a variable eventually.
+		_bytes.resize(bytes_in_buffer);
+	}
+}
+bool SubProcessWindows::_poll_read_from_std_err() {
+	int bytes_in_buffer = _err_bytes.size();
+
+	const int CHUNK_SIZE = 4096;
+	DWORD read = 0;
+
+	_err_bytes.resize(bytes_in_buffer + CHUNK_SIZE);
+	const bool success = ReadFile(_read_std_err_handles[0], _err_bytes.ptr() + bytes_in_buffer, CHUNK_SIZE, &read, NULL);
+
+	if (!success || read == 0) {
+		// Note, stop() will process remaning bytes, we had an error, so get rid of the new chunk, as it's empty.
+		_err_bytes.resize(bytes_in_buffer);
+		stop();
+		return ERR_FILE_EOF;
+	}
+
+	if (read != 0) {
+		// Assume that all possible encodings are ASCII-compatible.
+		// Break at newline to allow receiving long output in portions.
+		int newline_index = -1;
+		for (int i = read - 1; i >= 0; i--) {
+			if (_err_bytes[bytes_in_buffer + i] == '\n') {
+				newline_index = i;
+				break;
+			}
+		}
+
+		if (newline_index == -1) {
+			bytes_in_buffer += read;
+		} else {
+			const int bytes_to_convert = bytes_in_buffer + (newline_index + 1);
+			_append_to_std_err(_err_bytes.ptr(), bytes_to_convert);
+
+			bytes_in_buffer = read - (newline_index + 1);
+			memmove(_err_bytes.ptr(), _err_bytes.ptr() + bytes_to_convert, bytes_in_buffer);
+		}
+
+		_err_bytes.resize(bytes_in_buffer);
+	} else {
+		// 0 read, remove chunk. Should probably save actual size as a variable eventually.
+		_err_bytes.resize(bytes_in_buffer);
+	}
 }
 
 String SubProcessWindows::_quote_command_line_argument(const String &p_text) const {
