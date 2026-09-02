@@ -171,6 +171,8 @@ Error SubProcessWindows::start() {
 						if (indx != -1) {
 							String key = p.substr_index(0, indx);
 							String value = p.substr_index(indx + 1, p.length()); // +1 to skip =
+
+							new_env_map[key] = value;
 						}
 					}
 
