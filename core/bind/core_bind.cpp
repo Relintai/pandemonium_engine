@@ -2729,7 +2729,13 @@ void _SubProcess::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("stop"), &_SubProcess::stop);
 	ClassDB::bind_method(D_METHOD("poll"), &_SubProcess::poll);
 	ClassDB::bind_method(D_METHOD("send_signal", "signal"), &_SubProcess::send_signal);
+
 	ClassDB::bind_method(D_METHOD("write_to_stdin", "data"), &_SubProcess::write_to_stdin);
+	ClassDB::bind_method(D_METHOD("write_to_stdin_utf8", "data"), &_SubProcess::write_to_stdin_utf8);
+	ClassDB::bind_method(D_METHOD("write_to_stdin_utf16", "data"), &_SubProcess::write_to_stdin_utf16);
+	ClassDB::bind_method(D_METHOD("write_to_stdin_utf32", "data"), &_SubProcess::write_to_stdin_utf32);
+	ClassDB::bind_method(D_METHOD("write_data_to_stdin", "data"), &_SubProcess::write_data_to_stdin);
+
 	ClassDB::bind_method(D_METHOD("is_process_running"), &_SubProcess::is_process_running);
 
 	BIND_ENUM_CONSTANT(COMMUNICATION_FLAGS_NONE);
@@ -2809,9 +2815,23 @@ Error _SubProcess::poll() {
 Error _SubProcess::send_signal(const int p_signal) {
 	return _sub_process->send_signal(p_signal);
 }
+
 Error _SubProcess::write_to_stdin(const String &p_data) {
 	return _sub_process->write_to_stdin(p_data);
 }
+Error _SubProcess::write_to_stdin_utf8(const String &p_data) {
+	return _sub_process->write_to_stdin_utf8(p_data);
+}
+Error _SubProcess::write_to_stdin_utf16(const String &p_data) {
+	return _sub_process->write_to_stdin_utf16(p_data);
+}
+Error _SubProcess::write_to_stdin_utf32(const String &p_data) {
+	return _sub_process->write_to_stdin_utf32(p_data);
+}
+Error _SubProcess::write_data_to_stdin(const PoolByteArray &p_data) {
+	return _sub_process->write_data_to_stdin(p_data);
+}
+
 bool _SubProcess::is_process_running() const {
 	return _sub_process->is_process_running();
 }

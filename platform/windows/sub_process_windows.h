@@ -42,7 +42,13 @@ public:
 	virtual Error stop();
 	virtual Error poll();
 	virtual Error send_signal(const int p_signal);
+
 	virtual Error write_to_stdin(const String &p_data);
+	virtual Error write_to_stdin_utf8(const String &p_data);
+	virtual Error write_to_stdin_utf16(const String &p_data);
+	virtual Error write_to_stdin_utf32(const String &p_data);
+	virtual Error write_data_to_stdin(const PoolByteArray &p_data);
+
 	virtual bool is_process_running() const;
 
 	SubProcessWindows();

@@ -449,6 +449,10 @@ Error SubProcessUnix::send_signal(const int p_signal) {
 }
 
 Error SubProcessUnix::write_to_stdin(const String &p_data) {
+	return write_to_stdin_utf8(p_data);
+}
+
+Error SubProcessUnix::write_to_stdin_utf8(const String &p_data) {
 	if (_process_id == 0) {
 		return ERR_UNAVAILABLE;
 	}
@@ -470,7 +474,142 @@ Error SubProcessUnix::write_to_stdin(const String &p_data) {
 
 	// Note, we are using lenght() to skip sending null terminators!
 	while (sent < cs.length()) {
-		ssize_t wb = write(_write_pipes[1], cs.get_data(), cs.length());
+		ssize_t wb = write(_write_pipes[1], cs.get_data() + sent, cs.length() - sent);
+
+		// Error
+		if (wb < 0) {
+			if (_std_in_mutex) {
+				_std_in_mutex->unlock();
+			}
+
+			stop();
+			return ERR_FILE_EOF;
+		}
+
+		sent += wb;
+	}
+
+	if (_std_in_mutex) {
+		_std_in_mutex->unlock();
+	}
+
+	return OK;
+}
+
+Error SubProcessUnix::write_to_stdin_utf16(const String &p_data) {
+	if (_process_id == 0) {
+		return ERR_UNAVAILABLE;
+	}
+
+	if (!_write_pipes[1]) {
+		return ERR_UNAVAILABLE;
+	}
+
+	if (p_data.length() == 0) {
+		return OK;
+	}
+
+	ssize_t sent = 0;
+	Char16String cs = p_data.utf16();
+	// Note, we are using lenght() to skip sending null terminators!
+	int length_bytes = cs.length() * sizeof(char16_t);
+
+	if (_std_in_mutex) {
+		_std_in_mutex->lock();
+	}
+
+	while (sent < length_bytes) {
+		ssize_t wb = write(_write_pipes[1], ((const char *)cs.get_data()) + sent, length_bytes - sent);
+
+		// Error
+		if (wb < 0) {
+			if (_std_in_mutex) {
+				_std_in_mutex->unlock();
+			}
+
+			stop();
+			return ERR_FILE_EOF;
+		}
+
+		sent += wb;
+	}
+
+	if (_std_in_mutex) {
+		_std_in_mutex->unlock();
+	}
+
+	return OK;
+}
+
+Error SubProcessUnix::write_to_stdin_utf32(const String &p_data) {
+	if (_process_id == 0) {
+		return ERR_UNAVAILABLE;
+	}
+
+	if (!_write_pipes[1]) {
+		return ERR_UNAVAILABLE;
+	}
+
+	if (p_data.length() == 0) {
+		return OK;
+	}
+
+	ssize_t sent = 0;
+	const CharType *cs = p_data.get_data();
+	// Note, we are using lenght() to skip sending null terminators!
+	int length_bytes = p_data.length() * sizeof(CharType);
+
+	if (_std_in_mutex) {
+		_std_in_mutex->lock();
+	}
+
+	while (sent < length_bytes) {
+		ssize_t wb = write(_write_pipes[1], ((const char *)cs + sent), length_bytes - sent);
+
+		// Error
+		if (wb < 0) {
+			if (_std_in_mutex) {
+				_std_in_mutex->unlock();
+			}
+
+			stop();
+			return ERR_FILE_EOF;
+		}
+
+		sent += wb;
+	}
+
+	if (_std_in_mutex) {
+		_std_in_mutex->unlock();
+	}
+
+	return OK;
+}
+
+Error SubProcessUnix::write_data_to_stdin(const PoolByteArray &p_data) {
+	if (_process_id == 0) {
+		return ERR_UNAVAILABLE;
+	}
+
+	if (!_write_pipes[1]) {
+		return ERR_UNAVAILABLE;
+	}
+
+	if (p_data.size() == 0) {
+		return OK;
+	}
+
+	ssize_t sent = 0;
+
+	if (_std_in_mutex) {
+		_std_in_mutex->lock();
+	}
+
+	int size = p_data.size();
+	PoolByteArray::Read r = p_data.read();
+
+	while (sent < p_data.size()) {
+		ssize_t wb = write(_write_pipes[1], r.ptr() + sent, size - sent);
 
 		// Error
 		if (wb < 0) {

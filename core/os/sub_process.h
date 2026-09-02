@@ -38,6 +38,7 @@
 #include "core/os/mutex.h"
 #include "core/string/ustring.h"
 #include "core/typedefs.h"
+#include "core/variant/variant.h"
 
 /**
  * Multi-Platform abstraction for running and communicating with sub processes
@@ -95,8 +96,13 @@ public:
 	virtual Error stop() = 0;
 	virtual Error poll() = 0;
 	virtual Error send_signal(const int p_signal) = 0;
-	// Need utf8, utf16, and poolbytearray version.
+
 	virtual Error write_to_stdin(const String &p_data) = 0;
+	virtual Error write_to_stdin_utf8(const String &p_data) = 0;
+	virtual Error write_to_stdin_utf16(const String &p_data) = 0;
+	virtual Error write_to_stdin_utf32(const String &p_data) = 0;
+	virtual Error write_data_to_stdin(const PoolByteArray &p_data) = 0;
+
 	virtual bool is_process_running() const = 0;
 
 	Error run(const String &p_executable_path, const Vector<String> &p_arguments, const int p_communication_flags = COMMUNICATION_FLAGS_STDOUT, bool p_blocking = true, bool p_use_pipe_mutex = false, bool p_open_console = false);

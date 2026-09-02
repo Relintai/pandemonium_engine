@@ -749,7 +749,13 @@ public:
 	Error stop();
 	Error poll();
 	Error send_signal(const int p_signal);
+
 	Error write_to_stdin(const String &p_data);
+	Error write_to_stdin_utf8(const String &p_data);
+	Error write_to_stdin_utf16(const String &p_data);
+	Error write_to_stdin_utf32(const String &p_data);
+	Error write_data_to_stdin(const PoolByteArray &p_data);
+
 	bool is_process_running() const;
 
 	_SubProcess();

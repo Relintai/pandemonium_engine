@@ -361,6 +361,101 @@ Error SubProcessWindows::send_signal(const int p_signal) {
 }
 
 Error SubProcessWindows::write_to_stdin(const String &p_data) {
+	return write_to_stdin_utf16(p_data);
+}
+
+Error SubProcessWindows::write_to_stdin_utf8(const String &p_data) {
+	if (!is_process_running()) {
+		return ERR_UNCONFIGURED;
+	}
+
+	if (p_data.length() == 0) {
+		return OK;
+	}
+
+	Char8String cs = p_data.utf16();
+
+	if (_std_in_mutex) {
+		_std_in_mutex->lock();
+	}
+
+	DWORD total_written = 0;
+
+	// Note, we are using length() to skip sending null terminators!
+	for (;;) {
+		DWORD written;
+		const bool success = WriteFile(_write_handles[1], (cs.get_data()) + total_written, cs.length() - total_written, &written, NULL);
+
+		if (!success) {
+			if (_std_in_mutex) {
+				_std_in_mutex->unlock();
+			}
+
+			stop();
+			return ERR_FILE_EOF;
+		}
+
+		total_written += written;
+
+		if ((int)total_written >= cs.length()) {
+			break;
+		}
+	}
+
+	if (_std_in_mutex) {
+		_std_in_mutex->unlock();
+	}
+
+	return OK;
+}
+
+Error SubProcessWindows::write_to_stdin_utf16(const String &p_data) {
+	if (!is_process_running()) {
+		return ERR_UNCONFIGURED;
+	}
+
+	if (p_data.length() == 0) {
+		return OK;
+	}
+
+	Char16String cs = p_data.utf16();
+	// Note, we are using length() to skip sending null terminators!
+	int length_bytes = cs.length() * sizeof(char16_t);
+
+	if (_std_in_mutex) {
+		_std_in_mutex->lock();
+	}
+
+	DWORD total_written = 0;
+
+	for (;;) {
+		DWORD written;
+		const bool success = WriteFile(_write_handles[1], ((const char *)cs.get_data()) + total_written, length_bytes - total_written, &written, NULL);
+
+		if (!success) {
+			if (_std_in_mutex) {
+				_std_in_mutex->unlock();
+			}
+
+			stop();
+			return ERR_FILE_EOF;
+		}
+
+		total_written += written;
+
+		if ((int)total_written >= length_bytes) {
+			break;
+		}
+	}
+
+	if (_std_in_mutex) {
+		_std_in_mutex->unlock();
+	}
+
+	return OK;
+}
+
+Error SubProcessWindows::write_to_stdin_utf32(const String &p_data) {
 	if (!is_process_running()) {
 		return ERR_UNCONFIGURED;
 	}
@@ -375,28 +470,73 @@ Error SubProcessWindows::write_to_stdin(const String &p_data) {
 		_std_in_mutex->lock();
 	}
 
-	//DWORD total_written = 0;
-
+	DWORD total_written = 0;
 	// Note, we are using length() to skip sending null terminators!
-	//for (;;) {
-	DWORD written;
-	const bool success = WriteFile(_write_handles[1], (const char *)cs.get_data(), cs.length() * sizeof(char16_t), &written, NULL);
+	int length_bytes = p_data.length() * sizeof(CharType);
 
-	if (!success) {
-		if (_std_in_mutex) {
-			_std_in_mutex->unlock();
+	for (;;) {
+		DWORD written;
+		const bool success = WriteFile(_write_handles[1], ((const char *)cs.get_data()) + total_written, length_bytes - total_written, &written, NULL);
+
+		if (!success) {
+			if (_std_in_mutex) {
+				_std_in_mutex->unlock();
+			}
+
+			stop();
+			return ERR_FILE_EOF;
 		}
 
-		//stop();
-		return ERR_FILE_EOF;
+		total_written += written;
+
+		if ((int)total_written >= length_bytes) {
+			break;
+		}
 	}
 
-	//total_written += written;
+	if (_std_in_mutex) {
+		_std_in_mutex->unlock();
+	}
 
-	//if ((int)total_written >= cs.length()) {
-	//break;
-	//}
-	//}
+	return OK;
+}
+Error SubProcessWindows::write_data_to_stdin(const PoolByteArray &p_data) {
+	if (!is_process_running()) {
+		return ERR_UNCONFIGURED;
+	}
+
+	if (p_data.length() == 0) {
+		return OK;
+	}
+
+	if (_std_in_mutex) {
+		_std_in_mutex->lock();
+	}
+
+	int size = p_data.size();
+	PoolByteArray::Read r = p_data.read();
+
+	DWORD total_written = 0;
+
+	for (;;) {
+		DWORD written;
+		const bool success = WriteFile(_write_handles[1], r.ptr() + total_written, size - total_written, &written, NULL);
+
+		if (!success) {
+			if (_std_in_mutex) {
+				_std_in_mutex->unlock();
+			}
+
+			stop();
+			return ERR_FILE_EOF;
+		}
+
+		total_written += written;
+
+		if ((int)total_written >= size) {
+			break;
+		}
+	}
 
 	if (_std_in_mutex) {
 		_std_in_mutex->unlock();
