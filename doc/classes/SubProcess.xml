@@ -5,11 +5,33 @@
 	</brief_description>
 	<description>
 		This class grants access to run and manage sub processes with more fine grained control compared to OS.execute().
+		Note that environment variables are inherited by default.
+		Setting variables using [method set_environment_variable] will override already existing ones.
+		Unsetting a variable only removes it from this class's storage, it will not unset an inherited variable.
 	</description>
 	<tutorials>
 		<link>$DOCS_URL/07_demo_projects/misc/sub_process</link>
 	</tutorials>
 	<methods>
+		<method name="clear_environment_variables">
+			<return type="void" />
+			<description>
+				Clears all previously set custom environment variables.
+			</description>
+		</method>
+		<method name="get_environment_variable">
+			<return type="String" />
+			<argument index="0" name="key" type="StringName" />
+			<description>
+				Returns the value of the given environment variable if it was set, an empty String otherwise.
+			</description>
+		</method>
+		<method name="get_environment_variable_keys">
+			<return type="PoolStringArray" />
+			<description>
+				Returns all the previously set environment variable keys.
+			</description>
+		</method>
 		<method name="get_exitcode" qualifiers="const">
 			<return type="int" />
 			<description>
@@ -36,6 +58,13 @@
 				Only works if COMMUNICATION_FLAGS_STDOUT is set in [member communication_flags].
 			</description>
 		</method>
+		<method name="has_environment_variable">
+			<return type="bool" />
+			<argument index="0" name="key" type="StringName" />
+			<description>
+				Checks if an environment variable is set.
+			</description>
+		</method>
 		<method name="is_process_running" qualifiers="const">
 			<return type="bool" />
 			<description>
@@ -56,6 +85,14 @@
 				Send a signal to the running process. If the underlying operating system supports signals. (Windows doesn't.)
 			</description>
 		</method>
+		<method name="set_environment_variable">
+			<return type="void" />
+			<argument index="0" name="key" type="StringName" />
+			<argument index="1" name="value" type="String" />
+			<description>
+				Set an environment variable.
+			</description>
+		</method>
 		<method name="start">
 			<return type="int" enum="Error" />
 			<description>
@@ -66,6 +103,14 @@
 			<return type="int" enum="Error" />
 			<description>
 				Stop the running subprocess.
+			</description>
+		</method>
+		<method name="unset_environment_variable">
+			<return type="void" />
+			<argument index="0" name="key" type="StringName" />
+			<description>
+				Unset a previously set environment variable.
+				It does not unset inherited environment variables.
 			</description>
 		</method>
 		<method name="write_data_to_stdin">
@@ -107,6 +152,10 @@
 		</method>
 	</methods>
 	<members>
+		<member name="application_name" type="String" setter="set_application_name" getter="get_application_name" default="&quot;&quot;">
+			The application's name will be set to this if the underlying operating system supports it.
+			Windows does, linux doesn't.
+		</member>
 		<member name="arguments" type="PoolStringArray" setter="set_arguments" getter="get_arguments" default="PoolStringArray(  )">
 			The arguments that will be passed to the executable.
 		</member>
@@ -118,6 +167,9 @@
 		</member>
 		<member name="executable_path" type="String" setter="set_executable_path" getter="get_executable_path" default="&quot;&quot;">
 			The executable's path that will be run.
+		</member>
+		<member name="inherit_environment" type="bool" setter="set_inherit_environment" getter="get_inherit_environment" default="true">
+			Whether the subprocess will inherit all environment variables, or it starts from scratch.
 		</member>
 		<member name="open_console" type="bool" setter="set_open_console" getter="get_open_console" default="false">
 			Whether to open a console window or not. Windows only.
