@@ -226,7 +226,7 @@ Error SubProcessWindows::start() {
 					uint64_t str_byte_length = cs.length() * sizeof(char16_t);
 
 					memcpy(&current_env[current_offset], (const char *)cs.get_data(), str_byte_length);
-					current_offset += cs.size();
+					current_offset += cs.length();
 				}
 
 				// Add =
