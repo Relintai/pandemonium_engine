@@ -156,7 +156,7 @@ Error SubProcessWindows::start() {
 
 		if (_inherit_environment) {
 			wchar_t *initial_env = NULL;
-			initial_env = GetEnvironmentStrings();
+			initial_env = GetEnvironmentStringsW();
 
 			if (initial_env) {
 				const wchar_t *iei = initial_env;
@@ -184,9 +184,9 @@ Error SubProcessWindows::start() {
 
 					iei = iei + (item_length + 1);
 				}
-			}
 
-			FreeEnvironmentStrings(initial_env);
+				FreeEnvironmentStringsW(initial_env);
+			}
 		}
 
 		for (const HashMap<StringName, String>::Element *E = _environment_variables.front(); E; E = E->next) {
