@@ -132,11 +132,11 @@ Error SubProcessWindows::start() {
 	}
 
 	// Setup process
-	DWORD creaton_flags = NORMAL_PRIORITY_CLASS;
+	DWORD creation_flags = NORMAL_PRIORITY_CLASS;
 	if (_open_console) {
-		creaton_flags |= CREATE_NEW_CONSOLE;
+		creation_flags |= CREATE_NEW_CONSOLE;
 	} else {
-		creaton_flags |= CREATE_NO_WINDOW;
+		creation_flags |= CREATE_NO_WINDOW;
 	}
 
 	// Setup environment vars
@@ -158,7 +158,7 @@ Error SubProcessWindows::start() {
 		// one more to terminate the block. A Unicode environment block is terminated by four zero bytes:
 		// two for the last string, two more to terminate the block.
 		// So if this is not set, only the first env var will be used.
-		creaton_flags |= CREATE_UNICODE_ENVIRONMENT;
+		creation_flags |= CREATE_UNICODE_ENVIRONMENT;
 
 		if (_inherit_environment) {
 			wchar_t *initial_env = GetEnvironmentStringsW();
@@ -249,7 +249,7 @@ Error SubProcessWindows::start() {
 		}
 	}
 
-	int ret = CreateProcessW(nullptr, (LPWSTR)(modstr.ptrw()), nullptr, nullptr, inherit_handles, creaton_flags, current_env, nullptr, si_w, &_process_info.pi);
+	int ret = CreateProcessW(nullptr, (LPWSTR)(modstr.ptrw()), nullptr, nullptr, inherit_handles, creation_flags, current_env, nullptr, si_w, &_process_info.pi);
 
 	if (current_env) {
 		memdelete_arr(current_env);
