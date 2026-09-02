@@ -739,6 +739,21 @@ public:
 	bool get_open_console() const;
 	void set_open_console(const bool p_value);
 
+	// Environment
+
+	bool get_inherit_environment() const;
+	void set_inherit_environment(const bool p_value);
+
+	bool has_environment_variable(const StringName &p_key);
+	String get_environment_variable(const StringName &p_key);
+	void set_environment_variable(const StringName &p_key, const String &p_value);
+	void unset_environment_variable(const StringName &p_key);
+	void clear_environment_variables();
+
+	PoolStringArray get_environment_variable_keys();
+
+	// Other getters
+
 	String get_std_out();
 	String get_std_err();
 

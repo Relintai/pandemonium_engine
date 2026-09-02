@@ -92,6 +92,47 @@ void SubProcess::set_open_console(const bool p_value) {
 	_open_console = p_value;
 }
 
+// Environment
+
+bool SubProcess::get_inherit_environment() const {
+	return _inherit_environment;
+}
+void SubProcess::set_inherit_environment(const bool p_value) {
+	_inherit_environment = p_value;
+}
+
+bool SubProcess::has_environment_variable(const StringName &p_key) {
+	return _environment_variables.has(p_key);
+}
+String SubProcess::get_environment_variable(const StringName &p_key) {
+	if (!_environment_variables.has(p_key)) {
+		return String();
+	}
+
+	return _environment_variables[p_key];
+}
+void SubProcess::set_environment_variable(const StringName &p_key, const String &p_value) {
+	_environment_variables[p_key] = p_value;
+}
+void SubProcess::unset_environment_variable(const StringName &p_key) {
+	_environment_variables.erase(p_key);
+}
+void SubProcess::clear_environment_variables() {
+	_environment_variables.clear();
+}
+
+PoolStringArray SubProcess::get_environment_variable_keys() {
+	PoolStringArray r;
+
+	for (const HashMap<StringName, String>::Element *E = _environment_variables.front(); E; E = E->next) {
+		r.push_back(E->key());
+	}
+
+	return r;
+}
+
+// Other getters
+
 String SubProcess::get_std_out() {
 	if (_std_out_mutex) {
 		_std_out_mutex->lock();
@@ -146,6 +187,8 @@ SubProcess::SubProcess() {
 	_blocking = false;
 
 	_communication_flags = COMMUNICATION_FLAGS_STDOUT;
+
+	_inherit_environment = true;
 
 	_use_pipe_mutex = false;
 

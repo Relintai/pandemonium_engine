@@ -32,6 +32,7 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+#include "core/containers/hash_map.h"
 #include "core/containers/list.h"
 #include "core/math/math_defs.h"
 #include "core/os/memory.h"
@@ -43,8 +44,6 @@
 /**
  * Multi-Platform abstraction for running and communicating with sub processes
  */
-
-// TODO allow setting environment variables too
 
 class SubProcess {
 public:
@@ -69,6 +68,8 @@ public:
 	Vector<String> get_arguments() const;
 	void set_arguments(const Vector<String> &p_arguments);
 
+	// TODO app name
+
 	bool get_blocking() const;
 	void set_blocking(const bool p_value);
 
@@ -80,6 +81,21 @@ public:
 
 	bool get_open_console() const;
 	void set_open_console(const bool p_value);
+
+	// Environment
+
+	bool get_inherit_environment() const;
+	void set_inherit_environment(const bool p_value);
+
+	bool has_environment_variable(const StringName &p_key);
+	String get_environment_variable(const StringName &p_key);
+	void set_environment_variable(const StringName &p_key, const String &p_value);
+	void unset_environment_variable(const StringName &p_key);
+	void clear_environment_variables();
+
+	PoolStringArray get_environment_variable_keys();
+
+	// Other getters
 
 	String get_std_out();
 	String get_std_err();
@@ -129,6 +145,9 @@ protected:
 	String _std_err;
 
 	bool _use_pipe_mutex;
+
+	bool _inherit_environment;
+	HashMap<StringName, String> _environment_variables;
 
 	Mutex *_std_out_mutex;
 	Mutex *_std_err_mutex;

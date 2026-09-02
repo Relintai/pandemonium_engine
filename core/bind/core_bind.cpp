@@ -2719,6 +2719,22 @@ void _SubProcess::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_open_console", "value"), &_SubProcess::set_open_console);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "open_console"), "set_open_console", "get_open_console");
 
+	// Environment
+
+	ClassDB::bind_method(D_METHOD("get_inherit_environment"), &_SubProcess::get_inherit_environment);
+	ClassDB::bind_method(D_METHOD("set_inherit_environment", "value"), &_SubProcess::set_inherit_environment);
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "inherit_environment"), "set_inherit_environment", "get_inherit_environment");
+
+	ClassDB::bind_method(D_METHOD("has_environment_variable", "key"), &_SubProcess::has_environment_variable);
+	ClassDB::bind_method(D_METHOD("get_environment_variable", "key"), &_SubProcess::get_environment_variable);
+	ClassDB::bind_method(D_METHOD("set_environment_variable", "key", "value"), &_SubProcess::set_environment_variable);
+	ClassDB::bind_method(D_METHOD("unset_environment_variable", "key"), &_SubProcess::unset_environment_variable);
+	ClassDB::bind_method(D_METHOD("clear_environment_variables"), &_SubProcess::clear_environment_variables);
+
+	ClassDB::bind_method(D_METHOD("get_environment_variable_keys"), &_SubProcess::get_environment_variable_keys);
+
+	// Other
+
 	ClassDB::bind_method(D_METHOD("get_std_out"), &_SubProcess::get_std_out);
 	ClassDB::bind_method(D_METHOD("get_std_err"), &_SubProcess::get_std_err);
 
@@ -2787,6 +2803,33 @@ bool _SubProcess::get_open_console() const {
 }
 void _SubProcess::set_open_console(const bool p_value) {
 	_sub_process->set_open_console(p_value);
+}
+
+bool _SubProcess::get_inherit_environment() const {
+	return _sub_process->get_inherit_environment();
+}
+void _SubProcess::set_inherit_environment(const bool p_value) {
+	_sub_process->set_inherit_environment(p_value);
+}
+
+bool _SubProcess::has_environment_variable(const StringName &p_key) {
+	return _sub_process->has_environment_variable(p_key);
+}
+String _SubProcess::get_environment_variable(const StringName &p_key) {
+	return _sub_process->get_environment_variable(p_key);
+}
+void _SubProcess::set_environment_variable(const StringName &p_key, const String &p_value) {
+	_sub_process->set_environment_variable(p_key, p_value);
+}
+void _SubProcess::unset_environment_variable(const StringName &p_key) {
+	_sub_process->unset_environment_variable(p_key);
+}
+void _SubProcess::clear_environment_variables() {
+	_sub_process->clear_environment_variables();
+}
+
+PoolStringArray _SubProcess::get_environment_variable_keys() {
+	return _sub_process->get_environment_variable_keys();
 }
 
 String _SubProcess::get_std_out() {
