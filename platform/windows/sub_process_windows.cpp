@@ -253,7 +253,7 @@ Error SubProcessWindows::start() {
 
 	Char16String app_name = _application_name.utf16();
 
-	int ret = CreateProcessW(app_name.get_data(), (LPWSTR)(modstr.ptrw()), nullptr, nullptr, inherit_handles, creation_flags, current_env, nullptr, si_w, &_process_info.pi);
+	int ret = CreateProcessW((const wchar_t *)app_name.get_data(), (LPWSTR)(modstr.ptrw()), nullptr, nullptr, inherit_handles, creation_flags, current_env, nullptr, si_w, &_process_info.pi);
 
 	if (current_env) {
 		memdelete_arr(current_env);
