@@ -208,7 +208,7 @@ Error SubProcessWindows::start() {
 			// Note that we don't worry about stdin here, as it can only happen if a thread launches a process in blocking mode, an an another writes to it.
 
 			// This is needed to detect if the subprocess have terminated. even if the stdout and stderr is not connected.
-			if (had_error || !is_process_running()) {
+			if (had_error) {
 				break;
 			}
 		}
@@ -347,7 +347,7 @@ Error SubProcessWindows::poll() {
 	}
 
 	// This should the api more convenient to use.
-	if (had_error || !is_process_running()) {
+	if (had_error) {
 		stop();
 		return ERR_FILE_EOF;
 	}
