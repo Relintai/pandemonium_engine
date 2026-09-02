@@ -49,13 +49,6 @@
 				Return ERR_FILE_EOF if a read cannot be performed anymore, ERR_UNAVAILABLE if settings does not allow reading, OK on success.
 			</description>
 		</method>
-		<method name="write_to_stdin">
-			<return type="int" enum="Error" />
-			<argument index="0" name="data" type="String" />
-			<description>
-				Pipe data to the running process.
-			</description>
-		</method>
 		<method name="send_signal">
 			<return type="int" enum="Error" />
 			<argument index="0" name="signal" type="int" />
@@ -73,6 +66,43 @@
 			<return type="int" enum="Error" />
 			<description>
 				Stop the running subprocess.
+			</description>
+		</method>
+		<method name="write_data_to_stdin">
+			<return type="int" enum="Error" />
+			<argument index="0" name="data" type="PoolByteArray" />
+			<description>
+				Pipe raw data to the running process.
+			</description>
+		</method>
+		<method name="write_to_stdin">
+			<return type="int" enum="Error" />
+			<argument index="0" name="data" type="String" />
+			<description>
+				Pipe a String to the running process encoded in the operating system's preferred encoding.
+				Currently utf8 un unixes, utf16 on windows.
+				If you are using 2 different instances of the engine, use an explicit encoding, so you don't have to detect the running os on the receiving end.
+			</description>
+		</method>
+		<method name="write_to_stdin_utf16">
+			<return type="int" enum="Error" />
+			<argument index="0" name="data" type="String" />
+			<description>
+				Pipe a String encoded as utf16 to the running process.
+			</description>
+		</method>
+		<method name="write_to_stdin_utf32">
+			<return type="int" enum="Error" />
+			<argument index="0" name="data" type="String" />
+			<description>
+				Pipe a String encoded as utf132 to the running process.
+			</description>
+		</method>
+		<method name="write_to_stdin_utf8">
+			<return type="int" enum="Error" />
+			<argument index="0" name="data" type="String" />
+			<description>
+				Pipe a String encoded as utf8 to the running process.
 			</description>
 		</method>
 	</methods>
