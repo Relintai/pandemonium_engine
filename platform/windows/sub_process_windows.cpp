@@ -373,7 +373,7 @@ Error SubProcessWindows::write_to_stdin_utf8(const String &p_data) {
 		return OK;
 	}
 
-	Char8String cs = p_data.utf16();
+	CharString cs = p_data.utf8();
 
 	if (_std_in_mutex) {
 		_std_in_mutex->lock();
@@ -505,7 +505,7 @@ Error SubProcessWindows::write_data_to_stdin(const PoolByteArray &p_data) {
 		return ERR_UNCONFIGURED;
 	}
 
-	if (p_data.length() == 0) {
+	if (p_data.size() == 0) {
 		return OK;
 	}
 
