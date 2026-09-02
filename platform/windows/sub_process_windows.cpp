@@ -139,7 +139,126 @@ Error SubProcessWindows::start() {
 		creaton_flags |= CREATE_NO_WINDOW;
 	}
 
-	int ret = CreateProcessW(nullptr, (LPWSTR)(modstr.ptrw()), nullptr, nullptr, inherit_handles, creaton_flags, nullptr, nullptr, si_w, &_process_info.pi);
+	// Setup environment vars
+
+	// This is a series of null terminated strings with a double null at the end
+	// in key=value format. You can't have = anywhere else
+	// MSDN:
+	// All strings in the environment block must be sorted alphabetically by name.
+	// The sort is case-insensitive, Unicode order, without regard to locale.
+	// Because the equal sign is a separator, it must not be used in the name of an environment variable.
+	const wchar_t *current_env = NULL;
+
+	if (_inherit_environment && _environment_variables.size() == 0) {
+		// No need to do anything, just keep current_env as NULL.
+	} else {
+		HashMap<StringName, String> new_env_map;
+
+		{
+			const wchar_t *initial_env = NULL;
+			CreateEnvironmentBlock(&initial_env, NULL, _inherit_environment);
+
+			if (initial_env) {
+				const wchar_t *iei = initial_env;
+
+				while (*iei) {
+					int item_length = 0;
+
+					while (iei[item_length]) {
+						++item_length;
+					}
+
+					String p = String::utf16(iei, item_length);
+
+					if (p.length() > 0) {
+						// lazy
+						Vector<String> s = p.split("=", true);
+
+						ERR_CONTINUE(s.size() != 2);
+
+						StringName key = s[0];
+						String value = s[1];
+
+						new_env_map[key] = value;
+					}
+
+					iei = item_length + 1;
+				}
+			}
+
+			DestroyEnvironmentBlock(initial_env);
+		}
+
+		for (const HashMap<StringName, String>::Element *E = _environment_variables.front(); E; E = E->next) {
+			new_env_map[E->key()] = E->value();
+		}
+
+		// Unless MSDN is lying we need to write them in a sorted order.
+
+		PoolStringArray psa;
+
+		// Also let's count lengths for later
+		int length_count = 0;
+
+		for (const HashMap<StringName, String>::Element *E = new_env_map.front(); E; E = E->next) {
+			String sk = E->key();
+			psa.push_back(sk);
+			length_count += sk.length();
+			length_count += E->value().length();
+		}
+
+		if (length_count > 0) {
+			// Hopefully is enough
+			psa.sort();
+
+			// We only just need to write out everything
+			// All chars + each entry has an = and \0. and closing \0
+			current_env = memnew_arr(wchar_t, length_count + psa.size() * 2 + 1);
+
+			// Write data
+
+			uint64_t current_offset = 0;
+			int psa_size = psa.size();
+			PoolStringArray::Read r = psa.read();
+			for (int i = 0; i < psa_size; ++i) {
+				String sk = r[i];
+				StringName key = sk;
+
+				// Write key
+				{
+					Char16String cs = sk.utf16();
+					// Length does not includes a \0
+					uint64_t str_byte_length = cs.length() * sizeof(char16_t);
+
+					memcpy(current_env, (const char *)cs.get_data(), str_byte_length);
+					current_offset += str_byte_length;
+				}
+
+				// Add =
+				current_env[current_offset] = L'=';
+
+				// Write value
+				{
+					String value = new_env_map[key];
+					Char16String cs = value.utf16();
+					// Size includes a \0
+					uint64_t str_byte_length = cs.size() * sizeof(char16_t);
+
+					memcpy(current_env, (const char *)cs.get_data(), str_byte_length);
+					current_offset += str_byte_length;
+				}
+			}
+
+			current_env[current_offset] = L'\0';
+		}
+	}
+
+	int ret = CreateProcessW(nullptr, (LPWSTR)(modstr.ptrw()), nullptr, nullptr, inherit_handles, creaton_flags, current_env, nullptr, si_w, &_process_info.pi);
+
+	if (current_env) {
+		memdelete_arr(current_env);
+	}
+
 	if (!ret) {
 		if (_communication_flags != COMMUNICATION_FLAGS_NONE) {
 			// Cleanup pipe handles.
