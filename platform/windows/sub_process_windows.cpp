@@ -154,12 +154,6 @@ Error SubProcessWindows::start() {
 	} else {
 		HashMap<String, String> new_env_map;
 
-		// MSDN: Note that an ANSI environment block is terminated by two zero bytes: one for the last string,
-		// one more to terminate the block. A Unicode environment block is terminated by four zero bytes:
-		// two for the last string, two more to terminate the block.
-		// So if this is not set, only the first env var will be used.
-		creation_flags |= CREATE_UNICODE_ENVIRONMENT;
-
 		if (_inherit_environment) {
 			wchar_t *initial_env = GetEnvironmentStringsW();
 
@@ -210,6 +204,12 @@ Error SubProcessWindows::start() {
 			// We only just need to write out everything
 			// All chars + each entry has an = and \0. and closing \0
 			current_env = memnew_arr(wchar_t, length_count + psa.size() * 2 + 1);
+
+			// MSDN: Note that an ANSI environment block is terminated by two zero bytes: one for the last string,
+			// one more to terminate the block. A Unicode environment block is terminated by four zero bytes:
+			// two for the last string, two more to terminate the block.
+			// So if this is not set, only the first env var will be used.
+			creation_flags |= CREATE_UNICODE_ENVIRONMENT;
 
 			// Write data
 
