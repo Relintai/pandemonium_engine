@@ -187,58 +187,62 @@ Error SubProcessWindows::start() {
 		int bytes_in_buffer = 0;
 		int err_bytes_in_buffer = 0;
 
-		for (;;) { // Read StdOut and StdErr from pipe.
-			bool had_error = false;
+		if ((_communication_flags & COMMUNICATION_FLAGS_STDOUT) != 0 ||
+				(_communication_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+			for (;;) { // Read StdOut and StdErr from pipe.
+				bool had_error = false;
 
-			// First go for stdin
-			if ((_communication_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
-				if (_read_from_std_out(bytes_in_buffer)) {
-					had_error = true;
+				// First go for stdin
+				if ((_communication_flags & COMMUNICATION_FLAGS_STDOUT) != 0) {
+					if (_read_from_std_out(bytes_in_buffer)) {
+						had_error = true;
+					}
 				}
+
+				// StdErr
+				if ((_communication_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
+					// We want to read even if stdin errored!
+					if (_read_from_std_err(err_bytes_in_buffer)) {
+						had_error = true;
+					}
+				}
+
+				// Note that we don't worry about stdin here, as it can only happen if a thread launches a process in blocking mode, an an another writes to it.
+
+				// This is needed to detect if the subprocess have terminated. even if the stdout and stderr is not connected.
+				if (had_error) {
+					break;
+				}
+			}
+
+			// StdIn
+			if (bytes_in_buffer > 0) {
+				_append_to_std_out(_bytes.ptr(), bytes_in_buffer);
 			}
 
 			// StdErr
-			if ((_communication_flags & COMMUNICATION_FLAGS_STDERR) != 0) {
-				// We want to read even if stdin errored!
-				if (_read_from_std_err(err_bytes_in_buffer)) {
-					had_error = true;
-				}
+			if (err_bytes_in_buffer > 0) {
+				_append_to_std_err(_err_bytes.ptr(), err_bytes_in_buffer);
 			}
 
-			// Note that we don't worry about stdin here, as it can only happen if a thread launches a process in blocking mode, an an another writes to it.
-
-			// This is needed to detect if the subprocess have terminated. even if the stdout and stderr is not connected.
-			if (had_error) {
-				break;
+			if (_read_std_handles[0]) {
+				CloseHandle(_read_std_handles[0]);
+				_read_std_handles[0] = NULL;
 			}
-		}
 
-		// StdIn
-		if (bytes_in_buffer > 0) {
-			_append_to_std_out(_bytes.ptr(), bytes_in_buffer);
-		}
+			if (_read_std_err_handles[0]) {
+				CloseHandle(_read_std_err_handles[0]);
+				_read_std_err_handles[0] = NULL;
+			}
 
-		// StdErr
-		if (err_bytes_in_buffer > 0) {
-			_append_to_std_err(_err_bytes.ptr(), err_bytes_in_buffer);
-		}
-
-		if (_read_std_handles[0]) {
-			CloseHandle(_read_std_handles[0]);
-			_read_std_handles[0] = NULL;
-		}
-
-		if (_read_std_err_handles[0]) {
-			CloseHandle(_read_std_err_handles[0]);
-			_read_std_err_handles[0] = NULL;
+		} else {
+			WaitForSingleObject(_process_info.pi.hProcess, INFINITE);
 		}
 
 		if (_write_handles[1]) {
 			CloseHandle(_write_handles[1]);
 			_write_handles[1] = NULL;
 		}
-
-		WaitForSingleObject(_process_info.pi.hProcess, INFINITE);
 
 		DWORD ret2;
 		GetExitCodeProcess(_process_info.pi.hProcess, &ret2);
