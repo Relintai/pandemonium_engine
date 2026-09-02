@@ -140,6 +140,39 @@ String OS_Unix::get_stdin_string() {
 	return String::utf8(fgets(buff, 1024, stdin));
 }
 
+PoolByteArray OS_Unix::get_stdin_data() {
+	// Seem like the length of a pipe cannot be determined in a portable way.
+	PoolByteArray data;
+	uint8_t buff[1024];
+
+	while (true) {
+		ssize_t br = read(STDIN_FILENO, buff, 1024);
+
+		// this should never happen according to read's docs, but stops the compiler from issuing a warning.
+		ERR_FAIL_COND_V(br > 1024, data);
+
+		if (br < 0) {
+			break;
+		}
+
+		if (br == 0) {
+			break;
+		}
+
+		int start_index = data.size();
+		data.resize(data.size() + br);
+
+		PoolByteArray::Write w = data.write();
+		memcpy(w.ptr() + start_index, buff, br);
+
+		if (br < 1024) {
+			break;
+		}
+	}
+
+	return data;
+}
+
 String OS_Unix::get_name() const {
 	return "Unix";
 }

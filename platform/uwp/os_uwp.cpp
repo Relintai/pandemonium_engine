@@ -767,6 +767,9 @@ bool OS_UWP::set_environment(const String &p_var, const String &p_value) const {
 String OS_UWP::get_stdin_string() {
 	return String();
 }
+PoolByteArray OS_UWP::get_stdin_data() {
+	return PoolByteArray();
+}
 
 void OS_UWP::move_window_to_foreground() {
 }

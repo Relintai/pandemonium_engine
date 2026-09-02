@@ -3352,6 +3352,33 @@ String OS_Windows::get_stdin_string() {
 	}
 	return String();
 }
+PoolByteArray OS_Windows::get_stdin_data() {
+	HANDLE handle_stdin = GetStdHandle(STD_INPUT_HANDLE);
+
+	// Note that we have to do this, because we want ReadFile to return instantly
+	DWORD total_available_bytes;
+	if (!PeekNamedPipe(handle_stdin, 0, 0, 0, &total_available_bytes, 0)) {
+		return PoolByteArray();
+	}
+
+	if (total_available_bytes == 0) {
+		return PoolByteArray();
+	}
+
+	PoolByteArray data;
+	data.resize(total_available_bytes);
+
+	PoolByteArray::Write w = data.write();
+
+	DWORD count = 0;
+	BOOL success = ReadFile(handle_stdin, w.ptr(), total_available_bytes, &count, NULL);
+
+	if (!success || count == 0) {
+		return PoolByteArray();
+	}
+
+	return data;
+}
 
 void OS_Windows::enable_for_stealing_focus(ProcessID pid) {
 	AllowSetForegroundWindow(pid);

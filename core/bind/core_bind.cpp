@@ -533,6 +533,9 @@ Error _OS::shell_open(String p_uri) {
 String _OS::read_string_from_stdin() {
 	return OS::get_singleton()->get_stdin_string();
 }
+PoolByteArray _OS::read_data_from_stdin() {
+	return OS::get_singleton()->get_stdin_data();
+}
 
 int _OS::execute(const String &p_path, const Vector<String> &p_arguments, bool p_blocking, Array p_output, bool p_read_stderr, bool p_open_console) {
 	OS::ProcessID pid = -2;
@@ -1473,6 +1476,7 @@ void _OS::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_executable_path"), &_OS::get_executable_path);
 	ClassDB::bind_method(D_METHOD("read_string_from_stdin"), &_OS::read_string_from_stdin);
+	ClassDB::bind_method(D_METHOD("read_data_from_stdin"), &_OS::read_data_from_stdin);
 	ClassDB::bind_method(D_METHOD("execute", "path", "arguments", "blocking", "output", "read_stderr", "open_console"), &_OS::execute, DEFVAL(true), DEFVAL(Array()), DEFVAL(false), DEFVAL(false));
 	ClassDB::bind_method(D_METHOD("run", "path", "arguments", "output", "read_stderr", "open_console"), &_OS::run, DEFVAL(Array()), DEFVAL(false), DEFVAL(false));
 	ClassDB::bind_method(D_METHOD("create_process", "path", "arguments", "open_console"), &_OS::create_process, DEFVAL(false));

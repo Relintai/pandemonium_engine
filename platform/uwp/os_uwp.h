@@ -171,6 +171,7 @@ public:
 
 	virtual void alert(const String &p_alert, const String &p_title = "ALERT!");
 	String get_stdin_string();
+	PoolByteArray get_stdin_data();
 
 	void set_mouse_mode(MouseMode p_mode);
 	MouseMode get_mouse_mode() const;

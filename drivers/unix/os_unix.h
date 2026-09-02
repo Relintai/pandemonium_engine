@@ -53,6 +53,7 @@ public:
 
 	virtual void alert(const String &p_alert, const String &p_title = "ALERT!");
 	virtual String get_stdin_string();
+	virtual PoolByteArray get_stdin_data();
 
 	//virtual void set_mouse_show(bool p_show);
 	//virtual void set_mouse_grab(bool p_grab);

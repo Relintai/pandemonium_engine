@@ -200,6 +200,7 @@ public:
 
 	virtual void alert(const String &p_alert, const String &p_title = "ALERT!") = 0;
 	virtual String get_stdin_string() = 0;
+	virtual PoolByteArray get_stdin_data() = 0;
 
 	enum MouseMode {
 		MOUSE_MODE_VISIBLE,

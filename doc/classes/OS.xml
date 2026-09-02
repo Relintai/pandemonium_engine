@@ -924,6 +924,15 @@
 			<return type="String" />
 			<description>
 				Reads a user input string from the standard input (usually the terminal). This operation is [i]blocking[/i], which causes the window to freeze if [method read_string_from_stdin] is called on the main thread. The thread calling [method read_string_from_stdin] will block until the program receives a line break in standard input (usually by the user pressing [kbd]Enter[/kbd]).
+				If you want to read the standard input without blocking see [method read_data_from_stdin].
+				[b]Note:[/b] This method is implemented on Linux, macOS and Windows.
+			</description>
+		</method>
+		<method name="read_data_from_stdin">
+			<return type="PoolByteArray" />
+			<description>
+				Reads data from the standard input. This operation is [i]non-blocking[/i]. Suited for programmatical inter-process communication.
+				If you want to read user input from the console use [method read_string_from_stdin].
 				[b]Note:[/b] This method is implemented on Linux, macOS and Windows.
 			</description>
 		</method>
