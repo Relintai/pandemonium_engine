@@ -104,7 +104,39 @@ Error SubProcessUnix::start() {
 			}
 			args.push_back(0);
 
-			execvp(_executable_path.utf8().get_data(), &args[0]);
+			// Set up env vars
+
+			bool environment_modified = false;
+
+			if (!_inherit_environment) {
+				environment_modified = true;
+
+				if (!clearenv()) {
+					fprintf(stderr, "**ERROR** SubProcessUnix::execute - Could not clear environment!\n");
+				}
+			}
+
+			for (const HashMap<StringName, String>::Element *E = _environment_variables.front(); E; E = E->next) {
+				String key = E->key();
+				String value = E->value();
+
+				CharString key_cs = key.utf8();
+				CharString value_cs = value.utf8();
+
+				if (setenv(key_cs.get_data(), value_cs.get_data(), 1)) {
+					fprintf(stderr, "**ERROR** SubProcessUnix::execute - Failed to set environment variable: %s=%s!\n", key_cs.get_data(), value_cs.get_data());
+				}
+
+				environment_modified = true;
+			}
+
+			if (environment_modified) {
+				extern char **environ;
+
+				execve(_executable_path.utf8().get_data(), &args[0], environ);
+			} else {
+				execvp(_executable_path.utf8().get_data(), &args[0]);
+			}
 			// still alive? something failed..
 			fprintf(stderr, "**ERROR** SubProcessUnix::execute - Could not create child process while executing: %s\n", _executable_path.utf8().get_data());
 			raise(SIGKILL);
