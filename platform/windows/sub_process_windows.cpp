@@ -147,16 +147,16 @@ Error SubProcessWindows::start() {
 	// All strings in the environment block must be sorted alphabetically by name.
 	// The sort is case-insensitive, Unicode order, without regard to locale.
 	// Because the equal sign is a separator, it must not be used in the name of an environment variable.
-	const wchar_t *current_env = NULL;
+	wchar_t *current_env = NULL;
 
 	if (_inherit_environment && _environment_variables.size() == 0) {
 		// No need to do anything, just keep current_env as NULL.
 	} else {
 		HashMap<StringName, String> new_env_map;
 
-		{
-			const wchar_t *initial_env = NULL;
-			CreateEnvironmentBlock(&initial_env, NULL, _inherit_environment);
+		if (_inherit_environment) {
+			wchar_t *initial_env = NULL;
+			initial_env = GetEnvironmentStrings();
 
 			if (initial_env) {
 				const wchar_t *iei = initial_env;
@@ -168,7 +168,7 @@ Error SubProcessWindows::start() {
 						++item_length;
 					}
 
-					String p = String::utf16(iei, item_length);
+					String p = String::utf16((const char16_t *)iei, item_length);
 
 					if (p.length() > 0) {
 						// lazy
@@ -182,11 +182,11 @@ Error SubProcessWindows::start() {
 						new_env_map[key] = value;
 					}
 
-					iei = item_length + 1;
+					iei = iei + (item_length + 1);
 				}
 			}
 
-			DestroyEnvironmentBlock(initial_env);
+			FreeEnvironmentStrings(initial_env);
 		}
 
 		for (const HashMap<StringName, String>::Element *E = _environment_variables.front(); E; E = E->next) {
