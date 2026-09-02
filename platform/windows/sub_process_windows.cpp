@@ -142,7 +142,7 @@ Error SubProcessWindows::start() {
 	// Setup environment vars
 
 	// This is a series of null terminated strings with a double null at the end
-	// in key=value format. You can't have = anywhere else
+	// in key=value format. You can't have = in the name
 	// MSDN:
 	// All strings in the environment block must be sorted alphabetically by name.
 	// The sort is case-insensitive, Unicode order, without regard to locale.
@@ -152,40 +152,36 @@ Error SubProcessWindows::start() {
 	if (_inherit_environment && _environment_variables.size() == 0) {
 		// No need to do anything, just keep current_env as NULL.
 	} else {
-		HashMap<StringName, String> new_env_map;
+		HashMap<String, String> new_env_map;
+
+		// MSDN: Note that an ANSI environment block is terminated by two zero bytes: one for the last string,
+		// one more to terminate the block. A Unicode environment block is terminated by four zero bytes:
+		// two for the last string, two more to terminate the block.
+		// So if this is not set, only the first env var will be used.
+		creaton_flags |= CREATE_UNICODE_ENVIRONMENT;
 
 		if (_inherit_environment) {
-			wchar_t *initial_env = NULL;
-			initial_env = GetEnvironmentStringsW();
+			wchar_t *initial_env = GetEnvironmentStringsW();
 
 			if (initial_env) {
-				const wchar_t *iei = initial_env;
+				wchar_t *temp_env = initial_env;
 
-				while (*iei) {
-					int item_length = 0;
+				while (*temp_env != L'\0') {
+					String p = String::utf16((const char16_t *)temp_env);
 
-					while (iei[item_length]) {
-						++item_length;
-					}
-
-					String p = String::utf16((const char16_t *)iei, item_length);
+					temp_env += p.size();
 
 					if (p.length() > 0) {
-						// lazy
-						Vector<String> s = p.split("=", true);
+						int indx = p.find("=");
 
-						ERR_CONTINUE(s.size() != 2);
-
-						StringName key = s[0];
-						String value = s[1];
-
-						new_env_map[key] = value;
+						if (indx != -1) {
+							String key = p.substr_index(0, indx);
+							String value = p.substr_index(indx + 1, p.length()); // +1 to skip =
+						}
 					}
 
-					iei = iei + (item_length + 1);
+					FreeEnvironmentStringsW(initial_env);
 				}
-
-				FreeEnvironmentStringsW(initial_env);
 			}
 		}
 
@@ -200,7 +196,7 @@ Error SubProcessWindows::start() {
 		// Also let's count lengths for later
 		int length_count = 0;
 
-		for (const HashMap<StringName, String>::Element *E = new_env_map.front(); E; E = E->next) {
+		for (const HashMap<String, String>::Element *E = new_env_map.front(); E; E = E->next) {
 			String sk = E->key();
 			psa.push_back(sk);
 			length_count += sk.length();
@@ -221,21 +217,21 @@ Error SubProcessWindows::start() {
 			int psa_size = psa.size();
 			PoolStringArray::Read r = psa.read();
 			for (int i = 0; i < psa_size; ++i) {
-				String sk = r[i];
-				StringName key = sk;
+				String key = r[i];
 
 				// Write key
 				{
-					Char16String cs = sk.utf16();
+					Char16String cs = key.utf16();
 					// Length does not includes a \0
 					uint64_t str_byte_length = cs.length() * sizeof(char16_t);
 
-					memcpy(current_env, (const char *)cs.get_data(), str_byte_length);
-					current_offset += str_byte_length;
+					memcpy(&current_env[current_offset], (const char *)cs.get_data(), str_byte_length);
+					current_offset += cs.size();
 				}
 
 				// Add =
 				current_env[current_offset] = L'=';
+				++current_offset;
 
 				// Write value
 				{
@@ -244,8 +240,8 @@ Error SubProcessWindows::start() {
 					// Size includes a \0
 					uint64_t str_byte_length = cs.size() * sizeof(char16_t);
 
-					memcpy(current_env, (const char *)cs.get_data(), str_byte_length);
-					current_offset += str_byte_length;
+					memcpy(&current_env[current_offset], (const char *)cs.get_data(), str_byte_length);
+					current_offset += cs.size();
 				}
 			}
 
@@ -257,6 +253,7 @@ Error SubProcessWindows::start() {
 
 	if (current_env) {
 		memdelete_arr(current_env);
+		current_env = NULL;
 	}
 
 	if (!ret) {
