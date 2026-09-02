@@ -43,6 +43,8 @@
  * Multi-Platform abstraction for running and communicating with sub processes
  */
 
+// TODO allow setting environment variables too
+
 class SubProcess {
 public:
 	typedef int64_t ProcessID;
@@ -93,6 +95,7 @@ public:
 	virtual Error stop() = 0;
 	virtual Error poll() = 0;
 	virtual Error send_signal(const int p_signal) = 0;
+	// Need utf8, utf16, and poolbytearray version.
 	virtual Error write_to_stdin(const String &p_data) = 0;
 	virtual bool is_process_running() const = 0;
 
