@@ -152,10 +152,6 @@
 		</method>
 	</methods>
 	<members>
-		<member name="application_name" type="String" setter="set_application_name" getter="get_application_name" default="&quot;&quot;">
-			The application's name will be set to this if the underlying operating system supports it.
-			Windows does, linux doesn't.
-		</member>
 		<member name="arguments" type="PoolStringArray" setter="set_arguments" getter="get_arguments" default="PoolStringArray(  )">
 			The arguments that will be passed to the executable.
 		</member>

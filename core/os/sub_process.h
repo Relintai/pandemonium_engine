@@ -68,9 +68,6 @@ public:
 	Vector<String> get_arguments() const;
 	void set_arguments(const Vector<String> &p_arguments);
 
-	String get_application_name() const;
-	void set_application_name(const String &p_name);
-
 	bool get_blocking() const;
 	void set_blocking(const bool p_value);
 
@@ -137,8 +134,6 @@ protected:
 
 	String _executable_path;
 	Vector<String> _arguments;
-
-	String _application_name;
 
 	bool _blocking;
 
