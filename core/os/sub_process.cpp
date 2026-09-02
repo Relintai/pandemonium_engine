@@ -56,6 +56,15 @@ void SubProcess::set_arguments(const Vector<String> &p_arguments) {
 	_arguments = p_arguments;
 }
 
+String SubProcess::get_application_name() const {
+	return _application_name;
+}
+void SubProcess::set_application_name(const String &p_name) {
+	ERR_FAIL_COND(is_process_running());
+
+	_application_name = p_name;
+}
+
 bool SubProcess::get_blocking() const {
 	return _blocking;
 }

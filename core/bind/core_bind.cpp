@@ -2703,6 +2703,10 @@ void _SubProcess::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_arguments", "arguments"), &_SubProcess::set_arguments);
 	ADD_PROPERTY(PropertyInfo(Variant::POOL_STRING_ARRAY, "arguments"), "set_arguments", "get_arguments");
 
+	ClassDB::bind_method(D_METHOD("get_application_name"), &_SubProcess::get_application_name);
+	ClassDB::bind_method(D_METHOD("set_application_name", "name"), &_SubProcess::set_application_name);
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "application_name"), "set_application_name", "get_application_name");
+
 	ClassDB::bind_method(D_METHOD("get_blocking"), &_SubProcess::get_blocking);
 	ClassDB::bind_method(D_METHOD("set_blocking", "value"), &_SubProcess::set_blocking);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "blocking"), "set_blocking", "get_blocking");
@@ -2775,6 +2779,13 @@ Vector<String> _SubProcess::get_arguments() const {
 }
 void _SubProcess::set_arguments(const Vector<String> &p_arguments) {
 	_sub_process->set_arguments(p_arguments);
+}
+
+String _SubProcess::get_application_name() const {
+	return _sub_process->get_application_name();
+}
+void _SubProcess::set_application_name(const String &p_name) {
+	_sub_process->set_application_name(p_name);
 }
 
 bool _SubProcess::get_blocking() const {
