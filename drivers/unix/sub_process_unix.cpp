@@ -41,6 +41,10 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+#if defined(OSX_ENABLED) || defined(IPHONE_ENABLED)
+#define NO_CLEARENV
+#endif
+
 Error SubProcessUnix::start() {
 #ifdef __EMSCRIPTEN__
 	// Don't compile this code at all to avoid undefined references.
@@ -108,12 +112,21 @@ Error SubProcessUnix::start() {
 
 			bool environment_modified = false;
 
+#ifdef NO_CLEARENV
+			extern char **environ;
+#endif
+
 			if (!_inherit_environment) {
 				environment_modified = true;
 
+#ifndef NO_CLEARENV
 				if (!clearenv()) {
 					fprintf(stderr, "**ERROR** SubProcessUnix::execute - Could not clear environment!\n");
 				}
+#else
+				// FreeBSD manual: On systems where clearenv() is unavailable, the assignment environ = NULL; will probably do.
+				environ = NULL;
+#endif
 			}
 
 			for (const HashMap<StringName, String>::Element *E = _environment_variables.front(); E; E = E->next) {
@@ -131,8 +144,9 @@ Error SubProcessUnix::start() {
 			}
 
 			if (environment_modified) {
+#ifndef NO_CLEARENV
 				extern char **environ;
-
+#endif
 				execve(_executable_path.utf8().get_data(), &args[0], environ);
 			} else {
 				execvp(_executable_path.utf8().get_data(), &args[0]);
@@ -250,12 +264,21 @@ Error SubProcessUnix::start() {
 
 		bool environment_modified = false;
 
+#ifdef NO_CLEARENV
+		extern char **environ;
+#endif
+
 		if (!_inherit_environment) {
 			environment_modified = true;
 
+#ifndef NO_CLEARENV
 			if (!clearenv()) {
 				fprintf(stderr, "**ERROR** SubProcessUnix::execute - Could not clear environment!\n");
 			}
+#else
+			// FreeBSD manual: On systems where clearenv() is unavailable, the assignment environ = NULL; will probably do.
+			environ = NULL;
+#endif
 		}
 
 		for (const HashMap<StringName, String>::Element *E = _environment_variables.front(); E; E = E->next) {
@@ -273,7 +296,9 @@ Error SubProcessUnix::start() {
 		}
 
 		if (environment_modified) {
+#ifndef NO_CLEARENV
 			extern char **environ;
+#endif
 
 			// Note that execve replaces the current process (us) with the one requested.
 			execve(_executable_path.utf8().get_data(), &args[0], environ);
