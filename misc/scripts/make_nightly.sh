@@ -232,7 +232,7 @@ zip -r -q ../pandemonium_nightly_osx.app.zip ./pandemonium_nightly_osx.app
 
 # Sources
 
-zip -r -q ../pandemonium_source.zip ./pandemonium_source
+zip -r -q ../pandemonium_nightly_source.zip ./pandemonium_source
 
 cd ..
 
