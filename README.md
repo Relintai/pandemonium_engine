@@ -69,7 +69,17 @@ required complexities of today harder than they need to be.
 
 ### Binary downloads
 
-You can download binaries from the the releases tab [[here]](https://github.com/Relintai/pandemonium_engine/releases).
+You can download binaries from the the releases tab [[here]](https://github.com/Relintai/pandemonium_engine/releases),
+or from the [engine's site](https://pandemoniumengine.org/downloads/).
+
+Nighlies can be downloaded from [here](https://pandemoniumengine.org/downloads/nightly).
+
+### Compiling from source
+
+[See the official docs](https://github.com/Relintai/pandemonium_engine_docs/tree/master/05_engine_development/01_compiling)
+for compilation instructions for every supported platform.
+
+### Github Actions
 
 As of today (26.09.01) 8 git pushes apparently generated 33 dollars worth of actions usage.
 It seems to be disconted, so no payment seems to be necessary, but the UI is so bad I can barely tell what's going on.
@@ -80,16 +90,6 @@ I'll just assume it's due to the vibe coding (both by lots of people hammering i
 I don't get hit by a surprise bill of unimaginable size by accident in the future:
 
 Github actions are now disabled for this repository.
-
-Nighlies will likely be available soon, I'll also setup actions on my soon to be forgejo gitea mirror.
-
-Fortunately last month I was able to put together a build server using 2 sticks of old ddr4 ram and a new cpu and motherboard.
-Talk about timing.
-
-### Compiling from source
-
-[See the official docs](https://github.com/Relintai/pandemonium_engine_docs/tree/master/05_engine_development/01_compiling)
-for compilation instructions for every supported platform.
 
 ## Documentation and demos
 
