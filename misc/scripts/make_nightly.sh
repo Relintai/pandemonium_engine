@@ -12,16 +12,6 @@ project_root=$(pwd)
 
 full_project_name=$1
 
-version=""
-version_snake_cased=""
-
-if [ ! -z $1 ]; then
-    version="."
-    version+=$1
-
-    version_snake_cased=${version//./_}
-fi
-
 rm -Rf ./release
 mkdir release
 
@@ -29,7 +19,7 @@ mkdir release/temp
 mkdir release/temp/templates
 mkdir release/temp/templates_server
 mkdir release/temp/templates_sbc
-mkdir release/temp/gdnative_headers_v${version_snake_cased}
+mkdir release/temp/gdnative_headers
 
 # ==== Copy Normal Templates ====
 
@@ -129,41 +119,41 @@ cp bin/pandemonium.frt_sdl.opt.debug.arm64v8 release/temp/templates_sbc/linux_fr
 
 # Windows
 
-cp bin/pandemonium.windows.opt.tools.32.exe release/temp/pandemonium_v${version_snake_cased}_nightly_win32.exe
-cp bin/pandemonium.windows.opt.tools.64.exe release/temp/pandemonium_v${version_snake_cased}_nightly_win64.exe
+cp bin/pandemonium.windows.opt.tools.32.exe release/temp/pandemonium_nightly_win32.exe
+cp bin/pandemonium.windows.opt.tools.64.exe release/temp/pandemonium_nightly_win64.exe
 
 # Linux
 
-cp bin/pandemonium.x11.opt.tools.32 release/temp/pandemonium_v${version_snake_cased}_nightly_linux_32
-cp bin/pandemonium.x11.opt.tools.64 release/temp/pandemonium_v${version_snake_cased}_nightly_linux_64
-cp bin/pandemonium.x11.opt.tools.arm release/temp/pandemonium_v${version_snake_cased}_nightly_linux_arm32
-cp bin/pandemonium.x11.opt.tools.arm64 release/temp/pandemonium_v${version_snake_cased}_nightly_linux_arm64
+cp bin/pandemonium.x11.opt.tools.32 release/temp/pandemonium_nightly_linux_32
+cp bin/pandemonium.x11.opt.tools.64 release/temp/pandemonium_nightly_linux_64
+cp bin/pandemonium.x11.opt.tools.arm release/temp/pandemonium_nightly_linux_arm32
+cp bin/pandemonium.x11.opt.tools.arm64 release/temp/pandemonium_nightly_linux_arm64
 
 # Server (Linux)
 
-cp bin/pandemonium_server.x11.opt.tools.32 release/temp/pandemonium_v${version_snake_cased}_nightly_linux_server_32
-cp bin/pandemonium_server.x11.opt.tools.64 release/temp/pandemonium_v${version_snake_cased}_nightly_linux_server_64
-cp bin/pandemonium_server.x11.opt.tools.arm release/temp/pandemonium_v${version_snake_cased}_nightly_linux_server_arm32
-cp bin/pandemonium_server.x11.opt.tools.arm64 release/temp/pandemonium_v${version_snake_cased}_nightly_linux_server_arm64
+cp bin/pandemonium_server.x11.opt.tools.32 release/temp/pandemonium_nightly_linux_server_32
+cp bin/pandemonium_server.x11.opt.tools.64 release/temp/pandemonium_nightly_linux_server_64
+cp bin/pandemonium_server.x11.opt.tools.arm release/temp/pandemonium_nightly_linux_server_arm32
+cp bin/pandemonium_server.x11.opt.tools.arm64 release/temp/pandemonium_nightly_linux_server_arm64
 
 # JS
 
-cp bin/pandemonium.javascript.opt.tools.threads.zip release/temp/pandemonium_v${version_snake_cased}_nightly_javascript.zip
-#cp bin/pandemonium.javascript.opt.tools.gdnative.threads.zip release/temp/pandemonium_v${version_snake_cased}_nightly_javascript_gdnative.zip
+cp bin/pandemonium.javascript.opt.tools.threads.zip release/temp/pandemonium_nightly_javascript.zip
+#cp bin/pandemonium.javascript.opt.tools.gdnative.threads.zip release/temp/pandemonium_nightly_javascript_gdnative.zip
 
 # Android
 
-cp bin/android_editor.apk release/temp/pandemonium_v${version_snake_cased}_nightly_android.apk
+cp bin/android_editor.apk release/temp/pandemonium_nightly_android.apk
 
 # OSX - Editor
 
-cp -r bin/Pandemonium.app release/temp/pandemonium_v${version_snake_cased}_nightly_osx.app
+cp -r bin/Pandemonium.app release/temp/pandemonium_nightly_osx.app
 
 # ==== Copy sources ====
 
-mkdir release/temp/pandemonium_v${version_snake_cased}_source
+mkdir release/temp/pandemonium_source
 
-python ./misc/scripts_app/copy_repos.py . ./release/temp/pandemonium_v${version_snake_cased}_source 
+python ./misc/scripts_app/copy_repos.py . ./release/temp/pandemonium_source 
 
 # ==== Create version.txt for the export templates ====
 
@@ -180,21 +170,21 @@ python ./misc/scripts_app/copy_repos.py . ./release/temp/pandemonium_v${version_
 
 # Copy GDNative includes
 
-cp -r ./release/temp/pandemonium_v${version_snake_cased}_source/modules/gdnative/include/*  release/temp/gdnative_headers_v${version_snake_cased}/
+cp -r ./release/temp/pandemonium_source/modules/gdnative/include/*  release/temp/gdnative_headers/
 
 # Copy gdnative_api.json
 
-cp ./release/temp/pandemonium_v${version_snake_cased}_source/modules/gdnative/gdnative_api.json release/temp/gdnative_headers_v${version_snake_cased}/gdnative_api.json
+cp ./release/temp/pandemonium_source/modules/gdnative/gdnative_api.json release/temp/gdnative_headers/gdnative_api.json
 
 # Copy gdnative_api_struct.gen.h
 
-cp bin/gdnative_api_struct.gen.h release/temp/gdnative_headers_v${version_snake_cased}/gdnative_api_struct.gen.h
+cp bin/gdnative_api_struct.gen.h release/temp/gdnative_headers/gdnative_api_struct.gen.h
 
 # Generate JSON dump of the Pandemonium API for GDNative bindings.
 
-#./bin/pandemonium.x11.opt.tools.64 --gdnative-generate-json-api release/temp/gdnative_headers_v${version_snake_cased}/api.json
+#./bin/pandemonium.x11.opt.tools.64 --gdnative-generate-json-api release/temp/gdnative_headers/api.json
 
-./bin/pandemonium_server.x11.opt.tools.64 --gdnative-generate-json-api release/temp/gdnative_headers_v${version_snake_cased}/api.json
+./bin/pandemonium_server.x11.opt.tools.64 --gdnative-generate-json-api release/temp/gdnative_headers/api.json
 
 # ==== Zip everything ====
 
@@ -202,61 +192,61 @@ cd release/temp
 
 # Export templates
 
-zip -q -r ../pandemonium_v${version_snake_cased}_nightly_export_templates.zip  ./templates/*
-zip -q -r ../pandemonium_v${version_snake_cased}_nightly_export_templates_server.zip  ./templates_server/*
-zip -q -r ../pandemonium_v${version_snake_cased}_nightly_export_templates_sbc.zip  ./templates_sbc/*
+zip -q -r ../pandemonium_nightly_export_templates.zip  ./templates/*
+zip -q -r ../pandemonium_nightly_export_templates_server.zip  ./templates_server/*
+zip -q -r ../pandemonium_nightly_export_templates_sbc.zip  ./templates_sbc/*
 
 # GDNative headers
 
-zip -q -r ../pandemonium_v${version_snake_cased}_nightly_gdnative_headers.zip  ./gdnative_headers_v${version_snake_cased}/*
+zip -q -r ../pandemonium_nightly_gdnative_headers.zip  ./gdnative_headers/*
 
 # == Editors ==
 
 # Windows
 
-zip -q ../pandemonium_v${version_snake_cased}_nightly_win32.zip ./pandemonium_v${version_snake_cased}_nightly_win32.exe
-zip -q ../pandemonium_v${version_snake_cased}_nightly_win64.zip ./pandemonium_v${version_snake_cased}_nightly_win64.exe
+zip -q ../pandemonium_nightly_win32.zip ./pandemonium_nightly_win32.exe
+zip -q ../pandemonium_nightly_win64.zip ./pandemonium_nightly_win64.exe
 
 # Linux
 
-zip -q ../pandemonium_v${version_snake_cased}_nightly_linux_32.zip ./pandemonium_v${version_snake_cased}_nightly_linux_32
-zip -q ../pandemonium_v${version_snake_cased}_nightly_linux_64.zip ./pandemonium_v${version_snake_cased}_nightly_linux_64
-zip -q ../pandemonium_v${version_snake_cased}_nightly_linux_arm32.zip ./pandemonium_v${version_snake_cased}_nightly_linux_arm32
-zip -q ../pandemonium_v${version_snake_cased}_nightly_linux_arm64.zip ./pandemonium_v${version_snake_cased}_nightly_linux_arm64
+zip -q ../pandemonium_nightly_linux_32.zip ./pandemonium_nightly_linux_32
+zip -q ../pandemonium_nightly_linux_64.zip ./pandemonium_nightly_linux_64
+zip -q ../pandemonium_nightly_linux_arm32.zip ./pandemonium_nightly_linux_arm32
+zip -q ../pandemonium_nightly_linux_arm64.zip ./pandemonium_nightly_linux_arm64
 
 # Server (Linux)
 
-zip -q ../pandemonium_v${version_snake_cased}_nightly_linux_server_32.zip ./pandemonium_v${version_snake_cased}_nightly_linux_server_32
-zip -q ../pandemonium_v${version_snake_cased}_nightly_linux_server_64.zip ./pandemonium_v${version_snake_cased}_nightly_linux_server_64
-zip -q ../pandemonium_v${version_snake_cased}_nightly_linux_server_arm32.zip ./pandemonium_v${version_snake_cased}_nightly_linux_server_arm32
-zip -q ../pandemonium_v${version_snake_cased}_nightly_linux_server_arm64.zip ./pandemonium_v${version_snake_cased}_nightly_linux_server_arm64
+zip -q ../pandemonium_nightly_linux_server_32.zip ./pandemonium_nightly_linux_server_32
+zip -q ../pandemonium_nightly_linux_server_64.zip ./pandemonium_nightly_linux_server_64
+zip -q ../pandemonium_nightly_linux_server_arm32.zip ./pandemonium_nightly_linux_server_arm32
+zip -q ../pandemonium_nightly_linux_server_arm64.zip ./pandemonium_nightly_linux_server_arm64
 
 
 # Android
 
-zip -q ../pandemonium_v${version_snake_cased}_nightly_android.zip ./pandemonium_v${version_snake_cased}_nightly_android.apk
+zip -q ../pandemonium_nightly_android.zip ./pandemonium_nightly_android.apk
 
 # OSX - Editor
 
-zip -r -q ../pandemonium_v${version_snake_cased}_nightly_osx.app.zip ./pandemonium_v${version_snake_cased}_nightly_osx.app
+zip -r -q ../pandemonium_nightly_osx.app.zip ./pandemonium_nightly_osx.app
 
 # Sources
 
-zip -r -q ../pandemonium_v${version_snake_cased}_source.zip ./pandemonium_v${version_snake_cased}_source
+zip -r -q ../pandemonium_source.zip ./pandemonium_source
 
 cd ..
 
 # JS
 
-cp ./temp/pandemonium_v${version_snake_cased}_nightly_javascript.zip pandemonium_v${version_snake_cased}_nightly_javascript.zip 
+cp ./temp/pandemonium_nightly_javascript.zip pandemonium_nightly_javascript.zip 
 
 # ==== Rename export temlpates to tpz ====
 # It's still a normal zip though
 # Maybe it should be just kept as a normal zip?
 
-mv pandemonium_v${version_snake_cased}_nightly_export_templates.zip pandemonium_v${version_snake_cased}_nightly_export_templates.tpz
-mv pandemonium_v${version_snake_cased}_nightly_export_templates_server.zip pandemonium_v${version_snake_cased}_nightly_export_templates_server.tpz
-mv pandemonium_v${version_snake_cased}_nightly_export_templates_sbc.zip pandemonium_v${version_snake_cased}_nightly_export_templates_sbc.tpz
+mv pandemonium_nightly_export_templates.zip pandemonium_nightly_export_templates.tpz
+mv pandemonium_nightly_export_templates_server.zip pandemonium_nightly_export_templates_server.tpz
+mv pandemonium_nightly_export_templates_sbc.zip pandemonium_nightly_export_templates_sbc.tpz
 
 
 # Will complatin about the temp directory, but that's fine.
