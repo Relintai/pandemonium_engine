@@ -52,6 +52,7 @@
 #include "windows_terminal_logger.h"
 
 #include <avrt.h>
+#include <bcrypt.h>
 #include <direct.h>
 #include <knownfolders.h>
 #include <process.h>
