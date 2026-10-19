@@ -4964,7 +4964,7 @@ void GDScriptParser::_parse_class(ClassNode *p_class) {
 											}
 
 											if (current_export.hint_string == "int") {
-												current_export.hint_string += ":" + String::num(int_type);
+												current_export.hint_string += "|" + String::num(int_type);
 											}
 										} else if (tokenizer->get_token() == GDScriptTokenizer::TK_IDENTIFIER) {
 											int int_type = -1;
@@ -4993,7 +4993,7 @@ void GDScriptParser::_parse_class(ClassNode *p_class) {
 											}
 
 											if (current_export.hint_string == "int") {
-												current_export.hint_string += ":" + String::num(int_type);
+												current_export.hint_string += "|" + String::num(int_type);
 											}
 										} else {
 											_set_error("Number must be a value from PackedTypedArray.IntType, or a value's name.");
@@ -5003,7 +5003,7 @@ void GDScriptParser::_parse_class(ClassNode *p_class) {
 										_ADVANCE_AND_CONSUME_NEWLINES;
 									} else {
 										if (current_export.hint_string == "int") {
-											current_export.hint_string += ":" + String::num((int)PackedTypedArray::INT_TYPE_SIGNED_64);
+											current_export.hint_string += "|" + String::num((int)PackedTypedArray::INT_TYPE_SIGNED_64);
 										}
 									}
 
@@ -6161,7 +6161,7 @@ bool GDScriptParser::_parse_type(DataType &r_type, bool p_can_be_void) {
 								}
 
 								if (r_type.template_arguments == "int") {
-									r_type.template_arguments = String(r_type.template_arguments) + ":" + String::num(int_type);
+									r_type.template_arguments = String(r_type.template_arguments) + "|" + String::num(int_type);
 								}
 
 								tokenizer->advance();
@@ -6192,7 +6192,7 @@ bool GDScriptParser::_parse_type(DataType &r_type, bool p_can_be_void) {
 								}
 
 								if (r_type.template_arguments == "int") {
-									r_type.template_arguments = String(r_type.template_arguments) + ":" + String::num(int_type);
+									r_type.template_arguments = String(r_type.template_arguments) + "|" + String::num(int_type);
 								}
 
 								tokenizer->advance();
@@ -6209,7 +6209,7 @@ bool GDScriptParser::_parse_type(DataType &r_type, bool p_can_be_void) {
 							}
 						} else {
 							if (r_type.template_arguments == "int") {
-								r_type.template_arguments = String(r_type.template_arguments) + ":" + String::num((int)PackedTypedArray::INT_TYPE_SIGNED_64);
+								r_type.template_arguments = String(r_type.template_arguments) + "|" + String::num((int)PackedTypedArray::INT_TYPE_SIGNED_64);
 							}
 						}
 
@@ -6526,7 +6526,7 @@ GDScriptParser::DataType GDScriptParser::_type_from_variant(const Variant &p_val
 			String typename_str = arr.get_typename_string();
 			if (!typename_str.empty()) {
 				if (typename_str == "int") {
-					result.template_arguments = typename_str + ":" + String::num((int)arr.get_int_type());
+					result.template_arguments = typename_str + "|" + String::num((int)arr.get_int_type());
 				} else {
 					result.template_arguments = typename_str;
 				}

@@ -712,7 +712,7 @@ void EditorPropertyArray::setup(Variant::Type p_array_type, const String &p_hint
 	} else if (array_type == Variant::PACKED_TYPED_ARRAY && !p_hint_string.empty()) {
 		String type_hint_string = p_hint_string;
 
-		int hint_int_type_separator = p_hint_string.find(":");
+		int hint_int_type_separator = p_hint_string.find("|");
 		if (hint_int_type_separator >= 0) {
 			type_hint_string = p_hint_string.substr(0, hint_int_type_separator);
 
