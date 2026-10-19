@@ -4368,14 +4368,22 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 
 					String hint_prefix = "";
 					bool is_arrayed = false;
+					//bool last_was_packed_typed_array = false;
 
 					while (tokenizer->get_token() == PScriptTokenizer::TK_BUILT_IN_TYPE &&
-							tokenizer->get_token_type() == Variant::ARRAY &&
+							(tokenizer->get_token_type() == Variant::ARRAY ||
+									tokenizer->get_token_type() == Variant::TYPED_ARRAY ||
+									tokenizer->get_token_type() == Variant::PACKED_TYPED_ARRAY) &&
 							tokenizer->get_token(1) == PScriptTokenizer::TK_COMMA) {
+						Variant::Type arr_type = tokenizer->get_token_type();
+
+						//last_was_packed_typed_array = arr_type == Variant::PACKED_TYPED_ARRAY;
+
 						tokenizer->advance(); // Array
 						tokenizer->advance(); // Comma
+
 						if (is_arrayed) {
-							hint_prefix += itos(Variant::ARRAY) + ":";
+							hint_prefix += itos(arr_type) + ":";
 						} else {
 							is_arrayed = true;
 						}
@@ -4795,6 +4803,7 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 									_ADVANCE_AND_CONSUME_NEWLINES;
 
 								} break;
+								/*
 								case Variant::TYPED_ARRAY: {
 									if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER) {
 										current_export.hint = PROPERTY_HINT_RESOURCE_TYPE;
@@ -4835,7 +4844,8 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 										}
 									}
 								} break;
-
+								*/
+								/*
 								case Variant::PACKED_TYPED_ARRAY: {
 									if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER) {
 										current_export.hint = PROPERTY_HINT_RESOURCE_TYPE;
@@ -4920,6 +4930,7 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 									}
 
 								} break;
+								*/
 								default: {
 									current_export = PropertyInfo();
 									_set_error("Type \"" + Variant::get_type_name(type) + "\" can't take hints.");
@@ -4927,7 +4938,6 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 								} break;
 							}
 						}
-
 					} else {
 						parenthesis++;
 						Node *subexpr = _parse_and_reduce_expression(p_class, true, true);
