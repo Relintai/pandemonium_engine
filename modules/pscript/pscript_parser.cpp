@@ -5231,6 +5231,10 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 							} else {
 								current_export.hint_string = itos(current_export.type);
 							}
+
+							if (current_export.hint != PROPERTY_HINT_NONE) {
+								current_export.hint_string += +"/" + itos(current_export.hint);
+							}
 						}
 
 						if (!hint_prefix.empty()) {
