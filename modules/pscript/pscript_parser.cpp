@@ -4409,6 +4409,63 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 
 							switch (type) {
 								case Variant::INT: {
+									if (is_arrayed && last_array_type == Variant::PACKED_TYPED_ARRAY) {
+										if (tokenizer->get_token() == PScriptTokenizer::TK_CONSTANT && tokenizer->get_token_constant().is_num()) {
+											int int_type = tokenizer->get_token_constant();
+
+											if (int_type < PackedTypedArray::INT_TYPE_SIGNED_8 || int_type > PackedTypedArray::INT_TYPE_UNSIGNED_64) {
+												_set_error("Number must be a value from PackedTypedArray.IntType.");
+												return;
+											}
+
+											current_export.hint_string += "int|" + String::num(int_type);
+
+											_ADVANCE_AND_CONSUME_NEWLINES;
+
+											if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
+												_ADVANCE_AND_CONSUME_NEWLINES;
+											} else {
+												break;
+											}
+
+										} else if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER) {
+											int int_type = -1;
+
+											String enum_value_identifier = tokenizer->get_token_identifier();
+
+											if (enum_value_identifier == "INT_TYPE_SIGNED_8") {
+												int_type = PackedTypedArray::INT_TYPE_SIGNED_8;
+											} else if (enum_value_identifier == "INT_TYPE_UNSIGNED_8") {
+												int_type = PackedTypedArray::INT_TYPE_UNSIGNED_8;
+											} else if (enum_value_identifier == "INT_TYPE_SIGNED_16") {
+												int_type = PackedTypedArray::INT_TYPE_SIGNED_16;
+											} else if (enum_value_identifier == "INT_TYPE_UNSIGNED_16") {
+												int_type = PackedTypedArray::INT_TYPE_UNSIGNED_16;
+											} else if (enum_value_identifier == "INT_TYPE_SIGNED_32") {
+												int_type = PackedTypedArray::INT_TYPE_SIGNED_32;
+											} else if (enum_value_identifier == "INT_TYPE_UNSIGNED_32") {
+												int_type = PackedTypedArray::INT_TYPE_UNSIGNED_32;
+											} else if (enum_value_identifier == "INT_TYPE_SIGNED_64") {
+												int_type = PackedTypedArray::INT_TYPE_SIGNED_64;
+											} else if (enum_value_identifier == "INT_TYPE_UNSIGNED_64") {
+												int_type = PackedTypedArray::INT_TYPE_UNSIGNED_64;
+											} else {
+												_set_error("Identifier must be a value from PackedTypedArray.IntType.");
+												return;
+											}
+
+											current_export.hint_string += "int|" + String::num(int_type);
+
+											_ADVANCE_AND_CONSUME_NEWLINES;
+
+											if (tokenizer->get_token() == PScriptTokenizer::TK_COMMA) {
+												_ADVANCE_AND_CONSUME_NEWLINES;
+											} else {
+												break;
+											}
+										}
+									}
+
 									if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER && tokenizer->get_token_identifier() == "FLAGS") {
 										_ADVANCE_AND_CONSUME_NEWLINES;
 
@@ -4563,8 +4620,6 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 
 										break;
 									}
-
-									// TODO handle PackedTypedArray int hint here somewhere
 
 									FALLTHROUGH;
 								}
@@ -4948,14 +5003,36 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 							return;
 						}
 
-						// TODO
-						//current_export.type =
+						for (int i = 0; i < Variant::VARIANT_MAX; i++) {
+							if (val == Variant::get_type_name(Variant::Type(i))) {
+								current_export.type = Variant::Type(i);
+								break;
+							}
+						}
+
+						if (current_export.type == Variant::VARIANT_MAX) {
+							current_export.type = Variant::OBJECT;
+						}
+
 						current_export.hint = PROPERTY_HINT_RESOURCE_TYPE;
 						current_export.hint_string = val;
 
 						tokenizer->advance();
 
 					} else if (is_arrayed && last_array_type == Variant::TYPED_ARRAY && tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER) {
+						String val = tokenizer->get_token_identifier();
+
+						for (int i = 0; i < Variant::VARIANT_MAX; i++) {
+							if (val == Variant::get_type_name(Variant::Type(i))) {
+								current_export.type = Variant::Type(i);
+								break;
+							}
+						}
+
+						if (current_export.type == Variant::VARIANT_MAX) {
+							current_export.type = Variant::OBJECT;
+						}
+
 						current_export.hint = PROPERTY_HINT_RESOURCE_TYPE;
 						current_export.hint_string = tokenizer->get_token_identifier();
 
@@ -4967,6 +5044,17 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 						if (val.get_type() != Variant::STRING && val.get_type() != Variant::STRING_NAME) {
 							_set_error("Expected String or StringName constant in the hint.");
 							return;
+						}
+
+						for (int i = 0; i < Variant::VARIANT_MAX; i++) {
+							if (val == Variant::get_type_name(Variant::Type(i))) {
+								current_export.type = Variant::Type(i);
+								break;
+							}
+						}
+
+						if (current_export.type == Variant::VARIANT_MAX) {
+							current_export.type = Variant::OBJECT;
 						}
 
 						current_export.hint = PROPERTY_HINT_RESOURCE_TYPE;
@@ -4985,9 +5073,7 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 									return;
 								}
 
-								if (current_export.hint_string == "int") {
-									current_export.hint_string += "|" + String::num(int_type);
-								}
+								current_export.hint_string += "int|" + String::num(int_type);
 							} else if (tokenizer->get_token() == PScriptTokenizer::TK_IDENTIFIER) {
 								int int_type = -1;
 
@@ -5014,9 +5100,7 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 									return;
 								}
 
-								if (current_export.hint_string == "int") {
-									current_export.hint_string += "|" + String::num(int_type);
-								}
+								current_export.hint_string += "int|" + String::num(int_type);
 							}
 
 							tokenizer->advance();
@@ -5139,11 +5223,19 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 					parenthesis--;
 
 					if (is_arrayed) {
-						hint_prefix += itos(current_export.type);
-						if (current_export.hint) {
-							hint_prefix += "/" + itos(current_export.hint);
+						if (current_export.hint_string.empty()) {
+							if (current_export.type == Variant::INT && last_array_type == Variant::PACKED_TYPED_ARRAY) {
+								// Todo use Variant::Type, and convert the default enum value
+								current_export.hint_string = "int|6";
+								//itos(current_export.type);
+							} else {
+								current_export.hint_string = itos(current_export.type);
+							}
 						}
-						current_export.hint_string = hint_prefix + ":" + current_export.hint_string;
+
+						if (!hint_prefix.empty()) {
+							current_export.hint_string = hint_prefix + ":" + current_export.hint_string;
+						}
 
 						current_export.hint = PROPERTY_HINT_TYPE_STRING;
 						current_export.type = first_array_type;
@@ -5959,9 +6051,23 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 								}
 
 								if (member._export.type == Variant::TYPED_ARRAY || member._export.type == Variant::PACKED_TYPED_ARRAY) {
-									if (member.data_type.template_arguments != member._export.hint_string) {
-										_set_error(vformat("Can't convert the provided value to the export type. Template arguments: \"%s\", Hint string: \"%s\"", String(member.data_type.template_arguments), member._export.hint_string));
-										return;
+									if (member._export.hint_string.contains(":")) {
+										// Array in Array, TODO
+									} else if (member._export.hint_string.is_valid_integer()) {
+										// Just an int means Variant type as int
+										Variant::Type t = static_cast<Variant::Type>(member._export.hint_string.to_int());
+										String tn = Variant::get_type_name(t);
+
+										if (member.data_type.template_arguments != tn) {
+											_set_error(vformat("Can't convert the provided value to the export type. Template arguments: \"%s\", Hint string: \"%s\"", String(member.data_type.template_arguments), tn));
+											return;
+										}
+
+									} else {
+										if (member.data_type.template_arguments != member._export.hint_string) {
+											_set_error(vformat("Can't convert the provided value to the export type. Template arguments: \"%s\", Hint string: \"%s\"", String(member.data_type.template_arguments), member._export.hint_string));
+											return;
+										}
 									}
 								}
 							}
