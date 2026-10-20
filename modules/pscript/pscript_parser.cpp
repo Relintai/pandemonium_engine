@@ -5234,7 +5234,7 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 						}
 
 						if (!hint_prefix.empty()) {
-							if (current_export.hint_string.ends_with(":")) {
+							if (hint_prefix.ends_with(":")) {
 								current_export.hint_string = hint_prefix + current_export.hint_string;
 							} else {
 								current_export.hint_string = hint_prefix + ":" + current_export.hint_string;
