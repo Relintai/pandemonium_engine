@@ -705,144 +705,101 @@ void EditorPropertyArray::setup(Variant::Type p_array_type, const String &p_hint
 	// Alternatively:
 	// ::TypedArray, "TypedArray:23,Mesh/20" -> TypedArray of a TypedArray of mesh
 
-	if (array_type == Variant::ARRAY && !p_hint_string.empty()) {
-		// The format of p_hint_string is:
-		// sub_type/sub_type_hint:...
+	// The format of p_hint_string is:
+	// sub_type,sub_type_hint_string(opt)/sub_type_hint(opt):...
+	// if sub_type_str:... then sub_type is inferred, sub_type_hint_string is set using the given str
 
-		int hint_subtype_separator = p_hint_string.find(":");
-		if (hint_subtype_separator >= 0) {
-			String subtype_string = p_hint_string.substr(0, hint_subtype_separator);
-			int slash_pos = subtype_string.find("/");
-			if (slash_pos >= 0) {
-				subtype_hint = PropertyHint(subtype_string.substr(slash_pos + 1, subtype_string.size() - slash_pos - 1).to_int());
-				subtype_string = subtype_string.substr(0, slash_pos);
-			}
+	// For PackedTypedArrays
+	// sub_type/sub_type_hint:...
+	// sub_type|int_type/sub_type_hint:...
+	// sub_type,sub_type_hint_string(opt)|int_type/sub_type_hint(opt):...
+	// It should be with ints: int|1/12 ...
 
-			subtype_hint_string = p_hint_string.substr(hint_subtype_separator + 1, p_hint_string.size() - hint_subtype_separator - 1);
+	String subtype_string;
 
-			if (!subtype_string.is_valid_integer()) {
-				for (int i = 0; i < Variant::VARIANT_MAX; i++) {
-					if (subtype_string == Variant::get_type_name(Variant::Type(i))) {
-						subtype = Variant::Type(i);
-						break;
-					}
-				}
+	int hint_subtype_separator = p_hint_string.find(":");
+	if (hint_subtype_separator >= 0) {
+		subtype_string = p_hint_string.substr(0, hint_subtype_separator);
+		subtype_hint_string = p_hint_string.substr(hint_subtype_separator + 1, p_hint_string.size() - hint_subtype_separator - 1);
+	} else {
+		subtype_string = p_hint_string;
+		subtype_hint_string = p_hint_string;
+	}
 
-				if (subtype == Variant::VARIANT_MAX) {
-					subtype = Variant::OBJECT;
-				}
-			} else {
-				subtype = Variant::Type(subtype_string.to_int());
-			}
-		}
-	} else if (array_type == Variant::TYPED_ARRAY && !p_hint_string.empty()) {
-		// The format of p_hint_string is:
-		// sub_type/sub_type_hint:...
-
-		String subtype_string;
-
-		int hint_subtype_separator = p_hint_string.find(":");
-		if (hint_subtype_separator >= 0) {
-			subtype_string = p_hint_string.substr(0, hint_subtype_separator);
-		} else {
-			subtype_string = p_hint_string;
-		}
-
+	if (array_type == Variant::TYPED_ARRAY || array_type == Variant::PACKED_TYPED_ARRAY) {
 		if (subtype_string.empty()) {
 			subtype = Variant::NIL;
 			return;
 		}
+	}
 
-		int slash_pos = subtype_string.find("/");
-		if (slash_pos >= 0) {
-			subtype_hint = PropertyHint(subtype_string.substr(slash_pos + 1, subtype_string.size() - slash_pos - 1).to_int());
-			subtype_string = subtype_string.substr(0, slash_pos);
-		}
+	int slash_pos = subtype_string.find("/");
+	if (slash_pos >= 0) {
+		// subtype_property_hint
+		subtype_hint = PropertyHint(subtype_string.substr(slash_pos + 1, subtype_string.size() - slash_pos - 1).to_int());
+		// strip slash and everything after it
+		subtype_string = subtype_string.substr(0, slash_pos);
+	}
 
-		subtype_hint_string = p_hint_string.substr(hint_subtype_separator + 1, p_hint_string.size() - hint_subtype_separator - 1);
-
-		if (!subtype_string.is_valid_integer()) {
-			for (int i = 0; i < Variant::VARIANT_MAX; i++) {
-				if (subtype_string == Variant::get_type_name(Variant::Type(i))) {
-					subtype = Variant::Type(i);
-					break;
-				}
-			}
-
-			if (subtype == Variant::VARIANT_MAX) {
-				subtype = Variant::OBJECT;
-			}
-
-			if (subtype == Variant::OBJECT) {
-				typed_array_object_subtype = subtype_string;
-			}
-		} else {
-			subtype = Variant::Type(subtype_string.to_int());
-
-			if (subtype == Variant::OBJECT) {
-				typed_array_object_subtype = subtype_string;
-			}
-		}
-
-	} else if (array_type == Variant::PACKED_TYPED_ARRAY && !p_hint_string.empty()) {
+	// subtype_string might have a | if PACKED_TYPED_ARRAY
+	if (array_type == Variant::PACKED_TYPED_ARRAY) {
 		// The format of p_hint_string is:
 		// sub_type/sub_type_hint:...
 		// sub_type|int_type/sub_type_hint:...
+		// sub_type,sub_type_hint_string(opt)|int_type/sub_type_hint(opt):...
 		// It should be with ints: int|1/12 ...
-
-		String subtype_string;
-
-		int hint_subtype_separator = p_hint_string.find(":");
-		if (hint_subtype_separator >= 0) {
-			subtype_string = p_hint_string.substr(0, hint_subtype_separator);
-		} else {
-			subtype_string = p_hint_string;
-		}
-
-		if (subtype_string.empty()) {
-			subtype = Variant::NIL;
-			return;
-		}
-
-		int slash_pos = subtype_string.find("/");
-		if (slash_pos >= 0) {
-			subtype_hint = PropertyHint(subtype_string.substr(slash_pos + 1, subtype_string.size() - slash_pos - 1).to_int());
-			subtype_string = subtype_string.substr(0, slash_pos);
-		}
-
-		subtype_hint_string = p_hint_string.substr(hint_subtype_separator + 1, p_hint_string.size() - hint_subtype_separator - 1);
-
 		int hint_int_type_separator = subtype_string.find("|");
 
-		String int_type_string;
 		if (hint_int_type_separator >= 0) {
-			int_type_string = subtype_string.substr(hint_int_type_separator + 1);
+			String int_type_string = subtype_string.substr(hint_int_type_separator + 1);
 			subtype_string = subtype_string.substr(0, hint_int_type_separator);
+
+			if (int_type_string.length() > 0) {
+				packed_typed_array_int_type = static_cast<PackedTypedArray::IntType>(int_type_string.to_int());
+			}
+		}
+	}
+
+	String opt_subtype_hint_str;
+	int comma_pos = subtype_string.find(",");
+	if (comma_pos >= 0) {
+		opt_subtype_hint_str = subtype_string.substr(comma_pos + 1, subtype_string.size() - comma_pos - 1);
+		// strip , and everything after it
+		subtype_string = subtype_string.substr(0, comma_pos);
+
+		if (array_type == Variant::TYPED_ARRAY || array_type == Variant::PACKED_TYPED_ARRAY) {
+			typed_array_object_subtype = opt_subtype_hint_str;
 		}
 
-		if (int_type_string.length() > 0) {
-			packed_typed_array_int_type = static_cast<PackedTypedArray::IntType>(int_type_string.to_int());
+		// Override subtype_hint_string if it doesn't have a ":".
+		if (subtype_hint_string.find(":") >= 0) {
+			subtype_hint_string = opt_subtype_hint_str;
+		}
+	}
+
+	if (!subtype_string.is_valid_integer()) {
+		for (int i = 0; i < Variant::VARIANT_MAX; i++) {
+			if (subtype_string == Variant::get_type_name(Variant::Type(i))) {
+				subtype = Variant::Type(i);
+				break;
+			}
 		}
 
-		if (!subtype_string.is_valid_integer()) {
-			for (int i = 0; i < Variant::VARIANT_MAX; i++) {
-				if (subtype_string == Variant::get_type_name(Variant::Type(i))) {
-					subtype = Variant::Type(i);
-					break;
-				}
-			}
+		if (subtype == Variant::VARIANT_MAX) {
+			subtype = Variant::OBJECT;
+		}
 
-			if (subtype == Variant::VARIANT_MAX) {
-				subtype = Variant::OBJECT;
-			}
-
-			if (subtype == Variant::OBJECT) {
+		if (subtype == Variant::OBJECT) {
+			if (array_type == Variant::TYPED_ARRAY || array_type == Variant::PACKED_TYPED_ARRAY) {
 				typed_array_object_subtype = subtype_string;
 			}
-		} else {
-			subtype = Variant::Type(subtype_string.to_int());
+		}
 
-			if (subtype == Variant::OBJECT) {
+	} else {
+		subtype = Variant::Type(subtype_string.to_int());
+
+		if (subtype == Variant::OBJECT) {
+			if (array_type == Variant::TYPED_ARRAY || array_type == Variant::PACKED_TYPED_ARRAY) {
 				typed_array_object_subtype = subtype_string;
 			}
 		}
