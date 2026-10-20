@@ -693,9 +693,17 @@ void EditorPropertyArray::setup(Variant::Type p_array_type, const String &p_hint
 	// PROPERTY(Variant::TypedArray, ..., "int|4");
 	// PROPERTY(Variant::TypedArray, ..., "Mesh");
 	// PROPERTY(Variant::TypedArray, ..., "TypedArray/1:PackedTypedArray/2:Mesh");
-	//              Type                  Subtype1/PH1 : Subtype 2/PH2    : Subtype 3
+	//              Type                   SubType/PH1 : Subtype 2/PH2    : Subtype 3
 
-	// Note that we always process 1 level down here, so no need to do forward lookups
+	//ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "spells_cast_on_caster", PROPERTY_HINT_NONE, "23/20:Spell", PROPERTY_USAGE_DEFAULT, "Spell"), "spells_cast_on_caster_set", "spells_cast_on_caster_get");
+	// "23/20:Spell" Variant::OBJECT / PROPERTY_HINT_RESOURCE_TYPE:<Type>
+	// This will need to be reworked
+	// Either something like 23/20,Spell and each one is separated by colons :
+	// or Spell/20
+	// Both could work, setting variant type with an int is faster
+	// ::TypedArray, "TypedArray:Mesh/20" -> TypedArray of a TypedArray of mesh
+	// Alternatively:
+	// ::TypedArray, "TypedArray:23,Mesh/20" -> TypedArray of a TypedArray of mesh
 
 	if (array_type == Variant::ARRAY && !p_hint_string.empty()) {
 		// The format of p_hint_string is:
