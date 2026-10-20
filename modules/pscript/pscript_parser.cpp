@@ -5234,7 +5234,11 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 						}
 
 						if (!hint_prefix.empty()) {
-							current_export.hint_string = hint_prefix + ":" + current_export.hint_string;
+							if (current_export.hint_string.ends_with(":")) {
+								current_export.hint_string = hint_prefix + current_export.hint_string;
+							} else {
+								current_export.hint_string = hint_prefix + ":" + current_export.hint_string;
+							}
 						}
 
 						current_export.hint = PROPERTY_HINT_TYPE_STRING;
