@@ -5041,9 +5041,9 @@ void PScriptParser::_parse_class(ClassNode *p_class) {
 							tokenizer->advance();
 						}
 
-						// Consume a single ; after export, if present.
-						if (tokenizer->get_token() == PScriptTokenizer::TK_SEMICOLON) {
-							tokenizer->advance();
+						if (!_end_statement()) {
+							_set_error("Expected ';' after button export.");
+							return;
 						}
 
 						continue;
