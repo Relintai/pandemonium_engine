@@ -20,7 +20,7 @@
 ** The content in this amalgamation comes from Fossil check-in
 ** 555e07ef33f69a0957d24d8e555b702464a1 with changes in files:
 **
-**    
+**
 */
 #ifndef SQLITE_AMALGAMATION
 #define SQLITE_CORE 1
@@ -173,7 +173,9 @@
 #ifndef OS_VXWORKS
 #  define OS_VXWORKS 0
 #endif
+#ifndef SQLITE_NO_FCHOWN
 #define HAVE_FCHOWN 1
+#endif
 #define HAVE_READLINK 1
 #define HAVE_LSTAT 1
 #endif /* defined(_WRS_KERNEL) */
