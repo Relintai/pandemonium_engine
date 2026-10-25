@@ -5093,12 +5093,40 @@ void GDScriptParser::_parse_class(ClassNode *p_class) {
 							return;
 						}
 
+						StringName identifier = tokenizer->get_token_identifier();
+
+						if (ClassDB::class_exists(identifier) || ClassDB::class_exists("_" + identifier.operator String())) {
+							_set_error("Button export variable \"" + String(identifier) + "\" shadows a native class.");
+							return;
+						}
+
+						if (current_class->constant_expressions.has(identifier)) {
+							_set_error("Constant \"" + String(identifier) + "\" already exists in this class (at line " +
+									itos(current_class->constant_expressions[identifier].expression->line) + ").");
+							return;
+						}
+
+						for (int i = 0; i < current_class->variables.size(); i++) {
+							if (current_class->variables[i].identifier == identifier) {
+								_set_error("A variable named \"" + String(identifier) + "\" already exists in this class (at line " +
+										itos(current_class->variables[i].line) + ").");
+								return;
+							}
+						}
+
+						for (int i = 0; i < current_class->subclasses.size(); i++) {
+							if (current_class->subclasses[i]->name == identifier) {
+								_set_error("A class named \"" + String(identifier) + "\" already exists in this class (at line " + itos(current_class->subclasses[i]->line) + ").");
+								return;
+							}
+						}
+
 						ClassNode::Member member;
 
 						member._export = current_export;
 						current_export = PropertyInfo();
 
-						member.identifier = tokenizer->get_token_identifier();
+						member.identifier = identifier;
 						member.expression = nullptr;
 						member._export.name = member.identifier;
 						member.line = tokenizer->get_token_line();
