@@ -657,24 +657,7 @@ void EditorPropertyArray::_length_changed(double p_page) {
 			for (int i = previous_size; i < size; i++) {
 				if (array.get(i).get_type() == Variant::NIL) {
 					Variant::CallError ce;
-
-					if (subtype == Variant::TYPED_ARRAY) {
-						Variant tast;
-
-						if (typed_array_object_subtype.empty()) {
-						} else {
-							Variant tast = typed_array_object_subtype;
-						}
-						Variant *ptrs[1] = { &tast };
-						array.set(i, Variant::construct(subtype, (const Variant **)ptrs, 1, ce));
-					} else if (subtype == Variant::PACKED_TYPED_ARRAY) {
-						Variant tast = typed_array_object_subtype;
-						Variant it = packed_typed_array_int_type;
-						Variant *ptrs[2] = { &tast, &it };
-						array.set(i, Variant::construct(subtype, (const Variant **)ptrs, 2, ce));
-					} else {
-						array.set(i, Variant::construct(subtype, nullptr, 0, ce));
-					}
+					array.set(i, Variant::construct(subtype, nullptr, 0, ce));
 				}
 			}
 		}
