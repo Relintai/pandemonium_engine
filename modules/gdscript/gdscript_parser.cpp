@@ -5022,6 +5022,127 @@ void GDScriptParser::_parse_class(ClassNode *p_class) {
 							}
 						}
 
+					} else if (tokenizer->get_token() == GDScriptTokenizer::TK_PR_VOID) {
+						//For PROPERTY_HINT_BUTTON
+						//// Use a button in the inspector for this property.
+						// The property's type has to be Variant::NIL. hint_text="call_func:name/theme_type" ->
+						// calls call_func(const StringName &p_property) on press, optional: ":name/theme_type" -> get_theme_icon("name", "theme_type")
+
+						// Note that normal Strings are better in this case, but StringNames will also work.
+						// export(void, BUTTON, "<hint string>") property_name;
+						// export(void, BUTTON, @"<hint string>") property_name;
+
+						if (is_arrayed) {
+							_set_error("Can't export null type in arrays.");
+							return;
+						}
+
+						current_export.type = Variant::NIL;
+
+						_ADVANCE_AND_CONSUME_NEWLINES;
+
+						if (tokenizer->get_token() != GDScriptTokenizer::TK_COMMA) {
+							_set_error("Expected \",\" after void.");
+							return;
+						}
+
+						_ADVANCE_AND_CONSUME_NEWLINES;
+
+						if (tokenizer->get_token() != GDScriptTokenizer::TK_IDENTIFIER && !(tokenizer->get_token_identifier() == "BUTTON")) {
+							_set_error("Expected a BUTTON hint.");
+							return;
+						}
+
+						_ADVANCE_AND_CONSUME_NEWLINES;
+
+						if (tokenizer->get_token() != GDScriptTokenizer::TK_COMMA) {
+							_set_error("Expected \",\" after the button hint.");
+							return;
+						}
+
+						current_export.hint = PROPERTY_HINT_BUTTON;
+
+						_ADVANCE_AND_CONSUME_NEWLINES;
+
+						if (tokenizer->get_token_constant().get_type() != Variant::STRING && tokenizer->get_token_constant().get_type() != Variant::STRING_NAME) {
+							_set_error("Expected a string constant in the button hint.");
+							return;
+						}
+
+						current_export.hint_string = tokenizer->get_token_constant();
+
+						_ADVANCE_AND_CONSUME_NEWLINES;
+
+						if (tokenizer->get_token() != GDScriptTokenizer::TK_PARENTHESIS_CLOSE) {
+							current_export = PropertyInfo();
+							_set_error("Expected \")\" or \",\" after the export hint.");
+							return;
+						}
+
+						tokenizer->advance();
+						parenthesis--;
+
+						// Consume a single newline after export, if present.
+						if (tokenizer->get_token() == GDScriptTokenizer::TK_NEWLINE) {
+							tokenizer->advance();
+						}
+
+						if (tokenizer->get_token() != GDScriptTokenizer::TK_IDENTIFIER) {
+							current_export = PropertyInfo();
+							_set_error("Expected identifier after button export.");
+							return;
+						}
+
+						ClassNode::Member member;
+
+						member._export = current_export;
+						current_export = PropertyInfo();
+
+						member.identifier = tokenizer->get_token_identifier();
+						member.expression = nullptr;
+						member._export.name = member.identifier;
+						member.line = tokenizer->get_token_line();
+						member.usages = 1;
+
+						DataType dt;
+						dt.kind = DataType::BUILTIN;
+						dt.has_type = true;
+						dt.builtin_type = Variant::NIL;
+
+						member.data_type = dt;
+
+						ConstantNode *expr = alloc_node<ConstantNode>();
+						expr->value = Variant();
+						expr->line = member.line;
+
+						IdentifierNode *id = alloc_node<IdentifierNode>();
+						id->name = member.identifier;
+						id->datatype = member.data_type;
+
+						OperatorNode *op = alloc_node<OperatorNode>();
+						op->op = OperatorNode::OP_INIT_ASSIGN;
+						op->arguments.push_back(id);
+						op->arguments.push_back(expr);
+
+						member.initial_assignment = op;
+
+						p_class->variables.push_back(member);
+						p_class->initializer->statements.push_back(op);
+
+						tokenizer->advance();
+
+						// Consume a single newline after export, if present.
+						if (tokenizer->get_token() == GDScriptTokenizer::TK_NEWLINE) {
+							tokenizer->advance();
+						}
+
+						// Consume a single ; after export, if present.
+						if (tokenizer->get_token() == GDScriptTokenizer::TK_SEMICOLON) {
+							tokenizer->advance();
+						}
+
+						continue;
+
 					} else {
 						parenthesis++;
 						Node *subexpr = _parse_and_reduce_expression(p_class, true, true);

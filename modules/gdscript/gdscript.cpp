@@ -459,7 +459,7 @@ bool GDScript::_update_exports(bool *r_err, bool p_recursive_call, PlaceHolderSc
 			member_default_values_cache.clear();
 
 			for (int i = 0; i < c->variables.size(); i++) {
-				if (c->variables[i]._export.type == Variant::NIL) {
+				if (c->variables[i]._export.type == Variant::NIL && c->variables[i]._export.hint != PROPERTY_HINT_BUTTON) {
 					continue;
 				}
 
