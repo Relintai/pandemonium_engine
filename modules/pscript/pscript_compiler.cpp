@@ -2113,7 +2113,7 @@ Error PScriptCompiler::_parse_class_level(PScript *p_script, const PScriptParser
 		prop_info.name = name;
 		PropertyInfo export_info = p_class->variables[i]._export;
 
-		if (export_info.type != Variant::NIL) {
+		if (export_info.type != Variant::NIL || (export_info.type == Variant::NIL && export_info.hint == PROPERTY_HINT_BUTTON)) {
 			if (!minfo.data_type.has_type) {
 				prop_info.type = export_info.type;
 				prop_info.class_name = export_info.class_name;
