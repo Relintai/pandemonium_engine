@@ -979,8 +979,6 @@ void HTTPServerSimple::poll() {
 			continue;
 		}
 
-		_connections_lock.write_lock();
-
 #if CONNECTION_OPEN_CLOSE_DEBUG
 		ERR_PRINT("NEW CONN");
 #endif
@@ -1003,6 +1001,7 @@ void HTTPServerSimple::poll() {
 		connection->peer = connection->tcp;
 		connection->time = OS::get_singleton()->get_ticks_usec();
 
+		_connections_lock.write_lock();
 		_connections.push_back(connection);
 		_connections_lock.write_unlock();
 	}
