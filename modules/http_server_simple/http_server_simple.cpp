@@ -973,11 +973,13 @@ void HTTPServerSimple::poll() {
 
 	//todo add connection limit
 	while (server->is_connection_available()) {
-		_connections_lock.write_lock();
-
 		Ref<StreamPeerTCP> tcp = server->take_connection();
 
-		ERR_CONTINUE(!tcp.is_valid());
+		if (!tcp.is_valid()) {
+			continue;
+		}
+
+		_connections_lock.write_lock();
 
 #if CONNECTION_OPEN_CLOSE_DEBUG
 		ERR_PRINT("NEW CONN");
