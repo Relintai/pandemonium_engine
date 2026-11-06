@@ -192,10 +192,14 @@ files=(
   "pandemonium.frt_sdl.opt.arm32v6"
   "pandemonium.frt_sdl.opt.arm32v7"
   "pandemonium.frt_sdl.opt.arm64v8"
+  "pandemonium.frt_sdl.opt.x86_32"
+  "pandemonium.frt_sdl.opt.x86_64"
 
   "pandemonium.frt_sdl.opt.debug.arm32v6"
   "pandemonium.frt_sdl.opt.debug.arm32v7"
   "pandemonium.frt_sdl.opt.debug.arm64v8"
+  "pandemonium.frt_sdl.opt.debug.x86_32"
+  "pandemonium.frt_sdl.opt.debug.x86_64"
 )
 
 error=0
