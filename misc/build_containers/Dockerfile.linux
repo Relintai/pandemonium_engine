@@ -4,12 +4,14 @@ FROM pandemonium-fedora:${img_version}
 COPY files/x86_64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 /root/files/
 COPY files/i686-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 /root/files/
 COPY files/aarch64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 /root/files/
-COPY files/arm-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 /root/files/
+COPY files/armv6-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 /root/files/
+COPY files/armv7-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 /root/files/
 
 ENV PANDEMONIUN_SDK_LINUX_X86_64=/root/x86_64-pandemonium-linux-gnu_sdk-buildroot
 ENV PANDEMONIUN_SDK_LINUX_X86_32=/root/i686-pandemonium-linux-gnu_sdk-buildroot
 ENV PANDEMONIUN_SDK_LINUX_ARM64=/root/aarch64-pandemonium-linux-gnu_sdk-buildroot
-ENV PANDEMONIUN_SDK_LINUX_ARM32=/root/arm-pandemonium-linux-gnueabihf_sdk-buildroot
+ENV PANDEMONIUN_SDK_LINUX_ARMV7=/root/armv7-pandemonium-linux-gnueabihf_sdk-buildroot
+ENV PANDEMONIUN_SDK_LINUX_ARMV6=/root/armv6-pandemonium-linux-gnueabihf_sdk-buildroot
 
 ENV BASE_PATH=${PATH}
 
@@ -37,14 +39,20 @@ RUN cp /root/files/x86_64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 . && \
 		ln -s aarch64-pandemonium-linux-gnu-objcopy bin/objcopy && \
     ln -s aarch64-pandemonium-linux-gnu-strip bin/strip && \
     cd /root && \
-		cp /root/files/arm-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 . && \
-    tar xf arm-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 && \
-    rm -f arm-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 && \
-    cd arm-pandemonium-linux-gnueabihf_sdk-buildroot && \
+		cp /root/files/armv6-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 . && \
+    tar xf armv6-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 && \
+    rm -f armv6-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 && \
+    cd armv6-pandemonium-linux-gnueabihf_sdk-buildroot && \
     ./relocate-sdk.sh && \
-    ln -s arm-pandemonium-linux-gnueabihf-objcopy bin/objcopy && \
-    ln -s arm-pandemonium-linux-gnueabihf-strip bin/strip \
+    ln -s armv6-pandemonium-linux-gnueabihf-objcopy bin/objcopy && \
+    ln -s armv6-pandemonium-linux-gnueabihf-strip bin/strip && \
+		cp /root/files/armv7-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 . && \
+    tar xf armv7-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 && \
+    rm -f armv7-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 && \
+    cd armv7-pandemonium-linux-gnueabihf_sdk-buildroot && \
+    ./relocate-sdk.sh && \
+    ln -s armv7-pandemonium-linux-gnueabihf-objcopy bin/objcopy && \
+    ln -s armv7-pandemonium-linux-gnueabihf-strip bin/strip && \
     rm -rf /root/files
-
 
 CMD /bin/bash

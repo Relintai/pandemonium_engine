@@ -72,7 +72,8 @@ scons production=yes tools=yes target=release_debug custom_modules_shared=no deb
 scons production=yes tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=server arch=arm64 "$@"
 scons production=yes tools=no target=release custom_modules_shared=no debug_symbols=no platform=server arch=arm64 "$@"
 
-export PATH="${PANDEMONIUN_SDK_LINUX_ARM32}/bin:${BASE_PATH}"
+# = arm32 template
+export PATH="${PANDEMONIUN_SDK_LINUX_ARMv7}/bin:${BASE_PATH}"
 
 # Linux http server (templates) arm64
 scons production=yes ${HTTP_SERVER_COMMANDS} tools=no target=release_debug custom_modules_shared=no debug_symbols=no platform=server arch=arm "$@"

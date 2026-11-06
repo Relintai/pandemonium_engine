@@ -74,14 +74,14 @@ docker run ${custom_envvars} \
 docker run ${custom_envvars} \
         -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
         -v ${project_root}:/root/project \
-        -w /root/project pandemonium-frt-arm64:${img_version} \
+        -w /root/project pandemonium-linux:${img_version} \
         bash /root/engine_build_scripts/frt_arm64.sh "$@" 2>&1 | tee logs/frt_arm64.log
 
 # FRT Build arm32
 docker run ${custom_envvars} \
         -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
         -v ${project_root}:/root/project \
-        -w /root/project pandemonium-frt-arm32:${img_version} \
+        -w /root/project pandemonium-linux:${img_version} \
         bash /root/engine_build_scripts/frt_arm32.sh "$@" 2>&1 | tee logs/frt_arm32.log
 
 # Check files

@@ -11,8 +11,9 @@ export docker_build="docker build --build-arg img_version=${img_version} "
 
 docker build -t pandemonium-fedora:${img_version} -f Dockerfile.base . 2>&1 | tee logs/base.log
 
-if [ ! -e "${files_root}"/aarch64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 ] || [ ! -e "${files_root}"/arm-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 ] \
-|| [ ! -e "${files_root}"/i686-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 ] || [ ! -e "${files_root}"/x86_64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 ]; then
+if [ ! -e "${files_root}"/aarch64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 ] || [ ! -e "${files_root}"/armv6-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 ] \
+|| [ ! -e "${files_root}"/i686-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 ] || [ ! -e "${files_root}"/x86_64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 ] \
+|| [ ! -e "${files_root}"/armv7-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 ];then
     echo "Linux toolchains are required."
 		echo "It can be downloaded from: https://github.com/Relintai/buildroot/releases or https://pandemoniumengine.org/toolchains"
 		echo "It can be built using: https://github.com/Relintai/buildroot or https://git.relintai.net/Relintai/buildroot"
@@ -45,8 +46,4 @@ fi
 
 $docker_build -t pandemonium-osx:${img_version} -f Dockerfile.osx . 2>&1 | tee logs/osx.log
 $docker_build -t pandemonium-appleembedded:${img_version} -f Dockerfile.appleembedded . 2>&1 | tee logs/ios.log
-
-docker build -t pandemonium-frt-base:${img_version} -f Dockerfile.frt_base . 2>&1 | tee logs/frt_base.log
-$docker_build -t pandemonium-frt-arm32:${img_version} -f Dockerfile.frt_arm32 . 2>&1 | tee logs/frt_arm32.log
-$docker_build -t pandemonium-frt-arm64:${img_version} -f Dockerfile.frt_arm64 . 2>&1 | tee logs/frt_arm64.log
 
