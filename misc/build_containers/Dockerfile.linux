@@ -15,7 +15,8 @@ ENV PANDEMONIUN_SDK_LINUX_ARMV6=/root/armv6-pandemonium-linux-gnueabihf_sdk-buil
 
 ENV BASE_PATH=${PATH}
 
-RUN cp /root/files/x86_64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 . && \
+RUN cd /root && \
+    cp /root/files/x86_64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 . && \
     tar xf x86_64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 && \
     rm -f x86_64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 && \
     cd x86_64-pandemonium-linux-gnu_sdk-buildroot && \
