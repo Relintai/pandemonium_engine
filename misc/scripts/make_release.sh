@@ -120,13 +120,13 @@ cp bin/pandemonium.frt.opt.debug.arm64v8 release/temp/templates_sbc/linux_frt_ar
 cp bin/pandemonium.frt_sdl.opt.arm32v6 release/temp/templates_sbc/linux_frt_sdl_arm32v6_release
 cp bin/pandemonium.frt_sdl.opt.arm32v7 release/temp/templates_sbc/linux_frt_sdl_arm32v7_release
 cp bin/pandemonium.frt_sdl.opt.arm64v8 release/temp/templates_sbc/linux_frt_sdl_arm64v8_release
-cp bin/pandemonium.frt_sdl.opt.x86 release/temp/templates_sbc/linux_frt_sdl_x86_release
+cp bin/pandemonium.frt_sdl.opt.x86_32 release/temp/templates_sbc/linux_frt_sdl_x86_32_release
 cp bin/pandemonium.frt_sdl.opt.x86_64 release/temp/templates_sbc/linux_frt_sdl_x86_64_release
 
 cp bin/pandemonium.frt_sdl.opt.debug.arm32v6 release/temp/templates_sbc/linux_frt_sdl_arm32v6_debug
 cp bin/pandemonium.frt_sdl.opt.debug.arm32v7 release/temp/templates_sbc/linux_frt_sdl_arm32v7_debug
 cp bin/pandemonium.frt_sdl.opt.debug.arm64v8 release/temp/templates_sbc/linux_frt_sdl_arm64v8_debug
-cp bin/pandemonium.frt_sdl.opt.debug.x86 release/temp/templates_sbc/linux_frt_sdl_x86_debug
+cp bin/pandemonium.frt_sdl.opt.debug.x86_32 release/temp/templates_sbc/linux_frt_sdl_x86_32_debug
 cp bin/pandemonium.frt_sdl.opt.debug.x86_64 release/temp/templates_sbc/linux_frt_sdl_x86_64_debug
 
 # ==== Copy Enditors ====

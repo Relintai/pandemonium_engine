@@ -334,7 +334,7 @@ void EditorExportPlatformFRTSDL::set_debug_files(const String &p_arch, const Str
 String EditorExportPlatformFRTSDL::get_preset_arch(const Ref<EditorExportPreset> &p_preset) const {
 	String arch = p_preset->get("binary_format/architecture");
 
-	if (arch != "arm32v6" && arch != "arm32v7" && arch != "arm64v8" && arch != "x86" && arch != "x86_64") {
+	if (arch != "arm32v6" && arch != "arm32v7" && arch != "arm64v8" && arch != "x86_32" && arch != "x86_64") {
 		ERR_PRINT(vformat("Invalid value \"%s\" for \"binary_format/architecture\" in export preset \"%s\". Defaulting to \"arm32v6\".",
 				arch,
 				p_preset->get_name()));
@@ -397,12 +397,12 @@ void register_frt_sdl_exporter() {
 	platform->set_release_files("arm32v6", "linux_frt_sdl_arm32v6_release");
 	platform->set_release_files("arm32v7", "linux_frt_sdl_arm32v7_release");
 	platform->set_release_files("arm64v8", "linux_frt_sdl_arm64v8_release");
-	platform->set_release_files("x86", "linux_frt_sdl_x86_release");
+	platform->set_release_files("x86_32", "linux_frt_sdl_x86_32_release");
 	platform->set_release_files("x86_64", "linux_frt_sdl_x86_64_release");
 	platform->set_debug_files("arm32v6", "linux_frt_sdl_arm32v6_debug");
 	platform->set_debug_files("arm32v7", "linux_frt_sdl_arm32v7_debug");
 	platform->set_debug_files("arm64v8", "linux_frt_sdl_arm64v8_debug");
-	platform->set_debug_files("x86", "linux_frt_sdl_x86_debug");
+	platform->set_debug_files("x86_32", "linux_frt_sdl_x86_32_debug");
 	platform->set_debug_files("x86_64", "linux_frt_sdl_x86_64_debug");
 	platform->set_os_name("FRTSDL");
 	platform->set_chmod_flags(0755);

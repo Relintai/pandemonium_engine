@@ -57,8 +57,8 @@ def configure_arch(env):
 	elif env['frt_arch'] == 'arm64v8':
 		env.Append(CCFLAGS=['-march=armv8-a'])
 		env.extra_suffix += '.arm64v8'
-	elif env['frt_arch'] == 'x86':
-		env.extra_suffix += '.x86'
+	elif env['frt_arch'] == 'x86_32':
+		env.extra_suffix += '.x86_32'
 	elif env['frt_arch'] == 'x86_64':
 		env.extra_suffix += '.x86_64'
 
@@ -71,7 +71,7 @@ def configure_cross(env):
 			'arm32v6': 'arm-linux-gnueabihf',
 			'arm32v7': 'arm-linux-gnueabihf',
 			'arm64v8': 'aarch64-linux-gnu',
-			'x86': 'i386-linux-gnu',
+			'x86_32': 'i386-linux-gnu',
 			'x86_64': 'x86_64-linux-gnu',
 		}[env['frt_arch']]
 	else:
