@@ -40,6 +40,15 @@
 #include "sdl2_adapter.h"
 #include "sdl2_godot_mapping.h"
 
+#if defined(__FreeBSD__) || defined(__OpenBSD__) || (defined(__GLIBC_MINOR__) && (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 26))
+// In <unistd.h>.
+// One day... (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700)
+// https://publications.opengroup.org/standards/unix/c211
+#define UNIX_GET_ENTROPY
+#elif !defined(NO_URANDOM)
+#include <fcntl.h>
+#endif
+
 #ifndef GLES3_DISABLED
 #include "drivers/gles3/rasterizer_gles3.h"
 
@@ -59,15 +68,6 @@
 #include "servers/rendering/rendering_server_raster.h"
 #include "servers/rendering/rendering_server_wrap_mt.h"
 #include "servers/rendering_server.h"
-
-#if defined(__FreeBSD__) || defined(__OpenBSD__) || (defined(__GLIBC_MINOR__) && (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 26))
-// In <unistd.h>.
-// One day... (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700)
-// https://publications.opengroup.org/standards/unix/c211
-#define UNIX_GET_ENTROPY
-#elif !defined(NO_URANDOM)
-#include <fcntl.h>
-#endif
 
 namespace frt {
 
