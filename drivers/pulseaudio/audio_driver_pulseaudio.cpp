@@ -291,6 +291,10 @@ Error AudioDriverPulseAudio::init() {
 	exit_thread.clear();
 
 	mix_rate = GLOBAL_GET("audio/mix_rate");
+	// Avoid division by zero later if the property is 0
+	if (mix_rate == 0) {
+		mix_rate = 1;
+	}
 
 	pa_ml = pa_mainloop_new();
 	ERR_FAIL_COND_V(pa_ml == nullptr, ERR_CANT_OPEN);
