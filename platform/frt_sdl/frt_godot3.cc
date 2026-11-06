@@ -40,6 +40,9 @@
 #include "sdl2_adapter.h"
 #include "sdl2_godot_mapping.h"
 
+// needed for getentropy() on some compilers
+#include <unistd.h>
+
 #if defined(__FreeBSD__) || defined(__OpenBSD__) || (defined(__GLIBC_MINOR__) && (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 26))
 // In <unistd.h>.
 // One day... (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700)
