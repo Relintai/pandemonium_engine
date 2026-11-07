@@ -12,7 +12,6 @@ scons production=yes ${HTTP_SERVER_COMMANDS} tools=no target=release custom_modu
 mv -f bin/pandemonium_server.x11.opt.64 bin/pandemonium_http_server.x11.opt.64
 mv -f bin/pandemonium_server.x11.opt.debug.64 bin/pandemonium_http_server.x11.opt.debug.64
 
-# Linux editor 64 bit
 # Linux headless (editor) 64 bit
 scons production=yes tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=server bits=64 "$@"
 
