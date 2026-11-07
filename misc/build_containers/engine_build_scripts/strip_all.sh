@@ -1,5 +1,7 @@
 #!/bin/bash
-set -e
+
+# Don't
+#set -e
 
 cd bin
 
@@ -8,8 +10,6 @@ cd bin
 # The editor binaries are always stripped to make them smaller.
 
 # If you want to strip all, you can:
-
-# Comment out "set -e", so it does not error out on non zero exit code
 
 #strip -v -s pandemonium.x11.*
 #strip -v -s pandemonium_server.x11.*
