@@ -69,12 +69,19 @@ docker run ${custom_envvars} \
         -w /root/project pandemonium-appleembedded:${img_version} \
         bash /root/engine_build_scripts/ios.sh "$@" 2>&1 | tee logs/ios.log
 
-# FRT and FRT SDL Build
+# FRT Build
 docker run ${custom_envvars} \
         -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
         -v ${project_root}:/root/project \
         -w /root/project pandemonium-linux:${img_version} \
         bash /root/engine_build_scripts/frt.sh "$@" 2>&1 | tee logs/frt.log
+
+# SDL Build
+docker run ${custom_envvars} \
+        -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
+        -v ${project_root}:/root/project \
+        -w /root/project pandemonium-linux:${img_version} \
+        bash /root/engine_build_scripts/frt_sdl.sh "$@" 2>&1 | tee logs/frt.log
 
 # Check files
 
