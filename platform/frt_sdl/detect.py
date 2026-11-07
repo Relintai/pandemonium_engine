@@ -63,16 +63,16 @@ def configure_arch(env):
 	elif env['frt_arch'] == 'x86_64':
 		env.extra_suffix += '.x86_64'
 	elif env['frt_arch'] == 'no':
-        if env['frt_toolchain_arch_override'] == 'arm32v6':
-	    	env.extra_suffix += '.arm32v6'
-        elif env['frt_toolchain_arch_override'] == 'arm32v7':
-	    	env.extra_suffix += '.arm32v7'
-        elif env['frt_toolchain_arch_override'] == 'arm64v8':
-	    	env.extra_suffix += '.arm64v8'
-        elif env['frt_toolchain_arch_override'] == 'x86_32':
-	    	env.extra_suffix += '.x86_32'
-        elif env['frt_toolchain_arch_override'] == 'x86_64':
-	    	env.extra_suffix += '.x86_64'
+		if env['frt_toolchain_arch_override'] == 'arm32v6':
+			env.extra_suffix += '.arm32v6'
+		elif env['frt_toolchain_arch_override'] == 'arm32v7':
+			env.extra_suffix += '.arm32v7'
+		elif env['frt_toolchain_arch_override'] == 'arm64v8':
+			env.extra_suffix += '.arm64v8'
+		elif env['frt_toolchain_arch_override'] == 'x86_32':
+			env.extra_suffix += '.x86_32'
+		elif env['frt_toolchain_arch_override'] == 'x86_64':
+			env.extra_suffix += '.x86_64'
 
 def configure_cross(env):
 	if env['frt_cross'] == 'no':

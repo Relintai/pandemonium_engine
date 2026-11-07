@@ -165,12 +165,12 @@ def configure(env):
 		env.Append(CCFLAGS=['-march=armv8-a'])
 		env.extra_suffix += '.arm64v8'
 	elif env['frt_arch'] == 'no':
-        if env['frt_toolchain_arch_override'] == 'arm32v6':
-	    	env.extra_suffix += '.arm32v6'
-        elif env['frt_toolchain_arch_override'] == 'arm32v7':
-	    	env.extra_suffix += '.arm32v7'
-        elif env['frt_toolchain_arch_override'] == 'arm64v8':
-	    	env.extra_suffix += '.arm64v8'
+		if env['frt_toolchain_arch_override'] == 'arm32v6':
+			env.extra_suffix += '.arm32v6'
+		elif env['frt_toolchain_arch_override'] == 'arm32v7':
+			env.extra_suffix += '.arm32v7'
+		elif env['frt_toolchain_arch_override'] == 'arm64v8':
+			env.extra_suffix += '.arm64v8'
 
 
 	#env.Append(CFLAGS=['-std=gnu11']) # for libwebp (maybe more in the future)
