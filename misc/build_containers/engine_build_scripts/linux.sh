@@ -29,7 +29,7 @@ scons production=yes tools=no target=release_debug custom_modules_shared=no debu
 scons production=yes tools=no target=release custom_modules_shared=no debug_symbols=no platform=x11 arch=arm64 "$@"
 
 # = arm32 template
-export PATH="${PANDEMONIUN_SDK_LINUX_ARMv7}/bin:${BASE_PATH}"
+export PATH="${PANDEMONIUN_SDK_LINUX_ARMV7}/bin:${BASE_PATH}"
 
 # Linux editor arm
 scons production=yes tools=yes target=release_debug custom_modules_shared=no debug_symbols=no platform=x11 arch=arm "$@"
