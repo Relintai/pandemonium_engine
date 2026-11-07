@@ -40,6 +40,13 @@ docker run ${custom_envvars} \
         -w /root/project pandemonium-linux:${img_version} \
         bash /root/engine_build_scripts/linux.sh "$@" 2>&1 | tee logs/linux.log
 
+# Linux Build
+docker run ${custom_envvars} \
+        -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
+        -v ${project_root}:/root/project \
+        -w /root/project pandemonium-linux:${img_version} \
+        bash /root/engine_build_scripts/linux_server.sh "$@" 2>&1 | tee logs/linux_server.log
+
 # Javascript Build
 docker run ${custom_envvars} \
         -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
@@ -76,12 +83,12 @@ docker run ${custom_envvars} \
         -w /root/project pandemonium-linux:${img_version} \
         bash /root/engine_build_scripts/frt.sh "$@" 2>&1 | tee logs/frt.log
 
-# SDL Build
+# FRT SDL Build
 docker run ${custom_envvars} \
         -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
         -v ${project_root}:/root/project \
         -w /root/project pandemonium-linux:${img_version} \
-        bash /root/engine_build_scripts/frt_sdl.sh "$@" 2>&1 | tee logs/frt.log
+        bash /root/engine_build_scripts/frt_sdl.sh "$@" 2>&1 | tee logs/frt_sdl.log
 
 # Check files
 
