@@ -47,6 +47,7 @@ RUN cd /root && \
     ./relocate-sdk.sh && \
     ln -s armv6-pandemonium-linux-gnueabihf-objcopy bin/objcopy && \
     ln -s armv6-pandemonium-linux-gnueabihf-strip bin/strip && \
+    cd /root && \
 		cp /root/files/armv7-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 . && \
     tar xf armv7-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 && \
     rm -f armv7-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 && \
