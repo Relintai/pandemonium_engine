@@ -62,6 +62,7 @@ def configure_arch(env):
 		env.extra_suffix += '.x86_32'
 	elif env['frt_arch'] == 'x86_64':
 		env.extra_suffix += '.x86_64'
+		env["zstd_force_asm_include"] = True
 	elif env['frt_arch'] == 'no':
 		if env['frt_toolchain_arch_override'] == 'arm32v6':
 			env.extra_suffix += '.arm32v6'
@@ -72,6 +73,10 @@ def configure_arch(env):
 		elif env['frt_toolchain_arch_override'] == 'x86_32':
 			env.extra_suffix += '.x86_32'
 		elif env['frt_toolchain_arch_override'] == 'x86_64':
+			env.extra_suffix += '.x86_64'
+			env["zstd_force_asm_include"] = True
+		elif env['frt_toolchain_arch_override'] == 'no' and env["arch"] == "x64":
+			env["zstd_force_asm_include"] = True
 			env.extra_suffix += '.x86_64'
 
 def configure_cross(env):
