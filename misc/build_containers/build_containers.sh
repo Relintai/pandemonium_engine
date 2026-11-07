@@ -15,6 +15,7 @@ if [ ! -e "${files_root}"/aarch64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 ] 
 || [ ! -e "${files_root}"/i686-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 ] || [ ! -e "${files_root}"/x86_64-pandemonium-linux-gnu_sdk-buildroot.tar.bz2 ] \
 || [ ! -e "${files_root}"/armv7-pandemonium-linux-gnueabihf_sdk-buildroot.tar.bz2 ];then
     echo "Linux toolchains are required."
+    echo "You will need the '2026.11.07' release."
 		echo "It can be downloaded from: https://github.com/Relintai/buildroot/releases or https://pandemoniumengine.org/toolchains"
 		echo "It can be built using: https://github.com/Relintai/buildroot or https://git.relintai.net/Relintai/buildroot"
     exit 1
