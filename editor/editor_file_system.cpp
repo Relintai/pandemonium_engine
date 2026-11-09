@@ -1474,7 +1474,7 @@ void EditorFileSystem::init_compiled_lang_script_class_file_cache() {
 		for (int i = 0; i < ScriptServer::get_language_count(); i++) {
 			ScriptLanguage *lang = ScriptServer::get_language(i);
 			if (lang->has_delayed_script_class_metadata()) {
-				String n = lang->get_name();
+				StringName n = lang->get_name();
 				compiled_language_names.insert(n);
 			}
 		}
