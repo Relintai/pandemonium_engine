@@ -2197,8 +2197,12 @@ void EditorNode::_edit_current(bool p_skip_foreign) {
 			}
 		}
 
-		// TODO ugly hack, move this check into Script current_obj->get_class_name() != StringName("NativeScript")
-		if (current_obj->get_class_name() != StringName("NativeScript") && main_plugin) {
+		if (
+#ifdef MODULE_GDNATIVE_ENABLED
+				// TODO ugly hack, move this check into Script current_obj->get_class_name() != StringName("NativeScript")
+				current_obj->get_class_name() != StringName("NativeScript") &&
+#endif
+				main_plugin) {
 			// special case if use of external editor is true
 			Resource *current_res = Object::cast_to<Resource>(current_obj);
 			if (main_plugin->get_name() == "Script" &&
