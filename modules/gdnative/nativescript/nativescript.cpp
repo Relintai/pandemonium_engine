@@ -205,6 +205,15 @@ Ref<Script> NativeScript::get_base_script() const {
 		return Ref<Script>();
 	}
 
+	if (script_data->base == StringName()) {
+		return Ref<Script>();
+	}
+
+	// Pandemonium native c++ type
+	if (ClassDB::class_exists(script_data->base)) {
+		return Ref<Script>();
+	}
+
 	NativeScript *script = (NativeScript *)NSL->create_script();
 	Ref<NativeScript> ns = Ref<NativeScript>(script);
 	ERR_FAIL_COND_V(!ns.is_valid(), Ref<Script>());
