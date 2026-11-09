@@ -338,13 +338,16 @@ GDNativeLibraryEditor::GDNativeLibraryEditor() {
 		platform_osx.library_extension = "*.framework; Framework, *.dylib; Dynamic Library";
 		platforms["OSX"] = platform_osx;
 
+		/*
 		NativePlatformConfig platform_haiku;
 		platform_haiku.name = "Haiku";
 		platform_haiku.entries.push_back("64");
 		platform_haiku.entries.push_back("32");
 		platform_haiku.library_extension = "*.so";
 		platforms["Haiku"] = platform_haiku;
+		*/
 
+		/*
 		NativePlatformConfig platform_uwp;
 		platform_uwp.name = "UWP";
 		platform_uwp.entries.push_back("arm");
@@ -352,6 +355,7 @@ GDNativeLibraryEditor::GDNativeLibraryEditor() {
 		platform_uwp.entries.push_back("64");
 		platform_uwp.library_extension = "*.dll";
 		platforms["UWP"] = platform_uwp;
+		*/
 
 		NativePlatformConfig platform_android;
 		platform_android.name = "Android";
