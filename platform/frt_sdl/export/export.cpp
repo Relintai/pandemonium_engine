@@ -134,7 +134,7 @@ void EditorExportPlatformFRTSDL::get_export_options(List<ExportOption> *r_option
 	// interface to support more per-platform flexibility, like done in 4.0,
 	// so instead we hack the few needed changes here with `get_os_name()` checks.
 
-	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "binary_format/architecture", PROPERTY_HINT_ENUM, "arm32v6,arm32v7,arm64v8"), "arm32v6"));
+	r_options->push_back(ExportOption(PropertyInfo(Variant::STRING, "binary_format/architecture", PROPERTY_HINT_ENUM, "arm32v6,arm32v7,arm64v8,x86_32,x86_64"), "arm32v6"));
 
 	r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, "texture_format/bptc"), false));
 	r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, "texture_format/s3tc"), true));
