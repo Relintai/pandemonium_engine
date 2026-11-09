@@ -930,10 +930,10 @@ bool EditorData::script_class_is_parent(const StringName &p_class, const StringN
 		return false;
 	}
 
-	String base = script_class_get_base(p_class);
+	StringName base = script_class_get_base(p_class);
 	Ref<Script> script = ScriptServer::get_global_class_script(p_class);
 	ERR_FAIL_COND_V_MSG(script.is_null(), false, vformat("Global script class '%s' failed to load."));
-	Ref<Script> base_script = script->get_base_script();
+	//Ref<Script> base_script = script->get_base_script();
 
 	while (p_inherits != base) {
 		if (ClassDB::class_exists(base)) {
