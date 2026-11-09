@@ -347,7 +347,12 @@ bool GDNative::initialize() {
 		if (GDNativeLibrary::loaded_libraries.has(lib_path)) {
 			// already loaded. Don't load again.
 			// copy some of the stuff instead
+
 			this->native_handle = GDNativeLibrary::loaded_libraries[lib_path][0]->native_handle;
+
+			Vector<Ref<GDNative>> *gdnatives = &GDNativeLibrary::loaded_libraries[library->get_current_library_path()];
+			gdnatives->push_back(Ref<GDNative>(this));
+
 			initialized = true;
 			return true;
 		}
