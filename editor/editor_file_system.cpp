@@ -1481,10 +1481,14 @@ void EditorFileSystem::init_compiled_lang_script_class_file_cache() {
 		for (int i = 0; i < script_classes.size(); i++) {
 			Dictionary d = script_classes[i];
 			StringName c = d["class"];
+			String cstr = c;
 			String p = d["path"];
 			StringName lg = d["language"];
 			if (compiled_language_names.has(lg)) {
-				String ip = script_class_icons[c];
+				String ip;
+				if (script_class_icons.has(cstr)) {
+					ip = script_class_icons[cstr];
+				}
 				d["icon_path"] = ip;
 				compiled_lang_script_class_file_cache[p] = d;
 			}
