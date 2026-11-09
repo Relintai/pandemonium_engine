@@ -58,7 +58,8 @@ void register_server_exporter() {
 	platform_linux_server->set_debug_files("x86_32", "linux_server_32_debug");
 	platform_linux_server->set_debug_files("arm64", "linux_server_arm64_debug");
 	platform_linux_server->set_debug_files("arm32", "linux_server_arm32_debug");
-	platform_linux_server->set_os_name("Server");
+	platform_linux_server->set_os_name("X11");
+	platform_linux_http_server->add_platform_feature("Server");
 	platform_linux_server->set_chmod_flags(0755);
 
 	Ref<EditorExportPlatformPC> platform_linux_http_server;
@@ -77,7 +78,8 @@ void register_server_exporter() {
 	platform_linux_http_server->set_debug_files("x86_32", "linux_http_server_32_debug");
 	platform_linux_http_server->set_debug_files("arm64", "linux_http_server_arm64_debug");
 	platform_linux_http_server->set_debug_files("arm32", "linux_http_server_arm32_debug");
-	platform_linux_http_server->set_os_name("Server");
+	platform_linux_http_server->set_os_name("X11");
+	platform_linux_http_server->add_platform_feature("HTTPServer");
 	platform_linux_http_server->set_chmod_flags(0755);
 
 	// TODO the server platform can be built on bsd, and OSX. Add those eventually as well.
