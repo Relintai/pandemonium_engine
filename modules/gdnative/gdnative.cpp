@@ -173,7 +173,19 @@ void GDNativeLibrary::set_config_file(Ref<ConfigFile> p_config_file) {
 
 			bool skip = false;
 			for (int i = 0; i < tags.size(); i++) {
-				bool has_feature = OS::get_singleton()->has_feature(tags[i]);
+				bool negated = false;
+				String tag = tags[i];
+
+				if (tag.begins_with("!")) {
+					negated = true;
+					tag = tag.substr(1);
+				}
+
+				bool has_feature = OS::get_singleton()->has_feature(tag);
+
+				if (negated) {
+					has_feature = !has_feature;
+				}
 
 				if (!has_feature) {
 					skip = true;
