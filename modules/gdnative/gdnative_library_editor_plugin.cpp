@@ -329,6 +329,8 @@ GDNativeLibraryEditor::GDNativeLibraryEditor() {
 		platform_frt_sdl.entries.push_back("arm32v6");
 		platform_frt_sdl.entries.push_back("arm32v7");
 		platform_frt_sdl.entries.push_back("arm64v8");
+		platform_frt_sdl.entries.push_back("x68_32");
+		platform_frt_sdl.entries.push_back("x86_64");
 		platform_frt_sdl.library_extension = "*.so";
 		platforms["FRTSDL"] = platform_frt_sdl;
 
