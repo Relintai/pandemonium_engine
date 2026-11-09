@@ -278,6 +278,9 @@ void GDNativeLibraryEditor::_translate_to_config_file() {
 
 GDNativeLibraryEditor::GDNativeLibraryEditor() {
 	{ // Define platforms
+		// TODO move this to individual platforms
+		// It should be setup always, like exports
+		// Note that entries check for the existence of feature flags, dot (.) is a divider. ! is negation
 		NativePlatformConfig platform_windows;
 		platform_windows.name = "Windows";
 		platform_windows.entries.push_back("64");
@@ -287,10 +290,47 @@ GDNativeLibraryEditor::GDNativeLibraryEditor() {
 
 		NativePlatformConfig platform_linux;
 		platform_linux.name = "Linux/X11";
-		platform_linux.entries.push_back("64");
-		platform_linux.entries.push_back("32");
+		// Note here the final entry is X11.pc.64.!Server -> GDNative will check for "X11", "pc", and "64" feature flags, and that Server is not set.
+		platform_linux.entries.push_back("pc.64.!Server");
+		platform_linux.entries.push_back("pc.32.!Server");
+		platform_linux.entries.push_back("arm64.!Server");
+		platform_linux.entries.push_back("arm32.!Server");
 		platform_linux.library_extension = "*.so";
 		platforms["X11"] = platform_linux;
+
+		NativePlatformConfig platform_linux_server;
+		platform_linux_server.name = "Linux/Server";
+		platform_linux_server.entries.push_back("pc.64.!HTTPServer");
+		platform_linux_server.entries.push_back("pc.32.!HTTPServer");
+		platform_linux_server.entries.push_back("arm64.!HTTPServer");
+		platform_linux_server.entries.push_back("arm32.!HTTPServer");
+		platform_linux_server.library_extension = "*.so";
+		platforms["Server"] = platform_linux_server;
+
+		NativePlatformConfig platform_linux_http_server;
+		platform_linux_http_server.name = "Linux/HTTPServer";
+		platform_linux_http_server.entries.push_back("x86_64");
+		platform_linux_http_server.entries.push_back("x86_32");
+		platform_linux_http_server.entries.push_back("arm64");
+		platform_linux_http_server.entries.push_back("arm32");
+		platform_linux_http_server.library_extension = "*.so";
+		platforms["HTTPServer"] = platform_linux_http_server;
+
+		NativePlatformConfig platform_frt;
+		platform_frt.name = "Linux/FRT";
+		platform_frt.entries.push_back("arm32v6");
+		platform_frt.entries.push_back("arm32v7");
+		platform_frt.entries.push_back("arm64v8");
+		platform_frt.library_extension = "*.so";
+		platforms["FRT"] = platform_frt;
+
+		NativePlatformConfig platform_frt_sdl;
+		platform_frt_sdl.name = "Linux/FRT SDL";
+		platform_frt_sdl.entries.push_back("arm32v6");
+		platform_frt_sdl.entries.push_back("arm32v7");
+		platform_frt_sdl.entries.push_back("arm64v8");
+		platform_frt_sdl.library_extension = "*.so";
+		platforms["FRTSDL"] = platform_frt_sdl;
 
 		NativePlatformConfig platform_osx;
 		platform_osx.name = "macOS";
