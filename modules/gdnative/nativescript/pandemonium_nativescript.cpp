@@ -98,10 +98,10 @@ void GDAPI pandemonium_nativescript_register_tool_class(void *p_gdnative_handle,
 	classes->insert(p_name, desc);
 }
 
-void GDAPI pandemonium_nativescript_register_method(void *p_gdnative_handle, const char *p_name, const char *p_function_name, pandemonium_instance_method p_method) {
+void GDAPI pandemonium_nativescript_register_method(void *p_gdnative_handle, const char *p_class_name, const char *p_function_name, pandemonium_instance_method p_method) {
 	String *s = (String *)p_gdnative_handle;
 
-	RBMap<StringName, NativeScriptDesc>::Element *E = NSL->library_classes[*s].find(p_name);
+	RBMap<StringName, NativeScriptDesc>::Element *E = NSL->library_classes[*s].find(p_class_name);
 	ERR_FAIL_COND_MSG(!E, "Attempted to register method on non-existent class.");
 
 	NativeScriptDesc::Method method;
@@ -192,10 +192,10 @@ void GDAPI *pandemonium_nativescript_get_userdata(pandemonium_object *p_instance
  *
  */
 
-void GDAPI pandemonium_nativescript_set_method_argument_information(void *p_gdnative_handle, const char *p_name, const char *p_function_name, int p_num_args, const pandemonium_method_arg *p_args) {
+void GDAPI pandemonium_nativescript_set_method_argument_information(void *p_gdnative_handle, const char *p_class_name, const char *p_function_name, int p_num_args, const pandemonium_method_arg *p_args) {
 	String *s = (String *)p_gdnative_handle;
 
-	RBMap<StringName, NativeScriptDesc>::Element *E = NSL->library_classes[*s].find(p_name);
+	RBMap<StringName, NativeScriptDesc>::Element *E = NSL->library_classes[*s].find(p_class_name);
 	ERR_FAIL_COND_MSG(!E, "Attempted to add argument information for a method on a non-existent class.");
 
 	RBMap<StringName, NativeScriptDesc::Method>::Element *method = E->get().methods.find(p_function_name);
@@ -213,7 +213,7 @@ void GDAPI pandemonium_nativescript_set_method_argument_information(void *p_gdna
 		Variant::Type type = (Variant::Type)arg.type;
 		PropertyHint hint = (PropertyHint)arg.hint;
 
-		args.push_back(PropertyInfo(type, p_name, hint, hint_string));
+		args.push_back(PropertyInfo(type, p_class_name, hint, hint_string));
 	}
 
 	method_information->arguments = args;

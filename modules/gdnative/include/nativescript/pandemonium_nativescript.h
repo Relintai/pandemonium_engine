@@ -161,7 +161,7 @@ typedef struct {
 	GDCALLINGCONV void (*free_func)(void *);
 } pandemonium_instance_method;
 
-void GDAPI pandemonium_nativescript_register_method(void *p_gdnative_handle, const char *p_name, const char *p_function_name, pandemonium_instance_method p_method);
+void GDAPI pandemonium_nativescript_register_method(void *p_gdnative_handle, const char *p_class_name, const char *p_function_name, pandemonium_instance_method p_method);
 
 typedef struct {
 	// instance pointer, method data, user data, value
@@ -210,7 +210,7 @@ typedef struct {
 	pandemonium_string hint_string;
 } pandemonium_method_arg;
 
-void GDAPI pandemonium_nativescript_set_method_argument_information(void *p_gdnative_handle, const char *p_name, const char *p_function_name, int p_num_args, const pandemonium_method_arg *p_args);
+void GDAPI pandemonium_nativescript_set_method_argument_information(void *p_gdnative_handle, const char *p_class_name, const char *p_function_name, int p_num_args, const pandemonium_method_arg *p_args);
 
 // documentation
 
