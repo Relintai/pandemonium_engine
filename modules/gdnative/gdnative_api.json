@@ -25594,10 +25594,6 @@
                             "p_function_name"
                         ],
                         [
-                            "pandemonium_method_attributes",
-                            "p_attr"
-                        ],
-                        [
                             "pandemonium_instance_method",
                             "p_method"
                         ]

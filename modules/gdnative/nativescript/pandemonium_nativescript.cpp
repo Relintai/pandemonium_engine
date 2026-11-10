@@ -98,7 +98,7 @@ void GDAPI pandemonium_nativescript_register_tool_class(void *p_gdnative_handle,
 	classes->insert(p_name, desc);
 }
 
-void GDAPI pandemonium_nativescript_register_method(void *p_gdnative_handle, const char *p_name, const char *p_function_name, pandemonium_method_attributes p_attr, pandemonium_instance_method p_method) {
+void GDAPI pandemonium_nativescript_register_method(void *p_gdnative_handle, const char *p_name, const char *p_function_name, pandemonium_instance_method p_method) {
 	String *s = (String *)p_gdnative_handle;
 
 	RBMap<StringName, NativeScriptDesc>::Element *E = NSL->library_classes[*s].find(p_name);
