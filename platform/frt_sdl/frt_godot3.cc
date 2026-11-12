@@ -414,6 +414,9 @@ public: // OS
 		PoolVector<uint8_t>::Read r = icon_data.read();
 		os_.set_icon(i->get_width(), i->get_height(), r.ptr());
 	}
+	String get_name() const {
+		return "FRTSDL";
+	}
 
 public: // EventHandler
 	void handle_resize_event(ivec2 size) FRT_OVERRIDE {
