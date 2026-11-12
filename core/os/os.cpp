@@ -932,6 +932,13 @@ bool OS::has_feature(const String &p_feature) {
 	}
 #endif
 
+// I couldn't find an official define for this.
+#ifdef ARM_32_V6_ENABLED
+	if (p_feature == "arm32v6") {
+		return true;
+	}
+#endif
+
 	if (_check_internal_feature_support(p_feature)) {
 		return true;
 	}
