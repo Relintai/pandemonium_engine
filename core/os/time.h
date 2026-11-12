@@ -101,6 +101,7 @@ public:
 	String get_time_string_from_system(bool p_utc = false) const;
 	Dictionary get_time_zone_from_system() const;
 	double get_unix_time_from_system() const;
+	uint64_t get_unix_time_from_system_uint() const;
 	uint64_t get_ticks_msec() const;
 	uint64_t get_ticks_usec() const;
 

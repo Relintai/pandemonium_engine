@@ -396,6 +396,10 @@ double Time::get_unix_time_from_system() const {
 	return OS::get_singleton()->get_unix_time();
 }
 
+uint64_t Time::get_unix_time_from_system_uint() const {
+	return OS::get_singleton()->get_unix_time();
+}
+
 uint64_t Time::get_ticks_msec() const {
 	return OS::get_singleton()->get_ticks_msec();
 }
@@ -425,6 +429,7 @@ void Time::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_time_string_from_system", "utc"), &Time::get_time_string_from_system, DEFVAL(false));
 	ClassDB::bind_method(D_METHOD("get_time_zone_from_system"), &Time::get_time_zone_from_system);
 	ClassDB::bind_method(D_METHOD("get_unix_time_from_system"), &Time::get_unix_time_from_system);
+	ClassDB::bind_method(D_METHOD("get_unix_time_from_system_uint"), &Time::get_unix_time_from_system_uint);
 	ClassDB::bind_method(D_METHOD("get_ticks_msec"), &Time::get_ticks_msec);
 	ClassDB::bind_method(D_METHOD("get_ticks_usec"), &Time::get_ticks_usec);
 
