@@ -992,12 +992,10 @@ void ArrayMesh::add_surface_from_arrays_cpu(PrimitiveType p_primitive, const Arr
 	s->blend_shapes = p_blend_shapes;
 
 	if (p_arrays.size() > RS::ARRAY_VERTEX) {
-		// This is horrible but RenderingServer uses this .. it may do a conversion to PoolVector3Array?
-		// Maybe this rarely happens.
-		s->num_verts = PoolVector3Array(p_arrays[RS::ARRAY_VERTEX]).size();
+		s->num_verts = MAX(p_arrays[RS::ARRAY_VERTEX].get_array_size(), 0);
 	}
 	if (p_arrays.size() > RS::ARRAY_INDEX) {
-		s->num_inds = PoolIntArray(p_arrays[RS::ARRAY_INDEX]).size();
+		s->num_inds = MAX(p_arrays[RS::ARRAY_INDEX].get_array_size(), 0);
 	}
 }
 
