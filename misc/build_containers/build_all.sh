@@ -15,21 +15,22 @@ mkdir -p logs
 custom_envvars=""
 
 if [[ ! -z "${CUSTOM_ENVVARS}" ]]; then
-  custom_envvars="{$CUSTOM_ENVVARS} "
+	echo "CUSTOM_ENVVARS SET"
+	custom_envvars+="{$CUSTOM_ENVVARS} "
 fi
 
 #export OFFICIAL=1;./build_all.sh
 
 if [[ ! -z "${OFFICIAL}" ]]; then
 	echo "OFFICIAL BUILD SET"
-  custom_envvars='{$custom_envvars}-e BUILD_NAME=official '
+	custom_envvars+="-e BUILD_NAME=official "
 fi
 
 #export STABLE=1;./build_all.sh
 
 if [[ ! -z "${STABLE}" ]]; then
 	echo "STABLE BUILD SET"
-  custom_envvars='{$custom_envvars}-e BUILD_STATUS=stable '
+	custom_envvars+="-e BUILD_STATUS=stable "
 fi
 
 #export OFFICIAL=1;export STABLE=1;./build_all.sh
