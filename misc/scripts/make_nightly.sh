@@ -16,7 +16,9 @@ rm -Rf ./release
 mkdir release
 
 mkdir release/temp
-mkdir release/temp/templates
+mkdir release/temp/templates_pc
+mkdir release/temp/templates_mobile
+mkdir release/temp/templates_web
 mkdir release/temp/templates_server
 mkdir release/temp/templates_sbc
 mkdir release/temp/gdnative_headers
@@ -25,23 +27,23 @@ mkdir release/temp/gdnative_headers
 
 # Windows
 
-cp bin/pandemonium.windows.opt.32.exe release/temp/templates/windows_32_release.exe
-cp bin/pandemonium.windows.opt.64.exe release/temp/templates/windows_64_release.exe
+cp bin/pandemonium.windows.opt.32.exe release/temp/templates_pc/windows_32_release.exe
+cp bin/pandemonium.windows.opt.64.exe release/temp/templates_pc/windows_64_release.exe
 
-cp bin/pandemonium.windows.opt.debug.32.exe release/temp/templates/windows_32_debug.exe
-cp bin/pandemonium.windows.opt.debug.64.exe release/temp/templates/windows_64_debug.exe
+cp bin/pandemonium.windows.opt.debug.32.exe release/temp/templates_pc/windows_32_debug.exe
+cp bin/pandemonium.windows.opt.debug.64.exe release/temp/templates_pc/windows_64_debug.exe
 
 # Linux
 
-cp bin/pandemonium.x11.opt.32 release/temp/templates/linux_x11_32_release
-cp bin/pandemonium.x11.opt.64 release/temp/templates/linux_x11_64_release
-cp bin/pandemonium.x11.opt.arm release/temp/templates/linux_x11_arm32_release
-cp bin/pandemonium.x11.opt.arm64 release/temp/templates/linux_x11_arm64_release
+cp bin/pandemonium.x11.opt.32 release/temp/templates_pc/linux_x11_32_release
+cp bin/pandemonium.x11.opt.64 release/temp/templates_pc/linux_x11_64_release
+cp bin/pandemonium.x11.opt.arm release/temp/templates_pc/linux_x11_arm32_release
+cp bin/pandemonium.x11.opt.arm64 release/temp/templates_pc/linux_x11_arm64_release
 
-cp bin/pandemonium.x11.opt.debug.32 release/temp/templates/linux_x11_32_debug
-cp bin/pandemonium.x11.opt.debug.64 release/temp/templates/linux_x11_64_debug
-cp bin/pandemonium.x11.opt.debug.arm release/temp/templates/linux_x11_arm32_debug
-cp bin/pandemonium.x11.opt.debug.arm64 release/temp/templates/linux_x11_arm64_debug
+cp bin/pandemonium.x11.opt.debug.32 release/temp/templates_pc/linux_x11_32_debug
+cp bin/pandemonium.x11.opt.debug.64 release/temp/templates_pc/linux_x11_64_debug
+cp bin/pandemonium.x11.opt.debug.arm release/temp/templates_pc/linux_x11_arm32_debug
+cp bin/pandemonium.x11.opt.debug.arm64 release/temp/templates_pc/linux_x11_arm64_debug
 
 # Server (Linux)
 
@@ -69,31 +71,33 @@ cp bin/pandemonium_http_server.x11.opt.debug.arm64 release/temp/templates_server
 
 # JS
 
-cp bin/pandemonium.javascript.opt.zip release/temp/templates/webassembly_release.zip
-cp bin/pandemonium.javascript.opt.threads.zip release/temp/templates/webassembly_threads_release.zip
-cp bin/pandemonium.javascript.opt.gdnative.zip release/temp/templates/webassembly_gdnative_release.zip
-cp bin/pandemonium.javascript.opt.gdnative.threads.zip release/temp/templates/webassembly_gdnative_threads_release.zip
+cp bin/pandemonium.javascript.opt.zip release/temp/templates_web/webassembly_release.zip
+cp bin/pandemonium.javascript.opt.threads.zip release/temp/templates_web/webassembly_threads_release.zip
+cp bin/pandemonium.javascript.opt.gdnative.zip release/temp/templates_web/webassembly_gdnative_release.zip
+cp bin/pandemonium.javascript.opt.gdnative.threads.zip release/temp/templates_web/webassembly_gdnative_threads_release.zip
 
-cp bin/pandemonium.javascript.opt.debug.zip release/temp/templates/webassembly_debug.zip
-cp bin/pandemonium.javascript.opt.debug.threads.zip release/temp/templates/webassembly_threads_debug.zip
-cp bin/pandemonium.javascript.opt.debug.gdnative.zip release/temp/templates/webassembly_gdnative_debug.zip
-cp bin/pandemonium.javascript.opt.debug.gdnative.threads.zip release/temp/templates/webassembly_gdnative_threads_debug.zip
+cp bin/pandemonium.javascript.opt.debug.zip release/temp/templates_web/webassembly_debug.zip
+cp bin/pandemonium.javascript.opt.debug.threads.zip release/temp/templates_web/webassembly_threads_debug.zip
+cp bin/pandemonium.javascript.opt.debug.gdnative.zip release/temp/templates_web/webassembly_gdnative_debug.zip
+cp bin/pandemonium.javascript.opt.debug.gdnative.threads.zip release/temp/templates_web/webassembly_gdnative_threads_debug.zip
 
 # Android
-cp bin/android_source.zip release/temp/templates/android_source.zip
 
-cp bin/android_release.apk release/temp/templates/android_release.apk
-cp bin/android_debug.apk release/temp/templates/android_debug.apk
+cp bin/android_source.zip release/temp/templates_mobile/android_source.zip
 
-cp bin/pandemonium-lib.release.aar release/temp/templates/android_pandemonium-lib.release.aar
-cp bin/pandemonium-lib.debug.aar release/temp/templates/android_pandemonium-lib.debug.aar
+cp bin/android_release.apk release/temp/templates_mobile/android_release.apk
+cp bin/android_debug.apk release/temp/templates_mobile/android_debug.apk
+
+cp bin/pandemonium-lib.release.aar release/temp/templates_mobile/android_pandemonium-lib.release.aar
+cp bin/pandemonium-lib.debug.aar release/temp/templates_mobile/android_pandemonium-lib.debug.aar
 
 # OSX - export templates
 
-cp bin/osx.zip release/temp/templates/osx.zip
+cp bin/osx.zip release/temp/templates_pc/osx.zip
 
 # IOS
-cp bin/iphone.zip release/temp/templates/iphone.zip
+
+cp bin/iphone.zip release/temp/templates_mobile/iphone.zip
 
 # FRT
 
@@ -161,11 +165,15 @@ python ./misc/scripts_app/copy_repos.py . ./release/temp/pandemonium_source
 
 # ==== Create version.txt for the export templates ====
 
-#./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates/version.txt
+#./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_pc/version.txt
+#./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_mobile/version.txt
+#./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_web/version.txt
 #./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_server/version.txt
 #./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_sbc/version.txt
 
-./bin/pandemonium_server.x11.opt.tools.64 --version-full-config > release/temp/templates/version.txt
+./bin/pandemonium_server.x11.opt.tools.64 --version-full-config > release/temp/templates_pc/version.txt
+./bin/pandemonium_server.x11.opt.tools.64 --version-full-config > release/temp/templates_mobile/version.txt
+./bin/pandemonium_server.x11.opt.tools.64 --version-full-config > release/temp/templates_web/version.txt
 ./bin/pandemonium_server.x11.opt.tools.64 --version-full-config > release/temp/templates_server/version.txt
 ./bin/pandemonium_server.x11.opt.tools.64 --version-full-config > release/temp/templates_sbc/version.txt
 ./bin/pandemonium_server.x11.opt.tools.64 --version > release/version.txt
@@ -196,7 +204,9 @@ cd release/temp
 
 # Export templates
 
-zip -q -r ../pandemonium_nightly_export_templates.zip  ./templates/*
+zip -q -r ../pandemonium_nightly_export_templates_pc.zip  ./templates_pc/*
+zip -q -r ../pandemonium_nightly_export_templates_mobile.zip  ./templates_mobile/*
+zip -q -r ../pandemonium_nightly_export_templates_web.zip  ./templates_web/*
 zip -q -r ../pandemonium_nightly_export_templates_server.zip  ./templates_server/*
 zip -q -r ../pandemonium_nightly_export_templates_sbc.zip  ./templates_sbc/*
 
@@ -248,10 +258,11 @@ cp ./temp/pandemonium_nightly_javascript.zip pandemonium_nightly_javascript.zip
 # It's still a normal zip though
 # Maybe it should be just kept as a normal zip?
 
-mv pandemonium_nightly_export_templates.zip pandemonium_nightly_export_templates.tpz
+mv pandemonium_nightly_export_templates_pc.zip pandemonium_nightly_export_templates_pc.tpz
+mv pandemonium_nightly_export_templates_mobile.zip pandemonium_nightly_export_templates_mobile.tpz
+mv pandemonium_nightly_export_templates_web.zip pandemonium_nightly_export_templates_web.tpz
 mv pandemonium_nightly_export_templates_server.zip pandemonium_nightly_export_templates_server.tpz
 mv pandemonium_nightly_export_templates_sbc.zip pandemonium_nightly_export_templates_sbc.tpz
-
 
 # Will complatin about the temp directory, but that's fine.
 md5sum * > md5_sums.txt
