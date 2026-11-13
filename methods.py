@@ -152,12 +152,6 @@ def add_module_version_string(self, s):
 
 
 def get_version_info(module_version_string="", silent=False):
-    build_name = "custom_build"
-    if os.getenv("BUILD_NAME") != None:
-        build_name = str(os.getenv("BUILD_NAME"))
-        if not silent:
-            print("Using custom build name: '{}'.".format(build_name))
-
     import version
 
     version_info = {
@@ -167,7 +161,7 @@ def get_version_info(module_version_string="", silent=False):
         "minor": int(version.minor),
         "patch": int(version.patch),
         "status": str(version.status),
-        "build": str(build_name),
+        "build": str(version.build_name),
         "module_config": str(version.module_config) + module_version_string,
         "year": int(version.year),
         "website": str(version.website),
@@ -175,16 +169,15 @@ def get_version_info(module_version_string="", silent=False):
         "docs_branch": str(version.docs_branch),
     }
 
-    # For dev snapshots (alpha, beta, RC, etc.) we do not commit status change to Git,
-    # so this define provides a way to override it without having to modify the source.
-    if os.getenv("PANDEMONIUM_VERSION_STATUS") != None:
-        version_info["status"] = str(os.getenv("PANDEMONIUM_VERSION_STATUS"))
+    if os.getenv("BUILD_NAME") != None:
+        version_info["build_name"] = str(os.getenv("BUILD_NAME"))
         if not silent:
-            print(
-                "Using version status '{}', overriding the original '{}'.".format(
-                    version_info["status"], version.status
-                )
-            )
+            print("Using custom build name: '{}'.".format(version_info["build_name"]))
+
+    if os.getenv("BUILD_STATUS") != None:
+        version_info["status"] = str(os.getenv("BUILD_STATUS"))
+        if not silent:
+            print("Using custom build status: '{}'.".format(version_info["status"]))
 
     # Parse Git hash if we're in a Git repo.
     githash = ""
