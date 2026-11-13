@@ -56,14 +56,14 @@
 #define VERSION_HEX 0x10000 * VERSION_MAJOR + 0x100 * VERSION_MINOR + VERSION_PATCH
 
 // Describes the full configuration of that Pandemonium version, including the version number,
-// the status (beta, stable, etc.) and potential module-specific features (e.g. mono).
+// the status (stable, nightly, etc.) and potential module-specific features (e.g. mono).
 // Example: "3.1.4.stable.mono"
 #define VERSION_FULL_CONFIG VERSION_NUMBER "." VERSION_STATUS VERSION_MODULE_CONFIG
 
-// Similar to VERSION_FULL_CONFIG, but also includes the (potentially custom) VERSION_BUILD
-// description (e.g. official, custom_build, etc.).
-// Example: "3.1.4.stable.mono.official"
-#define VERSION_FULL_BUILD VERSION_FULL_CONFIG "." VERSION_BUILD
+// Similar to VERSION_FULL_CONFIG, but also includes the VERSION_BUILD
+// description (e.g. official, custom, etc.).
+// Example: "3.1.4.official.stable.mono"
+#define VERSION_FULL_BUILD VERSION_NUMBER "." VERSION_BUILD "." VERSION_STATUS VERSION_MODULE_CONFIG
 
 // Same as above, but prepended with Pandemonium's name and a cosmetic "v" for "version".
 // Example: "Pandemonium v3.1.4.stable.official.mono"
