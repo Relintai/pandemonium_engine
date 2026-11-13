@@ -607,7 +607,7 @@ Error Main::setup(const char *execpath, int argc, char *argv[], bool p_second_ph
 
 #ifdef TOOLS_ENABLED
 		} else if (I->get() == "--version-full-config") {
-			print_line(String(VERSION_FULL_CONFIG));
+			print_line(String(VERSION_FULL_BUILD));
 			exit_code = ERR_HELP; // Hack to force an early exit in `main()` with a success code.
 			goto error;
 #endif
