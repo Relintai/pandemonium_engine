@@ -93,7 +93,7 @@ void ExportTemplateManager::_update_template_status() {
 	memdelete(da);
 
 	// Update the state of the current version.
-	String current_version = VERSION_FULL_CONFIG;
+	String current_version = VERSION_FULL_BUILD;
 	current_value->set_text(current_version);
 
 	if (templates.has(current_version)) {
@@ -359,12 +359,12 @@ void ExportTemplateManager::_hide_dialog() {
 }
 
 bool ExportTemplateManager::can_install_android_template() {
-	const String templates_dir = EditorSettings::get_singleton()->get_templates_dir().plus_file(VERSION_FULL_CONFIG);
+	const String templates_dir = EditorSettings::get_singleton()->get_templates_dir().plus_file(VERSION_FULL_BUILD);
 	return FileAccess::exists(templates_dir.plus_file("android_source.zip"));
 }
 
 Error ExportTemplateManager::install_android_template() {
-	const String &templates_path = EditorSettings::get_singleton()->get_templates_dir().plus_file(VERSION_FULL_CONFIG);
+	const String &templates_path = EditorSettings::get_singleton()->get_templates_dir().plus_file(VERSION_FULL_BUILD);
 	const String &source_zip = templates_path.plus_file("android_source.zip");
 	ERR_FAIL_COND_V(!FileAccess::exists(source_zip), ERR_CANT_OPEN);
 	return install_android_template_from_file(source_zip);
@@ -382,7 +382,7 @@ Error ExportTemplateManager::install_android_template_from_file(const String &p_
 		// Add version, to ensure building won't work if template and Godot version don't match.
 		FileAccessRef f = FileAccess::open("res://android/.build_version", FileAccess::WRITE);
 		ERR_FAIL_COND_V(!f, ERR_CANT_CREATE);
-		f->store_line(VERSION_FULL_CONFIG);
+		f->store_line(VERSION_FULL_BUILD);
 		f->close();
 	}
 
@@ -540,13 +540,13 @@ ExportTemplateManager::ExportTemplateManager() {
 	current_open_button->set_text(TTR("Open Folder"));
 	current_open_button->set_tooltip(TTR("Open the folder containing installed templates for the current version."));
 	current_installed_hb->add_child(current_open_button);
-	current_open_button->connect("pressed", this, "_open_template_folder", varray(VERSION_FULL_CONFIG));
+	current_open_button->connect("pressed", this, "_open_template_folder", varray(VERSION_FULL_BUILD));
 
 	current_uninstall_button = memnew(Button);
 	current_uninstall_button->set_text(TTR("Uninstall"));
 	current_uninstall_button->set_tooltip(TTR("Uninstall templates for the current version."));
 	current_installed_hb->add_child(current_uninstall_button);
-	current_uninstall_button->connect("pressed", this, "_uninstall_template", varray(VERSION_FULL_CONFIG));
+	current_uninstall_button->connect("pressed", this, "_uninstall_template", varray(VERSION_FULL_BUILD));
 
 	// Download and install section.
 	HBoxContainer *install_templates_hb = memnew(HBoxContainer);
