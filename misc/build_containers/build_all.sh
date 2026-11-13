@@ -10,21 +10,29 @@ img_version=pe
 
 mkdir -p logs
 
-custom_envvars=''
+#CUSTOM_ENVVARS="-e <> -e <>";./build_all.sh
+
+custom_envvars=""
+
+if [[ ! -z "${CUSTOM_ENVVARS}" ]]; then
+  custom_envvars="{$CUSTOM_ENVVARS} "
+fi
 
 #export OFFICIAL=1;./build_all.sh
 
 if [[ ! -z "${OFFICIAL}" ]]; then
 	echo "OFFICIAL BUILD SET"
-  custom_envvars='-e BUILD_NAME=official'
+  custom_envvars='{$custom_envvars}-e BUILD_NAME=official '
 fi
 
-#export NIGHTLY=1;./build_all.sh
+#export STABLE=1;./build_all.sh
 
-if [[ ! -z "${NIGHTLY}" ]]; then
-	echo "NIGHTLY BUILD SET"
-  custom_envvars='-e BUILD_NAME=nightly'
+if [[ ! -z "${STABLE}" ]]; then
+	echo "STABLE BUILD SET"
+  custom_envvars='{$custom_envvars}-e BUILD_STATUS=stable '
 fi
+
+#export OFFICIAL=1;export STABLE=1;./build_all.sh
 
 # Windows Build
 docker run ${custom_envvars} \
