@@ -170,9 +170,9 @@ def get_version_info(module_version_string="", silent=False):
     }
 
     if os.getenv("BUILD_NAME") != None:
-        version_info["build_name"] = str(os.getenv("BUILD_NAME"))
+        version_info["build"] = str(os.getenv("BUILD_NAME"))
         if not silent:
-            print("Using custom build name: '{}'.".format(version_info["build_name"]))
+            print("Using custom build name: '{}'.".format(version_info["build"]))
 
     if os.getenv("BUILD_STATUS") != None:
         version_info["status"] = str(os.getenv("BUILD_STATUS"))
