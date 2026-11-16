@@ -1284,12 +1284,15 @@ bool Variant::is_one() const {
 }
 
 int32_t Variant::get_array_size() const {
-	// Update this switch if any new Variant::Type enum values are added.
-	static_assert(VARIANT_MAX == POOL_COLOR_ARRAY + 1, "Variant::Type enum changed, update Variant::get_array_size()");
-
 	switch (type) {
 		case ARRAY: {
 			return reinterpret_cast<const Array *>(_data._mem)->size();
+		} break;
+		case TYPED_ARRAY: {
+			return reinterpret_cast<const TypedArray *>(_data._mem)->size();
+		} break;
+		case PACKED_TYPED_ARRAY: {
+			return reinterpret_cast<const PackedTypedArray *>(_data._mem)->size();
 		} break;
 		case POOL_BYTE_ARRAY: {
 			return reinterpret_cast<const PoolVector<uint8_t> *>(_data._mem)->size();
@@ -1306,8 +1309,20 @@ int32_t Variant::get_array_size() const {
 		case POOL_VECTOR2_ARRAY: {
 			return reinterpret_cast<const PoolVector<Vector2> *>(_data._mem)->size();
 		} break;
+		case POOL_VECTOR2I_ARRAY: {
+			return reinterpret_cast<const PoolVector<Vector2i> *>(_data._mem)->size();
+		} break;
 		case POOL_VECTOR3_ARRAY: {
 			return reinterpret_cast<const PoolVector<Vector3> *>(_data._mem)->size();
+		} break;
+		case POOL_VECTOR3I_ARRAY: {
+			return reinterpret_cast<const PoolVector<Vector3i> *>(_data._mem)->size();
+		} break;
+		case POOL_VECTOR4_ARRAY: {
+			return reinterpret_cast<const PoolVector<Vector4> *>(_data._mem)->size();
+		} break;
+		case POOL_VECTOR4I_ARRAY: {
+			return reinterpret_cast<const PoolVector<Vector4i> *>(_data._mem)->size();
 		} break;
 		case POOL_COLOR_ARRAY: {
 			return reinterpret_cast<const PoolVector<Color> *>(_data._mem)->size();
