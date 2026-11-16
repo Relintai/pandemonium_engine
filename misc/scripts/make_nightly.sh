@@ -49,11 +49,13 @@ cp bin/pandemonium.x11.opt.debug.arm64 release/temp/templates_pc/linux_x11_arm64
 
 cp bin/pandemonium_server.x11.opt.32 release/temp/templates_server/linux_server_32_release
 cp bin/pandemonium_server.x11.opt.64 release/temp/templates_server/linux_server_64_release
+cp bin/pandemonium_server.x11.opt.arm32v6 release/temp/templates_server/linux_server_arm32v6_release
 cp bin/pandemonium_server.x11.opt.arm release/temp/templates_server/linux_server_arm32_release
 cp bin/pandemonium_server.x11.opt.arm64 release/temp/templates_server/linux_server_arm64_release
 
 cp bin/pandemonium_server.x11.opt.debug.32 release/temp/templates_server/linux_server_32_debug
 cp bin/pandemonium_server.x11.opt.debug.64 release/temp/templates_server/linux_server_64_debug
+cp bin/pandemonium_server.x11.opt.debug.arm32v6 release/temp/templates_server/linux_server_arm32v6_debug
 cp bin/pandemonium_server.x11.opt.debug.arm release/temp/templates_server/linux_server_arm32_debug
 cp bin/pandemonium_server.x11.opt.debug.arm64 release/temp/templates_server/linux_server_arm64_debug
 
@@ -61,11 +63,13 @@ cp bin/pandemonium_server.x11.opt.debug.arm64 release/temp/templates_server/linu
 
 cp bin/pandemonium_http_server.x11.opt.32 release/temp/templates_server/linux_http_server_32_release
 cp bin/pandemonium_http_server.x11.opt.64 release/temp/templates_server/linux_http_server_64_release
+cp bin/pandemonium_http_server.x11.opt.arm32v6 release/temp/templates_server/linux_http_server_arm32v6_release
 cp bin/pandemonium_http_server.x11.opt.arm release/temp/templates_server/linux_http_server_arm32_release
 cp bin/pandemonium_http_server.x11.opt.arm64 release/temp/templates_server/linux_http_server_arm64_release
 
 cp bin/pandemonium_http_server.x11.opt.debug.32 release/temp/templates_server/linux_http_server_32_debug
 cp bin/pandemonium_http_server.x11.opt.debug.64 release/temp/templates_server/linux_http_server_64_debug
+cp bin/pandemonium_http_server.x11.opt.debug.arm32v6 release/temp/templates_server/linux_http_server_arm32v6_debug
 cp bin/pandemonium_http_server.x11.opt.debug.arm release/temp/templates_server/linux_http_server_arm32_debug
 cp bin/pandemonium_http_server.x11.opt.debug.arm64 release/temp/templates_server/linux_http_server_arm64_debug
 
@@ -141,6 +145,7 @@ cp bin/pandemonium.x11.opt.tools.arm64 release/temp/pandemonium_nightly_linux_ar
 
 cp bin/pandemonium_server.x11.opt.tools.32 release/temp/pandemonium_nightly_linux_server_32
 cp bin/pandemonium_server.x11.opt.tools.64 release/temp/pandemonium_nightly_linux_server_64
+cp bin/pandemonium_server.x11.opt.tools.arm32v6 release/temp/pandemonium_nightly_linux_server_arm32v6
 cp bin/pandemonium_server.x11.opt.tools.arm release/temp/pandemonium_nightly_linux_server_arm32
 cp bin/pandemonium_server.x11.opt.tools.arm64 release/temp/pandemonium_nightly_linux_server_arm64
 
@@ -232,6 +237,7 @@ zip -q ../pandemonium_nightly_linux_arm64.zip ./pandemonium_nightly_linux_arm64
 
 zip -q ../pandemonium_nightly_linux_server_32.zip ./pandemonium_nightly_linux_server_32
 zip -q ../pandemonium_nightly_linux_server_64.zip ./pandemonium_nightly_linux_server_64
+zip -q ../pandemonium_nightly_linux_server_arm32v6.zip ./pandemonium_nightly_linux_server_arm32v6
 zip -q ../pandemonium_nightly_linux_server_arm32.zip ./pandemonium_nightly_linux_server_arm32
 zip -q ../pandemonium_nightly_linux_server_arm64.zip ./pandemonium_nightly_linux_server_arm64
 

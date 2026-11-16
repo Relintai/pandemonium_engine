@@ -49,7 +49,7 @@ docker run ${custom_envvars} \
         -w /root/project pandemonium-linux:${img_version} \
         bash /root/engine_build_scripts/linux.sh "$@" 2>&1 | tee logs/linux.log
 
-# Linux Build
+# Linux Server Build
 docker run ${custom_envvars} \
         -v ${basedir}/engine_build_scripts:/root/engine_build_scripts \
         -v ${project_root}:/root/project \
@@ -133,27 +133,32 @@ files=(
   # Server (Linux)
   "pandemonium_server.x11.opt.32"
   "pandemonium_server.x11.opt.64"
+  "pandemonium_server.x11.opt.arm32v6"
   "pandemonium_server.x11.opt.arm"
   "pandemonium_server.x11.opt.arm64"
 
   "pandemonium_server.x11.opt.debug.32"
   "pandemonium_server.x11.opt.debug.64"
+  "pandemonium_server.x11.opt.debug.arm32v6"
   "pandemonium_server.x11.opt.debug.arm"
   "pandemonium_server.x11.opt.debug.arm64"
 
   "pandemonium_server.x11.opt.tools.32"
   "pandemonium_server.x11.opt.tools.64"
+  "pandemonium_server.x11.opt.tools.arm32v6"
   "pandemonium_server.x11.opt.tools.arm"
   "pandemonium_server.x11.opt.tools.arm64"
 
   # HTTP Server (Linux)
   "pandemonium_http_server.x11.opt.32"
   "pandemonium_http_server.x11.opt.64"
+  "pandemonium_http_server.x11.opt.arm32v6"
   "pandemonium_http_server.x11.opt.arm"
   "pandemonium_http_server.x11.opt.arm64"
 
   "pandemonium_http_server.x11.opt.debug.32"
   "pandemonium_http_server.x11.opt.debug.64"
+  "pandemonium_http_server.x11.opt.debug.arm32v6"
   "pandemonium_http_server.x11.opt.debug.arm"
   "pandemonium_http_server.x11.opt.debug.arm64"
 

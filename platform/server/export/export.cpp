@@ -50,14 +50,17 @@ void register_server_exporter() {
 	platform_linux_server->set_extension("x86", "x86_32");
 	platform_linux_server->set_extension("arm64", "arm64");
 	platform_linux_server->set_extension("arm32", "arm32");
+	platform_linux_server->set_extension("arm32v6", "arm32v6");
 	platform_linux_server->set_release_files("x86_64", "linux_server_64_release");
 	platform_linux_server->set_release_files("x86_32", "linux_server_32_release");
 	platform_linux_server->set_release_files("arm64", "linux_server_arm64_release");
 	platform_linux_server->set_release_files("arm32", "linux_server_arm32_release");
+	platform_linux_server->set_release_files("arm32v6", "linux_server_arm32v6_release");
 	platform_linux_server->set_debug_files("x86_64", "linux_server_64_debug");
 	platform_linux_server->set_debug_files("x86_32", "linux_server_32_debug");
 	platform_linux_server->set_debug_files("arm64", "linux_server_arm64_debug");
 	platform_linux_server->set_debug_files("arm32", "linux_server_arm32_debug");
+	platform_linux_server->set_debug_files("arm32v6", "linux_server_arm32v6_debug");
 	// TODO should probably move the X11 stuff from ExportPlatformPC into ExportPlatformX11
 	platform_linux_server->set_os_name("X11");
 	platform_linux_server->add_platform_feature("Server");
@@ -71,14 +74,17 @@ void register_server_exporter() {
 	platform_linux_http_server->set_extension("x86", "x86_32");
 	platform_linux_http_server->set_extension("arm64", "arm64");
 	platform_linux_http_server->set_extension("arm32", "arm32");
+	platform_linux_http_server->set_extension("arm32v6", "arm32v6");
 	platform_linux_http_server->set_release_files("x86_64", "linux_http_server_64_release");
 	platform_linux_http_server->set_release_files("x86_32", "linux_http_server_32_release");
 	platform_linux_http_server->set_release_files("arm64", "linux_http_server_arm64_release");
 	platform_linux_http_server->set_release_files("arm32", "linux_http_server_arm32_release");
+	platform_linux_http_server->set_release_files("arm32v6", "linux_http_server_arm32v6_release");
 	platform_linux_http_server->set_debug_files("x86_64", "linux_http_server_64_debug");
 	platform_linux_http_server->set_debug_files("x86_32", "linux_http_server_32_debug");
 	platform_linux_http_server->set_debug_files("arm64", "linux_http_server_arm64_debug");
 	platform_linux_http_server->set_debug_files("arm32", "linux_http_server_arm32_debug");
+	platform_linux_http_server->set_debug_files("arm32v6", "linux_http_server_arm32v6_debug");
 	platform_linux_http_server->set_os_name("X11");
 	platform_linux_http_server->add_platform_feature("Server");
 	platform_linux_http_server->add_platform_feature("HTTPServer");

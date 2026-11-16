@@ -102,6 +102,9 @@ def configure(env):
         # G = General-purpose extensions, C = Compression extension (very common).
         env.Append(CCFLAGS=["-march=rv64gc"])
 
+    if env["arch"] == "arm32v6":
+        env.Append(CPPFLAGS=['-DARM_32_V6_ENABLED'])
+
     ## Compiler configuration
 
     if "CXX" in env and "clang" in os.path.basename(env["CXX"]):

@@ -303,7 +303,8 @@ GDNativeLibraryEditor::GDNativeLibraryEditor() {
 		platform_linux_server.entries.push_back("pc.64.!HTTPServer");
 		platform_linux_server.entries.push_back("pc.32.!HTTPServer");
 		platform_linux_server.entries.push_back("arm64.!HTTPServer");
-		platform_linux_server.entries.push_back("arm32.!HTTPServer");
+		platform_linux_server.entries.push_back("arm32.!arm32v6.!HTTPServer");
+		platform_linux_server.entries.push_back("arm32v6.!HTTPServer");
 		platform_linux_server.library_extension = "*.so";
 		platforms["Server"] = platform_linux_server;
 
@@ -312,7 +313,8 @@ GDNativeLibraryEditor::GDNativeLibraryEditor() {
 		platform_linux_http_server.entries.push_back("x86_64");
 		platform_linux_http_server.entries.push_back("x86_32");
 		platform_linux_http_server.entries.push_back("arm64");
-		platform_linux_http_server.entries.push_back("arm32");
+		platform_linux_http_server.entries.push_back("arm32.!arm32v6");
+		platform_linux_http_server.entries.push_back("arm32v6");
 		platform_linux_http_server.library_extension = "*.so";
 		platforms["HTTPServer"] = platform_linux_http_server;
 
