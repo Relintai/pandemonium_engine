@@ -85,6 +85,14 @@ void WebServer::start() {
 void WebServer::stop() {
 	call("_stop");
 }
+void WebServer::restart() {
+	if (!_is_running) {
+		return;
+	}
+
+	stop();
+	start();
+}
 
 void WebServer::_start() {
 	if (_is_running) {
@@ -102,7 +110,6 @@ void WebServer::_stop() {
 
 	_is_running = false;
 }
-
 Dictionary WebServer::unregister_connection_for_request(const Ref<WebServerRequest> &request) {
 	return call("_unregister_connection_for_request", request);
 }
@@ -184,10 +191,12 @@ void WebServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("server_handle_request", "request"), &WebServer::server_handle_request);
 	ClassDB::bind_method(D_METHOD("request_write_lock"), &WebServer::request_write_lock);
 
-	BIND_VMETHOD(MethodInfo("_start"));
-	BIND_VMETHOD(MethodInfo("_stop"));
 	ClassDB::bind_method(D_METHOD("start"), &WebServer::start);
 	ClassDB::bind_method(D_METHOD("stop"), &WebServer::stop);
+	ClassDB::bind_method(D_METHOD("restart"), &WebServer::restart);
+
+	BIND_VMETHOD(MethodInfo("_start"));
+	BIND_VMETHOD(MethodInfo("_stop"));
 	ClassDB::bind_method(D_METHOD("_start"), &WebServer::_start);
 	ClassDB::bind_method(D_METHOD("_stop"), &WebServer::_stop);
 

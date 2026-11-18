@@ -71,6 +71,7 @@ public:
 
 	void start();
 	void stop();
+	void restart();
 
 	virtual void _start();
 	virtual void _stop();
