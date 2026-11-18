@@ -163,6 +163,8 @@ protected:
 	Thread *_poll_thread;
 	bool _running;
 
+	int _connection_consecutive_fails;
+
 	static void _server_thread_poll(void *data);
 };
 

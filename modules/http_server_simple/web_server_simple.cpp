@@ -176,6 +176,8 @@ void WebServerSimple::_start() {
 
 	WebServer::_start();
 
+	_connection_consecutive_fails = 0;
+
 	_server->upload_file_store_type = _upload_file_store_type;
 	_server->upload_temp_file_store_path = _upload_temp_file_store_path.path_ensure_end_slash();
 
@@ -286,6 +288,8 @@ WebServerSimple::WebServerSimple() {
 
 	_server_quit = false;
 
+	_connection_consecutive_fails = 0;
+
 	_server.instance();
 	_server->_web_server = this;
 
@@ -327,8 +331,18 @@ void WebServerSimple::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_INTERNAL_PROCESS: {
 			if (_single_threaded_poll) {
+				if (_connection_consecutive_fails > 10) {
+					ERR_PRINT("connection_consecutive_fails > 10! Restarting server!");
+
+					call_deferred("restart");
+					// We return, for a faster restart
+					return;
+				}
+
 				_server_lock.lock();
-				_server->poll();
+				if (_server->poll()) {
+					++_connection_consecutive_fails;
+				}
 				_server_lock.unlock();
 			}
 		} break;
@@ -421,11 +435,22 @@ void WebServerSimple::_bind_methods() {
 
 void WebServerSimple::_server_thread_poll(void *data) {
 	WebServerSimple *ej = (WebServerSimple *)data;
+
 	while (!ej->_server_quit) {
 		OS::get_singleton()->delay_usec(1000);
 
+		if (ej->_connection_consecutive_fails > 10) {
+			ERR_PRINT("connection_consecutive_fails > 10! Restarting server!");
+
+			ej->call_deferred("restart");
+			// We return, for a faster restart
+			return;
+		}
+
 		ej->_server_lock.lock();
-		ej->_server->poll();
+		if (ej->_server->poll()) {
+			++ej->_connection_consecutive_fails;
+		}
 		ej->_server_lock.unlock();
 	}
 }

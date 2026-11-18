@@ -123,7 +123,7 @@ public:
 
 	Error listen(int p_port, IP_Address p_address, bool p_use_ssl, String p_ssl_key, String p_ssl_cert);
 	bool is_listening() const;
-	void poll();
+	bool poll();
 
 	Dictionary unregister_connection_for_request(const Ref<WebServerRequest> &request);
 

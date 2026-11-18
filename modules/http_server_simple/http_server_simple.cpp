@@ -966,18 +966,32 @@ bool HTTPServerSimple::is_listening() const {
 	return server->is_listening();
 }
 
-void HTTPServerSimple::poll() {
+bool HTTPServerSimple::poll() {
 	if (!server->is_listening()) {
-		return;
+		return false;
 	}
+
+	// Likely temporary, trying to narrow down a hard to replicate and rare
+	// potential bug / unexpected / unhandled quirk. Not yet sure which one.
+	int connection_consecutive_fail_times = 0;
 
 	//todo add connection limit
 	while (server->is_connection_available()) {
 		Ref<StreamPeerTCP> tcp = server->take_connection();
 
 		if (!tcp.is_valid()) {
+			++connection_consecutive_fail_times;
+
+			if (connection_consecutive_fail_times >= 1000) {
+				// Break to wake workers, and to then to wait a bit
+				break;
+			}
+
 			continue;
 		}
+
+		// Reset counter when hitting a valid connection
+		connection_consecutive_fail_times = 0;
 
 #if CONNECTION_OPEN_CLOSE_DEBUG
 		ERR_PRINT("NEW CONN");
@@ -1039,6 +1053,8 @@ void HTTPServerSimple::poll() {
 			_wake_workers();
 		}
 	}
+
+	return connection_consecutive_fail_times >= 1000;
 }
 
 Dictionary HTTPServerSimple::unregister_connection_for_request(const Ref<WebServerRequest> &request) {
