@@ -342,6 +342,8 @@ void WebServerSimple::_notification(int p_what) {
 				_server_lock.lock();
 				if (_server->poll()) {
 					++_connection_consecutive_fails;
+				} else {
+					_connection_consecutive_fails = 0;
 				}
 				_server_lock.unlock();
 			}
@@ -450,6 +452,8 @@ void WebServerSimple::_server_thread_poll(void *data) {
 		ej->_server_lock.lock();
 		if (ej->_server->poll()) {
 			++ej->_connection_consecutive_fails;
+		} else {
+			ej->_connection_consecutive_fails = 0;
 		}
 		ej->_server_lock.unlock();
 	}
