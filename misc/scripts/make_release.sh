@@ -30,6 +30,7 @@ mkdir release/temp/templates_pc
 mkdir release/temp/templates_mobile
 mkdir release/temp/templates_javascript
 mkdir release/temp/templates_server
+mkdir release/temp/templates_http_server
 mkdir release/temp/templates_sbc
 mkdir release/temp/gdnative_headers_v${version_snake_cased}
 
@@ -71,17 +72,17 @@ cp bin/pandemonium_server.x11.opt.debug.arm64 release/temp/templates_server/linu
 
 # HTTP Server (Linux)
 
-cp bin/pandemonium_http_server.x11.opt.32 release/temp/templates_server/linux_http_server_32_release
-cp bin/pandemonium_http_server.x11.opt.64 release/temp/templates_server/linux_http_server_64_release
-cp bin/pandemonium_http_server.x11.opt.arm32v6 release/temp/templates_server/linux_http_server_arm32v6_release
-cp bin/pandemonium_http_server.x11.opt.arm release/temp/templates_server/linux_http_server_arm32_release
-cp bin/pandemonium_http_server.x11.opt.arm64 release/temp/templates_server/linux_http_server_arm64_release
+cp bin/pandemonium_http_server.x11.opt.32 release/temp/templates_http_server/linux_http_server_32_release
+cp bin/pandemonium_http_server.x11.opt.64 release/temp/templates_http_server/linux_http_server_64_release
+cp bin/pandemonium_http_server.x11.opt.arm32v6 release/temp/templates_http_server/linux_http_server_arm32v6_release
+cp bin/pandemonium_http_server.x11.opt.arm release/temp/templates_http_server/linux_http_server_arm32_release
+cp bin/pandemonium_http_server.x11.opt.arm64 release/temp/templates_http_server/linux_http_server_arm64_release
 
-cp bin/pandemonium_http_server.x11.opt.debug.32 release/temp/templates_server/linux_http_server_32_debug
-cp bin/pandemonium_http_server.x11.opt.debug.64 release/temp/templates_server/linux_http_server_64_debug
-cp bin/pandemonium_http_server.x11.opt.debug.arm32v6 release/temp/templates_server/linux_http_server_arm32v6_debug
-cp bin/pandemonium_http_server.x11.opt.debug.arm release/temp/templates_server/linux_http_server_arm32_debug
-cp bin/pandemonium_http_server.x11.opt.debug.arm64 release/temp/templates_server/linux_http_server_arm64_debug
+cp bin/pandemonium_http_server.x11.opt.debug.32 release/temp/templates_http_server/linux_http_server_32_debug
+cp bin/pandemonium_http_server.x11.opt.debug.64 release/temp/templates_http_server/linux_http_server_64_debug
+cp bin/pandemonium_http_server.x11.opt.debug.arm32v6 release/temp/templates_http_server/linux_http_server_arm32v6_debug
+cp bin/pandemonium_http_server.x11.opt.debug.arm release/temp/templates_http_server/linux_http_server_arm32_debug
+cp bin/pandemonium_http_server.x11.opt.debug.arm64 release/temp/templates_http_server/linux_http_server_arm64_debug
 
 # JS
 
@@ -185,12 +186,14 @@ python ./misc/scripts_app/copy_repos.py . ./release/temp/pandemonium_v${version_
 #./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_mobile/version.txt
 #./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_javascript/version.txt
 #./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_server/version.txt
+#./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_http_server/version.txt
 #./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_sbc/version.txt
 
 ./bin/pandemonium_server.x11.opt.tools.64 --version-full-config > release/temp/templates_pc/version.txt
 ./bin/pandemonium_server.x11.opt.tools.64 --version-full-config > release/temp/templates_mobile/version.txt
 ./bin/pandemonium_server.x11.opt.tools.64 --version-full-config > release/temp/templates_javascript/version.txt
 ./bin/pandemonium_server.x11.opt.tools.64 --version-full-config > release/temp/templates_server/version.txt
+./bin/pandemonium_server.x11.opt.tools.64 --version-full-config > release/temp/templates_http_server/version.txt
 ./bin/pandemonium_server.x11.opt.tools.64 --version-full-config > release/temp/templates_sbc/version.txt
 ./bin/pandemonium_server.x11.opt.tools.64 --version > release/version.txt
 
@@ -224,6 +227,7 @@ zip -q -r ../pandemonium_v${version_snake_cased}_stable_export_templates_pc.zip 
 zip -q -r ../pandemonium_v${version_snake_cased}_stable_export_templates_mobile.zip  ./templates_mobile/*
 zip -q -r ../pandemonium_v${version_snake_cased}_stable_export_templates_javascript.zip  ./templates_javascript/*
 zip -q -r ../pandemonium_v${version_snake_cased}_stable_export_templates_server.zip  ./templates_server/*
+zip -q -r ../pandemonium_v${version_snake_cased}_stable_export_templates_http_server.zip  ./templates_http_server/*
 zip -q -r ../pandemonium_v${version_snake_cased}_stable_export_templates_sbc.zip  ./templates_sbc/*
 
 # GDNative headers
@@ -279,6 +283,7 @@ mv pandemonium_v${version_snake_cased}_stable_export_templates_pc.zip pandemoniu
 mv pandemonium_v${version_snake_cased}_stable_export_templates_mobile.zip pandemonium_v${version_snake_cased}_stable_export_templates_mobile.tpz
 mv pandemonium_v${version_snake_cased}_stable_export_templates_javascript.zip pandemonium_v${version_snake_cased}_stable_export_templates_javascript.tpz
 mv pandemonium_v${version_snake_cased}_stable_export_templates_server.zip pandemonium_v${version_snake_cased}_stable_export_templates_server.tpz
+mv pandemonium_v${version_snake_cased}_stable_export_templates_http_server.zip pandemonium_v${version_snake_cased}_stable_export_templates_http_server.tpz
 mv pandemonium_v${version_snake_cased}_stable_export_templates_sbc.zip pandemonium_v${version_snake_cased}_stable_export_templates_sbc.tpz
 
 # Will complatin about the temp directory, but that's fine.
