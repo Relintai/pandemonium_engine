@@ -28,7 +28,7 @@ mkdir release
 mkdir release/temp
 mkdir release/temp/templates_pc
 mkdir release/temp/templates_mobile
-mkdir release/temp/templates_web
+mkdir release/temp/templates_javascript
 mkdir release/temp/templates_server
 mkdir release/temp/templates_sbc
 mkdir release/temp/gdnative_headers_v${version_snake_cased}
@@ -85,15 +85,15 @@ cp bin/pandemonium_http_server.x11.opt.debug.arm64 release/temp/templates_server
 
 # JS
 
-cp bin/pandemonium.javascript.opt.zip release/temp/templates_web/webassembly_release.zip
-cp bin/pandemonium.javascript.opt.threads.zip release/temp/templates_web/webassembly_threads_release.zip
-cp bin/pandemonium.javascript.opt.gdnative.zip release/temp/templates_web/webassembly_gdnative_release.zip
-cp bin/pandemonium.javascript.opt.gdnative.threads.zip release/temp/templates_web/webassembly_gdnative_threads_release.zip
+cp bin/pandemonium.javascript.opt.zip release/temp/templates_javascript/webassembly_release.zip
+cp bin/pandemonium.javascript.opt.threads.zip release/temp/templates_javascript/webassembly_threads_release.zip
+cp bin/pandemonium.javascript.opt.gdnative.zip release/temp/templates_javascript/webassembly_gdnative_release.zip
+cp bin/pandemonium.javascript.opt.gdnative.threads.zip release/temp/templates_javascript/webassembly_gdnative_threads_release.zip
 
-cp bin/pandemonium.javascript.opt.debug.zip release/temp/templates_web/webassembly_debug.zip
-cp bin/pandemonium.javascript.opt.debug.threads.zip release/temp/templates_web/webassembly_threads_debug.zip
-cp bin/pandemonium.javascript.opt.debug.gdnative.zip release/temp/templates_web/webassembly_gdnative_debug.zip
-cp bin/pandemonium.javascript.opt.debug.gdnative.threads.zip release/temp/templates_web/webassembly_gdnative_threads_debug.zip
+cp bin/pandemonium.javascript.opt.debug.zip release/temp/templates_javascript/webassembly_debug.zip
+cp bin/pandemonium.javascript.opt.debug.threads.zip release/temp/templates_javascript/webassembly_threads_debug.zip
+cp bin/pandemonium.javascript.opt.debug.gdnative.zip release/temp/templates_javascript/webassembly_gdnative_debug.zip
+cp bin/pandemonium.javascript.opt.debug.gdnative.threads.zip release/temp/templates_javascript/webassembly_gdnative_threads_debug.zip
 
 
 # Android
@@ -183,13 +183,13 @@ python ./misc/scripts_app/copy_repos.py . ./release/temp/pandemonium_v${version_
 
 #./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_pc/version.txt
 #./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_mobile/version.txt
-#./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_web/version.txt
+#./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_javascript/version.txt
 #./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_server/version.txt
 #./bin/pandemonium.x11.opt.tools.64 --version-full-config > release/temp/templates_sbc/version.txt
 
 ./bin/pandemonium_server.x11.opt.tools.64 --version-full-config > release/temp/templates_pc/version.txt
 ./bin/pandemonium_server.x11.opt.tools.64 --version-full-config > release/temp/templates_mobile/version.txt
-./bin/pandemonium_server.x11.opt.tools.64 --version-full-config > release/temp/templates_web/version.txt
+./bin/pandemonium_server.x11.opt.tools.64 --version-full-config > release/temp/templates_javascript/version.txt
 ./bin/pandemonium_server.x11.opt.tools.64 --version-full-config > release/temp/templates_server/version.txt
 ./bin/pandemonium_server.x11.opt.tools.64 --version-full-config > release/temp/templates_sbc/version.txt
 ./bin/pandemonium_server.x11.opt.tools.64 --version > release/version.txt
@@ -222,7 +222,7 @@ cd release/temp
 
 zip -q -r ../pandemonium_v${version_snake_cased}_stable_export_templates_pc.zip  ./templates_pc/*
 zip -q -r ../pandemonium_v${version_snake_cased}_stable_export_templates_mobile.zip  ./templates_mobile/*
-zip -q -r ../pandemonium_v${version_snake_cased}_stable_export_templates_web.zip  ./templates_web/*
+zip -q -r ../pandemonium_v${version_snake_cased}_stable_export_templates_javascript.zip  ./templates_javascript/*
 zip -q -r ../pandemonium_v${version_snake_cased}_stable_export_templates_server.zip  ./templates_server/*
 zip -q -r ../pandemonium_v${version_snake_cased}_stable_export_templates_sbc.zip  ./templates_sbc/*
 
@@ -277,7 +277,7 @@ cp ./temp/pandemonium_v${version_snake_cased}_stable_javascript.zip pandemonium_
 
 mv pandemonium_v${version_snake_cased}_stable_export_templates_pc.zip pandemonium_v${version_snake_cased}_stable_export_templates_pc.tpz
 mv pandemonium_v${version_snake_cased}_stable_export_templates_mobile.zip pandemonium_v${version_snake_cased}_stable_export_templates_mobile.tpz
-mv pandemonium_v${version_snake_cased}_stable_export_templates_web.zip pandemonium_v${version_snake_cased}_stable_export_templates_web.tpz
+mv pandemonium_v${version_snake_cased}_stable_export_templates_javascript.zip pandemonium_v${version_snake_cased}_stable_export_templates_javascript.tpz
 mv pandemonium_v${version_snake_cased}_stable_export_templates_server.zip pandemonium_v${version_snake_cased}_stable_export_templates_server.tpz
 mv pandemonium_v${version_snake_cased}_stable_export_templates_sbc.zip pandemonium_v${version_snake_cased}_stable_export_templates_sbc.tpz
 
