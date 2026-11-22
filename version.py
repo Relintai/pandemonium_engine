@@ -1,12 +1,12 @@
 short_name = "pandemonium_engine"
 name = "Pandemonium Engine"
 major = 5
-minor = 3
+minor = 4
 patch = 0
 build_name = "custom"
-status = "stable"
+status = "nightly"
 module_config = ""
 year = 2026
 website = "https://pandemoniumengine.org"
 docs_url = "https://github.com/Relintai/pandemonium_engine_docs/blob/"
-docs_branch = "5.3"
+docs_branch = "master"
