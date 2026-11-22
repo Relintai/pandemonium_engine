@@ -6,6 +6,298 @@ All notable changes to this project will be documented in this file.
 
 Nothing yet.
 
+## [5.3.0]
+
+### Highlights
+
+- SubProcess was reworked, now all it's methods are properly implemented and works.
+  It now also supports passign environment variables.
+- The engine has nightlies now.
+- The big export templates were split into pc, mobile, and javascript, the server export templates were split into server and http_server.
+- Added do .. while loops to PScript.
+- Implemented export syntax for PROPERTY_HINT_BUTTON to PScript and GDScript.
+- Updated SQLite to 3.54.1.
+- The frt build containers were merged into the normal linux one.
+- The linux build container can now build for arm32v6 (pi zero).
+- The linux toolchains were updated to be able to handle frt_sdl, frt, and arm32v6.
+- Added x86 and x86_64 templates for the frt_sdl platform.
+- Now build_name and status can both be set using version.py, and they can also be
+  customized using environment variables.
+- GDNative got all it's apparent bugs and usability issues fixed.
+- The editor now uses VERSION_FULL_BUILD instead of VERSION_FULL_CONFIG when managing the export templates.
+  - This means that now an official nightly build will try to use the "5.3.official.nightly" folder instead of the "5.3.nightly" folder.
+	- This helps with managing custom editor builds.
+
+### Breaking Changes
+
+- Change the int hint type separator for PackedTypedArrays from ":" to "|" in preparation for adding additional export hints that arrays support.
+- SubProcess was reworked, it's api had to change a bit.
+- The big export templates were split into pc, mobile, and javascript, the server export templates were split into server and http_server.
+- Remove leftover unused rpc mode field from the GDNative structs.
+- Remove now empty pandemonium_method_attributes struct.
+  It will probably just fail compile on some platforms this way.
+
+### Core
+
+- Change the int hint type separator for PackedTypedArrays from ":" to "|" in preparation for adding additional export hints that arrays support.
+- Added get_unix_time_from_system_uint() helper method to the Time singleton.
+- Added a way to handle arm32v6 as a built in OS feature.
+
+#### SubProcess
+
+- Now SubProcess::get_data() clears the pipe, and it also uses the pipe mutex.
+- Now SubProcess::start() clears the accumulated data.
+- Implement SubProcessUnix::send_signal().
+- Signals doesn't seem to exist on windows, so just return ERR_UNAVAILABLE in SubProcessWindows::send_signal().
+- Cleanups and Tweaks to SubProcess's api.
+- Implement sending data to a subprocess on unix.
+- Rework SubProcess's communication setup api.
+  Now instead of a mode + bools, it's a single flag.
+  The Unix backend still need to be finished to use pipes.
+- Pipes setup for SubProcessUnix.
+- Fix bytes_in_buffer starting value in SubProcessWindows::poll().
+- SubProcessUnix initial pipes based reimplementation.
+- Backport improvements to SubProcessWindows.
+- Implemented SubProcessUnix::send_data().
+- Call stop() on error in SubProcessUnix::send_data() for convenience. Also comment.
+- Backport improvements to SubProcessWindows::send_data().
+- Detect if the process is not running in SubProcessUnix::poll() for convenience.
+- Renamed SubProcess:send_data() to write_to_stdin() to match the getters.
+- Separated pipe mutex in SubProcess. Now all 3 channels (stdout, stderr, stdin) have one.
+- Add SubProcess demo project link to the docs.
+- Fix issues in SubProcessUnix::poll() and SubProcessWindows::poll().
+- Check if the process is still running before checking if the call is blocking in SubProcessUnix::poll().
+  If you are polling from an another thread this will make it stop if the
+  process terminates.
+- Added is_process_running() check in SubProcessWindows::poll() if polling from an another thread while blocking.
+- Resize the correct buffer.
+- Fix blocking logic SubProcessUnix and SubProcessWindows start().
+- Move non-blocking is_process_running() check in SubProcessUnix and SubProcessWindows poll().
+- Shring back the buffer if the read didn't succeed in SubProcessWindows::start().
+- Also shrink the buffer if an error happens while blocking in SubProcessUnix::start().
+- Properly handle 0 reads in SubProcess Unix and Windows.
+- Fix pipe write handle usage in SubProcessWindows.
+- Factor out SECURITY_ATTRIBUTES creation in SubProcessWindows::start().
+- Clear _bytes and _err_bytes array in SubProcessUnix and SubProcessWindows start().
+- Close the right write handle.
+- Break in SubProcessWindows::start() if 0 length was read.
+- Do the same in poll().
+- Remove unnecessary check, also a comment in SubProcessWindows::start().
+- Remove 2 unecessary resizes in SubProcessWindows::start().
+- Close the inherited error handle in SubProcessWindow.
+- Factor out std reads from SubProcessWindows::start(), so they get read properly in every case.
+- Same change for Unix.
+- Factor out std reads from SubProcessWindows::poll() as well.
+- Same change to SubProcessWindows.
+- Call stop() in poll() if an error happened.
+- Don't call stop() in SubProcessWindows::write_to_stdin().
+- Simplify SubProcessWindows::write_to_stdin().
+- Send wide chars in SubProcessWindows::write_to_stdin().
+- Use PeekNamedPipe() to determine available data when polling in SubProcessWindows.
+- Added more stdin write method to SubProcess. This way different encodings, and data can also be sent directly.
+  - Also improved the implementation.
+- Don't check whether the process is running when polling in SubProcessWindows::start() and poll().
+- Fix blocking non-read mode in SubProcessWindows::start().
+- Added environment variable api to SubProcess.
+- Pass environment variables to SubProcess in SubProcessUnix.
+- Also implement passing environment variables when pipes are used.
+- Initial environment variable support for SubProcessWindows.
+- Fix Environment variable handling in SubProcessWindows.
+- Move flag set.
+- Actually store old values in the env map dict.
+- Added application name property to SubProcess.
+- Docs for the new methods in SubProcess.
+- Fix windows build.
+- Remove application_name property from SubProcess.
+- Fix osx and ios build.
+
+#### OS
+
+- Added get_stdin_data() helper method to OS.
+  - It can be used to read the stdin without blocking.
+  - Also it reads raw data.
+  - Suited for programmatical inter process communication.
+  - It's bound as read_data_from_stdin().
+
+#### Build
+
+- Added build name to version.py. Now the build system uses the BUILD_STATUS instead of PANDEMONIUM_VERSION_STATUS
+  environment variable to override the build status string.
+- Tweak VERSION_FULL_BUILD define so it puts the VERSION_BUILD right after the verstion, and not to the end.
+- Use VERSION_FULL_BUILD instead of VERSION_FULL_CONFIG when managing the export templates.
+  This means that now an official nightly build will try to use the
+  "5.3.official.nightly" folder instead of the "5.3.nightly" folder.
+- Also update the --version-full-config argument to return the now expected values.
+- Also update export template location in EditorExportPlatform.
+
+### Servers
+
+- Avoid division by zero in AudioDriverPulseAudio if the mix_rate property ends up being 0.
+
+### Editor
+
+- Tweaks to EditorData::script_class_is_parent().
+- Don't switch to the script tab when double clicking on NativeScripts.
+- Only perform the check in the previous commit if GDNative is enabled.
+
+### Modules
+
+#### Entity Spell System
+
+- Fix crash in ESS::load_all() if the resource couldn't be loaded. Closes #12.
+
+#### PScript
+
+- Remove 'Spaces used before tabs on a line' leftover error from PScript.
+- Allow method call chains to be broken up into multiple lines in PScript.
+- Added do .. while loops to PScript.
+- Implemented export syntax for PROPERTY_HINT_BUTTON to PScript.
+- Require ; after button export in PScript.
+- Fix variable name collisions with button export hints in PScript.
+
+#### GDScript
+
+- Backported PROPERTY_HINT_BUTTON exports to GDScript.
+
+#### Database SQLite
+
+- Updated SQLite to 3.54.1.
+- Reapply SQLITE_NO_FCHOWN Pandemonium sqlite patch.
+- Save previous commit as a patch.
+
+#### HTTP Server Simple
+
+- Lock after taking the connection in HTTPServerSimple::poll(). Also don't error if the connection is not valid.
+- Move the write lock so it's only locking when it adds the connection to the connections list in HTTPServerSimple::poll().
+- Added a restart method to WebServer.
+- Added temporary error checks and workaround for a very hard to replicate potential bug / socket quirk to WebServerSimple.
+- Also added a restart notification to WebServer.
+- Changed the WebServer restart notification so that it's signaling an upcoming restart instead of a completed one.
+  It's much more useful this way.
+- Reset the consecuticve fails counter after a success.
+
+#### GDNative
+
+- Match default parameters of the parent in NativeScript::get_global_class_name().
+- Fix NativeScript::get_base_script() returning unexpected values when the base is a native engine type.
+- Fix NativeScripts loading icons.
+- Set reference count properly in GDNative::initialize() when a library is only loaded once.
+- Now GDNative Library will handle a ! as a feature flag negation when defining platform features.
+- Update GDNative library editor platform list.
+- Disable the Haiku and UWP Gdnative platforms for now.
+- Added x86_32 and x86_64 architectures to frt_sdl's gdnative platform.
+- Remove leftover unused rpc mode field from the GDNative structs.
+- Remove now empty pandemonium_method_attributes struct.
+  It will probably just fail compile on some platforms this way.
+- Improve parameter name in the gdnative headers.
+
+### Platform
+
+- Restore old -march flags for arm32v6 for frt and frt_sdl platforms as they are the correct ones.
+  Note that frt won't be able to build the armv6 version in the current
+  build containers. They will be updated.
+- Added frt_toolchain_arch_override option to frt and the frt_sdl backends. It can be used to deiffrentiate between builds when a global compiler is used.
+
+#### FRT SDL
+
+- Move the UNIX_GET_ENTROPY check up in frt_godot3.cc.
+- Added missing include to frt_godot3.cc.
+- Added x86 and x86_64 templates for the frt_sdl platform.
+- Tweak 32 bit x86 build name for the frt sdl platform.
+- Fix frt_sdl x64 build.
+- Added x86_32 and x86_64 to the architecture dropdown to frt_sdl's export dialog.
+- Return the proper OS name for FRT SDL.
+
+#### Server, HTTPServer
+
+- Set the server's platform name properly in it's exporter.
+- Revert previous change, and add Server and HTTPServer platform features instead.
+- Also add Server feature to the HTTPServer export.
+
+### Other
+
+- Disabled github actions in the setting.
+
+#### Build Scripts
+
+- Added nightly quick option to the build all script.
+- Use the server executable in the make_release script, so it works on machines without a display.
+- Added a new make nightly release script.
+- Change stable in filenames to nightly in the make nightly script.
+- Add version.txt to the nightly release.
+- Remove versions from filenames in the make nightly script.
+- Add nightly and the new mirror link to the readme, also small cleanups.
+- Fix nightly source zip name.
+- Merge frt builds together.
+- Use the build containers to strip binaries.
+- Don't stop on error in the strip all script.
+- Also add a check for the new frt sdl binaries to the build_all script.
+- Split frt build script into frt and frt_sdl.
+- Split container linux build script to x11 and server.
+- Rework the strip all in-container script.
+- Don't error out in the strip all script on non zero return code.
+- Split the main export templates zip into 3: pc, mobile, and web.
+- Fix arm32v6 server and http server builds (pi zero) and add them to the releases and nightlies.
+- Rename the web release and nightly templates zip to javascript.
+- Split the server templates to server and http server.
+
+#### Build Containers
+
+- Merged the frt build containers into the linux ones.
+  - Now frt builds also use the custom toolchains.
+  - Note that the toolchains were updated, the old ones won't work.
+- Small tweak to the linux build container.
+- Fix path in the linux container.
+- Print the required build tools version in the build_containers script.
+
+### Backports
+
+#### Godot 3.x
+
+- Avoid attenuating indirect light when using vertex lighting in the GLES3 renderer
+- Fix `make_dir_recursive`
+  Co-authored-by: icarito
+- Fix `GLES3` padding in scene shader
+  Co-authored-by: Sebastian Silva <sebastian@fuentelibre.org>
+- Fix `GLES3` padding uniforms so they match
+- Fix CharacterBody 2D/3D BVH performance issue
+  Character bodies (PhysicsXDServer::BODY_MODE_KINEMATIC) were expanding
+  their AABBs to incorporate next frame motion. This should only happen
+  if CCD is turned on. If CCD is not turned on, all the extra broad phase
+  hits are wasted, since narrow phase will not consider motion unless
+  CCD is on.
+- Add BCrypt include MSVC requires
+- Limit JPEG loader to the Image::MAX_* before decoding.
+- Fix heap overflow with invalid string length in binary resources
+- Fix out-of-bounds reads with corrupt PHashTranslation data
+  Validate bucket and string offsets, and bounds-check smaz decompression input.
+- `Physics` - Add `wake_neighbors` function (3D)
+- tinyexr: Fix heap OOB read in multipart header parsing
+  This fixes CVE-2026-110597 which was notified to me by Fedora:
+  https://bugzilla.redhat.com/show_bug.cgi?id=2554377
+  Godot doesn't load multipart EXR files at all so we're not affected,
+  but patching it to appease vulnerability checks.
+- nanosvg: Fix float-to-int UB in parser and rasterizer
+  Fixes CVE-2026-88366, CVE-2026-88367 and CVE-2026-88368.
+  Backported from upstream PR memononen/nanosvg#298.
+- freetype: Backport fix for CVE-2026-95512
+  Backport upstream commit f3ca71c99 limiting CID subroutine overlaps.
+- freetype: Backport fix for CVE-2025-27363
+  Reject negative subglyph counts in load_truetype_glyph, as done in
+  the Ubuntu/Debian backport for FreeType 2.12.1.
+- pcre2: Update to 10.49
+  Fixes a number of security issues.
+  Drops the macOS sljit patch, now included upstream.
+- Disable PCRE2 JIT.
+  (cherry picked from commit 9834733f6f38df298f8c8c7630923f701766fe7a)
+- Fix out-of-bounds write when loading corrupt HDR images
+  Validate the image size and the RLE run and dump lengths.
+- brotli: Update to 1.2.1
+- miniupnpc: Backport minixml fixes for CVE-2026-110655 and CVE-2026-110656
+- Add `Variant::get_array_size()`
+- Handle all pandemonium variant types in Variant::get_array_size().
+
+
 ## [5.2.0]
 
 Relatively small release due to me having to work on finishing my dissertation.
