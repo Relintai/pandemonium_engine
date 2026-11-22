@@ -9,4 +9,4 @@ module_config = ""
 year = 2026
 website = "https://pandemoniumengine.org"
 docs_url = "https://github.com/Relintai/pandemonium_engine_docs/blob/"
-docs_branch = "master"
+docs_branch = "5.3"
